@@ -8,10 +8,12 @@
 # LICENSE file for more information.
 #
 ################################################################################
-
+import os
 import ConfigParser
+
+config_path = os.path.join(os.path.dirname(__file__),'../aimsConfig.ini')
 config = ConfigParser.ConfigParser()
-config.read("/home/splanzer/systemConfigs/aimsConfig.ini") #if we go down this path will need to decide on common OPA and Ubuntu location
+config.read(config_path) #if we go down this path will need to decide on common OPA and Ubuntu location
 
 def ConfigSectionMap(section):
     ''' obtain system variables as stored locally '''

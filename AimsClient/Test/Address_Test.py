@@ -19,6 +19,7 @@ Created on 29/10/2015
 import unittest
 import inspect
 import sys
+import re
 
 
 sys.path.append('..')
@@ -44,9 +45,9 @@ class Test_0_SelfTest(unittest.TestCase):
 class Test_1_TestSetters(unittest.TestCase):
     
     def setUp(self): 
-        testlog.debug('Instantiate null address')
+        testlog.debug('Instantiate null address, address.setter list')
         self._address = Address()
-        self._address_setters = [ i for i in inspect.getmembers(Address, predicate=inspect.ismethod).keys() if i[:3]=='set']
+        self._address_setters = [i for i in dict(inspect.getmembers(Address, predicate=inspect.ismethod)).keys() if i[:3]=='set']
 
         
     def tearDown(self):
@@ -55,23 +56,67 @@ class Test_1_TestSetters(unittest.TestCase):
         self._address_setters = None
         
         
-    def test1_inst(self):
+    def test10_instSetters(self):
         '''Tests that all the setters set a matching attribute i.e. setAttribute("X") -> self._Attribute = "X"'''
-        testval = 1     
-        for asm in self.address_setters:
-            asa = asm[:4].replace('set','_').lower()+asm[4:]
-            getattr(self._address, am)(testval)
-            self.assertEqual(getattr(self._address, asa), testval, 'testval mismatch')
+        testlog.debug('Test10 Instantiate all setters')
+        for asttr in self._address_setters:
+            aval = self._generateAttrVal(asttr)
+            aname = self._generateAttrName(asttr)
+            getattr(self._address, asttr)(aval)
+            self.assertEqual(getattr(self._address, aname), aval, 'set* : Setter {} not setting correct attribute value {}'.format(asttr,aval))
             
-    def test2_nullremoval(self):
+    def test20_nullRemoval(self):
         '''Tests whether null values are removed from the object array'''
-        pass
-    
-    def test3_checkJSON(self):
-        '''Tests whether JSON object gets created correctly'''
-        pass
-    
+        testlog.debug('Test20 Instantiate sparse dict and test null removal')
+        td1 = {'a': 111, 'b': None, 'c': 333, 'd': None, 'e': 555}
+        td2 = {'a': 111, 'c': 333, 'e': 555}
+        td3 = self._address.delNone(td1)
+        self.assertEqual(td3, td2, 'delNone : Dict null remover failure {}'.format(td3))
 
+    def test30_checkPopulatedAddressDict(self):
+        '''Tests whether JSON object gets created correctly'''
+        sample = {
+            'workflow':{
+                'sourceUser':'SU','sourceReason':'SR'},
+            'components':{
+                'addressType':'AT','externalAddressId':'EAI','externalAddressIdScheme':'EAIS',
+                'lifecycle':'L"','unitType':'UT','unitValue':'UV','levelType':'LT','levelValue':'LV',
+                'addressNumberPrefix':'ANP','addressNumber':'AN',
+                'addressNumberSuffix':'ANS','addressNumberHigh':'ANH',
+                'roadCentrelineId':'RCLI','roadPrefix':'RP','roadName':'RN','roadTypeName':'RTN','roadSuffix':'RS',
+                'waterRouteName':'WRN','waterName':'WN',
+                'suburbLocality':'SL','townCity':'TC'},
+            'addressedObject':{
+                'objectType':'OT','objectName':'ON',
+                'addressPosition':{
+                    'type':'APT','coordinates':[1,1],
+                    'crs':{'type':'CT','properties':{'name':'CP'}}},
+            'externalObjectId':'EOI','externalObjectIdScheme':'EOIS',
+            'valuationReference':'VR','certificateOfTitle':'COT','appellation':'A'
+        }}
+        testlog.debug('Test30 Attributes set to match JSON sample and compare')
+        for asm in self._address_setters:
+            aval = self._generateAttrVal(asm)
+            getattr(self._address, asm)(aval)
+        jresult = self._address.objectify()
+        self.assertEqual(jresult, sample, 'JSON Address constructed incorrectly {}'.format(jresult))
+        
+    def test31_checkAddressDictNullRemoval(self):
+        '''check whether JSON output is truncated correctly on null inputs'''
+        pass
+    
+    def test32_checkAddressDictErrorRaisedOnNull(self):
+        '''Check if error raised if attempt to create JSON output on null address array'''
+        pass
+        
+    
+    def _generateAttrVal(self,setmthd):
+        setmthd = re.match('set_*(.*)',setmthd).group(1)
+        return setmthd[:1].upper()+''.join([s for s in setmthd[1:] if ord(s)>64 and ord(s)<91])
+    
+    def _generateAttrName(self,setmthd):
+        setmthd = re.match('set_*(.*)',setmthd).group(1)
+        return '_'+setmthd[:1].lower()+setmthd[1:]
 
 
 if __name__ == "__main__":
