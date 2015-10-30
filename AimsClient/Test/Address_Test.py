@@ -10,7 +10,7 @@ All rights reserved
 This program is released under the terms of the new BSD license. See the 
 LICENSE file for more information.
 
-Tests for command line URLs
+Tests on Address class
 
 Created on 29/10/2015
 
@@ -29,7 +29,7 @@ from AimsLogging import Logger
 
 testlog = Logger.setup()
 
-class Test_0_SelfTest(unittest.TestCase):
+class Test_0_AddressSelfTest(unittest.TestCase):
     
     def setUp(self):
         pass
@@ -40,9 +40,9 @@ class Test_0_SelfTest(unittest.TestCase):
     def test_1_selftest(self):
         #assertIsNotNone added in 3.1
         self.assertNotEqual(testlog,None,'Testlog not instantiated')
-        testlog.debug('Test message')
+        testlog.debug('Address_Test Log')
         
-class Test_1_TestSetters(unittest.TestCase):
+class Test_1_AddressTestSetters(unittest.TestCase):
     
     def setUp(self): 
         testlog.debug('Instantiate null address, address.setter list')
@@ -80,7 +80,7 @@ class Test_1_TestSetters(unittest.TestCase):
                 'sourceUser':'SU','sourceReason':'SR'},
             'components':{
                 'addressType':'AT','externalAddressId':'EAI','externalAddressIdScheme':'EAIS',
-                'lifecycle':'L"','unitType':'UT','unitValue':'UV','levelType':'LT','levelValue':'LV',
+                'lifecycle':'L','unitType':'UT','unitValue':'UV','levelType':'LT','levelValue':'LV',
                 'addressNumberPrefix':'ANP','addressNumber':'AN',
                 'addressNumberSuffix':'ANS','addressNumberHigh':'ANH',
                 'roadCentrelineId':'RCLI','roadPrefix':'RP','roadName':'RN','roadTypeName':'RTN','roadSuffix':'RS',
