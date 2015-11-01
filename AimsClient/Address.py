@@ -95,12 +95,15 @@ class Address(object):
     def setCertificateOfTitle( self, certificateOfTitle ): self._certificateOfTitle = certificateOfTitle  
     def setAppellation( self, appellation ): self._appellation = appellation    
          
-    def delNone (self, d):
+    def delNone (self,d):
         ''' Removes key / value pairs from object whereby value is == to None '''
         for key, value in d.items():
             if value is None:
                 del d[key]
-            return d
+        return d
+        
+    @staticmethod
+    def _delNone(d): return {k:v for k,v in d.items() if v}
 
     def objectify(self):
         ''' Python address class to json object '''
