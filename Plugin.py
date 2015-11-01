@@ -18,6 +18,7 @@ import Resources
 
 from LayerManager import LayerManager
 from CreateNewTool import CreateNewTool
+from AimsClient.Gui.Controller import Controller
 
 class Plugin( ):
 
@@ -34,6 +35,8 @@ class Plugin( ):
         self._iface = iface
         self._statusbar = iface.mainWindow().statusBar()
         self._layers = None
+        
+        self._controller = Controller()
         
     def initGui(self):
         self._layers = LayerManager(self._iface)
@@ -52,6 +55,8 @@ class Plugin( ):
         self._createnewaddressaction.setStatusTip("place point for new address")
         self._createnewaddressaction.setEnabled(False)
         self._createnewaddressaction.triggered.connect( self.startNewAddressTool )
+        self._createnewtool = CreateNewTool( self._iface, self._controller )
+        self._createnewtool.setAction( self._createnewaddressaction )
        
         # Add to own toolbar
         self._toolbar = self._iface.addToolBar("AIMS Client")
@@ -60,7 +65,7 @@ class Plugin( ):
         # Add actions to menu and toolbar icon
         self._iface.addToolBarIcon(self._loadaction)
         self._iface.addPluginToMenu("&AIMS Client", self._loadaction)
-        self._iface.addPluginToMenu("&AIMS Client", self._createnewaddressaction)
+        #self._iface.addPluginToMenu("&AIMS Client", self._createnewaddressaction)
 
     def unload(self):      
         self._iface.mainWindow().removeToolBar(self._toolbar)
@@ -72,6 +77,8 @@ class Plugin( ):
     def loadEditor( self ):
         self.startNewAddressTool()
         self._layers.installRefLayers()
+        self._createnewaddressaction.setEnabled(True)
             
     def startNewAddressTool( self ):
-        self._createnewaddressaction.setEnabled(True)
+        self._iface.mapCanvas().setMapTool( self._createnewtool )
+        self._createnewtool.setEnabled( True )
