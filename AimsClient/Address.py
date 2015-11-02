@@ -48,11 +48,11 @@ class Address(object):
         # addressable object
         self._aoType = None
         self._aoName = None
-        self._aoPositionType = None
+        self._aoPositionType = 'Point'
         self._x = None
         self._y = None
-        self._crsType = None #is this a bad candidate for a defualt - to begin with all will be points, the future ... ?
-        self._crsProperties = None #'urn:ogc:def:crs:EPSG::2193' #need to guarantee therefore it is always 2193
+        #self._crsType = None #is this a bad candidate for a defualt - to begin with all will be points, the future ... ?
+        self._crsProperties = 'urn:ogc:def:crs:EPSG::2193' #need to guarantee this always 2193
         self._externalObjectId = None
         self._externalObjectIdScheme = None
         self._valuationReference = None
@@ -84,11 +84,11 @@ class Address(object):
     def setTownCity( self, settownCity ): self._settownCity = settownCity 
     def setAoType( self, aoType ): self._aoType = aoType
     def setAoName( self, aoName ): self._aoName = aoName  
-    def setAoPositionType( self, aoPositionType ): self._aoPositionType = aoPositionType
+    #def setAoPositionType( self, aoPositionType ): self._aoPositionType = aoPositionType
     def set_x( self, x ): self._x = x  
     def set_y( self, y ): self._y = y  
-    def setCrsType( self, crsType ): self._crsType = crsType  
-    def setCrsProperties( self, crsProperties ): self._crsProperties = crsProperties
+    #def setCrsType( self, crsType ): self._crsType = crsType  
+    #def setCrsProperties( self, crsProperties ): self._crsProperties = crsProperties
     def setExternalObjectId( self, externalObjectId ): self._externalObjectId = externalObjectId  
     def setExternalObjectIdScheme( self, externalObjectIdScheme ): self._externalObjectIdScheme = externalObjectIdScheme  
     def setValuationReference( self, valuationReference ): self._valuationReference = valuationReference  

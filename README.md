@@ -9,6 +9,9 @@ LICENSE file for further information.
 Copyright 2015 Crown copyright (c) Land Information New Zealand and the New
 Zealand Government.
 
+##Current test status master: 
+[![Build Status](https://travis-ci.org/linz/QGIS-AIMS-Plugin.svg?branch=master)](https://travis-ci.org/linz/QGIS-AIMS-Plugin)
+
 
 ##Dependencies
 	*Postgres 9.0

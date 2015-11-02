@@ -40,7 +40,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="comboBox"/>
+      <widget class="QComboBox" name="uAddressType"/>
      </item>
     </layout>
    </item>
@@ -243,7 +243,7 @@
       </widget>
      </item>
      <item row="4" column="1">
-      <widget class="QComboBox" name="uUnitTypeLineEdit"/>
+      <widget class="QComboBox" name="uUnitType"/>
      </item>
      <item row="5" column="0">
       <widget class="QLabel" name="levelTypeLabel">
@@ -573,7 +573,7 @@
   <tabstop>uExternalAddId</tabstop>
   <tabstop>UexternalAddressIdScheme</tabstop>
   <tabstop>ulifeCycle</tabstop>
-  <tabstop>uUnitTypeLineEdit</tabstop>
+  <tabstop>uUnitType</tabstop>
   <tabstop>uLevelType</tabstop>
   <tabstop>uLevelValue</tabstop>
   <tabstop>uRoadCentrelineId</tabstop>
@@ -592,7 +592,7 @@
   <tabstop>uAppellation</tabstop>
   <tabstop>uAbort</tabstop>
   <tabstop>uSubmitAddressButton</tabstop>
-  <tabstop>comboBox</tabstop>
+  <tabstop>uAddressType</tabstop>
  </tabstops>
  <resources/>
  <connections/>

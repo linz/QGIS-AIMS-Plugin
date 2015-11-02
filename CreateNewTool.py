@@ -58,9 +58,19 @@ class CreateNewTool( QgsMapTool ):
             QMessageBox.warning(self._iface.mainWindow(),"Create Address Point", "Not enabled")
             return
         
+
+        
         pt = e.pos()
-        coords = self.toMapCoordinates(QPoint(pt.x(), pt.y()))
+        coords = self.toMapCoordinates(QPoint(pt.x(), pt.y()))# Point validation???
         
         # Open new address form
-        addDetials = NewAddressDialog.newAddress(self._iface.mainWindow())
+        address = NewAddressDialog.newAddress(self._iface.mainWindow(), coords)
+        
+        
+        
+        
+        
+        
+        
+        
         
