@@ -60,7 +60,7 @@ class Address(object):
         self._appellation = None
     
     #set functions used to manipulate object properties   
-    def set_sourceReason (self, sourceReason): self._sourceReason = sourceReason
+    def setSourceReason (self, sourceReason): self._sourceReason = sourceReason
     def setAddressType( self, addressType ): self._addressType = addressType    
     def setExternalAddressId( self, externalAddressId ): self._externalAddressId = externalAddressId 
     def setExternalAddressIdScheme( self, externalAddressIdScheme ): self._externalAddressIdScheme = externalAddressIdScheme 
@@ -81,7 +81,7 @@ class Address(object):
     def setWaterRouteName( self, waterRouteName ): self._waterRouteName = waterRouteName 
     def setWaterName( self, waterName ): self._waterName = waterName 
     def setSuburbLocality( self, suburbLocality ): self._suburbLocality = suburbLocality 
-    def setTownCity( self, settownCity ): self._settownCity = settownCity 
+    def setTownCity( self, townCity ): self._townCity = townCity 
     def setAoType( self, aoType ): self._aoType = aoType
     def setAoName( self, aoName ): self._aoName = aoName  
     #def setAoPositionType( self, aoPositionType ): self._aoPositionType = aoPositionType
