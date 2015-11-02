@@ -22,10 +22,8 @@ import sys
 import re
 
 
-sys.path.append('..')
-
-from Address import Address
-from AimsLogging import Logger
+from AimsClient.Address import Address
+from AimsClient.AimsLogging import Logger
 
 testlog = Logger.setup()
 
@@ -120,5 +118,4 @@ class Test_1_AddressTestSetters(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    #import sys;sys.argv = ['', 'Test.testLDSRead']
     unittest.main()

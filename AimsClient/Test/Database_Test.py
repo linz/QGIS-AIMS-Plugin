@@ -22,11 +22,8 @@ import sys
 import re
 
 
-sys.path.append('..')
-
-import Database
-
-from AimsLogging import Logger
+from AimsClient import Database
+from AimsClient.AimsLogging import Logger
 
 testlog = Logger.setup()
 

@@ -19,11 +19,11 @@ Created on 29/10/2015
 
 import unittest
 
-from Address_Test import Test_0_AddressSelfTest as AT0
-from Address_Test import Test_1_AddressTestSetters as AT1
-from Database_Test import Test_0_DatabaseSelfTest as DT0
-from Database_Test import Test_1_DatabaseTestSetters as DT1
-from AimsLogging import Logger
+from AimsClient.Test.Address_Test import Test_0_AddressSelfTest as AT0
+from AimsClient.Test.Address_Test import Test_1_AddressTestSetters as AT1
+from AimsClient.Test.Database_Test import Test_0_DatabaseSelfTest as DT0
+from AimsClient.Test.Database_Test import Test_1_DatabaseTestSetters as DT1
+from AimsClient.AimsLogging import Logger
 
 testlog = Logger.setup()
 
