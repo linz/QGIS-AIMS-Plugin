@@ -19,6 +19,9 @@ from qgis.gui import *
 
 from AimsClient.Gui import Controller
 from AimsClient.Address import Address
+from AimsClient.Gui.NewAddressDialog import NewAddressDialog
+
+
 
 class CreateNewTool( QgsMapTool ):
     ''' tool for creating new address information ''' 
@@ -28,6 +31,7 @@ class CreateNewTool( QgsMapTool ):
         QgsMapTool.__init__(self, iface.mapCanvas())
    
         self._iface = iface
+        self._controller = controller
         self.activate()
 
     def activate( self ):
@@ -53,21 +57,10 @@ class CreateNewTool( QgsMapTool ):
         if not self._enabled:
             QMessageBox.warning(self._iface.mainWindow(),"Create Address Point", "Not enabled")
             return
-
+        
         pt = e.pos()
         coords = self.toMapCoordinates(QPoint(pt.x(), pt.y()))
-    
-        # Do something to create the point!
-        try:
-            self.setPoint( coords )
-        except:
-            msg = str(sys.exc_info()[1])
-            QMessageBox.warning(self._iface.mainWindow(),"Error creating point",msg)
-
-
-    def setPoint( self, coords ):
-        src_crs = self._iface.mapCanvas().mapRenderer().destinationCrs()
-        tgt_crs = QgsCoordinateReferenceSystem()
-        tgt_crs.createFromOgcWmsCrs('EPSG:4167')
-        transform = QgsCoordinateTransform( src_crs, tgt_crs )
-        wkt = transform.transform( coords.x(), coords.y() ).wellKnownText()
+        
+        # Open new address form
+        addDetials = NewAddressDialog.newAddress(self._iface.mainWindow())
+        

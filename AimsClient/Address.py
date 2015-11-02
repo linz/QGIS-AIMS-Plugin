@@ -60,12 +60,15 @@ class Address(object):
         self._appellation = None
     
     #set functions used to manipulate object properties   
+    def set_sourceReason (self, sourceReason): self._sourceReason = sourceReason
     def setAddressType( self, addressType ): self._addressType = addressType    
     def setExternalAddressId( self, externalAddressId ): self._externalAddressId = externalAddressId 
     def setExternalAddressIdScheme( self, externalAddressIdScheme ): self._externalAddressIdScheme = externalAddressIdScheme 
     def setLifecycle( self, lifecycle ): self._lifecycle = lifecycle 
     def setUnitType( self, unitType ): self._unitType = unitType 
     def setUnitValue( self, unitValue ): self._unitValue = unitValue 
+    def setLevelType( self, levelType ): self._levelType = levelType 
+    def setLevelValue( self, levelValue ): self._levelValue = levelValue 
     def setAddressNumberPrefix( self, addressNumberPrefix ): self._addressNumberPrefix = addressNumberPrefix 
     def setAddressNumber( self, addressNumber ): self._addressNumber = addressNumber 
     def setAddressNumberSuffix( self, addressNumberSuffix ): self._addressNumberSuffix = addressNumberSuffix 
@@ -78,8 +81,9 @@ class Address(object):
     def setWaterRouteName( self, waterRouteName ): self._waterRouteName = waterRouteName 
     def setWaterName( self, waterName ): self._waterName = waterName 
     def setSuburbLocality( self, suburbLocality ): self._suburbLocality = suburbLocality 
-    def setSettownCity( self, settownCity ): self._settownCity = settownCity 
-    def setAoType( self, aoType ): self._aoType = aoType 
+    def setTownCity( self, settownCity ): self._settownCity = settownCity 
+    def setAoType( self, aoType ): self._aoType = aoType
+    def setAoName( self, aoName ): self._aoName = aoName  
     def setAoPositionType( self, aoPositionType ): self._aoPositionType = aoPositionType
     def set_x( self, x ): self._x = x  
     def set_y( self, y ): self._y = y  
