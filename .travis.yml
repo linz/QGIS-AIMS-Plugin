@@ -25,7 +25,7 @@ before_script:
   - echo "Setup starting on " `date`
   - psql -c 'create database aims_ci_test;' -U postgres
   - psql -c 'create schema aims;' -U postgres
-  - psql -c 'create table aims.aims_test_table(id int, desc varchar(32));' -U postgres
+  - psql -c 'create table aims.aims_test_table(id int, name varchar(32));' -U postgres
   - echo "Build starting on " `date`
   - export QGIS_PREFIX_PATH=/usr
   - export PYTHONPATH=${QGIS_PREFIX_PATH}/share/qgis/python/:${QGIS_PREFIX_PATH}/share/qgis/python/plugins:`pwd`
