@@ -51,8 +51,8 @@ class Address(object):
         self._aoPositionType = 'Point'
         self._x = None
         self._y = None
-        #self._crsType = None #is this a bad candidate for a defualt - to begin with all will be points, the future ... ?
-        self._crsProperties = 'urn:ogc:def:crs:EPSG::2193' #need to guarantee this always 2193
+        self._crsType = 'name'
+        self._crsProperties = 'urn:ogc:def:crs:EPSG::2193' #need to guarantee supplied coords are in 2193
         self._externalObjectId = None
         self._externalObjectIdScheme = None
         self._valuationReference = None

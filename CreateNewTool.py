@@ -21,8 +21,6 @@ from AimsClient.Gui import Controller
 from AimsClient.Address import Address
 from AimsClient.Gui.NewAddressDialog import NewAddressDialog
 
-
-
 class CreateNewTool( QgsMapTool ):
     ''' tool for creating new address information ''' 
     
@@ -57,20 +55,10 @@ class CreateNewTool( QgsMapTool ):
         if not self._enabled:
             QMessageBox.warning(self._iface.mainWindow(),"Create Address Point", "Not enabled")
             return
-        
-
-        
+             
         pt = e.pos()
         coords = self.toMapCoordinates(QPoint(pt.x(), pt.y()))# Point validation???
         
         # Open new address form
         address = NewAddressDialog.newAddress(self._iface.mainWindow(), coords)
-        
-        
-        
-        
-        
-        
-        
-        
         

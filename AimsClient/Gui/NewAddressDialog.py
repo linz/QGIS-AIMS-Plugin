@@ -14,8 +14,7 @@ from PyQt4.QtGui import *
 import re
 
 from Ui_NewAddressDialog import Ui_NewAddressDialog
-from AimsClient import Address
-import Controller
+from AimsClient.Address import Address
 
 class NewAddressDialog(Ui_NewAddressDialog, QDialog):
     
@@ -29,8 +28,8 @@ class NewAddressDialog(Ui_NewAddressDialog, QDialog):
         self.setupUi(self)
         
         self.coords = coords
-        self.address = Address.Address()
-   
+        self.address = Address()
+     
         # set form combobox default values
         self.uAddressType.addItems(['Road', 'Water'])
         self.ulifeCycle.addItems(['Current', 'Proposed', 'Retired'])
@@ -44,21 +43,20 @@ class NewAddressDialog(Ui_NewAddressDialog, QDialog):
     
     def submitAddress( self ):
         ''' take users input from form and submit to AIMS API '''
-        # Need to pass to validation function prior to the below
- 
-        self.address.setAddressType(str(self.uAddressType.text()))
+        # Need to pass to validation function prior to the below 
+        self.address.setAddressType(str(self.uAddressType.currentText()))
         self.address.setExternalAddressId(str(self.uExternalAddId.text()))
-        self.address.setExternalAddressIdScheme(str(self.externalAddressIdScheme.text()))
+        self.address.setExternalAddressIdScheme(str(self.uExternalAddressIdScheme.text()))
         self.address.setLifecycle(str(self.ulifeCycle.currentText()))
         self.address.setUnitType(str(self.uUnitType.currentText()))
         self.address.setUnitValue(str(self.uUnit.text()))
         self.address.setLevelType(str(self.uLevelType.currentText()))
         self.address.setLevelValue(str(self.uLevelValue.text()))
-        self.address.setAddressNumberPrefix( str(self.uPrefix.text()))
-        self.address.setAddressNumber(int(self.uBase.text()))
+        self.address.setAddressNumberPrefix( str(self.uPrefix.text()))         
+        if self.uBase.text() != '': self.address.setAddressNumber(int(self.uBase.text())) #need to limit user input toi int
         self.address.setAddressNumberSuffix(str(self.uAlpha.text()))
-        self.address.setAddressNumberHigh(int(self.uHigh.text()))
-        self.address.setRoadCentrelineId(int(self.uRoadCentrelineId.text()))
+        if self.uHigh.text() != '': self.address.setAddressNumberHigh(int(self.uHigh.text()))
+        if self.uRoadCentrelineId.text() != '': self.address.setRoadCentrelineId(int(self.uRoadCentrelineId.text()))
         self.address.setRoadPrefix(str(self.uRoadPrefix.text()))
         self.address.setRoadName(str(self.uRoadName.text()))
         self.address.setRoadTypeName(str(self.uRoadTypeName.text()))
@@ -76,14 +74,12 @@ class NewAddressDialog(Ui_NewAddressDialog, QDialog):
         self.address.setValuationReference(str(self.uValuationReference.text())) 
         self.address.setCertificateOfTitle(str(self.uCertificateOfTitle.text()))
         self.address.setAppellation(str(self.uAppellation.text()))
-            
-            
+                     
     def FullNumChanged(self, newnumber):
         ''' sets address components based on user supplied full address '''
-        
         # set address components to None
         [i.setText(None) for i in ([self.uPrefix, self.uUnit, self.uBase, self.uAlpha, self.uHigh])]
-
+        # split full address into components
         p = re.compile(r'^(?P<flat_prefix>[A-Z]+)?(?:\s)?(?P<flat>[0-9]+/\s*|^[A-Z]{,2}/\s*)?(?P<base>[0-9]+)(?P<alpha>[A-Z]+)?$') 
         m = p.match(newnumber.upper())
         try:

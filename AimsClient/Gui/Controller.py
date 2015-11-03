@@ -10,12 +10,17 @@
 ################################################################################
 
 from PyQt4.QtCore import *
-#from AddressList import AddressList
-#from AimsClient.Address import Address
+from AimsClient.Address import Address
 
 class Controller( QObject ):
+    
     def __init__( self ):
         QObject.__init__(self)
         self._currentAddress = None
-        #if Controller._instance == None:
-        #    Controller._instance = self
+    '''
+    def initialiseNewAddress(self):
+        return Address()
+    
+    def destroyAddObj(self, address):   
+        pass
+    '''
