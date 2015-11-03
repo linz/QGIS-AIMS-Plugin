@@ -30,8 +30,8 @@ from AimsClient.AimsLogging import Logger
 
 testlog = Logger.setup()
 
-#DCONF = {'host':'127.0.0.1', 'port':3128, 'user':'postgres','password':'','name':'aims_ci_test','aimsschema':'aims'}
-DCONF = {'host':'127.0.0.1', 'port':3128, 'user':'test_user','password':'test_pass','name':'aims_ci_test','aimsschema':'aims'}
+DCONF = {'host':'127.0.0.1', 'port':3128, 'user':'postgres','password':'', \
+         'name':'aims_ci_test','aimsschema':'aims', 'table':'aims_test_table'}
 TIMEOUT = 10
 
 class TimeoutError(Exception): pass
@@ -93,9 +93,9 @@ class Test_2_DatabaseConnectivity(unittest.TestCase):
     conn = None
     cur = None
     res = None
-    q1 = 'SELECT * FROM aims_test_table;'
-    q2 = "INSERT INTO aims.aims_test_table VALUES(1000,'first');"
-    q3 = "DELETE FROM aims.aims_test_table WHERE id=1000;"
+    q1 = 'SELECT * FROM {};'.format(DCONF['table'])
+    q2 = "INSERT INTO {}.{} VALUES(1000,'first');".format(DCONF['aimsschema'],DCONF['table'])
+    q3 = "DELETE FROM {}.{} WHERE id=1000;".format(DCONF['aimsschema'],DCONF['table'])
     
     def setUp(self): 
         Database._setup(DCONF)
@@ -114,8 +114,8 @@ class Test_2_DatabaseConnectivity(unittest.TestCase):
     @timeout(seconds=TIMEOUT, message='Timeout execution query on database')
     def test20_execute(self):
         testlog.debug('Test_2.20 Test query execution (SELECT) function')
-        res = Database.execute(self.q1)
-        self.assertNotNull(res,'Query "{}" failed'.format(q1))
+        self.res = Database.execute(self.q1)
+        self.assertNotNull(res,'Query "{}" failed with {}'.format(self.q1,self.res))
     
     def test30_executeScalar(self):
         pass
