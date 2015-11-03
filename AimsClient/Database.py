@@ -26,6 +26,13 @@ _user = Config.ConfigSectionMap('db')['user']
 _password=''
 _aimsSchema='reference'
 
+def _setup(d):
+    setHost(d['host'])
+    setPort(d['port'])
+    setDatabase(d['name']) 
+    setAimsSchema(d['aimsschema'])
+    setUser(d['user'])
+    setPassword(d['password'])
 
 def host(): return _host
 def setHost(host): global _host; _host=host; _reset()
@@ -43,7 +50,7 @@ def password(): return _password
 def setPassword(password): global _password; _password=password; _reset()
 
 def aimsSchema(): return _aimsSchema
-def setBdeSchema(bdeSchema): global _bdeSchema; _bdeSchema=bdeSchema; _reset()
+def setAimsSchema(aimsschema): global _aimsSchema; _aimsSchema=aimsschema; _reset()
 
 def _reset():
     global _db
@@ -64,6 +71,7 @@ def connection():
             user=_user, 
             password=_password
         )
+        db.set_isolation_level(0)
         c = db.cursor()
         c.execute('set search_path='+_aimsSchema+', public' )
         _db = db
