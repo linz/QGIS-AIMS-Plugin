@@ -17,6 +17,7 @@ install:
   - pip install --upgrade pep8
   - pip install --upgrade pylint
   - pip install ConfigParser
+  - pip install coveralls
   
 services:
   - postgresql
@@ -35,4 +36,7 @@ before_script:
 
 script: 
   - make
-  - nosetests
+  - nosetests --with-coverage
+
+after_success:
+  - coveralls

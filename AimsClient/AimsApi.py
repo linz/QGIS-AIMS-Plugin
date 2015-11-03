@@ -19,11 +19,11 @@ class AimsApi( ):
         self._changeUrl = Config.ConfigSectionMap('url')['address']
         self._user = Config.ConfigSectionMap('user')['name']
         self._password = Config.ConfigSectionMap('user')['pass']
-        self._headers = {'content-type':'application/json', 'accept':'application/json'}
+        self._headers = {'content-type':'application/json', 'accept':'application/json'}        
            
     def changefeedAdd( self, payload ):
         ''' Add an address to the Change feed '''
-        requests.get(self._changeUrl, data=json.dumps(payload), auth=(self._user, self._password))
+        return requests.post(self._changeUrl+'add', data=json.dumps(payload), headers=self._headers, auth=(self._user, self._password))
         #test for failure and if so trigger error module and show warning
                
       
