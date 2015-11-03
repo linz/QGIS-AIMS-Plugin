@@ -119,18 +119,8 @@
          <height>16777215</height>
         </size>
        </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLineEdit" name="uPrefix">
-       <property name="maximumSize">
-        <size>
-         <width>65</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string/>
+       <property name="inputMethodHints">
+        <set>Qt::ImhFormattedNumbersOnly</set>
        </property>
       </widget>
      </item>
@@ -161,6 +151,19 @@
          <width>65</width>
          <height>16777215</height>
         </size>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLineEdit" name="uPrefix">
+       <property name="maximumSize">
+        <size>
+         <width>65</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string/>
        </property>
       </widget>
      </item>

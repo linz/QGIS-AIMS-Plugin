@@ -14,13 +14,17 @@ from AimsClient.Address import Address
 
 class Controller( QObject ):
     
+    _instance = None
+    
     def __init__( self ):
         QObject.__init__(self)
         self._currentAddress = None
-    '''
+        if Controller._instance == None:
+            Controller._instance = self
+    
     def initialiseNewAddress(self):
         return Address()
     
     def destroyAddObj(self, address):   
         pass
-    '''
+    

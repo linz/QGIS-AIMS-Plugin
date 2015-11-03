@@ -84,11 +84,11 @@ class Address(object):
     def setTownCity( self, townCity ): self._townCity = townCity 
     def setAoType( self, aoType ): self._aoType = aoType
     def setAoName( self, aoName ): self._aoName = aoName  
-    #def setAoPositionType( self, aoPositionType ): self._aoPositionType = aoPositionType
+    def setAoPositionType( self, aoPositionType ): self._aoPositionType = aoPositionType
     def set_x( self, x ): self._x = x  
     def set_y( self, y ): self._y = y  
-    #def setCrsType( self, crsType ): self._crsType = crsType  
-    #def setCrsProperties( self, crsProperties ): self._crsProperties = crsProperties
+    def setCrsType( self, crsType ): self._crsType = crsType  
+    def setCrsProperties( self, crsProperties ): self._crsProperties = crsProperties
     def setExternalObjectId( self, externalObjectId ): self._externalObjectId = externalObjectId  
     def setExternalObjectIdScheme( self, externalObjectIdScheme ): self._externalObjectIdScheme = externalObjectIdScheme  
     def setValuationReference( self, valuationReference ): self._valuationReference = valuationReference  
@@ -108,7 +108,7 @@ class Address(object):
     def objectify(self):
         ''' Python address class to json object '''
 
-        return {
+        return self._delNone({
         'workflow':{
             'sourceUser':self._sourceUser,
             'sourceReason':self._sourceReason
@@ -158,4 +158,4 @@ class Address(object):
             'certificateOfTitle':self._certificateOfTitle,
             'appellation':self._appellation
         }
-    }
+    })
