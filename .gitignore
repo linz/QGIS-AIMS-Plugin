@@ -1,0 +1,7 @@
+.pydevproject
+.project
+.git
+*.pyc
+Resources.py
+*.ini
+.settings
