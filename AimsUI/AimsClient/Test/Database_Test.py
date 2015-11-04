@@ -25,8 +25,8 @@ from functools import wraps
 from multiprocessing import Process
 
 
-from AimsClient import Database
-from AimsClient.AimsLogging import Logger
+from AimsUI.AimsClient import Database
+from AimsUI.AimsClient.AimsLogging import Logger
 
 testlog = Logger.setup()
 

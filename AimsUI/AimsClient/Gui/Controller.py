@@ -10,7 +10,7 @@
 ################################################################################
 
 from PyQt4.QtCore import *
-from AimsClient.Address import Address
+from AimsUI.AimsClient.Address import Address
 
 class Controller( QObject ):
     
