@@ -56,9 +56,9 @@ class ConfigReader(object):
                 if not val or val == 'None' or val == '' or all(i in whitespace for i in val):
                     self.d[sect][k] = os.environ['aims_{}_{}'.format(sect,k)]
                     
-    def configSectionMap(self,section):
+    def configSectionMap(self,section=None):
         '''per section config matcher'''
-        return self.d[section]
+        return self.d[section] if section else self.d
         
     
         
