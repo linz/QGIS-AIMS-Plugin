@@ -109,13 +109,13 @@ class Test_2_DatabaseConnectivity(unittest.TestCase):
     def test10_connection(self):
         testlog.debug('Test_2.10 Test connection() function')
         self.conn = Database.connection()
-        self.assertNotNull(conn,'Connection not established')
+        self.assertNotNull(self.conn,'Connection not established')
         
     @timeout(seconds=TIMEOUT, message='Timeout execution query on database')
     def test20_execute(self):
         testlog.debug('Test_2.20 Test query execution (SELECT) function')
         self.res = Database.execute(self.q1)
-        self.assertNotNull(res,'Query "{}" failed with {}'.format(self.q1,self.res))
+        self.assertNotNull(self.res,'Query "{}" failed with {}'.format(self.q1,self.res))
     
     def test30_executeScalar(self):
         pass

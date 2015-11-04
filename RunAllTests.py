@@ -21,9 +21,14 @@ import unittest
 
 from Test.Address_Test import Test_0_AddressSelfTest as AT0
 from Test.Address_Test import Test_1_AddressTestSetters as AT1
+
 from Test.Database_Test import Test_0_DatabaseSelfTest as DT0
 from Test.Database_Test import Test_1_DatabaseTestSetters as DT1
 from Test.Database_Test import Test_2_DatabaseConnectivity as DT2
+
+from Test.LayerManager_Test import Test_0_LayerManagerSelfTest as LMT1
+from Test.LayerManager_Test import Test_1_LayerManagerSetters as LMT2
+
 from AimsUI.AimsLogging import Logger
 
 testlog = Logger.setup()
@@ -41,6 +46,8 @@ class FullSuite(unittest.TestSuite):
         suites += unittest.makeSuite(DT0)
         suites += unittest.makeSuite(DT1)
         suites += unittest.makeSuite(DT2)
+        suites += unittest.makeSuite(LMT1) 
+        suites += unittest.makeSuite(LMT2)
         
         return unittest.TestSuite(suites)
 
