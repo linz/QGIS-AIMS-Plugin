@@ -12,18 +12,26 @@
 import psycopg2
 import Error
 import Config
+from Config import ConfigReader
 
 _db = None
 _autocommit = True
 _restartRequired = False
 
-_host = Config.ConfigSectionMap('db')['host']
-_port = Config.ConfigSectionMap('db')['port']
-_name = Config.ConfigSectionMap('db')['name']
+config = ConfigReader()
+_host = config.configSectionMap('db')['host']
+_port = config.configSectionMap('db')['port']
+_name = config.configSectionMap('db')['name']
+_user = config.configSectionMap('db')['user']
+_password = config.configSectionMap('db')['password']
 
-_user = Config.ConfigSectionMap('db')['user']
+###_host = Config.ConfigSectionMap('db')['host']
+###_port = Config.ConfigSectionMap('db')['port']
+###_name = Config.ConfigSectionMap('db')['name']
+
+###_user = Config.ConfigSectionMap('db')['user']
 #_password = Config.ConfigSectionMap('db')['password']
-_password=''
+###_password=''
 _aimsSchema='reference'
 
 def _setup(d):
