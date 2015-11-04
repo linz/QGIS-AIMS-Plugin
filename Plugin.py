@@ -16,9 +16,9 @@ from qgis.utils import *
 
 import Resources
 
-from LayerManager import LayerManager
-from CreateNewTool import CreateNewTool
-from AimsClient.Gui.Controller import Controller
+from AimsUI.LayerManager import LayerManager
+from AimsUI.CreateNewTool import CreateNewTool
+from AimsUI.AimsClient.Gui.Controller import Controller
 
 class Plugin( ):
 
