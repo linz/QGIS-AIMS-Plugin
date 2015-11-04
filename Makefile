@@ -1,12 +1,12 @@
 ###### EDIT ##################### 
 #Directory with ui and resource files
-RESOURCE_DIR = ./
+RESOURCE_DIR = .
  
 #Directory for compiled resources
 COMPILED_DIR = ./
   
 #UI files to compile
-UI_FILES = AimsClient/Gui/Ui_NewAddressDialog.ui
+UI_FILES = AimsUI/AimsClient/Gui/Ui_NewAddressDialog.ui
 #Qt resource files to compile
 RESOURCES = Resources.qrc
  

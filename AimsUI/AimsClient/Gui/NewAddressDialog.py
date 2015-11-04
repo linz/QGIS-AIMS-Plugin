@@ -14,8 +14,9 @@ from PyQt4.QtGui import *
 import re
 
 from Ui_NewAddressDialog import Ui_NewAddressDialog
-from AimsClient.Address import Address
-from AimsClient.AimsApi import *
+from AimsUI.AimsClient.Address import Address
+from AimsUI.AimsClient.AimsApi import *
+
 
 class NewAddressDialog(Ui_NewAddressDialog, QDialog):
     
@@ -42,31 +43,44 @@ class NewAddressDialog(Ui_NewAddressDialog, QDialog):
         self.uFullNum.textChanged.connect(self.FullNumChanged)
         self.uSubmitAddressButton.clicked.connect(self.submitAddress)
         # Need to connect abort button and ensure address instance destroyed
+             
     
+    def wsEqualsNone (self, uInput):
+        ''' convert whitespace to None '''
+        if uInput == '':
+            return None
+        else: return uInput
+        
+        
     def submitAddress( self ):
         ''' take users input from form and submit to AIMS API '''
         # Need to pass to validation function prior to the below 
         self.address.setAddressType(str(self.uAddressType.currentText()))
-        if self.uExternalAddId.text() != '': self.address.setExternalAddressId(str(self.uExternalAddId.text()))
-        if self.uExternalAddressIdScheme.text() != '': self.address.setExternalAddressIdScheme(str(self.uExternalAddressIdScheme.text()))
+        self.address.setExternalAddressId(self.wsEqualsNone(str(self.uExternalAddId.text())))
+
+        self.address.setExternalAddressId(self.wsEqualsNone(str(self.uExternalAddId.text())))
+        self.address.setExternalAddressIdScheme(self.wsEqualsNone(str(self.uExternalAddressIdScheme.text())))
         self.address.setLifecycle(str(self.ulifeCycle.currentText()))
-        if self.uUnitType.currentText(): self.address.setUnitType(str(self.uUnitType.currentText()))
-        if self.uUnit.text() != '': self.address.setUnitValue(str(self.uUnit.text()))
-        if self.uLevelType.currentText(): self.address.setLevelType(str(self.uLevelType.currentText()))
-        if self.uLevelValue.text() != '': self.address.setLevelValue(str(self.uLevelValue.text()))
-        if self.uPrefix.text() != '': self.address.setAddressNumberPrefix( str(self.uPrefix.text()))         
-        if self.uBase.text() != '': self.address.setAddressNumber(int(self.uBase.text())) #need to limit user input toi int
-        if self.uAlpha.text() != '': self.address.setAddressNumberSuffix(str(self.uAlpha.text()))
-        if self.uHigh.text() != '': self.address.setAddressNumberHigh(int(self.uHigh.text()))
-        if self.uRoadCentrelineId.text() != '': self.address.setRoadCentrelineId(int(self.uRoadCentrelineId.text()))
-        if self.uRoadPrefix.text() != '': self.address.setRoadPrefix(str(self.uRoadPrefix.text()))
-        if self.uRoadName.text() != '': self.address.setRoadName(str(self.uRoadName.text()))
-        if self.uRoadTypeName.text() != '': self.address.setRoadTypeName(str(self.uRoadTypeName.text()))
-        if self.uRoadSuffix.text() != '': self.address.setRoadSuffix(str(self.uRoadSuffix.text()))
-        if self.uWaterRouteName.text() != '': self.address.setWaterRouteName(str(self.uWaterRouteName.text()))
-        if self.uWaterName.text() != '': self.address.setWaterName(str(self.uWaterName.text()))
+        self.address.setUnitType(self.wsEqualsNone(str(self.uUnitType.currentText())))
+        self.address.setUnitValue(self.wsEqualsNone(str(self.uUnit.text())))
+        self.address.setLevelType(self.wsEqualsNone(str(self.uLevelType.currentText())))
+        self.address.setLevelValue(self.wsEqualsNone(str(self.uLevelValue.text())))
+        self.address.setAddressNumberPrefix(self.wsEqualsNone(str(self.uPrefix.text())))         
+        self.address.setAddressNumberSuffix(self.wsEqualsNone(str(self.uAlpha.text())))
+        
+        # Below must be int, else set to None
+        self.address.setAddressNumber(int(self.uBase.text())) if self.uBase.text().isnumeric() else self.address.setAddressNumber(None)
+        self.address.setAddressNumberHigh(int(self.uHigh.text())) if self.uHigh.text().isnumeric() else self.address.setAddressNumberHigh(None)
+        self.address.setRoadCentrelineId(int(self.uRoadCentrelineId.text())) if self.uRoadCentrelineId.text().isnumeric() else self.address.setRoadCentrelineId(None)
+
+        self.address.setRoadPrefix(self.wsEqualsNone(str(self.uRoadPrefix.text())))
+        self.address.setRoadName(self.wsEqualsNone(str(self.uRoadName.text())))
+        self.address.setRoadTypeName(self.wsEqualsNone(str(self.uRoadTypeName.text())))
+        self.address.setRoadSuffix(self.wsEqualsNone(str(self.uRoadSuffix.text())))
+        self.address.setWaterRouteName(self.wsEqualsNone(str(self.uWaterRouteName.text())))
+        self.address.setWaterName(self.wsEqualsNone(str(self.uWaterName.text())))
         self.address.setAoType(str(self.UObjectType.currentText()))
-        if self.uObjectName.text() != '': self.address.setAoName(str(self.uObjectName.text()))  
+        self.address.setAoName(self.wsEqualsNone(str(self.uObjectName.text())))  
         self.address.set_x(self.coords.x()) 
         self.address.set_y(self.coords.y())
         #address.setCrsType(self.  )
