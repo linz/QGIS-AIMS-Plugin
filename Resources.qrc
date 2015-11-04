@@ -1,6 +1,0 @@
-<RCC>
-  <qresource prefix="plugins/AimsClient/" >
-    <file>loadaddress.png</file>
-    <file>newaddresspoint.png</file>    
-    </qresource>
-</RCC>
