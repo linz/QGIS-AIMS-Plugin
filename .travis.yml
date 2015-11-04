@@ -1,38 +1,41 @@
 language: python
 python:
-  - "2.7"
-
+- '2.7'
 virtualenv:
   system_site_packages: true
-
 before_install:
-  - sudo apt-get update  
-
-install: 
-  - sudo apt-get install python-qt4 pyqt4-dev-tools
-  - sudo add-apt-repository -y ppa:ubuntugis/ubuntugis-unstable
-  - sudo apt-get install -y qgis
-  - pip install requests
-  - pip install --upgrade pip
-  - pip install --upgrade pep8
-  - pip install --upgrade pylint
-  - pip install ConfigParser
-  
+- sudo apt-get update
+install:
+- sudo apt-get install python-qt4 pyqt4-dev-tools
+- sudo add-apt-repository -y ppa:ubuntugis/ubuntugis-unstable
+- sudo apt-get install -y qgis
+- pip install requests
+- pip install --upgrade pip
+- pip install --upgrade pep8
+- pip install --upgrade pylint
+- pip install ConfigParser
+- pip install coveralls
 services:
-  - postgresql
-   
+- postgresql
 before_script:
-  - echo "Setup starting on " `date`
-  - psql -c 'create database aims_ci_test;' -U postgres
-  - psql -c 'create schema aims;' -U postgres
-  - psql -c 'create table aims.aims_test_table(id int, name varchar(32));' -U postgres
-  - echo "Build starting on " `date`
-  - export QGIS_PREFIX_PATH=/usr
-  - export PYTHONPATH=${QGIS_PREFIX_PATH}/share/qgis/python/:${QGIS_PREFIX_PATH}/share/qgis/python/plugins:`pwd`
-  - echo "PYTHONPATH:" $PYTHONPATH
-  - export LD_LIBRARY_PATH=${QGIS_PREFIX_PATH}/lib
-
-
-script: 
-  - make
-  - nosetests
+- echo "Setup starting on " `date`
+- psql -c 'create database aims_ci_test;' -U postgres
+- psql -c 'create schema aims;' -U postgres
+- psql -c 'create table aims.aims_test_table(id int, name varchar(32));' -U postgres
+- echo "Build starting on " `date`
+- export QGIS_PREFIX_PATH=/usr
+- export PYTHONPATH=${QGIS_PREFIX_PATH}/share/qgis/python/:${QGIS_PREFIX_PATH}/share/qgis/python/plugins:`pwd`
+- echo "PYTHONPATH:" $PYTHONPATH
+- export LD_LIBRARY_PATH=${QGIS_PREFIX_PATH}/lib
+script:
+- make
+- nosetests --with-coverage
+after_success:
+- coveralls
+env:
+  global:
+  - secure: RNOMNCMv+JfkraIkepBBxPH2e1nzjdht6zPLZpfi6RdAhaiS6Um8IUUKyB1ej31PAheQFfeajMFFdfDZbjjbDCAS9PbloL2TJCSRjmh67AK+BwL3TY2SuTxN+JIeHp3gBsNiu9RsQlvA28sm+C7wVgfCSNdcWrBO+Ud64LknF1Beo/7+awhvV278vC8CqybucKv/peN8v0G++TjzYkMV9F4msZr6CdQaKZrdSlTqZ7Dftr9vZZ1V3LHZ3ueOvFTcikaJYsN1y1RbJ/cuKbrLzXBH+SAOk1hWfMMRerJe/AYwofWAbvWY1IEZklCPPGGDv1OxkQ/T/shDSdptn6S62BbO1BZ4hkCUPsTZAu+meAmLyeIxooQyZd1lSDNxzF2+x+IO/sJME2W2T/+4P7WJwX2JsV37T7DuQB2a/wmdhx7A0TdT5+QeFHUHkJsuWBtVd1CU3EQ7azgvO718VXpOFBJZuP+LKH0u8IeRJpARyM0VxnIFhTjikqTpsc79mKmZtqodmhF6Aeyc7mbXmKSzfMZTasHy/zPLzPLNL0lohgqJcdbaBLstUxhoUEOv+TKRWJdR2+74O9FsTpQEFCKvI3uAtoSr8w4rfwG4d4g9CdHsyGsC5JPUbxMkWjWFwMyuJ6RAN0ycyaNSexZsf9I+TfsbGnf9kuIwddNpsh78MdQ=
+  - secure: Qnu96NfhQgPgEBqXqEMd4f5RxPwx/FKQ83s96zaCtkBQCCArDq50BG0FPhv9ZYW9lGpDsMLxvbSWINbhF233jEaijpzFlsGgaWnK+npgDkmseEn7z8rC7HUOnrYk1lN2uScpcBVNPmToUm1rlqIXx6wweFrFeI13EN4aowqxYp8yIElRjloHsmRDqqs1eQpmfJZw5p7XwzZRP9I0EPUhYt+f0ZEHsKZz4QpNFYgeLqs5cKd5+b6DOxo61h72hBZcvE1SocAzzuhrYzkM5cFPvjK12d5asHgGO5CMc653+cNdiU/oSfSzV5Yu1fqjSmJqCmnC1+Ndge8DbQd72eEbJH3sQFp8kAGBZ/UQdNxR18mky9ry/Q9clpqqHHmEH16oOdvtv3HP/NJiQWd938RwW1VF4VUXb8gM/17DVYpSuqwbH/7vowgC4m0lpjZ8vUZsP2jFIrvDCOxjjte5HhvTjaOWw2fRqmWpBxSxHqtxbfFORM9VxRZGZDHNnD0Lg44GrRxYJWtpX7aR0mRrXzBK3lUtIVJQ5jjOJ3tkRO1cQRnQ5w0BMJQjDFWIS45z0z5wII+3XPyS+3kq81wYwWyEbKqXqv5d0oytX6cWvIQMVyjEWaQUOXzYpQyRu2zixe2b4uduWFeYNFCioZgoSQSqL51pG6pEfRFmY3gfne4PQMo=
+  - secure: c+7CBwt0askUpzgWjvYWJvtWCm5MPpQev1MeKXFacWSTBpNZAwOnX7/x3RVPQRWabY5XFzZmwLVTtqPkMJEjlIN6y4gxacrMIt/l4nKP5eDV6tdtfLAwhmctJ+Xhre82Ec6ZlVlMXgoJrveg/nMwqxAE4vPv10sZdhacv6rufLi9onObIzQ/rL6mB26nfOmr3l+kakCLY+XWmKC9IUnW4C9wSrPwp1IGymY6FbOS4W9weasNay3oe6k7BngMDc5iTAop+wfFOEJPLnWxSf3qwMRJ5VwLBqxjmxFTfvXu7BjxEnqjNRizSwzbxtsbZu2lM7qHi5Wy0lutIchwcoCIEJNXarDBu25/o39jg2/yypLGuEpQRpGSzsKMqb7u0rQHykrKGrEVEjv4tDq59+tPBI6SeJSTBwY1/JBPXAJBQYX1jdYSrzk0WQ14ZrXcFYjfx6v3oZf18PSBXTTMtL5lFQWlEJpVTmBR6tJRzF7TIscWHHngIRwSfFyRs2GkoGMCXo+hADZ7GeiIFAwDnog0OgWkKqf9m1cWlthpgahgEYxuh3hbnrreJMb/LaES6fyG1MNDZd7UUWAcAHL5SX3qu9AxCSbPpxkhsGcghwNWZe55bX6kkqLk//mEBxFbBPCSR2c7nwC9MYDc7YsqqQc//jlOtizCs+ejZAByfkwJRls=
+  - secure: FztiFWlnzIOqopZn0tU5urKBfkUk5IKZX+F5ZeXZ0bnpMUmGbJHtwgfIGfrwcxjNVCwSiMlS0+ZWFq74ZD7ZkcrGaEEhOhgynONU5GW6pW2xM6a4ZkOCE9S5+MklaO3wVHftG87AS2072HFeDR5vu+NE/nafbAF0KQ45qPfkMiOwYUsjUoA2IiekcK+21xHi1bp+7hBg9RgY2FoxryAGmOuS8CFkOXrLuV4er9BHjFVu7ZbJAdyKT0qs2Aew7b+TtZpr2xj7+MShMwQikTGf9xniaz95eOF/qVb3ZuJrNLAKSN9FARwBkX7xchPm0QOwbNQvQCyAHnnte75LSVOnPS4pOyOMREMzmqOB74YcQLiC6p6x9m5hFlU+PFP8/8P6GPL1tLGVfZ+EcnnpNXC1hvTJ8pYuIGIBYZaVgXjUHQk3xIsDYCW+oKOq0m4oi3U/bORt7cC1WcNPgzX/kPs5DZE+/YOrdaUs/9ZTy06rYTvjKfdpOQdLPFUYvpEmQ17Ym0XfRn3UDmXNRuv1cwICjSGX8xW8jsHHoCKUdNBhTeyRLaA7pqMxZgw1lotE0w4J+4MMgorGk6GyshJhEUqAI7YHsQnZ6bjM41c+VhWyzfpqmSvKX10xWmrcDJdLSnclwtOL165BbtH0cptSOp/RDgpjBKXywBZhO2LKXu/DdkY=
+  - secure: wQ5zov18SMTEn0sDwYeWSvHR3MCDwvURSOT75/n88uxEvDn7WrCKUO6wfiPHck4DeeUKg/SXj+9N5du3mNxFYzFDbeGMwr+PJaIWmbWwdmeDfvEmI2Q1kt3nzSDP8IHF6M9IhD6jjmjxhQVv8ldIWkpcXewD3MdQ7A2EETYWCNxo/zlYsGjKTLgr1BGzIo/ku/qABtFrNYxXsdvuJe/Yjt0cpJPCmFmWQnxKyRQZb9aED46fpxoGDm5DgKckNBFmSM1nfPz8vzO1IERsAYa7bbY/mFxJJ2RWJzl4YoCa9v52bPgj5m4BQZ/ThRIYEhsQIsCWNgyEGwdnCAQYwCtxL2ABf6bw20Pk8lOZvdsNMqi9d9lWwO8YxaMiu/6HErnW8IeBJJFduLNSxZQ4FnlfMtbiddRrLAoNjO2n96AIBO8eNu4Z0iv8r9uOBAYM66poBk9QrXr+nYaNm812KRvdrWP7yM7GnSe7oqRTpBbf1p/snYUzo8hsEt2UYtxe+4C+F+zG3CsVu012odZAN2fZ9Nd98nd0WnFJHsfWfycWGzs9Eapla1+muLch5U3DwAeUy2T/YSTB2bYzql8Rny4JskNxr3h6zRAaj1wMVDqE/zeWXNWYqrx/iNME07tWMdw16wSWxypte49CRAnURYxybnOfJU6qV1PsbJEqFF54+dI=

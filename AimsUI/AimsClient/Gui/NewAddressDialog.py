@@ -15,20 +15,21 @@ import re
 
 from Ui_NewAddressDialog import Ui_NewAddressDialog
 from AimsClient.Address import Address
+from AimsClient.AimsApi import *
 
 class NewAddressDialog(Ui_NewAddressDialog, QDialog):
     
     @classmethod
-    def newAddress( cls, coords, parent=None):
-        dlg = NewAddressDialog( parent, coords )
+    def newAddress( cls, coords, addInstance, parent=None):
+        dlg = NewAddressDialog(parent, coords, addInstance)
         dlg.exec_()
     
-    def __init__( self, coords, parent=None ):
+    def __init__( self, parent, coords, addInstance ):
         QDialog.__init__( self, parent )
         self.setupUi(self)
         
         self.coords = coords
-        self.address = Address()
+        self.address = addInstance
      
         # set form combobox default values
         self.uAddressType.addItems(['Road', 'Water'])
@@ -40,31 +41,32 @@ class NewAddressDialog(Ui_NewAddressDialog, QDialog):
         # Connect uSubmitAddressButton to function
         self.uFullNum.textChanged.connect(self.FullNumChanged)
         self.uSubmitAddressButton.clicked.connect(self.submitAddress)
+        # Need to connect abort button and ensure address instance destroyed
     
     def submitAddress( self ):
         ''' take users input from form and submit to AIMS API '''
         # Need to pass to validation function prior to the below 
         self.address.setAddressType(str(self.uAddressType.currentText()))
-        self.address.setExternalAddressId(str(self.uExternalAddId.text()))
-        self.address.setExternalAddressIdScheme(str(self.uExternalAddressIdScheme.text()))
+        if self.uExternalAddId.text() != '': self.address.setExternalAddressId(str(self.uExternalAddId.text()))
+        if self.uExternalAddressIdScheme.text() != '': self.address.setExternalAddressIdScheme(str(self.uExternalAddressIdScheme.text()))
         self.address.setLifecycle(str(self.ulifeCycle.currentText()))
-        self.address.setUnitType(str(self.uUnitType.currentText()))
-        self.address.setUnitValue(str(self.uUnit.text()))
-        self.address.setLevelType(str(self.uLevelType.currentText()))
-        self.address.setLevelValue(str(self.uLevelValue.text()))
-        self.address.setAddressNumberPrefix( str(self.uPrefix.text()))         
+        if self.uUnitType.currentText(): self.address.setUnitType(str(self.uUnitType.currentText()))
+        if self.uUnit.text() != '': self.address.setUnitValue(str(self.uUnit.text()))
+        if self.uLevelType.currentText(): self.address.setLevelType(str(self.uLevelType.currentText()))
+        if self.uLevelValue.text() != '': self.address.setLevelValue(str(self.uLevelValue.text()))
+        if self.uPrefix.text() != '': self.address.setAddressNumberPrefix( str(self.uPrefix.text()))         
         if self.uBase.text() != '': self.address.setAddressNumber(int(self.uBase.text())) #need to limit user input toi int
-        self.address.setAddressNumberSuffix(str(self.uAlpha.text()))
+        if self.uAlpha.text() != '': self.address.setAddressNumberSuffix(str(self.uAlpha.text()))
         if self.uHigh.text() != '': self.address.setAddressNumberHigh(int(self.uHigh.text()))
         if self.uRoadCentrelineId.text() != '': self.address.setRoadCentrelineId(int(self.uRoadCentrelineId.text()))
-        self.address.setRoadPrefix(str(self.uRoadPrefix.text()))
-        self.address.setRoadName(str(self.uRoadName.text()))
-        self.address.setRoadTypeName(str(self.uRoadTypeName.text()))
-        self.address.setRoadSuffix(str(self.uRoadSuffix.text()))
-        self.address.setWaterRouteName(str(self.uWaterRouteName.text()))
-        self.address.setWaterName(str(self.uWaterName.text()))
+        if self.uRoadPrefix.text() != '': self.address.setRoadPrefix(str(self.uRoadPrefix.text()))
+        if self.uRoadName.text() != '': self.address.setRoadName(str(self.uRoadName.text()))
+        if self.uRoadTypeName.text() != '': self.address.setRoadTypeName(str(self.uRoadTypeName.text()))
+        if self.uRoadSuffix.text() != '': self.address.setRoadSuffix(str(self.uRoadSuffix.text()))
+        if self.uWaterRouteName.text() != '': self.address.setWaterRouteName(str(self.uWaterRouteName.text()))
+        if self.uWaterName.text() != '': self.address.setWaterName(str(self.uWaterName.text()))
         self.address.setAoType(str(self.UObjectType.currentText()))
-        self.address.setAoName(str(self.uObjectName.text()))  
+        if self.uObjectName.text() != '': self.address.setAoName(str(self.uObjectName.text()))  
         self.address.set_x(self.coords.x()) 
         self.address.set_y(self.coords.y())
         #address.setCrsType(self.  )
@@ -73,8 +75,18 @@ class NewAddressDialog(Ui_NewAddressDialog, QDialog):
         self.address.setExternalObjectIdScheme(str(self.uExtObjectIdScheme.text()))
         self.address.setValuationReference(str(self.uValuationReference.text())) 
         self.address.setCertificateOfTitle(str(self.uCertificateOfTitle.text()))
-        self.address.setAppellation(str(self.uAppellation.text()))
-                     
+            
+        # load address to AIMS Via API
+        payload = Address.objectify(self.address)
+        success = AimsApi().changefeedAdd(payload)
+        
+        if success:
+            pass
+            
+        
+    def createNewApi(self):
+        pass
+                        
     def FullNumChanged(self, newnumber):
         ''' sets address components based on user supplied full address '''
         # set address components to None
