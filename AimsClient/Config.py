@@ -25,3 +25,40 @@ def ConfigSectionMap(section):
         except:
             dict1[option] = None
     return dict1
+
+
+AIMS_CONFIG = os.path.join(os.path.dirname(__file__),'../aimsConfig.ini')
+
+class ConfigReader(object):
+    
+    cp = ConfigParser.ConfigParser()
+    
+    def __init__(self):
+        self.cp.read(AIMS_CONFIG)
+        self._readConfig()
+        self._fillConfig()
+        
+    def _readConfig(self):
+        '''Read the CP to a dict'''
+        self.d = {}
+        for sect in self.cp.sections():
+            self.d[sect] = {}
+            for opt in self.cp.options(sect):
+                val = self.cp.get(sect,opt)
+                self.d[sect][opt] = val if val else None
+                
+    def _fillConfig(self):
+        '''Attempt to fill missing values in config file with matching env vars'''
+        #NOTE env vars must use sec-opt=val format and are bypassed with null value
+        for sect in self.d:
+            for k,val in d[sect].items():
+                if val == 'None' or val == '' or all(i in whitespace for i in val):
+                    d[sect][k] = os.environ['aims_{}_{}'.format(sect,k)]
+                    
+    def configSectionMap(self,section):
+        '''per section config matcher'''
+        return self.d[section]
+        
+    
+        
+        

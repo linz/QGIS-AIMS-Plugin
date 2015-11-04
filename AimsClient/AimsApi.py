@@ -12,13 +12,21 @@
 import json
 import requests
 import Config
+from Config import ConfigReader
 
 class AimsApi( ):
     ''' make and receive all http requests / responses to AIMS API '''
+#     def __init__(self):
+#         self._changeUrl = Config.ConfigSectionMap('url')['address']
+#         self._user = Config.ConfigSectionMap('user')['name']
+#         self._password = Config.ConfigSectionMap('user')['pass']
+#         self._headers = {'content-type':'application/json', 'accept':'application/json'}    
+        
     def __init__(self):
-        self._changeUrl = Config.ConfigSectionMap('url')['address']
-        self._user = Config.ConfigSectionMap('user')['name']
-        self._password = Config.ConfigSectionMap('user')['pass']
+        config = ConfigReader()
+        self._changeUrl = config.configSectionMap('url')['address']
+        self._user = config.configSectionMap('user')['name']
+        self._password = config.configSectionMap('user')['pass']
         self._headers = {'content-type':'application/json', 'accept':'application/json'}
            
     def changefeedAdd( self, payload ):
