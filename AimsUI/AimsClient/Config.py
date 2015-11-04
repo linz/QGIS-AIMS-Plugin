@@ -10,6 +10,7 @@
 ################################################################################
 import os
 import ConfigParser
+from string import whitespace
 
 config_path = os.path.join(os.path.dirname(__file__),'../aimsConfig.ini')
 config = ConfigParser.ConfigParser()
@@ -51,9 +52,9 @@ class ConfigReader(object):
         '''Attempt to fill missing values in config file with matching env vars'''
         #NOTE env vars must use sec-opt=val format and are bypassed with null value
         for sect in self.d:
-            for k,val in d[sect].items():
-                if val == 'None' or val == '' or all(i in whitespace for i in val):
-                    d[sect][k] = os.environ['aims_{}_{}'.format(sect,k)]
+            for k,val in self.d[sect].items():
+                if not val or val == 'None' or val == '' or all(i in whitespace for i in val):
+                    self.d[sect][k] = os.environ['aims_{}_{}'.format(sect,k)]
                     
     def configSectionMap(self,section):
         '''per section config matcher'''
