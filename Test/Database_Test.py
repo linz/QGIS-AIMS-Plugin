@@ -26,7 +26,7 @@ from multiprocessing import Process
 
 
 from AimsUI.AimsClient import Database
-from AimsUI.AimsClient.AimsLogging import Logger
+from AimsUI.AimsLogging import Logger
 
 testlog = Logger.setup()
 

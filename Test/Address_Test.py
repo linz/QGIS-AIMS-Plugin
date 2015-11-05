@@ -23,7 +23,7 @@ import re
 
 
 from AimsUI.AimsClient.Address import Address
-from AimsUI.AimsClient.AimsLogging import Logger
+from AimsUI.AimsLogging import Logger
 
 testlog = Logger.setup()
 
