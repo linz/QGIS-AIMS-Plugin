@@ -19,7 +19,16 @@ import Resources
 from AimsUI.LayerManager import LayerManager
 from AimsUI.CreateNewTool import CreateNewTool
 from AimsUI.AimsClient.Gui.Controller import Controller
-
+'''
+#debugging
+try:
+    import sys
+    sys.path.append('/opt/eclipse/plugins/org.python.pydev_4.4.0.201510052309/pysrc')
+    from pydevd import settrace
+    settrace()
+except:
+    pass
+'''
 class Plugin( ):
 
     Name = "AimsClient"
@@ -29,7 +38,7 @@ class Plugin( ):
     Author="splanzer@linz.govt.nz <Simon Planzer>"
     PluginUrl="tbc"
     Description="Client for loading address information into the Address Information Management System (AIMS)"
-    SettingsBase="AimsClient/"
+    SettingsBase="QGIS-AIMS-Plugin/"
 
     def __init__( self, iface ):        
         self._iface = iface
@@ -42,14 +51,14 @@ class Plugin( ):
         self._layers = LayerManager(self._iface)
         
         # Main address editing window
-        self._loadaction = QAction(QIcon(":/plugins/AimsClient/loadaddress.png"), 
-            "AIMS Client", self._iface.mainWindow())
-        self._loadaction.setWhatsThis("Open the AIMS Client")
-        self._loadaction.setStatusTip("Open the AIMS Client")
+        self._loadaction = QAction(QIcon(":/plugins/QGIS-AIMS-Plugin/resources/loadaddress.png"), 
+            "QGIS-AIMS-Plugin", self._iface.mainWindow())
+        self._loadaction.setWhatsThis("Open the QGIS-AIMS-Plugin")
+        self._loadaction.setStatusTip("Open the QGIS-AIMS-Plugin")
         self._loadaction.triggered.connect( self.loadEditor )
                        
         # Create new address
-        self._createnewaddressaction = QAction(QIcon(":/plugins/AimsClient/newaddresspoint.png"), 
+        self._createnewaddressaction = QAction(QIcon(":/plugins/QGIS-AIMS-Plugin/resources/newaddresspoint.png"), 
             "Create new address", self._iface.mainWindow())
         self._createnewaddressaction.setWhatsThis("place point for new address")
         self._createnewaddressaction.setStatusTip("place point for new address")
@@ -59,25 +68,25 @@ class Plugin( ):
         self._createnewtool.setAction( self._createnewaddressaction )
        
         # Add to own toolbar
-        self._toolbar = self._iface.addToolBar("AIMS Client")
+        self._toolbar = self._iface.addToolBar("QGIS-AIMS-Plugin")
         self._toolbar.addAction(self._createnewaddressaction)
 
         # Add actions to menu and toolbar icon
         self._iface.addToolBarIcon(self._loadaction)
-        self._iface.addPluginToMenu("&AIMS Client", self._loadaction)
-        #self._iface.addPluginToMenu("&AIMS Client", self._createnewaddressaction)
+        self._iface.addPluginToMenu("&QGIS-AIMS-Plugin", self._loadaction)
+        #self._iface.addPluginToMenu("&QGIS-AIMS-Plugin", self._createnewaddressaction)
 
     def unload(self):      
         self._iface.mainWindow().removeToolBar(self._toolbar)
         self._iface.removeToolBarIcon(self._loadaction)
-        self._iface.removePluginMenu("&AIMS Client",self._loadaction)
-        self._iface.removePluginMenu("&AIMS Client", self._createnewaddressaction)
+        self._iface.removePluginMenu("&QGIS-AIMS-Plugin",self._loadaction)
+        self._iface.removePluginMenu("&QGIS-AIMS-Plugin", self._createnewaddressaction)
   
-    # Connect to "open aims client"
+    # Connect to "open QGIS-AIMS-Plugin"
     def loadEditor( self ):
         self.startNewAddressTool()
         self._layers.installRefLayers()
-        self._createnewaddressaction.setEnabled(True)
+        #self._createnewaddressaction.setEnabled(True)
             
     def startNewAddressTool( self ):
         self._iface.mapCanvas().setMapTool( self._createnewtool )
