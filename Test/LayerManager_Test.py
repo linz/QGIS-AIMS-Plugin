@@ -1,7 +1,8 @@
+# coding=utf-8
 '''
 v.0.0.1
 
-QGIS-AIMS-Plugin - Address_Test
+QGIS-AIMS-Plugin - LayerManager_Test
 
 Copyright 2011 Crown copyright (c)
 Land Information New Zealand and the New Zealand Government.
@@ -10,9 +11,9 @@ All rights reserved
 This program is released under the terms of the new BSD license. See the 
 LICENSE file for more information.
 
-Tests on Address class
+Tests on LayerManager class
 
-Created on 29/10/2015
+Created on 05/11/2015
 
 @author: jramsay
 '''
@@ -22,7 +23,7 @@ import sys
 import re
 
 #from Test._QGisInterface import QgisInterface
-from AimsUI.LayerManager import LayerManager
+from AimsUI.LayerManager import LayerManager, InvalidParameterException
 
 from AimsUI.AimsLogging import Logger
 
@@ -62,6 +63,21 @@ class Test_1_LayerManagerSetters(unittest.TestCase):
         self._layermanager.setLayerId(testlayer,testval)
         self.assertEqual(self._layermanager.layerId(testlayer),testval, 'Unable to set layer ID {}'.format(testval))
 
+    def test11_instLayerIdRange(self):
+        '''Example of success/fail test cases over range of input values'''
+        testlog.debug('Test_1.11 Test range of layer ID values')
+        testlayer = _Dummy_Layer()
+
+        testsuccesses = ('A','Z','#$%^&_)_#@)','māori')
+        for ts in testsuccesses:
+            self._layermanager.setLayerId(testlayer,ts)
+            self.assertEqual(self._layermanager.layerId(testlayer),ts, 'Unable to set layer ID {}'.format(ts))
+            
+        testfailures = (None,0,float('nan'),float('inf'),object,self)
+        for tf in testfailures:
+            self.assertRaises(InvalidParameterException, self._layermanager.setLayerId,testlayer,tf)
+
+                
 #------------------------------------------------------------------------------
 
         

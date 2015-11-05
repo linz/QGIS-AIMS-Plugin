@@ -16,6 +16,8 @@ from qgis.core import *
 
 from AimsClient import Database
 
+class InvalidParameterException(): pass
+
 class LayerManager( QObject ):
 
     _propBaseName='AimsClient.'
@@ -35,6 +37,7 @@ class LayerManager( QObject ):
         return str(layer.customProperty(idprop))
 
     def setLayerId( self, layer, id ):
+        if not isinstance(id,str): raise InvalidParameterException()
         idprop = self._propBaseName + 'Id'
         layer.setCustomProperty(idprop,id)
 
