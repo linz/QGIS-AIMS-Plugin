@@ -37,10 +37,17 @@ class Test_0_LayerManagerSelfTest(unittest.TestCase):
     def tearDown(self):
         pass
     
-    def test_1_selftest(self):
+    def test10_selfTest(self):
         #assertIsNotNone added in 3.1
         self.assertNotEqual(testlog,None,'Testlog not instantiated')
         testlog.debug('LayerManager_Test Log')
+    
+    def test20_layerManagerTest(self):
+        #assertIsNotNone added in 3.1        
+        testlog.debug('Test_0.20 LayerManager instantiation test')
+        qi = _Dummy_IFace()
+        layermanager = LayerManager(qi)
+        self.assertNotEqual(layermanager,None,'LayerManager not instantiated')
         
 class Test_1_LayerManagerSetters(unittest.TestCase):
     #QI = QgisInterface(_Dummy_Canvas())

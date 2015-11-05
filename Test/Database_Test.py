@@ -59,10 +59,16 @@ class Test_0_DatabaseSelfTest(unittest.TestCase):
     def tearDown(self):
         pass
     
-    def test_10_selftest(self):
+    def test10_selfTest(self):
         #assertIsNotNone added in 3.1
-        self.assertNotEqual(testlog,None,'Testlog not instantiated')
         testlog.debug('Test_0.10 Database_Test Log')
+        self.assertNotEqual(testlog,None,'Testlog not instantiated')
+        
+#     def test20_databaseTest(self):
+#         #assertIsNotNone added in 3.1        
+#         testlog.debug('Test_0.20 Database instantiation test')
+#         database = Database()
+#         self.assertNotEqual(database,None,'Database not instantiated')
         
 class Test_1_DatabaseTestSetters(unittest.TestCase):
     

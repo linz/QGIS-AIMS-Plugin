@@ -35,10 +35,16 @@ class Test_0_AddressSelfTest(unittest.TestCase):
     def tearDown(self):
         pass
     
-    def test_1_selftest(self):
+    def test10_selfTest(self):
         #assertIsNotNone added in 3.1
         self.assertNotEqual(testlog,None,'Testlog not instantiated')
         testlog.debug('Address_Test Log')
+        
+    def test20_addressTest(self):
+        #assertIsNotNone added in 3.1        
+        testlog.debug('Test_0.20 Address instantiation test')
+        address = Address()
+        self.assertNotEqual(address,None,'Address not instantiated')
         
 class Test_1_AddressTestSetters(unittest.TestCase):
     
