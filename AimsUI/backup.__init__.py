@@ -9,7 +9,7 @@
 #
 ################################################################################
 
-#from Plugin import Plugin
+from Plugin import Plugin
 
 #debugging
 try:
@@ -19,3 +19,26 @@ try:
     settrace()
 except:
     pass
+
+def name():
+    return Plugin.LongName
+
+def description():
+    return Plugin.Description
+
+def version():
+    return Plugin.Version
+
+def qgisMinimumVersion():
+    return Plugin.QgisMinimumVersion
+
+def authorName():
+    return Plugin.Author
+
+def classFactory(iface):
+    return Plugin(iface)
+
+def icon():
+    return 'loadaddress.png'
+
+

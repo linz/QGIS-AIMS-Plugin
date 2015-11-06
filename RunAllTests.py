@@ -19,12 +19,20 @@ Created on 29/10/2015
 
 import unittest
 
-from AimsClient.Test.Address_Test import Test_0_AddressSelfTest as AT0
-from AimsClient.Test.Address_Test import Test_1_AddressTestSetters as AT1
-from AimsClient.Test.Database_Test import Test_0_DatabaseSelfTest as DT0
-from AimsClient.Test.Database_Test import Test_1_DatabaseTestSetters as DT1
-from AimsClient.Test.Database_Test import Test_2_DatabaseConnectivity as DT2
-from AimsClient.AimsLogging import Logger
+from Test.Address_Test import Test_0_AddressSelfTest as AT0
+from Test.Address_Test import Test_1_AddressTestSetters as AT1
+
+from Test.Database_Test import Test_0_DatabaseSelfTest as DT0
+from Test.Database_Test import Test_1_DatabaseTestSetters as DT1
+from Test.Database_Test import Test_2_DatabaseConnectivity as DT2
+
+from Test.LayerManager_Test import Test_0_LayerManagerSelfTest as LMT0
+from Test.LayerManager_Test import Test_1_LayerManagerSetters as LMT1
+
+from Test.Controller_Test import Test_0_ControllerSelfTest as CT0
+from Test.Controller_Test import Test_1_ControllerTestSetupFunction as CT1
+
+from AimsUI.AimsLogging import Logger
 
 testlog = Logger.setup()
 
@@ -41,6 +49,10 @@ class FullSuite(unittest.TestSuite):
         suites += unittest.makeSuite(DT0)
         suites += unittest.makeSuite(DT1)
         suites += unittest.makeSuite(DT2)
+        suites += unittest.makeSuite(LMT0) 
+        suites += unittest.makeSuite(LMT1)
+        suites += unittest.makeSuite(CT0)
+        suites += unittest.makeSuite(CT1)
         
         return unittest.TestSuite(suites)
 

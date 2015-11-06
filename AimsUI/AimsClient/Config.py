@@ -9,12 +9,15 @@
 #
 ################################################################################
 import os
+import sys
+import re
 import ConfigParser
 from string import whitespace
 
 config_path = os.path.join(os.path.dirname(__file__),'../aimsConfig.ini')
 config = ConfigParser.ConfigParser()
 config.read(config_path) #if we go down this path will need to decide on common OPA and Ubuntu location
+
 
 def ConfigSectionMap(section):
     ''' obtain system variables as stored locally '''
@@ -27,7 +30,9 @@ def ConfigSectionMap(section):
             dict1[option] = None
     return dict1
 
-
+#possible guess config values 
+UNAME = os.environ['USERNAME'] if re.search('win',sys.platform) else os.environ['LOGNAME']
+DEF_CONFIG = {'db':{'host':'127.0.0.1'},'user':{'name':UNAME}}
 AIMS_CONFIG = os.path.join(os.path.dirname(__file__),'../aimsConfig.ini')
 
 class ConfigReader(object):
@@ -50,15 +55,21 @@ class ConfigReader(object):
                 
     def _fillConfig(self):
         '''Attempt to fill missing values in config file with matching env vars'''
-        #NOTE env vars must use sec-opt=val format and are bypassed with null value
+        #NOTE env vars must use aims_sec_opt=val format and are bypassed with null value
         for sect in self.d:
             for k,val in self.d[sect].items():
                 if not val or val == 'None' or val == '' or all(i in whitespace for i in val):
-                    self.d[sect][k] = os.environ['aims_{}_{}'.format(sect,k)]
+                    eval = os.environ['aims_{}_{}'.format(sect,k)] if 'aims_{}_{}'.format(sect,k) in os.environ else None
+                    dcval = DEF_CONFIG[sect][k] if sect in DEF_CONFIG and k in DEF_CONFIG[sect] else None
+                    self.d[sect][k] = eval if eval else dcval
                     
-    def configSectionMap(self,section):
+    def _promptUser(self):
+        '''If config cannot be populated with ini file and envvars prompt the user for missing values or report failure'''
+        pass
+                    
+    def configSectionMap(self,section=None):
         '''per section config matcher'''
-        return self.d[section]
+        return self.d[section] if section else self.d
         
     
         

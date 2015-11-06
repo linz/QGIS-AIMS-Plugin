@@ -25,10 +25,10 @@ from functools import wraps
 from multiprocessing import Process
 
 
-from AimsClient import Database
-from AimsClient.AimsLogging import Logger
+from AimsUI.AimsClient import Database
+from AimsUI.AimsLogging import Logger
 
-testlog = Logger.setup()
+testlog = Logger.setup('test')
 
 DCONF = {'host':'127.0.0.1', 'port':3128, 'user':'postgres','password':'', \
          'name':'aims_ci_test','aimsschema':'aims', 'table':'aims_test_table'}
@@ -59,10 +59,16 @@ class Test_0_DatabaseSelfTest(unittest.TestCase):
     def tearDown(self):
         pass
     
-    def test_10_selftest(self):
+    def test10_selfTest(self):
         #assertIsNotNone added in 3.1
-        self.assertNotEqual(testlog,None,'Testlog not instantiated')
         testlog.debug('Test_0.10 Database_Test Log')
+        self.assertNotEqual(testlog,None,'Testlog not instantiated')
+        
+#     def test20_databaseTest(self):
+#         #assertIsNotNone added in 3.1        
+#         testlog.debug('Test_0.20 Database instantiation test')
+#         database = Database()
+#         self.assertNotEqual(database,None,'Database not instantiated')
         
 class Test_1_DatabaseTestSetters(unittest.TestCase):
     
@@ -109,13 +115,13 @@ class Test_2_DatabaseConnectivity(unittest.TestCase):
     def test10_connection(self):
         testlog.debug('Test_2.10 Test connection() function')
         self.conn = Database.connection()
-        self.assertNotNull(conn,'Connection not established')
+        self.assertNotNull(self.conn,'Connection not established')
         
     @timeout(seconds=TIMEOUT, message='Timeout execution query on database')
     def test20_execute(self):
         testlog.debug('Test_2.20 Test query execution (SELECT) function')
         self.res = Database.execute(self.q1)
-        self.assertNotNull(res,'Query "{}" failed with {}'.format(self.q1,self.res))
+        self.assertNotNull(self.res,'Query "{}" failed with {}'.format(self.q1,self.res))
     
     def test30_executeScalar(self):
         pass

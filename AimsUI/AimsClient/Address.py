@@ -10,18 +10,20 @@
 ################################################################################
 
 import Config
+from Config import ConfigReader
 
 class Address(object):
     ''' UI address class ''' 
 
     def __init__(self):
+        config = ConfigReader()
         self._changeTypeName = None
         self._submitterUserName = None
         self._submittedDate = None
         self._queueStatusName = None #default
         
         # address values
-        self._sourceUser = Config.ConfigSectionMap('user')['name']
+        self._sourceUser = config.configSectionMap('user')['name']
         self._sourceReason = None
         self._addressType = None #could set defaults?
         self._externalAddressId = None

@@ -3,6 +3,6 @@
 .git
 *.pyc
 Resources.py
-*.ini
 .settings
 /env-var-exports.txt
+*.log
