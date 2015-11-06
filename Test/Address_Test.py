@@ -25,7 +25,7 @@ import re
 from AimsUI.AimsClient.Address import Address
 from AimsUI.AimsLogging import Logger
 
-testlog = Logger.setup()
+testlog = Logger.setup('test')
 
 class Test_0_AddressSelfTest(unittest.TestCase):
     
