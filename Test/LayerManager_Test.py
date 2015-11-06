@@ -75,7 +75,7 @@ class Test_1_LayerManagerSetters(unittest.TestCase):
         testlog.debug('Test_1.11 Test range of layer ID values')
         testlayer = _Dummy_Layer()
 
-        testsuccesses = ('A','Z','#$%^&_)_#@)','māori')
+        testsuccesses = ('A','Z','#$%^&_)_#@)','māori','   ','')
         for ts in testsuccesses:
             self._layermanager.setLayerId(testlayer,ts)
             self.assertEqual(self._layermanager.layerId(testlayer),ts, 'Unable to set layer ID {}'.format(ts))
