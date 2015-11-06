@@ -86,7 +86,7 @@ class Plugin( ):
     def loadEditor( self ):
         self.startNewAddressTool()
         self._layers.installRefLayers()
-        #self._createnewaddressaction.setEnabled(True)
+        self._createnewaddressaction.setEnabled(True)
             
     def startNewAddressTool( self ):
         self._iface.mapCanvas().setMapTool( self._createnewtool )
