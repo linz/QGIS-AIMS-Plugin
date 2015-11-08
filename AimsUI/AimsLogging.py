@@ -19,15 +19,16 @@ import logging
 import os
 
 LOGDIR = '../log/'
-mainlog = 'DEBUG'
-aimslog = logging.getLogger(mainlog)
+aimslog = 'aims'
+testlog = 'test'
+#logger = logging.getLogger(aimslog)
 
 class Logger(object):
     '''Logging class, used for common setup of log files''' 
     
 
     @staticmethod
-    def setup(lf=mainlog,ll=logging.DEBUG,ff=1):
+    def setup(lf=aimslog,ll=logging.DEBUG,ff=1):
         formats = {1:'%(asctime)s - %(levelname)s - %(module)s %(lineno)d - %(message)s',
                    2:':: %(module)s %(lineno)d - %(message)s',
                    3:'%(asctime)s,%(message)s'}

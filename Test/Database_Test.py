@@ -28,7 +28,7 @@ from multiprocessing import Process
 from AimsUI.AimsClient import Database
 from AimsUI.AimsLogging import Logger
 
-testlog = Logger.setup()
+testlog = Logger.setup('test')
 
 DCONF = {'host':'127.0.0.1', 'port':3128, 'user':'postgres','password':'', \
          'name':'aims_ci_test','aimsschema':'aims', 'table':'aims_test_table'}

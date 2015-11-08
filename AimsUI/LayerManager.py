@@ -16,6 +16,10 @@ from qgis.core import *
 
 from AimsClient import Database
 
+from AimsUI.AimsLogging import Logger
+
+aimslog = Logger.setup()
+
 class InvalidParameterException(): pass
 
 class LayerManager( QObject ):
@@ -37,7 +41,9 @@ class LayerManager( QObject ):
         return str(layer.customProperty(idprop))
 
     def setLayerId( self, layer, id ):
-        if not isinstance(id,str): raise InvalidParameterException()
+        if not isinstance(id,str): 
+            aimslog.error('Invalid Layer ID {}={}'.format(layer,id))
+            raise InvalidParameterException()
         idprop = self._propBaseName + 'Id'
         layer.setCustomProperty(idprop,id)
 

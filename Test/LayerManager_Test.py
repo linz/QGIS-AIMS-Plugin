@@ -27,7 +27,7 @@ from AimsUI.LayerManager import LayerManager, InvalidParameterException
 
 from AimsUI.AimsLogging import Logger
 
-testlog = Logger.setup()
+testlog = Logger.setup('test')
 
 class Test_0_LayerManagerSelfTest(unittest.TestCase):
     
@@ -50,10 +50,10 @@ class Test_0_LayerManagerSelfTest(unittest.TestCase):
         self.assertNotEqual(layermanager,None,'LayerManager not instantiated')
         
 class Test_1_LayerManagerSetters(unittest.TestCase):
-    #QI = QgisInterface(_Dummy_Canvas())
 
     def setUp(self): 
         testlog.debug('Instantiate null address, address.setter list')
+        #self.QI = QgisInterface(_Dummy_Canvas())
         self.QI = _Dummy_IFace()
         self._layermanager = LayerManager(self.QI)
 
@@ -75,7 +75,7 @@ class Test_1_LayerManagerSetters(unittest.TestCase):
         testlog.debug('Test_1.11 Test range of layer ID values')
         testlayer = _Dummy_Layer()
 
-        testsuccesses = ('A','Z','#$%^&_)_#@)','māori')
+        testsuccesses = ('A','Z','#$%^&_)_#@)','māori','   ','')
         for ts in testsuccesses:
             self._layermanager.setLayerId(testlayer,ts)
             self.assertEqual(self._layermanager.layerId(testlayer),ts, 'Unable to set layer ID {}'.format(ts))

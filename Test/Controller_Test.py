@@ -23,10 +23,11 @@ import re
 
 #from Test._QGisInterface import QgisInterface
 from AimsUI.AimsClient.Gui.Controller import Controller
+from AimsUI.AimsClient.Address import Address
 
 from AimsUI.AimsLogging import Logger
 
-testlog = Logger.setup()
+testlog = Logger.setup('test')
 
 class Test_0_ControllerSelfTest(unittest.TestCase):
     
@@ -47,7 +48,19 @@ class Test_0_ControllerSelfTest(unittest.TestCase):
         controller = Controller()
         self.assertNotEqual(controller,None,'Controller not instantiated')
 
+class Test_1_ControllerTestSetupFunction(unittest.TestCase):
+    
+    def setUp(self): 
+        self._controller = Controller()
+    
+    def tearDown(self):
+        self._controller = None
         
+    def test10_initControllerAddress(self):  
+        testlog.debug('Test_1.10 Controller/Address instantiation test')
+        self.assertEqual(isinstance(self._controller.initialiseNewAddress(),Address),True,'Cannot init Controller.Address')
+        #self.assertIsInstance(self._controller.initialiseNewAddress(),Address,'Cannot init Controller.Address')
+          
     
 if __name__ == "__main__":
     unittest.main()
