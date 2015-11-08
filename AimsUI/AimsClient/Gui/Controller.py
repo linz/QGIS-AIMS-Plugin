@@ -8,9 +8,13 @@
 # LICENSE file for more information.
 #
 ################################################################################
+import sys
+from os.path import dirname, abspath
+sys.path.append('.qgis2/python/plugins/QGIS-AIMS-Plugin')
 
 from PyQt4.QtCore import *
 from AimsUI.AimsClient.Address import Address
+
 
 class Controller( QObject ):
     
@@ -22,9 +26,9 @@ class Controller( QObject ):
         if Controller._instance == None:
             Controller._instance = self
     
-    def initialiseNewAddress(self):
+    def initialiseNewAddress(self): #rename initialiseAddressObj
         return Address()
-    
+
     def destroyAddObj(self, address):   
         pass
     
