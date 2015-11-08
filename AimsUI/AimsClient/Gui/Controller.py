@@ -26,9 +26,9 @@ class Controller( QObject ):
         if Controller._instance == None:
             Controller._instance = self
     
-    def initialiseNewAddress(self):
+    def initialiseNewAddress(self): #rename initialiseAddressObj
         return Address()
-    
+
     def destroyAddObj(self, address):   
         pass
     

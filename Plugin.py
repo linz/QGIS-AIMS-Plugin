@@ -17,7 +17,7 @@ from qgis.utils import *
 import Resources
 
 from AimsUI.LayerManager import LayerManager
-from AimsUI.CreateNewTool import CreateNewTool
+from AimsUI.CreateAddressTool import CreateAddressTool
 from AimsUI.AimsClient.Gui.Controller import Controller
 '''
 #debugging
@@ -64,8 +64,8 @@ class Plugin( ):
         self._createnewaddressaction.setStatusTip("place point for new address")
         self._createnewaddressaction.setEnabled(False)
         self._createnewaddressaction.triggered.connect( self.startNewAddressTool )
-        self._createnewtool = CreateNewTool( self._iface, self._controller )
-        self._createnewtool.setAction( self._createnewaddressaction )
+        self._createAddressTool = CreateAddressTool( self._iface, self._controller )
+        self._createAddressTool.setAction( self._createnewaddressaction )
        
         # Add to own toolbar
         self._toolbar = self._iface.addToolBar("QGIS-AIMS-Plugin")
@@ -89,5 +89,5 @@ class Plugin( ):
         self._createnewaddressaction.setEnabled(True)
             
     def startNewAddressTool( self ):
-        self._iface.mapCanvas().setMapTool( self._createnewtool )
-        self._createnewtool.setEnabled( True )
+        self._iface.mapCanvas().setMapTool( self._createAddressTool )
+        self._createAddressTool.setEnabled( True )
