@@ -18,7 +18,7 @@ from qgis.core import *
 from qgis.gui import *
 
 from AimsClient.Gui import Controller
-from AimsClient.Address import Address
+#from AimsClient.Address import Address
 from AimsClient.Gui.NewAddressDialog import NewAddressDialog
 
 class CreateNewTool( QgsMapTool ):
