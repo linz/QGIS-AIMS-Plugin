@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>386</width>
-    <height>900</height>
+    <height>938</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -119,8 +119,18 @@
          <height>16777215</height>
         </size>
        </property>
-       <property name="inputMethodHints">
-        <set>Qt::ImhFormattedNumbersOnly</set>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLineEdit" name="uPrefix">
+       <property name="maximumSize">
+        <size>
+         <width>65</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string/>
        </property>
       </widget>
      </item>
@@ -151,22 +161,6 @@
          <width>65</width>
          <height>16777215</height>
         </size>
-       </property>
-       <property name="inputMask">
-        <string/>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLineEdit" name="uPrefix">
-       <property name="maximumSize">
-        <size>
-         <width>65</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string/>
        </property>
       </widget>
      </item>
@@ -297,24 +291,16 @@
      </item>
      <item row="9" column="0">
       <widget class="QLabel" name="roadCentrelineIdLabel">
+       <property name="font">
+        <font>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
        <property name="text">
         <string>Road Centreline Id:</string>
        </property>
       </widget>
-     </item>
-     <item row="9" column="1">
-      <layout class="QHBoxLayout" name="horizontalLayout_4">
-       <item>
-        <widget class="QLineEdit" name="uRoadCentrelineId"/>
-       </item>
-       <item>
-        <widget class="QToolButton" name="uGetRclToolButton">
-         <property name="text">
-          <string>...</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
      </item>
      <item row="10" column="0">
       <widget class="QLabel" name="roadPrefixLabel">
@@ -431,7 +417,7 @@
         <font>
          <weight>75</weight>
          <bold>true</bold>
-         <underline>true</underline>
+         <underline>false</underline>
         </font>
        </property>
        <property name="text">
@@ -448,7 +434,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Object Type</string>
+        <string>Object Type:</string>
        </property>
       </widget>
      </item>
@@ -506,6 +492,12 @@
      </item>
      <item row="22" column="1">
       <widget class="QLineEdit" name="uValuationReference">
+       <property name="baseSize">
+        <size>
+         <width>0</width>
+         <height>50</height>
+        </size>
+       </property>
        <property name="maxLength">
         <number>30</number>
        </property>
@@ -538,6 +530,62 @@
         <number>500</number>
        </property>
       </widget>
+     </item>
+     <item row="26" column="1">
+      <widget class="QPlainTextEdit" name="uComments">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>20</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="baseSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="25" column="0" colspan="2">
+      <widget class="Line" name="line_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="26" column="0">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>Comments:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="1">
+      <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <item>
+        <widget class="QLineEdit" name="uRoadCentrelineId"/>
+       </item>
+       <item>
+        <widget class="QToolButton" name="uGetRclToolButton">
+         <property name="text">
+          <string>&gt;</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>
@@ -601,6 +649,7 @@
   <tabstop>uCertificateOfTitle</tabstop>
   <tabstop>uAppellation</tabstop>
   <tabstop>uAbort</tabstop>
+  <tabstop>uSubmitAddressButton</tabstop>
   <tabstop>uAddressType</tabstop>
  </tabstops>
  <resources/>

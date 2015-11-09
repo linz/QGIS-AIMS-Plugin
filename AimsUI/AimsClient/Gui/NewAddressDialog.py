@@ -20,7 +20,7 @@ from qgis.utils import iface
 class NewAddressDialog(Ui_NewAddressDialog, QDialog):
     
     @classmethod
-    def newAddress( cls, coords, addInstance, parent=None):
+    def instance( cls, coords, addInstance, parent=None):
         dlg = NewAddressDialog(parent, coords, addInstance)
         NewAddressDialog.setDlgInstance(dlg)
         dlg.show()
@@ -137,17 +137,5 @@ class NewAddressDialog(Ui_NewAddressDialog, QDialog):
     
 
     def getRcl(self):
-        # Crude implementation needs to be worked into getRclTool class
         pass
-        '''
-        #iface.actionSelect().trigger()
-        layer = iface.activeLayer()
-        selection = layer.selectedFeatures()
-        self.uRoadCentrelineId.setText(str(selection[0]['roadcentrelineid']))
-   
-        #clear the selection
-        layer.setSelectedFeatures([])
-        # Re-enable previous tool (CreateAddressTool)
-        #self._iface.mapCanvas().setMapTool( self._getRclTool )
-        #self._createnewtool.setEnabled( True )
-        '''
+

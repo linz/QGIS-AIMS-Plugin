@@ -21,7 +21,7 @@ from AimsClient.Gui import Controller
 #from AimsClient.Address import Address
 from AimsClient.Gui.NewAddressDialog import NewAddressDialog
 
-class CreateNewTool( QgsMapTool ):
+class CreateNewAddressTool( QgsMapTool ):
     ''' tool for creating new address information ''' 
     
     def __init__( self, iface, controller=None ):        
@@ -60,10 +60,11 @@ class CreateNewTool( QgsMapTool ):
         coords = self.toMapCoordinates(QPoint(pt.x(), pt.y()))# Point validation???
         
         # intialise an address instance
+        #need to contan with with
         addInstance = self._controller.initialiseNewAddress()
         
         # Open new address form
-        address = NewAddressDialog.newAddress(coords, addInstance, self._iface.mainWindow())
+        NewAddressDialog.instance(coords, addInstance, self._iface.mainWindow())
         
         #test success
         
