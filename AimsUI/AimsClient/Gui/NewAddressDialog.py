@@ -109,7 +109,8 @@ class NewAddressDialog(Ui_NewAddressDialog, QDialog):
         self.address.setCertificateOfTitle(str(self.uCertificateOfTitle.text()))
             
         # load address to AIMS Via API
-        payload = Address.objectify(self.address)
+        #payload = Address.objectify(self.address) 
+        payload = self.address.objectify()
         # Capture the returned response (response distilled down to list of errors)
         valErrors = AimsApi().changefeedAdd(payload)
         

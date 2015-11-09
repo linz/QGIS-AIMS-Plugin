@@ -17,7 +17,7 @@ from AimsUI.AimsClient.Address import Address
 
 
 class Controller( QObject ):
-    
+    '''For future use with multiple objects requesting address/layers etc'''
     _instance = None
     
     def __init__( self ):
