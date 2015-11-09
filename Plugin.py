@@ -74,7 +74,7 @@ class Plugin( ):
         # Add actions to menu and toolbar icon
         self._iface.addToolBarIcon(self._loadaction)
         self._iface.addPluginToMenu("&QGIS-AIMS-Plugin", self._loadaction)
-        #self._iface.addPluginToMenu("&QGIS-AIMS-Plugin", self._createnewaddressaction)
+        self._iface.addPluginToMenu("&QGIS-AIMS-Plugin", self._createnewaddressaction)
 
     def unload(self):      
         self._iface.mainWindow().removeToolBar(self._toolbar)

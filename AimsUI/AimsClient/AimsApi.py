@@ -9,7 +9,7 @@
 #
 ################################################################################
 import json
-import requests
+import httplib2
 
 from Config import ConfigReader
 
@@ -24,29 +24,28 @@ class AimsApi( ):
         self._headers = {'content-type':'application/json', 'accept':'application/json'}
     
     @staticmethod #or do i want classmethod?    
-    def handleErrors( r ):
+    def handleErrors( content ):
         ''' Return the reason for any critical errors '''        
         criticalErrors = []
-        for i in r['entities']:
+        for i in content['entities']:
             if i['properties']['severity'] == 'Reject':
                 criticalErrors.append( '- '+i['properties']['description']+'\n' )
         return ''.join(criticalErrors)
 
     @staticmethod       
-    def handleResponse(cls, r ):
+    def handleResponse(cls, resp, content ):
         ''' test http response'''
-        if r.status_code == 201: #to be more inclusive i.e. 200 ...
+        if resp == 201: #to be more inclusive i.e. 200 ...
             return [] #i.e. no errors
-        return cls.handleErrors( r.json() )
+        return cls.handleErrors( content )
     
     def changefeedAdd( self, payload ):
         ''' Add an address to the Change feed '''
-        r = requests.post(self._url+'changefeed/add', headers = self._headers, data=json.dumps(payload), auth=(self._user, self._password))
-        return self.handleResponse(self, r )
-       
-        #test for failure and if so trigger error module and show warning
-               
-      
+        h = httplib2.Http(".cache")
+        h.add_credentials(self._user, self._password)
+        resp, content = h.request(self._url+'changefeed/add', "POST", json.dumps(payload), self._headers)
+        return self.handleResponse(self, resp["status"], json.loads(content) )
+        
     def changefeedUpdate( self, payload ):
         ''' Update an address on the Change feed '''
         pass 
