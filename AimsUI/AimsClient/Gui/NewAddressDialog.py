@@ -26,7 +26,6 @@ class NewAddressDialog(Ui_NewAddressDialog, QDialog):
         dlg = NewAddressDialog(parent, coords, addInstance)
         NewAddressDialog.setDlgInstance(dlg)
         dlg.show()
-        #dlg.exec_()
            
     def __init__( self, parent, coords, addInstance):
         QDialog.__init__( self, parent )
@@ -43,8 +42,7 @@ class NewAddressDialog(Ui_NewAddressDialog, QDialog):
         self.uBase.setValidator(intValidator)
         self.uHigh.setValidator(intValidator)
         #self.uRoadCentrelineId.setValidator(intValidator)
-
-     
+        
         # Set form combobox default values
         self.uAddressType.addItems(['Road', 'Water'])
         self.ulifeCycle.addItems(['Current', 'Proposed', 'Retired'])
@@ -109,7 +107,7 @@ class NewAddressDialog(Ui_NewAddressDialog, QDialog):
         self.address.setExternalObjectIdScheme(str(self.uExtObjectIdScheme.text()))
         self.address.setValuationReference(str(self.uValuationReference.text())) 
         self.address.setCertificateOfTitle(str(self.uCertificateOfTitle.text()))
-        self.address.setSourceReason(str(self.uComments.toPlainText()))    
+        self.address.setSourceReason(str(self.uNotes.toPlainText()))    
         # load address to AIMS Via API
         #payload = Address.objectify(self.address) 
         payload = self.address.objectify()
@@ -135,8 +133,7 @@ class NewAddressDialog(Ui_NewAddressDialog, QDialog):
             if m.group('base') is not None: self.uBase.setText(m.group('base'))
             if m.group('alpha') is not None: self.uAlpha.setText(m.group('alpha'))
         except:
-            pass #silently
-    
+            pass #silently  
 
     def getRcl(self):
         pass

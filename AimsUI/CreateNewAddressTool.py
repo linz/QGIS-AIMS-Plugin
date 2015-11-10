@@ -64,14 +64,27 @@ class CreateNewAddressTool( QgsMapTool ):
         # Get coords     
         pt = e.pos()
         coords = self.toMapCoordinates(QPoint(pt.x(), pt.y()))# Point validation???
+         
+        try:
+            self.setPoint( coords )
+        except:
+            msg = str(sys.exc_info()[1])
+            QMessageBox.warning(self._iface.mainWindow(),"Error creating point",msg)
+    
+    def setPoint( self, coords ):
+        src_crs = self._iface.mapCanvas().mapRenderer().destinationCrs()
+        tgt_crs = QgsCoordinateReferenceSystem()
+        tgt_crs.createFromOgcWmsCrs('EPSG:2193')
+        transform = QgsCoordinateTransform( src_crs, tgt_crs )
+        coords = transform.transform( coords.x(), coords.y() )     
         
         # intialise an address instance
-        #need to contan with with
         addInstance = self._controller.initialiseNewAddress()
-        
+        #with self._controller.initialiseNewAddress() as addInstance:
+        #    pass
+        ''' with statement to be included when refactoring as initialiseNewAddress may no
+        # longer reside in controller. initialiseNewAddress need to be a member of a class
+        # that has __enter__ and _exit__ methods to for the context manager to utilise. 
+        ''' 
         # Open new address form
         NewAddressDialog.instance(coords, addInstance, self._iface.mainWindow())
-        
-        #test success
-        
-        

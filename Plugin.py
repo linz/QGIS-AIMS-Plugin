@@ -47,6 +47,10 @@ class Plugin( ):
         
         self._controller = Controller()
         
+        if iface.mapCanvas().mapRenderer().hasCrsTransformEnabled():
+            my_crs = QgsCoordinateReferenceSystem(4167,QgsCoordinateReferenceSystem.EpsgCrsId)
+            iface.mapCanvas().mapRenderer().setDestinationCrs(my_crs)
+
     def initGui(self):
         self._layers = LayerManager(self._iface)
         
