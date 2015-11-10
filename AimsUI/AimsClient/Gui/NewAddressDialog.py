@@ -125,16 +125,25 @@ class NewAddressDialog(Ui_NewAddressDialog, QDialog):
         # Set address components to None
         [i.setText(None) for i in ([self.uPrefix, self.uUnit, self.uBase, self.uAlpha, self.uHigh])]
         # Split full address into components
-        p = re.compile(r'^(?P<flat_prefix>[A-Z]+)?(?:\s)?(?P<flat>[0-9]+/\s*|^[A-Z]{,2}/\s*)?(?P<base>[0-9]+)(?P<alpha>[A-Z]+)?$') 
-        m = p.match(newnumber.upper())
-        try:
-            if m.group('flat_prefix') is not None: self.uPrefix.setText(m.group('flat_prefix'))
-            if m.group('flat') is not None: self.uUnit.setText(m.group('flat').strip('/'))
-            if m.group('base') is not None: self.uBase.setText(m.group('base'))
-            if m.group('alpha') is not None: self.uAlpha.setText(m.group('alpha'))
-        except:
-            pass #silently  
-
+        if '-' not in newnumber: 
+            p = re.compile(r'^(?P<flat_prefix>[A-Z]+)?(?:\s)?(?P<flat>[0-9]+/\s*|^[A-Z]{,2}/\s*)?(?P<base>[0-9]+)(?P<alpha>[A-Z]+)?$') 
+            m = p.match(newnumber.upper())
+            try:
+                if m.group('flat_prefix') is not None: self.uPrefix.setText(m.group('flat_prefix'))
+                if m.group('flat') is not None: self.uUnit.setText(m.group('flat').strip('/'))
+                if m.group('base') is not None: self.uBase.setText(m.group('base'))
+                if m.group('alpha') is not None: self.uAlpha.setText(m.group('alpha'))
+            except:
+                pass #silently  
+        else:
+            p = re.compile(r'^(?P<base>[0-9]+)(?:-)(?P<high>[0-9]+)$') 
+            m = p.match(newnumber.upper())
+            try:
+                if m.group('base') is not None: self.uBase.setText(m.group('base'))
+                if m.group('high') is not None: self.uHigh.setText(m.group('high'))
+            except:
+                pass #silently  
+        
     def getRcl(self):
         pass
 
