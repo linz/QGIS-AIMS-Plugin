@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 ################################################################################
 #
 # Copyright 2015 Crown copyright (c)
@@ -7,7 +8,12 @@
 # This program is released under the terms of the 3 clause BSD license. See the 
 # LICENSE file for more information.
 #
-################################################################################
+###############################################################################
+
+#try:
+#    _fromUtf8 = str(QtCore.fromUtf8)
+#except AttributeError:
+#    _fromUtf8 = lambda s: s
 
 import sys
 

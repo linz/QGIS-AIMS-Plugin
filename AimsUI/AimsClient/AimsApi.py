@@ -1,3 +1,4 @@
+
 ################################################################################
 #
 # Copyright 2015 Crown copyright (c)
@@ -23,7 +24,7 @@ class AimsApi( ):
         self._password = config.configSectionMap('user')['pass']
         self._headers = {'content-type':'application/json', 'accept':'application/json'}
     
-    @staticmethod #or do i want classmethod?    
+    @staticmethod #   
     def handleErrors( content ):
         ''' Return the reason for any critical errors '''        
         criticalErrors = []
@@ -37,6 +38,13 @@ class AimsApi( ):
         ''' test http response'''
         if resp == 201: #to be more inclusive i.e. 200 ...
             return [] #i.e. no errors
+        try:
+            #return list of validation errors
+            return cls.handleErrors( content )
+        except:
+            #failing that give the user the direct http response
+            return 'Please contact your system administrator \n' + str(content)
+        
         return cls.handleErrors( content )
     
     def changefeedAdd( self, payload ):

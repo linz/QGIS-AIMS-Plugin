@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 ################################################################################
 #
 # Copyright 2015 Crown copyright (c)
@@ -76,7 +78,6 @@ class NewAddressDialog(Ui_NewAddressDialog, QDialog):
         # Run through the setters
         self.address.setAddressType(str(self.uAddressType.currentText()))
         self.address.setExternalAddressId(self.wsEqualsNone(str(self.uExternalAddId.text())))
-        self.address.setExternalAddressId(self.wsEqualsNone(str(self.uExternalAddId.text())))
         self.address.setExternalAddressIdScheme(self.wsEqualsNone(str(self.uExternalAddressIdScheme.text())))
         self.address.setLifecycle(str(self.ulifeCycle.currentText()))
         self.address.setUnitType(self.wsEqualsNone(str(self.uUnitType.currentText())))
@@ -91,7 +92,8 @@ class NewAddressDialog(Ui_NewAddressDialog, QDialog):
         self.address.setRoadCentrelineId(int(self.uRoadCentrelineId.text())) if self.uRoadCentrelineId.text().isnumeric() else self.address.setRoadCentrelineId(None)
         # Roads
         self.address.setRoadPrefix(self.wsEqualsNone(str(self.uRoadPrefix.text())))
-        self.address.setRoadName(self.wsEqualsNone(str(self.uRoadName.text())))
+        #self.address.setRoadName(self.wsEqualsNone(self.uRoadName.text().encode('utf-8')))
+        self.address.setRoadName(self.wsEqualsNone(self.uRoadName.text()))
         self.address.setRoadTypeName(self.wsEqualsNone(str(self.uRoadTypeName.text())))
         self.address.setRoadSuffix(self.wsEqualsNone(str(self.uRoadSuffix.text())))
         self.address.setWaterRouteName(self.wsEqualsNone(str(self.uWaterRouteName.text())))
@@ -107,7 +109,7 @@ class NewAddressDialog(Ui_NewAddressDialog, QDialog):
         self.address.setExternalObjectIdScheme(str(self.uExtObjectIdScheme.text()))
         self.address.setValuationReference(str(self.uValuationReference.text())) 
         self.address.setCertificateOfTitle(str(self.uCertificateOfTitle.text()))
-            
+        self.address.setSourceReason(str(self.uComments.toPlainText()))    
         # load address to AIMS Via API
         #payload = Address.objectify(self.address) 
         payload = self.address.objectify()
