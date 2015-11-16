@@ -10,11 +10,6 @@
 #
 ###############################################################################
 
-#try:
-#    _fromUtf8 = str(QtCore.fromUtf8)
-#except AttributeError:
-#    _fromUtf8 = lambda s: s
-
 import sys
 
 from PyQt4.QtCore import *
@@ -24,7 +19,6 @@ from qgis.core import *
 from qgis.gui import *
 
 from AimsClient.Gui import Controller
-#from AimsClient.Address import Address
 from AimsClient.Gui.NewAddressDialog import NewAddressDialog
 
 class CreateNewAddressTool( QgsMapTool ):
@@ -54,17 +48,18 @@ class CreateNewAddressTool( QgsMapTool ):
             self.deactivate()
  
     def canvasReleaseEvent(self,e):
+        
         if not e.button() == Qt.LeftButton:
             return
         
         if not self._enabled:
-            QMessageBox.warning(self._iface.mainWindow(),"Create Address Point", "Not enabled")
+            #QMessageBox.warning(self._iface.mainWindow(),"Create Address Point", "Not enabled")
             return
-        
+
         # Get coords     
         pt = e.pos()
         coords = self.toMapCoordinates(QPoint(pt.x(), pt.y()))# Point validation???
-         
+             
         try:
             self.setPoint( coords )
         except:
@@ -85,6 +80,12 @@ class CreateNewAddressTool( QgsMapTool ):
         ''' with statement to be included when refactoring as initialiseNewAddress may no
         # longer reside in controller. initialiseNewAddress need to be a member of a class
         # that has __enter__ and _exit__ methods to for the context manager to utilise. 
-        ''' 
+        '''
+ 
         # Open new address form
-        NewAddressDialog.instance(coords, addInstance, self._iface.mainWindow())
+    
+        self._enabled = False
+        NewAddressDialog.newAddress(coords, addInstance, self._iface.mainWindow())
+        self._enabled = True
+            
+            

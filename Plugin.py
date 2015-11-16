@@ -19,6 +19,7 @@ import Resources
 from AimsUI.LayerManager import LayerManager
 from AimsUI.CreateNewAddressTool import CreateNewAddressTool
 from AimsUI.AimsClient.Gui.Controller import Controller
+from AimsUI import AimsLogging
 '''
 #debugging
 try:
@@ -29,16 +30,11 @@ try:
 except:
     pass
 '''
-class Plugin( ):
+from AimsUI.AimsLogging import Logger
 
-    Name = "AimsClient"
-    LongName="Address Information Management System Client"
-    Version="1.0"
-    QgisMinimumVersion="2.0"
-    Author="splanzer@linz.govt.nz <Simon Planzer>"
-    PluginUrl="tbc"
-    Description="Client for loading address information into the Address Information Management System (AIMS)"
-    SettingsBase="QGIS-AIMS-Plugin/"
+aimslog = Logger.setup()
+
+class Plugin( ):
 
     def __init__( self, iface ):        
         self._iface = iface
@@ -46,10 +42,11 @@ class Plugin( ):
         self._layers = None
         
         self._controller = Controller()
+        aimslog.debug(iface)
         
-        if iface.mapCanvas().mapRenderer().hasCrsTransformEnabled():
-            my_crs = QgsCoordinateReferenceSystem(4167,QgsCoordinateReferenceSystem.EpsgCrsId)
-            iface.mapCanvas().mapRenderer().setDestinationCrs(my_crs)
+        #if iface.mapCanvas().mapRenderer().hasCrsTransformEnabled():
+        #    my_crs = QgsCoordinateReferenceSystem(4167,QgsCoordinateReferenceSystem.EpsgCrsId)
+        #    iface.mapCanvas().mapRenderer().setDestinationCrs(my_crs)
 
     def initGui(self):
         self._layers = LayerManager(self._iface)

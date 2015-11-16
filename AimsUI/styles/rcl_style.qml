@@ -16,7 +16,7 @@
     <edittype widgetv2type="TextEdit" name="roadname">
       <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
     </edittype>
-    <edittype widgetv2type="TextEdit" name="roadnametype">
+    <edittype widgetv2type="TextEdit" name="roadtypename">
       <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
     </edittype>
   </edittypes>
@@ -73,7 +73,7 @@
     <property key="labeling/distMapUnitMaxScale" value="0"/>
     <property key="labeling/distMapUnitMinScale" value="0"/>
     <property key="labeling/enabled" value="true"/>
-    <property key="labeling/fieldName" value=" concat(  &quot;roadname&quot; ,+ ' ' + title( &quot;roadnametype&quot; ))&#xa;"/>
+    <property key="labeling/fieldName" value=" concat(  &quot;roadname&quot; ,  ' ',&quot;roadtypename&quot; ) "/>
     <property key="labeling/fontBold" value="true"/>
     <property key="labeling/fontCapitals" value="0"/>
     <property key="labeling/fontFamily" value="Century Schoolbook L"/>

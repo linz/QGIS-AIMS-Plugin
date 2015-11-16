@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
 ################################################################################
 #
@@ -22,27 +21,27 @@ from qgis.utils import iface
 class NewAddressDialog(Ui_NewAddressDialog, QDialog):
     
     @classmethod
-    def instance( cls, coords, addInstance, parent=None):
+    def newAddress( cls, coords, addInstance, parent=None):
         dlg = NewAddressDialog(parent, coords, addInstance)
-        NewAddressDialog.setDlgInstance(dlg)
-        dlg.show()
-           
+        dlg.exec_()
+  
     def __init__( self, parent, coords, addInstance):
-        QDialog.__init__( self, parent )
+        QDialog.__init__( self, parent )  
         self.setupUi(self)
         self.iface = iface
-        self.dlg = None
-                
         self.coords = coords
         self.address = addInstance
-        
-        # limit user input
+   
+        # limit user inputs
         intValidator = QIntValidator()    
         self.uExternalAddId.setValidator(intValidator)
         self.uBase.setValidator(intValidator)
         self.uHigh.setValidator(intValidator)
-        #self.uRoadCentrelineId.setValidator(intValidator)
-        
+
+        self.uAlpha.setValidator(QRegExpValidator(QRegExp(r'^[A-Za-z]{0,3}'), self))
+        self.uUnit.setValidator(QRegExpValidator(QRegExp(r'^\w+'), self))
+        self.uPrefix.setValidator(QRegExpValidator(QRegExp(r'^\w+'), self))
+ 
         # Set form combobox default values
         self.uAddressType.addItems(['Road', 'Water'])
         self.ulifeCycle.addItems(['Current', 'Proposed', 'Retired'])
@@ -51,19 +50,16 @@ class NewAddressDialog(Ui_NewAddressDialog, QDialog):
         self.UObjectType.addItems(['Parcel', 'Building'])
                     
         # Make connections
-        self.uFullNum.textChanged.connect(self.FullNumChanged)
+        self.uFullNum.textChanged.connect(self.fullNumChanged)
         self.uSubmitAddressButton.clicked.connect(self.submitAddress)
         self.uGetRclToolButton.clicked.connect(self.getRcl)
         self.uAbort.clicked.connect(self.closeDlg)
-        
+        self.show()
+
         # Need to connect abort button and ensure address instance destroyed  
     def closeDlg (self):
-        self.dlg.close()
+        self.reject()
         # Need to destroy with with statement back at createNewAddressTool
-
-    def setDlgInstance (self):
-        ''' make the object self-aware  ''' 
-        self.dlg = self
     
     def wsEqualsNone (self, uInput): #
         ''' convert whitespace to None '''
@@ -79,25 +75,24 @@ class NewAddressDialog(Ui_NewAddressDialog, QDialog):
         self.address.setExternalAddressIdScheme(self.wsEqualsNone(str(self.uExternalAddressIdScheme.text())))
         self.address.setLifecycle(str(self.ulifeCycle.currentText()))
         self.address.setUnitType(self.wsEqualsNone(str(self.uUnitType.currentText())))
-        self.address.setUnitValue(self.wsEqualsNone(str(self.uUnit.text())))
+        self.address.setUnitValue(self.wsEqualsNone(str(self.uUnit.text()).upper()))
         self.address.setLevelType(self.wsEqualsNone(str(self.uLevelType.currentText())))
         self.address.setLevelValue(self.wsEqualsNone(str(self.uLevelValue.text())))
-        self.address.setAddressNumberPrefix(self.wsEqualsNone(str(self.uPrefix.text())))         
-        self.address.setAddressNumberSuffix(self.wsEqualsNone(str(self.uAlpha.text())))     
+        self.address.setAddressNumberPrefix(self.wsEqualsNone(str(self.uPrefix.text()).upper()))         
+        self.address.setAddressNumberSuffix(self.wsEqualsNone(str(self.uAlpha.text()).upper()))     
         # Below must be int, else set to None ### Validation has made special handling of int redundant
         self.address.setAddressNumber(int(self.uBase.text())) if self.uBase.text().isnumeric() else self.address.setAddressNumber(None)
         self.address.setAddressNumberHigh(int(self.uHigh.text())) if self.uHigh.text().isnumeric() else self.address.setAddressNumberHigh(None)
         self.address.setRoadCentrelineId(int(self.uRoadCentrelineId.text())) if self.uRoadCentrelineId.text().isnumeric() else self.address.setRoadCentrelineId(None)
         # Roads
         self.address.setRoadPrefix(self.wsEqualsNone(str(self.uRoadPrefix.text())))
-        #self.address.setRoadName(self.wsEqualsNone(self.uRoadName.text().encode('utf-8')))
-        self.address.setRoadName(self.wsEqualsNone(self.uRoadName.text()))
+        self.address.setRoadName(self.wsEqualsNone(self.uRoadName.text().encode('utf-8')))
         self.address.setRoadTypeName(self.wsEqualsNone(str(self.uRoadTypeName.text())))
         self.address.setRoadSuffix(self.wsEqualsNone(str(self.uRoadSuffix.text())))
-        self.address.setWaterRouteName(self.wsEqualsNone(str(self.uWaterRouteName.text())))
+        self.address.setWaterRouteName(self.wsEqualsNone(self.uWaterRouteName.text().encode('utf-8')))
         self.address.setWaterName(self.wsEqualsNone(str(self.uWaterName.text())))
         self.address.setAoType(str(self.UObjectType.currentText()))
-        self.address.setAoName(self.wsEqualsNone(str(self.uObjectName.text())))  
+        self.address.setAoName(self.wsEqualsNone(self.uObjectName.text().encode('utf-8'))) 
         self.address.set_x(self.coords.x()) 
         self.address.set_y(self.coords.y())
         # address.setCrsType(self.  )
@@ -106,21 +101,22 @@ class NewAddressDialog(Ui_NewAddressDialog, QDialog):
         self.address.setExternalObjectId(str(self.uExternalObjectId.text()))
         self.address.setExternalObjectIdScheme(str(self.uExtObjectIdScheme.text()))
         self.address.setValuationReference(str(self.uValuationReference.text())) 
-        self.address.setCertificateOfTitle(str(self.uCertificateOfTitle.text()))
-        self.address.setSourceReason(str(self.uNotes.toPlainText()))    
+        self.address.setCertificateOfTitle(self.wsEqualsNone(self.uCertificateOfTitle.text().encode('utf-8')))
+        self.address.setCertificateOfTitle(self.wsEqualsNone(self.uAppellation.text().encode('utf-8')))
+        self.address.setSourceReason(self.uNotes.toPlainText().encode('utf-8'))   
+
         # load address to AIMS Via API
         #payload = Address.objectify(self.address) 
         payload = self.address.objectify()
         # Capture the returned response (response distilled down to list of errors)
         valErrors = AimsApi().changefeedAdd(payload)
         
-        # if no errors close the window
         if len(valErrors) == 0:
-            self.dlg.closeDlg()
+            self.closeDlg()
         else:
             QMessageBox.warning(iface.mainWindow(),"Create Address Point", valErrors)
-                      
-    def FullNumChanged(self, newnumber):
+                 
+    def fullNumChanged(self, newnumber):
         ''' Sets address components based on user inputted "full address" '''
         # Set address components to None
         [i.setText(None) for i in ([self.uPrefix, self.uUnit, self.uBase, self.uAlpha, self.uHigh])]
@@ -146,4 +142,3 @@ class NewAddressDialog(Ui_NewAddressDialog, QDialog):
         
     def getRcl(self):
         pass
-

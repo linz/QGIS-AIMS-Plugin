@@ -16,9 +16,9 @@ from qgis.core import *
 
 from AimsClient import Database
 
-from AimsUI.AimsLogging import Logger
+#from AimsUI.AimsLogging import Logger
 
-aimslog = Logger.setup()
+#aimslog = Logger.setup()
 
 class InvalidParameterException(): pass
 
@@ -42,7 +42,7 @@ class LayerManager( QObject ):
 
     def setLayerId( self, layer, id ):
         if not isinstance(id,str): 
-            aimslog.error('Invalid Layer ID {}={}'.format(layer,id))
+            #aimslog.error('Invalid Layer ID {}={}'.format(layer,id))
             raise InvalidParameterException()
         idprop = self._propBaseName + 'Id'
         layer.setCustomProperty(idprop,id)
@@ -87,10 +87,11 @@ class LayerManager( QObject ):
         schema = Database.aimsSchema()
         # Join rcl and road name (via rna) for labeling purposes. NOTE - only P1 rna used
         sql = '''(Select rcl.roadcentrelineid, rcl.roadcentrelinealtid,rcl.noncadastralroad, 
-                  rcl.shape, rcl.organisationid, rn.roadname, rn.roadnametype  
+                  rcl.shape, rcl.organisationid, rn.roadname, rt.roadtypename  
                 FROM reference.roadcentreline rcl JOIN reference.roadnameassociation rna 
                 ON rcl.roadcentrelineid = rna.roadcentrelineid 
                 JOIN reference.roadname rn ON rn.roadnameid =  rna.roadnameid 
+                JOIN reference.roadtype rt on rn.roadtypeid = rt.roadtypeid
                 WHERE rcl.roadcentrelinestatus = 'CURR' AND rna.rnapriority = 1 AND rn.roadnamestatus = 'CURR')'''
         
         self.installLayer( 'rcl', '', sql, 'roadcentrelineid', True, "",'Roads' )        

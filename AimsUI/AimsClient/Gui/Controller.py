@@ -10,10 +10,11 @@
 ################################################################################
 import sys
 from os.path import dirname, abspath
-sys.path.append('.qgis2/python/plugins/QGIS-AIMS-Plugin')
+#sys.path.append('.qgis2/python/plugins/aims')
 
 from PyQt4.QtCore import *
 from AimsUI.AimsClient.Address import Address
+
 
 
 class Controller( QObject ):
