@@ -102,7 +102,7 @@ class NewAddressDialog(Ui_NewAddressDialog, QDialog):
         self.address.setExternalObjectIdScheme(str(self.uExtObjectIdScheme.text()))
         self.address.setValuationReference(str(self.uValuationReference.text())) 
         self.address.setCertificateOfTitle(self.wsEqualsNone(self.uCertificateOfTitle.text().encode('utf-8')))
-        self.address.setCertificateOfTitle(self.wsEqualsNone(self.uAppellation.text().encode('utf-8')))
+        self.address.setAppellation(self.wsEqualsNone(self.uAppellation.text().encode('utf-8')))
         self.address.setSourceReason(self.uNotes.toPlainText().encode('utf-8'))   
 
         # load address to AIMS Via API
@@ -132,9 +132,11 @@ class NewAddressDialog(Ui_NewAddressDialog, QDialog):
             except:
                 pass #silently  
         else:
-            p = re.compile(r'^(?P<base>[0-9]+)(?:-)(?P<high>[0-9]+)$') 
+            p = re.compile(r'^(?P<flat_prefix>[A-Z]+)?(?:\s)?(?P<flat>[0-9]+/\s*|^[A-Z]{,2}/\s*)?(?P<base>[0-9]+)(?:-)(?P<high>[0-9]+)$') 
             m = p.match(newnumber.upper())
             try:
+                if m.group('flat_prefix') is not None: self.uPrefix.setText(m.group('flat_prefix'))
+                if m.group('flat') is not None: self.uUnit.setText(m.group('flat').strip('/'))
                 if m.group('base') is not None: self.uBase.setText(m.group('base'))
                 if m.group('high') is not None: self.uHigh.setText(m.group('high'))
             except:

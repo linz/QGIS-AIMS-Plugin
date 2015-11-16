@@ -73,6 +73,8 @@ class CreateNewAddressTool( QgsMapTool ):
         transform = QgsCoordinateTransform( src_crs, tgt_crs )
         coords = transform.transform( coords.x(), coords.y() )     
         
+        
+        self._enabled = False #disable tool - i.e allow only one dlg instance
         # intialise an address instance
         addInstance = self._controller.initialiseNewAddress()
         #with self._controller.initialiseNewAddress() as addInstance:
@@ -81,10 +83,7 @@ class CreateNewAddressTool( QgsMapTool ):
         # longer reside in controller. initialiseNewAddress need to be a member of a class
         # that has __enter__ and _exit__ methods to for the context manager to utilise. 
         '''
- 
         # Open new address form
-    
-        self._enabled = False
         NewAddressDialog.newAddress(coords, addInstance, self._iface.mainWindow())
         self._enabled = True
             
