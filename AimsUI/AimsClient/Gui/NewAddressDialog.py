@@ -37,7 +37,6 @@ class NewAddressDialog(Ui_NewAddressDialog, QDialog):
         self.uExternalAddId.setValidator(intValidator)
         self.uBase.setValidator(intValidator)
         self.uHigh.setValidator(intValidator)
-
         self.uAlpha.setValidator(QRegExpValidator(QRegExp(r'^[A-Za-z]{0,3}'), self))
         self.uUnit.setValidator(QRegExpValidator(QRegExp(r'^\w+'), self))
         self.uPrefix.setValidator(QRegExpValidator(QRegExp(r'^\w+'), self))
@@ -45,7 +44,7 @@ class NewAddressDialog(Ui_NewAddressDialog, QDialog):
         # Set form combobox default values
         self.uAddressType.addItems(['Road', 'Water'])
         self.ulifeCycle.addItems(['Current', 'Proposed', 'Retired'])
-        self.uUnitType.addItems([None, 'Apartment', 'Villa', 'Shop', 'Banana'])
+        self.uUnitType.addItems([None, 'Apartment', 'Villa', 'Shop', 'Banana'])#require feed back as to approved values
         self.uLevelType.addItems([None, 'Ground', 'Floor', 'Basement', 'Sub-basement', 'Sub-sub-basement', 'Mezzanine'])
         self.UObjectType.addItems(['Parcel', 'Building'])
                     
@@ -56,10 +55,9 @@ class NewAddressDialog(Ui_NewAddressDialog, QDialog):
         self.uAbort.clicked.connect(self.closeDlg)
         self.show()
 
-        # Need to connect abort button and ensure address instance destroyed  
     def closeDlg (self):
+        ''' close form '''
         self.reject()
-        # Need to destroy with with statement back at createNewAddressTool
     
     def wsEqualsNone (self, uInput): #
         ''' convert whitespace to None '''
@@ -67,7 +65,7 @@ class NewAddressDialog(Ui_NewAddressDialog, QDialog):
             return None
         else: return uInput
          
-    def submitAddress( self ):
+    def submitAddress(self):
         ''' take users input from form and submit to AIMS API '''
         # Run through the setters
         self.address.setAddressType(str(self.uAddressType.currentText()))
@@ -84,7 +82,7 @@ class NewAddressDialog(Ui_NewAddressDialog, QDialog):
         self.address.setAddressNumber(int(self.uBase.text())) if self.uBase.text().isnumeric() else self.address.setAddressNumber(None)
         self.address.setAddressNumberHigh(int(self.uHigh.text())) if self.uHigh.text().isnumeric() else self.address.setAddressNumberHigh(None)
         self.address.setRoadCentrelineId(int(self.uRoadCentrelineId.text())) if self.uRoadCentrelineId.text().isnumeric() else self.address.setRoadCentrelineId(None)
-        # Roads
+        # ROADS
         self.address.setRoadPrefix(self.wsEqualsNone(str(self.uRoadPrefix.text())))
         self.address.setRoadName(self.wsEqualsNone(self.uRoadName.text().encode('utf-8')))
         self.address.setRoadTypeName(self.wsEqualsNone(str(self.uRoadTypeName.text())))
@@ -106,7 +104,6 @@ class NewAddressDialog(Ui_NewAddressDialog, QDialog):
         self.address.setSourceReason(self.uNotes.toPlainText().encode('utf-8'))   
 
         # load address to AIMS Via API
-        #payload = Address.objectify(self.address) 
         payload = self.address.objectify()
         # Capture the returned response (response distilled down to list of errors)
         valErrors = AimsApi().changefeedAdd(payload)
@@ -117,7 +114,7 @@ class NewAddressDialog(Ui_NewAddressDialog, QDialog):
             QMessageBox.warning(iface.mainWindow(),"Create Address Point", valErrors)
                  
     def fullNumChanged(self, newnumber):
-        ''' Sets address components based on user inputted "full address" '''
+        ''' splits a full (user inputted) address string into address components '''
         # Set address components to None
         [i.setText(None) for i in ([self.uPrefix, self.uUnit, self.uBase, self.uAlpha, self.uHigh])]
         # Split full address into components

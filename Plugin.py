@@ -20,8 +20,8 @@ from AimsUI.LayerManager import LayerManager
 from AimsUI.CreateNewAddressTool import CreateNewAddressTool
 from AimsUI.AimsClient.Gui.Controller import Controller
 from AimsUI import AimsLogging
-'''
-#debugging
+
+# Dev only - debugging
 try:
     import sys
     sys.path.append('/opt/eclipse/plugins/org.python.pydev_4.4.0.201510052309/pysrc')
@@ -29,14 +29,13 @@ try:
     settrace()
 except:
     pass
-'''
-from AimsUI.AimsLogging import Logger
 
+from AimsUI.AimsLogging import Logger
 aimslog = Logger.setup()
 
 class Plugin( ):
 
-    def __init__( self, iface ):        
+    def __init__(self, iface):        
         self._iface = iface
         self._statusbar = iface.mainWindow().statusBar()
         self._layers = None
@@ -84,11 +83,11 @@ class Plugin( ):
         self._iface.removePluginMenu("&QGIS-AIMS-Plugin", self._createnewaddressaction)
   
     # Connect to "open QGIS-AIMS-Plugin"
-    def loadEditor( self ):
+    def loadEditor(self):
         self.startNewAddressTool()
         self._layers.installRefLayers()
         self._createnewaddressaction.setEnabled(True)
             
-    def startNewAddressTool( self ):
-        self._iface.mapCanvas().setMapTool( self._CreateNewAddressTool )
+    def startNewAddressTool(self):
+        self._iface.mapCanvas().setMapTool(self._CreateNewAddressTool)
         self._CreateNewAddressTool.setEnabled( True )

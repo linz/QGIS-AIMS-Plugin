@@ -10,7 +10,6 @@
 # LICENSE file for more information.
 #
 ################################################################################
-
 import Config
 from Config import ConfigReader
 
@@ -63,7 +62,7 @@ class Address(object):
         self._certificateOfTitle = None
         self._appellation = None
     
-    #set functions used to manipulate object properties   
+    # Set functions used to manipulate object properties   
     def setSourceReason (self, sourceReason): self._sourceReason = sourceReason
     def setAddressType( self, addressType ): self._addressType = addressType    
     def setExternalAddressId( self, externalAddressId ): self._externalAddressId = externalAddressId 

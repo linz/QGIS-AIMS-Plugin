@@ -25,13 +25,6 @@ _name = config.configSectionMap('db')['name']
 _user = config.configSectionMap('db')['user']
 _password = config.configSectionMap('db')['password']
 
-###_host = Config.ConfigSectionMap('db')['host']
-###_port = Config.ConfigSectionMap('db')['port']
-###_name = Config.ConfigSectionMap('db')['name']
-
-###_user = Config.ConfigSectionMap('db')['user']
-#_password = Config.ConfigSectionMap('db')['password']
-###_password=''
 _aimsSchema='reference'
 
 def _setup(d):

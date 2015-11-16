@@ -14,7 +14,7 @@ import httplib2
 
 from Config import ConfigReader
 
-class AimsApi( ):
+class AimsApi(object):
     ''' make and receive all http requests / responses to AIMS API '''   
         
     def __init__(self):
@@ -25,7 +25,7 @@ class AimsApi( ):
         self._headers = {'content-type':'application/json', 'accept':'application/json'}
     
     @staticmethod #   
-    def handleErrors( content ):
+    def handleErrors(content):
         ''' Return the reason for any critical errors '''        
         criticalErrors = []
         for i in content['entities']:
@@ -34,30 +34,30 @@ class AimsApi( ):
         return ''.join(criticalErrors)
 
     @staticmethod       
-    def handleResponse(cls, resp, content ):
+    def handleResponse(cls, resp, content):
         ''' test http response'''
         if resp == 201: #to be more inclusive i.e. 200 ...
             return [] #i.e. no errors
         try:
-            #return list of validation errors
-            return cls.handleErrors( content )
+            # Return list of validation errors
+            return cls.handleErrors(content)
         except:
-            #failing that give the user the direct http response
+            # Failing that give the user the direct http response
             return 'Please contact your system administrator \n' + str(content)
         
-        return cls.handleErrors( content )
+        return cls.handleErrors(content)
     
-    def changefeedAdd( self, payload ):
+    def changefeedAdd(self, payload):
         ''' Add an address to the Change feed '''
         h = httplib2.Http(".cache")
         h.add_credentials(self._user, self._password)
         resp, content = h.request(self._url+'changefeed/add', "POST", json.dumps(payload), self._headers)
         return self.handleResponse(self, resp["status"], json.loads(content) )
         
-    def changefeedUpdate( self, payload ):
+    def changefeedUpdate(self, payload):
         ''' Update an address on the Change feed '''
         pass 
        
-    def changefeedDelete( self, payload ):
+    def changefeedDelete(self, payload):
         ''' Delete a address via Change feed '''
         pass
