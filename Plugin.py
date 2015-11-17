@@ -16,7 +16,6 @@ from qgis.utils import *
 
 import Resources
 
-from AimsUI.LayerManager import LayerManager
 from AimsUI.CreateNewAddressTool import CreateNewAddressTool
 from AimsUI.AimsClient.Gui.Controller import Controller
 from AimsUI import AimsLogging
@@ -38,18 +37,11 @@ class Plugin( ):
     def __init__(self, iface):        
         self._iface = iface
         self._statusbar = iface.mainWindow().statusBar()
-        self._layers = None
-        
+                
         self._controller = Controller()
         aimslog.debug(iface)
-        
-        #if iface.mapCanvas().mapRenderer().hasCrsTransformEnabled():
-        #    my_crs = QgsCoordinateReferenceSystem(4167,QgsCoordinateReferenceSystem.EpsgCrsId)
-        #    iface.mapCanvas().mapRenderer().setDestinationCrs(my_crs)
 
     def initGui(self):
-        self._layers = LayerManager(self._iface)
-        
         # Main address editing window
         self._loadaction = QAction(QIcon(":/plugins/QGIS-AIMS-Plugin/resources/loadaddress.png"), 
             "QGIS-AIMS-Plugin", self._iface.mainWindow())
@@ -82,12 +74,11 @@ class Plugin( ):
         self._iface.removePluginMenu("&QGIS-AIMS-Plugin",self._loadaction)
         self._iface.removePluginMenu("&QGIS-AIMS-Plugin", self._createnewaddressaction)
   
-    # Connect to "open QGIS-AIMS-Plugin"
     def loadEditor(self):
         self.startNewAddressTool()
-        self._layers.installRefLayers()
+        self._controller.loadRefLayers(self._iface)
         self._createnewaddressaction.setEnabled(True)
             
     def startNewAddressTool(self):
         self._iface.mapCanvas().setMapTool(self._CreateNewAddressTool)
-        self._CreateNewAddressTool.setEnabled( True )
+        self._CreateNewAddressTool.setEnabled(True)

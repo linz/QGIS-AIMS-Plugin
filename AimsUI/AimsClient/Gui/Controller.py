@@ -14,14 +14,15 @@ from os.path import dirname, abspath
 
 from PyQt4.QtCore import *
 from AimsUI.AimsClient.Address import Address
-
+from AimsUI.LayerManager import LayerManager
 
 
 class Controller(QObject):
     '''For future use with multiple objects requesting address/layers etc'''
     _instance = None
     
-    def __init__( self ):
+    def __init__(self):
+        self._layers = None
         QObject.__init__(self)
         self._currentAddress = None
         if Controller._instance == None:
@@ -32,4 +33,12 @@ class Controller(QObject):
 
     def destroyAddObj(self, address):   
         pass
+    
+    def loadRefLayers (self, iface):
+        self._layers = LayerManager(iface)
+        self._layers.installRefLayers()
+    
+    def refreshlayer(self):
+        pass
+
     
