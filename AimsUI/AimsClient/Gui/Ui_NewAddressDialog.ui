@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>386</width>
-    <height>906</height>
+    <height>938</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -119,38 +119,8 @@
          <height>16777215</height>
         </size>
        </property>
-       <property name="inputMethodHints">
-        <set>Qt::ImhFormattedNumbersOnly</set>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="4">
-      <widget class="QLineEdit" name="uBase">
-       <property name="maximumSize">
-        <size>
-         <width>65</width>
-         <height>16777215</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="2">
-      <widget class="QLineEdit" name="uUnit">
-       <property name="maximumSize">
-        <size>
-         <width>65</width>
-         <height>16777215</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="8">
-      <widget class="QLineEdit" name="uAlpha">
-       <property name="maximumSize">
-        <size>
-         <width>65</width>
-         <height>16777215</height>
-        </size>
+       <property name="maxLength">
+        <number>6</number>
        </property>
       </widget>
      </item>
@@ -164,6 +134,51 @@
        </property>
        <property name="text">
         <string/>
+       </property>
+       <property name="maxLength">
+        <number>3</number>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="4">
+      <widget class="QLineEdit" name="uBase">
+       <property name="maximumSize">
+        <size>
+         <width>65</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="inputMethodHints">
+        <set>Qt::ImhNone</set>
+       </property>
+       <property name="maxLength">
+        <number>6</number>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QLineEdit" name="uUnit">
+       <property name="maximumSize">
+        <size>
+         <width>65</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="maxLength">
+        <number>6</number>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="8">
+      <widget class="QLineEdit" name="uAlpha">
+       <property name="maximumSize">
+        <size>
+         <width>65</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="maxLength">
+        <number>4</number>
        </property>
       </widget>
      </item>
@@ -420,7 +435,7 @@
         <font>
          <weight>75</weight>
          <bold>true</bold>
-         <underline>true</underline>
+         <underline>false</underline>
         </font>
        </property>
        <property name="text">
@@ -437,7 +452,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Object Type</string>
+        <string>Object Type:</string>
        </property>
       </widget>
      </item>
@@ -495,6 +510,12 @@
      </item>
      <item row="22" column="1">
       <widget class="QLineEdit" name="uValuationReference">
+       <property name="baseSize">
+        <size>
+         <width>0</width>
+         <height>50</height>
+        </size>
+       </property>
        <property name="maxLength">
         <number>30</number>
        </property>
@@ -528,8 +549,65 @@
        </property>
       </widget>
      </item>
+     <item row="26" column="1">
+      <widget class="QPlainTextEdit" name="uNotes">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>20</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="baseSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="25" column="0" colspan="2">
+      <widget class="Line" name="line_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="26" column="0">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>Notes:</string>
+       </property>
+      </widget>
+     </item>
      <item row="9" column="1">
-      <widget class="QLineEdit" name="uRoadCentrelineId"/>
+      <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <item>
+        <widget class="QLineEdit" name="uRoadCentrelineId">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QToolButton" name="uGetRclToolButton">
+         <property name="text">
+          <string>&gt;</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>
@@ -579,7 +657,6 @@
   <tabstop>uUnitType</tabstop>
   <tabstop>uLevelType</tabstop>
   <tabstop>uLevelValue</tabstop>
-  <tabstop>uRoadCentrelineId</tabstop>
   <tabstop>uRoadPrefix</tabstop>
   <tabstop>uRoadName</tabstop>
   <tabstop>uRoadTypeName</tabstop>
@@ -594,6 +671,7 @@
   <tabstop>uCertificateOfTitle</tabstop>
   <tabstop>uAppellation</tabstop>
   <tabstop>uAbort</tabstop>
+  <tabstop>uSubmitAddressButton</tabstop>
   <tabstop>uAddressType</tabstop>
  </tabstops>
  <resources/>

@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 ################################################################################
 #
 # Copyright 2015 Crown copyright (c)
@@ -8,7 +10,6 @@
 # LICENSE file for more information.
 #
 ################################################################################
-
 import Config
 from Config import ConfigReader
 
@@ -54,14 +55,14 @@ class Address(object):
         self._x = None
         self._y = None
         self._crsType = 'name'
-        self._crsProperties = 'urn:ogc:def:crs:EPSG::2193' #need to guarantee supplied coords are in 2193
+        self._crsProperties = 'urn:ogc:def:crs:EPSG::2193' # New Address coords guarantees to be supplied in 2193
         self._externalObjectId = None
         self._externalObjectIdScheme = None
         self._valuationReference = None
         self._certificateOfTitle = None
         self._appellation = None
     
-    #set functions used to manipulate object properties   
+    # Set functions used to manipulate object properties   
     def setSourceReason (self, sourceReason): self._sourceReason = sourceReason
     def setAddressType( self, addressType ): self._addressType = addressType    
     def setExternalAddressId( self, externalAddressId ): self._externalAddressId = externalAddressId 
@@ -96,13 +97,6 @@ class Address(object):
     def setValuationReference( self, valuationReference ): self._valuationReference = valuationReference  
     def setCertificateOfTitle( self, certificateOfTitle ): self._certificateOfTitle = certificateOfTitle  
     def setAppellation( self, appellation ): self._appellation = appellation    
-         
-    def delNone (self,d):
-        ''' Removes key / value pairs from object whereby value is == to None '''
-        for key, value in d.items():
-            if value is None:
-                del d[key]
-        return d
         
     @staticmethod
     def _delNone(d): return {k:v for k,v in d.items() if v}

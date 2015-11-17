@@ -11,7 +11,15 @@
 
 [general]
 name=AimsClient
-qgisMinimumVersion=2.0
 description=QGIS Plugin for managing LINZ address information
+about=QGIS Plugin for managing LINZ address information
 category=Vector
-version=version 1.0
+experimental=True
+version=version 0.1.6
+qgisMinimumVersion=2.6
+author=splanzer
+email=splanzer@linz.govt.nz
+icon=./resources/loadaddress.png
+homepage=https://github.com/linz/QGIS-AIMS-Plugin
+tracker=https://github.com/linz/QGIS-AIMS-Plugin/issues
+repository=https://github.com/linz/QGIS-AIMS-Plugin

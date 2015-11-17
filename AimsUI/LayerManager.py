@@ -22,7 +22,7 @@ aimslog = Logger.setup()
 
 class InvalidParameterException(): pass
 
-class LayerManager( QObject ):
+class LayerManager(QObject):
 
     _propBaseName='AimsClient.'
     _styledir = join(dirname(abspath(__file__)),'styles')
@@ -36,36 +36,36 @@ class LayerManager( QObject ):
         self._rclLayer = None
         self._parLayer = None
 
-    def layerId( self, layer ):
+    def layerId(self, layer):
         idprop = self._propBaseName + 'Id' 
         return str(layer.customProperty(idprop))
 
-    def setLayerId( self, layer, id ):
+    def setLayerId(self, layer, id):
         if not isinstance(id,str): 
             aimslog.error('Invalid Layer ID {}={}'.format(layer,id))
             raise InvalidParameterException()
         idprop = self._propBaseName + 'Id'
         layer.setCustomProperty(idprop,id)
 
-    def layers( self):
+    def layers(self):
         for layer in QgsMapLayerRegistry.instance().mapLayers().values():
             if layer.type() == layer.VectorLayer and self.layerId(layer):
                 yield layer
 
-    def findLayer( self, name ): 
+    def findLayer(self, name): 
         for layer in self.layers():
             if self.layerId(layer) == name:
                 return layer
         return None
 
-    def installLayer( self, id, schema, table, key, estimated, where, displayname ):
+    def installLayer(self, id, schema, table, key, estimated, where, displayname):
         layer = self.findLayer(id)
         if layer:
             legend = self._iface.legendInterface()
             if not legend.isLayerVisible(layer):
                 legend.setLayerVisible(layer, True)
             return layer
-        self._statusBar.showMessage("Loading layer " + displayname )
+        self._statusBar.showMessage("Loading layer " + displayname)
         layer = None
         try:
             uri = QgsDataSourceURI()
@@ -83,14 +83,15 @@ class LayerManager( QObject ):
             self._statusBar.showMessage("")
         return layer
 
-    def installRefLayers( self ):
+    def installRefLayers(self):
         schema = Database.aimsSchema()
         # Join rcl and road name (via rna) for labeling purposes. NOTE - only P1 rna used
         sql = '''(Select rcl.roadcentrelineid, rcl.roadcentrelinealtid,rcl.noncadastralroad, 
-                  rcl.shape, rcl.organisationid, rn.roadname, rn.roadnametype  
+                  rcl.shape, rcl.organisationid, rn.roadname, rt.roadtypename  
                 FROM reference.roadcentreline rcl JOIN reference.roadnameassociation rna 
                 ON rcl.roadcentrelineid = rna.roadcentrelineid 
                 JOIN reference.roadname rn ON rn.roadnameid =  rna.roadnameid 
+                LEFT JOIN reference.roadtype rt on rn.roadtypeid = rt.roadtypeid
                 WHERE rcl.roadcentrelinestatus = 'CURR' AND rna.rnapriority = 1 AND rn.roadnamestatus = 'CURR')'''
         
         self.installLayer( 'rcl', '', sql, 'roadcentrelineid', True, "",'Roads' )        
