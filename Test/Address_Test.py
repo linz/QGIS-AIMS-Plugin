@@ -74,7 +74,7 @@ class Test_1_AddressTestSetters(unittest.TestCase):
         testlog.debug('Test_1.20 Instantiate sparse dict and test null removal')
         td1 = {'a': 111, 'b': None, 'c': 333, 'd': None, 'e': 555}
         td2 = {'a': 111, 'c': 333, 'e': 555}
-        td3 = self._address.delNone(td1)
+        td3 = self._address._delNone(td1)
         self.assertEqual(td3, td2, 'delNone : Dict null remover failure {}'.format(td3))
 
     #@unittest.skip("Test skipped awaiting finalisation of Address Class structure")
