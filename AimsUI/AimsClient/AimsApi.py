@@ -61,3 +61,11 @@ class AimsApi(object):
     def changefeedDelete(self, payload):
         ''' Delete a address via Change feed '''
         pass
+    
+    def getFeatures( self, xMax, yMax, xMin, yMin ):
+        ''' get aims addresses within bbox'''
+        h = httplib2.Http(".cache")
+        h.add_credentials(self._user, self._password)
+        urlEnd ='features?bbox={0},{1},{2},{3}'.format(xMin,yMin,xMax,yMax)
+        resp, content = h.request(self._url+urlEnd, 'GET', headers = self._headers)
+        return json.loads(content) # Validation ... 
