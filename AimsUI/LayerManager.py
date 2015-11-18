@@ -13,6 +13,7 @@ from os.path import dirname, abspath, join
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from qgis.core import *
+from qgis.gui import *
 
 from AimsClient import Database
 from AimsUI.AimsClient.AimsApi import *
@@ -140,17 +141,16 @@ class LayerManager(QObject):
             pass
         #test if scale allows showing of features
         scale = self._iface.mapCanvas().mapRenderer().scale()
-        if scale <= 1000:
+        if scale <= 10000:
             self.createFeaturesLayers()
-
-    
 
     def createFeaturesLayers(self):
         ext = self._iface.mapCanvas().extent()
         r = AimsApi().getFeatures(ext.xMaximum(), ext.yMaximum(), ext.xMinimum(), ext.yMinimum())
         id =  'adr'
         #set srs
-        layer = QgsVectorLayer("Point", "AimsFeatures", "memory")
+  
+        layer = QgsVectorLayer("Point?crs=EPSG:2193", "AimsFeatures", "memory")
         self.setLayerId(layer, id)
         provider = layer.dataProvider()
         
@@ -171,7 +171,6 @@ class LayerManager(QObject):
         
         # commit to stop editing the layer
         layer.commitChanges()
-    
         # update layer's extent when new features have been added
         # because change of extent in provider is not propagated to the layer
         layer.updateExtents()
@@ -184,6 +183,11 @@ class LayerManager(QObject):
         except:
             pass
         QgsMapLayerRegistry.instance().addMapLayer(layer)
+        
+
+        if layer.featureCount() > 1000:
+            self._iface.messageBar().pushMessage("Warning", "Not all features shown: API limit of 1000 features met", level=QgsMessageBar.CRITICAL)
+
         
         
         
