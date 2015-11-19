@@ -66,6 +66,6 @@ class AimsApi(object):
         ''' get aims addresses within bbox'''
         h = httplib2.Http(".cache")
         h.add_credentials(self._user, self._password)
-        urlEnd ='features?bbox={0},{1},{2},{3}'.format(xMin,yMin,xMax,yMax)
+        urlEnd ='features?count=1000&bbox={0},{1},{2},{3}'.format(xMin,yMin,xMax,yMax)
         resp, content = h.request(self._url+urlEnd, 'GET', headers = self._headers)
         return json.loads(content) # Validation ... 

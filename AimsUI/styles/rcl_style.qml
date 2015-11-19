@@ -128,7 +128,7 @@
     <property key="labeling/shadowColorB" value="0"/>
     <property key="labeling/shadowColorG" value="0"/>
     <property key="labeling/shadowColorR" value="0"/>
-    <property key="labeling/shadowDraw" value="false"/>
+    <property key="labeling/shadowDraw" value="true"/>
     <property key="labeling/shadowOffsetAngle" value="135"/>
     <property key="labeling/shadowOffsetDist" value="1"/>
     <property key="labeling/shadowOffsetGlobal" value="true"/>

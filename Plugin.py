@@ -44,7 +44,7 @@ class Plugin( ):
         # set srs
         self._displayCrs = QgsCoordinateReferenceSystem()
         self._displayCrs.createFromOgcWmsCrs('EPSG:2193') 
-        iface.mapCanvas().mapRenderer().setDestinationCrs(self._displayCrs)
+        iface.mapCanvas().mapRenderer().setDestinationCrs(self._displayCrs) # DeprecationWarning: QgsMapCanvas.mapRenderer() is deprecated
 
     def initGui(self):
         # Main address editing window
