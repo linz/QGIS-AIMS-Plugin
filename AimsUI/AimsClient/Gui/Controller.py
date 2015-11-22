@@ -24,7 +24,6 @@ class Controller(QObject):
     def __init__(self):
         self._layers = None
         QObject.__init__(self)
-        self._currentAddress = None
         if Controller._instance == None:
             Controller._instance = self
     
@@ -40,5 +39,3 @@ class Controller(QObject):
     
     def refreshlayer(self):
         pass
-
-    

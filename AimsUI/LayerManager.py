@@ -28,6 +28,9 @@ class LayerManager(QObject):
     _propBaseName='AimsClient.'
     _styledir = join(dirname(abspath(__file__)),'styles')
     _addressLayerId='adr'
+    
+    addressLayerAdded = pyqtSignal( QgsMapLayer, name="addressLayerAdded")
+    addressLayerRemoved = pyqtSignal( name="addressLayerRemoved")
 
     def __init__( self, iface ):
         QObject.__init__(self)
@@ -38,12 +41,13 @@ class LayerManager(QObject):
         self._parLayer = None
         self._locLayer = None
         
-        # connect loading of features to mapcanvas event
-        self._iface.mapCanvas().extentsChanged.connect(self.loadFeatures)
-        
         QgsMapLayerRegistry.instance().layerWillBeRemoved.connect(self.checkRemovedLayer)
         QgsMapLayerRegistry.instance().layerWasAdded.connect( self.checkNewLayer )
-
+    
+    def initialiseExtentEvent(self):  
+        ''' Once plugin loading triggered initialise loading of AIMS Feautres '''
+        self._iface.mapCanvas().extentsChanged.connect(self.loadAimsFeatures)
+    
     def layerId(self, layer):
         idprop = self._propBaseName + 'Id' 
         return str(layer.customProperty(idprop))
@@ -60,7 +64,7 @@ class LayerManager(QObject):
     def checkRemovedLayer(self, id):
         if self._adrLayer and self._adrLayer.id() == id:
             self._adrLayer = None
-            #self.addressLayerRemoved.emit() -- need to disbale any tools that use this layer back in plugin.py
+            self.addressLayerRemoved.emit()
         if self._rclLayer and self._rclLayer.id() == id:
             self._rclLayer = None
         if self._parLayer and self._parLayer.id() == id:
@@ -75,8 +79,8 @@ class LayerManager(QObject):
         if layerId == self._addressLayerId:
             newlayer = self._adrLayer == None
             self._adrLayer = layer
-            #if newlayer:
-                #self.addressLayerAdded.emit(layer) -- need to enab'e any tools that use this layer back in plugin.py
+            if newlayer:
+                self.addressLayerAdded.emit(layer)
         elif layerId == 'rcl':
             self._rclLayer = layer
         elif layerId == 'par':
@@ -139,27 +143,29 @@ class LayerManager(QObject):
                             "parceltype not in ('ROAD','RLWY')",'Parcels' )    
         #self.installLayer( 'loc', '', sqlLoc, 'localityid', True, "",'Locality' )   
         
-    def loadFeatures(self):
+    def loadAimsFeatures(self):
         ''' load AIMS features '''
         # test if layer exists
         layerid = self._addressLayerId
         layer = self.findLayer(layerid)
         if layer:
             QgsMapLayerRegistry.instance().removeMapLayer( layer.id() )
-            pass
         #test if scale allows showing of features
         scale = self._iface.mapCanvas().mapRenderer().scale()
-        if scale <= 10000:
-            self.createFeaturesLayers()
-
-    def createFeaturesLayers(self):
+        if scale <= 10000: # would be a bit of reconjiggering to ensure persistent layer but then we could get scale from user settings
+            self.getAimsFeatures()
+    
+    def getAimsFeatures(self):
         ext = self._iface.mapCanvas().extent()
-        id = self._addressLayerId
         r = AimsApi().getFeatures(ext.xMaximum(), ext.yMaximum(), ext.xMinimum(), ext.yMinimum()) 
         # all or nothing. i.e if the API limit of 1000 feature is met dont give the user any features
         if len(r['entities']) == 1000:
             return
-        layer = QgsVectorLayer("Point?crs=EPSG:2193", "AIMS Features", "memory") #rather not ard code crs
+        self.createFeaturesLayers(r)
+        
+    def createFeaturesLayers(self, r):
+        id = self._addressLayerId
+        layer = QgsVectorLayer("Point?crs=EPSG:2193", "AIMS Features", "memory") #rather not hard code crs
         self.setLayerId(layer, id)
         provider = layer.dataProvider()
         provider.addAttributes([QgsField('fullAddressNumber', QVariant.String),
@@ -275,7 +281,7 @@ class LayerManager(QObject):
         layer.commitChanges()
         # update layer's extent when new features have been added
         # because change of extent in provider is not propagated to the layer
-        layer.updateExtents()
+        #layer.updateExtents()
         try:
             layer.loadNamedStyle(join(self._styledir,id+'_style.qml'))
         except:
