@@ -23,12 +23,13 @@ from AimsClient.Gui.NewAddressDialog import NewAddressDialog
 class CreateNewAddressTool(QgsMapTool):
     ''' tool for creating new address information ''' 
     
-    def __init__(self, iface, controller=None):        
+    def __init__(self, iface, layerManager, controller=None):        
         QgsMapTool.__init__(self, iface.mapCanvas())
    
         self._iface = iface
         self._controller = controller
         self.activate()
+        self._layerManager = layerManager
 
     def activate(self):
         QgsMapTool.activate(self)
@@ -82,5 +83,5 @@ class CreateNewAddressTool(QgsMapTool):
         # that has __enter__ and _exit__ methods to for the context manager to utilise. 
         '''
         # Open new address form
-        NewAddressDialog.newAddress(coords, addInstance, self._iface.mainWindow())
+        NewAddressDialog.newAddress(coords, addInstance, self._layerManager, self._iface.mainWindow())
         self._enabled = True

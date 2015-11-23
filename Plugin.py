@@ -65,7 +65,7 @@ class Plugin( ):
         self._createnewaddressaction.setStatusTip('place point for new address')
         self._createnewaddressaction.setEnabled(False)
         self._createnewaddressaction.triggered.connect( self.startNewAddressTool )
-        self._CreateNewAddressTool = CreateNewAddressTool( self._iface, self._controller )
+        self._CreateNewAddressTool = CreateNewAddressTool( self._iface, self._layers, self._controller )
         self._CreateNewAddressTool.setAction( self._createnewaddressaction )
         
                 # Delete address point
@@ -75,7 +75,7 @@ class Plugin( ):
         self._deladdressaction.setStatusTip('Delete AIMS Feature')
         self._deladdressaction.setEnabled(False)
         self._deladdressaction.triggered.connect( self.startDelAddressTool )
-        self._deladdtool = DelAddressTool( self._iface, self._controller )
+        self._deladdtool = DelAddressTool( self._iface, self._layers, self._controller )
         self._deladdtool.setAction( self._deladdressaction )
        
         # Add to own toolbar
@@ -125,3 +125,4 @@ class Plugin( ):
         
     def startDelAddressTool(self):
         self._iface.mapCanvas().setMapTool(self._deladdtool)
+        self._deladdtool.setEnabled(True)

@@ -61,6 +61,9 @@ class LayerManager(QObject):
             if layer.type() == layer.VectorLayer and self.layerId(layer):
                 yield layer
     
+    def addressLayer( self ):
+        return self._adrLayer
+    
     def checkRemovedLayer(self, id):
         if self._adrLayer and self._adrLayer.id() == id:
             self._adrLayer = None
@@ -168,15 +171,17 @@ class LayerManager(QObject):
         layer = QgsVectorLayer("Point?crs=EPSG:2193", "AIMS Features", "memory") #rather not hard code crs
         self.setLayerId(layer, id)
         provider = layer.dataProvider()
-        provider.addAttributes([QgsField('fullAddressNumber', QVariant.String),
+        provider.addAttributes([QgsField('fullAddress', QVariant.String),
+                            QgsField('fullAddressNumber', QVariant.String),
                             QgsField('fullRoadName', QVariant.String),
                             QgsField('addressId', QVariant.String),
                             QgsField('addressType', QVariant.String),
                             QgsField('lifecycle', QVariant.String),
+                            QgsField('version', QVariant.String),
                             QgsField('unitValue', QVariant.String),
                             QgsField('unitType', QVariant.String),
                             QgsField('levelType', QVariant.String),
-                            QgsField('levelValue', QVariant.String),
+                            QgsField('levelVaddressIdalue', QVariant.String),
                             QgsField('addressNumberPrefix', QVariant.String),
                             QgsField('addressNumber', QVariant.String),
                             QgsField('addressNumberSuffix', QVariant.String),
@@ -206,7 +211,9 @@ class LayerManager(QObject):
         # would like to come back and do something more intelligent here
     
         for e in r['entities']:
+            version = e['properties']['version']
             c = e['properties']['components']
+            fullAddress = c['fullAddress'] if c.has_key('fullAddress') else None
             fullAddressNumber = c['fullAddressNumber'] if c.has_key('fullAddressNumber') else None
             fullRoadName = c['fullRoadName'] if c.has_key('fullRoadName') else None 
             addressId = c['addressId'] if c.has_key('addressId') else None 
@@ -245,11 +252,13 @@ class LayerManager(QObject):
                  
             fet = QgsFeature()
             fet.setGeometry(QgsGeometry.fromPoint(QgsPoint(coords[0],coords[1])))
-            fet.setAttributes([fullAddressNumber, 
+            fet.setAttributes([fullAddress,
+                               fullAddressNumber, 
                                 fullRoadName,
                                 addressId,
                                 addressType,
                                 lifecycle,
+                                version,
                                 unitValue,
                                 unitType,
                                 levelType,

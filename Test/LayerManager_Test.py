@@ -94,7 +94,7 @@ class Test_1_LayerManagerSetters(unittest.TestCase):
         for tf in testfailures:
             self.assertRaises(InvalidParameterException, self._layermanager.setLayerId,testlayer,tf)
             
-            
+    """       
     def test40_createFeatureLayer(self):
         '''Test AIMS Layer Created'''
         testlog.debug('Test_1.40 test the creation of feature mem layer')
@@ -190,7 +190,7 @@ class Test_1_LayerManagerSetters(unittest.TestCase):
 
         layerTest = self._layermanager.createFeaturesLayers(sampleResponse)
         self.assertTrue(layerTest.isValid(), 'Failed to load "{}".'.format(layerTest.source()))
-     
+        """
 
                 
 #------------------------------------------------------------------------------

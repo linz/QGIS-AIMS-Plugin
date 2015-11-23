@@ -16,23 +16,25 @@ import re
 from Ui_NewAddressDialog import Ui_NewAddressDialog
 from AimsUI.AimsClient.Address import Address
 from AimsUI.AimsClient.AimsApi import *
+from AimsUI.GetRclTool import *
 from qgis.utils import iface
 
 class NewAddressDialog(Ui_NewAddressDialog, QDialog):
     
     @classmethod
-    def newAddress( cls, coords, addInstance, parent=None):
-        dlg = NewAddressDialog(parent, coords, addInstance)
+    def newAddress( cls, coords, addInstance, layerManager, parent=None):
+        dlg = NewAddressDialog(parent, coords, addInstance, layerManager)
         dlg.exec_()
   
-    def __init__( self, parent, coords, addInstance):
+    def __init__( self, parent, coords, addInstance, layerManager):
         QDialog.__init__( self, parent )  
         self.setupUi(self)
         self.iface = iface
         self.coords = coords
         self.address = addInstance
+        self._layerManager = layerManager
    
-        # limit user inputs
+        # limit user inputs_layerManager
         intValidator = QIntValidator()    
         self.uExternalAddId.setValidator(intValidator)
         self.uBase.setValidator(intValidator)
@@ -141,3 +143,4 @@ class NewAddressDialog(Ui_NewAddressDialog, QDialog):
         
     def getRcl(self):
         pass
+        #rcl = getRclTool(self.iface, self._layerManager)
