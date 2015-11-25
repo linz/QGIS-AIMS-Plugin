@@ -37,49 +37,67 @@ class DelAddressTool(QgsMapToolIdentifyFeature):
 
     def canvasReleaseEvent(self, mouseEvent):
         self._iface.setActiveLayer(self._layers.addressLayer())
-        
         retireFeatures = []
-        retireIds = {"version":None,
-                    "components":{"addressId":None, "fullAddress":None}}
         
         results = self.identify(mouseEvent.x(), mouseEvent.y(), self.ActiveLayer, self.VectorLayer)
         if len(results) == 0: 
             return
         if len(results) == 1:
-            fullAddress = results[0].mFeature.attribute('fullAddress')
+            retireIds = {}        
             retireIds['version'] = results[0].mFeature.attribute('version')
-            retireIds['components']['addressId'] = results[0].mFeature.attribute('addressId')
-            retireIds['components']['roadName'] = results[0].mFeature.attribute('roadName')
+            retireIds['components'] = {'addressId': results[0].mFeature.attribute('addressId')}
+            
+            fullAddress = results[0].mFeature.attribute('fullAddress')
             
             if QMessageBox.question(self._iface.mainWindow(), 
                  "Confirm Address Retirement",
-                 fullAddress + "\n will be marked for retirement?",
+                fullAddress + "\n will be marked for retirement?",
                 QMessageBox.Ok | QMessageBox.Cancel,
-                QMessageBox.Ok ) == QMessageBox.Ok:
-                
+                QMessageBox.Ok ) == QMessageBox.Ok:    
                 retireFeatures.append(retireIds)
+
         else: # Stacked points
-            dlg = DelAddressDialog( self._iface.mainWindow() )
+            identifiedFeatures=[] 
+            for i in range (0,len(results)):
+                identifiedFeatures.append(dict(
+                fullAddress=results[i].mFeature.attribute('fullAddress'),
+                version= results[i].mFeature.attribute('version'),
+                addressId= results[i].mFeature.attribute('addressId')
+                ))
+            # Open 'Retire' dialog showing selected AIMS features   
+            dlg = DelAddressDialog(self._iface.mainWindow())
+            retireFeatures = dlg.selectFeatures(identifiedFeatures)
         
-        self.delAddress(retireFeatures)
+        if retireFeatures: # else the user hit 'ok' and did not select any records            
+            self.delAddress(retireFeatures)
+        return 
         
     def delAddress(self, retireFeatures):
-        ''' iterate through ids of features to be deleted an pass to del API '''
-        for retireFeatures in retireFeatures:
-            AimsApi().changefeedRetire(retireFeatures)
-            # build dict
-            # append to list
+        ''' iterate through the list of retirement payloads and pass to retire API '''
+        for retiree in retireFeatures:
+            AimsApi().changefeedRetire(retiree) # reinitialising each time
  
-    
 class DelAddressDialog( Ui_DelAddressDialog, QDialog ):
 
     def __init__( self, parent ):
         QDialog.__init__(self,parent)
         self.setupUi(self)
+    
+    def selectionToRetirementJson(self, selected):
+        ''' Reformats the list of dict that represents the users selection 
+        from the dialog into a list of AIMS json objects ''' 
+        retireFeatures = []
+        for i in selected:  
+            retireIds = {}        
+            retireIds['version'] = i['version']
+            retireIds['components'] = {'addressId': i['addressId']}
+            retireFeatures.append(retireIds)
+        return retireFeatures        
 
-    def selectAddress( self, addresses ):
-        self.uSadListView.setList(addresses,
-                                 ['address','sad_id','rna_id','offset'])
+    def selectFeatures( self, identifiedFeatures ):
+        self.uSadListView.setList(identifiedFeatures,
+                                 ['fullAddress','version','addressId'])
         if self.exec_() == QDialog.Accepted:
-            return self.uSadListView.selectedItem()
+            return self.selectionToRetirementJson(self.uSadListView.selectedItems())
         return None
+

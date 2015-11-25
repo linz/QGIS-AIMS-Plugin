@@ -17,7 +17,7 @@ from qgis.utils import *
 import Resources
 
 from AimsUI.CreateNewAddressTool import CreateNewAddressTool
-from  AimsUI.LayerManager import LayerManager
+from AimsUI.LayerManager import LayerManager
 from DelAddressTool import DelAddressTool
 from AimsUI.AimsClient.Gui.Controller import Controller
 from AimsUI import AimsLogging
@@ -68,7 +68,7 @@ class Plugin( ):
         self._CreateNewAddressTool = CreateNewAddressTool( self._iface, self._layers, self._controller )
         self._CreateNewAddressTool.setAction( self._createnewaddressaction )
         
-                # Delete address point
+        # Delete address point
         self._deladdressaction = QAction(QIcon(':/plugins/QGIS-AIMS-Plugin/resources/deleteaddress.png'), 
             'Delete AIMS Feature', self._iface.mainWindow())
         self._deladdressaction.setWhatsThis('Delete AIMS Feature')
