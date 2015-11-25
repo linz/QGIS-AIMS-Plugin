@@ -34,17 +34,18 @@ class ConfigReader(object):
             self.d[sect] = {}
             for opt in self.cp.options(sect):
                 val = self.cp.get(sect,opt)
-                self.d[sect][opt] = val if val else None
+                self.d[sect][opt] = val or None
                 
     def _fillConfig(self):
         '''Attempt to fill missing values in config file with matching env vars'''
         #NOTE env vars must use aims_sec_opt=val format and are bypassed with null value
         for sect in self.d:
             for k,val in self.d[sect].items():
-                if not val or val == 'None' or val == '' or all(i in whitespace for i in val):
-                    eval = os.environ['aims_{}_{}'.format(sect,k)] if 'aims_{}_{}'.format(sect,k) in os.environ else None
-                    dcval = DEF_CONFIG[sect][k] if sect in DEF_CONFIG and k in DEF_CONFIG[sect] else None
-                    self.d[sect][k] = eval if eval else dcval
+                #NB Apply CC changes. Add test for text None (configparser *feature)
+                if val is None or val.strip() == '' or val == 'None' or all(i in whitespace for i in val):
+                    envvar = 'aims_{}_{}'.format(sect,k)
+                    eval = os.environ.get(envvar)
+                    self.d[sect][k] = eval or DEF_CONFIG.get(sect,{}).get(k)
                     
     def _promptUser(self):
         '''If config cannot be populated with ini file and envvars prompt the user for missing values or report failure'''

@@ -104,7 +104,7 @@ class Test_2_DatabaseConnectivity(unittest.TestCase):
     q3 = "DELETE FROM {}.{} WHERE id=1000;".format(DCONF['aimsschema'],DCONF['table'])
     
     def setUp(self): 
-        Database._setup(DCONF)
+        Database.setup(DCONF)
         
     def tearDown(self):
         self.conn = None

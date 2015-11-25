@@ -51,7 +51,7 @@ class Test_1_AddressTestSetters(unittest.TestCase):
     def setUp(self): 
         testlog.debug('Instantiate null address, address.setter list')
         self._address = Address()
-        self._address_setters = [i for i in dict(inspect.getmembers(Address, predicate=inspect.ismethod)).keys() if i[:3]=='set']
+        self._address_setters = [i for i in dict(inspect.getmembers(Address, predicate=inspect.ismethod)) if i[:3]=='set']
 
         
     def tearDown(self):

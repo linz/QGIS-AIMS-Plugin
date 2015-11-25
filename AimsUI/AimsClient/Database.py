@@ -27,7 +27,7 @@ _password = config.configSectionMap('db')['password']
 
 _aimsSchema='reference'
 
-def _setup(d):
+def setup(d):
     setHost(d['host'])
     setPort(d['port'])
     setDatabase(d['name']) 

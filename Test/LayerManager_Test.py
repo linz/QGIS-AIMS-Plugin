@@ -31,8 +31,9 @@ import sys
 import re
 
 #from Test._QGisInterface import QgisInterface
-from AimsUI.LayerManager import LayerManager, InvalidParameterException
+import AimsService_Mock as AM
 
+from AimsUI.LayerManager import LayerManager, InvalidParameterException
 from AimsUI.AimsLogging import Logger
 
 QtCore.QCoreApplication.setOrganizationName('QGIS')
@@ -55,7 +56,7 @@ class Test_0_LayerManagerSelfTest(unittest.TestCase):
     def test20_layerManagerTest(self):
         #assertIsNotNone added in 3.1        
         testlog.debug('Test_0.20 LayerManager instantiation test')
-        qi = DummyInterface()
+        qi = AM.getQIMock()
         layermanager = LayerManager(qi)
         self.assertNotEqual(layermanager,None,'LayerManager not instantiated')
         
@@ -64,8 +65,8 @@ class Test_1_LayerManagerSetters(unittest.TestCase):
     def setUp(self): 
         testlog.debug('Instantiate null address, address.setter list')
         #self.QI = QgisInterface(_Dummy_Canvas())
-        self.QI = DummyInterface()
-        self._layermanager = LayerManager(self.QI)
+        qi = AM.getQIMock()
+        self._layermanager = LayerManager(qi)
 
         
     def tearDown(self):
@@ -74,16 +75,18 @@ class Test_1_LayerManagerSetters(unittest.TestCase):
         
     def test10_instLayerID(self):
         '''Test the layer id setter'''
-        testlog.debug('Test_1.10 Instantiate layer ID')
-        testlayer = _Dummy_Layer()
         testval = 'AIMS1000'
+        testlog.debug('Test_1.10 Instantiate layer ID')
+        testlayer = AM.getLayerMock()#_Dummy_Layer()
+        testlayer.return_value = testval
+       
         self._layermanager.setLayerId(testlayer,testval)
         self.assertEqual(self._layermanager.layerId(testlayer),testval, 'Unable to set layer ID {}'.format(testval))
 
     def test11_instLayerIdRange(self):
         '''Example of success/fail test cases over range of input values'''
         testlog.debug('Test_1.11 Test range of layer ID values')
-        testlayer = _Dummy_Layer()
+        testlayer = AM.getLayerMock()#_Dummy_Layer()
 
         testsuccesses = ('A','Z','#$%^&_)_#@)','māori','   ','')
         for ts in testsuccesses:

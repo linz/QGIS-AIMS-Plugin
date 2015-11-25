@@ -33,7 +33,7 @@ class AimsApi(object):
                 criticalErrors.append( '- '+i['properties']['description']+'\n' )
         return ''.join(criticalErrors)
 
-    @staticmethod       
+    @classmethod       
     def handleResponse(cls, resp, content):
         ''' test http response'''
         if resp == 201: #to be more inclusive i.e. 200 ...
