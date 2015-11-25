@@ -47,7 +47,7 @@ class Plugin( ):
         # set srs
         self._displayCrs = QgsCoordinateReferenceSystem()
         self._displayCrs.createFromOgcWmsCrs('EPSG:2193') 
-        iface.mapCanvas().mapRenderer().setDestinationCrs(self._displayCrs) # DeprecationWarning: QgsMapCanvas.mapRenderer() is deprecated
+        iface.mapCanvas().mapSettings().setDestinationCrs(self._displayCrs)
 
     def initGui(self):
         self._layers = LayerManager(self._iface)
@@ -98,7 +98,6 @@ class Plugin( ):
             only when the address layer exists '''
         self._deladdressaction.setEnabled(True)
         self._createnewaddressaction.setEnabled(True)
-        #self._CreateNewAddressTool.setEnabled(True)
        
     def disableAddressLayer(self):
         ''' disable tools that are dependent on the Address Layer

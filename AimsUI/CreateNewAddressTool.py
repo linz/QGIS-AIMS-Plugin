@@ -68,7 +68,7 @@ class CreateNewAddressTool(QgsMapTool):
     
     def setPoint( self, coords ):
         ''' guarantee srs and pass to the API '''
-        src_crs = self._iface.mapCanvas().mapRenderer().destinationCrs()
+        src_crs = self._iface.mapCanvas().mapSettings().destinationCrs()
         tgt_crs = QgsCoordinateReferenceSystem()
         tgt_crs.createFromOgcWmsCrs('EPSG:2193')
         transform = QgsCoordinateTransform( src_crs, tgt_crs )
