@@ -15,24 +15,24 @@ import re
 
 from Ui_NewAddressDialog import Ui_NewAddressDialog
 from AimsUI.AimsClient.Address import Address
-from AimsUI.AimsClient.AimsApi import *
-from AimsUI.GetRclTool import *
+#from AimsUI.GetRclTool import *
 from qgis.utils import iface
 
 class NewAddressDialog(Ui_NewAddressDialog, QDialog):
     
     @classmethod
-    def newAddress( cls, coords, addInstance, layerManager, parent=None):
-        dlg = NewAddressDialog(parent, coords, addInstance, layerManager)
+    def newAddress( cls, coords, addInstance, layerManager, controller, parent=None):
+        dlg = NewAddressDialog(parent, coords, addInstance, layerManager, controller)
         dlg.exec_()
   
-    def __init__( self, parent, coords, addInstance, layerManager):
+    def __init__( self, parent, coords, addInstance, layerManager, controller):
         QDialog.__init__( self, parent )  
         self.setupUi(self)
         self.iface = iface
         self.coords = coords
         self.address = addInstance
         self._layerManager = layerManager
+        self._controller = controller
    
         # limit user inputs_layerManager
         intValidator = QIntValidator()    
@@ -95,9 +95,6 @@ class NewAddressDialog(Ui_NewAddressDialog, QDialog):
         self.address.setAoName(self.wsEqualsNone(self.uObjectName.text().encode('utf-8'))) 
         self.address.set_x(self.coords.x()) 
         self.address.set_y(self.coords.y())
-        # address.setCrsType(self.  )
-        # address.setCrsProperties(self.  )
-        # Address Object
         self.address.setExternalObjectId(str(self.uExternalObjectId.text()))
         self.address.setExternalObjectIdScheme(str(self.uExtObjectIdScheme.text()))
         self.address.setValuationReference(str(self.uValuationReference.text())) 
@@ -106,9 +103,9 @@ class NewAddressDialog(Ui_NewAddressDialog, QDialog):
         self.address.setSourceReason(self.uNotes.toPlainText().encode('utf-8'))   
 
         # load address to AIMS Via API
-        payload = self.address.objectify()
+        payload = self.address.aimsObject()
         # Capture the returned response (response distilled down to list of errors)
-        valErrors = AimsApi().changefeedAdd(payload)
+        valErrors = self._controller.newAddress(payload)
         
         if len(valErrors) == 0:
             self.closeDlg()

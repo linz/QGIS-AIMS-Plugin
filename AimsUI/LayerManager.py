@@ -127,24 +127,10 @@ class LayerManager(QObject):
         ''' install AIMS postgres ref data '''
         
         schema = Database.aimsSchema()
-        # Join rcl and road name (via rna) for labeling purposes. NOTE - only P1 rna used
-        sqlRcl = '''(SELECT rcl.roadcentrelineid, rcl.roadcentrelinealtid,rcl.noncadastralroad, 
-                  rcl.shape, rcl.organisationid, rn.roadname, rt.roadtypename  
-                FROM reference.roadcentreline rcl JOIN reference.roadnameassociation rna 
-                ON rcl.roadcentrelineid = rna.roadcentrelineid 
-                JOIN reference.roadname rn ON rn.roadnameid =  rna.roadnameid 
-                LEFT JOIN reference.roadtype rt ON rn.roadtypeid = rt.roadtypeid
-                WHERE rcl.roadcentrelinestatus = 'CURR' AND rna.rnapriority = 1 AND rn.roadnamestatus = 'CURR')'''
         
-        sqlLoc = '''(SELECT localityid, locality4thordername, shape
-                        FROM reference.locality
-                        WHERE locality4thordername is not null
-                        AND enddate is null)'''
-        
-        self.installLayer( 'rcl', '', sqlRcl, 'roadcentrelineid', True, "",'Roads' )        
+        self.installLayer( 'rcl', schema, 'aimsroads', 'roadcentrelineid', True, "",'Roads' )        
         self.installLayer( 'par', schema, 'parcel', 'id', True, 
                             "parceltype not in ('ROAD','RLWY')",'Parcels' )    
-        #self.installLayer( 'loc', '', sqlLoc, 'localityid', True, "",'Locality' )   
         
     def loadAimsFeatures(self):
         ''' load AIMS features '''

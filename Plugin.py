@@ -18,7 +18,7 @@ import Resources
 
 from AimsUI.CreateNewAddressTool import CreateNewAddressTool
 from AimsUI.LayerManager import LayerManager
-from DelAddressTool import DelAddressTool
+from AimsUI.DelAddressTool import DelAddressTool
 from AimsUI.AimsClient.Gui.Controller import Controller
 from AimsUI import AimsLogging
 
@@ -40,8 +40,8 @@ class Plugin( ):
         self._iface = iface
         self._statusbar = iface.mainWindow().statusBar()
         self._deladdtool = None
-                
-        self._controller = Controller()
+           
+        
         aimslog.debug(iface)
         
         # set srs
@@ -51,6 +51,7 @@ class Plugin( ):
 
     def initGui(self):
         self._layers = LayerManager(self._iface)
+        self._controller = Controller(iface, self._layers)
         # Main address editing window
         self._loadaction = QAction(QIcon(':/plugins/QGIS-AIMS-Plugin/resources/loadaddress.png'), 
             'QGIS-AIMS-Plugin', self._iface.mainWindow())

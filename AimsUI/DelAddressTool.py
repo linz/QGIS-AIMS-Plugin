@@ -7,7 +7,7 @@ from qgis.core import *
 from qgis.gui import *
 
 from Ui_DelAddressDialog import Ui_DelAddressDialog
-from AimsUI.AimsClient.AimsApi import AimsApi
+
 
 class DelAddressTool(QgsMapToolIdentifyFeature):
 
@@ -16,8 +16,9 @@ class DelAddressTool(QgsMapToolIdentifyFeature):
     def __init__(self, iface, layerManager, controller):
         QgsMapToolIdentify.__init__(self, iface.mapCanvas())
         self._iface = iface
-        self.activate()
         self._layers = layerManager
+        self._controller = controller
+        self.activate()
 
     def activate(self):
         QgsMapTool.activate(self)
@@ -69,13 +70,10 @@ class DelAddressTool(QgsMapToolIdentifyFeature):
             retireFeatures = dlg.selectFeatures(identifiedFeatures)
         
         if retireFeatures: # else the user hit 'ok' and did not select any records            
-            self.delAddress(retireFeatures)
-        return 
-        
-    def delAddress(self, retireFeatures):
-        ''' iterate through the list of retirement payloads and pass to retire API '''
-        for retiree in retireFeatures:
-            AimsApi().changefeedRetire(retiree) # reinitialising each time
+            valErrors = self._controller.retireAddress(retireFeatures)
+            if len(valErrors) != 0:
+                QMessageBox.warning(self._iface.mainWindow(),"Create Address Point", valErrors)
+        return       
  
 class DelAddressDialog( Ui_DelAddressDialog, QDialog ):
 

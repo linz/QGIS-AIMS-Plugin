@@ -10,23 +10,20 @@
 # LICENSE file for more information.
 #
 ################################################################################
-import Config
-from Config import ConfigReader
 
 class Address(object):
     ''' UI address class ''' 
 
-    def __init__(self):
-        config = ConfigReader()
+    def __init__(self, user):
         self._changeTypeName = None
         self._submitterUserName = None
         self._submittedDate = None
-        self._queueStatusName = None #default
+        self._queueStatusName = None
         
         # address values
-        self._sourceUser = config.configSectionMap('user')['name']
+        self._sourceUser = user
         self._sourceReason = None
-        self._addressType = None #could set defaults?
+        self._addressType = None
         self._externalAddressId = None
         self._externalAddressIdScheme = None
         self._lifecycle = None
@@ -99,9 +96,9 @@ class Address(object):
     def setAppellation( self, appellation ): self._appellation = appellation    
         
     @staticmethod
-    def _delNone(d): return {k:v for k,v in d.items() if v}
+    def _delNone(d): return {k:v for k,v in d.items() if v is not None}
 
-    def objectify(self):
+    def aimsObject(self):
         ''' Python address class to json object '''
 
         return self._delNone({

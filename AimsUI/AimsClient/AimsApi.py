@@ -25,22 +25,26 @@ class AimsApi(object):
         self._headers = {'content-type':'application/json', 'accept':'application/json'}
     
     @staticmethod #   
-    def handleErrors(content):
+    def handleErrors(resp, content):
         ''' Return the reason for any critical errors '''        
         criticalErrors = []
-        for i in content['entities']:
-            if i['properties']['severity'] == 'Reject':
-                criticalErrors.append( '- '+i['properties']['description']+'\n' )
+        if str(resp) == '400':
+            for i in content['entities']:
+                if i['properties']['severity'] == 'Reject':
+                    criticalErrors.append( '- '+i['properties']['description']+'\n' )
+        if str(resp) == '409':
+            criticalErrors.append(content['properties']['reason'] +'\n'+ content['properties']['message'])
         return ''.join(criticalErrors)
 
-    @classmethod       
+    @staticmethod       
     def handleResponse(cls, resp, content):
-        ''' test http response'''
+        ''' test http response
+        [] == no errors, else list of critical errors'''
         if resp == 201: #to be more inclusive i.e. 200 ...
             return [] #i.e. no errors
         try:
             # Return list of validation errors
-            return cls.handleErrors(content)
+            return cls.handleErrors(resp, content)
         except:
             # Failing that give the user the direct http response
             return 'Please contact your system administrator \n' + str(content)
