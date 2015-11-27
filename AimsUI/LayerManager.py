@@ -32,9 +32,10 @@ class LayerManager(QObject):
     addressLayerAdded = pyqtSignal( QgsMapLayer, name="addressLayerAdded")
     addressLayerRemoved = pyqtSignal( name="addressLayerRemoved")
 
-    def __init__( self, iface ):
+    def __init__(self, iface, controller):
         QObject.__init__(self)
         self._iface = iface
+        self._controller = controller
         self._statusBar = iface.mainWindow().statusBar()
         self._adrLayer = None
         self._rclLayer = None
@@ -146,7 +147,7 @@ class LayerManager(QObject):
     
     def getAimsFeatures(self):
         ext = self._iface.mapCanvas().extent()
-        r = AimsApi().getFeatures(ext.xMaximum(), ext.yMaximum(), ext.xMinimum(), ext.yMinimum()) 
+        r = self._controller.getFeatures(ext.xMaximum(), ext.yMaximum(), ext.xMinimum(), ext.yMinimum()) 
         # all or nothing. i.e if the API limit of 1000 feature is met dont give the user any features
         if len(r['entities']) == 1000:
             return
@@ -157,40 +158,40 @@ class LayerManager(QObject):
         layer = QgsVectorLayer("Point?crs=EPSG:2193", "AIMS Features", "memory") #rather not hard code crs
         self.setLayerId(layer, id)
         provider = layer.dataProvider()
-        provider.addAttributes([QgsField('fullAddress', QVariant.String),
-                            QgsField('fullAddressNumber', QVariant.String),
-                            QgsField('fullRoadName', QVariant.String),
-                            QgsField('addressId', QVariant.String),
-                            QgsField('addressType', QVariant.String),
-                            QgsField('lifecycle', QVariant.String),
-                            QgsField('version', QVariant.String),
-                            QgsField('unitValue', QVariant.String),
-                            QgsField('unitType', QVariant.String),
-                            QgsField('levelType', QVariant.String),
-                            QgsField('levelVaddressIdalue', QVariant.String),
-                            QgsField('addressNumberPrefix', QVariant.String),
-                            QgsField('addressNumber', QVariant.String),
-                            QgsField('addressNumberSuffix', QVariant.String),
-                            QgsField('addressNumberHigh', QVariant.String),
-                            QgsField('roadCentrelineId', QVariant.String),
-                            QgsField('roadPrefix', QVariant.String),
-                            QgsField('roadName', QVariant.String),       
-                            QgsField('roadTypeName', QVariant.String),
-                            QgsField('roadSuffix', QVariant.String),
-                            QgsField('waterRouteName', QVariant.String),
-                            QgsField('waterName', QVariant.String),
-                            QgsField('suburbLocality', QVariant.String),
-                            QgsField('townCity', QVariant.String),
-                            QgsField('addressableObjectId', QVariant.String),
-                            QgsField('objectType', QVariant.String),
-                            QgsField('objectName', QVariant.String),
-                            QgsField('addressPositionType', QVariant.String),
-                            QgsField('suburbLocalityId', QVariant.String),
-                            QgsField('townCityId', QVariant.String),
-                            QgsField('parcelId', QVariant.String),
-                            QgsField('meshblock', QVariant.String)])
+        provider.addAttributes([QgsField('addressType', QVariant.String),
+                                QgsField('fullAddress', QVariant.String),
+                                QgsField('fullAddressNumber', QVariant.String),
+                                QgsField('fullRoadName', QVariant.String),
+                                QgsField('suburbLocality', QVariant.String),
+                                QgsField('townCity', QVariant.String),
+                                QgsField('meshblock', QVariant.String),
+                                QgsField('lifecycle', QVariant.String), 
+                                QgsField('roadPrefix', QVariant.String),
+                                QgsField('roadName', QVariant.String),      
+                                QgsField('roadSuffix', QVariant.String),
+                                QgsField('roadTypeName', QVariant.String),
+                                QgsField('roadCentrelineId', QVariant.String),
+                                QgsField('waterRouteName', QVariant.String),
+                                QgsField('waterName', QVariant.String),
+                                QgsField('unitValue', QVariant.String),
+                                QgsField('unitType', QVariant.String),
+                                QgsField('levelType', QVariant.String),
+                                QgsField('levelValue', QVariant.String),
+                                QgsField('addressNumberPrefix', QVariant.String),
+                                QgsField('addressNumber', QVariant.String),
+                                QgsField('addressNumberSuffix', QVariant.String),
+                                QgsField('addressNumberHigh', QVariant.String),
+                                QgsField('version', QVariant.String),
+                                QgsField('addressId', QVariant.String),
+                                QgsField('addressableObjectId', QVariant.String),
+                                QgsField('objectType', QVariant.String),
+                                QgsField('objectName', QVariant.String),
+                                QgsField('addressPositionType', QVariant.String),
+                                QgsField('suburbLocalityId', QVariant.String),
+                                QgsField('parcelId', QVariant.String)])
         # add fields
 
+       
         layer.updateFields() # tell the vector layer to fetch changes from the provider
         
         # Fairly simple implementation (but simple to read and explicit) would like
@@ -238,13 +239,21 @@ class LayerManager(QObject):
                  
             fet = QgsFeature()
             fet.setGeometry(QgsGeometry.fromPoint(QgsPoint(coords[0],coords[1])))
-            fet.setAttributes([fullAddress,
-                               fullAddressNumber, 
+            fet.setAttributes([ addressType,
+                                fullAddress,
+                                fullAddressNumber,
                                 fullRoadName,
-                                addressId,
-                                addressType,
-                                lifecycle,
-                                version,
+                                suburbLocality,
+                                townCity,
+                                meshblock,
+                                lifecycle, 
+                                roadPrefix,
+                                roadName,      
+                                roadSuffix,
+                                roadTypeName,
+                                roadCentrelineId,
+                                waterRouteName,
+                                waterName,
                                 unitValue,
                                 unitType,
                                 levelType,
@@ -253,23 +262,14 @@ class LayerManager(QObject):
                                 addressNumber,
                                 addressNumberSuffix,
                                 addressNumberHigh,
-                                roadCentrelineId,
-                                roadPrefix,
-                                roadName,
-                                roadTypeName,
-                                roadSuffix,
-                                waterRouteName,
-                                waterName,
-                                suburbLocality,
-                                townCity,
+                                version,
+                                addressId,
                                 addressableObjectId,
                                 objectType,
                                 objectName,
                                 addressPositionType,
                                 suburbLocalityId,
-                                townCityId,
-                                parcelId,
-                                meshblock])
+                                parcelId])
             provider.addFeatures([fet])
 
         # commit to stop editing the layer

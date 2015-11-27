@@ -20,7 +20,7 @@ class AimsApi(object):
     def __init__(self):
         config = ConfigReader()
         self._url = config.configSectionMap('url')['api']
-        self._user = config.configSectionMap('user')['name']
+        self.user = config.configSectionMap('user')['name']
         self._password = config.configSectionMap('user')['pass']
         self._headers = {'content-type':'application/json', 'accept':'application/json'}
     
@@ -54,7 +54,7 @@ class AimsApi(object):
     def changefeedAdd(self, payload):
         ''' Add an address to the Change feed '''
         h = httplib2.Http(".cache")
-        h.add_credentials(self._user, self._password)
+        h.add_credentials(self.user, self._password)
         resp, content = h.request(self._url+'changefeed/add', "POST", json.dumps(payload), self._headers)
         return self.handleResponse(self, resp["status"], json.loads(content) )
         
@@ -65,14 +65,14 @@ class AimsApi(object):
     def changefeedRetire(self, payload):
         ''' Retire address via Change feed '''
         h = httplib2.Http(".cache")
-        h.add_credentials(self._user, self._password)
+        h.add_credentials(self.user, self._password)
         resp, content = h.request(self._url+'changefeed/retire', "POST", json.dumps(payload), self._headers)
         return self.handleResponse(self, resp["status"], json.loads(content) )
     
     def getFeatures( self, xMax, yMax, xMin, yMin ):
         ''' get aims addresses within bbox'''
         h = httplib2.Http(".cache")
-        h.add_credentials(self._user, self._password)
+        h.add_credentials(self.user, self._password)
         urlEnd ='features?count=1000&bbox={0},{1},{2},{3}'.format(xMin,yMin,xMax,yMax)
         resp, content = h.request(self._url+urlEnd, 'GET', headers = self._headers)
         return json.loads(content) # Validation ... 

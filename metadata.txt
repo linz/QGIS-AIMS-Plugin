@@ -10,12 +10,12 @@
 ################################################################################
 
 [general]
-name=AimsClient
+name=Aims Plugin
 description=QGIS Plugin for managing LINZ address information
 about=QGIS Plugin for managing LINZ address information
 category=Vector
-experimental=True
-version=version 0.1.6
+version=0.2.2
+experimental=False
 qgisMinimumVersion=2.6
 author=splanzer
 email=splanzer@linz.govt.nz

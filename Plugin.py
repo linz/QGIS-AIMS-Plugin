@@ -40,7 +40,6 @@ class Plugin( ):
         self._iface = iface
         self._statusbar = iface.mainWindow().statusBar()
         self._deladdtool = None
-           
         
         aimslog.debug(iface)
         
@@ -50,8 +49,8 @@ class Plugin( ):
         iface.mapCanvas().mapSettings().setDestinationCrs(self._displayCrs)
 
     def initGui(self):
-        self._layers = LayerManager(self._iface)
-        self._controller = Controller(iface, self._layers)
+        self._controller = Controller(iface)
+        self._layers = LayerManager(self._iface, self._controller)
         # Main address editing window
         self._loadaction = QAction(QIcon(':/plugins/QGIS-AIMS-Plugin/resources/loadaddress.png'), 
             'QGIS-AIMS-Plugin', self._iface.mainWindow())
@@ -114,11 +113,9 @@ class Plugin( ):
         self._iface.removePluginMenu('&QGIS-AIMS-Plugin', self._deladdressaction)
         
     def loadEditor(self):
-        self.startNewAddressTool()
         self._layers.initialiseExtentEvent()
-        self._controller.loadRefLayers(self._iface)
-        
-            
+        self._layers.installRefLayers()
+                    
     def startNewAddressTool(self):
         self._iface.mapCanvas().setMapTool(self._CreateNewAddressTool)
         self._CreateNewAddressTool.setEnabled(True)

@@ -1,22 +1,43 @@
 <!DOCTYPE qgis PUBLIC 'http://mrcc.com/qgis.dtd' 'SYSTEM'>
-<qgis version="2.8.1-Wien" minimumScale="-4.65661e-10" maximumScale="6e+06" simplifyDrawingHints="1" minLabelScale="1" maxLabelScale="1e+08" simplifyDrawingTol="1" simplifyMaxScale="1" hasScaleBasedVisibilityFlag="1" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
+<qgis version="2.8.1-Wien" minimumScale="0" maximumScale="6e+06" simplifyDrawingHints="1" minLabelScale="1" maxLabelScale="1e+08" simplifyDrawingTol="1" simplifyMaxScale="1" hasScaleBasedVisibilityFlag="1" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
   <edittypes>
+    <edittype widgetv2type="TextEdit" name="roadprefixname">
+      <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
+    </edittype>
+    <edittype widgetv2type="TextEdit" name="roadname">
+      <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
+    </edittype>
+    <edittype widgetv2type="TextEdit" name="roadsuffixname">
+      <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
+    </edittype>
+    <edittype widgetv2type="TextEdit" name="roadtypename">
+      <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
+    </edittype>
+    <edittype widgetv2type="TextEdit" name="roadnameid">
+      <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
+    </edittype>
     <edittype widgetv2type="TextEdit" name="roadcentrelineid">
       <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
     </edittype>
     <edittype widgetv2type="TextEdit" name="roadcentrelinealtid">
       <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
     </edittype>
+    <edittype widgetv2type="TextEdit" name="roadnametype">
+      <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
+    </edittype>
     <edittype widgetv2type="TextEdit" name="noncadastralroad">
       <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
     </edittype>
+    <edittype widgetv2type="TextEdit" name="roadnamestatus">
+      <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
+    </edittype>
+    <edittype widgetv2type="TextEdit" name="unoffocial">
+      <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
+    </edittype>
+    <edittype widgetv2type="TextEdit" name="sufi">
+      <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
+    </edittype>
     <edittype widgetv2type="TextEdit" name="organisationid">
-      <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
-    </edittype>
-    <edittype widgetv2type="TextEdit" name="roadname">
-      <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
-    </edittype>
-    <edittype widgetv2type="TextEdit" name="roadtypename">
       <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
     </edittype>
   </edittypes>
@@ -73,7 +94,7 @@
     <property key="labeling/distMapUnitMaxScale" value="0"/>
     <property key="labeling/distMapUnitMinScale" value="0"/>
     <property key="labeling/enabled" value="true"/>
-    <property key="labeling/fieldName" value=" CASE WHEN  &quot;roadtypename&quot;  IS NULL THEN &quot;roadname&quot;&#xa; ELSE  concat(  &quot;roadname&quot; ,  ' ',&quot;roadtypename&quot; ) &#xa; END&#xa; "/>
+    <property key="labeling/fieldName" value="CASE WHEN (&quot;roadprefixname&quot; IS NOT NULL) THEN &quot;roadprefixname&quot;  ELSE ''  END&#xa;||&quot;roadname&quot; || ' ' || CASE WHEN (&quot;roadtypename&quot; IS NOT NULL) THEN &quot;roadtypename&quot; ELSE ''  END&#xa;||CASE WHEN (&quot;roadsuffixname&quot; IS NOT NULL) THEN &quot;roadsuffixname&quot;  ELSE ''  END&#xa;"/>
     <property key="labeling/fontBold" value="true"/>
     <property key="labeling/fontCapitals" value="0"/>
     <property key="labeling/fontFamily" value="Century Schoolbook L"/>
