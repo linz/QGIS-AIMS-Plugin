@@ -10,7 +10,7 @@
 ################################################################################
 import sys
 from os.path import dirname, abspath
-#sys.path.append('.qgis2/python/plugins/QGIS-AIMS-Plugin')
+sys.path.append('.qgis2/python/plugins/QGIS-AIMS-Plugin')
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
@@ -23,6 +23,7 @@ from AimsUI.AimsClient.Address import Address
 from AimsUI.LayerManager import LayerManager
 from NewAddressDialog import NewAddressDialog
 from AimsUI.DelAddressTool import DelAddressTool
+from AimsUI.MoveAddressTool import MoveAddressTool
 from AimsUI.CreateNewAddressTool import CreateNewAddressTool
 from AimsUI.AimsClient.AimsApi import AimsApi
 from AimsUI import AimsLogging
@@ -53,7 +54,6 @@ class Controller(QObject):
         if Controller._instance == None:
             Controller._instance = self
     
-    
     def initGui(self):
         self._layers = LayerManager(self._iface, self)
         # Main address editing window
@@ -65,13 +65,13 @@ class Controller(QObject):
                        
         # Create new address
         self._createnewaddressaction = QAction(QIcon(':/plugins/QGIS-AIMS-Plugin/resources/newaddresspoint.png'), 
-            'Create new address', self._iface.mainWindow())
-        self._createnewaddressaction.setWhatsThis('place point for new address')
-        self._createnewaddressaction.setStatusTip('place point for new address')
+            'Create AIMS Feature', self._iface.mainWindow())
+        self._createnewaddressaction.setWhatsThis('Create AIMS Feature')
+        self._createnewaddressaction.setStatusTip('Create AIMS Feature')
         self._createnewaddressaction.setEnabled(False)
         self._createnewaddressaction.triggered.connect( self.startNewAddressTool )
-        self._CreateNewAddressTool = CreateNewAddressTool( self._iface, self._layers, self)
-        self._CreateNewAddressTool.setAction( self._createnewaddressaction )
+        self._createnewaddresstool = CreateNewAddressTool( self._iface, self._layers, self)
+        self._createnewaddresstool.setAction( self._createnewaddressaction )
         
         # Delete address point
         self._deladdressaction = QAction(QIcon(':/plugins/QGIS-AIMS-Plugin/resources/deleteaddress.png'), 
@@ -83,16 +83,40 @@ class Controller(QObject):
         self._deladdtool = DelAddressTool( self._iface, self._layers, self)
         self._deladdtool.setAction( self._deladdressaction )
        
+       # Move address
+        self._moveaddressaction = QAction(QIcon(':/plugins/QGIS-AIMS-Plugin/resources/moveaddress.png'), 
+            'Move AIMS Feature(s)', self._iface.mainWindow())
+        self._moveaddressaction.setWhatsThis('Move AIMS Feature(s)')
+        self._moveaddressaction.setStatusTip('Move AIMS Feature(s)')
+        self._moveaddressaction.setEnabled(False)
+        self._moveaddressaction.triggered.connect( self.startMoveAddressTool )
+        self._moveaddtool = MoveAddressTool( self._iface, self._layers, self)
+        self._moveaddtool.setAction( self._moveaddressaction )      
+       
+       # Update address
+        self._updateaddressaction = QAction(QIcon(':/plugins/QGIS-AIMS-Plugin/resources/updateaddress.png'), 
+            'Update AIMS Feature', self._iface.mainWindow())
+        self._updateaddressaction.setWhatsThis('Update AIMS Feature')
+        self._updateaddressaction.setStatusTip('Update AIMS Feature')
+        self._updateaddressaction.setEnabled(False)
+        #self._updateaddressaction.triggered.connect( self.startDelAddressTool )
+        #self._updatetool = UpdateAddressTool( self._iface, self._layers, self)
+        #self._updatetool.setAction( self._updateaddressaction )
+       
         # Add to own toolbar
         self._toolbar = self._iface.addToolBar('QGIS-AIMS-Plugin')
         self._toolbar.addAction(self._createnewaddressaction)
         self._toolbar.addAction(self._deladdressaction)
-
+        self._toolbar.addAction(self._updateaddressaction)
+        self._toolbar.addAction(self._moveaddressaction)
+        
         # Add actions to menu and toolbar icon
         self._iface.addToolBarIcon(self._loadaction)
         self._iface.addPluginToMenu('&QGIS-AIMS-Plugin', self._loadaction)
         self._iface.addPluginToMenu('&QGIS-AIMS-Plugin', self._createnewaddressaction)
         self._iface.addPluginToMenu('&QGIS-AIMS-Plugin', self._deladdressaction)
+        self._iface.addPluginToMenu('&QGIS-AIMS-Plugin', self._updateaddressaction)
+        self._iface.addPluginToMenu('&QGIS-AIMS-Plugin', self._moveaddressaction)
         
         # Make useful connections!
         self._layers.addressLayerAdded.connect(self.enableAddressLayer)
@@ -104,12 +128,16 @@ class Controller(QObject):
             only when the address layer exists '''
         self._deladdressaction.setEnabled(True)
         self._createnewaddressaction.setEnabled(True)
-       
+        self._moveaddressaction.setEnabled(True)
+        self._updateaddressaction.setEnabled(True)
+        
     def disableAddressLayer(self):
         ''' disable tools that are dependent on the Address Layer
             when the address does not exists '''
         self._deladdressaction.setEnabled(False)
         self._createnewaddressaction.setEnabled(False)
+        self._moveaddressaction.setEnabled(False)
+        self._updateaddressaction.setEnabled(False)
 
     def unload(self):      
         self._iface.mainWindow().removeToolBar(self._toolbar)
@@ -123,8 +151,16 @@ class Controller(QObject):
         self._layers.installRefLayers()
                     
     def startNewAddressTool(self):
-        self._iface.mapCanvas().setMapTool(self._CreateNewAddressTool)
-        self._CreateNewAddressTool.setEnabled(True)
+        self._iface.mapCanvas().setMapTool(self._createnewaddresstool)
+        self._createnewaddresstool.setEnabled(True)
+    
+    def startMoveAddressTool(self):
+        self._iface.mapCanvas().setMapTool(self._moveaddtool)
+        self._moveaddtool.setEnabled(True)
+    
+    def startUpdateAddressTool(self):
+        self._iface.mapCanvas().setMapTool(self._updateaddtool)
+        self._updateaddtool.setEnabled(True)
         
     def startDelAddressTool(self):
         self._iface.mapCanvas().setMapTool(self._deladdtool)
