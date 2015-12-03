@@ -17,18 +17,19 @@ from PyQt4.QtGui import *
 from qgis.core import *
 from qgis.gui import *
 
-from AimsClient.Gui import Controller
 from AimsClient.Gui.NewAddressDialog import NewAddressDialog
+
 
 class CreateNewAddressTool(QgsMapTool):
     ''' tool for creating new address information ''' 
     
-    def __init__(self, iface, controller=None):        
+    def __init__(self, iface, layerManager, controller=None):        
         QgsMapTool.__init__(self, iface.mapCanvas())
    
         self._iface = iface
         self._controller = controller
         self.activate()
+        self._layerManager = layerManager
 
     def activate(self):
         QgsMapTool.activate(self)
@@ -46,8 +47,7 @@ class CreateNewAddressTool(QgsMapTool):
         else:
             self.deactivate()
  
-    def canvasReleaseEvent(self,e):
-        
+    def canvasReleaseEvent(self,e):    
         if not e.button() == Qt.LeftButton:
             return
         
@@ -67,20 +67,14 @@ class CreateNewAddressTool(QgsMapTool):
     
     def setPoint( self, coords ):
         ''' guarantee srs and pass to the API '''
-        src_crs = self._iface.mapCanvas().mapRenderer().destinationCrs()
+        self._enabled = False
+        # move the below utility somewhere modular, as other tools will also require this
+        src_crs = self._iface.mapCanvas().mapSettings().destinationCrs()
         tgt_crs = QgsCoordinateReferenceSystem()
         tgt_crs.createFromOgcWmsCrs('EPSG:2193')
         transform = QgsCoordinateTransform( src_crs, tgt_crs )
         coords = transform.transform( coords.x(), coords.y() )     
-   
-        self._enabled = False #disable tool - i.e allow only one dlg instance
-        # intialise an address instance
-        addInstance = self._controller.initialiseNewAddress()
-        #with self._controller.initialiseNewAddress() as addInstance:
-        ''' with statement to be included when refactoring as initialiseNewAddress may no
-        # longer reside in controller. initialiseNewAddress need to be a member of a class
-        # that has __enter__ and _exit__ methods to for the context manager to utilise. 
-        '''
-        # Open new address form
-        NewAddressDialog.newAddress(coords, addInstance, self._iface.mainWindow())
+        
+        addInstance = self._controller.initialiseAddressObj()
+        NewAddressDialog.newAddress(coords, addInstance, self._layerManager, self._controller, self._iface.mainWindow())
         self._enabled = True

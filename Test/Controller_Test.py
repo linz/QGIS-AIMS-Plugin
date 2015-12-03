@@ -21,6 +21,7 @@ import inspect
 import sys
 import re
 
+from AimsService_Mock import ASM
 #from Test._QGisInterface import QgisInterface
 from AimsUI.AimsClient.Gui.Controller import Controller
 from AimsUI.AimsClient.Address import Address
@@ -45,20 +46,22 @@ class Test_0_ControllerSelfTest(unittest.TestCase):
     def test20_controllerTest(self):
         #assertIsNotNone added in 3.1        
         testlog.debug('Test_0.20 Controller instantiation test')
-        controller = Controller()
+        qi = ASM.getMock(ASM.ASMenum.QI)()
+        controller = Controller(qi)
         self.assertNotEqual(controller,None,'Controller not instantiated')
 
 class Test_1_ControllerTestSetupFunction(unittest.TestCase):
     
     def setUp(self): 
-        self._controller = Controller()
+        qi = ASM.getMock(ASM.ASMenum.QI)()
+        self._controller = Controller(qi)
     
     def tearDown(self):
         self._controller = None
         
     def test10_initControllerAddress(self):  
         testlog.debug('Test_1.10 Controller/Address instantiation test')
-        self.assertEqual(isinstance(self._controller.initialiseNewAddress(),Address),True,'Cannot init Controller.Address')
+        self.assertEqual(isinstance(self._controller.initialiseAddressObj(),Address),True,'Cannot init Controller.Address')
         #self.assertIsInstance(self._controller.initialiseNewAddress(),Address,'Cannot init Controller.Address')
           
     

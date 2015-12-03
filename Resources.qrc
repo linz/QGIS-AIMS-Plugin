@@ -2,5 +2,8 @@
   <qresource prefix="plugins/QGIS-AIMS-Plugin">
     <file>resources/loadaddress.png</file>
     <file>resources/newaddresspoint.png</file>    
+    <file>resources/moveaddress.png</file>
+    <file>resources/deleteaddress.png</file>
+    <file>resources/updateaddress.png</file>
     </qresource>
 </RCC>

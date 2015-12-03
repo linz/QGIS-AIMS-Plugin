@@ -21,46 +21,56 @@ from AimsUI.AimsLogging import Logger
 
 aimslog = Logger.setup()
 
-class InvalidParameterException(): pass
+class InvalidParameterException(Exception): pass
 
 class LayerManager(QObject):
 
     _propBaseName='AimsClient.'
     _styledir = join(dirname(abspath(__file__)),'styles')
     _addressLayerId='adr'
+    
+    addressLayerAdded = pyqtSignal( QgsMapLayer, name="addressLayerAdded")
+    addressLayerRemoved = pyqtSignal( name="addressLayerRemoved")
 
-    def __init__( self, iface ):
+    def __init__(self, iface, controller):
         QObject.__init__(self)
         self._iface = iface
+        self._controller = controller
         self._statusBar = iface.mainWindow().statusBar()
         self._adrLayer = None
         self._rclLayer = None
         self._parLayer = None
         self._locLayer = None
         
-        # connect loading of features to mapcanvas event
-        self._iface.mapCanvas().extentsChanged.connect(self.loadFeatures)
-        
         QgsMapLayerRegistry.instance().layerWillBeRemoved.connect(self.checkRemovedLayer)
         QgsMapLayerRegistry.instance().layerWasAdded.connect( self.checkNewLayer )
-
+    
+    def initialiseExtentEvent(self):  
+        ''' Once plugin loading triggered initialise loading of AIMS Feautres '''
+        self._iface.mapCanvas().extentsChanged.connect(self.loadAimsFeatures)
+    
     def layerId(self, layer):
         idprop = self._propBaseName + 'Id' 
         return str(layer.customProperty(idprop))
 
     def setLayerId(self, layer, id):
-        idprop = self._propBaseName + 'Id'
-        layer.setCustomProperty(idprop,id)
+        if id and isinstance(id,str):
+            idprop = self._propBaseName + 'Id'
+            layer.setCustomProperty(idprop,id)
+        else: raise InvalidParameterException("'{}' is not a valid id".format(id))
 
     def layers(self):
         for layer in QgsMapLayerRegistry.instance().mapLayers().values():
             if layer.type() == layer.VectorLayer and self.layerId(layer):
                 yield layer
     
+    def addressLayer( self ):
+        return self._adrLayer
+    
     def checkRemovedLayer(self, id):
         if self._adrLayer and self._adrLayer.id() == id:
             self._adrLayer = None
-            #self.addressLayerRemoved.emit() -- need to disbale any tools that use this layer back in plugin.py
+            self.addressLayerRemoved.emit()
         if self._rclLayer and self._rclLayer.id() == id:
             self._rclLayer = None
         if self._parLayer and self._parLayer.id() == id:
@@ -75,8 +85,8 @@ class LayerManager(QObject):
         if layerId == self._addressLayerId:
             newlayer = self._adrLayer == None
             self._adrLayer = layer
-            #if newlayer:
-                #self.addressLayerAdded.emit(layer) -- need to enab'e any tools that use this layer back in plugin.py
+            if newlayer:
+                self.addressLayerAdded.emit(layer)
         elif layerId == 'rcl':
             self._rclLayer = layer
         elif layerId == 'par':
@@ -120,87 +130,79 @@ class LayerManager(QObject):
         ''' install AIMS postgres ref data '''
         
         schema = Database.aimsSchema()
-        # Join rcl and road name (via rna) for labeling purposes. NOTE - only P1 rna used
-        sqlRcl = '''(SELECT rcl.roadcentrelineid, rcl.roadcentrelinealtid,rcl.noncadastralroad, 
-                  rcl.shape, rcl.organisationid, rn.roadname, rt.roadtypename  
-                FROM reference.roadcentreline rcl JOIN reference.roadnameassociation rna 
-                ON rcl.roadcentrelineid = rna.roadcentrelineid 
-                JOIN reference.roadname rn ON rn.roadnameid =  rna.roadnameid 
-                LEFT JOIN reference.roadtype rt ON rn.roadtypeid = rt.roadtypeid
-                WHERE rcl.roadcentrelinestatus = 'CURR' AND rna.rnapriority = 1 AND rn.roadnamestatus = 'CURR')'''
         
-        sqlLoc = '''(SELECT localityid, locality4thordername, shape
-                        FROM reference.locality
-                        WHERE locality4thordername is not null
-                        AND enddate is null)'''
-        
-        self.installLayer( 'rcl', '', sqlRcl, 'roadcentrelineid', True, "",'Roads' )        
+        self.installLayer( 'rcl', schema, 'aimsroads', 'roadcentrelineid', True, "",'Roads' )        
         self.installLayer( 'par', schema, 'parcel', 'id', True, 
                             "parceltype not in ('ROAD','RLWY')",'Parcels' )    
-        #self.installLayer( 'loc', '', sqlLoc, 'localityid', True, "",'Locality' )   
         
-    def loadFeatures(self):
+    def loadAimsFeatures(self):
         ''' load AIMS features '''
         # test if layer exists
         layerid = self._addressLayerId
         layer = self.findLayer(layerid)
         if layer:
             QgsMapLayerRegistry.instance().removeMapLayer( layer.id() )
-            pass
         #test if scale allows showing of features
-        scale = self._iface.mapCanvas().mapRenderer().scale()
-        if scale <= 10000:
-            self.createFeaturesLayers()
-
-    def createFeaturesLayers(self):
+        scale = self._iface.mapCanvas().mapSettings().scale()
+        if scale <= 10000: # would be a bit of reconjiggering to ensure persistent layer but then we could get scale from user settings
+            self.getAimsFeatures()
+    
+    def getAimsFeatures(self):
         ext = self._iface.mapCanvas().extent()
-        id = self._addressLayerId
-        r = AimsApi().getFeatures(ext.xMaximum(), ext.yMaximum(), ext.xMinimum(), ext.yMinimum()) 
+        r = self._controller.getFeatures(ext.xMaximum(), ext.yMaximum(), ext.xMinimum(), ext.yMinimum()) 
         # all or nothing. i.e if the API limit of 1000 feature is met dont give the user any features
         if len(r['entities']) == 1000:
             return
-        layer = QgsVectorLayer("Point?crs=EPSG:2193", "AIMS Features", "memory") #rather not ard code crs
+        self.createFeaturesLayers(r)
+        
+    def createFeaturesLayers(self, r):
+        id = self._addressLayerId
+        layer = QgsVectorLayer("Point?crs=EPSG:2193", "AIMS Features", "memory") #rather not hard code crs
         self.setLayerId(layer, id)
         provider = layer.dataProvider()
-        provider.addAttributes([QgsField('fullAddressNumber', QVariant.String),
-                            QgsField('fullRoadName', QVariant.String),
-                            QgsField('addressId', QVariant.String),
-                            QgsField('addressType', QVariant.String),
-                            QgsField('lifecycle', QVariant.String),
-                            QgsField('unitValue', QVariant.String),
-                            QgsField('unitType', QVariant.String),
-                            QgsField('levelType', QVariant.String),
-                            QgsField('levelValue', QVariant.String),
-                            QgsField('addressNumberPrefix', QVariant.String),
-                            QgsField('addressNumber', QVariant.String),
-                            QgsField('addressNumberSuffix', QVariant.String),
-                            QgsField('addressNumberHigh', QVariant.String),
-                            QgsField('roadCentrelineId', QVariant.String),
-                            QgsField('roadPrefix', QVariant.String),
-                            QgsField('roadName', QVariant.String),       
-                            QgsField('roadTypeName', QVariant.String),
-                            QgsField('roadSuffix', QVariant.String),
-                            QgsField('waterRouteName', QVariant.String),
-                            QgsField('waterName', QVariant.String),
-                            QgsField('suburbLocality', QVariant.String),
-                            QgsField('townCity', QVariant.String),
-                            QgsField('addressableObjectId', QVariant.String),
-                            QgsField('objectType', QVariant.String),
-                            QgsField('objectName', QVariant.String),
-                            QgsField('addressPositionType', QVariant.String),
-                            QgsField('suburbLocalityId', QVariant.String),
-                            QgsField('townCityId', QVariant.String),
-                            QgsField('parcelId', QVariant.String),
-                            QgsField('meshblock', QVariant.String)])
+        provider.addAttributes([QgsField('addressType', QVariant.String),
+                                QgsField('fullAddress', QVariant.String),
+                                QgsField('fullAddressNumber', QVariant.String),
+                                QgsField('fullRoadName', QVariant.String),
+                                QgsField('suburbLocality', QVariant.String),
+                                QgsField('townCity', QVariant.String),
+                                QgsField('meshblock', QVariant.String),
+                                QgsField('lifecycle', QVariant.String), 
+                                QgsField('roadPrefix', QVariant.String),
+                                QgsField('roadName', QVariant.String),      
+                                QgsField('roadSuffix', QVariant.String),
+                                QgsField('roadTypeName', QVariant.String),
+                                QgsField('roadCentrelineId', QVariant.String),
+                                QgsField('waterRouteName', QVariant.String),
+                                QgsField('waterName', QVariant.String),
+                                QgsField('unitValue', QVariant.String),
+                                QgsField('unitType', QVariant.String),
+                                QgsField('levelType', QVariant.String),
+                                QgsField('levelValue', QVariant.String),
+                                QgsField('addressNumberPrefix', QVariant.String),
+                                QgsField('addressNumber', QVariant.String),
+                                QgsField('addressNumberSuffix', QVariant.String),
+                                QgsField('addressNumberHigh', QVariant.String),
+                                QgsField('version', QVariant.String),
+                                QgsField('addressId', QVariant.String),
+                                QgsField('addressableObjectId', QVariant.String),
+                                QgsField('objectType', QVariant.String),
+                                QgsField('objectName', QVariant.String),
+                                QgsField('addressPositionType', QVariant.String),
+                                QgsField('suburbLocalityId', QVariant.String),
+                                QgsField('parcelId', QVariant.String)])
         # add fields
 
+       
         layer.updateFields() # tell the vector layer to fetch changes from the provider
         
         # Fairly simple implementation (but simple to read and explicit) would like
         # would like to come back and do something more intelligent here
     
         for e in r['entities']:
+            version = e['properties']['version']
             c = e['properties']['components']
+            fullAddress = c['fullAddress'] if c.has_key('fullAddress') else None
             fullAddressNumber = c['fullAddressNumber'] if c.has_key('fullAddressNumber') else None
             fullRoadName = c['fullRoadName'] if c.has_key('fullRoadName') else None 
             addressId = c['addressId'] if c.has_key('addressId') else None 
@@ -239,11 +241,21 @@ class LayerManager(QObject):
                  
             fet = QgsFeature()
             fet.setGeometry(QgsGeometry.fromPoint(QgsPoint(coords[0],coords[1])))
-            fet.setAttributes([fullAddressNumber, 
+            fet.setAttributes([ addressType,
+                                fullAddress,
+                                fullAddressNumber,
                                 fullRoadName,
-                                addressId,
-                                addressType,
-                                lifecycle,
+                                suburbLocality,
+                                townCity,
+                                meshblock,
+                                lifecycle, 
+                                roadPrefix,
+                                roadName,      
+                                roadSuffix,
+                                roadTypeName,
+                                roadCentrelineId,
+                                waterRouteName,
+                                waterName,
                                 unitValue,
                                 unitType,
                                 levelType,
@@ -252,30 +264,21 @@ class LayerManager(QObject):
                                 addressNumber,
                                 addressNumberSuffix,
                                 addressNumberHigh,
-                                roadCentrelineId,
-                                roadPrefix,
-                                roadName,
-                                roadTypeName,
-                                roadSuffix,
-                                waterRouteName,
-                                waterName,
-                                suburbLocality,
-                                townCity,
+                                version,
+                                addressId,
                                 addressableObjectId,
                                 objectType,
                                 objectName,
                                 addressPositionType,
                                 suburbLocalityId,
-                                townCityId,
-                                parcelId,
-                                meshblock])
+                                parcelId])
             provider.addFeatures([fet])
 
         # commit to stop editing the layer
         layer.commitChanges()
         # update layer's extent when new features have been added
         # because change of extent in provider is not propagated to the layer
-        layer.updateExtents()
+        #layer.updateExtents()
         try:
             layer.loadNamedStyle(join(self._styledir,id+'_style.qml'))
         except:
