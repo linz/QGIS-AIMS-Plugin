@@ -120,7 +120,7 @@ class Test_1_AddressTestSetters(unittest.TestCase):
         '''Check error raised if attempt to create JSON output on null address array'''
         pass
         
-    
+#------------------------------------------------------------------------------    
     def _generateAttrVal(self,setmthd):
         setmthd = re.match('set_*(.*)',setmthd).group(1)
         return setmthd[:1].upper()+''.join([s for s in setmthd[1:] if ord(s)>64 and ord(s)<91])
