@@ -182,6 +182,7 @@ class ASM(object):
     @classmethod
     def getAimsHttpMock(cls):
         return Mock(spec=_AimsHttp)
+    
     @classmethod
     def getQIMock(cls):
         return Mock(spec=_QInterface)
