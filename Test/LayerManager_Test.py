@@ -107,13 +107,36 @@ class Test_1_LayerManagerSetters(unittest.TestCase):
             #    self._layermanager.setLayerId(testlayer,tf)
             
             
-    def test20_instLayers(self):
-        '''tests whether a layer generator is returned'''
-        pass
+class Test_2_LayerConnection(umintest.TestCase):
+    
+    def setUp(self): 
+        testlog.debug('Instantiate null address, address.setter list')
+        #self.QI = QgisInterface(_Dummy_Canvas())
+        qi = ASM.getMock(ASM.ASMenum.QI)()
+        controller = Controller(qi)
+        self._layermanager = LayerManager(qi,controller)
+
+        
+    def tearDown(self):
+        testlog.debug('Destroy null layermanager')
+        self._layermanager = None   
+        
+    def test10_instLayers(self):
+        '''tests whether a layer generator is returned and it contains valid layers'''
+        #since this calls QgsMapLayerRegistry it wont return layers in a test env so never hits the assert
+        for layergen in self._layermanager.layers():
+            self.assertTrue(isinstance(layergen, ASM.getMock(ASM.ASMenum.LAYER)), 'Object returned not a layer type')
+        
+    def test20_installRefLayers(self):
+        '''tests install reflayers on the layer manager'''
+        try: self._layermanager.installRefLayers()
+        except Exception as e: raise AssertionError('Install reflayers failed. {}'.format(e))
         
     def test30_checkRemovedLayer(self):
-        '''tests _adrLayer is set to null'''
-        pass
+        '''checks layers get null'd'''
+        self._layermanager.installRefLayers()
+        
+        
         
     def test40_checkNewLayer(self):
         '''tests whether layer is assigned to correct attribute'''
