@@ -34,4 +34,4 @@ class Plugin(object):
         self.controller.initGui()
 
     def unload(self): 
-        self.controller.initGui()
+        self.controller.unload()
