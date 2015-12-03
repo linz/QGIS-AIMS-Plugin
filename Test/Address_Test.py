@@ -27,6 +27,9 @@ from AimsUI.AimsLogging import Logger
 
 testlog = Logger.setup('test')
 
+#user to init an address, simple text string read from a stored config file
+user_text = 'aims_user'
+
 class Test_0_AddressSelfTest(unittest.TestCase):
     
     def setUp(self):
@@ -43,14 +46,14 @@ class Test_0_AddressSelfTest(unittest.TestCase):
     def test20_addressTest(self):
         #assertIsNotNone added in 3.1        
         testlog.debug('Test_0.20 Address instantiation test')
-        address = Address()
+        address = Address(user_text)
         self.assertNotEqual(address,None,'Address not instantiated')
         
 class Test_1_AddressTestSetters(unittest.TestCase):
     
     def setUp(self): 
         testlog.debug('Instantiate null address, address.setter list')
-        self._address = Address()
+        self._address = Address(user_text)
         self._address_setters = [i for i in dict(inspect.getmembers(Address, predicate=inspect.ismethod)) if i[:3]=='set']
 
         
@@ -117,7 +120,7 @@ class Test_1_AddressTestSetters(unittest.TestCase):
         '''Check error raised if attempt to create JSON output on null address array'''
         pass
         
-    
+#------------------------------------------------------------------------------    
     def _generateAttrVal(self,setmthd):
         setmthd = re.match('set_*(.*)',setmthd).group(1)
         return setmthd[:1].upper()+''.join([s for s in setmthd[1:] if ord(s)>64 and ord(s)<91])

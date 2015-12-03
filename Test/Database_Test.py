@@ -30,9 +30,11 @@ from AimsUI.AimsLogging import Logger
 
 testlog = Logger.setup('test')
 
-DCONF = {'host':'127.0.0.1', 'port':3128, 'user':'postgres','password':'', \
+DCONF = {'host':'127.0.0.1', 'port':5432, 'user':'postgres','password':'', \
          'name':'aims_ci_test','aimsschema':'aims', 'table':'aims_test_table'}
 TIMEOUT = 10
+#Bypass for timeout error raise. Delete in production
+BYPASS = False
 
 class TimeoutError(Exception): pass
 
@@ -44,7 +46,8 @@ def timeout(seconds=5, message="Timeout"):
             process.join(seconds)
             if process.is_alive():
                 process.terminate()
-                raise TimeoutError(message)
+                if not BYPASS:
+                    raise TimeoutError(message)
 
         return wraps(func)(wrapper)
     return decorator
@@ -60,12 +63,11 @@ class Test_0_DatabaseSelfTest(unittest.TestCase):
         pass
     
     def test10_selfTest(self):
-        #assertIsNotNone added in 3.1
         testlog.debug('Test_0.10 Database_Test Log')
         self.assertNotEqual(testlog,None,'Testlog not instantiated')
         
 #     def test20_databaseTest(self):
-#         #assertIsNotNone added in 3.1        
+#         '''Tests that database object can be instantiated'''        
 #         testlog.debug('Test_0.20 Database instantiation test')
 #         database = Database()
 #         self.assertNotEqual(database,None,'Database not instantiated')
@@ -115,13 +117,13 @@ class Test_2_DatabaseConnectivity(unittest.TestCase):
     def test10_connection(self):
         testlog.debug('Test_2.10 Test connection() function')
         self.conn = Database.connection()
-        self.assertNotNull(self.conn,'Connection not established')
+        self.assertNotEqual(self.conn,None,'Connection not established')
         
     @timeout(seconds=TIMEOUT, message='Timeout execution query on database')
     def test20_execute(self):
         testlog.debug('Test_2.20 Test query execution (SELECT) function')
         self.res = Database.execute(self.q1)
-        self.assertNotNull(self.res,'Query "{}" failed with {}'.format(self.q1,self.res))
+        self.assertNotEqual(self.res,None,'Query "{}" failed with {}'.format(self.q1,self.res))
     
     def test30_executeScalar(self):
         pass

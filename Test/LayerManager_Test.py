@@ -31,9 +31,10 @@ import sys
 import re
 
 #from Test._QGisInterface import QgisInterface
-import AimsService_Mock as AM
+from AimsService_Mock import ASM
 
 from AimsUI.LayerManager import LayerManager, InvalidParameterException
+from AimsUI.AimsClient.Gui.Controller import Controller
 from AimsUI.AimsLogging import Logger
 
 QtCore.QCoreApplication.setOrganizationName('QGIS')
@@ -56,8 +57,9 @@ class Test_0_LayerManagerSelfTest(unittest.TestCase):
     def test20_layerManagerTest(self):
         #assertIsNotNone added in 3.1        
         testlog.debug('Test_0.20 LayerManager instantiation test')
-        qi = AM.getQIMock()
-        layermanager = LayerManager(qi)
+        qi = ASM.getMock(ASM.ASMenum.QI)()
+        controller = Controller(qi)
+        layermanager = LayerManager(qi,controller)
         self.assertNotEqual(layermanager,None,'LayerManager not instantiated')
         
 class Test_1_LayerManagerSetters(unittest.TestCase):
@@ -65,8 +67,9 @@ class Test_1_LayerManagerSetters(unittest.TestCase):
     def setUp(self): 
         testlog.debug('Instantiate null address, address.setter list')
         #self.QI = QgisInterface(_Dummy_Canvas())
-        qi = AM.getQIMock()
-        self._layermanager = LayerManager(qi)
+        qi = ASM.getMock(ASM.ASMenum.QI)()
+        controller = Controller(qi)
+        self._layermanager = LayerManager(qi,controller)
 
         
     def tearDown(self):
@@ -77,8 +80,8 @@ class Test_1_LayerManagerSetters(unittest.TestCase):
         '''Test the layer id setter'''
         testval = 'AIMS1000'
         testlog.debug('Test_1.10 Instantiate layer ID')
-        testlayer = AM.getLayerMock()#_Dummy_Layer()
-        testlayer.return_value = testval
+        testlayer = ASM.getMock(ASM.ASMenum.LAYER)()
+        testlayer.customProperty.return_value = testval
        
         self._layermanager.setLayerId(testlayer,testval)
         self.assertEqual(self._layermanager.layerId(testlayer),testval, 'Unable to set layer ID {}'.format(testval))
@@ -86,16 +89,46 @@ class Test_1_LayerManagerSetters(unittest.TestCase):
     def test11_instLayerIdRange(self):
         '''Example of success/fail test cases over range of input values'''
         testlog.debug('Test_1.11 Test range of layer ID values')
-        testlayer = AM.getLayerMock()#_Dummy_Layer()
 
-        testsuccesses = ('A','Z','#$%^&_)_#@)','māori','   ','')
+        testsuccesses = ('A','Z','#$%^&_)_#@)','māori','   ')
         for ts in testsuccesses:
+            testlayer = ASM.getMock(ASM.ASMenum.LAYER)(idrv=ts)
             self._layermanager.setLayerId(testlayer,ts)
             self.assertEqual(self._layermanager.layerId(testlayer),ts, 'Unable to set layer ID {}'.format(ts))
             
-        testfailures = (None,0,float('nan'),float('inf'),object,self)
+        #NB Can't set None as on Mock property since it is interpreted as no value so must be caught
+        testfailures = (None,'',0,float('nan'),float('inf'),object,self)
         for tf in testfailures:
-            self.assertRaises(InvalidParameterException, self._layermanager.setLayerId,testlayer,tf)
+            testlayer = ASM.getMock(ASM.ASMenum.LAYER)(idrv=tf)
+            #testlayer.customProperty.return_value = tf
+            self.assertRaises(InvalidParameterException, self._layermanager.setLayerId, testlayer, tf)
+            #ctx mgr doesn't work for some reason!
+            #with self.assertRaises(InvalidParameterException):
+            #    self._layermanager.setLayerId(testlayer,tf)
+            
+            
+    def test20_instLayers(self):
+        '''tests whether a layer generator is returned'''
+        pass
+        
+    def test30_checkRemovedLayer(self):
+        '''tests _adrLayer is set to null'''
+        pass
+        
+    def test40_checkNewLayer(self):
+        '''tests whether layer is assigned to correct attribute'''
+        #NB ('adr','_adrLayer'),#can't easily test adr since it emits a signal and fails with mock parameters
+        for ltype in (('rcl','_rclLayer'),
+                      ('par','_parLayer'),
+                      ('loc','_locLayer'),):
+            testlayer = ASM.getMock(ASM.ASMenum.LAYER)(idrv=ltype[0])
+            self._layermanager.setLayerId(testlayer,ltype[0])
+            #testlayer.customProperty.return_value = ltype[0]
+            self._layermanager.checkNewLayer(testlayer)
+            self.assertEqual(self._layermanager.__getattribute__(ltype[1]),testlayer)
+        
+        
+    
             
     """       
     def test40_createFeatureLayer(self):
