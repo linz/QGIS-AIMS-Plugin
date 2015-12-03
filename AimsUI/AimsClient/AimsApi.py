@@ -74,3 +74,10 @@ class AimsApi(object):
         urlEnd ='features?count=1000&bbox={0},{1},{2},{3}'.format(xMin,yMin,xMax,yMax)
         resp, content = h.request(self._url+urlEnd, 'GET', headers = self._headers)
         return json.loads(content) # Validation ... 
+    
+    def updateFeature(self, payload):
+        ''' update aims address feature. What did you think it did? '''
+        h = httplib2.Http(".cache")
+        h.add_credentials(self.user, self._password)
+        resp, content = h.request(self._url+'changefeed/update', "POST", json.dumps(payload), self._headers)
+        return self.handleResponse(resp["status"], json.loads(content) )

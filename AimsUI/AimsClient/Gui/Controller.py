@@ -26,6 +26,7 @@ from AimsUI.DelAddressTool import DelAddressTool
 from AimsUI.MoveAddressTool import MoveAddressTool
 from AimsUI.CreateNewAddressTool import CreateNewAddressTool
 from AimsUI.AimsClient.AimsApi import AimsApi
+
 from AimsUI import AimsLogging
 
 from AimsUI.AimsLogging import Logger
@@ -41,8 +42,8 @@ class Controller(QObject):
         self._api = AimsApi()
         self._user = self._api.user
 
-        self._statusbar = iface.mainWindow().statusBar()
-        self._deladdtool = None
+        #self._statusbar = iface.mainWindow().statusBar()
+        #self._deladdtool = None
         
         aimslog.debug(iface)
         
@@ -181,5 +182,9 @@ class Controller(QObject):
     def getFeatures(self, xMaximum, yMaximum, xMinimum, yMinimum):
         return self._api.getFeatures(xMaximum, yMaximum, xMinimum, yMinimum)
     
+    def updateFeature(self, payload):
+        return self._api.updateFeature(payload)
+        
+
     def refreshlayer(self):
         pass

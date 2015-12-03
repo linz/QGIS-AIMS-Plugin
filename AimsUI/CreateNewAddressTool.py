@@ -47,7 +47,7 @@ class CreateNewAddressTool(QgsMapTool):
         else:
             self.deactivate()
  
-    def canvasReleaseEvent(self,e):    
+    def canvasReleaseEvent(self,e):    #QgisMapMouseEvents have SnappingMode functionality that could be utilsied here 
         if not e.button() == Qt.LeftButton:
             return
         

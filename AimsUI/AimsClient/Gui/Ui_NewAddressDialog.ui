@@ -636,7 +636,7 @@
      <item>
       <widget class="QPushButton" name="uSubmitAddressButton">
        <property name="text">
-        <string>Retire</string>
+        <string>Submit</string>
        </property>
       </widget>
      </item>
