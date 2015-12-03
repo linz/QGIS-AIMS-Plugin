@@ -21,7 +21,7 @@ from AimsUI.AimsLogging import Logger
 
 aimslog = Logger.setup()
 
-class InvalidParameterException(): pass
+class InvalidParameterException(Exception): pass
 
 class LayerManager(QObject):
 
@@ -54,8 +54,10 @@ class LayerManager(QObject):
         return str(layer.customProperty(idprop))
 
     def setLayerId(self, layer, id):
-        idprop = self._propBaseName + 'Id'
-        layer.setCustomProperty(idprop,id)
+        if id and isinstance(id,str):
+            idprop = self._propBaseName + 'Id'
+            layer.setCustomProperty(idprop,id)
+        else: raise InvalidParameterException("'{}' is not a valid id".format(id))
 
     def layers(self):
         for layer in QgsMapLayerRegistry.instance().mapLayers().values():
