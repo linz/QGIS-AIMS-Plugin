@@ -21,18 +21,17 @@ class MoveAddressTool(QgsMapToolIdentifyFeature, QgsHighlight):
         self._layers = layerManager
         self._controller = controller
         self._feature = None
-        self.hl = None
+        self._marker = None
+        self._sb = self._iface.mainWindow().statusBar()
         self.activate()
 
     def activate(self):
         QgsMapTool.activate(self)
-        sb = self._iface.mainWindow().statusBar()
-        sb.showMessage("Select feature to move")
+        self._sb.showMessage("Select feature to move")
     
     def deactivate(self):
-        sb = self._iface.mainWindow().statusBar()
-        self._canvas.scene().removeItem(self.hl)
-        sb.clearMessage()
+        self._canvas.scene().removeItem(self._marker)
+        self._sb.clearMessage()
     
     def setEnabled(self, enabled):
         self._enabled = enabled
@@ -42,13 +41,11 @@ class MoveAddressTool(QgsMapToolIdentifyFeature, QgsHighlight):
             self.deactivate()
 
     def canvasReleaseEvent(self, mouseEvent):
-        layer = self._iface.setActiveLayer(self._layers.addressLayer())
-        layer = self._iface.activeLayer()
+        self._iface.setActiveLayer(self._layers.addressLayer())
         
         if mouseEvent.button() == Qt.LeftButton:
             results = self.identify(mouseEvent.x(), mouseEvent.y(), self.ActiveLayer, self.VectorLayer)
-            
-            self._canvas.scene().removeItem(self.hl)
+            self._canvas.scene().removeItem(self._marker)
             
             if len(results) == 0: 
                 return
@@ -57,7 +54,7 @@ class MoveAddressTool(QgsMapToolIdentifyFeature, QgsHighlight):
                    
                 # Highlight feature    
                 coords = results[0].mFeature.geometry().asPoint()
-                self.hl = AimsUtility.highlight(self._iface, coords)
+                self._marker = AimsUtility.highlight(self._iface, coords)
                 
                 # init new address obj
                 self.address = self._controller.initialiseAddressObj()
@@ -88,8 +85,7 @@ class MoveAddressTool(QgsMapToolIdentifyFeature, QgsHighlight):
                 self.address.setAoName(str(results[0].mFeature.attribute('objectName')))
                 self.address.setAoPositionType(str(results[0].mFeature.attribute('addressPositionType')))
                 
-                sb = self._iface.mainWindow().statusBar()
-                sb.showMessage("Right new feature location")
+                self._sb.showMessage("Right click for features new location")
                 
         if mouseEvent.button() == Qt.RightButton:
             if self._feature:

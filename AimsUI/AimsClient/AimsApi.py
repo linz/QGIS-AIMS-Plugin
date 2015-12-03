@@ -16,7 +16,9 @@ from Config import ConfigReader
 
 class AimsApi(object):
     ''' make and receive all http requests / responses to AIMS API '''   
-        
+    
+    # 
+    
     def __init__(self):
         config = ConfigReader()
         self._url = config.configSectionMap('url')['api']
@@ -40,14 +42,15 @@ class AimsApi(object):
         [] == no errors, else list of critical errors'''
         if resp == 201: #to be more inclusive i.e. 200 ...
             return [] #i.e. no errors
-        try:
-            # Return list of validation errors
-            return self.handleErrors(resp, content)
-        except:
-            # Failing that give the user the direct http response
-            return 'Please contact your system administrator \n' + str(content)
-        
-        return self.handleErrors(resp, content)
+        else:
+            # list of validation errors
+            errors = self.handleErrors(resp, content)
+            if len(errors) > 0:
+                return errors
+            else:
+                # Failing that give the user the direct http response
+                return 'Please contact your system administrator \n HTTP Error :' + resp
+
     
     def changefeedAdd(self, payload):
         ''' Add an address to the Change feed '''
