@@ -100,18 +100,18 @@ class Address(object):
     def setAppellation( self, appellation ): self._appellation = appellation    
         
     
-    def _delNone(self, o):
+    def _delNull(self, o):
         #needs to be expained to handle none also
         if hasattr(o, 'items'):
             oo = type(o)()
             for k in o:
                 if (k != 'NULL') and (o[k] != 'NULL'):
-                    oo[k] = self._delNone(o[k])
+                    oo[k] = self._delNull(o[k])
         elif hasattr(o, '__iter__'):
             oo = [ ] 
             for it in o:
                 if it != 'NULL':
-                    oo.append(self._delNone(it))
+                    oo.append(self._delNull(it))
         else: return o
         return type(o)(oo)
 

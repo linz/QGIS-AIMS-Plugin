@@ -60,6 +60,19 @@ class LayerManager(QObject):
         else: raise InvalidParameterException("'{}' is not a valid id".format(id))
 
     def layers(self):
+#         print '-----------------------------------------'
+#         print 'Q',QgsMapLayerRegistry
+#         print 'Q-I',QgsMapLayerRegistry.instance()
+#         print 'Q-I-ML',QgsMapLayerRegistry.instance().mapLayers() 
+#         print 'Q-I-ML-V',QgsMapLayerRegistry.instance().mapLayers().values()
+#         print 'Q-1',QgsMapLayerRegistry.first()
+#         print 'Q-2',QgsMapLayerRegistry.second().third()
+#         print 'Q-3',QgsMapLayerRegistry.fourth.fifth.sixth
+#         
+#         #print 'Q-Irv',QgsMapLayerRegistry.instance().return_value
+#         #print 'Q-I-MLrv',QgsMapLayerRegistry.instance().mapLayers().return_value
+#         #print 'Q-I-ML-Vrv',QgsMapLayerRegistry.instance().mapLayers().values().return_value
+#         print '-----------------------------------------'
         for layer in QgsMapLayerRegistry.instance().mapLayers().values():
             if layer.type() == layer.VectorLayer and self.layerId(layer):
                 yield layer

@@ -164,35 +164,73 @@ class _Layer(object):
     cp = {}
     def setCustomProperty(self,prop,id): self.cp[prop] = id 
     def customProperty(self,prop): return self.cp[prop]
-    
-class VectorLayer(_Layer):pass
+    def type(self): return type(self)
 
+#-------------------------------------------------------------
+
+class _pyqtSignal(object):
+    def emit(self): pass
+    
+#------------------------------------------------------------- 
+#from contextlib import contextmanager
+#@contextmanager
+class ContextMock(Mock):
+    def __exit__(self, exc_type=None, exc_val=None, exc_tb=None): pass
+    def __enter__(self): pass
+    
+class _QgsMapLayerRegistry(object):
+
+    def instance(self): return self
+    def mapLayers(self): return _MapLayers()
+    
+class _MapLayers(object):
+    def values(self): return []
 #-------------------------------------------------------------
 
 
 class ASM(object):
-    ASMenum = enum('HTTP','QI','LAYER')
+    ASMenum = enum('HTTP','QI','LAYER','SIGNAL','QMLR')
     @classmethod
     def getMock(cls,type):
-        return {cls.ASMenum.HTTP : ASM.getAimsHttpMock,
-                cls.ASMenum.QI : ASM.getQIMock,
-                cls.ASMenum.LAYER : ASM.getLayerMock
+        return {cls.ASMenum.HTTP :  ASM.getAimsHttpMock,
+                cls.ASMenum.QI :    ASM.getQIMock,
+                cls.ASMenum.LAYER : ASM.getLayerMock,
+                cls.ASMenum.SIGNAL :ASM.getPyQtSignalMock,
+                cls.ASMenum.QMLR :  ASM.getQMLRMock
                 }[type]
                 
-    @classmethod
-    def getAimsHttpMock(cls):
+    def getMockSpec(cls,type):
+        m =  ASM.getMock(type)
+        print type
+        return ASM.getMock(type)().__class__
+                
+    @staticmethod
+    def getAimsHttpMock():
         return Mock(spec=_AimsHttp)
     
-    @classmethod
-    def getQIMock(cls):
+    @staticmethod
+    def getQIMock():
         return Mock(spec=_QInterface)
     
-    @classmethod
-    def getLayerMock(cls,idrv=None):
+    @staticmethod
+    def getLayerMock(id_rv=None):
         m = Mock(spec=_Layer)
-        m.customProperty.return_value = idrv
-        m.type = VectorLayer
+        m.customProperty.return_value = id_rv
+        m.VectorLayer = None
+        m.type.return_value = None
+        return m    
+    
+    @staticmethod
+    def getPyQtSignalMock():
+        m = Mock(spec=_pyqtSignal)
+        return m    
+    
+    @staticmethod
+    def getQMLRMock(qmlr_rv=[None,]):
+        m = ContextMock(spec=_QgsMapLayerRegistry)
+        m.instance().mapLayers().values().return_value = qmlr_rv
         return m
+
 
 ###------
 
