@@ -147,6 +147,9 @@ class _QInterface(object):
     def mapCanvas(self):
         return _MapCanvas()
     
+    def legendInterface(self):
+        return _Legend()
+    
 class _MapCanvas(object):
     def mapSettings(self):
         return _MapSettings()
@@ -157,6 +160,10 @@ class _MapSettings(object):
     
 class _MainWindow(object):
     def statusBar(self): return None
+    
+class _Legend(object):
+    def isLayerVisible(layer): pass
+    def setLayerVisible(layer): pass
     
 #------------------------------------------------------------------------------
     
@@ -189,14 +196,18 @@ class _MapLayers(object):
 
 
 class ASM(object):
-    ASMenum = enum('HTTP','QI','LAYER','SIGNAL','QMLR')
+    '''Aims Service Mock accessor'''
+    
+    ASMenum = enum('HTTP','QI','LAYER','SIGNAL','QMLR','QLGD')
+    
     @classmethod
     def getMock(cls,type):
         return {cls.ASMenum.HTTP :  ASM.getAimsHttpMock,
                 cls.ASMenum.QI :    ASM.getQIMock,
                 cls.ASMenum.LAYER : ASM.getLayerMock,
                 cls.ASMenum.SIGNAL :ASM.getPyQtSignalMock,
-                cls.ASMenum.QMLR :  ASM.getQMLRMock
+                cls.ASMenum.QMLR :  ASM.getQMLRMock,
+                cls.ASMenum.QLGD :  ASM.getQLGDMock
                 }[type]
                 
     def getMockSpec(cls,type):
@@ -229,6 +240,11 @@ class ASM(object):
     def getQMLRMock(qmlr_rv=[None,]):
         m = ContextMock(spec=_QgsMapLayerRegistry)
         m.instance().mapLayers().values().return_value = qmlr_rv
+        return m    
+    
+    @staticmethod
+    def getQLGDMock(qlgd_rv=None):
+        m = Mock(spec=_Legend)
         return m
 
 

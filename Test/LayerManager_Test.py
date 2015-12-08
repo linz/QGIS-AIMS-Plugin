@@ -36,9 +36,11 @@ from AimsService_Mock import ASM
 from AimsUI.LayerManager import LayerManager, InvalidParameterException
 from AimsUI.AimsClient.Gui.Controller import Controller
 from AimsUI.AimsLogging import Logger
-
+from Database_Test import DCONF 
+import AimsUI.AimsClient.Database
 
 from mock import Mock, patch
+from openshot.uploads.vimeo.oauth2 import setter
 
 
 QtCore.QCoreApplication.setOrganizationName('QGIS')
@@ -46,6 +48,8 @@ QtCore.QCoreApplication.setApplicationName('QGIS2')
 testlog = Logger.setup('test')
 
 LM_QMLR = 'AimsUI.LayerManager.QgsMapLayerRegistry'
+LM_QDSU = 'AimsUI.LayerManager.QgsDataSourceURI'
+LM_QVL = 'AimsUI.LayerManager.QgsVectorLayer'
 
 class Test_0_LayerManagerSelfTest(unittest.TestCase):
     
@@ -127,45 +131,84 @@ class Test_2_LayerManagerConnection(unittest.TestCase):
         
     def tearDown(self):
         testlog.debug('Destroy null layermanager')
-        self._layermanager = None   
-    
+        self._layermanager = None                   
+
     def test10_layers(self):
         '''tests whether a layer generator is returned and it contains valid layers'''
-        test_layers = [1,2,3]
-        with (ASM.getMock(ASM.ASMenum.QMLR)(test_layers)) as QgsMapLayerRegistry:
-            for glayer in self._layermanager.layers():
-                self.assertTrue(isinstance(glayer, ASM.getMock(ASM.ASMenum.LAYER)), 'Object returned not a layer type')
-                
-
-    def test11_layers(self):
-        '''tests whether a layer generator is returned and it contains valid layers'''
-        test_layers = 3*[ASM.getMock(ASM.ASMenum.LAYER)(),]
-        #with patch('qgis.core.QgsMapLayerRegistry') as qmlr_mock:
-        conf = {'instance().mapLayers.values':test_layers}
-        qmlr_spec = ASM.getMock(ASM.ASMenum.QMLR).__class__
+        test_layers = 3*(ASM.getMock(ASM.ASMenum.LAYER)(),)
         with patch(LM_QMLR) as qmlr_mock:
             qmlr_mock.instance.return_value.mapLayers.return_value.values.return_value = test_layers
-            #qmlr_mock.configure_mock(**conf)
             for glayer in self._layermanager.layers():
+                testlog.debug('testing layer (fetch) for {}'.format(glayer))
                 self.assertEqual(isinstance(glayer, ASM.getMock(ASM.ASMenum.LAYER)().__class__), True,'Object returned not a layer type')
             
     def test20_findLayer(self):
         '''tests whether the find layer fiunction returns a named layer, uses layers() gen'''
-        rcltestlayer = ASM.getMock(ASM.ASMenum.LAYER)()
-        self._layermanager.layers
-        self._layermanager.findLayer('rcl')
+        test_layeridlist = ('rcl','par','loc','adr')
+        test_layerlist = len(test_layeridlist)*(ASM.getMock(ASM.ASMenum.LAYER)(),)
+        test_layerdict = {x[0]:x[1] for x in zip(test_layeridlist,test_layerlist)}
+        with patch(LM_QMLR) as qmlr_mock:
+            qmlr_mock.instance.return_value.mapLayers.return_value.values.return_value = test_layerdict.values()
+            for test_layerid in test_layerdict:
+                testlog.debug('testing findlayer for layer type {}'.format(test_layerid))
+                test_layerdict[test_layerid].customProperty.return_value = test_layerid
+                test_layer = self._layermanager.findLayer(test_layerid)
+                self.assertEqual(isinstance(test_layer, ASM.getMock(ASM.ASMenum.LAYER)().__class__), True,'Object returned not a layer type with name'.format(test_layerid))
+    
+    
+    def test30_installLayers_find(self):
+        '''tests install layer when layer is already installed in Qgis'''
+        test_idlist = ('rcl','par','loc','adr')
+        test_layer = ASM.getMock(ASM.ASMenum.LAYER)()
         
-    def test30_installLayers(self):
-        '''tests install reflayers on the layer manager'''
-        try: self._layermanager.installRefLayers()
-        except Exception as e: raise AssertionError('Install reflayers failed. {}'.format(e))
+        for test_id in test_idlist:
+            test_layer.customProperty.return_value = test_id
+            #set up legendinterface to return legend mock!!!
+            qlgd_mock =  ASM.getMock(ASM.ASMenum.QLGD)()
+            self._layermanager._iface.legendInterface.return_value = qlgd_mock
+    
+            for lyr_vis in (True,False):
+                #set legend visibility
+                qlgd_mock.isLayerVisible.return_value = lyr_vis
+                with patch(LM_QMLR) as qmlr_mock:
+                    testlog.debug('testing installlayer 1 on layer with name {} and lgd visibility={}'.format(test_id,lyr_vis))
+                    #set up findlayer to return test_layer
+                    qmlr_mock.instance.return_value.mapLayers.return_value.values.return_value = [test_layer,]
+                    res_layer = self._layermanager.installLayer(test_id, DCONF['aimsschema'], DCONF['table'], 'test_key', 'test_est', 'test_where', 'test_displayname')
+        
+                    self.assertEqual(test_layer,res_layer, 'installlayers and set layers dont match on layer with name {} and lgd visibility={}'.format(test_id,lyr_vis))
+                        
+    def test31_installLayers_db(self):
+        '''tests installlayer's fetch from database if layer not available'''
+        #This doesn't test the Database fetch part of the function and just internal logic. It isn't as useful as it could be
+        test_idlist = ('rcl','par','loc','adr')
+        test_layer = ASM.getMock(ASM.ASMenum.LAYER)() 
+        for test_id in test_idlist:
+            #set layerid to none to bypass active fetch
+            with patch(LM_QMLR) as qmlr_mock:
+                qmlr_mock.instance.return_value.mapLayers.return_value.values.return_value = ()
+                with patch(LM_QVL) as qvl_mock:
+                    testlog.debug('testing installlayer 2 on layer with name {}'.format(test_id))
+                    qvl_mock.return_value = test_layer
+                    res_layer = self._layermanager.installLayer(test_id, DCONF['aimsschema'], DCONF['table'], 'test_key', False, 'test_where', 'test_displayname')
+                    self.assertEqual(test_layer, res_layer, 'installlayers and set layers dont match on fetched layer with name {}'.format(test_id))
 
         
     def test40_installRefLayers(self):
-        '''tests install reflayers on the layer manager'''
-        try: self._layermanager.installRefLayers()
-        except Exception as e: raise AssertionError('Install reflayers failed. {}'.format(e))  
-        
+        '''tests whether ref layers have been installed following execution of the installreflayers method'''
+        self._layermanager.installRefLayers()
+        #TODO. uses the findlayer logic to test whether the layers have been fetched but mocks this functionality. rework! 
+        test_layeridlist = ('rcl','par')
+        test_layerlist = len(test_layeridlist)*(ASM.getMock(ASM.ASMenum.LAYER)(),)
+        test_layerdict = {x[0]:x[1] for x in zip(test_layeridlist,test_layerlist)}
+        with patch(LM_QMLR) as qmlr_mock:
+            qmlr_mock.instance.return_value.mapLayers.return_value.values.return_value = test_layerdict.values()
+            for test_layerid in test_layerdict:
+                testlog.debug('testing installreflayers for layer type {}'.format(test_layerid))
+                test_layerdict[test_layerid].customProperty.return_value = test_layerid
+                test_layer = self._layermanager.findLayer(test_layerid)
+                self.assertEqual(isinstance(test_layer, ASM.getMock(ASM.ASMenum.LAYER)().__class__), True,'Object returned not a layer type with name'.format(test_layerid))
+    
         
 
     def test50_checkNewLayer(self):
@@ -176,6 +219,7 @@ class Test_2_LayerManagerConnection(unittest.TestCase):
                       ('loc','_locLayer'),
                       ('adr','_adrLayer')):
             testlayer = ASM.getMock(ASM.ASMenum.LAYER)(id_rv=ltype[0])
+            #TODO. consider moving id setting to local scope
             self._layermanager.setLayerId(testlayer,ltype[0])
             #testlayer.customProperty.return_value = ltype[0]
             self._layermanager.checkNewLayer(testlayer)
@@ -183,132 +227,8 @@ class Test_2_LayerManagerConnection(unittest.TestCase):
         
     def test60_checkRemovedLayer(self):
         '''checks layers get null'd'''
-        self._layermanager.installRefLayers()        
+        pass      
     
-            
-    """       
-    def test40_createFeatureLayer(self):
-        '''Test AIMS Layer Created'''
-        testlog.debug('Test_1.40 test the creation of feature mem layer')
-        return True
-        
-        sampleResponse = {
-                "class":[
-                    "address",
-                    "collection"
-                ],
-                "links":[
-                    {
-                        "rel":[
-                            "self"
-                        ],
-                        "href":"http://144.66.241.207:8080/aims/api/address/features?page=1"
-                    },
-                    {
-                        "rel":[
-                            "next"
-                        ],
-                        "href":"http://144.66.241.207:8080/aims/api/address/features?page=2"
-                    }
-                ],
-                "actions":[
-                    {
-                        "name":"add",
-                        "method":"POST",
-                        "href":"http://144.66.241.207:8080/aims/api/address/changefeed/add"
-                    }
-                ],
-                "entities":[
-                    {
-                        "class":[
-                            "address"
-                        ],
-                        "rel":[
-                            "item"
-                        ],
-                        "links":[
-                            {
-                                "rel":[
-                                    "self"
-                                ],
-                                "href":"http://144.66.241.207:8080/aims/api/address/features/1"
-                            }
-                        ],
-                        "properties":{
-                            "publishDate":"2015-02-19",
-                            "version":1622074,
-                            "components":{
-                                "addressId":1,
-                                "addressType":"Road",
-                                "lifecycle":"Current",
-                                "addressNumber":523,
-                                "roadCentrelineId":112967,
-                                "roadName":"Waiatai",
-                                "roadTypeName":"Road",
-                                "suburbLocality":"Wairoa",
-                                "townCity":"Wairoa",
-                                "fullAddressNumber":"523",
-                                "fullRoadName":"Waiatai Road",
-                                "fullAddress":"523 Waiatai Road, Wairoa"
-                            },
-                            "addressedObject":{
-                                "addressableObjectId":1706002,
-                                "objectType":"Parcel",
-                                "addressPosition":{
-                                    "type":"Point",
-                                    "coordinates":[
-                                        1990322.0310298172,
-                                        5673091.026376988
-                                    ],
-                                    "crs":{
-                                        "type":"name",
-                                        "properties":{
-                                            "name":"urn:ogc:def:crs:EPSG::2193"
-                                        }
-                                    }
-                                }
-                            },
-                            "codes":{
-                                "suburbLocalityId":2622,
-                                "townCityId":100124,
-                                "parcelId":4220123,
-                                "meshblock":"1398600"
-                            }
-                        }
-                    }
-                ]
-            }
-        
-
-        layerTest = self._layermanager.createFeaturesLayers(sampleResponse)
-        self.assertTrue(layerTest.isValid(), 'Failed to load "{}".'.format(layerTest.source()))
-        """
-
-                
-#------------------------------------------------------------------------------
-
-        
-class DummyInterface(object):
-    
-    def __getattr__(self, *args, **kwargs):
-        def dummy(*args, **kwargs):
-            return self
-        return dummy
-    def __iter__(self):
-        return self
-    def next(self):
-        raise StopIteration
-    def layers(self):
-        # simulate iface.legendInterface().layers()
-        return QgsMapLayerRegistry.instance().mapLayers().values()
-    
-class _Dummy_MainWindow(object):
-    def statusBar(self): return None
-    
-class _Dummy_Layer(object):
-    cp = {}
-    def setCustomProperty(self,prop,id): self.cp[prop] = id 
-    def customProperty(self,prop): return self.cp[prop]
     
     
 if __name__ == "__main__":
