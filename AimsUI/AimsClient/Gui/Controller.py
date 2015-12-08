@@ -184,7 +184,6 @@ class Controller(QObject):
     
     def updateFeature(self, payload):
         return self._api.updateFeature(payload)
-        
 
     def refreshlayer(self):
         pass

@@ -46,6 +46,8 @@ class Address(object):
         self._waterName = None
         self._suburbLocality = None
         self._townCity = None
+        # _fullAddress only an attribute of 'Features'
+        self.fullAddress = None
        
         # addressable object
         self._aoType = None
@@ -97,8 +99,10 @@ class Address(object):
     def setExternalObjectIdScheme( self, externalObjectIdScheme ): self._externalObjectIdScheme = externalObjectIdScheme  
     def setValuationReference( self, valuationReference ): self._valuationReference = valuationReference  
     def setCertificateOfTitle( self, certificateOfTitle ): self._certificateOfTitle = certificateOfTitle  
-    def setAppellation( self, appellation ): self._appellation = appellation    
-        
+    def setAppellation( self, appellation ): self._appellation = appellation      
+    # realted to Features feed only
+    def setFullAddress (self, fullAddress): self.fullAddress = fullAddress  
+
     
     def _delNull(self, o):
         #needs to be expained to handle none also

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'Ui_DelAddressDialog.ui'
+# Form implementation generated from reading ui file 'AimsUI/Ui_DelAddressDialog.ui'
 #
-# Created: Wed Nov 25 12:58:16 2015
+# Created: Tue Dec  8 14:44:17 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -47,7 +47,7 @@ class Ui_DelAddressDialog(object):
         QtCore.QMetaObject.connectSlotsByName(DelAddressDialog)
 
     def retranslateUi(self, DelAddressDialog):
-        DelAddressDialog.setWindowTitle(_translate("DelAddressDialog", "Select addresses to retire", None))
-        self.label_2.setText(_translate("DelAddressDialog", "Select addresses for retirement", None))
+        DelAddressDialog.setWindowTitle(_translate("DelAddressDialog", "Select features to retire", None))
+        self.label_2.setText(_translate("DelAddressDialog", "Select features for retirement", None))
 
 from AimsUI.AimsClient.Gui.DictionaryList import DictionaryListView
