@@ -37,9 +37,15 @@ from AimsUI.LayerManager import LayerManager, InvalidParameterException
 from AimsUI.AimsClient.Gui.Controller import Controller
 from AimsUI.AimsLogging import Logger
 
+
+from mock import Mock, patch
+
+
 QtCore.QCoreApplication.setOrganizationName('QGIS')
 QtCore.QCoreApplication.setApplicationName('QGIS2')
 testlog = Logger.setup('test')
+
+LM_QMLR = 'AimsUI.LayerManager.QgsMapLayerRegistry'
 
 class Test_0_LayerManagerSelfTest(unittest.TestCase):
     
@@ -71,6 +77,7 @@ class Test_1_LayerManagerSetters(unittest.TestCase):
         controller = Controller(qi)
         self._layermanager = LayerManager(qi,controller)
 
+
         
     def tearDown(self):
         testlog.debug('Destroy null layermanager')
@@ -92,22 +99,22 @@ class Test_1_LayerManagerSetters(unittest.TestCase):
 
         testsuccesses = ('A','Z','#$%^&_)_#@)','māori','   ')
         for ts in testsuccesses:
-            testlayer = ASM.getMock(ASM.ASMenum.LAYER)(idrv=ts)
+            testlayer = ASM.getMock(ASM.ASMenum.LAYER)(id_rv=ts)
             self._layermanager.setLayerId(testlayer,ts)
             self.assertEqual(self._layermanager.layerId(testlayer),ts, 'Unable to set layer ID {}'.format(ts))
             
         #NB Can't set None as on Mock property since it is interpreted as no value so must be caught
         testfailures = (None,'',0,float('nan'),float('inf'),object,self)
         for tf in testfailures:
-            testlayer = ASM.getMock(ASM.ASMenum.LAYER)(idrv=tf)
+            testlayer = ASM.getMock(ASM.ASMenum.LAYER)(id_rv=tf)
             #testlayer.customProperty.return_value = tf
             self.assertRaises(InvalidParameterException, self._layermanager.setLayerId, testlayer, tf)
             #ctx mgr doesn't work for some reason!
             #with self.assertRaises(InvalidParameterException):
-            #    self._layermanager.setLayerId(testlayer,tf)
+            #    self._layermanager.setLayerId(testlayer,tf)            
             
-            
-class Test_2_LayerConnection(umintest.TestCase):
+class Test_2_LayerManagerConnection(unittest.TestCase):
+    '''installreflayer->installlayer->findlayer->layers'''
     
     def setUp(self): 
         testlog.debug('Instantiate null address, address.setter list')
@@ -115,42 +122,68 @@ class Test_2_LayerConnection(umintest.TestCase):
         qi = ASM.getMock(ASM.ASMenum.QI)()
         controller = Controller(qi)
         self._layermanager = LayerManager(qi,controller)
+        self._layermanager.addressLayerAdded = ASM.getMock(ASM.ASMenum.SIGNAL)()
 
         
     def tearDown(self):
         testlog.debug('Destroy null layermanager')
         self._layermanager = None   
-        
-    def test10_instLayers(self):
+    
+    def test10_layers(self):
         '''tests whether a layer generator is returned and it contains valid layers'''
-        #since this calls QgsMapLayerRegistry it wont return layers in a test env so never hits the assert
-        for layergen in self._layermanager.layers():
-            self.assertTrue(isinstance(layergen, ASM.getMock(ASM.ASMenum.LAYER)), 'Object returned not a layer type')
+        test_layers = [1,2,3]
+        with (ASM.getMock(ASM.ASMenum.QMLR)(test_layers)) as QgsMapLayerRegistry:
+            for glayer in self._layermanager.layers():
+                self.assertTrue(isinstance(glayer, ASM.getMock(ASM.ASMenum.LAYER)), 'Object returned not a layer type')
+                
+
+    def test11_layers(self):
+        '''tests whether a layer generator is returned and it contains valid layers'''
+        test_layers = 3*[ASM.getMock(ASM.ASMenum.LAYER)(),]
+        #with patch('qgis.core.QgsMapLayerRegistry') as qmlr_mock:
+        conf = {'instance().mapLayers.values':test_layers}
+        qmlr_spec = ASM.getMock(ASM.ASMenum.QMLR).__class__
+        with patch(LM_QMLR) as qmlr_mock:
+            qmlr_mock.instance.return_value.mapLayers.return_value.values.return_value = test_layers
+            #qmlr_mock.configure_mock(**conf)
+            for glayer in self._layermanager.layers():
+                self.assertEqual(isinstance(glayer, ASM.getMock(ASM.ASMenum.LAYER)().__class__), True,'Object returned not a layer type')
+            
+    def test20_findLayer(self):
+        '''tests whether the find layer fiunction returns a named layer, uses layers() gen'''
+        rcltestlayer = ASM.getMock(ASM.ASMenum.LAYER)()
+        self._layermanager.layers
+        self._layermanager.findLayer('rcl')
         
-    def test20_installRefLayers(self):
+    def test30_installLayers(self):
         '''tests install reflayers on the layer manager'''
         try: self._layermanager.installRefLayers()
         except Exception as e: raise AssertionError('Install reflayers failed. {}'.format(e))
+
         
-    def test30_checkRemovedLayer(self):
-        '''checks layers get null'd'''
-        self._layermanager.installRefLayers()
+    def test40_installRefLayers(self):
+        '''tests install reflayers on the layer manager'''
+        try: self._layermanager.installRefLayers()
+        except Exception as e: raise AssertionError('Install reflayers failed. {}'.format(e))  
         
         
-        
-    def test40_checkNewLayer(self):
+
+    def test50_checkNewLayer(self):
         '''tests whether layer is assigned to correct attribute'''
         #NB ('adr','_adrLayer'),#can't easily test adr since it emits a signal and fails with mock parameters
         for ltype in (('rcl','_rclLayer'),
                       ('par','_parLayer'),
-                      ('loc','_locLayer'),):
-            testlayer = ASM.getMock(ASM.ASMenum.LAYER)(idrv=ltype[0])
+                      ('loc','_locLayer'),
+                      ('adr','_adrLayer')):
+            testlayer = ASM.getMock(ASM.ASMenum.LAYER)(id_rv=ltype[0])
             self._layermanager.setLayerId(testlayer,ltype[0])
             #testlayer.customProperty.return_value = ltype[0]
             self._layermanager.checkNewLayer(testlayer)
             self.assertEqual(self._layermanager.__getattribute__(ltype[1]),testlayer)
         
-        
+    def test60_checkRemovedLayer(self):
+        '''checks layers get null'd'''
+        self._layermanager.installRefLayers()        
     
             
     """       
