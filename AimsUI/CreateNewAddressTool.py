@@ -18,7 +18,7 @@ from qgis.core import *
 from qgis.gui import *
 
 from AimsClient.Gui.NewAddressDialog import NewAddressDialog
-
+from AimsUI.AimsClient.AimsUtility import AimsUtility
 
 class CreateNewAddressTool(QgsMapTool):
     ''' tool for creating new address information ''' 
@@ -47,7 +47,7 @@ class CreateNewAddressTool(QgsMapTool):
         else:
             self.deactivate()
  
-    def canvasReleaseEvent(self,e):    #QgisMapMouseEvents have SnappingMode functionality that could be utilsied here 
+    def canvasReleaseEvent(self,e):    #QgisMapMouseEvents has SnappingMode functionality that could be utilsied here 
         if not e.button() == Qt.LeftButton:
             return
         
@@ -68,12 +68,7 @@ class CreateNewAddressTool(QgsMapTool):
     def setPoint( self, coords ):
         ''' guarantee srs and pass to the API '''
         self._enabled = False
-        # move the below utility somewhere modular, as other tools will also require this
-        src_crs = self._iface.mapCanvas().mapSettings().destinationCrs()
-        tgt_crs = QgsCoordinateReferenceSystem()
-        tgt_crs.createFromOgcWmsCrs('EPSG:2193')
-        transform = QgsCoordinateTransform( src_crs, tgt_crs )
-        coords = transform.transform( coords.x(), coords.y() )     
+        coords = AimsUtility.transform(self._iface, coords)    
         
         addInstance = self._controller.initialiseAddressObj()
         NewAddressDialog.newAddress(coords, addInstance, self._layerManager, self._controller, self._iface.mainWindow())

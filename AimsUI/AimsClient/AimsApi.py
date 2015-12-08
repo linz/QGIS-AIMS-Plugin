@@ -40,7 +40,7 @@ class AimsApi(object):
     def handleResponse(self, resp, content):
         ''' test http response
         [] == no errors, else list of critical errors'''
-        if resp == 201: #to be more inclusive i.e. 200 ...
+        if str(resp) == '201': #to be more inclusive i.e. 200 ...
             return [] #i.e. no errors
         else:
             # list of validation errors
@@ -51,7 +51,6 @@ class AimsApi(object):
                 # Failing that give the user the direct http response
                 return 'Please contact your system administrator \n HTTP Error :' + resp
 
-    
     def changefeedAdd(self, payload):
         ''' Add an address to the Change feed '''
         h = httplib2.Http(".cache")
@@ -79,7 +78,7 @@ class AimsApi(object):
         return json.loads(content) # Validation ... 
     
     def updateFeature(self, payload):
-        ''' update aims address feature. What did you think it did? '''
+        ''' update aims address feature '''
         h = httplib2.Http(".cache")
         h.add_credentials(self.user, self._password)
         resp, content = h.request(self._url+'changefeed/update', "POST", json.dumps(payload), self._headers)
