@@ -51,12 +51,16 @@ class LayerManager(QObject):
     
     def layerId(self, layer):
         idprop = self._propBaseName + 'Id' 
-        return str(layer.customProperty(idprop))
+        res = layer.customProperty(idprop)
+        if isinstance(res,QVariant): res = res.toPyObject()
+        return str(res)
 
     def setLayerId(self, layer, id):
         if id and isinstance(id,str):
             idprop = self._propBaseName + 'Id'
             layer.setCustomProperty(idprop,id)
+            id2 = self.layerId(layer)
+            if id2<>id: aimslog.warn('input id={} <> (layerid={}, cprop={})'.format(id,id2,layer.customProperty(idprop)))
         else: raise InvalidParameterException("'{}' is not a valid id".format(id))
 
     def layers(self):
@@ -131,9 +135,10 @@ class LayerManager(QObject):
         
         schema = Database.aimsSchema()
         
-        self.installLayer( 'rcl', schema, 'aimsroads', 'roadcentrelineid', True, "",'Roads' )        
-        self.installLayer( 'par', schema, 'parcel', 'id', True, 
-                            "parceltype not in ('ROAD','RLWY')",'Parcels' )    
+        rcl = self.installLayer( 'rcl', schema, 'aimsroads', 'roadcentrelineid', True, "",'Roads' )        
+        par = self.installLayer( 'par', schema, 'parcel', 'id', True, 
+                            "parceltype not in ('ROAD','RLWY')",'Parcels' )
+        return rcl,par    
         
     def loadAimsFeatures(self):
         ''' load AIMS features '''

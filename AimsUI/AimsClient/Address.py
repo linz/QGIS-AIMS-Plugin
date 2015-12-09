@@ -47,7 +47,7 @@ class Address(object):
         self._suburbLocality = None
         self._townCity = None
         # _fullAddress only an attribute of 'Features'
-        self.fullAddress = None
+        self._fullAddress = None
        
         # addressable object
         self._aoType = None
@@ -101,7 +101,7 @@ class Address(object):
     def setCertificateOfTitle( self, certificateOfTitle ): self._certificateOfTitle = certificateOfTitle  
     def setAppellation( self, appellation ): self._appellation = appellation      
     # realted to Features feed only
-    def setFullAddress (self, fullAddress): self.fullAddress = fullAddress  
+    def setFullAddress (self, fullAddress): self._fullAddress = fullAddress  
 
     
     def _delNull(self, o):

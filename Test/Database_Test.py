@@ -32,6 +32,7 @@ testlog = Logger.setup('test')
 
 DCONF = {'host':'127.0.0.1', 'port':'5432', 'user':'postgres','password':'', \
          'name':'aims_ci_test','aimsschema':'aims', 'table':'aims_test_table'}
+
 TIMEOUT = 10
 #Bypass for timeout error raise. Delete in production
 BYPASS = True
@@ -115,14 +116,12 @@ class Test_2_DatabaseConnectivity(unittest.TestCase):
     
     @timeout(seconds=TIMEOUT, message='Timeout connecting to database')
     def test10_connection(self):
-        return#####
         testlog.debug('Test_2.10 Test connection() function')
         self.conn = Database.connection()
         self.assertNotEqual(self.conn,None,'Connection not established')
         
     @timeout(seconds=TIMEOUT, message='Timeout execution query on database')
     def test20_execute(self):
-        return#####
         testlog.debug('Test_2.20 Test query execution (SELECT) function')
         self.res = Database.execute(self.q1)
         self.assertNotEqual(self.res,None,'Query "{}" failed with {}'.format(self.q1,self.res))

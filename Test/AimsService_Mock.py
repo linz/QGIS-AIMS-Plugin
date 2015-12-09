@@ -168,11 +168,14 @@ class _Legend(object):
 #------------------------------------------------------------------------------
     
 class _Layer(object):
+    Layer = True
     cp = {}
     def setCustomProperty(self,prop,id): self.cp[prop] = id 
     def customProperty(self,prop): return self.cp[prop]
     def type(self): return type(self)
-
+    
+class _VectorLayer(_Layer):
+    VectorLayer = True
 #-------------------------------------------------------------
 
 class _pyqtSignal(object):
@@ -211,6 +214,7 @@ class ASM(object):
                 }[type]
                 
     def getMockSpec(cls,type):
+        '''doesn't work, getmock is evaluated before __class__'''
         m =  ASM.getMock(type)
         print type
         return ASM.getMock(type)().__class__
@@ -224,12 +228,16 @@ class ASM(object):
         return Mock(spec=_QInterface)
     
     @staticmethod
-    def getLayerMock(id_rv=None):
-        m = Mock(spec=_Layer)
+    def getLayerMock(id_rv=None, vl_rv=None,tp_rv=None):
+        if vl_rv:
+            m = Mock(spec=_VectorLayer)
+            m.type.return_value = m.VectorLayer
+        else:
+            m = Mock(spec=_Layer)
+            m.type.return_value = m.Layer
         m.customProperty.return_value = id_rv
-        m.VectorLayer = None
-        m.type.return_value = None
-        return m    
+
+        return m
     
     @staticmethod
     def getPyQtSignalMock():

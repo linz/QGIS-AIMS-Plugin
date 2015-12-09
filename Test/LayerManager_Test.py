@@ -51,6 +51,13 @@ LM_QMLR = 'AimsUI.LayerManager.QgsMapLayerRegistry'
 LM_QDSU = 'AimsUI.LayerManager.QgsDataSourceURI'
 LM_QVL = 'AimsUI.LayerManager.QgsVectorLayer'
 
+LCONF = {'id':'rcl', 'schema':'aims_schema', 'table':'aims_table', 'key':'id', 'estimated':True, 'where':'', 'displayname':'aims_layer'}
+def getLConf(replace=None):
+    if replace and isinstance(replace,dict):
+        for r in replace:
+            if r in LCONF: LCONF[r] = replace[r] 
+    return LCONF
+
 class Test_0_LayerManagerSelfTest(unittest.TestCase):
     
     def setUp(self):
@@ -91,9 +98,8 @@ class Test_1_LayerManagerSetters(unittest.TestCase):
         '''Test the layer id setter'''
         testval = 'AIMS1000'
         testlog.debug('Test_1.10 Instantiate layer ID')
-        testlayer = ASM.getMock(ASM.ASMenum.LAYER)()
-        testlayer.customProperty.return_value = testval
-       
+        testlayer = ASM.getMock(ASM.ASMenum.LAYER)(id_rv=testval,vl_rv=True)
+
         self._layermanager.setLayerId(testlayer,testval)
         self.assertEqual(self._layermanager.layerId(testlayer),testval, 'Unable to set layer ID {}'.format(testval))
 
@@ -103,7 +109,7 @@ class Test_1_LayerManagerSetters(unittest.TestCase):
 
         testsuccesses = ('A','Z','#$%^&_)_#@)','māori','   ')
         for ts in testsuccesses:
-            testlayer = ASM.getMock(ASM.ASMenum.LAYER)(id_rv=ts)
+            testlayer = ASM.getMock(ASM.ASMenum.LAYER)(id_rv=ts,vl_rv=True)
             self._layermanager.setLayerId(testlayer,ts)
             self.assertEqual(self._layermanager.layerId(testlayer),ts, 'Unable to set layer ID {}'.format(ts))
             
@@ -133,36 +139,43 @@ class Test_2_LayerManagerConnection(unittest.TestCase):
         testlog.debug('Destroy null layermanager')
         self._layermanager = None                   
 
-    def test10_layers(self):
-        '''tests whether a layer generator is returned and it contains valid layers'''
-        test_layers = 3*(ASM.getMock(ASM.ASMenum.LAYER)(),)
+    def test10_layers_m(self):
+        '''tests whether a layer generator is returned and it contains valid mock layers'''
+        test_layers = 3*(ASM.getMock(ASM.ASMenum.LAYER)(vl_rv=True),)
         with patch(LM_QMLR) as qmlr_mock:
             qmlr_mock.instance.return_value.mapLayers.return_value.values.return_value = test_layers
             for glayer in self._layermanager.layers():
-                testlog.debug('testing layer (fetch) for {}'.format(glayer))
-                self.assertEqual(isinstance(glayer, ASM.getMock(ASM.ASMenum.LAYER)().__class__), True,'Object returned not a layer type')
+                testlog.debug('T10 - testing layer (fetch) for {}'.format(glayer))
+                self.assertEqual(isinstance(glayer, ASM.getMock(ASM.ASMenum.LAYER)().__class__), True,'Object returned not a layer type')    
+                
+    def test11_layers(self):
+        '''tests whether a layer generator is returned and it contains valid layers'''
+        #TODO install test layers even though installlayer functionality is untested. in the meantime returns none
+        for glayer in self._layermanager.layers():
+            testlog.debug('testing layer (fetch) for {}'.format(glayer))
+            self.assertEqual(isinstance(glayer, QgsVectorLayer), True,'Object returned not a layer type')
+            
             
     def test20_findLayer(self):
         '''tests whether the find layer fiunction returns a named layer, uses layers() gen'''
-        test_layeridlist = ('rcl','par','loc','adr')
-        test_layerlist = len(test_layeridlist)*(ASM.getMock(ASM.ASMenum.LAYER)(),)
-        test_layerdict = {x[0]:x[1] for x in zip(test_layeridlist,test_layerlist)}
+        test_layerdict = {test_layerid:ASM.getMock(ASM.ASMenum.LAYER)(id_rv=test_layerid,vl_rv=True) for test_layerid in ('rcl','par','loc','adr')}
+        #test_layerlist = len(test_layeridlist)*(ASM.getMock(ASM.ASMenum.LAYER)(vl_rv=True),)
+        #test_layerdict = {x[0]:x[1] for x in zip(test_layeridlist,test_layerlist)}
         with patch(LM_QMLR) as qmlr_mock:
             qmlr_mock.instance.return_value.mapLayers.return_value.values.return_value = test_layerdict.values()
             for test_layerid in test_layerdict:
-                testlog.debug('testing findlayer for layer type {}'.format(test_layerid))
-                test_layerdict[test_layerid].customProperty.return_value = test_layerid
+                testlog.debug('T20 testing findlayer for layer type {}'.format(test_layerid))
+                #test_layerdict[test_layerid].customProperty.return_value = test_layerid
                 test_layer = self._layermanager.findLayer(test_layerid)
-                self.assertEqual(isinstance(test_layer, ASM.getMock(ASM.ASMenum.LAYER)().__class__), True,'Object returned not a layer type with name'.format(test_layerid))
+                self.assertEqual(isinstance(test_layer, ASM.getMock(ASM.ASMenum.LAYER)(vl_rv=True).__class__), True,'Object returned not a layer type with name'.format(test_layerid))
     
     
     def test30_installLayers_find(self):
         '''tests install layer when layer is already installed in Qgis'''
         test_idlist = ('rcl','par','loc','adr')
-        test_layer = ASM.getMock(ASM.ASMenum.LAYER)()
         
         for test_id in test_idlist:
-            test_layer.customProperty.return_value = test_id
+            test_layer = ASM.getMock(ASM.ASMenum.LAYER)(id_rv=test_id,vl_rv=True)
             #set up legendinterface to return legend mock!!!
             qlgd_mock =  ASM.getMock(ASM.ASMenum.QLGD)()
             self._layermanager._iface.legendInterface.return_value = qlgd_mock
@@ -171,10 +184,10 @@ class Test_2_LayerManagerConnection(unittest.TestCase):
                 #set legend visibility
                 qlgd_mock.isLayerVisible.return_value = lyr_vis
                 with patch(LM_QMLR) as qmlr_mock:
-                    testlog.debug('testing installlayer 1 on layer with name {} and lgd visibility={}'.format(test_id,lyr_vis))
+                    testlog.debug('T30 - testing installlayer 1 on layer with name {} and lgd visibility={}'.format(test_id,lyr_vis))
                     #set up findlayer to return test_layer
                     qmlr_mock.instance.return_value.mapLayers.return_value.values.return_value = [test_layer,]
-                    res_layer = self._layermanager.installLayer(test_id, DCONF['aimsschema'], DCONF['table'], 'test_key', 'test_est', 'test_where', 'test_displayname')
+                    res_layer = self._layermanager.installLayer(**getLConf(replace={'id':test_id}))
         
                     self.assertEqual(test_layer,res_layer, 'installlayers and set layers dont match on layer with name {} and lgd visibility={}'.format(test_id,lyr_vis))
                         
@@ -188,26 +201,38 @@ class Test_2_LayerManagerConnection(unittest.TestCase):
             with patch(LM_QMLR) as qmlr_mock:
                 qmlr_mock.instance.return_value.mapLayers.return_value.values.return_value = ()
                 with patch(LM_QVL) as qvl_mock:
-                    testlog.debug('testing installlayer 2 on layer with name {}'.format(test_id))
+                    testlog.debug('T40 - testing installlayer 2 on layer with name {}'.format(test_id))
                     qvl_mock.return_value = test_layer
                     res_layer = self._layermanager.installLayer(test_id, DCONF['aimsschema'], DCONF['table'], 'test_key', False, 'test_where', 'test_displayname')
                     self.assertEqual(test_layer, res_layer, 'installlayers and set layers dont match on fetched layer with name {}'.format(test_id))
 
+
+    #now that installlayers is tested we can use this to generate test layers
         
+    def test32_installLayers_tst(self):
+        '''tests whether fake layers have been installed following execution of the installlayers method'''
+        test_layer_id = 't32'
+        test_layer = self._layermanager.installLayer(**getLConf(replace={'displayname':test_layer_id}))
+        #test_layer = ASM.getMock(ASM.ASMenum.LAYER)(id_rv=test_layer_id) 
+        with patch(LM_QMLR) as qmlr_mock:
+            testlog.debug('T32 - testing installlayers on fake layer {}'.format(test_layer_id))
+            self._layermanager.setLayerId(test_layer,test_layer_id)
+            qmlr_mock.instance.return_value.mapLayers.return_value.values.return_value = (test_layer,)
+            found_layer = self._layermanager.findLayer(test_layer_id)
+            self.assertEqual(found_layer, test_layer,'returned layer does not match set layer using name {}'.format(test_layer_id))
+    
+    
     def test40_installRefLayers(self):
         '''tests whether ref layers have been installed following execution of the installreflayers method'''
-        self._layermanager.installRefLayers()
-        #TODO. uses the findlayer logic to test whether the layers have been fetched but mocks this functionality. rework! 
-        test_layeridlist = ('rcl','par')
-        test_layerlist = len(test_layeridlist)*(ASM.getMock(ASM.ASMenum.LAYER)(),)
-        test_layerdict = {x[0]:x[1] for x in zip(test_layeridlist,test_layerlist)}
+        ref_layers = {a:b for a,b in zip(('rcl','par'), self._layermanager.installRefLayers())}
+        
         with patch(LM_QMLR) as qmlr_mock:
-            qmlr_mock.instance.return_value.mapLayers.return_value.values.return_value = test_layerdict.values()
-            for test_layerid in test_layerdict:
-                testlog.debug('testing installreflayers for layer type {}'.format(test_layerid))
-                test_layerdict[test_layerid].customProperty.return_value = test_layerid
-                test_layer = self._layermanager.findLayer(test_layerid)
-                self.assertEqual(isinstance(test_layer, ASM.getMock(ASM.ASMenum.LAYER)().__class__), True,'Object returned not a layer type with name'.format(test_layerid))
+            qmlr_mock.instance.return_value.mapLayers.return_value.values.return_value = ref_layers.values()
+            for test_layerid in ref_layers:
+                testlog.debug('T40 - testing installreflayers for layer type {}'.format(test_layerid))
+                self._layermanager.setLayerId(ref_layers[test_layerid],test_layerid)
+                found_layer = self._layermanager.findLayer(test_layerid)
+                self.assertEqual(found_layer, ref_layers[test_layerid],'returned layer does not match set layer using name {}'.format(test_layerid))
     
         
 
@@ -229,6 +254,16 @@ class Test_2_LayerManagerConnection(unittest.TestCase):
         '''checks layers get null'd'''
         pass      
     
+    def test70_loadAimsFeatures(self):
+        self._layermanager._iface.mapCanvas.return_value.mapSettings.return_value.scale.return_value = 9999999
+        self._layermanager.loadAimsFeatures()
+        self.assertEqual(1,1,'1')
+    
+    def test_80_getAimsFeatures(self):
+        pass
+    
+    def test90_createFeaturesLayers(self):
+        pass
     
     
 if __name__ == "__main__":
