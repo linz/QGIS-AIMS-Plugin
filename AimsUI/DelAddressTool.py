@@ -6,10 +6,12 @@ from PyQt4.QtGui import *
 from qgis.core import *
 from qgis.gui import *
 
+import qgis
+
 from Ui_DelAddressDialog import Ui_DelAddressDialog
 
 
-class DelAddressTool(QgsMapToolIdentifyFeature):
+class DelAddressTool(qgis.gui.QgsMapToolIdentifyFeature):
 
     tolerance=5
 

@@ -59,8 +59,7 @@ class LayerManager(QObject):
         if id and isinstance(id,str):
             idprop = self._propBaseName + 'Id'
             layer.setCustomProperty(idprop,id)
-            id2 = self.layerId(layer)
-            if id2<>id: aimslog.warn('input id={} <> (layerid={}, cprop={})'.format(id,id2,layer.customProperty(idprop)))
+            #assert id == self.layerId(layer), 'ID return error'
         else: raise InvalidParameterException("'{}' is not a valid id".format(id))
 
     def layers(self):
@@ -235,8 +234,8 @@ class LayerManager(QObject):
             addressableObjectId = o['addressableObjectId'] if o.has_key('addressableObjectId') else None  
             objectType = o['objectType'] if o.has_key('objectType') else None     
             objectName = o['objectName'] if o.has_key('objectName') else None    
-            addressPositionType = o['addressPosition']['type'] if o['addressPosition'].has_key('type') else None
-            coords = o['addressPosition']['coordinates'] if o['addressPosition'].has_key('coordinates') else None 
+            addressPositionType = o['addressPosition']['type'] if o.has_key('addressPosition') and o['addressPosition'].has_key('type') else None
+            coords = o['addressPosition']['coordinates'] if o.has_key('addressPosition') and o['addressPosition'].has_key('coordinates') else None 
             
             codes = e['properties']['codes'] 
             suburbLocalityId = codes['suburbLocalityId'] if codes.has_key('suburbLocalityId') else None  # does the user require these???
