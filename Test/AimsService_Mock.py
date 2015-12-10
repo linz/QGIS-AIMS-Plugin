@@ -147,52 +147,157 @@ class _QInterface(object):
     def mapCanvas(self):
         return _MapCanvas()
     
+    def legendInterface(self):
+        return _Legend()
+    
+    def messageBar(self): pass
+    
 class _MapCanvas(object):
     def mapSettings(self):
         return _MapSettings()
+    def extent(self): return _Extent()
     
 class _MapSettings(object):
-    def setDestinationCrs(_displayCrs):
-        pass
+    def setDestinationCrs(_displayCrs):pass
     
+class _Extent(object):
+    def xMaximum():pass
+    def yMaximum():pass
+    def xMinimum():pass
+    def yMinimum():pass
+        
 class _MainWindow(object):
     def statusBar(self): return None
+    
+class _Legend(object):
+    def isLayerVisible(layer): pass
+    def setLayerVisible(layer): pass
     
 #------------------------------------------------------------------------------
     
 class _Layer(object):
+    Layer = True
     cp = {}
-    def setCustomProperty(self,prop,id): self.cp[prop] = id 
-    def customProperty(self,prop): return self.cp[prop]
+    def id():pass#id = None
+    def setCustomProperty(self,prop,id): pass#self.cp[prop] = id 
+    def customProperty(self,prop): pass#return self.cp[prop]
+    def type(self): pass#return type(self)
+    def dataProvider(self): return _Provider()
+    def updateFields(self): pass
+    def commitChanges(self): pass
+    def loadNamedStyle(self):pass
+    #def createFeaturesLayer(self):pass
     
-class VectorLayer(_Layer):pass
+class _VectorLayer(_Layer):
+    VectorLayer = True
+    
+class _Provider(object):
+    def addAttributes(self,listofattributes):pass
+    
+class _Feature(object):
+    def setGeometry(self):pass
+    def setAttributes(self):pass
 
+class _Geometry(object):
+    def fromPoint(self):return _Geometry()
+    
+class _Point(object):
+    def __init__(self,x,y):pass
+#-------------------------------------------------------------
+
+class _pyqtSignal(object):
+    def emit(self): pass
+    
+#------------------------------------------------------------- 
+#from contextlib import contextmanager
+#@contextmanager
+class ContextMock(Mock):
+    def __exit__(self, exc_type=None, exc_val=None, exc_tb=None): pass
+    def __enter__(self): pass
+    
+class _QgsMapLayerRegistry(object):
+
+    def instance(self): return self
+    def mapLayers(self): return _MapLayers()
+    
+class _MapLayers(object):
+    def values(self): return []
 #-------------------------------------------------------------
 
 
 class ASM(object):
-    ASMenum = enum('HTTP','QI','LAYER')
+    '''Aims Service Mock accessor'''
+    
+    ASMenum = enum('HTTP','QI','LAYER','FEATURE','GEOMETRY','POINT','SIGNAL','QMLR','QLGD')
+    
     @classmethod
     def getMock(cls,type):
-        return {cls.ASMenum.HTTP : ASM.getAimsHttpMock,
-                cls.ASMenum.QI : ASM.getQIMock,
-                cls.ASMenum.LAYER : ASM.getLayerMock
+        return {cls.ASMenum.HTTP :      ASM.getAimsHttpMock,
+                cls.ASMenum.QI :        ASM.getQIMock,
+                cls.ASMenum.LAYER :     ASM.getLayerMock,
+                cls.ASMenum.FEATURE :   ASM.getFeatureMock,
+                cls.ASMenum.GEOMETRY :  ASM.getGeometryMock,
+                cls.ASMenum.POINT :     ASM.getPointMock,
+                cls.ASMenum.SIGNAL :    ASM.getPyQtSignalMock,
+                cls.ASMenum.QMLR :      ASM.getQMLRMock,
+                cls.ASMenum.QLGD :      ASM.getQLGDMock
                 }[type]
                 
-    @classmethod
-    def getAimsHttpMock(cls):
+    def getMockSpec(cls,type):
+        '''doesn't work, getmock is evaluated before __class__'''
+        m =  ASM.getMock(type)
+        print type
+        return ASM.getMock(type)().__class__
+                
+    @staticmethod
+    def getAimsHttpMock():
         return Mock(spec=_AimsHttp)
     
-    @classmethod
-    def getQIMock(cls):
+    @staticmethod
+    def getQIMock():
         return Mock(spec=_QInterface)
     
-    @classmethod
-    def getLayerMock(cls,idrv=None):
-        m = Mock(spec=_Layer)
-        m.customProperty.return_value = idrv
-        m.type = VectorLayer
+    @staticmethod
+    def getLayerMock(idrv=None, cprv=None, vlrv=None,tprv=None):
+        if vlrv:
+            m = Mock(spec=_VectorLayer)
+            m.type.return_value = m.VectorLayer
+        else:
+            m = Mock(spec=_Layer)
+            m.type.return_value = m.Layer
+        m.id.return_value = idrv
+        m.customProperty.return_value = cprv
+
         return m
+    
+    @staticmethod
+    def getFeatureMock():
+        return Mock(spec=_Feature)       
+    
+    @staticmethod
+    def getGeometryMock():
+        return Mock(spec=_Geometry)    
+    
+    @staticmethod
+    def getPointMock():
+        return Mock(spec=_Point)
+    
+    @staticmethod
+    def getPyQtSignalMock():
+        m = Mock(spec=_pyqtSignal)
+        return m    
+    
+    @staticmethod
+    def getQMLRMock(qmlr_rv=[None,]):
+        m = ContextMock(spec=_QgsMapLayerRegistry)
+        m.instance().mapLayers().values().return_value = qmlr_rv
+        return m    
+    
+    @staticmethod
+    def getQLGDMock(qlgd_rv=None):
+        m = Mock(spec=_Legend)
+        return m
+
 
 ###------
 

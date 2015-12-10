@@ -6,13 +6,13 @@ virtualenv:
 before_install:
 - sudo apt-get update
 install:
-- sudo apt-get install python-qt4 pyqt4-dev-tools
+- #sudo apt-get install python-qt4 pyqt4-dev-tools
 - sudo add-apt-repository -y ppa:ubuntugis/ubuntugis-unstable
 - sudo apt-get install -y qgis
-- pip install requests
+- #pip install requests
 - pip install --upgrade pip
-- pip install --upgrade pep8
-- pip install --upgrade pylint
+- #pip install --upgrade pep8
+- #pip install --upgrade pylint
 - pip install ConfigParser
 - pip install coveralls
 services:
@@ -20,6 +20,7 @@ services:
 before_script:
 - echo "Setup starting on " `date`
 - psql -c 'create database aims_ci_test;' -U postgres
+- psql -c '\connect aims_ci_test;' -U postgres
 - psql -c 'create schema aims;' -U postgres
 - psql -c 'create table aims.aims_test_table(id int, name varchar(32));' -U postgres
 - echo "Build starting on " `date`

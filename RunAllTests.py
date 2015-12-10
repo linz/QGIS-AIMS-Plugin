@@ -28,6 +28,7 @@ from Test.Database_Test import Test_2_DatabaseConnectivity as DT2
 
 from Test.LayerManager_Test import Test_0_LayerManagerSelfTest as LMT0
 from Test.LayerManager_Test import Test_1_LayerManagerSetters as LMT1
+from Test.LayerManager_Test import Test_2_LayerManagerConnection as LMT2
 
 from Test.Controller_Test import Test_0_ControllerSelfTest as CT0
 from Test.Controller_Test import Test_1_ControllerTestSetupFunction as CT1
@@ -51,6 +52,7 @@ class FullSuite(unittest.TestSuite):
         suites += unittest.makeSuite(DT2)
         suites += unittest.makeSuite(LMT0) 
         suites += unittest.makeSuite(LMT1)
+        suites += unittest.makeSuite(LMT2)
         suites += unittest.makeSuite(CT0)
         suites += unittest.makeSuite(CT1)
         

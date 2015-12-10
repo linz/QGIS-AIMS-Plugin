@@ -30,11 +30,12 @@ from AimsUI.AimsLogging import Logger
 
 testlog = Logger.setup('test')
 
-DCONF = {'host':'127.0.0.1', 'port':5432, 'user':'postgres','password':'', \
+DCONF = {'host':'127.0.0.1', 'port':'5432', 'user':'postgres','password':'', \
          'name':'aims_ci_test','aimsschema':'aims', 'table':'aims_test_table'}
+
 TIMEOUT = 10
 #Bypass for timeout error raise. Delete in production
-BYPASS = False
+BYPASS = True
 
 class TimeoutError(Exception): pass
 

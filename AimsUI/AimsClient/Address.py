@@ -19,6 +19,8 @@ class Address(object):
         self._submitterUserName = None
         self._submittedDate = None
         self._queueStatusName = None
+        self._version = None
+        self._addressId = None
         
         # address values
         self._sourceUser = user
@@ -44,6 +46,8 @@ class Address(object):
         self._waterName = None
         self._suburbLocality = None
         self._townCity = None
+        # _fullAddress only an attribute of 'Features'
+        self._fullAddress = None
        
         # addressable object
         self._aoType = None
@@ -60,6 +64,8 @@ class Address(object):
         self._appellation = None
     
     # Set functions used to manipulate object properties   
+    def setVersion (self, version): self._version = version
+    def setAddressId (self, addressId): self._addressId = addressId
     def setSourceReason (self, sourceReason): self._sourceReason = sourceReason
     def setAddressType( self, addressType ): self._addressType = addressType    
     def setExternalAddressId( self, externalAddressId ): self._externalAddressId = externalAddressId 
@@ -93,20 +99,38 @@ class Address(object):
     def setExternalObjectIdScheme( self, externalObjectIdScheme ): self._externalObjectIdScheme = externalObjectIdScheme  
     def setValuationReference( self, valuationReference ): self._valuationReference = valuationReference  
     def setCertificateOfTitle( self, certificateOfTitle ): self._certificateOfTitle = certificateOfTitle  
-    def setAppellation( self, appellation ): self._appellation = appellation    
-        
-    @staticmethod
-    def _delNone(d): return {k:v for k,v in d.items() if v is not None}
+    def setAppellation( self, appellation ): self._appellation = appellation      
+    # realted to Features feed only
+    def setFullAddress (self, fullAddress): self._fullAddress = fullAddress  
+
+    
+    def _delNull(self, o):
+        #needs to be expained to handle none also
+        if hasattr(o, 'items'):
+            oo = type(o)()
+            for k in o:
+                if (k != 'NULL') and (o[k] != 'NULL'):
+                    oo[k] = self._delNull(o[k])
+        elif hasattr(o, '__iter__'):
+            oo = [ ] 
+            for it in o:
+                if it != 'NULL':
+                    oo.append(self._delNull(it))
+        else: return o
+        return type(o)(oo)
+
 
     def aimsObject(self):
         ''' Python address class to json object '''
 
         return self._delNone({
+        'version':self._version,                      
         'workflow':{
             'sourceUser':self._sourceUser,
             'sourceReason':self._sourceReason
         },
         'components':{
+            'addressId':self._addressId,
             'addressType':self._addressType,
             'externalAddressId':self._externalAddressId,
             'externalAddressIdScheme':self._externalAddressIdScheme,
