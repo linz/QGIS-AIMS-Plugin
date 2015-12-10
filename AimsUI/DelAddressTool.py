@@ -5,10 +5,13 @@ from PyQt4.QtGui import *
 
 from qgis.core import *
 from qgis.gui import *
+from qgis.gui import QgsMapToolIdentifyFeature as QMTIF
+
+#reload(QMTIF)
 
 from Ui_DelAddressDialog import Ui_DelAddressDialog
 
-class DelAddressTool(QgsMapToolIdentifyFeature):
+class DelAddressTool(QMTIF):#QgsMapToolIdentifyFeature):
 
     tolerance=5
 
