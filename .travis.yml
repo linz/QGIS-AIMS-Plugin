@@ -1,12 +1,11 @@
 language: python
 python: '2.7'
-sudo: False
 
 virtualenv:
     system_site_packages: true
 
 install:
-    - apt-get install -y qgis
+    - sudo apt-get install -y qgis
     - pip install ConfigParser
     - pip install coveralls
     
