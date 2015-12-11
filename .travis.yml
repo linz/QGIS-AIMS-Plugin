@@ -3,10 +3,10 @@ python: '2.7'
 
 virtualenv:
     system_site_packages: true
-  
+
 before_install:
     - sudo apt-get update
-    
+
 install:
     - sudo apt-get install python-qt4 pyqt4-dev-tools
     - sudo apt-get install -y qgis
@@ -20,6 +20,7 @@ before_script:
     - echo "Setup PATH vars. " `python -c 'import sys; print sys.path'`
     - export QGIS_PREFIX_PATH=/usr/share/qgis
     - export PYTHONPATH=$PYTHONPATH:${QGIS_PREFIX_PATH}/python/:${QGIS_PREFIX_PATH}/python/plugins:`pwd`
+    - export PYTHONPATH=$PYTHONPATH:/usr/lib/python2.7/dist-packages/qgis
     - echo "PYTHONPATH:" $PYTHONPATH
     - export LD_LIBRARY_PATH=${QGIS_PREFIX_PATH}/lib
     - echo "Setup DB. " `date`
