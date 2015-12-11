@@ -1,6 +1,9 @@
 language: python
 python: '2.7'
 
+virtualenv:
+    system_site_packages: true
+  
 before_install:
     - sudo apt-get update
     
@@ -14,7 +17,7 @@ services:
     - postgresql
     
 before_script:
-    - echo "Setup PATH vars. " `date`
+    - echo "Setup PATH vars. " `python -c 'import sys; print sys.path'`
     - export QGIS_PREFIX_PATH=/usr/share/qgis
     - export PYTHONPATH=$PYTHONPATH:${QGIS_PREFIX_PATH}/python/:${QGIS_PREFIX_PATH}/python/plugins:`pwd`
     - echo "PYTHONPATH:" $PYTHONPATH
