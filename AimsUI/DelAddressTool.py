@@ -5,6 +5,8 @@ from PyQt4.QtGui import *
 
 from qgis.core import *
 from qgis.gui import *
+from qgis.gui import QgsMapToolIdentify as QMTI
+from qgis.gui import QgsMapToolIdentifyFeature as QMTIF
 
 
 # from qgis.gui import QgsMapTool
@@ -13,9 +15,8 @@ from qgis.gui import *
 # from PyQt4.QtGui import QDialog
 # from PyQt4.QtGui import QMessageBox
 
-#reload(QMTIF)
+from AimsUI.AimsClient.Gui.Ui_DelAddressDialog import Ui_DelAddressDialog
 
-from Ui_DelAddressDialog import Ui_DelAddressDialog
 
 class DelAddressTool(QgsMapToolIdentify):
 
@@ -28,6 +29,10 @@ class DelAddressTool(QgsMapToolIdentify):
         self._controller = controller
         self.activate()
 
+        self.cursor = QCursor()
+        self.setShape(Qt.CrossCursor)
+        self.parent().setCursor(self.cursor)
+    
     def activate(self):
         QgsMapTool.activate(self)
         sb = self._iface.mainWindow().statusBar()
