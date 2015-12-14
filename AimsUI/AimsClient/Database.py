@@ -13,6 +13,9 @@ import psycopg2
 import Error
 import Config
 from Config import ConfigReader
+from AimsUI.AimsLogging import Logger
+
+aimslog = Logger.setup()
 
 _db = None
 _autocommit = True
@@ -28,6 +31,7 @@ _password = config.configSectionMap('db')['password']
 _aimsSchema='reference'
 
 def setup(d):
+    aimslog.info('Setting DB, {}'.format(d))
     setHost(d['host'])
     setPort(d['port'])
     setDatabase(d['name']) 
