@@ -25,6 +25,7 @@ from NewAddressDialog import NewAddressDialog
 from AimsUI.DelAddressTool import DelAddressTool
 from AimsUI.MoveAddressTool import MoveAddressTool
 from AimsUI.CreateNewAddressTool import CreateNewAddressTool
+from AimsUI.UpdateAddressTool import UpdateAddressTool
 from AimsUI.AimsClient.AimsApi import AimsApi
 
 from AimsUI import AimsLogging
@@ -39,8 +40,8 @@ class Controller(QObject):
     def __init__(self, iface):
         QObject.__init__(self)
         self._iface = iface
-        self._api = AimsApi()
-        self._user = self._api.user
+        self.api = AimsApi()
+        self.user = self.api.user
 
         #self._statusbar = iface.mainWindow().statusBar()
         #self._deladdtool = None
@@ -100,9 +101,9 @@ class Controller(QObject):
         self._updateaddressaction.setWhatsThis('Update AIMS Feature')
         self._updateaddressaction.setStatusTip('Update AIMS Feature')
         self._updateaddressaction.setEnabled(False)
-        #self._updateaddressaction.triggered.connect( self.startDelAddressTool )
-        #self._updatetool = UpdateAddressTool( self._iface, self._layers, self)
-        #self._updatetool.setAction( self._updateaddressaction )
+        self._updateaddressaction.triggered.connect( self.startUpdateAddressTool )
+        self._updateaddtool = UpdateAddressTool( self._iface, self._layers, self)
+        self._updateaddtool.setAction( self._updateaddressaction )
        
         # Add to own toolbar
         self._toolbar = self._iface.addToolBar('QGIS-AIMS-Plugin')
@@ -150,7 +151,8 @@ class Controller(QObject):
     def loadEditor(self):
         self._layers.initialiseExtentEvent()
         self._layers.installRefLayers()
-                    
+    
+    # now seems the below could be one method         
     def startNewAddressTool(self):
         self._iface.mapCanvas().setMapTool(self._createnewaddresstool)
         self._createnewaddresstool.setEnabled(True)
@@ -168,22 +170,22 @@ class Controller(QObject):
         self._deladdtool.setEnabled(True)
 
     def initialiseAddressObj(self): 
-        return Address(self._user)
+        return Address(self.user)
 
     def newAddress(self, payload):   
-        return self._api.changefeedAdd(payload)
+        return self.api.changefeedAdd(payload)
     
     def retireAddress(self, retireFeatures):
         ''' retireFeatures == [] to account for single and multiple
         method iterates through the list of retirement payloads and pass to retire API '''
         for retiree in retireFeatures:
-            return self._api.changefeedRetire(retiree) 
+            return self.api.changefeedRetire(retiree) 
     
     def getFeatures(self, xMaximum, yMaximum, xMinimum, yMinimum):
-        return self._api.getFeatures(xMaximum, yMaximum, xMinimum, yMinimum)
+        return self.api.getFeatures(xMaximum, yMaximum, xMinimum, yMinimum)
     
     def updateFeature(self, payload):
-        return self._api.updateFeature(payload)
+        return self.api.updateFeature(payload)
 
     def refreshlayer(self):
         pass

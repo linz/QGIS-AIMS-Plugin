@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'AimsUI/AimsClient/Gui/Ui_NewAddressDialog.ui'
 #
-# Created: Thu Dec  3 20:52:29 2015
+# Created: Mon Dec 14 13:10:07 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -260,9 +260,9 @@ class Ui_NewAddressDialog(object):
         self.objectTypeLabel.setFont(font)
         self.objectTypeLabel.setObjectName(_fromUtf8("objectTypeLabel"))
         self.formLayout.setWidget(18, QtGui.QFormLayout.LabelRole, self.objectTypeLabel)
-        self.UObjectType = QtGui.QComboBox(NewAddressDialog)
-        self.UObjectType.setObjectName(_fromUtf8("UObjectType"))
-        self.formLayout.setWidget(18, QtGui.QFormLayout.FieldRole, self.UObjectType)
+        self.uObjectType = QtGui.QComboBox(NewAddressDialog)
+        self.uObjectType.setObjectName(_fromUtf8("uObjectType"))
+        self.formLayout.setWidget(18, QtGui.QFormLayout.FieldRole, self.uObjectType)
         self.objectNameLabel = QtGui.QLabel(NewAddressDialog)
         self.objectNameLabel.setObjectName(_fromUtf8("objectNameLabel"))
         self.formLayout.setWidget(19, QtGui.QFormLayout.LabelRole, self.objectNameLabel)
@@ -367,8 +367,8 @@ class Ui_NewAddressDialog(object):
         NewAddressDialog.setTabOrder(self.uRoadTypeName, self.uRoadSuffix)
         NewAddressDialog.setTabOrder(self.uRoadSuffix, self.uWaterRouteName)
         NewAddressDialog.setTabOrder(self.uWaterRouteName, self.uWaterName)
-        NewAddressDialog.setTabOrder(self.uWaterName, self.UObjectType)
-        NewAddressDialog.setTabOrder(self.UObjectType, self.uObjectName)
+        NewAddressDialog.setTabOrder(self.uWaterName, self.uObjectType)
+        NewAddressDialog.setTabOrder(self.uObjectType, self.uObjectName)
         NewAddressDialog.setTabOrder(self.uObjectName, self.uExternalObjectId)
         NewAddressDialog.setTabOrder(self.uExternalObjectId, self.uExtObjectIdScheme)
         NewAddressDialog.setTabOrder(self.uExtObjectIdScheme, self.uValuationReference)
@@ -379,8 +379,8 @@ class Ui_NewAddressDialog(object):
         NewAddressDialog.setTabOrder(self.uSubmitAddressButton, self.uAddressType)
 
     def retranslateUi(self, NewAddressDialog):
-        NewAddressDialog.setWindowTitle(_translate("NewAddressDialog", "Create New Address", None))
-        self.label.setText(_translate("NewAddressDialog", "Full Number:", None))
+        NewAddressDialog.setWindowTitle(_translate("NewAddressDialog", "Feature Form", None))
+        self.label.setText(_translate("NewAddressDialog", "Number Splitter", None))
         self.label_5.setText(_translate("NewAddressDialog", "Unit:", None))
         self.label_6.setText(_translate("NewAddressDialog", "Base:", None))
         self.label_8.setText(_translate("NewAddressDialog", "Alpha:", None))

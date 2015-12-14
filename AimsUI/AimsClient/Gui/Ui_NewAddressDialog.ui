@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Create New Address</string>
+   <string>Feature Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -25,7 +25,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Full Number:</string>
+        <string>Number Splitter</string>
        </property>
       </widget>
      </item>
@@ -457,7 +457,7 @@
       </widget>
      </item>
      <item row="18" column="1">
-      <widget class="QComboBox" name="UObjectType"/>
+      <widget class="QComboBox" name="uObjectType"/>
      </item>
      <item row="19" column="0">
       <widget class="QLabel" name="objectNameLabel">
@@ -663,7 +663,7 @@
   <tabstop>uRoadSuffix</tabstop>
   <tabstop>uWaterRouteName</tabstop>
   <tabstop>uWaterName</tabstop>
-  <tabstop>UObjectType</tabstop>
+  <tabstop>uObjectType</tabstop>
   <tabstop>uObjectName</tabstop>
   <tabstop>uExternalObjectId</tabstop>
   <tabstop>uExtObjectIdScheme</tabstop>

@@ -23,6 +23,8 @@ class Address(object):
         self._addressId = None
         
         # address values
+        
+        # the below is can no longer be considered private - This needs to be updated 
         self._sourceUser = user
         self._sourceReason = None
         self._addressType = None
@@ -103,18 +105,17 @@ class Address(object):
     # realted to Features feed only
     def setFullAddress (self, fullAddress): self._fullAddress = fullAddress  
 
-    
+       
     def _delNull(self, o):
-        #needs to be expained to handle none also
         if hasattr(o, 'items'):
             oo = type(o)()
             for k in o:
-                if (k != 'NULL') and (o[k] != 'NULL'):
+                if k != 'NULL' and o[k] != 'NULL' and o[k] != None:
                     oo[k] = self._delNull(o[k])
         elif hasattr(o, '__iter__'):
             oo = [ ] 
             for it in o:
-                if it != 'NULL':
+                if it != 'NULL' and it != None:
                     oo.append(self._delNull(it))
         else: return o
         return type(o)(oo)
@@ -123,7 +124,7 @@ class Address(object):
     def aimsObject(self):
         ''' Python address class to json object '''
 
-        return self._delNone({
+        return self._delNull({
         'version':self._version,                      
         'workflow':{
             'sourceUser':self._sourceUser,
