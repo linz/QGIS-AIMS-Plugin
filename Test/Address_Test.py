@@ -76,7 +76,7 @@ class Test_1_AddressTestSetters(unittest.TestCase):
         '''Tests whether null values are removed from the object array'''
         testlog.debug('Test_1.20 Instantiate sparse dict and test null removal')
         td1 = {'a': 111, 'b': None, 'c': 333, 'd': 'NULL', 'e': 555, 'f':{'fa': 'NULL','fb': 777}}
-        td2 = {'a': 111, 'b': None, 'c': 333, 'e': 555, 'f': {'fb': 777}}
+        td2 = {'a': 111, 'c': 333, 'e': 555, 'f': {'fb': 777}}
         td3 = self._address._delNull(td1)
         self.assertEqual(td3, td2, 'delNone : Dict null remover failure {}'.format(td3))
 

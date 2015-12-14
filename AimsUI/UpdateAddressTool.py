@@ -11,7 +11,7 @@ from AimsUI.AimsClient.Gui.Ui_UpdAddressDialog import Ui_UpdAddressDialog
 from AimsUI.AimsClient.UiUtility import UiUtility
 
 
-class UpdateAddressTool(QgsMapToolIdentifyFeature):
+class UpdateAddressTool(QgsMapToolIdentify):
 
     tolerance=5
 

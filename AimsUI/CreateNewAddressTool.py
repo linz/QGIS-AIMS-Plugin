@@ -20,11 +20,11 @@ from qgis.gui import *
 from AimsClient.Gui.NewAddressDialog import NewAddressDialog
 from AimsUI.AimsClient.UiUtility import UiUtility
 
-class CreateNewAddressTool(QgsMapToolIdentifyFeature):
+class CreateNewAddressTool(QgsMapToolIdentify):
     ''' tool for creating new address information ''' 
     
     def __init__(self, iface, layerManager, controller=None):        
-        QgsMapTool.__init__(self, iface.mapCanvas())
+        QgsMapToolIdentify.__init__(self, iface.mapCanvas())
    
         self._iface = iface
         self._controller = controller

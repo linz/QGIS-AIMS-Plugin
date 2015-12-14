@@ -10,7 +10,7 @@ from AimsUI.AimsClient.Gui.Ui_MoveAddressDialog import Ui_MoveAddressDialog
 from AimsUI.AimsClient.Address import Address
 from AimsUI.AimsClient.UiUtility import UiUtility
 
-class MoveAddressTool(QgsMapToolIdentifyFeature):
+class MoveAddressTool(QgsMapToolIdentify):
 
     tolerance=5
 

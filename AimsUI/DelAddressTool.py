@@ -5,9 +5,6 @@ from PyQt4.QtGui import *
 
 from qgis.core import *
 from qgis.gui import *
-from qgis.gui import QgsMapToolIdentify as QMTI
-from qgis.gui import QgsMapToolIdentifyFeature as QMTIF
-
 
 # from qgis.gui import QgsMapTool
 # from qgis.gui import QgsMapToolIdentify as QMTI
