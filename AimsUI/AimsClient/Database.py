@@ -30,6 +30,7 @@ _password = config.configSectionMap('db')['password']
 
 _aimsSchema='reference'
 
+
 def setup(d):
     aimslog.info('Setting DB, {}'.format(d))
     setHost(d['host'])
