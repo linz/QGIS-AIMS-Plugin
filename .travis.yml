@@ -30,6 +30,8 @@ before_script:
     - psql -c '\connect aims_ci_test;' -U postgres
     - psql -c 'create schema aims;' -U postgres
     - psql -c 'create table aims.aims_test_table(id int, name varchar(32));' -U postgres
+    - psql -c 'insert into aims.aims_test_table values(1,'aims_test_data');' -U postgres
+    - psql -c 'select * from aims.aims_test_table;' -U postgres
     - echo "Build. " `date`
 
     

@@ -10,7 +10,7 @@
 ################################################################################
 
 import psycopg2
-import Error
+from Error import Error
 import Config
 from Config import ConfigReader
 from AimsUI.AimsLogging import Logger
@@ -40,22 +40,46 @@ def setup(d):
     setPassword(d['password'])
 
 def host(): return _host
-def setHost(host): global _host; _host=host; _reset()
+def setHost(host): 
+    global _host
+    if _host!=host:
+        _host=host; 
+        _reset()
 
 def port(): return _port
-def setPort(port): global _port; _port=port; _reset()
+def setPort(port): 
+    global _port
+    if _port!=port:
+        _port=port
+        _reset()
 
 def database(): return _name
-def setDatabase(name): global _name; _name=name; _reset()
+def setDatabase(name): 
+    global _name
+    if _name!=name:
+        _name=name
+        _reset()
 
 def user(): return _user
-def setUser(user): global _user; _user=user; _reset()
+def setUser(user): 
+    global _user
+    if _user!=user:
+        _user=user
+        _reset()
 
 def password(): return _password
-def setPassword(password): global _password; _password=password; _reset()
+def setPassword(password): 
+    global _password
+    if _password!=password:
+        _password=password
+        _reset()
 
 def aimsSchema(): return _aimsSchema
-def setAimsSchema(aimsschema): global _aimsSchema; _aimsSchema=aimsschema; _reset()
+def setAimsSchema(aimsSchema): 
+    global _aimsSchema
+    if _aimsSchema!=aimsSchema:
+        _aimsSchema=aimsSchema
+        _reset()
 
 def _reset():
     global _db
