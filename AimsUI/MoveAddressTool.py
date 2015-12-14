@@ -6,11 +6,11 @@ from PyQt4.QtGui import *
 from qgis.core import *
 from qgis.gui import *
 
-from AimsUI.Ui_MoveAddressDialog import Ui_MoveAddressDialog
+from AimsUI.AimsClient.Gui.Ui_MoveAddressDialog import Ui_MoveAddressDialog
 from AimsUI.AimsClient.Address import Address
-from AimsUI.AimsClient.AimsUtility import AimsUtility
+from AimsUI.AimsClient.UiUtility import UiUtility
 
-class MoveAddressTool(QgsMapToolIdentify):
+class MoveAddressTool(QgsMapToolIdentifyFeature):
 
     tolerance=5
 
@@ -41,7 +41,7 @@ class MoveAddressTool(QgsMapToolIdentify):
             self.deactivate()
     
     def setMarker(self, coords):
-        self._marker = AimsUtility.highlight(self._iface, coords)
+        self._marker = UiUtility.highlight(self._iface, coords)
 
     def canvasReleaseEvent(self, mouseEvent):
         self._iface.setActiveLayer(self._layers.addressLayer())
@@ -54,13 +54,12 @@ class MoveAddressTool(QgsMapToolIdentify):
             
             if len(results) == 0: 
                 return
-            if len(results) == 1:
+            elif len(results) == 1:
                 # Highlight feature
                 coords = results[0].mFeature.geometry().asPoint()
                 self.setMarker(coords)
                 # create address object for feature. It is this obj properties that will be passed to API
-                self._features.append(self.setAddObj(results[0]))
-                                
+                self._features.append(UiUtility.mapResultsToAddObj(results[0], self._controller))
                 self._sb.showMessage("Right click for features new location")
                 
             else: # Stacked points
@@ -82,68 +81,44 @@ class MoveAddressTool(QgsMapToolIdentify):
                     
                     for result in results:
                         if result.mFeature.attribute('addressId') in moveFeaturesIds:
-                            self._features.append(self.setAddObj(result))
-                    
+                            self._features.append(UiUtility.mapResultsToAddObj(result, self._controller))
+                                           
                     self._sb.showMessage("Right click for features new location")
                     
                 else: 
                     self._features = None
                     self._canvas.scene().removeItem(self._marker)
-                
+        
+        # Right click for new position         
         if mouseEvent.button() == Qt.RightButton:
+            results = self.identify(mouseEvent.x(), mouseEvent.y(), self.ActiveLayer, self.VectorLayer)
             if self._features:
-                pt = mouseEvent.pos()
-                coords = self.toMapCoordinates(QPoint(pt.x(), pt.y()))
-                coords = AimsUtility.transform(self._iface, coords)
+                if len(results) == 0:                     
+                    coords = self.toMapCoordinates(QPoint(mouseEvent.x(), mouseEvent.y()))
+
+                else:
+                    # Snapping. i.e Move to stack
+                    coords = results[0].mFeature.geometry().asPoint()    
                 
+                # set new coords for all selected features
+                coords = UiUtility.transform(self._iface, coords)
                 for feature in self._features:          
-                    feature.set_x(coords[0])
-                    feature.set_y(coords[1])
-                
-                    payload = feature.aimsObject()
-                    valErrors = self._controller.updateFeature(payload)
-                
-                    if len(valErrors) == 0:
-                        pass #no errors
-                    else:
-                        QMessageBox.warning(self._iface.mainWindow(),"Move Feature", valErrors +'\n'*2 + feature.fullAddress )
+                        feature.set_x(coords[0])
+                        feature.set_y(coords[1])  
+                    
+                payload = feature.aimsObject()
+                valErrors = self._controller.updateFeature(payload)
+            
+                if len(valErrors) == 0:
+                    pass #no errors
+                else:
+                    QMessageBox.warning(self._iface.mainWindow(),"Move Feature", valErrors +'\n'*2 + feature._fullAddress )
                 
                 self._features = []
                 self._canvas.scene().removeItem(self._marker)
                 self._sb.clearMessage()
                 
             else: QMessageBox.warning(self._iface.mainWindow(),"Move Feature", "You must first select a feature to move")
-    
-    def setAddObj(self, results):
-        # init new address obj
-        self.feature = self._controller.initialiseAddressObj()
-        # set obj properties    
-        self.feature.setFullAddress(str(results.mFeature.attribute('fullAddress')))                     
-        self.feature.setAddressType(str(results.mFeature.attribute('addressType')))
-        self.feature.setSuburbLocality(str(results.mFeature.attribute('suburbLocality')))
-        self.feature.setTownCity(str(results.mFeature.attribute('townCity')))
-        self.feature.setLifecycle(str(results.mFeature.attribute('lifecycle'))) 
-        self.feature.setRoadPrefix(str(results.mFeature.attribute('roadPrefix')))
-        self.feature.setRoadName(str(results.mFeature.attribute('roadName')))      
-        self.feature.setRoadSuffix(str(results.mFeature.attribute('roadSuffix')))
-        self.feature.setRoadTypeName(str(results.mFeature.attribute('roadTypeName')))
-        self.feature.setRoadCentrelineId(str(results.mFeature.attribute('roadCentrelineId')))
-        self.feature.setWaterRouteName(str(results.mFeature.attribute('waterRouteName')))
-        self.feature.setWaterName(str(results.mFeature.attribute('waterName')))
-        self.feature.setUnitValue(str(results.mFeature.attribute('unitValue')))
-        self.feature.setUnitType(str(results.mFeature.attribute('unitType')))
-        self.feature.setLevelType(str(results.mFeature.attribute('levelType')))
-        self.feature.setLevelValue(str(results.mFeature.attribute('levelValue')))
-        self.feature.setAddressNumberPrefix(str(results.mFeature.attribute('addressNumberPrefix')))
-        self.feature.setAddressNumber(str(results.mFeature.attribute('addressNumber')))
-        self.feature.setAddressNumberSuffix(str(results.mFeature.attribute('addressNumberSuffix')))
-        self.feature.setAddressNumberHigh(str(results.mFeature.attribute('addressNumberHigh')))
-        self.feature.setVersion(str(results.mFeature.attribute('version')))
-        self.feature.setAddressId(str(results.mFeature.attribute('addressId')))
-        self.feature.setAoType(str(results.mFeature.attribute('objectType')))
-        self.feature.setAoName(str(results.mFeature.attribute('objectName')))
-        self.feature.setAoPositionType(str(results.mFeature.attribute('addressPositionType')))
-        return self.feature
 
 class MoveAddressDialog(Ui_MoveAddressDialog, QDialog ):
 
