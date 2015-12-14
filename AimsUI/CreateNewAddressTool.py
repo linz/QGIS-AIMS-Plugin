@@ -35,6 +35,8 @@ class CreateNewAddressTool(QgsMapToolIdentify):
         QgsMapTool.activate(self)
         sb = self._iface.mainWindow().statusBar()
         sb.showMessage("Click map to create point")
+        self.cursor = QCursor(Qt.CrossCursor)
+        self.parent().setCursor(self.cursor)
     
     def deactivate(self):
         sb = self._iface.mainWindow().statusBar()

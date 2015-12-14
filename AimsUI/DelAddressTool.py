@@ -25,15 +25,13 @@ class DelAddressTool(QgsMapToolIdentify):
         self._layers = layerManager
         self._controller = controller
         self.activate()
-
-        self.cursor = QCursor()
-        self.setShape(Qt.CrossCursor)
-        self.parent().setCursor(self.cursor)
     
     def activate(self):
         QgsMapTool.activate(self)
         sb = self._iface.mainWindow().statusBar()
         sb.showMessage("Click map to delete feature")
+        self.cursor = QCursor(Qt.CrossCursor)
+        self.parent().setCursor(self.cursor)
     
     def deactivate(self):
         sb = self._iface.mainWindow().statusBar()
