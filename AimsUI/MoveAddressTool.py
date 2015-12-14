@@ -28,6 +28,8 @@ class MoveAddressTool(QgsMapToolIdentify):
     def activate(self):
         QgsMapTool.activate(self)
         self._sb.showMessage("Select feature to move")
+        self.cursor = QCursor(Qt.CrossCursor)
+        self.parent().setCursor(self.cursor)
     
     def deactivate(self):
         self._canvas.scene().removeItem(self._marker)

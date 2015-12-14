@@ -19,13 +19,7 @@ import re
 class UiUtility (object):
     ''' Utility Class. Methods up for adoption
     Plans to find these a better home '''
-    
-    
-    # ---
-    # - Scope for several classes here
-    # ---
-
-    
+        
     @staticmethod
     def transform (iface, coords, tgt=2193):       
         src_crs = iface.mapCanvas().mapSettings().destinationCrs()
