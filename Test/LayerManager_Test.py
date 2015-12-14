@@ -40,8 +40,6 @@ from Database_Test import DCONF
 import AimsUI.AimsClient.Database
 
 from mock import Mock, patch
-from openshot.uploads.vimeo.oauth2 import setter
-
 
 QtCore.QCoreApplication.setOrganizationName('QGIS')
 QtCore.QCoreApplication.setApplicationName('QGIS2')

@@ -16,7 +16,7 @@ class DictionaryListView( QTableView ):
     def __init__( self, parent=None ):
         QTableView.__init__( self, parent )
         # Change default settings
-        self.setSelectionMode(QAbstractItemView.MultiSelection) # need to make this dynamic. set a default to single and the caller can over write to mutli 
+        # self.setSelectionMode(QAbstractItemView.ExtendedSelection) <-- relying on the setting of this via the UI_ modules
         self.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.horizontalHeader().setStretchLastSection(True)
         self.horizontalHeader().setHighlightSections(False)

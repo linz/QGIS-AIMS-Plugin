@@ -6,3 +6,4 @@ Resources.py
 .settings
 /env-var-exports.txt
 *.log
+/.travis.yml.backup

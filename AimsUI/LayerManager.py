@@ -173,9 +173,9 @@ class LayerManager(QObject):
                                 QgsField('meshblock', QVariant.String),
                                 QgsField('lifecycle', QVariant.String), 
                                 QgsField('roadPrefix', QVariant.String),
-                                QgsField('roadName', QVariant.String),      
-                                QgsField('roadSuffix', QVariant.String),
+                                QgsField('roadName', QVariant.String),                                
                                 QgsField('roadTypeName', QVariant.String),
+                                QgsField('roadSuffix', QVariant.String),
                                 QgsField('roadCentrelineId', QVariant.String),
                                 QgsField('waterRouteName', QVariant.String),
                                 QgsField('waterName', QVariant.String),
@@ -189,12 +189,20 @@ class LayerManager(QObject):
                                 QgsField('addressNumberHigh', QVariant.String),
                                 QgsField('version', QVariant.String),
                                 QgsField('addressId', QVariant.String),
+                                QgsField('externalAddressId', QVariant.String),
+                                QgsField('externalAddressIdScheme', QVariant.String),
                                 QgsField('addressableObjectId', QVariant.String),
                                 QgsField('objectType', QVariant.String),
                                 QgsField('objectName', QVariant.String),
                                 QgsField('addressPositionType', QVariant.String),
                                 QgsField('suburbLocalityId', QVariant.String),
-                                QgsField('parcelId', QVariant.String)])
+                                QgsField('parcelId', QVariant.String),
+                                QgsField('externalObjectId', QVariant.String),
+                                QgsField('externalObjectIdScheme', QVariant.String),
+                                QgsField('valuationReference', QVariant.String),
+                                QgsField('certificateOfTitle', QVariant.String),
+                                QgsField('appellation', QVariant.String)
+                                ])
         # add fields
 
        
@@ -210,6 +218,8 @@ class LayerManager(QObject):
             fullAddressNumber = c['fullAddressNumber'] if c.has_key('fullAddressNumber') else None
             fullRoadName = c['fullRoadName'] if c.has_key('fullRoadName') else None 
             addressId = c['addressId'] if c.has_key('addressId') else None 
+            externalAddressId = c['externalAddressId'] if c.has_key('externalAddressId') else None 
+            externalAddressIdScheme = c['externalAddressIdScheme'] if c.has_key('externalAddressIdScheme') else None 
             addressType = c['addressType'] if c.has_key('addressType') else None 
             lifecycle = c['lifecycle']if c.has_key('lifecycle') else None 
             unitType =c['unitType'] if c.has_key('unitType') else None 
@@ -234,9 +244,16 @@ class LayerManager(QObject):
             addressableObjectId = o['addressableObjectId'] if o.has_key('addressableObjectId') else None  
             objectType = o['objectType'] if o.has_key('objectType') else None     
             objectName = o['objectName'] if o.has_key('objectName') else None    
+            addressPositionType = o['addressPosition']['type'] if o['addressPosition'].has_key('type') else None
+            coords = o['addressPosition']['coordinates'] if o['addressPosition'].has_key('coordinates') else None 
+            externalObjectId = o['externalObjectId'] if o.has_key('externalObjectId') else None    
+            externalObjectIdScheme = o['externalObjectIdScheme'] if o.has_key('externalObjectIdScheme') else None    
+            valuationReference = o['valuationReference'] if o.has_key('valuationReference') else None    
+            certificateOfTitle = o['certificateOfTitle'] if o.has_key('certificateOfTitle') else None    
+            appellation = o['appellation'] if o.has_key('appellation') else None    
             addressPositionType = o['addressPosition']['type'] if o.has_key('addressPosition') and o['addressPosition'].has_key('type') else None
             coords = o['addressPosition']['coordinates'] if o.has_key('addressPosition') and o['addressPosition'].has_key('coordinates') else None 
-            
+
             codes = e['properties']['codes'] 
             suburbLocalityId = codes['suburbLocalityId'] if codes.has_key('suburbLocalityId') else None  # does the user require these???
             townCityId = codes['townCityId'] if codes.has_key('townCityId') else None  # does the user require these???
@@ -254,9 +271,9 @@ class LayerManager(QObject):
                                 meshblock,
                                 lifecycle, 
                                 roadPrefix,
-                                roadName,      
-                                roadSuffix,
+                                roadName,                              
                                 roadTypeName,
+                                roadSuffix,
                                 roadCentrelineId,
                                 waterRouteName,
                                 waterName,
@@ -270,12 +287,19 @@ class LayerManager(QObject):
                                 addressNumberHigh,
                                 version,
                                 addressId,
+                                externalAddressId,
+                                externalAddressIdScheme,
                                 addressableObjectId,
                                 objectType,
                                 objectName,
                                 addressPositionType,
                                 suburbLocalityId,
-                                parcelId])
+                                parcelId,
+                                externalObjectId,
+                                externalObjectIdScheme,
+                                valuationReference,
+                                certificateOfTitle,
+                                appellation])
             provider.addFeatures([fet])
 
         # commit to stop editing the layer
