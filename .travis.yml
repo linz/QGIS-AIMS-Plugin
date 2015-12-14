@@ -19,8 +19,8 @@ services:
 before_script:
     - echo "Setup PATH vars. " `python -c 'import sys; print sys.path'`
     - export QGIS_PREFIX_PATH=/usr
-    #- export PYTHONPATH=$PYTHONPATH:${QGIS_PREFIX_PATH}/share/qgis/python/:${QGIS_PREFIX_PATH}/share/qgis/python/plugins:`pwd`    
-    - export PYTHONPATH=$PYTHONPATH:${QGIS_PREFIX_PATH}/share/pyshared/qgis/:`pwd`
+    - export PYTHONPATH=$PYTHONPATH:${QGIS_PREFIX_PATH}/share/qgis/python/:${QGIS_PREFIX_PATH}/share/qgis/python/plugins:`pwd`    
+    - export PYTHONPATH=$PYTHONPATH:${QGIS_PREFIX_PATH}/share/pyshared/qgis
     - export PYTHONPATH=$PYTHONPATH:/usr/lib/python2.7/dist-packages/qgis
     - echo "PYTHONPATH:" $PYTHONPATH
     - echo "PP contents:" `python -c "import os;print [(d,os.listdir(d)) for d in os.environ.get('PYTHONPATH').split(':') if os.path.exists(d)]"`
