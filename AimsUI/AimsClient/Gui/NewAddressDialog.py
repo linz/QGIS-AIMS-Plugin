@@ -22,7 +22,7 @@ from qgis.utils import iface
 class NewAddressDialog(Ui_NewAddressDialog, QDialog):
     
     @classmethod
-    def newAddress(cls, addInstance, layerManager, controller,parent = None, coords = None):
+    def newAddress(cls, addInstance, layerManager, controller, parent = None, coords = None):
         dlg = NewAddressDialog(parent, coords, addInstance, layerManager, controller)
         dlg.exec_()
   

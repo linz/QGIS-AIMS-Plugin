@@ -8,10 +8,6 @@
 # LICENSE file for more information.
 #
 ################################################################################
-
-from qgis.utils import iface
-
-
 from AimsUI.AimsClient.Gui.Controller import Controller
 from AimsUI import AimsLogging
 

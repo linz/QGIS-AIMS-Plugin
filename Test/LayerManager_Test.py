@@ -92,8 +92,6 @@ class Test_1_LayerManagerSetters(unittest.TestCase):
         qi = ASM.getMock(ASM.ASMenum.QI)()
         controller = Controller(qi)
         self._layermanager = LayerManager(qi,controller)
-
-
         
     def tearDown(self):
         testlog.debug('Destroy null layermanager')
@@ -178,7 +176,7 @@ class Test_2_LayerManagerConnection(unittest.TestCase):
                 test_layer = self._layermanager.findLayer(test_layerid)
                 self.assertEqual(isinstance(test_layer, ASM.getMock(ASM.ASMenum.LAYER)(vlrv=True).__class__), True,'Object returned not a layer type with name'.format(test_layerid))
     
-    
+
     def test30_installLayers_find(self):
         '''tests install layer when layer is already installed in Qgis'''
         for test_id in [l[0] for l in self.MLAYERS]:

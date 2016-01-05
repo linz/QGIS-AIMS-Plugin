@@ -21,7 +21,7 @@ class UiUtility (object):
     Plans to find these a better home '''
         
     @staticmethod
-    def transform (iface, coords, tgt=2193):       
+    def transform (iface, coords, tgt=4167):       
         src_crs = iface.mapCanvas().mapSettings().destinationCrs()
         tgt_crs = QgsCoordinateReferenceSystem()
         tgt_crs.createFromOgcWmsCrs('EPSG:{}'.format(tgt))
@@ -30,7 +30,7 @@ class UiUtility (object):
             
     @staticmethod
     def highlight (iface, coords):
-    #function may bve mopved later to a 'highlight' module
+    #function may be moved later to a 'highlight' module
         adrMarker = QgsVertexMarker(iface.mapCanvas())
         adrMarker.setIconSize(15)
         adrMarker.setPenWidth(2)
@@ -67,7 +67,7 @@ class UiUtility (object):
     
     @staticmethod
     def mapResultsToAddObj (results, controller):
-         # init new address obj
+        # init new address obj
         feature = controller.initialiseAddressObj()
         # set obj properties    
         feature.setFullAddress(str(results.mFeature.attribute('fullAddress')))                     

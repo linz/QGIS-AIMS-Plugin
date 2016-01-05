@@ -161,7 +161,7 @@ class LayerManager(QObject):
         
     def createFeaturesLayers(self, r):
         id = self._addressLayerId
-        layer = QgsVectorLayer("Point?crs=EPSG:2193", "AIMS Features", "memory") #rather not hard code crs
+        layer = QgsVectorLayer("Point?crs=EPSG:4167", "AIMS Features", "memory") #rather not hard code crs
         self.setLayerId(layer, id)
         provider = layer.dataProvider()
         provider.addAttributes([QgsField('addressType', QVariant.String),

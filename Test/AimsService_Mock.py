@@ -95,7 +95,7 @@ resp = {
                             "crs":{
                                 "type":"name",
                                 "properties":{
-                                    "name":"urn:ogc:def:crs:EPSG::2193"
+                                    "name":"urn:ogc:def:crs:EPSG::4167"
                                 }
                             }
                         }
@@ -118,6 +118,10 @@ def enum(*sequential, **named):
     enums['reverse'] = reverse
     return type('Enum', (), enums)
 
+
+class _results(object):
+    def mFeature(self):
+        return _attribute()
 
 class _AimsHttp(object):
     def call(self):
@@ -200,6 +204,7 @@ class _Feature(object):
 
 class _Geometry(object):
     def fromPoint(self):return _Geometry()
+    def asPoint(self):return _Geometry()
     
 class _Point(object):
     def __init__(self,x,y):pass
@@ -260,7 +265,7 @@ class ASM(object):
     @staticmethod
     def getLayerMock(idrv=None, cprv=None, vlrv=None,tprv=None):
         if vlrv:
-            m = Mock(spec=_VectorLayer)
+            m = Mock(spec=_VectorLayer) #spec argument configures the mock to take its specification from another object
             m.type.return_value = m.VectorLayer
         else:
             m = Mock(spec=_Layer)

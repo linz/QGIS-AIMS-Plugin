@@ -50,7 +50,7 @@ class Controller(QObject):
         
         # set srs
         self._displayCrs = QgsCoordinateReferenceSystem()
-        self._displayCrs.createFromOgcWmsCrs('EPSG:2193') 
+        self._displayCrs.createFromOgcWmsCrs('EPSG:4167') 
         iface.mapCanvas().mapSettings().setDestinationCrs(self._displayCrs)
         
         if Controller._instance == None:

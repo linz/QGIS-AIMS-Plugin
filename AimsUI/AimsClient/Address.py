@@ -58,7 +58,7 @@ class Address(object):
         self._x = None
         self._y = None
         self._crsType = 'name'
-        self._crsProperties = 'urn:ogc:def:crs:EPSG::2193' # New Address coords guarantees to be supplied in 2193
+        self._crsProperties = 'urn:ogc:def:crs:EPSG::4167' # New Address coords guaranteed to be supplied in 4167
         self._externalObjectId = None
         self._externalObjectIdScheme = None
         self._valuationReference = None
