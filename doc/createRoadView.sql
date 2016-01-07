@@ -10,6 +10,7 @@ SELECT 	rp.roadprefixname,
 	rcl.roadcentrelinealtid,
 	rn.roadnametype,
 	rcl.noncadastralroad,
+	
 	rn.roadnamestatus,
 	rn.unoffocial,
 	rn.sufi,

@@ -76,7 +76,7 @@ resp = {
                         "addressNumber":523,
                         "roadCentrelineId":112967,
                         "roadName":"Waiatai",
-                        "roadTypeName":"Road",
+                        "roadType":"Road",
                         "suburbLocality":"Wairoa",
                         "townCity":"Wairoa",
                         "fullAddressNumber":"523",

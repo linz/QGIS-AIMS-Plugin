@@ -15,10 +15,10 @@ class Address(object):
     ''' UI address class ''' 
 
     def __init__(self, user):
-        self._changeTypeName = None
+        self._changeType = None
         self._submitterUserName = None
         self._submittedDate = None
-        self._queueStatusName = None
+        self._queueStatus = None
         self._version = None
         self._addressId = None
         
@@ -42,9 +42,9 @@ class Address(object):
         self._roadCentrelineId = None
         self._roadPrefix = None
         self._roadName = None
-        self._roadTypeName = None
+        self._roadType = None
         self._roadSuffix = None
-        self._waterRouteName = None
+        self._waterRoute = None
         self._waterName = None
         self._suburbLocality = None
         self._townCity = None
@@ -84,9 +84,9 @@ class Address(object):
     def setRoadCentrelineId( self, roadCentrelineId ): self._roadCentrelineId = roadCentrelineId 
     def setRoadPrefix( self, roadPrefix ): self._roadPrefix = roadPrefix 
     def setRoadName( self, roadName ): self._roadName = roadName 
-    def setRoadTypeName( self, roadTypeName ): self._roadTypeName = roadTypeName 
+    def setroadType( self, roadType ): self._roadType = roadType 
     def setRoadSuffix( self, roadSuffix ): self._roadSuffix = roadSuffix 
-    def setWaterRouteName( self, waterRouteName ): self._waterRouteName = waterRouteName 
+    def setwaterRoute( self, waterRoute ): self._waterRoute = waterRoute 
     def setWaterName( self, waterName ): self._waterName = waterName 
     def setSuburbLocality( self, suburbLocality ): self._suburbLocality = suburbLocality 
     def setTownCity( self, townCity ): self._townCity = townCity 
@@ -147,9 +147,9 @@ class Address(object):
             'roadCentrelineId':self._roadCentrelineId,
             'roadPrefix':self._roadPrefix,
             'roadName':self._roadName,
-            'roadTypeName':self._roadTypeName,
+            'roadType':self._roadType,
             'roadSuffix':self._roadSuffix,
-            'waterRouteName':self._waterRouteName,
+            'waterRoute':self._waterRoute,
             'waterName':self._waterName,
             'suburbLocality':self._suburbLocality,
             'townCity':self._townCity

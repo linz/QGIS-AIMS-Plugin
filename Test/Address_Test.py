@@ -94,8 +94,8 @@ class Test_1_AddressTestSetters(unittest.TestCase):
                 'lifecycle':'L','unitType':'UT','unitValue':'UV','levelType':'LT','levelValue':'LV',
                 'addressNumberPrefix':'ANP','addressNumber':'AN',
                 'addressNumberSuffix':'ANS','addressNumberHigh':'ANH',
-                'roadCentrelineId':'RCLI','roadPrefix':'RP','roadName':'RN','roadTypeName':'RTN','roadSuffix':'RS',
-                'waterRouteName':'WRN','waterName':'WN',
+                'roadCentrelineId':'RCLI','roadPrefix':'RP','roadName':'RN','roadType':'RTN','roadSuffix':'RS',
+                'waterRoute':'WRN','waterName':'WN',
                 'suburbLocality':'SL','townCity':'TC'},
             'addressedObject':{
                 'objectType':'OT','objectName':'ON',

@@ -174,10 +174,10 @@ class LayerManager(QObject):
                                 QgsField('lifecycle', QVariant.String), 
                                 QgsField('roadPrefix', QVariant.String),
                                 QgsField('roadName', QVariant.String),                                
-                                QgsField('roadTypeName', QVariant.String),
+                                QgsField('roadType', QVariant.String),
                                 QgsField('roadSuffix', QVariant.String),
                                 QgsField('roadCentrelineId', QVariant.String),
-                                QgsField('waterRouteName', QVariant.String),
+                                QgsField('waterRoute', QVariant.String),
                                 QgsField('waterName', QVariant.String),
                                 QgsField('unitValue', QVariant.String),
                                 QgsField('unitType', QVariant.String),
@@ -233,9 +233,9 @@ class LayerManager(QObject):
             roadCentrelineId = c['roadCentrelineId'] if c.has_key('roadCentrelineId') else None 
             roadPrefix = c['roadPrefix'] if c.has_key('roadPrefix') else None 
             roadName = c['roadName'] if c.has_key('roadName') else None 
-            roadTypeName = c['roadTypeName'] if c.has_key('roadTypeName') else None 
+            roadType = c['roadType'] if c.has_key('roadType') else None 
             roadSuffix = c['roadSuffix'] if c.has_key('roadSuffix') else None 
-            waterRouteName = c['waterRouteName'] if c.has_key('waterRouteName') else None 
+            waterRoute = c['waterRoute'] if c.has_key('waterRoute') else None 
             waterName = c['waterName'] if c.has_key('waterName') else None 
             suburbLocality = c['suburbLocality'] if c.has_key('suburbLocality') else None
             townCity = c['townCity'] if c.has_key('townCity') else None 
@@ -272,10 +272,10 @@ class LayerManager(QObject):
                                 lifecycle, 
                                 roadPrefix,
                                 roadName,                              
-                                roadTypeName,
+                                roadType,
                                 roadSuffix,
                                 roadCentrelineId,
-                                waterRouteName,
+                                waterRoute,
                                 waterName,
                                 unitValue,
                                 unitType,

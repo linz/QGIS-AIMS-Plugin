@@ -61,7 +61,7 @@ class UpdateAddressDialog(Ui_NewAddressDialog, QDialog):
         self.uRoadName.setText(UiUtility.nullEqualsNone(self.feature._roadName))
         self.uRoadTypeName.setText(UiUtility.nullEqualsNone(self.feature._roadTypeName))
         self.uRoadSuffix.setText(UiUtility.nullEqualsNone(self.feature._roadSuffix))
-        self.uWaterRouteName.setText(UiUtility.nullEqualsNone(self.feature._waterRouteName))
+        self.uWaterRouteName.setText(UiUtility.nullEqualsNone(self.feature._waterRoute))
         self.uWaterName.setText(UiUtility.nullEqualsNone(self.feature._waterName))
         
         # addressable object
