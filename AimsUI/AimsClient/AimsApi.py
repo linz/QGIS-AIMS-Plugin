@@ -14,6 +14,8 @@ import httplib2
 
 from Config import ConfigReader
 
+
+
 class AimsApi(object):
     ''' make and receive all http requests / responses to AIMS API '''   
     
@@ -23,6 +25,9 @@ class AimsApi(object):
         self.user = config.configSectionMap('user')['name']
         self._password = config.configSectionMap('user')['pass']
         self._headers = {'content-type':'application/json', 'accept':'application/json'}
+        
+        self.h = httplib2.Http(".cache")
+        self.h.add_credentials(self.user, self._password)
    
     def handleErrors(self, resp, content):
         ''' Return the reason for any critical errors '''        
@@ -32,7 +37,8 @@ class AimsApi(object):
                 if i['properties']['severity'] == 'Reject':
                     criticalErrors.append( '- '+i['properties']['description']+'\n' )
         if str(resp) == '409':
-            criticalErrors.append(content['properties']['reason'] +'\n'+ content['properties']['message'])
+            #criticalErrors.append(content['properties']['reason'] +'\n'+ content['properties']['message'])
+            criticalErrors.append('\n\n'+content['properties']['reason'] +' - '+ content['entities'][0]['properties']['description']+':'+'\n    ')
         return ''.join(criticalErrors)
     
     def handleResponse(self, resp, content):
@@ -51,33 +57,46 @@ class AimsApi(object):
 
     def changefeedAdd(self, payload):
         ''' Add an address to the Change feed '''
-        h = httplib2.Http(".cache")
-        h.add_credentials(self.user, self._password)
-        resp, content = h.request(self._url+'changefeed/add', "POST", json.dumps(payload), self._headers)
+        resp, content = self.h.request(self._url+'address/changefeed/add', "POST", json.dumps(payload), self._headers)
         return self.handleResponse(resp["status"], json.loads(content) )
-        
-    def changefeedUpdate(self, payload):
-        ''' Update an address on the Change feed '''
-        pass 
-       
-    def changefeedRetire(self, payload):
+     
+    def changefeedRetire(self, retireFeatures):
         ''' Retire address via Change feed '''
-        h = httplib2.Http(".cache")
-        h.add_credentials(self.user, self._password)
-        resp, content = h.request(self._url+'changefeed/retire', "POST", json.dumps(payload), self._headers)
-        return self.handleResponse(resp["status"], json.loads(content) )
+        error = []
+        for payload in retireFeatures:
+            resp, content = self.h.request(self._url+'address/changefeed/retire', "POST", json.dumps(payload), self._headers)
+            errorHandling = (self.handleResponse(resp["status"], json.loads(content)))
+            if errorHandling == []:
+                continue
+            else: error.append(errorHandling+payload['address'])
+        return {'errors': error}
     
     def getFeatures( self, xMax, yMax, xMin, yMin ):
         ''' get aims addresses within bbox'''
-        h = httplib2.Http(".cache")
-        h.add_credentials(self.user, self._password)
-        urlEnd ='features?count=1000&bbox={0},{1},{2},{3}'.format(xMin,yMin,xMax,yMax)
-        resp, content = h.request(self._url+urlEnd, 'GET', headers = self._headers)
+        urlEnd ='address/features?count=1000&bbox={0},{1},{2},{3}'.format(xMin,yMin,xMax,yMax)
+        resp, content = self.h.request(self._url+urlEnd, 'GET', headers = self._headers)
         return json.loads(content) # Validation ... 
     
     def updateFeature(self, payload):
         ''' update aims address feature '''
-        h = httplib2.Http(".cache")
-        h.add_credentials(self.user, self._password)
-        resp, content = h.request(self._url+'changefeed/update', "POST", json.dumps(payload), self._headers)
+        resp, content = self.h.request(self._url+'address/changefeed/update', "POST", json.dumps(payload), self._headers)
         return self.handleResponse(resp["status"], json.loads(content) )
+    
+    def newGroup(self, payload):
+        ''' opens a new group and returns the new groupId '''
+        resp, content = self.h.request(self._url+'groups/changefeed/replace', "POST", json.dumps(payload), self._headers)
+
+        return {'errors': self.handleResponse(resp["status"], json.loads(content)),
+                'data':{'groupId':json.loads(content)['properties']['changeGroupId']}}
+
+    def addToGroup(self, groupId, groupData):
+        ''' add addresses to a lineage group '''
+        error = []
+        for payload in groupData:
+            resp, content = self.h.request(self._url+'groups/changefeed/{}/address/add/'.format(groupId),"POST" , json.dumps(payload), self._headers)
+            #error=self.handleResponse(resp["status"], json.loads(content))
+            errorHandling = (self.handleResponse(resp["status"], json.loads(content)))
+            if errorHandling == []:
+                continue
+            else: error.append(errorHandling+payload['address'])
+        return {'errors': error}

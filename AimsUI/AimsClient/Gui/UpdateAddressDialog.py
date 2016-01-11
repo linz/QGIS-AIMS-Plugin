@@ -59,7 +59,7 @@ class UpdateAddressDialog(Ui_NewAddressDialog, QDialog):
         self.uRoadCentrelineId.setText(UiUtility.nullEqualsNone(self.feature._roadCentrelineId))
         self.uRoadPrefix.setText(UiUtility.nullEqualsNone(self.feature._roadPrefix))
         self.uRoadName.setText(UiUtility.nullEqualsNone(self.feature._roadName))
-        self.uRoadTypeName.setText(UiUtility.nullEqualsNone(self.feature._roadTypeName))
+        self.uRoadTypeName.setText(UiUtility.nullEqualsNone(self.feature._roadType))
         self.uRoadSuffix.setText(UiUtility.nullEqualsNone(self.feature._roadSuffix))
         self.uWaterRouteName.setText(UiUtility.nullEqualsNone(self.feature._waterRoute))
         self.uWaterName.setText(UiUtility.nullEqualsNone(self.feature._waterName))

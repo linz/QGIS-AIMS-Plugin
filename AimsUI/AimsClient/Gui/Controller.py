@@ -26,6 +26,7 @@ from AimsUI.DelAddressTool import DelAddressTool
 from AimsUI.MoveAddressTool import MoveAddressTool
 from AimsUI.CreateNewAddressTool import CreateNewAddressTool
 from AimsUI.UpdateAddressTool import UpdateAddressTool
+from AimsUI.LineageTool import LineageTool
 from AimsUI.AimsClient.AimsApi import AimsApi
 
 from AimsUI import AimsLogging
@@ -58,6 +59,8 @@ class Controller(QObject):
     
     def initGui(self):
         self._layers = LayerManager(self._iface, self)
+        self._lineagetool = LineageTool( self._iface, self._layers, self)
+        
         # Main address editing window
         self._loadaction = QAction(QIcon(':/plugins/QGIS-AIMS-Plugin/resources/loadaddress.png'), 
             'QGIS-AIMS-Plugin', self._iface.mainWindow())
@@ -105,12 +108,21 @@ class Controller(QObject):
         self._updateaddtool = UpdateAddressTool( self._iface, self._layers, self)
         self._updateaddtool.setAction( self._updateaddressaction )
        
+       # Address lineage
+        self._lineageaction = QAction(QIcon(':/plugins/QGIS-AIMS-Plugin/resources/lineage.png'), 
+            'Build Lineage Relationships Between Features', self._iface.mainWindow())
+        self._lineageaction.setWhatsThis('Build Lineage Relationships Between Features')
+        self._lineageaction.setStatusTip('Build Lineage Relationships Between Features')
+        self._lineageaction.setEnabled(False)
+        self._lineageaction.triggered.connect( self._lineagetool.setEnabled )
+              
         # Add to own toolbar
         self._toolbar = self._iface.addToolBar('QGIS-AIMS-Plugin')
         self._toolbar.addAction(self._createnewaddressaction)
         self._toolbar.addAction(self._deladdressaction)
         self._toolbar.addAction(self._updateaddressaction)
         self._toolbar.addAction(self._moveaddressaction)
+        self._toolbar.addAction(self._lineageaction)
         
         # Add actions to menu and toolbar icon
         self._iface.addToolBarIcon(self._loadaction)
@@ -132,6 +144,7 @@ class Controller(QObject):
         self._createnewaddressaction.setEnabled(True)
         self._moveaddressaction.setEnabled(True)
         self._updateaddressaction.setEnabled(True)
+        self._lineageaction.setEnabled(True)
         
     def disableAddressLayer(self):
         ''' disable tools that are dependent on the Address Layer
@@ -140,6 +153,7 @@ class Controller(QObject):
         self._createnewaddressaction.setEnabled(False)
         self._moveaddressaction.setEnabled(False)
         self._updateaddressaction.setEnabled(False)
+        self._lineageaction.setEnabled(False)
 
     def unload(self):      
         self._iface.mainWindow().removeToolBar(self._toolbar)
@@ -152,7 +166,7 @@ class Controller(QObject):
         self._layers.initialiseExtentEvent()
         self._layers.installRefLayers()
     
-    # now seems the below could be one method         
+    
     def startNewAddressTool(self):
         self._iface.mapCanvas().setMapTool(self._createnewaddresstool)
         self._createnewaddresstool.setEnabled(True)
@@ -168,7 +182,11 @@ class Controller(QObject):
     def startDelAddressTool(self):
         self._iface.mapCanvas().setMapTool(self._deladdtool)
         self._deladdtool.setEnabled(True)
-
+    
+    def startLineageTool(self):
+        self._iface.mapCanvas().setMapTool(self._lineagetool)
+        self._deladdtool.setEnabled(True)
+             
     def initialiseAddressObj(self): 
         return Address(self.user)
 
@@ -176,16 +194,19 @@ class Controller(QObject):
         return self.api.changefeedAdd(payload)
     
     def retireAddress(self, retireFeatures):
-        ''' retireFeatures == [] to account for single and multiple
-        method iterates through the list of retirement payloads and pass to retire API '''
-        for retiree in retireFeatures:
-            return self.api.changefeedRetire(retiree) 
+        return self.api.changefeedRetire(retireFeatures) 
     
     def getFeatures(self, xMaximum, yMaximum, xMinimum, yMinimum):
         return self.api.getFeatures(xMaximum, yMaximum, xMinimum, yMinimum)
     
     def updateFeature(self, payload):
         return self.api.updateFeature(payload)
+    
+    def newGroup(self, payload):
+        return self.api.newGroup(payload)
+    
+    def addToGroup(self, groupId, payload):
+        return self.api.addToGroup(groupId, payload)
 
     def refreshlayer(self):
         pass

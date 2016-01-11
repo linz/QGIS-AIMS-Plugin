@@ -80,7 +80,8 @@ class DelAddressTool(QgsMapToolIdentify):
         if retireFeatures: # else the user hit 'ok' and did not select any records            
             valErrors = self._controller.retireAddress(retireFeatures)
             if len(valErrors) != 0:
-                QMessageBox.warning(self._iface.mainWindow(),"Retire Address Point", valErrors)
+                #QMessageBox.warning(self._iface.mainWindow(),"Retire Address Point", valErrors)
+                QMessageBox.warning(self._iface.mainWindow(),"Retire Feature Error", ''.join(valErrors['errors']))
         return       
  
 class DelAddressDialog( Ui_DelAddressDialog, QDialog ):
@@ -97,6 +98,7 @@ class DelAddressDialog( Ui_DelAddressDialog, QDialog ):
             retireIds = {}        
             retireIds['version'] = i['version']
             retireIds['components'] = {'addressId': i['addressId']}
+            retireIds['address'] = i['fullAddress'] #bit of a hack. this data not required by the API but useful for error reporting
             retireFeatures.append(retireIds)
         return retireFeatures        
 

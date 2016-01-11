@@ -84,9 +84,9 @@ class Address(object):
     def setRoadCentrelineId( self, roadCentrelineId ): self._roadCentrelineId = roadCentrelineId 
     def setRoadPrefix( self, roadPrefix ): self._roadPrefix = roadPrefix 
     def setRoadName( self, roadName ): self._roadName = roadName 
-    def setroadType( self, roadType ): self._roadType = roadType 
+    def setRoadType( self, roadType ): self._roadType = roadType 
     def setRoadSuffix( self, roadSuffix ): self._roadSuffix = roadSuffix 
-    def setwaterRoute( self, waterRoute ): self._waterRoute = waterRoute 
+    def setWaterRoute( self, waterRoute ): self._waterRoute = waterRoute 
     def setWaterName( self, waterName ): self._waterName = waterName 
     def setSuburbLocality( self, suburbLocality ): self._suburbLocality = suburbLocality 
     def setTownCity( self, townCity ): self._townCity = townCity 
