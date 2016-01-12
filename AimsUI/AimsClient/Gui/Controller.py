@@ -208,5 +208,11 @@ class Controller(QObject):
     def addToGroup(self, groupId, payload):
         return self.api.addToGroup(groupId, payload)
 
+    def submitGroup(self, groupId, payload):
+        return self.api.submitGroup(groupId, payload)
+    
+    def groupVersion(self, groupId):
+        return self.api.groupVersion(groupId)
+    
     def refreshlayer(self):
         pass
