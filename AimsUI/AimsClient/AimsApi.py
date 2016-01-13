@@ -33,7 +33,7 @@ class AimsApi(object):
         if str(resp) in ('400', '404') :
             for i in content['entities']:
                 if i['properties']['severity'] == 'Reject':
-                    criticalErrors.append( '- '+i['properties']['description']+'\n' )
+                    criticalErrors.append( '- '+i['properties']['description']+'   \n' )
                 else: return [] # <-- the error was not critical
         elif str(resp) == '409':
             #criticalErrors.append(content['properties']['reason'] +'\n'+ content['properties']['message'])

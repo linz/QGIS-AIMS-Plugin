@@ -114,7 +114,7 @@ class Controller(QObject):
         self._lineageaction.setWhatsThis('Build Lineage Relationships Between Features')
         self._lineageaction.setStatusTip('Build Lineage Relationships Between Features')
         self._lineageaction.setEnabled(False)
-        self._lineageaction.triggered.connect( self._lineagetool.setEnabled )
+        self._lineageaction.triggered.connect(self._lineagetool.setEnabled)
               
         # Add to own toolbar
         self._toolbar = self._iface.addToolBar('QGIS-AIMS-Plugin')
