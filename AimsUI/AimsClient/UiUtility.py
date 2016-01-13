@@ -14,8 +14,6 @@ from PyQt4.QtGui import QColor, QIntValidator, QRegExpValidator
 from PyQt4.QtCore import QRegExp
 import re
 
-
-
 class UiUtility (object):
     ''' Utility Class. Methods up for adoption
     Plans to find these a better home '''

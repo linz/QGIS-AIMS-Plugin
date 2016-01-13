@@ -69,7 +69,7 @@ class AimsApi(object):
             errorHandling = (self.handleResponse(resp["status"], json.loads(content)))
             if errorHandling == []:
                 continue
-            else: error.append(errorHandling+payload['address'])
+            else: error.append(errorHandling)
         return {'errors': error}
     
     def getFeatures( self, xMax, yMax, xMin, yMin ):

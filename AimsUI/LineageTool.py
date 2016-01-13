@@ -106,6 +106,7 @@ class LineageDialog( Ui_LineageDialog, QDialog ):
         # Signals
         self.uGroupDescription.textChanged.connect(self.groupDescripChanged)
         self.uGroupId.textChanged.connect(self.groupIdChanged)
+        self.uGroupId.setValidator(QIntValidator())
     
     def groupSelection(self, selected):
         ''' Reformats the list of dict that represents the users selection 
