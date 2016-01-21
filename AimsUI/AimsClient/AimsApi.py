@@ -116,4 +116,16 @@ class AimsApi(object):
         resp, content = self.h.request(self._url+'groups/changefeed/{}'.format(groupId),'GET', headers = self._headers)
         return {'errors': self.handleResponse(resp["status"], json.loads(content)),
                 'data':{'groupVersionId':json.loads(content)['properties']['version']}}
-
+        
+    def getResItemsHrefs (self):
+        """ get the reference to each resolution item associated with each resolution pages"""    
+        resp, content = self.h.request(self._url+'address/resolutionfeed?count=1000','GET', headers = self._headers) #under dev, currently only looking at the one page
+        content = json.loads(content)
+        for i in content['entities']:
+            yield i['links'][0]['href']
+    
+    def getResData(self):
+        ''' returns all res items '''
+        for href in self.getResItemsHrefs():        
+            content = self.h.request(href,'GET', headers = self._headers)
+            yield content # need to wrap in {'errors':error,data{data}}

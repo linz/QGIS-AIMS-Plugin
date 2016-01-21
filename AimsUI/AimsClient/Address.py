@@ -104,8 +104,60 @@ class Address(object):
     def setAppellation( self, appellation ): self._appellation = appellation      
     # realted to Features feed only
     def setFullAddress (self, fullAddress): self._fullAddress = fullAddress  
+    
+    def loadQueueItem( self, queueEntity ):
+        r = loadResolutionItem( self.href )
+        
+        #Properties
+        self.version = str(r.get('properties').get('version'))
+        self.id = r.get('properties').get('changeId')
+        self.changeTypeName = r.get('properties').get('changeTypeName')
+        self.submitterUserName = r.get('properties').get('workflow').get('submitterUserName')
+        self.submittedDate = r.get('properties').get('workflow').get('submittedDate')
+        self.queueStatusName = r.get('properties').get('workflow').get('queueStatusName')
+        self.sourceReason = r.get('properties').get('workflow').get('sourceReason')
+        
+        #Address Attributes
+        self.addressId = r.get('properties').get('components').get('addressId')
+        self.addressType = r.get('properties').get('components').get('addressType')     
+        self.lifecycle = r.get('properties').get('components').get('lifecycle')   
+        self.unitType = r.get('properties').get('components').get('unitType')                                          
+        self.unitValue = r.get('properties').get('components').get('unitValue')
+        self.levelType = r.get('properties').get('components').get('levelType')                                                 
+        self.levelValue = r.get('properties').get('components').get('levelValue')
+        self.addressNumberPrefix = r.get('properties').get('components').get('addressNumberPrefix')  
+        self.addressNumber = r.get('properties').get('components').get('addressNumber')     
+        self.addressNumberSuffix = r.get('properties').get('components').get('addressNumberSuffix')   
+        self.addressNumberHigh = r.get('properties').get('components').get('addressNumberHigh')
+        self.roadCentrelineId = r.get('properties').get('components').get('roadCentrelineId')
+        self.roadPrefix = r.get('properties').get('components').get('roadPrefix')       
+        self.roadName = r.get('properties').get('components').get('roadName')
+        self.roadTypeName = r.get('properties').get('components').get('roadTypeName')
+        self.roadSuffix = r.get('properties').get('components').get('roadSuffix')
+        self.suburbLocality = r.get('properties').get('components').get('suburbLocality')    
+        self.townCity = r.get('properties').get('components').get('townCity')
+  
+        #AddressableObject Attributes
+        self.objectType = r.get('properties').get('addressedObject').get('objectType') #chainning used as this will return None if Key does not exists
+        try:
+            self.addressPositionType = r.get('properties').get('addressedObject').get('addressPosition').get('type')
+        except: self.addressPositionType = 'NONE'
+        try:
+            self.addressPositionCoords = r.get('properties').get('addressedObject').get('addressPosition').get('coordinates')
+        except: self.addressPositionCoords ='NONE'
+        
+        #Warnings / Info
+        info = []
+        warnings = []     
+ 
+        for i in r.get('entities'):   
+            if i.get('properties').get('severity') == 'Info':
+                info.append(i.get('properties').get('description'))
+            elif i.get('properties').get('severity') == 'Warning':
+                warnings.append(i.get('properties').get('description')) 
+        self.info = '\n'.join( info )+'\n'
+        self.warnings = '\n'.join( warnings ) 
 
-       
     def _delNull(self, o):
         if hasattr(o, 'items'):
             oo = type(o)()

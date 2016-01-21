@@ -9,6 +9,8 @@
 #
 ################################################################################
 import sys
+import Resources
+
 from os.path import dirname, abspath
 sys.path.append('.qgis2/python/plugins/QGIS-AIMS-Plugin')
 
@@ -17,7 +19,7 @@ from PyQt4.QtGui import *
 from qgis.core import *
 from qgis.gui import *
 
-import Resources
+from DockWindow import DockWindow
 
 from AimsUI.AimsClient.Address import Address
 from AimsUI.LayerManager import LayerManager
@@ -28,6 +30,9 @@ from AimsUI.CreateNewAddressTool import CreateNewAddressTool
 from AimsUI.UpdateAddressTool import UpdateAddressTool
 from AimsUI.LineageTool import LineageTool
 from AimsUI.AimsClient.AimsApi import AimsApi
+from AimsQueueWidget import AimsQueueWidget
+from AddressList import AddressList
+
 
 from AimsUI import AimsLogging
 
@@ -43,6 +48,8 @@ class Controller(QObject):
         self._iface = iface
         self.api = AimsApi()
         self.user = self.api.user
+        self._alist = AddressList()
+        self._currentAddress = None
 
         #self._statusbar = iface.mainWindow().statusBar()
         #self._deladdtool = None
@@ -132,11 +139,12 @@ class Controller(QObject):
         self._iface.addPluginToMenu('&QGIS-AIMS-Plugin', self._updateaddressaction)
         self._iface.addPluginToMenu('&QGIS-AIMS-Plugin', self._moveaddressaction)
         
+               
         # Make useful connections!
         self._layers.addressLayerAdded.connect(self.enableAddressLayer)
         self._layers.addressLayerRemoved.connect(self.disableAddressLayer)
      
-    # There is scope for individual data and layer classes   
+    # Plugin Management 
     def enableAddressLayer(self, layer):
         ''' enable tools that are dependent on the Address Layer
             only when the address layer exists '''
@@ -165,6 +173,9 @@ class Controller(QObject):
     def loadEditor(self):
         self._layers.initialiseExtentEvent()
         self._layers.installRefLayers()
+        # Load queue widget
+        queues = AimsQueueWidget( self._iface.mainWindow(), self )
+        DockWindow(self._iface.mainWindow(),queues,"AimsQueues","Aims Queues")
     
     
     def startNewAddressTool(self):
@@ -189,7 +200,8 @@ class Controller(QObject):
              
     def initialiseAddressObj(self): 
         return Address(self.user)
-
+    
+    # API Methods
     def newAddress(self, payload):   
         return self.api.changefeedAdd(payload)
     
@@ -216,3 +228,19 @@ class Controller(QObject):
     
     def refreshlayer(self):
         pass
+    
+    def getResData(self):
+        return self.api.getResData()
+    
+    # queue management 
+    
+    '''
+    def loadReviewQueue(self):
+        self.api.getResData()
+        self._alist.setReviewItems( )
+    '''
+    
+def instance():
+    if Controller._instance == None:
+        Controller._instance = Controller()
+    return Controller._instance
