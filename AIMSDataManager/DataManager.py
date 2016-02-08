@@ -217,7 +217,7 @@ class Persistence():
         if not self.read():
             self.ADL = self._initADL() 
             self.coords = {'sw':SW,'ne':NE}
-            self.tracker = {ft:{'page':1,'index':1,'threads':1,'interval':1} for ft in FeedType.reverse}
+            self.tracker = {ft:{'page':[1,1],'index':1,'threads':1,'interval':1} for ft in FeedType.reverse}
             self.write() 
             
     def _initADL(self):
@@ -240,8 +240,9 @@ class Persistence():
 
 
 def test():
-    #cd /home/jramsay/git/SP-QGIS-AIMS-Plugin/AIMSDataManager
-    #sys.path.append('/home/jramsay/git/SP-QGIS-AIMS-Plugin/AIMSDataManager')
+    #cd <path>/git/SP-QGIS-AIMS-Plugin/AIMSDataManager
+    #import sys
+    #sys.path.append('<path>/git/SP-QGIS-AIMS-Plugin/AIMSDataManager')
     #from DataManager import DataManager
     #start DM
     print 'start'

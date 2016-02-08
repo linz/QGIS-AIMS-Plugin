@@ -110,9 +110,9 @@ class DataSync(threading.Thread):
         '''get full page loads'''
         newaddr = []
         pg,ii = self.ftracker['page'],self.ftracker['index']
-        p1,lastpage = pg if pg else 2*(self._findLastPage(LAST_PAGE_GUESS),)
+        backpage,lastpage = pg if pg else 2*(self._findLastPage(LAST_PAGE_GUESS),)
         #setup pool
-        pool = [{'page':p,'ref':None} for p in range(pg,pg+thr)]
+        pool = [{'page':p,'ref':None} for p in range(lastpage,lastpage+thr)]
         for r in pool:
             r['ref'] = self.fetchPage(r['page'])
         
@@ -131,7 +131,7 @@ class DataSync(threading.Thread):
                         ref = self.fetchPage(nextpage)
                         pool.append({'page':nextpage,'ref':ref})
         #update CF tracker with latest page number
-        self.managePage((p1,lastpage))
+        self.managePage((backpage,lastpage))
         return newaddr
             
     def fetchPage(self,p):
@@ -170,7 +170,7 @@ class DataSyncFeatures(DataSync):
     
     def __init__(self,params,queues):
         super(DataSyncFeatures,self).__init__(params,queues)
-        self.ftracker = {'page':(1,1),'index':1,'threads':5,'interval':5}    
+        #self.ftracker = {'page':[1,1],'index':1,'threads':5,'interval':5}    
 
 
 class DataSyncFeeds(DataSync): 
@@ -200,11 +200,11 @@ class DataSyncFeeds(DataSync):
                 elif acount>0: return p
                 else: p_end = p         
     
-    def backfillPage(self,pg):
+    def backfillPage(self,prevpage):
         '''backfills pages from requested page. non-pooled/non-tracked since non critical'''
         newaddr = []
                 
-        ref = self.fetchPage(pg)
+        ref = self.fetchPage(prevpage)
         du = self.duinst[ref]
         while du.isAlive(): pass
         alist = du.queue.get()
@@ -216,7 +216,7 @@ class DataSyncFeeds(DataSync):
             ref = self.fetchPage(prevpage)                
                 
         #update CF tracker with latest page number
-        self.managePage(pg-1,None)
+        self.managePage((prevpage-1,None))
         return newaddr
 
     def _statusFilter(self,alist):
@@ -241,7 +241,7 @@ class DataSyncChangeFeed(DataSyncFeeds):
       
     def __init__(self,params,queues):
         super(DataSyncChangeFeed,self).__init__(params,queues)
-        self.ftracker = {'page':(1,1),'index':1,'threads':1,'interval':20}
+        self.ftracker = {'page':[1,1],'index':1,'threads':1,'interval':20}
 
     def processAddress(self,at,addr):  
         at2 = ApprovalType.reverse[at][:3].capitalize()      
@@ -260,7 +260,7 @@ class DataSyncResolutionFeed(DataSyncFeeds):
       
     def __init__(self,params,queues):
         super(DataSyncResolutionFeed,self).__init__(params,queues)
-        self.ftracker = {'page':(1,1),'index':1,'threads':1,'interval':20}
+        self.ftracker = {'page':[1,1],'index':1,'threads':1,'interval':20}
         
 
     def processAddress(self,at,addr):  
