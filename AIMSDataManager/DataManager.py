@@ -157,8 +157,16 @@ class DataManager(object):
         
     def pull(self):
         '''Return copy of the ADL. Speedup, insist on deepcopy at address level'''
-        self._monitor()
         return copy.deepcopy(self.persist.ADL)
+    
+    def refresh(self):
+        '''returns feed length counts without client having to do a pull/deepcopy'''
+        self._monitor()
+        return [len(self.persist.ADL[f]) for f in FeedType.reverse]
+    
+    def close(self):
+        self.persist.write()
+        
     
     def action(self,at,address):
         '''Some user initiated approval action'''
@@ -167,14 +175,15 @@ class DataManager(object):
         
         
     def _monitor(self):
+        '''for each feed check the out queue and put any new items into the ADL'''
         for ft in FeedType.reverse:
             while not self.ioq[ft]['out'].empty():
                 dat = self.ioq[ft]['out'].get()
                 self.persist.ADL[ft] += dat
-        self.persist.write()
+        #self.persist.write()
         return self.persist.ADL
     
-    def resp(self):
+    def response(self):
         resp = ()
         while not self.ioq[FeedType.FEATURES]['resp'].empty():
             resp += (self.ioq[FeedType.FEATURES]['resp'].get(),)
@@ -217,7 +226,7 @@ class Persistence():
         if not self.read():
             self.ADL = self._initADL() 
             self.coords = {'sw':SW,'ne':NE}
-            self.tracker = {ft:{'page':[1,1],'index':1,'threads':1,'interval':1} for ft in FeedType.reverse}
+            self.tracker = {ft:{'page':[1,1],'index':1,'threads':1,'interval':5} for ft in FeedType.reverse}
             self.write() 
             
     def _initADL(self):
@@ -240,15 +249,21 @@ class Persistence():
 
 
 def test():
+    try:
+        dm = DataManager()
+        test1(dm)
+    finally:
+        dm.close()
+        
+def test1(dm):
     #cd <path>/git/SP-QGIS-AIMS-Plugin/AIMSDataManager
     #import sys
-    #sys.path.append('<path>/git/SP-QGIS-AIMS-Plugin/AIMSDataManager')
     #from DataManager import DataManager
     #start DM
     print 'start'
-    dm = DataManager()
     dm.persist.ADL = testdata
     #get some data
+    dm.refresh()
     listofaddresses = dm.pull()
     #add
     time.sleep(5)
@@ -298,12 +313,16 @@ def test():
         time.sleep(5)
         
 def testresp(dm):
+    
+    aimslog.info('*** Main COUNT {}'.format(dm.refresh()))
+
+        
     out = dm.pull()
     for o in out:
         #aimslog.info('*** Main OUTPUT {} - [{}]'.format(out[o],len(out[o])))
         aimslog.info('*** Main OUTPUT {} [{}]'.format(o,len(out[o])))
-        
-    resp = dm.resp()
+    
+    resp = dm.response()
     for r in resp:
         #aimslog.info('*** Main RESP {} - [{}]'.format(r,len(resp))) 
         aimslog.info('*** Main RESP {} [{}]'.format(r,len(resp)))

@@ -256,6 +256,10 @@ class AddressChange(Address):
         self._version = None
         self._addressId = None
         
+    def filter(self):
+        pass
+        
+        
 class AddressResolution(Address):
     ''' UI address res class ''' 
     type = FeedType.RESOLUTIONFEED
