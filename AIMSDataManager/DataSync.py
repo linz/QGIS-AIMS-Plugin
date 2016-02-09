@@ -77,13 +77,14 @@ class DataSync(threading.Thread):
             #if there are things in the input queue, process them, push to CF #TODO. there shouldnt ever be anything in the FF inq 
             if not self.inq.empty():
                 changelist = self.inq.get()    
-                aimslog.info('found {} items in queue'.format(len(changelist)))
+                aimslog.info('FT {} - found {} items in queue'.format(FeedType.reverse[self.ft],len(changelist)))
                 self.processInputQueue(changelist)
                 
-            #otherwise just keep doing reqular updates
-            aimslog.debug('FT {} sleeping {} with size(Qin)={}'.format(FeedType.reverse[self.ft],self.ftracker['interval'],self.inq.qsize())) 
             #aimslog.debug('process Q={}'.format(len(self.duinst)))
             self.syncFeeds(self.fetchFeedUpdates(self.ftracker['threads']))
+            #otherwise just keep doing reqular updates
+            aimslog.debug('\n****************\n****************\n****************\n')
+            aimslog.debug('FT {} sleeping {} with size(Qin)={}'.format(FeedType.reverse[self.ft],self.ftracker['interval'],self.inq.qsize())) 
             time.sleep(self.ftracker['interval'])
             
        
@@ -216,7 +217,7 @@ class DataSyncFeeds(DataSync):
             ref = self.fetchPage(prevpage)                
                 
         #update CF tracker with latest page number
-        self.managePage((prevpage-1,None))
+        self.managePage((prevpage,None))
         return newaddr
 
     def _statusFilter(self,alist):
