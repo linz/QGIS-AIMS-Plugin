@@ -8,7 +8,7 @@ from qgis.gui import *
 
 from AimsClient.Gui.UpdateAddressDialog import UpdateAddressDialog
 from AimsUI.AimsClient.Gui.Ui_UpdAddressDialog import Ui_UpdAddressDialog
-from AimsUI.AimsClient.UiUtility import UiUtility
+from AimsUI.AimsClient.Gui.UiUtility import UiUtility
 
 
 class UpdateAddressTool(QgsMapToolIdentify):
@@ -20,6 +20,7 @@ class UpdateAddressTool(QgsMapToolIdentify):
         self._iface = iface
         self._layers = layerManager
         self._controller = controller
+        self._canvas = iface.mapCanvas()
         self.activate()
 
     def activate(self):
@@ -39,6 +40,9 @@ class UpdateAddressTool(QgsMapToolIdentify):
             self.activate()
         else:
             self.deactivate()
+    
+    def setMarker(self, coords):
+        self._marker = UiUtility.highlight(self._iface, coords)
 
     def canvasReleaseEvent(self, mouseEvent):
         self._feature = None
@@ -70,7 +74,11 @@ class UpdateAddressTool(QgsMapToolIdentify):
                         break
         # Open form
         if self._feature:
+            # highlight feature 
+                        
+            self.setMarker(results[0].mFeature.geometry().asPoint())
             UpdateAddressDialog.updateAddress(self._feature, self._layers, self._controller, self._iface.mainWindow())
+            self._canvas.scene().removeItem(self._marker)
 
 class updateAddressDialog(Ui_UpdAddressDialog, QDialog ):
 

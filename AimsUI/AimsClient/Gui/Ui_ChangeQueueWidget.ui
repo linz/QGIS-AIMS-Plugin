@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ReviewQueueWidget</class>
- <widget class="QWidget" name="ReviewQueueWidget">
+ <class>ChangeQueueWidget</class>
+ <widget class="QWidget" name="ChangeQueueWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -72,40 +72,17 @@
        <item>
         <layout class="QVBoxLayout" name="verticalLayout">
          <item>
-          <widget class="QPushButton" name="pushButton">
-           <property name="maximumSize">
-            <size>
-             <width>70</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Accept</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButton_2">
-           <property name="maximumSize">
-            <size>
-             <width>70</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Reject</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="verticalSpacer_3">
+          <spacer name="horizontalSpacer_2">
            <property name="orientation">
-            <enum>Qt::Vertical</enum>
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Fixed</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
-             <width>20</width>
-             <height>40</height>
+             <width>70</width>
+             <height>70</height>
             </size>
            </property>
           </spacer>

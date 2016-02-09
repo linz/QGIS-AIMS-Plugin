@@ -25,7 +25,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Number Splitter</string>
+        <string>Number Splitter:</string>
        </property>
       </widget>
      </item>
@@ -363,7 +363,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Road Type Name:</string>
+        <string>Road Type:</string>
        </property>
       </widget>
      </item>
