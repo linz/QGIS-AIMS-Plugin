@@ -25,13 +25,14 @@ import getopt
 import logging
 import zipfile
 import time
-
 import threading
 import Queue
+
+
 from DataUpdater import DataUpdater,DataUpdaterAction,DataUpdaterApproval
 from AimsApi import AimsApi 
 from AimsLogging import Logger
-from AimsUtility import ActionType,ApprovalType,FeedType
+from AimsUtility import ActionType,ApprovalType,FeedType,LogWrap
 
 aimslog = None
 
@@ -40,6 +41,7 @@ FNAME = 'aimsdata'
 
 PAGES_INIT = 10
 PAGES_PERIOCDIC = 3
+POOL_PAGE_CHECK_DELAY = 0.2
 LAST_PAGE_GUESS = 1000
 
 
@@ -83,11 +85,10 @@ class DataSync(threading.Thread):
             #aimslog.debug('process Q={}'.format(len(self.duinst)))
             self.syncFeeds(self.fetchFeedUpdates(self.ftracker['threads']))
             #otherwise just keep doing reqular updates
-            aimslog.debug('\n****************\n****************\n****************\n')
+
             aimslog.debug('FT {} sleeping {} with size(Qin)={}'.format(FeedType.reverse[self.ft],self.ftracker['interval'],self.inq.qsize())) 
             time.sleep(self.ftracker['interval'])
             
-       
         
     def stop(self):
         self._stop.set()
@@ -106,21 +107,24 @@ class DataSync(threading.Thread):
 #             self.fetchFeedUpdates(ft, pt)
             
 
-        
+    @LogWrap.timediff
     def fetchFeedUpdates(self,thr):
         '''get full page loads'''
         newaddr = []
         pg,ii = self.ftracker['page'],self.ftracker['index']
         backpage,lastpage = pg if pg else 2*(self._findLastPage(LAST_PAGE_GUESS),)
         #setup pool
+        #print 'LP {} {}->{}'.format(FeedType.reverse[self.ft][:2].capitalize(),lastpage,lastpage+thr)
         pool = [{'page':p,'ref':None} for p in range(lastpage,lastpage+thr)]
         for r in pool:
             r['ref'] = self.fetchPage(r['page'])
         
         while len(pool)>0:#any([p[2] for p in pool if p[2]>1])
             for r in pool:
+                print 'checking page {}{} pool={}'.format(FeedType.reverse[self.ft][:2].capitalize(), r['page'],[p['page'] for p in pool]) 
                 du = self.duinst[r['ref']]
                 if not du.isAlive():
+                    print '{}{} finished'.format(FeedType.reverse[self.ft][:2].capitalize(),r['page'])
                     alist = du.queue.get()
                     acount = len(alist)
                     newaddr += alist
@@ -131,8 +135,14 @@ class DataSync(threading.Thread):
                         lastpage = max(r['page'],lastpage)
                         ref = self.fetchPage(nextpage)
                         pool.append({'page':nextpage,'ref':ref})
+                    else:
+                        pass
+                        print 'no addresses in page {}{}'.format(FeedType.reverse[self.ft][:2].capitalize(),r['page'])
+                time.sleep(POOL_PAGE_CHECK_DELAY)
+                print '---------\n'
         #update CF tracker with latest page number
         self.managePage((backpage,lastpage))
+        print 'leaving {} with pool={}'.format(FeedType.reverse[self.ft][:2].capitalize(),[p['page'] for p in pool])
         return newaddr
             
     def fetchPage(self,p):
@@ -152,7 +162,7 @@ class DataSync(threading.Thread):
 
     def syncFeeds(self,newaddr):
         '''return all new addresses'''
-        if self.aimsdata!=newaddr:
+        if self.aimsdata != newaddr:
             self.aimsdata = newaddr
             self.outq.put(newaddr)
             
@@ -169,9 +179,11 @@ class DataSync(threading.Thread):
 
 class DataSyncFeatures(DataSync):
     
+    #ft = FeedType.FEATURES
+    
     def __init__(self,params,queues):
         super(DataSyncFeatures,self).__init__(params,queues)
-        #self.ftracker = {'page':[1,1],'index':1,'threads':5,'interval':5}    
+        self.ftracker = {'page':[1,1],'index':1,'threads':5,'interval':30}    
 
 
 class DataSyncFeeds(DataSync): 
@@ -225,6 +237,7 @@ class DataSyncFeeds(DataSync):
         return [a for a in alist if a._workflow_queueStatus not in ('expired','deleted')]
     
     #Processes the input queue sending address changes to the API
+    @LogWrap.timediff
     def processInputQueue(self,changelist):
         '''Take the input change queue and split out individual address objects for DU processing'''
         #{ADD:addr_1,RETIRE:adr_2...
@@ -239,10 +252,12 @@ class DataSyncFeeds(DataSync):
         if p[1]: self.ftracker['page'][1] = p[1]
 
 class DataSyncChangeFeed(DataSyncFeeds):
+    
+    #ft = FeedType.CHANGEFEED
       
     def __init__(self,params,queues):
         super(DataSyncChangeFeed,self).__init__(params,queues)
-        self.ftracker = {'page':[1,1],'index':1,'threads':1,'interval':20}
+        self.ftracker = {'page':[1,1],'index':1,'threads':1,'interval':30}
 
     def processAddress(self,at,addr):  
         at2 = ApprovalType.reverse[at][:3].capitalize()      
@@ -258,10 +273,12 @@ class DataSyncChangeFeed(DataSyncFeeds):
 
 
 class DataSyncResolutionFeed(DataSyncFeeds):
-      
+    
+    #ft = FeedType.RESOLUTIONFEED
+    
     def __init__(self,params,queues):
         super(DataSyncResolutionFeed,self).__init__(params,queues)
-        self.ftracker = {'page':[1,1],'index':1,'threads':1,'interval':20}
+        self.ftracker = {'page':[1,1],'index':1,'threads':1,'interval':5}
         
 
     def processAddress(self,at,addr):  

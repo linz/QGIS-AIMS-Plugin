@@ -9,7 +9,11 @@
 #
 ################################################################################
 from Config import ConfigReader
+from functools import wraps, partial
+import time
+from AimsLogging import Logger
 
+aimslog = Logger.setup()
 
 def readConf():
     conf = {}
@@ -20,6 +24,23 @@ def readConf():
     conf['headers'] = {'content-type':'application/json', 'accept':'application/json'}
     return conf
 
+class LogWrap(object):
+    #simple ligfile time stamp decorator 
+    @classmethod
+    def timediff(cls,func=None, prefix=''):
+        msg = 'TD {} {}'.format(prefix,func.__name__)        
+        if func is None:
+            return partial(cls.timediff)
+
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            t1 = time.time()
+            res = func(*args, **kwargs)
+            tdif = time.time()-t1
+            aimslog.info(msg+' {}'.format(tdif))
+            return res
+        return wrapper
+    
 class IterEnum(object):
     index = 0
     def __iter__(self): return self

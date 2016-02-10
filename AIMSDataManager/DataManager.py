@@ -147,6 +147,9 @@ class DataManager(object):
             self.persist.ADL[FeedType.FEATURES] = self.persist._initADL()[FeedType.FEATURES]
             #save the new coordinates
             self.persist.coords['sw'],self.persist.coords['ne'] = sw,ne
+            #kill the old features thread
+            self.ds[FeedType.FEATURES].stop()
+            del self.ds[FeedType.FEATURES]
             #reinitialise a new features DataSync
             self._initFeedDS(FeedType.FEATURES,DataSyncFeatures)
 
@@ -165,7 +168,7 @@ class DataManager(object):
         return [len(self.persist.ADL[f]) for f in FeedType.reverse]
     
     def close(self):
-        self.persist.write()
+        return self.persist.write()
         
     
     def action(self,at,address):
@@ -178,8 +181,9 @@ class DataManager(object):
         '''for each feed check the out queue and put any new items into the ADL'''
         for ft in FeedType.reverse:
             while not self.ioq[ft]['out'].empty():
-                dat = self.ioq[ft]['out'].get()
-                self.persist.ADL[ft] += dat
+                #because the queue isnt populated till all pages are loaded we can just swap out the ADL
+                self.persist.ADL[ft] = self.ioq[ft]['out'].get()
+
         #self.persist.write()
         return self.persist.ADL
     
@@ -215,6 +219,15 @@ class DataManager(object):
         '''All user changes are posted to the CF inq'''
         self.ioq[FeedType.CHANGEFEED]['in'].put(changes)
         
+    #CM
+        
+    def __enter__(self):
+        return self
+    
+    def __exit__(self,exc_type=None, exc_val=None, exc_tb=None):
+        return self.close()
+
+        
 
 class Persistence():
     '''static class for persisting config/long-lived information'''
@@ -226,6 +239,7 @@ class Persistence():
         if not self.read():
             self.ADL = self._initADL() 
             self.coords = {'sw':SW,'ne':NE}
+            #default tracker, gets overwritten
             self.tracker = {ft:{'page':[1,1],'index':1,'threads':1,'interval':5} for ft in FeedType.reverse}
             self.write() 
             
@@ -244,16 +258,19 @@ class Persistence():
         return True
     
     def write(self, localds=LOCALADL):
-        archive = [self.tracker,self.coords,self.ADL]
-        pickle.dump(archive, open(localds,'wb'))
+        try:
+            archive = [self.tracker,self.coords,self.ADL]
+            pickle.dump(archive, open(localds,'wb'))
+        except:
+            return False
+        return True
 
 
 def test():
-    try:
-        dm = DataManager()
+    
+    with DataManager() as dm:
         test1(dm)
-    finally:
-        dm.close()
+        
         
 def test1(dm):
     #cd <path>/git/SP-QGIS-AIMS-Plugin/AIMSDataManager
