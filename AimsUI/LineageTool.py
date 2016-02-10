@@ -1,5 +1,3 @@
-import sys
-
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
@@ -17,7 +15,7 @@ class LineageTool(QObject):
         self._controller = controller
         self.dlg = None
         
-    def setEnabled( self, enabled ):
+    def setEnabled(self, enabled):
         self._enabled = enabled
         self.refineSelection()
     
@@ -96,7 +94,7 @@ class LineageTool(QObject):
         if len(apiSubmitGroup['errors']) != 0: # API error list is populated
             self.showWarning("Error Submitting Group For Review", ''.join(apiSubmitGroup['errors']))
                 
-class LineageDialog( Ui_LineageDialog, QDialog ):
+class LineageDialog(Ui_LineageDialog, QDialog):
     ''' QDialog Box requesting the user to refine and confirm
     their selection of features grouped as a common lineage  '''
 
@@ -114,7 +112,6 @@ class LineageDialog( Ui_LineageDialog, QDialog ):
         groupFeatures = []
         for i in selected:  
             groupIds = {}    
-            # cant the below be one line    
             groupIds['version'] = i['version']
             groupIds['components'] = {'addressId': i['addressId']}
             groupIds['address'] = i['fullAddress']
@@ -130,7 +127,7 @@ class LineageDialog( Ui_LineageDialog, QDialog ):
         return None
     
     def groupDescripChanged(self):
-        ''' if a description is provided, disable the user inputted group Id  '''
+        ''' If a description is provided, disable the user inputted group Id  '''
         if len(self.uGroupDescription.toPlainText()) != 0:
             self.uGroupId.setEnabled(False)
         else: self.uGroupId.setEnabled(True)

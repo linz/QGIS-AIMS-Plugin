@@ -8,11 +8,9 @@ from qgis.gui import *
 
 from AimsUI.AimsClient.Gui.Ui_MoveAddressDialog import Ui_MoveAddressDialog
 from AimsUI.AimsClient.Address import Address
-from AimsUI.AimsClient.UiUtility import UiUtility
+from AimsUI.AimsClient.Gui.UiUtility import UiUtility
 
 class MoveAddressTool(QgsMapToolIdentify):
-
-    tolerance=5
 
     def __init__(self, iface, layerManager, controller):
         QgsMapToolIdentify.__init__(self, iface.mapCanvas())
@@ -97,7 +95,6 @@ class MoveAddressTool(QgsMapToolIdentify):
             if self._features:
                 if len(results) == 0:                     
                     coords = self.toMapCoordinates(QPoint(mouseEvent.x(), mouseEvent.y()))
-
                 else:
                     # Snapping. i.e Move to stack
                     coords = results[0].mFeature.geometry().asPoint()    

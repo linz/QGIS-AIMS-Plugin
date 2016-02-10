@@ -70,6 +70,9 @@ class LayerManager(QObject):
     def addressLayer( self ):
         return self._adrLayer
     
+    def rclLayer( self ):
+        return self._rclLayer
+    
     def checkRemovedLayer(self, id):
         if self._adrLayer and self._adrLayer.id() == id:
             self._adrLayer = None

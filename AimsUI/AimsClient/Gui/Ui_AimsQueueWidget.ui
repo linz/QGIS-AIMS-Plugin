@@ -17,9 +17,9 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
-     <widget class="QWidget" name="uChangeTab">
+     <widget class="ChangeQueueWidget" name="uChangeTab">
       <attribute name="title">
        <string>Change</string>
       </attribute>
@@ -77,6 +77,12 @@
    <class>ReviewQueueWidget</class>
    <extends>QWidget</extends>
    <header>ReviewQueueWidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ChangeQueueWidget</class>
+   <extends>QWidget</extends>
+   <header>ChangeQueueWidget</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

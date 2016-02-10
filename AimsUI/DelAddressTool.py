@@ -1,23 +1,12 @@
-import sys
-
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
 from qgis.core import *
 from qgis.gui import *
 
-# from qgis.gui import QgsMapTool
-# from qgis.gui import QgsMapToolIdentify as QMTI
-# 
-# from PyQt4.QtGui import QDialog
-# from PyQt4.QtGui import QMessageBox
-
 from AimsUI.AimsClient.Gui.Ui_DelAddressDialog import Ui_DelAddressDialog
 
-
 class DelAddressTool(QgsMapToolIdentify):
-
-    tolerance=5
 
     def __init__(self, iface, layerManager, controller):
         QgsMapToolIdentify.__init__(self, iface.mapCanvas())
@@ -108,4 +97,4 @@ class DelAddressDialog( Ui_DelAddressDialog, QDialog ):
         if self.exec_() == QDialog.Accepted:
             return self.selectionToRetirementJson(self.uSadListView.selectedItems())
         return None
-
+    

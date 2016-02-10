@@ -18,18 +18,18 @@ from qgis.core import *
 from qgis.gui import *
 
 from AimsClient.Gui.NewAddressDialog import NewAddressDialog
-from AimsUI.AimsClient.UiUtility import UiUtility
+from AimsUI.AimsClient.Gui.UiUtility import UiUtility
 
 class CreateNewAddressTool(QgsMapToolIdentify):
     ''' tool for creating new address information ''' 
-    
+
     def __init__(self, iface, layerManager, controller=None):        
         QgsMapToolIdentify.__init__(self, iface.mapCanvas())
-   
         self._iface = iface
         self._controller = controller
         self.activate()
         self._layers = layerManager
+        self._canvas = iface.mapCanvas()
 
     def activate(self):
         QgsMapTool.activate(self)
@@ -74,11 +74,17 @@ class CreateNewAddressTool(QgsMapToolIdentify):
                 msg = str(sys.exc_info()[1])
                 QMessageBox.warning(self._iface.mainWindow(),"Error creating point",msg)
     
+    def setMarker(self, coords):
+        self._marker = UiUtility.highlight(self._iface, coords, QgsVertexMarker.ICON_X)
+   
     def setPoint( self, coords ):
         ''' guarantee srs and pass to the API '''
         self._enabled = False
+        self.setMarker(coords)
         coords = UiUtility.transform(self._iface, coords)    
         
+        # init new address object and open form
         addInstance = self._controller.initialiseAddressObj()
         NewAddressDialog.newAddress(addInstance, self._layers, self._controller, self._iface.mainWindow(), coords)
+        self._canvas.scene().removeItem(self._marker)
         self._enabled = True

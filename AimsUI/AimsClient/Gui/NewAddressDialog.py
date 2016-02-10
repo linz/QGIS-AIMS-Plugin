@@ -15,8 +15,8 @@ import re
 
 from Ui_NewAddressDialog import Ui_NewAddressDialog
 from AimsUI.AimsClient.Address import Address
-from AimsUI.AimsClient.UiUtility import UiUtility
-#from AimsUI.GetRclTool import *
+from AimsUI.AimsClient.Gui.UiUtility import UiUtility
+
 from qgis.utils import iface
 
 class NewAddressDialog(Ui_NewAddressDialog, QDialog):
@@ -29,29 +29,39 @@ class NewAddressDialog(Ui_NewAddressDialog, QDialog):
     def __init__(self, parent, coords, addInstance, layerManager, controller):
         QDialog.__init__( self, parent )  
         self.setupUi(self)
-        self.iface = iface
+        self._iface = iface
         self.coords = coords
         self.feature = addInstance
         self._layerManager = layerManager
         self._controller = controller
-   
+                
         # limit user inputs
         UiUtility.formMask(self)
         # set combo box defaults
         UiUtility.setFormCombos(self)
                     
         # Make connections
-        self.uFullNum.textChanged.connect(self.fullNumChanged)
+        self.uFullNum.textEdited.connect(self.fullNumChanged)
+        self.uPrefix.textEdited.connect(self.partNumChanged)
+        self.uUnit.textEdited.connect(self.partNumChanged)
+        self.uBase.textEdited.connect(self.partNumChanged)
+        self.uHigh.textEdited.connect(self.partNumChanged)
+        self.uAlpha.textEdited.connect(self.partNumChanged)
+        
         self.uSubmitAddressButton.clicked.connect(self.submitAddress)
-        self.uGetRclToolButton.clicked.connect(self.getRcl)
         self.uAbort.clicked.connect(self.closeDlg)
+        self.rejected.connect(self.closeDlg)
+        self.uGetRclToolButton.clicked.connect(self.getRcl)
         self.show()
-
+    
+    def getRcl(self):
+        self._controller.startRclTool(self)
+      
     def closeDlg (self):
         ''' close form '''
+        self._controller.setPreviousMapTool() # revert back to NewAddTool
         self.reject()
         
-    # now that 'update' requires the same concept - seems like this needs to be shipped somewhere modular
     def submitAddress(self):
         ''' take users input from form and submit to AIMS API '''
         # Run through the setters
@@ -71,6 +81,11 @@ class NewAddressDialog(Ui_NewAddressDialog, QDialog):
     def fullNumChanged(self, newnumber):
         UiUtility.fullNumChanged(self, newnumber)
         
-    def getRcl(self):
-        pass
-        #rcl = getRclTool(self.iface, self._layerManager)
+    def partNumChanged(self,):
+        if self.uUnit.text(): unit = self.uUnit.text()+'/' 
+        else: unit = ''
+        
+        if self.uHigh.text(): high = '-'+self.uHigh.text()
+        else: high = ''
+        
+        self.uFullNum.setText(self.uPrefix.text().upper()+unit+self.uBase.text()+high+self.uAlpha.text().upper())

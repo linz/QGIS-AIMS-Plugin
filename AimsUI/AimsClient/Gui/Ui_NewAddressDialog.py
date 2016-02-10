@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'AimsUI/AimsClient/Gui/Ui_NewAddressDialog.ui'
 #
-# Created: Mon Dec 14 13:10:07 2015
+# Created: Fri Feb  5 09:42:00 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -380,7 +380,7 @@ class Ui_NewAddressDialog(object):
 
     def retranslateUi(self, NewAddressDialog):
         NewAddressDialog.setWindowTitle(_translate("NewAddressDialog", "Feature Form", None))
-        self.label.setText(_translate("NewAddressDialog", "Number Splitter", None))
+        self.label.setText(_translate("NewAddressDialog", "Number Splitter:", None))
         self.label_5.setText(_translate("NewAddressDialog", "Unit:", None))
         self.label_6.setText(_translate("NewAddressDialog", "Base:", None))
         self.label_8.setText(_translate("NewAddressDialog", "Alpha:", None))
@@ -397,7 +397,7 @@ class Ui_NewAddressDialog(object):
         self.roadCentrelineIdLabel.setText(_translate("NewAddressDialog", "Road Centreline Id:", None))
         self.roadPrefixLabel.setText(_translate("NewAddressDialog", "Road Prefix:", None))
         self.roadNameLabel.setText(_translate("NewAddressDialog", "Road Name:", None))
-        self.roadTypeNameLabel.setText(_translate("NewAddressDialog", "Road Type Name:", None))
+        self.roadTypeNameLabel.setText(_translate("NewAddressDialog", "Road Type:", None))
         self.roadSuffixLabel.setText(_translate("NewAddressDialog", "Road Suffix:", None))
         self.waterRouteNameLabel.setText(_translate("NewAddressDialog", "Water Route Name:", None))
         self.waterNameLabel.setText(_translate("NewAddressDialog", "Water Name:", None))

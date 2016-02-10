@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'AimsUI/AimsClient/Gui/Ui_ReviewQueueWidget.ui'
+# Form implementation generated from reading ui file 'AimsUI/AimsClient/Gui/Ui_ChangeQueueWidget.ui'
 #
-# Created: Fri Feb  5 15:35:31 2016
+# Created: Wed Feb  3 10:37:37 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -23,13 +23,13 @@ except AttributeError:
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig)
 
-class Ui_ReviewQueueWidget(object):
-    def setupUi(self, ReviewQueueWidget):
-        ReviewQueueWidget.setObjectName(_fromUtf8("ReviewQueueWidget"))
-        ReviewQueueWidget.resize(517, 858)
-        self.verticalLayout_4 = QtGui.QVBoxLayout(ReviewQueueWidget)
+class Ui_ChangeQueueWidget(object):
+    def setupUi(self, ChangeQueueWidget):
+        ChangeQueueWidget.setObjectName(_fromUtf8("ChangeQueueWidget"))
+        ChangeQueueWidget.resize(517, 858)
+        self.verticalLayout_4 = QtGui.QVBoxLayout(ChangeQueueWidget)
         self.verticalLayout_4.setObjectName(_fromUtf8("verticalLayout_4"))
-        self.splitter = QtGui.QSplitter(ReviewQueueWidget)
+        self.splitter = QtGui.QSplitter(ChangeQueueWidget)
         self.splitter.setOrientation(QtCore.Qt.Vertical)
         self.splitter.setObjectName(_fromUtf8("splitter"))
         self.horizontalLayoutWidget = QtGui.QWidget(self.splitter)
@@ -63,15 +63,7 @@ class Ui_ReviewQueueWidget(object):
         self.horizontalLayout.addLayout(self.verticalLayout_6)
         self.verticalLayout = QtGui.QVBoxLayout()
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
-        self.pushButton = QtGui.QPushButton(self.horizontalLayoutWidget)
-        self.pushButton.setMaximumSize(QtCore.QSize(70, 16777215))
-        self.pushButton.setObjectName(_fromUtf8("pushButton"))
-        self.verticalLayout.addWidget(self.pushButton)
-        self.pushButton_2 = QtGui.QPushButton(self.horizontalLayoutWidget)
-        self.pushButton_2.setMaximumSize(QtCore.QSize(70, 16777215))
-        self.pushButton_2.setObjectName(_fromUtf8("pushButton_2"))
-        self.verticalLayout.addWidget(self.pushButton_2)
-        spacerItem1 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        spacerItem1 = QtGui.QSpacerItem(70, 70, QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Minimum)
         self.verticalLayout.addItem(spacerItem1)
         self.horizontalLayout.addLayout(self.verticalLayout)
         self.horizontalLayoutWidget_2 = QtGui.QWidget(self.splitter)
@@ -111,16 +103,14 @@ class Ui_ReviewQueueWidget(object):
         self.horizontalLayout_3.addLayout(self.verticalLayout_3)
         self.verticalLayout_4.addWidget(self.splitter)
 
-        self.retranslateUi(ReviewQueueWidget)
-        QtCore.QMetaObject.connectSlotsByName(ReviewQueueWidget)
+        self.retranslateUi(ChangeQueueWidget)
+        QtCore.QMetaObject.connectSlotsByName(ChangeQueueWidget)
 
-    def retranslateUi(self, ReviewQueueWidget):
-        ReviewQueueWidget.setWindowTitle(_translate("ReviewQueueWidget", "Form", None))
-        self.label_2.setText(_translate("ReviewQueueWidget", "Filter User:", None))
-        self.pushButton.setText(_translate("ReviewQueueWidget", "Accept", None))
-        self.pushButton_2.setText(_translate("ReviewQueueWidget", "Reject", None))
-        self.pushButton_3.setText(_translate("ReviewQueueWidget", "Display", None))
-        self.pushButton_4.setText(_translate("ReviewQueueWidget", "Update", None))
+    def retranslateUi(self, ChangeQueueWidget):
+        ChangeQueueWidget.setWindowTitle(_translate("ChangeQueueWidget", "Form", None))
+        self.label_2.setText(_translate("ChangeQueueWidget", "Filter User:", None))
+        self.pushButton_3.setText(_translate("ChangeQueueWidget", "Display", None))
+        self.pushButton_4.setText(_translate("ChangeQueueWidget", "Update", None))
 
 from QueueModelView import QueueView
 from QueueEditorWidget import QueueEditorWidget
