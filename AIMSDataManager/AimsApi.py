@@ -173,7 +173,6 @@ class AimsApi(object):
             url = '{}/{}?count={}&page={}'.format(self._url,FeedType.reverse[ft].lower(),count,page)
         print 'REQUEST',url
         resp, content = self.h.request(url,'GET', headers = self._headers)
-        print 'CONTENT',content
         for entity in json.loads(content)['entities']:
             href = entity['links'][0]['href']#TODO specify address type
             addrlist += [self.afactory.getAddress(model=entity['properties']),]

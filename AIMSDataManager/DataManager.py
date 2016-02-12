@@ -178,20 +178,35 @@ class DataManager(object):
         
     def _synchronise(self,newds):
         '''compare provided and current ADL. Split out deletes/adds/updates'''
+        self._synchroniseChangeFeed(newds)
+        self._synchroniseResolutionFeed(newds)
+  
+        
+    def _synchroniseChangeFeed(self,newds):
+        '''compare provided and current ADL. Split out deletes/adds/updates'''
         #check changes etc
         changes = {}
-        for ft in FeedType.reverse:
-            #identify changes in the feed and do the necessary updates by putting them in the queue
-            home,away = self.persist.ADL[ft],newds[ft]
-            changes[ActionType.ADD] = [a2 for a2 in away if a2 not in home]#[away[a2] for a2 in away if a2 not in home]
-            changes[ActionType.RETIRE] = [a1 for a1 in home if a1 not in away]#[home[a1] for a1 in home if a1 not in away]
-            #addresses not in adds/dels that have changed attributes
-            changes[ActionType.UPDATE] = [a2 for a2 in [x for x in away if x not in changes[ActionType.ADD]] \
-                                          for a1 in [x for x in home if x not in changes[ActionType.RETIRE]] \
-                                          if a1==a2 and not a1.compare(a2)] 
-                                        #[away[a2] for a2 in [x for x in away if x not in changes[ActionType.ADD]] \
-                                        #for a1 in [x for x in home if x not in changes[ActionType.RETIRE]] \
-                                        #if a1==a2 and not home[a1].compare(away[a2])]
+        #identify changes in the feed and do the necessary updates by putting them in the queue
+        home,away = self.persist.ADL[FeedType,CHANGEFEED],newds[FeedType.CHANGEFEED]
+        changes[ActionType.ADD] = [a2 for a2 in away if a2 not in home]
+        changes[ActionType.RETIRE] = [a1 for a1 in home if a1 not in away]
+        #addresses not in adds/dels that have changed attributes
+        changes[ActionType.UPDATE] = [a2 for a2 in [x for x in away if x not in changes[ActionType.ADD]] \
+                                      for a1 in [x for x in home if x not in changes[ActionType.RETIRE]] \
+                                      if a1==a2 and not a1.compare(a2)]     
+        
+    def _synchroniseResolutionFeed(self,newds):
+        '''compare provided and current ADL. Split out deletes/adds/updates'''
+        #check changes etc
+        changes = {}
+        #identify changes in the feed and do the necessary updates by putting them in the queue
+        home,away = self.persist.ADL[FeedType,RESOLUTIOFEED],newds[FeedType.RESOLUTIONFEED]
+        changes[ApprovalType.ACCEPT] = [a2 for a2 in away if a2 not in home]
+        changes[ApprovalType.DECLINE] = [a1 for a1 in home if a1 not in away]
+        #addresses not in adds/dels that have changed attributes
+        changes[ApprovalType.UPDATE] = [a2 for a2 in [x for x in away if x not in changes[ActionType.ACCEPT]] \
+                                      for a1 in [x for x in home if x not in changes[ActionType.DECLINE]] \
+                                      if a1==a2 and not a1.compare(a2)] 
             
         #TODO. add logic for what changes trigger what updates Or just get all updates
         aq = self._process(changes)
