@@ -15,12 +15,11 @@ import copy
 import time
 import pprint
 from Address import Address, AddressChange, AddressResolution
-from DataUpdater import DataUpdater
+#from DataUpdater import DataUpdater
 from DataSync import DataSync,DataSyncFeatures,DataSyncChangeFeed,DataSyncResolutionFeed
 from datetime import datetime as DT
 from AimsUtility import ActionType,FeedType,readConf
 from AimsLogging import Logger
-
 
 LOCALADL = 'aimsdata'
 LOCALDB = 'aimsdata.sb'
@@ -31,24 +30,7 @@ NE = (174.78509,-41.27491)
 
 
 aimslog = None
-# testdata = {FeedType.FEATURES:{
-#                 1: Address._import(Address('one')), 
-#                 2: Address._import(Address('two')),
-#                 3: Address._import(Address('three')),
-#                 4: Address._import(Address('four')),
-#                 5: Address._import(Address('five'))
-#                 },
-#             FeedType.CHANGEFEED:{
-#                 11: AddressChange._import(AddressChange('one_c')), 
-#                 12: AddressChange._import(AddressChange('two_c')), 
-#                 13: AddressChange._import(AddressChange('three_c'))       
-#                 },
-#             FeedType.RESOLUTIONFEED:{
-#                 21: AddressResolution._import(AddressResolution('one_r')), 
-#                 22: AddressResolution._import(AddressResolution('two_r')), 
-#                 23: AddressResolution._import(AddressResolution('three_r'))       
-#                 }
-#             } 
+
 testdata = {FeedType.FEATURES:[
                 Address._import(Address('one')), 
                 Address._import(Address('two')),
@@ -198,7 +180,7 @@ class DataManager(object):
         '''compare provided and current ADL. Split out deletes/adds/updates'''
         #check changes etc
         changes = {}
-        for ft in (FeedType.FEATURES,):#FeedType.reverse:
+        for ft in FeedType.reverse:
             #identify changes in the feed and do the necessary updates by putting them in the queue
             home,away = self.persist.ADL[ft],newds[ft]
             changes[ActionType.ADD] = [a2 for a2 in away if a2 not in home]#[away[a2] for a2 in away if a2 not in home]

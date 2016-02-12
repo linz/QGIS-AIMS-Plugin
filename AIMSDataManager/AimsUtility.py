@@ -13,6 +13,8 @@ from functools import wraps, partial
 import time
 from AimsLogging import Logger
 
+MAX_FEATURE_COUNT = 1000
+
 aimslog = Logger.setup()
 
 def readConf():
@@ -23,6 +25,7 @@ def readConf():
     conf['password'] = config.configSectionMap('user')['pass']
     conf['headers'] = {'content-type':'application/json', 'accept':'application/json'}
     return conf
+
 
 class LogWrap(object):
     #simple ligfile time stamp decorator 
@@ -65,8 +68,7 @@ class Enumeration():
         #monkeypatch instance#t2 = type('eenum',(t,), {'next':IterEnum.next})
         #return t
 
-
-        
+class InvalidEnumerationType(Exception): pass
 
 ActionType = Enumeration.enum('ADD','RETIRE','UPDATE')
 ApprovalType = Enumeration.enum('ACCEPT','DECLINE','UPDATE')

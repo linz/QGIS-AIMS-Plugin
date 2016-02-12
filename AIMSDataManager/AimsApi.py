@@ -14,21 +14,25 @@ import httplib2
 
 from Address import Address,AddressChange,AddressResolution
 from Config import ConfigReader
-from AimsUtility import ActionType,ApprovalType,FeedType
+from AimsUtility import ActionType,ApprovalType,FeedType,MAX_FEATURE_COUNT
 from AimsLogging import Logger
+
 
 aimslog = None
 
 class AimsApi(object):
-    ''' make and receive all http requests / responses to AIMS API '''   
+    ''' make and receive all http requests / responses to AIMS API '''
+      
     global aimslog
     aimslog = Logger.setup()
     
-    def __init__(self,config):
+    def __init__(self,config,afactory):
         self._url = config['url']
         self._password = config['password']
         self.user = config['user']
         self._headers = config['headers']
+        
+        self.afactory = afactory
 
         self.h = httplib2.Http(".cache")
         self.h.add_credentials(self.user, self._password)
@@ -144,14 +148,12 @@ class AimsApi(object):
     #--- A G G R E G A T E S  &  A L I A S E S -----------------------------------------------------------------------------
     #-----------------------------------------------------------------------------------------------------------------------
     
-    FEED = ('resolutionfeed','changefeed','features')
-    MAX_COUNT = 1000
     
-    def getAllPages(self,ft,count=MAX_COUNT):
+    def getAllPages(self,ft,count=MAX_FEATURE_COUNT):
         '''Get all available pages sequentially'''
         return self.getPageUp(ft, page=1, count=count)
     
-    def getPageUp(self,ft,page,count=MAX_COUNT):
+    def getPageUp(self,ft,page,count=MAX_FEATURE_COUNT):
         entities = 1
         addrlist = {}
         addrlist[ft] = ()
@@ -161,7 +163,7 @@ class AimsApi(object):
             aimslog.info('PageRef.{}'.format(page))
         return (page,addrlist)
             
-    def getOnePage(self,ft,sw,ne,page,count=MAX_COUNT):
+    def getOnePage(self,ft,sw,ne,page,count=MAX_FEATURE_COUNT):
         '''Get a numbered page'''
         addrlist = []
         if sw and ne:
@@ -169,23 +171,25 @@ class AimsApi(object):
             url = '{}/{}?count={}&bbox={}&page={}'.format(self._url,FeedType.reverse[ft].lower(),count,bb,page)
         else:
             url = '{}/{}?count={}&page={}'.format(self._url,FeedType.reverse[ft].lower(),count,page)
+        print 'REQUEST',url
         resp, content = self.h.request(url,'GET', headers = self._headers)
+        print 'CONTENT',content
         for entity in json.loads(content)['entities']:
             href = entity['links'][0]['href']#TODO specify address type
-            addrlist += [Address._import(Address(href),entity['properties']),]
+            addrlist += [self.afactory.getAddress(model=entity['properties']),]
         return addrlist
 
         
     def changefeedActionAddress(self,at,payload):
         '''Make a change to the feature list by posting a change on the changefeed'''
-        jser = json.dumps(AddressChange._export(payload))
+        jser = json.dumps(self.afactory.convertAddress(payload,at))#         AddressChange._export(payload))
         url = '{}address/changefeed/{}'.format(self._url,ActionType.reverse[at].lower())
         resp, content = self.h.request(url,"POST", jser, self._headers)
         return self.handleResponse(resp["status"], json.loads(content) )    
     
     def resolutionfeedActionAddress(self,at,payload):
         '''Approve/Decline a change by submitting address to resolutionfeed'''
-        jser = json.dumps(AddressResolution._export(payload))
+        jser = json.dumps(self.afactory.convertAddress(payload,at))                       #AddressResolution._export(payload))
         url = '{}address/resolutionfeed/{}'.format(self._url,ApprovalType.reverse[at].lower())
         resp, content = self.h.request(url,"POST", jser, self._headers)
         return self.handleResponse(resp["status"], json.loads(content) )

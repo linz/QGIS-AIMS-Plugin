@@ -47,10 +47,10 @@ class DataUpdater(threading.Thread):
     
     def __init__(self,params,queue):
         threading.Thread.__init__(self)
-        self.ref,self.conf = params
+        self.ref,self.conf,self.afactory = params
         self.queue = queue
         self._stop = threading.Event()
-        self.api = AimsApi(self.conf)    
+        self.api = AimsApi(self.conf,self.afactory)    
         
     def setup(self,ft,sw,ne,page):
         '''request a page'''

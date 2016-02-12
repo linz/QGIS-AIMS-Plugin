@@ -141,13 +141,14 @@ class Address(object):
     
     def __str__(self):
         return 'ADR.{}.{}.{}'.format(self.type,self._addressId,self._version)
-    
+        
     @classmethod
-    def _import(cls,obj,data=DA,prefix=''):
+    def _import(cls,obj,model=None,prefix=''):
         '''Flatten properties dict into an (Address) object
         param obj : Address object to be pop'd
         param data: dict of data matching address obj
         '''
+        data = model if model else cls.DA
         for k in data:
             setter = 'set'+k[0].upper()+k[1:]
             if isinstance(data[k],dict): obj = cls._import(obj,data[k],prefix+DEF_SEP+k)
@@ -155,7 +156,8 @@ class Address(object):
         return obj
     
     @classmethod  
-    def _export(cls,obj,data=DA):
+    def _export(cls,obj,model=None):
+        data = model if model else cls.DA
         '''Match object attributes to a predefined (Address) dict'''
         for attr in [a for a in obj.__dict__.keys()]:#dir(obj) if not a.startswith('__')]:
             atlist = attr.split(DEF_SEP)[1:]
@@ -275,10 +277,17 @@ class AddressResolution(Address):
         self._addressId = None 
         
 def test():
-    a1 = Address._import(Address('X'))
-    print a1
+    import pprint
+    a1 = Address._import(Address('one'))
+    a2 = AddressChange._import(AddressChange('two'))
+    a3 = AddressResolution._import(AddressResolution('three'))
+    print a1,a2,a3
     r1 = Address._export(a1)
-    print r1
+    r2 = AddressChange._export(a2)
+    r3 = AddressResolution._export(a3)
+    pprint.pprint (r1)
+    pprint.pprint (r2)
+    pprint.pprint (r3)
 
             
 if __name__ == '__main__':
