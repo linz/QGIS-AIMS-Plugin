@@ -1,0 +1,37 @@
+{
+    "publishDate":'1970-01-01',
+    "version":0,
+    "components":{
+        "addressId":0,
+        "addressType":None,
+        "lifecycle":None,
+        "addressNumber":0,
+        "roadCentrelineId":0,
+        "roadName":None,
+        "roadType":None,
+        "suburbLocality":None,
+        "fullAddressNumber":0,
+        "fullRoadName":None,
+        "fullAddress":None
+    },
+    "addressedObject":{
+        "addressableObjectId":0,
+        "objectType":None,
+        "addressPosition":{
+            "type":None,
+            "coordinates":[0.0,0.0],
+            "crs":{
+                "type":None,
+                "properties":{
+                    "name":"urn:ogc:def:crs:EPSG::4167"
+                }
+            }
+        },
+        "addressPositionType":None
+    },
+    "codes":{
+        "suburbLocalityId":0,
+        "parcelId":0,
+        "meshblock":None
+    }
+}
