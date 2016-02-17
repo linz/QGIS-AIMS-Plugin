@@ -1,34 +1,60 @@
 {
-    "changeId":0,
-    "changeType":None,
+    "version":'#required',
+    "changeId":'#required',
     "workflow":{
-        "submitterUserName":None,
-        "submittedDate":'1970-01-01',
-        "queueStatus":None,
-        "sourceOrganisation":None
+        "statusNotes":None
     },
     "components":{
-        "addressId":0,
-        "addressType":None,
-        "lifecycle":None,
-        "addressNumber":0,
-        "roadCentrelineId":0,
-        "roadName":None,
+        "addressType":'#required,oneof=Road|Water',
+        "primaryAddressId":None,
+        "alternativeOfAddressId":None,
+        "externalAddressId":None,
+        "externalAddressIdScheme":None,
+        "lifecycle":'#oneof=Proposed|Current|Retired',
+        "unitType":None,
+        "unitValue":None,
+        "levelType":None,
+        "levelValue":None,
+        "addressNumberPrefix":None,
+        "addressNumber":'#required',
+        "addressNumberSuffix":None,
+        "addressNumberHigh":None,
+        "roadCentrelineId":None,
+        "roadPrefix":None,
+        "roadName":'#required',
+        "roadType":None,
+        "roadSuffix":None,
+        "waterRoute":None,
+        "waterName":None,
         "suburbLocality":None,
         "townCity":None
     },
     "addressedObject":{
-        "objectType":"Parcel",
-        "addressPosition":{
-            "type":"Point",
-            "coordinates":[0.0,0.0],
-            "crs":{
-                "type":None,
-                "properties":{
-                    "name":"urn:ogc:def:crs:EPSG::4167"
-                }
+        "objectType":'#oneof=Parcel|Building',
+        "objectName":None,
+        "addressPositions":[
+            {
+                "position":{
+                    "type":"Point",
+                    "coordinates":[
+                        0.0,
+                        0.0
+                    ],
+                    "crs":{
+                        "type":"name",
+                        "properties":{
+                            "name":"urn:ogc:def:crs:EPSG::4167"
+                        }
+                    }
+                },
+                "positionType":'#required,oneof=Unknown|Centroid|Label|Set Back Off Road',
+                "primary":False
             }
-        },
-        "externalObjectId":None
+        ],
+        "externalObjectId":None,
+        "externalObjectIdScheme":None,
+        "valuationReference":None,
+        "certificateOfTitle":None,
+        "appelation":None
     }
 }

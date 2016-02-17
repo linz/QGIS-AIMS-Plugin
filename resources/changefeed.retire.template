@@ -1,6 +1,10 @@
 {
-    "version":None,
+    "version":'#required',
+    "workflow":{
+        "sourceUser":None,
+        "sourceReason":None
+    },
     "components":{
-        "addressId":None
+        "addressId":'#required',
     }
 }

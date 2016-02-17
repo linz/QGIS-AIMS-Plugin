@@ -37,7 +37,7 @@ from AddressFactory import AddressFactory#,AddressChangeFactory,AddressResolutio
 aimslog = None
 
 FPATH = os.path.join('..',os.path.dirname(__file__)) #base of local datastorage
-FNAME = 'aimsdata'
+FNAME = 'data_hash'
 
 PAGES_INIT = 10
 PAGE_LIMIT = 1000
@@ -56,7 +56,8 @@ class DataSync(threading.Thread):
     lock = threading.Lock()
     duinst = {}
     
-    aimsdata = []#{ft:[] for ft in FeedType.reverse}
+    #hash to compare latest fetched data
+    data_hash = {ft:0 for ft in FeedType.reverse}
     
     sw,ne = None,None
     
@@ -126,6 +127,9 @@ class DataSync(threading.Thread):
             for r in pool:
                 print 'checking page {}{} pool={}'.format(FeedType.reverse[self.ft][:2].capitalize(), r['page'],[p['page'] for p in pool]) 
                 du = self.duinst[r['ref']]
+                print 'DU',du.isAlive()
+                if len(pool) == 1 and r['page'] ==6:
+                    print 'halt' 
                 if not du.isAlive():
                     print '{}{} finished'.format(FeedType.reverse[self.ft][:2].capitalize(),r['page'])
                     alist = du.queue.get()
@@ -167,11 +171,12 @@ class DataSync(threading.Thread):
         #self.duinst[ref].join()
         #return adrq.get()
 
-    def syncFeeds(self,newaddr):
+    def syncFeeds(self,new_addr):
         '''return all new addresses'''
-        if self.aimsdata != newaddr:
-            self.aimsdata = newaddr
-            self.outq.put(newaddr)
+        new_hash = hash(frozenset(new_addr))
+        if self.data_hash != new_hash:
+            self.data_hash = new_hash
+            self.outq.put(new_addr)
             
     def managePage(self,p):
         ''''default behaviour is to not manage page counts and re read features from scratch

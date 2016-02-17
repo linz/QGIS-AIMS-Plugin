@@ -1,34 +1,4 @@
 {
-    "changeId":0,
-    "changeType":None,
-    "workflow":{
-        "submitterUserName":None,
-        "submittedDate":'1970-01-01',
-        "queueStatus":None,
-        "sourceOrganisation":None
-    },
-    "components":{
-        "addressId":0,
-        "addressType":None,
-        "lifecycle":None,
-        "addressNumber":0,
-        "roadCentrelineId":0,
-        "roadName":None,
-        "suburbLocality":None,
-        "townCity":None
-    },
-    "addressedObject":{
-        "objectType":"Parcel",
-        "addressPosition":{
-            "type":"Point",
-            "coordinates":[0.0,0.0],
-            "crs":{
-                "type":None,
-                "properties":{
-                    "name":"urn:ogc:def:crs:EPSG::4167"
-                }
-            }
-        },
-        "externalObjectId":None
-    }
+    "version":'#required',
+    "changeId":'#required'
 }

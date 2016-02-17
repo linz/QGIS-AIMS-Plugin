@@ -18,151 +18,72 @@ from AimsUtility import ActionType,FeedType
 
 DEF_SEP = '_'
 
-
-DEF_ADDR = {
-          FeedType.FEATURES:{
-                "publishDate":'1970-01-01',
-                "version":0,
-                "components":{
-                    "addressId":0,
-                    "addressType":None,
-                    "lifecycle":None,
-                    "addressNumber":0,
-                    "roadCentrelineId":0,
-                    "roadName":None,
-                    "roadType":None,
-                    "suburbLocality":None,
-                    "fullAddressNumber":0,
-                    "fullRoadName":None,
-                    "fullAddress":None
-                },
-                "addressedObject":{
-                    "addressableObjectId":0,
-                    "objectType":None,
-                    "addressPosition":{
-                        "type":None,
-                        "coordinates":[0.0,0.0],
-                        "crs":{
-                            "type":None,
-                            "properties":{
-                                "name":"urn:ogc:def:crs:EPSG::4167"
-                            }
-                        }
-                    },
-                    "addressPositionType":None
-                },
-                "codes":{
-                    "suburbLocalityId":0,
-                    "parcelId":0,
-                    "meshblock":None
-                }
-            },
-          FeedType.CHANGEFEED:{
-                "changeId":0,
-                "changeType":None,
-                "workflow":{
-                    "submitterUserName":None,
-                    "submittedDate":'1970-01-01',
-                    "queueStatus":None,
-                    "sourceOrganisation":None
-                },
-                "components":{
-                    "addressId":0,
-                    "addressType":None,
-                    "lifecycle":None,
-                    "addressNumber":0,
-                    "roadCentrelineId":0,
-                    "roadName":None,
-                    "suburbLocality":None,
-                    "townCity":None
-                },
-                "addressedObject":{
-                    "objectType":"Parcel",
-                    "addressPosition":{
-                        "type":"Point",
-                        "coordinates":[0.0,0.0],
-                        "crs":{
-                            "type":None,
-                            "properties":{
-                                "name":"urn:ogc:def:crs:EPSG::4167"
-                            }
-                        }
-                    },
-                    "externalObjectId":None
-                }
-             },
-          FeedType.RESOLUTIONFEED:{
-                "version":0,
-                "changeId":0,
-                "changeType":None,
-                "workflow":{
-                    "submitterUserName":None,
-                    "submittedDate":'1970-01-01',
-                    "queueStatus":None,
-                    "sourceOrganisation":"e-Spatial"
-                },
-                "components":{
-                    "addressId":0,
-                    "addressType":None,
-                    "lifecycle":None,
-                    "addressNumber":0,
-                    "roadCentrelineId":0,
-                    "roadName":None,
-                    "suburbLocality":None,
-                    "townCity":None
-                },
-                "addressedObject":{
-                    "objectType":None,
-                    "addressPosition":{
-                        "type":None,
-                        "coordinates":[0.0,0.0],
-                        "crs":{
-                            "type":None,
-                            "properties":{
-                                "name":"urn:ogc:def:crs:EPSG::4167"
-                            }
-                        }
-                    },
-                    "externalObjectId":None
-                }
-            }
-        }
-
     
+class Position(object):
+    '''Position type for embedded address positions.
+    Uses hardcoded attrs since it has a constant structure'''
+    
+    BRANCH = ('addressedObject','addressPositions')#'{}addressedObject{}addressPositions'.format(*2*(DEF_SEP,))
+    
+    def __init__(self, ref=None): 
+        self._position_type = 'Point'
+        self._position_coordinates = [0.0,0.0]
+        self._position_crs_type = None
+        self._position_crs_properties_name = 'urn:ogc:def:crs:EPSG::4167'
+        self._positionType = None
+        self._primary = None
+    
+    def __str__(self):
+        return 'POS'    
+
+    @staticmethod
+    def getInstance(d):
+        p = Position()
+        p.set(d)
+        return p
+        
+    def set(self,d):
+        self._set(
+            d['position']['type'],
+            d['position']['coordinates'],
+            d['position']['crs']['type'],
+            d['position']['crs']['properties']['name'],
+            d['positionType'],
+            d['primary']
+        )
+        
+    def _set(self,p1type,coordinates,ctype,cprops=None,p2type=None,primary=None):
+        '''sets object parameters'''
+        self._position_type = p1type
+        self._position_coordinates = coordinates
+        self._position_crs_type = ctype
+        self._position_crs_properties_name = cprops
+        self._positionType = p2type
+        self._primary = primary
+        
+        
+    def get(self):
+        return {"position":{
+                    "type":self._position_type,
+                        "coordinates":self._position_coordinates,
+                        "crs":{"type":self._position_crs_type,
+                            "properties":{"name":self._position_crs_properties_name}
+                        }},
+                    "positionType":self._positionType,
+                    "primary":self._primary
+                }
+
 class Address(object):
     ''' UI address class ''' 
     
     type = FeedType.FEATURES
-    DA = DEF_ADDR[type]
     
     def __init__(self, ref=None): 
         #aimslog.info('AdrRef.{}'.format(ref))
-        pass
+        if ref: self._ref = ref
     
     def __str__(self):
         return 'ADR.{}.{}.{}'.format(self.type,self._addressId,self._version)
-        
-    @classmethod
-    def _import(cls,obj,model=None,prefix=''):
-        '''Flatten properties dict into an (Address) object
-        param obj : Address object to be pop'd
-        param data: dict of data matching address obj
-        '''
-        data = model if model else cls.DA
-        for k in data:
-            setter = 'set'+k[0].upper()+k[1:]
-            if isinstance(data[k],dict): obj = cls._import(obj,data[k],prefix+DEF_SEP+k)
-            else: getattr(obj,setter)(data[k] or None) if hasattr(obj,setter) else setattr(obj,prefix+DEF_SEP+k,data[k] or None)
-        return obj
-    
-    @classmethod  
-    def _export(cls,obj,model=None):
-        data = model if model else cls.DA
-        '''Match object attributes to a predefined (Address) dict'''
-        for attr in [a for a in obj.__dict__.keys()]:#dir(obj) if not a.startswith('__')]:
-            atlist = attr.split(DEF_SEP)[1:]
-            reduce(dict.__getitem__, atlist[:-1], data)[atlist[-1:][0]] = getattr(obj,attr)
-        return data
                 
         
     #type filters, better queried off server but hardcoded for now
@@ -180,45 +101,88 @@ class Address(object):
     def setPublishDate(self,d): self._publishDate = d if Address._vDate(d) else None
     def setVersion (self, version): self._version = version if Address._vInt(version) else None
     
-    def setAddressId (self, addressId): self._addressId = addressId
+    def setAddressId (self, addressId): 
+        self._components_addressId = addressId
+        
     def setSourceReason (self, sourceReason): self._sourceReason = sourceReason
-    def setAddressType( self, addressType ): self._addressType = addressType    
-    def setExternalAddressId( self, externalAddressId ): self._externalAddressId = externalAddressId 
-    def setExternalAddressIdScheme( self, externalAddressIdScheme ): self._externalAddressIdScheme = externalAddressIdScheme 
-    def setLifecycle( self, lifecycle ): self._lifecycle = lifecycle 
+    def setAddressType( self, addressType ): 
+        self._components_addressType = addressType 
+           
+    def setExternalAddressId( self, externalAddressId ): 
+        self._addressedObject_externalAddressId = externalAddressId 
+    def setExternalAddressIdScheme( self, externalAddressIdScheme ): self._externalAddressIdScheme = externalAddressIdScheme
+    def setLifecycle( self, lifecycle ): 
+        self._components_lifecycle = lifecycle
+         
     def setUnitType( self, unitType ): self._unitType = unitType 
     def setUnitValue( self, unitValue ): self._unitValue = unitValue 
     def setLevelType( self, levelType ): self._levelType = levelType 
     def setLevelValue( self, levelValue ): self._levelValue = levelValue 
-    def setAddressNumberPrefix( self, addressNumberPrefix ): self._addressNumberPrefix = addressNumberPrefix 
-    def setAddressNumber( self, addressNumber ): self._addressNumber = addressNumber 
-    def setAddressNumberSuffix( self, addressNumberSuffix ): self._addressNumberSuffix = addressNumberSuffix 
+    def setAddressNumberPrefix( self, addressNumberPrefix ): 
+        self._components_addressNumberPrefix = addressNumberPrefix 
+    def setAddressNumber( self, addressNumber ): 
+        self._components_addressNumber = addressNumber
+          
+    def setAddressNumberSuffix( self, addressNumberSuffix ): 
+        self._components_addressNumberSuffix = addressNumberSuffix
+         
     def setAddressNumberHigh( self, addressNumberHigh ): self._addressNumberHigh = addressNumberHigh 
-    def setRoadCentrelineId( self, roadCentrelineId ): self._roadCentrelineId = roadCentrelineId 
+    def setRoadCentrelineId( self, roadCentrelineId ): 
+        self._components_roadCentrelineId = roadCentrelineId
+         
     def setRoadPrefix( self, roadPrefix ): self._roadPrefix = roadPrefix 
-    def setRoadName( self, roadName ): self._roadName = roadName 
-    def setRoadType( self, roadType ): self._roadType = roadType 
+    def setRoadName( self, roadName ): 
+        self._components_roadName = roadName
+         
+    def setRoadType( self, roadType ): 
+        self._components_roadType = roadType
+         
     def setRoadSuffix( self, roadSuffix ): self._roadSuffix = roadSuffix 
     def setWaterRoute( self, waterRoute ): self._waterRoute = waterRoute 
     def setWaterName( self, waterName ): self._waterName = waterName 
-    def setSuburbLocality( self, suburbLocality ): self._suburbLocality = suburbLocality 
-    def setTownCity( self, townCity ): self._townCity = townCity 
-    def setAoType( self, aoType ): self._aoType = aoType
-    def setAoName( self, aoName ): self._aoName = aoName  
-    def setAoPositionType( self, aoPositionType ): self._aoPositionType = aoPositionType
-    def set_x( self, x ): self._x = x  
-    def set_y( self, y ): self._y = y  
-    def setCrsType( self, crsType ): self._crsType = crsType  
-    def setCrsProperties( self, crsProperties ): self._crsProperties = crsProperties
-    def setExternalObjectId( self, externalObjectId ): self._externalObjectId = externalObjectId  
+    def setSuburbLocality( self, suburbLocality ): 
+        self._components_suburbLocality = suburbLocality
+         
+    def setTownCity( self, townCity ): 
+        self._components_townCity = townCity
+         
+    #def setAoType( self, aoType ): self._aoType = aoType
+    #def setAoName( self, aoName ): self._aoName = aoName  
+    #def setAoPositionType( self, aoPositionType ): self._aoPositionType = aoPositionType
+    #def set_x( self, x ): self._x = x  
+    #def set_y( self, y ): self._y = y  
+    #def setCrsType( self, crsType ): self._crsType = crsType  
+    #def setCrsProperties( self, crsProperties ): self._crsProperties = crsProperties
+    def setExternalObjectId( self, externalObjectId ): 
+        self._addressedObject_externalObjectId = externalObjectId
+          
     def setExternalObjectIdScheme( self, externalObjectIdScheme ): self._externalObjectIdScheme = externalObjectIdScheme  
     def setValuationReference( self, valuationReference ): self._valuationReference = valuationReference  
     def setCertificateOfTitle( self, certificateOfTitle ): self._certificateOfTitle = certificateOfTitle  
-    def setAppellation( self, appellation ): self._appellation = appellation      
+    def setAppellation( self, appellation ): self._appellation = appellation
+          
     # realted to Features feed only
-    def setFullAddress (self, fullAddress): self._fullAddress = fullAddress  
+    def setFullAddressNumber (self, fullAddressNumber): 
+        self._components_fullAddressNumber = fullAddressNumber
+        
+    def setFullRoadName (self, fullRoadName): 
+        self._components_fullRoadName = fullRoadName
+          
+    def setFullAddress (self, fullAddress): 
+        self._components_fullAddress = fullAddress    
     
-
+    #---------------------------------------------------
+    def setAddressPositions(self,pdict):
+        '''adds ('add' not 'set' but setter recognised needs set) another position object'''
+        if not hasattr(self,'_addressedObject_addressPositions'): self._addressedObject_addressPositions = []
+        for p in pdict:
+            self._addressedObject_addressPositions.append(Position.getInstance(p))
+        
+    def getAddressPositions(self):
+        '''return a list of dict'd position objects'''
+        return [p.get() for p in self._addressedObject_addressPositions]
+    #---------------------------------------------------
+    
     def _delNull(self, o):
         if hasattr(o, 'items'):
             oo = type(o)()
@@ -233,10 +197,6 @@ class Address(object):
         else: return o
         return type(o)(oo)
 
-
-    def aimsObject(self):
-        ''' Python address class to json object '''
-        return Address._export(self)
     
     def compare(self,other):
         '''Equality comparator'''
@@ -247,7 +207,7 @@ class Address(object):
 class AddressChange(Address):
     ''' UI address change class ''' 
     type = FeedType.CHANGEFEED
-    DA = DEF_ADDR[type]
+    #DA = DEF_ADDR[type]
     
     def __init__(self, ref=None): 
         super(AddressChange,self).__init__(ref)
@@ -256,7 +216,6 @@ class AddressChange(Address):
         self._submittedDate = None
         self._queueStatus = None
         self._version = None
-        self._addressId = None
         
     def filter(self):
         pass
@@ -265,7 +224,7 @@ class AddressChange(Address):
 class AddressResolution(Address):
     ''' UI address res class ''' 
     type = FeedType.RESOLUTIONFEED
-    DA = DEF_ADDR[type]
+    #DA = DEF_ADDR[type]
 
     def __init__(self, ref=None): 
         super(AddressResolution,self).__init__(ref)   
@@ -274,7 +233,6 @@ class AddressResolution(Address):
         self._submittedDate = None
         self._queueStatus = None
         self._version = None
-        self._addressId = None 
         
 def test():
     import pprint

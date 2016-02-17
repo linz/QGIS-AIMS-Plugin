@@ -18,7 +18,7 @@ from Address import Address, AddressChange, AddressResolution
 #from DataUpdater import DataUpdater
 from DataSync import DataSync,DataSyncFeatures,DataSyncChangeFeed,DataSyncResolutionFeed
 from datetime import datetime as DT
-from AimsUtility import ActionType,FeedType,readConf
+from AimsUtility import ActionType,ApprovalType,FeedType,readConf
 from AimsLogging import Logger
 
 LOCALADL = 'aimsdata'
@@ -89,7 +89,11 @@ class DataManager(object):
         self.ds[ft].start()
         
     def close(self):
-        '''non abrupt shutdown saving persisted data'''
+        '''shutdown closing/stopping ds threads and persisting data'''
+        for ds in self.ds.values():
+            #ds.close()
+            #ds.stop()
+            pass
         self.persist.write()
 
 #     #==============================================================================================
@@ -148,9 +152,6 @@ class DataManager(object):
         '''returns feed length counts without client having to do a pull/deepcopy'''
         self._monitor()
         return [len(self.persist.ADL[f]) for f in FeedType.reverse]
-    
-    def close(self):
-        return self.persist.write()
         
     
     def action(self,at,address):
@@ -187,7 +188,7 @@ class DataManager(object):
         #check changes etc
         changes = {}
         #identify changes in the feed and do the necessary updates by putting them in the queue
-        home,away = self.persist.ADL[FeedType,CHANGEFEED],newds[FeedType.CHANGEFEED]
+        home,away = self.persist.ADL[FeedType.CHANGEFEED],newds[FeedType.CHANGEFEED]
         changes[ActionType.ADD] = [a2 for a2 in away if a2 not in home]
         changes[ActionType.RETIRE] = [a1 for a1 in home if a1 not in away]
         #addresses not in adds/dels that have changed attributes
@@ -200,12 +201,12 @@ class DataManager(object):
         #check changes etc
         changes = {}
         #identify changes in the feed and do the necessary updates by putting them in the queue
-        home,away = self.persist.ADL[FeedType,RESOLUTIOFEED],newds[FeedType.RESOLUTIONFEED]
+        home,away = self.persist.ADL[FeedType.RESOLUTIONFEED],newds[FeedType.RESOLUTIONFEED]
         changes[ApprovalType.ACCEPT] = [a2 for a2 in away if a2 not in home]
         changes[ApprovalType.DECLINE] = [a1 for a1 in home if a1 not in away]
         #addresses not in adds/dels that have changed attributes
-        changes[ApprovalType.UPDATE] = [a2 for a2 in [x for x in away if x not in changes[ActionType.ACCEPT]] \
-                                      for a1 in [x for x in home if x not in changes[ActionType.DECLINE]] \
+        changes[ApprovalType.UPDATE] = [a2 for a2 in [x for x in away if x not in changes[ApprovalType.ACCEPT]] \
+                                      for a1 in [x for x in home if x not in changes[ApprovalType.DECLINE]] \
                                       if a1==a2 and not a1.compare(a2)] 
             
         #TODO. add logic for what changes trigger what updates Or just get all updates

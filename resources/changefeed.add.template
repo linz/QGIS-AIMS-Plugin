@@ -1,17 +1,31 @@
 {
     "components":{
-        "addressType":None,
-        "lifecycle":None,
-        "addressNumber":None,
+        "addressType":'#required,oneof=Road|Water',
+        "primaryAddressId":None,
+        "alternativeOfAddressId":None,
+        "externalAddressId":None,
+        "externalAddressIdScheme":None,
+        "lifecycle":'#oneof=Proposed|Current|Retired',
+        "unitType":None,
+        "unitValue":None,
+        "levelType":None,
+        "levelValue":None,
+        "addressNumberPrefix":None,
+        "addressNumber":'#required',
         "addressNumberSuffix":None,
         "roadCentrelineId":None,
-        "roadName":None,
+        "roadPrefix":None,
+        "roadName":'#required',
         "roadType":None,
+        "roadSuffix":None,
+        "waterRoute":None,
+        "waterName":None,
         "suburbLocality":None,
         "townCity":None
     },
     "addressedObject":{
-        "objectType":None,
+        "objectType":'#oneof=Parcel|Building',
+        "objectName":None,
         "addressPositions":[
             {
                 "position":{
@@ -27,10 +41,14 @@
                         }
                     }
                 },
-                "positionType":None,
-                "primary":None
+                "positionType":'#required,oneof=Unknown|Centroid|Label|Set Back Off Road',
+                "primary":False
             }
         ],
-        "externalObjectId":None
+        "externalObjectId":None,
+        "externalObjectIdScheme":None,
+        "valuationReference":None,
+        "certificateOfTitle":None,
+        "appelation":None
     }
 }

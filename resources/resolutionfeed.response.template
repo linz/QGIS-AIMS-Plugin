@@ -20,16 +20,25 @@
     },
     "addressedObject":{
         "objectType":None,
-        "addressPosition":{
-            "type":None,
-            "coordinates":[0.0,0.0],
-            "crs":{
-                "type":None,
-                "properties":{
-                    "name":"urn:ogc:def:crs:EPSG::4167"
-                }
+        "addressPositions":[
+            {
+                "position":{
+                    "type":"Point",
+                    "coordinates":[
+                        0.0,
+                        0.0
+                    ],
+                    "crs":{
+                        "type":"name",
+                        "properties":{
+                            "name":"urn:ogc:def:crs:EPSG::4167"
+                        }
+                    }
+                },
+                "positionType":None,
+                "primary":None
             }
-        },
+        ],
         "externalObjectId":None
     }
 }
