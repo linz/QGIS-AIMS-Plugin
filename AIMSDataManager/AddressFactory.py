@@ -47,39 +47,27 @@ class AddressFactory(object):
     
     @staticmethod
     def getInstance(ft):
+        '''gets a factory instance'''
         if ft==FeedType.FEATURES: return AddressFactory(ft)
         elif ft==FeedType.CHANGEFEED: return AddressChangeFactory(ft)
         elif ft==FeedType.RESOLUTIONFEED: return AddressResolutionFactory(ft)
         else: raise InvalidEnumerationType('FeedType {} not available'.format(ft))
     
     
-    def getAddress(self,adr=None,model=None,prefix=''):
+    def getAddress(self,ref=None,adr=None,model=None,prefix=''):
         '''Creates an address object from a model using a template if not provided'''
-        adr = adr if adr else self.addrtype('<default>')
+        adr = adr if adr else self.addrtype(ref)
         data = model if model else self.template['response']   
         for k in data:
             setter = 'set'+k[0].upper()+k[1:]
-#             if k == 'addressId': 
-#                 pass
-            if isinstance(data[k],dict): adr = self.getAddress(adr,data[k],prefix+DEF_SEP+k)
+            if isinstance(data[k],dict): adr = self.getAddress(ref=ref,adr=adr,model=data[k],prefix=prefix+DEF_SEP+k)
             else: getattr(adr,setter)(data[k] or None) if hasattr(adr,setter) else setattr(adr,prefix+DEF_SEP+k,data[k] or None)
         return adr
         
 
-class AddressFeedFactory(AddressFactory):    
+class AddressFeedFactory(AddressFactory):
+        
     PBRANCH = '{d}{}{d}{}'.format(d=DEF_SEP,*Position.BRANCH)
-    def convertAddress_old(self,adr,at):
-        '''Converts an address into its json payload equivalent '''
-        data = copy.copy(self.template[self.reqtype.reverse[at]])
-        '''Match object attributes to a predefined (Address) dict'''
-        for attr in [a for a in adr.__dict__.keys()]:
-            #special treatment for address positions since theyre a list not a primitive/dict
-            if attr == self.PBRANCH and data.has_key('addressedObject'):
-                data['addressedObject']['addressPositions'] = adr.getAddressPositions()
-            else:
-                atlist = attr.split(DEF_SEP)[1:]
-                reduce(dict.__getitem__, atlist[:-1], data)[atlist[-1:][0]] = getattr(adr,attr)
-        return data
     
     def convertAddress(self,adr,at):
         '''Converts an address into its json payload equivalent '''
@@ -146,8 +134,11 @@ class AddressResolutionFactory(AddressFeedFactory):
     reqtype = ApprovalType
     def __init__(self,ref=None):
         super(AddressResolutionFactory,self).__init__(ref)
-
-
+        
+    def getAddress(self,ref=None,adr=None,model=None,prefix=''):
+        adrr = super(AddressResolutionFactory,self).getAddress(ref,adr,model,prefix)
+        adrr.setWarnings([])
+        return adrr
 
 
 class TemplateReader(object):
@@ -177,6 +168,8 @@ def test():
     af_c = AddressFactory.getInstance(FeedType.CHANGEFEED)
     af_r = AddressFactory.getInstance(FeedType.RESOLUTIONFEED)
     
+    
+    axx = af_r.getAddress()
     ac1 = af_f.getAddress()
     #ac1._addressedObject_externalObjectId = 1000
     ac1._components_addressType = 'Road'

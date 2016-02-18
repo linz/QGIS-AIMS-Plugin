@@ -15,6 +15,7 @@ import copy
 import time
 import pprint
 from Address import Address, AddressChange, AddressResolution
+from AddressFactory import AddressFactory
 #from DataUpdater import DataUpdater
 from DataSync import DataSync,DataSyncFeatures,DataSyncChangeFeed,DataSyncResolutionFeed
 from datetime import datetime as DT
@@ -31,24 +32,7 @@ NE = (174.78509,-41.27491)
 
 aimslog = None
 
-testdata = {FeedType.FEATURES:[
-                Address._import(Address('one')), 
-                Address._import(Address('two')),
-                Address._import(Address('three')),
-                Address._import(Address('four')),
-                Address._import(Address('five'))
-                ],
-            FeedType.CHANGEFEED:[
-                AddressChange._import(AddressChange('one_c')), 
-                AddressChange._import(AddressChange('two_c')), 
-                AddressChange._import(AddressChange('three_c'))       
-                ],
-            FeedType.RESOLUTIONFEED:[
-                AddressResolution._import(AddressResolution('one_r')), 
-                AddressResolution._import(AddressResolution('two_r')), 
-                AddressResolution._import(AddressResolution('three_r'))       
-                ]
-            } 
+
 
 class DataManager(object):
     '''Initialises maintenance thread and provides queue accessors'''
@@ -263,19 +247,42 @@ class Persistence():
             return False
         return True
 
-
+testdata = []
 def test():
+    aff = AddressFactory(FeedType.FEATURES)
+    afc = AddressFactory(FeedType.CHANGEFEED)
+    afr = AddressFactory(FeedType.RESOLUTIONFEED)
+    global testdata
+    testdata = {FeedType.FEATURES:[
+                aff.getAddress('one'), 
+                aff.getAddress('two'),
+                aff.getAddress('three'),
+                aff.getAddress('four'),
+                aff.getAddress('five')
+                ],
+            FeedType.CHANGEFEED:[
+                afc.getAddress('one_c'), 
+                afc.getAddress('two_c'), 
+                afc.getAddress('three_c')     
+                ],
+            FeedType.RESOLUTIONFEED:[
+                afr.getAddress('one_r'), 
+                afr.getAddress('two_r'), 
+                afr.getAddress('three_r')       
+                ]
+            } 
     
     with DataManager() as dm:
-        test1(dm)
+        test1(dm,(aff,afc,afr))
         
         
-def test1(dm):
+def test1(dm,f3):
     #cd <path>/git/SP-QGIS-AIMS-Plugin/AIMSDataManager
     #import sys
     #from DataManager import DataManager
     #start DM
     print 'start'
+    
     dm.persist.ADL = testdata
     #get some data
     dm.refresh()
@@ -283,9 +290,9 @@ def test1(dm):
     #add
     time.sleep(5)
     aimslog.info('*** Main ADD '+str(time.clock()))
-    addr_7 = Address._import(Address('ninenintyseven'))
-    addr_8 = Address._import(Address('ninenintyeight'))
-    addr_9 = Address._import(Address('ninenintynine'))
+    addr_7 = f3[0].getAddress('ninenintyseven')
+    addr_8 = f3[0].getAddress('ninenintyeight')
+    addr_9 = f3[0].getAddress('ninenintynine')
     listofaddresses[FeedType.FEATURES].append(addr_7)
     listofaddresses[FeedType.FEATURES].append(addr_8)
     listofaddresses[FeedType.FEATURES].append(addr_9)

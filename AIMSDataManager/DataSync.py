@@ -127,9 +127,9 @@ class DataSync(threading.Thread):
             for r in pool:
                 print 'checking page {}{} pool={}'.format(FeedType.reverse[self.ft][:2].capitalize(), r['page'],[p['page'] for p in pool]) 
                 du = self.duinst[r['ref']]
-                print 'DU',du.isAlive()
-                if len(pool) == 1 and r['page'] ==6:
-                    print 'halt' 
+                #print 'DU',du.isAlive()
+                #if len(pool) == 1 and r['page'] == 6: #DEBUG
+                #    print 'halt' 
                 if not du.isAlive():
                     print '{}{} finished'.format(FeedType.reverse[self.ft][:2].capitalize(),r['page'])
                     alist = du.queue.get()
@@ -154,6 +154,7 @@ class DataSync(threading.Thread):
         #update CF tracker with latest page number
         self.managePage((backpage,lastpage))
         print 'leaving {} with pool={}'.format(FeedType.reverse[self.ft][:2].capitalize(),[p['page'] for p in pool])
+        print [a.__str__() for a in newaddr]
         return newaddr
             
     def fetchPage(self,p):
@@ -267,7 +268,7 @@ class DataSyncChangeFeed(DataSyncFeeds):
       
     def __init__(self,params,queues):
         super(DataSyncChangeFeed,self).__init__(params,queues)
-        self.ftracker = {'page':[1,1],'index':1,'threads':1,'interval':60}
+        self.ftracker = {'page':[1,1],'index':1,'threads':1,'interval':600}
 
     def processAddress(self,at,addr):  
         at2 = ApprovalType.reverse[at][:3].capitalize()      
@@ -293,12 +294,14 @@ class DataSyncResolutionFeed(DataSyncFeeds):
         ref = 'Req{0}.{1:%y%m%d.%H%M%S}'.format(at2,DT.now())
         params = (ref,self.conf,self.afactory)
         #self.ioq = {'in':Queue.Queue(),'out':Queue.Queue()}
+        print 'XXXXXXXXXXXXXXXXXXXXXXXXX'
         self.duinst[ref] = DataUpdaterApproval(params,self.respq)
         self.duinst[ref].setup(at,addr)
         self.duinst[ref].setDaemon(False)
         self.duinst[ref].start()
         #self.duinst[ref].join()
         return ref
+    
 
     
         

@@ -18,7 +18,47 @@ from AimsUtility import ActionType,FeedType
 
 DEF_SEP = '_'
 
+#------------------------------------------------------------------------------
+#W A R N I N G
+
+class Warning(object):
+
+    BRANCH = ('properties')
     
+    def __init__(self):
+
+        self._ruleId = None,
+        self._description = None
+        self._severity = None    
+        
+    @staticmethod
+    def getInstance(d):
+        w = Warning()
+        w.set(d)
+        return w
+    
+    def set(self,d):
+        self._set(
+            d['ruleId'],
+            d['description'],
+            d['severity']
+        )    
+        
+    def _set(self,ruleId, description,severity):
+        '''sets object parameters'''
+        self._ruleId = ruleId
+        self._description = description
+        self._severity = severity     
+        
+    def get(self):
+        return {"ruleId":self._ruleId,
+                "description":self._description,
+                "severity":self._severity
+                }
+        
+#------------------------------------------------------------------------------
+# P O S I T I O N
+
 class Position(object):
     '''Position type for embedded address positions.
     Uses hardcoded attrs since it has a constant structure'''
@@ -73,6 +113,9 @@ class Position(object):
                     "primary":self._primary
                 }
 
+#------------------------------------------------------------------------------
+# A D D R E S S
+
 class Address(object):
     ''' UI address class ''' 
     
@@ -80,10 +123,11 @@ class Address(object):
     
     def __init__(self, ref=None): 
         #aimslog.info('AdrRef.{}'.format(ref))
-        if ref: self._ref = ref
+        self._ref = ref
     
     def __str__(self):
-        return 'ADR.{}.{}.{}'.format(self.type,self._addressId,self._version)
+        #return 'ADR.{}.{}.{}.{}'.format(self._ref,self.type,self.getAddressId(),self._version)
+        return 'ADR.{}.{}'.format(self._ref,self.type)
                 
         
     #type filters, better queried off server but hardcoded for now
@@ -101,15 +145,22 @@ class Address(object):
     def setPublishDate(self,d): self._publishDate = d if Address._vDate(d) else None
     def setVersion (self, version): self._version = version if Address._vInt(version) else None
     
+    def setChangeId(self, changeId): 
+        self._changeId = changeId
+    def getChangeId(self): 
+        return self._changeId
+    
     def setAddressId (self, addressId): 
         self._components_addressId = addressId
+    def getAddressId(self): 
+        return self._components_addressId
         
     def setSourceReason (self, sourceReason): self._sourceReason = sourceReason
     def setAddressType( self, addressType ): 
         self._components_addressType = addressType 
            
     def setExternalAddressId( self, externalAddressId ): 
-        self._addressedObject_externalAddressId = externalAddressId 
+        self._components_externalAddressId = externalAddressId 
     def setExternalAddressIdScheme( self, externalAddressIdScheme ): self._externalAddressIdScheme = externalAddressIdScheme
     def setLifecycle( self, lifecycle ): 
         self._components_lifecycle = lifecycle
@@ -183,19 +234,19 @@ class Address(object):
         return [p.get() for p in self._addressedObject_addressPositions]
     #---------------------------------------------------
     
-    def _delNull(self, o):
-        if hasattr(o, 'items'):
-            oo = type(o)()
-            for k in o:
-                if k != 'NULL' and o[k] != 'NULL' and o[k] != None:
-                    oo[k] = self._delNull(o[k])
-        elif hasattr(o, '__iter__'):
-            oo = [ ] 
-            for it in o:
-                if it != 'NULL' and it != None:
-                    oo.append(self._delNull(it))
-        else: return o
-        return type(o)(oo)
+#     def _delNull(self, o):
+#         if hasattr(o, 'items'):
+#             oo = type(o)()
+#             for k in o:
+#                 if k != 'NULL' and o[k] != 'NULL' and o[k] != None:
+#                     oo[k] = self._delNull(o[k])
+#         elif hasattr(o, '__iter__'):
+#             oo = [ ] 
+#             for it in o:
+#                 if it != 'NULL' and it != None:
+#                     oo.append(self._delNull(it))
+#         else: return o
+#         return type(o)(oo)
 
     
     def compare(self,other):
@@ -204,6 +255,8 @@ class Address(object):
         #IMPORTANT. Attribute value compare, relies on deep copy
         return all((getattr(self,a)==getattr(other,a) for a in self.__dict__.keys()))
         
+#------------------------------------------------------------------------------
+
 class AddressChange(Address):
     ''' UI address change class ''' 
     type = FeedType.CHANGEFEED
@@ -211,15 +264,11 @@ class AddressChange(Address):
     
     def __init__(self, ref=None): 
         super(AddressChange,self).__init__(ref)
-        self._changeType = None
-        self._submitterUserName = None
-        self._submittedDate = None
-        self._queueStatus = None
-        self._version = None
         
     def filter(self):
         pass
         
+#------------------------------------------------------------------------------
         
 class AddressResolution(Address):
     ''' UI address res class ''' 
@@ -228,11 +277,10 @@ class AddressResolution(Address):
 
     def __init__(self, ref=None): 
         super(AddressResolution,self).__init__(ref)   
-        self._changeType = None
-        self._submitterUserName = None
-        self._submittedDate = None
-        self._queueStatus = None
-        self._version = None
+        self._warnings = None
+        
+    def setWarnings(self,warnings):
+        self._warnings = warnings
         
 def test():
     import pprint
@@ -247,6 +295,7 @@ def test():
     pprint.pprint (r2)
     pprint.pprint (r3)
 
+#------------------------------------------------------------------------------
             
 if __name__ == '__main__':
     test()      

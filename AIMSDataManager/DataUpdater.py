@@ -50,7 +50,7 @@ class DataUpdater(threading.Thread):
         self.ref,self.conf,self.afactory = params
         self.queue = queue
         self._stop = threading.Event()
-        self.api = AimsApi(self.conf,self.afactory)    
+        self.api = AimsApi(self.conf)    
         
     def setup(self,ft,sw,ne,page):
         '''request a page'''
@@ -61,7 +61,9 @@ class DataUpdater(threading.Thread):
     def run(self):
         '''get single page of addresses from API'''
         aimslog.info('GET.{} {} - Page{}'.format(self.ref,FeedType.reverse[self.ft],self.page))
-        addr = self.api.getOnePage(self.ft,self.sw,self.ne,self.page)
+        addr = []
+        for entity in self.api.getOnePage(self.ft,self.sw,self.ne,self.page):
+            addr += [self.afactory.getAddress(model=entity['properties']),]
         self.queue.put(addr)
 
         
@@ -82,12 +84,15 @@ class DataUpdaterAction(DataUpdater):
         '''set address parameters'''
         self.ft = ft
         self.address = address
+        self.payload = self.afactory.convertAddress(self.address,self.ft)
         
     def run(self):
         '''address change action on the CF'''
         aimslog.info('ACT.{} {} - Addr{}'.format(self.ref,ActionType.reverse[self.ft],self.address))
-        resp = self.api.changefeedActionAddress(self.ft,self.address)
-        self.queue.put(resp)
+        resp = self.api.changefeedActionAddress(self.ft,self.payload)
+        chg_adr = self.afactory.getAddress(model=resp)
+        print 'CHG_ADR',res_adr
+        self.queue.put(chg_adr)
 
             
 class DataUpdaterApproval(DataUpdater):
@@ -96,12 +101,18 @@ class DataUpdaterApproval(DataUpdater):
         '''set address parameters'''
         self.ft = ft
         self.address = address
+        self.cid = address.getChangeId()
+        self.payload = self.afactory.convertAddress(self.address,self.ft)
         
     def run(self):
         '''approval action on the RF''' 
         aimslog.info('APP.{} {} - Addr{}'.format(self.ref,ApprovalType.reverse[self.ft],self.address))
-        resp = self.api.resolutionfeedActionAddress(self.ft,self.address)
-        self.queue.put(resp)
+        resp = self.api.resolutionfeedApproveAddress(self.ft,self.payload,self.cid)
+        res_adr = self.afactory.getAddress(model=resp)
+        print 'RES_ADR',res_adr
+        res_adr.setWarning(self.api.getWarnings(self.cid))
+        self.queue.put(res_adr)
+        #self.queue.put({'resp':resp,'warn':warn})
 
         
     
