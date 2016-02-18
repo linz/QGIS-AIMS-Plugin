@@ -1,10 +1,12 @@
 
-from PyQt4.QtCore import *
 from PyQt4.QtGui import *
+from PyQt4.QtCore import *
+from qgis.core import *
+from qgis.utils import *
 
 from Ui_ReviewQueueWidget import Ui_ReviewQueueWidget
 from QueueModelView import *
-#from AimsUI.AimsClient.Address import Address
+#from UiUtility import UiUtility 
 
 import sys # temp
 
@@ -16,16 +18,17 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
     def __init__( self, parent=None, controller=None ):
         QWidget.__init__( self, parent )
         self.setupUi(self)
-        self.mock_data = self.build_mock_data() # temp
         self.setController( controller )
+        self.iface = self._controller.iface
+        self.uidm = self._controller.UidataManager        
+        self.reviewData = self.uidm.reviewData()
+        self.buttonDisplay.clicked.connect(self.display)
+        self.currentObjKey = None
         
-        self.mock_data = self.build_mock_data() # temp
-        self._controller.dataManager.pull()
-
         # Features View 
-        featuresHeader = ['Full Number', 'Full Road', 'Life Cycle', 'Town', 'Suburb Locality', 'hidden']
+        featuresHeader = ['Full Number', 'Full Road', 'Life Cycle', 'Town', 'Suburb Locality']
         self.featuresTableView = self.uFeaturesTableView
-        self.featureModel = FeatureTableModel(self.mock_data, featuresHeader)
+        self.featureModel = FeatureTableModel(self.reviewData, featuresHeader)
         #VIEW <------> PROXY MODEL <------> DATA MODEL
         self.featuresTableView.setModel(self.featureModel)
         self.featuresTableView.rowSelected.connect(self.featureClicked)
@@ -37,7 +40,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self._groupProxyModel.setFilterCaseSensitivity(Qt.CaseInsensitive)
         groupHeader = ['Id', 'Change', 'Source Org.', 'Submitter Name', 'Date']   
         self.groupTableView = self.uGroupTableView
-        self.groupModel = GroupTableModel(self.mock_data, self.featureModel, groupHeader)
+        self.groupModel = GroupTableModel(self.reviewData, self.featureModel, groupHeader)
         #VIEW <------> PROXY MODEL <------> DATA MODEL
         self._groupProxyModel.setSourceModel(self.groupModel)
         self.groupTableView.setModel(self._groupProxyModel)
@@ -57,11 +60,15 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         if not controller:
             controller = Controller.instance()
         self._controller = controller
+    
+    def singleReviewObj(self, objKey):
+        return self.uidm.singleReviewObj(objKey)
+            
     def featureClicked(self, row):
-        feature = self.featureModel.listClicked(row)
+        self.currentObjKey = self.featureModel.listClicked(row)        
         #emit feature chnaged --> editwidget to connect to signal
         #self.featureSelected.emit( feature )
-        self.uQueueEditor.currentFeature(feature)
+        self.uQueueEditor.currentFeature(self.singleReviewObj(self.currentObjKey))
         
     def selectAddress( self, row ): #rename Select Group
         self.groupModel.listClicked(row)
@@ -99,15 +106,26 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
             item.setCheckState(Qt.Checked)
             item.setCheckable(True)
             model.setItem(i,item)
+    
+    def formatUiData(self):
+        rData = {}
+        for k, v in self.reviewData.items():
+            #if len(rData) == 10: break
+            rData[(v._changeId, v._changeType, 'orgPlaceHolder', v._workflow_submitterUserName, v._workflow_submittedDate )] = [[self.fullNumber(), self.fullRoad(k), v._lifecycle, v._townCity, v._suburbLocality ]]
+        return rData
+    
+    def display(self):
+        coords = self.uidm.reviewItemCoords(self.currentObjKey)
+        buffer = .00100
+        extents = QgsRectangle( coords[0]-buffer,coords[1]-buffer,
+                              coords[0]+buffer,coords[1]+buffer)
+        self.iface.mapCanvas().setExtent( extents )
+        self.iface.mapCanvas().refresh()
+        #self.setMarker(coords) <-- perhaps the reveiw layer will suffice and no highlighted needed
+    
+    #def setMarker(self, coords):
+    #    self._marker = UiUtility.highlight(self.iface, QgsPoint(coords[0],coords[1]))
 
-    def build_mock_data(self):
-         return  {('090001','Update', 'Alk City', 'Milo', '2016-01-11'):     [['12', 'Test Road', 'Current', 'Somewhere Town',  'Somewhere', 'AddressObject1']],
-                 ('4098018','Replace', 'Alk City', 'Nately', '2016-01-11'):  [['14', 'Fake Street', 'Current', 'Somewhere Town', 'Somewhere', 'AddressObject2'],
-                                                                             ['10', 'Goa Way', 'Current', 'Somewhere Town', 'Somewhere',  'AddressObject3'],
-                                                                             ['10A', 'Road Way',  'Current','Somewhere Town', 'Somewhere',  'AddressObject4']], 
-                 ('4098018','Retire', 'Rotorua', 'Yossarian', '2016-02-34'): [['100', 'The Terrace', 'Retire','Somewhere Town', 'Somewhere', 'AddressObject5']],
-                 ('4098018','Add', 'Wellington City',  'Appleby', '2016-01-11'):[['100000', 'Busy Road', 'Current', 'Somewhere Town', 'Somewhere', 'AddressObject6']],
-                 }
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     

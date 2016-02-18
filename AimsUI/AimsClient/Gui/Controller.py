@@ -33,8 +33,7 @@ from AimsUI.GetRclTool import GetRcl
 from AimsUI.AimsClient.AimsApi import AimsApi
 from AimsQueueWidget import AimsQueueWidget
 from AddressList import AddressList
-
-from AIMSDataManager.DataManager import DataManager
+from UiDataManager import UiDataManager
 
 from AimsUI import AimsLogging
 from AimsUI.AimsLogging import Logger
@@ -46,18 +45,17 @@ class Controller(QObject):
     
     def __init__(self, iface):
         QObject.__init__(self)
-        self._iface = iface
+        self.iface = iface
         self.api = AimsApi()
         self.user = self.api.user
-        self._alist = AddressList()
         self._currentAddress = None
+
         self._queues = None
         self._currentMapTool = None
         self.actions = []
         if Controller._instance == None:
             Controller._instance = self
-        
-        self.dataManager = DataManager()
+        self.UidataManager = UiDataManager(self.iface)
       
         aimslog.debug(iface)
         
@@ -67,14 +65,14 @@ class Controller(QObject):
         iface.mapCanvas().mapSettings().setDestinationCrs(self._displayCrs)
 
     def initGui(self):
-        self._layers = LayerManager(self._iface, self)
+        self._layers = LayerManager(self.iface, self)
                 
         # Build an action list from QGIS navigation toolbar
-        actionList = self._iface.mapNavToolToolBar().actions()
-        self.actions = self._iface.mapNavToolToolBar().actions()
+        actionList = self.iface.mapNavToolToolBar().actions()
+        self.actions = self.iface.mapNavToolToolBar().actions()
         # Main address editing window
         self._loadaction = QAction(QIcon(':/plugins/QGIS-AIMS-Plugin/resources/loadaddress.png'), 
-            'QGIS-AIMS-Plugin', self._iface.mainWindow())
+            'QGIS-AIMS-Plugin', self.iface.mainWindow())
         self._loadaction.setWhatsThis('Open the QGIS-AIMS-Plugin')
         self._loadaction.setStatusTip('Open the QGIS-AIMS-Plugin')
         self._loadaction.triggered.connect(self.loadQueues)
@@ -82,68 +80,68 @@ class Controller(QObject):
         
         # Create new address tool
         self._createnewaddressaction = QAction(QIcon(':/plugins/QGIS-AIMS-Plugin/resources/newaddresspoint.png'), 
-            'Create AIMS Feature', self._iface.mainWindow())
+            'Create AIMS Feature', self.iface.mainWindow())
         self._createnewaddressaction.setWhatsThis('Create AIMS Feature')
         self._createnewaddressaction.setStatusTip('Create AIMS Feature')
         self._createnewaddressaction.setEnabled(False)
         self._createnewaddressaction.setCheckable(True)
         self._createnewaddressaction.triggered.connect( self.startNewAddressTool )
-        self._createnewaddresstool = CreateNewAddressTool( self._iface, self._layers, self)
+        self._createnewaddresstool = CreateNewAddressTool( self.iface, self._layers, self)
         self._createnewaddresstool.setAction( self._createnewaddressaction )
         self.actions.append(self._createnewaddressaction)
         
         # Delete address point
         self._deladdressaction = QAction(QIcon(':/plugins/QGIS-AIMS-Plugin/resources/deleteaddress.png'), 
-            'Delete AIMS Feature', self._iface.mainWindow())
+            'Delete AIMS Feature', self.iface.mainWindow())
         self._deladdressaction.setWhatsThis('Delete AIMS Feature')
         self._deladdressaction.setStatusTip('Delete AIMS Feature')
         self._deladdressaction.setEnabled(False)
         self._deladdressaction.setCheckable(True)
         self._deladdressaction.triggered.connect( self.startDelAddressTool )
-        self._deladdtool = DelAddressTool( self._iface, self._layers, self)
+        self._deladdtool = DelAddressTool( self.iface, self._layers, self)
         self._deladdtool.setAction( self._deladdressaction )        
         self.actions.append(self._deladdressaction)
         
         # Move address
         self._moveaddressaction = QAction(QIcon(':/plugins/QGIS-AIMS-Plugin/resources/moveaddress.png'), 
-            'Move AIMS Feature(s)', self._iface.mainWindow())
+            'Move AIMS Feature(s)', self.iface.mainWindow())
         self._moveaddressaction.setWhatsThis('Move AIMS Feature(s)')
         self._moveaddressaction.setStatusTip('Move AIMS Feature(s)')
         self._moveaddressaction.setEnabled(False)
         self._moveaddressaction.setCheckable(True)
         self._moveaddressaction.triggered.connect( self.startMoveAddressTool )
-        self._moveaddtool = MoveAddressTool( self._iface, self._layers, self)
+        self._moveaddtool = MoveAddressTool( self.iface, self._layers, self)
         self._moveaddtool.setAction( self._moveaddressaction )      
         self.actions.append(self._moveaddressaction)
         
         # Update address
         self._updateaddressaction = QAction(QIcon(':/plugins/QGIS-AIMS-Plugin/resources/updateaddress.png'), 
-            'Update AIMS Feature', self._iface.mainWindow())
+            'Update AIMS Feature', self.iface.mainWindow())
         self._updateaddressaction.setWhatsThis('Update AIMS Feature')
         self._updateaddressaction.setStatusTip('Update AIMS Feature')
         self._updateaddressaction.setEnabled(False)
         self._updateaddressaction.setCheckable(True)
         self._updateaddressaction.triggered.connect( self.startUpdateAddressTool )
-        self._updateaddtool = UpdateAddressTool( self._iface, self._layers, self)
+        self._updateaddtool = UpdateAddressTool( self.iface, self._layers, self)
         self._updateaddtool.setAction( self._updateaddressaction )  
         self.actions.append(self._updateaddressaction)
                     
         # RCL tools -- Not a QAction as triggered from many palaces but not the toolbar
-        self._rcltool = GetRcl(self._iface, self._layers, self, parent = None)
+        self._rcltool = GetRcl(self.iface, self._layers, self, parent = None)
        
         # Address lineage
         self._lineageaction = QAction(QIcon(':/plugins/QGIS-AIMS-Plugin/resources/lineage.png'), 
-            'Build Lineage Relationships Between Features', self._iface.mainWindow())
+            'Build Lineage Relationships Between Features', self.iface.mainWindow())
         self._lineageaction.setWhatsThis('Build Lineage Relationships Between Features')
         self._lineageaction.setStatusTip('Build Lineage Relationships Between Features')
         self._lineageaction.setEnabled(False)
         self._lineageaction.setCheckable(True)
-        self._lineagetool = LineageTool( self._iface, self._layers, self)
+        self._lineagetool = LineageTool( self.iface, self._layers, self)
         self._lineageaction.triggered.connect(self._lineagetool.setEnabled)
         self.actions.append(self._lineageaction)
         
         # Add to own toolbar
-        self._toolbar = self._iface.addToolBar('QGIS-AIMS-Plugin')
+        self._toolbar = self.iface.addToolBar('QGIS-AIMS-Plugin')
         self._toolbar.addAction(self._createnewaddressaction)
         self._toolbar.addAction(self._deladdressaction)
         self._toolbar.addAction(self._updateaddressaction)
@@ -151,21 +149,21 @@ class Controller(QObject):
         self._toolbar.addAction(self._lineageaction)
         
         # Add actions to menu and toolbar icon
-        self._iface.addToolBarIcon(self._loadaction)
-        self._iface.addPluginToMenu('&QGIS-AIMS-Plugin', self._loadaction)
-        self._iface.addPluginToMenu('&QGIS-AIMS-Plugin', self._createnewaddressaction)
-        self._iface.addPluginToMenu('&QGIS-AIMS-Plugin', self._deladdressaction)
-        self._iface.addPluginToMenu('&QGIS-AIMS-Plugin', self._updateaddressaction)
-        self._iface.addPluginToMenu('&QGIS-AIMS-Plugin', self._moveaddressaction)
+        self.iface.addToolBarIcon(self._loadaction)
+        self.iface.addPluginToMenu('&QGIS-AIMS-Plugin', self._loadaction)
+        self.iface.addPluginToMenu('&QGIS-AIMS-Plugin', self._createnewaddressaction)
+        self.iface.addPluginToMenu('&QGIS-AIMS-Plugin', self._deladdressaction)
+        self.iface.addPluginToMenu('&QGIS-AIMS-Plugin', self._updateaddressaction)
+        self.iface.addPluginToMenu('&QGIS-AIMS-Plugin', self._moveaddressaction)
         
         # Make useful connections
         self._layers.addressLayerAdded.connect(self.enableAddressLayer)
         self._layers.addressLayerRemoved.connect(self.disableAddressLayer)
         # capture maptool selection changes
-        QObject.connect( self._iface.mapCanvas(), SIGNAL( "mapToolSet(QgsMapTool *)" ), self.mapToolChanged)
+        QObject.connect( self.iface.mapCanvas(), SIGNAL( "mapToolSet(QgsMapTool *)" ), self.mapToolChanged)
 
         # Add actions from QGIS attributes toolbar (handling QWidgetActions)
-        tmpActionList = self._iface.attributesToolBar().actions()
+        tmpActionList = self.iface.attributesToolBar().actions()
         for action in tmpActionList:
             if isinstance(action, QWidgetAction):
                 actionList.extend( action.defaultWidget().actions() )
@@ -174,7 +172,7 @@ class Controller(QObject):
         # ... could add other toolbars' action lists...
 
         # Build a group with actions from actionList
-        group = QActionGroup( self._iface.mainWindow() )
+        group = QActionGroup( self.iface.mainWindow() )
         group.setExclusive(True)
         for qgisAction in actionList:
             group.addAction( qgisAction )
@@ -184,8 +182,8 @@ class Controller(QObject):
             group.addAction( action )
     
     def mapToolChanged(self):
-        if isinstance(self._iface.mapCanvas().mapTool(), GetRcl) == False:          
-            self._currentMapTool = self._iface.mapCanvas().mapTool()
+        if isinstance(self.iface.mapCanvas().mapTool(), GetRcl) == False:          
+            self._currentMapTool = self.iface.mapCanvas().mapTool()
 
     # Plugin Management 
     def enableAddressLayer(self, layer):
@@ -210,14 +208,14 @@ class Controller(QObject):
         if self._queues:
             self._queues.close()
             self._queues = None 
-        self._iface.mainWindow().removeToolBar(self._toolbar)
-        self._iface.removeToolBarIcon(self._loadaction)
-        self._iface.removePluginMenu('&QGIS-AIMS-Plugin',self._loadaction)
-        self._iface.removePluginMenu('&QGIS-AIMS-Plugin', self._createnewaddressaction)
-        self._iface.removePluginMenu('&QGIS-AIMS-Plugin', self._deladdressaction)
-        self._iface.removePluginMenu('&QGIS-AIMS-Plugin', self._updateaddressaction)
-        self._iface.removePluginMenu('&QGIS-AIMS-Plugin', self._moveaddressaction)
-        self._iface.removePluginMenu('&QGIS-AIMS-Plugin', self._lineageaction)
+        self.iface.mainWindow().removeToolBar(self._toolbar)
+        self.iface.removeToolBarIcon(self._loadaction)
+        self.iface.removePluginMenu('&QGIS-AIMS-Plugin',self._loadaction)
+        self.iface.removePluginMenu('&QGIS-AIMS-Plugin', self._createnewaddressaction)
+        self.iface.removePluginMenu('&QGIS-AIMS-Plugin', self._deladdressaction)
+        self.iface.removePluginMenu('&QGIS-AIMS-Plugin', self._updateaddressaction)
+        self.iface.removePluginMenu('&QGIS-AIMS-Plugin', self._moveaddressaction)
+        self.iface.removePluginMenu('&QGIS-AIMS-Plugin', self._lineageaction)
 
     def loadQueues( self ):
         ''' load the queue widgets '''
@@ -227,8 +225,8 @@ class Controller(QObject):
                
     def Queues(self):
         if not self._queues:
-            queues = AimsQueueWidget( self._iface.mainWindow(), self )
-            DockWindow(self._iface.mainWindow(),queues,"AimsQueues","Aims Queues")
+            queues = AimsQueueWidget( self.iface.mainWindow(), self )
+            DockWindow(self.iface.mainWindow(),queues,"AimsQueues","Aims Queues")
             self._queues = queues
         return self._queues
     
@@ -239,31 +237,31 @@ class Controller(QObject):
     def setPreviousMapTool(self):
         ''' this allows for roll back to the maptool that called get rcl
         for a better ux'''
-        self._iface.mapCanvas().setMapTool(self._currentMapTool)
+        self.iface.mapCanvas().setMapTool(self._currentMapTool)
         
     def startNewAddressTool(self):
-        self._iface.mapCanvas().setMapTool(self._createnewaddresstool)
+        self.iface.mapCanvas().setMapTool(self._createnewaddresstool)
         self._createnewaddresstool.setEnabled(True)
     
     def startRclTool(self, parent = None):
-        self._rcltool = GetRcl(self._iface, self._layers, self, parent)
-        self._iface.mapCanvas().setMapTool(self._rcltool)
+        self._rcltool = GetRcl(self.iface, self._layers, self, parent)
+        self.iface.mapCanvas().setMapTool(self._rcltool)
         self._rcltool.setEnabled(True)
     
     def startMoveAddressTool(self):
-        self._iface.mapCanvas().setMapTool(self._moveaddtool)
+        self.iface.mapCanvas().setMapTool(self._moveaddtool)
         self._moveaddtool.setEnabled(True)
     
     def startUpdateAddressTool(self):
-        self._iface.mapCanvas().setMapTool(self._updateaddtool)
+        self.iface.mapCanvas().setMapTool(self._updateaddtool)
         self._updateaddtool.setEnabled(True)
         
     def startDelAddressTool(self):
-        self._iface.mapCanvas().setMapTool(self._deladdtool)
+        self.iface.mapCanvas().setMapTool(self._deladdtool)
         self._deladdtool.setEnabled(True)
     
     def startLineageTool(self):
-        self._iface.mapCanvas().setMapTool(self._lineagetool)
+        self.iface.mapCanvas().setMapTool(self._lineagetool)
         self._deladdtool.setEnabled(True) 
              
     def initialiseAddressObj(self): 

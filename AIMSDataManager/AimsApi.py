@@ -26,13 +26,11 @@ class AimsApi(object):
     global aimslog
     aimslog = Logger.setup()
     
-    def __init__(self,config,afactory):
+    def __init__(self,config):
         self._url = config['url']
         self._password = config['password']
         self.user = config['user']
         self._headers = config['headers']
-        
-        self.afactory = afactory
 
         self.h = httplib2.Http(".cache")
         self.h.add_credentials(self.user, self._password)
@@ -57,7 +55,7 @@ class AimsApi(object):
         ''' test http response
         [] == no errors, else list of critical errors'''
         if str(resp) in ('201', '200'): #to be more inclusive i.e. 200 ...
-            return [] #i.e. no errors
+            return content #[]#i.e. no errors
         else:
             # list of validation errors
             errors = self.handleErrors(resp, content)
@@ -163,6 +161,8 @@ class AimsApi(object):
             aimslog.info('PageRef.{}'.format(page))
         return (page,addrlist)
             
+    #-----------------------------------------------------------
+    
     def getOnePage(self,ft,sw,ne,page,count=MAX_FEATURE_COUNT):
         '''Get a numbered page'''
         addrlist = []
@@ -173,25 +173,31 @@ class AimsApi(object):
             url = '{}/{}?count={}&page={}'.format(self._url,FeedType.reverse[ft].lower(),count,page)
         print 'REQUEST',url
         resp, content = self.h.request(url,'GET', headers = self._headers)
-        for entity in json.loads(content)['entities']:
-            href = entity['links'][0]['href']#TODO specify address type
-            addrlist += [self.afactory.getAddress(model=entity['properties']),]
-        return addrlist
+        return self.handleResponse(resp["status"], json.loads(content)) ['entities']    
 
+
+    def getWarnings(self,cid):
+        '''get warnings for a changeId'd resolutionfeed address'''
+        url = '{}/{}/{}'.format(self._url,FeedType.reverse[ft].lower(),self.cid)
+        resp, content = self.h.request(url,"GET", headers = self._headers)
+        for entity in self.handleResponse(resp["status"], json.loads(content)):
+            warnlist += [Warning.getInstance(entity),]
+        return warnlist
+    
         
     def changefeedActionAddress(self,at,payload):
         '''Make a change to the feature list by posting a change on the changefeed'''
-        jser = json.dumps(self.afactory.convertAddress(payload,at))#         AddressChange._export(payload))
         url = '{}address/changefeed/{}'.format(self._url,ActionType.reverse[at].lower())
-        resp, content = self.h.request(url,"POST", jser, self._headers)
+        resp, content = self.h.request(url,"POST", json.dumps(payload), self._headers)
         return self.handleResponse(resp["status"], json.loads(content) )    
     
-    def resolutionfeedActionAddress(self,at,payload):
+    def resolutionfeedApproveAddress(self,at,payload,cid):
         '''Approve/Decline a change by submitting address to resolutionfeed'''
-        jser = json.dumps(self.afactory.convertAddress(payload,at))                       #AddressResolution._export(payload))
-        url = '{}address/resolutionfeed/{}'.format(self._url,ApprovalType.reverse[at].lower())
-        resp, content = self.h.request(url,"POST", jser, self._headers)
+        url = '{}address/resolutionfeed/{}/{}'.format(self._url,cid,ApprovalType.reverse[at].lower())
+        resp, content = self.h.request(url,"POST", json.dumps(payload), self._headers)
         return self.handleResponse(resp["status"], json.loads(content) )
+    
+
     
     #not needed
     def featureAddAddress(self,payload): return self.changefeedActionAddress(ActionType.ADD, payload)    
@@ -202,9 +208,9 @@ class AimsApi(object):
     def changefeedRetireAddress(self,payload): return self.featureRetireAddress(payload)
     def changefeedUpdateAddress(self,payload): return self.featureUpdateAddress(payload)
        
-    def resolutionfeedApproveAddress(self,payload): return self.resolutionfeedActionAddress(ApprovalType.APPROVE, payload)   
-    def resolutionfeedDeclineAddress(self,payload): return self.resolutionfeedActionAddress(ApprovalType.DECLINE, payload)   
-    def resolutionfeedUpdateAddress(self,payload): return self.resolutionfeedActionAddress(ApprovalType.UPDATE, payload)   
+    def resolutionfeedApproveAddress(self,payload): return self.resolutionfeedApproveAddress(ApprovalType.APPROVE, payload)   
+    def resolutionfeedDeclineAddress(self,payload): return self.resolutionfeedApproveAddress(ApprovalType.DECLINE, payload)   
+    def resolutionfeedUpdateAddress(self,payload): return self.resolutionfeedApproveAddress(ApprovalType.UPDATE, payload)   
        
         
         

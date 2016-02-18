@@ -10,6 +10,7 @@ class QueueView(QTableView):
     rowSelected = pyqtSignal( int, name="rowSelected" )
     rowSelectionChanged = pyqtSignal( name="rowSelectionChanged" )
     
+    
     def __init__( self, parent=None ):
         QTableView.__init__( self, parent )
         # Change default settings
@@ -37,11 +38,15 @@ class QueueView(QTableView):
         return None
 
 class FeatureTableModel(QAbstractTableModel):
-    def __init__(self, data, headerdata = None,parent=None):
+ 
+    
+    def __init__(self, data , headerdata = None,parent=None):
         QAbstractTableModel.__init__(self, parent)
+        #if data == {}: data = {('','', '', '', ''): [['', '', '', '', '','']]} # dummy data if nothing return from dm
         self._data = data
         self.headerdata = headerdata
-        self.dict_key = data.keys()[0] # on init, storing any old key until the users updates it. #('4098018','Update', '2016-01-11', 'Wellington City', 'Milo')
+        
+        self.dict_key = self._data.keys()[0] # on init, storing any old key until the users updates it. issue when none returned....
         
     def set_key(self, key = None):
         self.beginResetModel()
@@ -67,14 +72,14 @@ class FeatureTableModel(QAbstractTableModel):
 
     def listClicked(self, index):
         ''' return the associated obj '''
-        return self._data[self.dict_key][index][5]
+        return self.dict_key[0]
             
         
 class GroupTableModel(QAbstractTableModel):
-    def __init__(self, data, groupModel = None, headerdata = None, parent=None):
+    def __init__(self, data, featureModel = None, headerdata = None, parent=None):
         QAbstractTableModel.__init__(self, parent)
         self._data = sorted(data.keys())
-        self.groupModel = groupModel
+        self.groupModel = featureModel
         self.headerdata = headerdata
 
     def listClicked(self, row):
@@ -85,11 +90,13 @@ class GroupTableModel(QAbstractTableModel):
         return len(self._data)
     
     def columnCount(self, QModelIndex_parent=None, *args, **kwargs):
-        return len(self._data)+1
+        try:
+            return len(self._data[0])
+        except: 0
 
-    def data(self, QModelIndex, int_role=None):
-        row = QModelIndex.row()
-        col = QModelIndex.column()
+    def data(self, index, int_role=None):
+        row =index.row()
+        col =index.column()
         if int_role == Qt.DisplayRole:
             return str(self._data[row][col])
     

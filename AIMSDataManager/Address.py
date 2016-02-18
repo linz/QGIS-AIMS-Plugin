@@ -149,6 +149,7 @@ class Address(object):
         self._changeId = changeId
     def getChangeId(self): 
         return self._changeId    
+    
     def setAddressId (self, addressId): 
         self._components_addressId = addressId
     def getAddressId(self): 

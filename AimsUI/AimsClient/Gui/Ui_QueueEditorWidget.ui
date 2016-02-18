@@ -23,7 +23,7 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>0</y>
+        <y>-73</y>
         <width>364</width>
         <height>1158</height>
        </rect>
@@ -140,7 +140,7 @@
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_4">
                <item>
-                <widget class="QLabel" name="labelWarning">
+                <widget class="QLabel" name="uWarning">
                  <property name="text">
                   <string/>
                  </property>
@@ -159,6 +159,12 @@
           <layout class="QGridLayout" name="gridLayout_15">
            <item row="7" column="1">
             <widget class="QLineEdit" name="uPrefix">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
              <property name="text">
               <string/>
              </property>
@@ -166,6 +172,12 @@
            </item>
            <item row="9" column="1">
             <widget class="QLineEdit" name="uAlpha">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
              <property name="text">
               <string/>
              </property>
@@ -187,6 +199,12 @@
            </item>
            <item row="4" column="1">
             <widget class="QLineEdit" name="uLevelValue">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
              <property name="text">
               <string/>
              </property>
@@ -208,6 +226,12 @@
            </item>
            <item row="10" column="1">
             <widget class="QLineEdit" name="uHigh">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
              <property name="text">
               <string/>
              </property>
@@ -250,8 +274,27 @@
            <item row="3" column="1">
             <widget class="QComboBox" name="uLevelType"/>
            </item>
+           <item row="6" column="0">
+            <widget class="QLabel" name="label_107">
+             <property name="maximumSize">
+              <size>
+               <width>175</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Unit Value:</string>
+             </property>
+            </widget>
+           </item>
            <item row="6" column="1">
             <widget class="QLineEdit" name="uUnit">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
              <property name="text">
               <string/>
              </property>
@@ -259,13 +302,6 @@
            </item>
            <item row="5" column="1">
             <widget class="QComboBox" name="uUnitType"/>
-           </item>
-           <item row="16" column="1">
-            <widget class="QLineEdit" name="uRoadTypeName">
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
            </item>
            <item row="15" column="1">
             <widget class="QLineEdit" name="uRoadName">
@@ -284,19 +320,6 @@
              </property>
              <property name="text">
               <string>Life Cycle:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="6" column="0">
-            <widget class="QLabel" name="label_107">
-             <property name="maximumSize">
-              <size>
-               <width>175</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>Unit Value:</string>
              </property>
             </widget>
            </item>
@@ -324,13 +347,6 @@
             <widget class="QLabel" name="label_110">
              <property name="text">
               <string>Road Suffix:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="19" column="1">
-            <widget class="QLineEdit" name="uWaterRouteName">
-             <property name="text">
-              <string/>
              </property>
             </widget>
            </item>
@@ -386,6 +402,12 @@
            </item>
            <item row="8" column="1">
             <widget class="QLineEdit" name="uBase">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
              <property name="text">
               <string/>
              </property>
@@ -431,7 +453,7 @@
            <item row="13" column="1">
             <layout class="QHBoxLayout" name="horizontalLayout">
              <item>
-              <widget class="QLineEdit" name="uRoadCentrelineId"/>
+              <widget class="QLineEdit" name="uRclId"/>
              </item>
              <item>
               <widget class="QToolButton" name="uGetRclToolButton">
@@ -456,7 +478,7 @@
             </widget>
            </item>
            <item row="11" column="1">
-            <widget class="QLineEdit" name="lineEdit_2">
+            <widget class="QLineEdit" name="uExternalIdScheme">
              <property name="text">
               <string/>
              </property>
@@ -466,6 +488,20 @@
             <widget class="QLabel" name="label_3">
              <property name="text">
               <string>Ext. Add  Id:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="16" column="1">
+            <widget class="QLineEdit" name="uRoadTypeName">
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="19" column="1">
+            <widget class="QLineEdit" name="uWaterRouteName">
+             <property name="text">
+              <string/>
              </property>
             </widget>
            </item>
@@ -488,6 +524,13 @@
        </item>
        <item>
         <layout class="QGridLayout" name="gridLayout_13">
+         <item row="4" column="0">
+          <widget class="QLabel" name="label_94">
+           <property name="text">
+            <string>Ext. Obj Id:</string>
+           </property>
+          </widget>
+         </item>
          <item row="0" column="0">
           <widget class="QLabel" name="label_92">
            <property name="minimumSize">
@@ -501,20 +544,10 @@
            </property>
           </widget>
          </item>
-         <item row="3" column="1">
-          <widget class="QComboBox" name="uExtObjectIdScheme"/>
-         </item>
          <item row="7" column="0">
           <widget class="QLabel" name="label_93">
            <property name="text">
             <string>appellation:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="0">
-          <widget class="QLabel" name="label_94">
-           <property name="text">
-            <string>Ext. Obj Id:</string>
            </property>
           </widget>
          </item>
@@ -587,16 +620,15 @@
          <item row="2" column="0">
           <widget class="QLabel" name="label_99">
            <property name="text">
-            <string>Address Position:</string>
+            <string>Position Type:</string>
            </property>
           </widget>
          </item>
+         <item row="3" column="1">
+          <widget class="QLineEdit" name="uExtObjectIdScheme"/>
+         </item>
          <item row="2" column="1">
-          <widget class="QLineEdit" name="lineAddressPosition">
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
+          <widget class="QComboBox" name="uPositionType"/>
          </item>
         </layout>
        </item>
