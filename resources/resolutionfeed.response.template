@@ -6,20 +6,39 @@
         "submitterUserName":None,
         "submittedDate":'1970-01-01',
         "queueStatus":None,
-        "sourceOrganisation":"e-Spatial"
+        "sourceOrganisation":None
+        "statusNotes"None
+        "sourceReason"None
     },
     "components":{
         "addressId":0,
         "addressType":None,
+        "primaryAddressId":0
+        "alternativeOfAddressId":0
+        "externalAddressId":None
+        "externalAddressIdScheme":None
         "lifecycle":None,
+        "unitType":None
+        "unitValue":None
+        "levelType":None
+        "levelValue":None
+        "addressNumberPrefix":None
         "addressNumber":0,
+        "addressNumberSuffix":None
+        "addressNumberHigh":0
         "roadCentrelineId":0,
+        "roadPrefix":None
         "roadName":None,
+        "roadType":None
+        "roadSuffix":None
+        "waterRoute":None
+        "waterName":None
         "suburbLocality":None,
         "townCity":None
     },
     "addressedObject":{
         "objectType":None,
+        "objectName":None,
         "addressPositions":[
             {
                 "position":{
@@ -38,7 +57,11 @@
                 "positionType":None,
                 "primary":None
             }
-        ],
-        "externalObjectId":None
+        ],        
+    	"externalObjectId":None,
+  		"externalObjectIdScheme":None,
+   		"valuationReference":None,
+    	"certificateOfTitle":None,
+    	"appellation":None   
     }
 }

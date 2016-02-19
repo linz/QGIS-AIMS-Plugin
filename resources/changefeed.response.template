@@ -7,18 +7,34 @@
         #    "queueStatus":None
         #},
         "components":{
-            "addressType":None,
-            "lifecycle":None,
-            "addressNumber":None,
-            "addressNumberSuffix":None,
-            "roadCentrelineId":None,
-            "roadName":None,
-            "roadType":None,
-            "suburbLocality":None,
-            "townCity":None
+            "addressId":0,
+        	"addressType":None,
+	        "primaryAddressId":0
+	        "alternativeOfAddressId":0
+	        "externalAddressId":None
+	        "externalAddressIdScheme":None
+	        "lifecycle":None,
+	        "unitType":None
+	        "unitValue":None
+	        "levelType":None
+	        "levelValue":None
+	        "addressNumberPrefix":None
+	        "addressNumber":0,
+	        "addressNumberSuffix":None
+	        "addressNumberHigh":0
+	        "roadCentrelineId":0,
+	        "roadPrefix":None
+	        "roadName":None,
+	        "roadType":None
+	        "roadSuffix":None
+	        "waterRoute":None
+	        "waterName":None
+	        "suburbLocality":None,
+	        "townCity":None
         },
         "addressedObject":{
             "objectType":None,
+            "objectName":None,
             "addressPositions":[
                 {
                     "position":{
@@ -37,7 +53,11 @@
                     "positionType":None,
                     "primary":None
                 }
-            ],
-            "externalObjectId":None
+            ],        	
+        	"externalObjectId":None,
+      		"externalObjectIdScheme":None,
+       		"valuationReference":None,
+        	"certificateOfTitle":None,
+        	"appellation":None            
         }
     }
