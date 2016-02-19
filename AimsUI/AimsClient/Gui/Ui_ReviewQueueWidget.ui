@@ -126,7 +126,7 @@
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <item>
-          <widget class="QPushButton" name="pushButton_3">
+          <widget class="QPushButton" name="buttonDisplay">
            <property name="maximumSize">
             <size>
              <width>70</width>
@@ -176,7 +176,7 @@
           </spacer>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_4">
+          <widget class="QPushButton" name="uUpdateButton">
            <property name="maximumSize">
             <size>
              <width>70</width>

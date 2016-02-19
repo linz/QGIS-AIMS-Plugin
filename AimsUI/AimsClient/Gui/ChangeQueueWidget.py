@@ -96,6 +96,5 @@ class ChangeQueueWidget( Ui_ChangeQueueWidget, QWidget ):
                  ('4098018','Replace', 'Alk City', 'Nately', '2016-01-11'):  [['14', 'Fake Street', 'Current', 'Somewhere Town', 'Somewhere', 'AddressObject2'],
                                                                                      ['10', 'Goa Way', 'Current', 'Somewhere Town', 'Somewhere',  'AddressObject3'],
                                                                                      ['10A', 'Road Way',  'Current','Somewhere Town', 'Somewhere',  'AddressObject4']], 
-                 ('4098018','Retire', 'Rotorua', 'Yossarian', '2016-02-34'): [['100', 'The Terrace', 'Retire','Somewhere Town', 'Somewhere', 'AddressObject5']],
-                 ('4098018','Add', 'Wellington City',  'Appleby', '2016-01-11'):      [['100000', 'Busy Road', 'Current', 'Somewhere Town', 'Somewhere', 'AddressObject6']],
+                 ('4098018','Retire', 'Rotorua', 'Yossarian', '2016-02-34'): [['100', 'The Terrace', 'Retire','Somewhere Town', 'Somewhere', 'AddressObject5']]
                  }

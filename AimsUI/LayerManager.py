@@ -197,7 +197,7 @@ class LayerManager(QObject):
                                 QgsField('addressableObjectId', QVariant.String),
                                 QgsField('objectType', QVariant.String),
                                 QgsField('objectName', QVariant.String),
-                                QgsField('addressPositionType', QVariant.String),
+                                QgsField('addressPositionsType', QVariant.String),
                                 QgsField('suburbLocalityId', QVariant.String),
                                 QgsField('parcelId', QVariant.String),
                                 QgsField('externalObjectId', QVariant.String),
@@ -215,7 +215,6 @@ class LayerManager(QObject):
         # would like to come back and do something more intelligent here
     
         for e in r['entities']:
-            version = e['properties']['version']
             c = e['properties']['components']
             fullAddress = c['fullAddress'] if c.has_key('fullAddress') else None
             fullAddressNumber = c['fullAddressNumber'] if c.has_key('fullAddressNumber') else None
@@ -243,20 +242,24 @@ class LayerManager(QObject):
             suburbLocality = c['suburbLocality'] if c.has_key('suburbLocality') else None
             townCity = c['townCity'] if c.has_key('townCity') else None 
             
+            
             o = e['properties']['addressedObject']
+            '''
             addressableObjectId = o['addressableObjectId'] if o.has_key('addressableObjectId') else None  
             objectType = o['objectType'] if o.has_key('objectType') else None     
             objectName = o['objectName'] if o.has_key('objectName') else None    
-            addressPositionType = o['addressPosition']['type'] if o['addressPosition'].has_key('type') else None
-            coords = o['addressPosition']['coordinates'] if o['addressPosition'].has_key('coordinates') else None 
+            addressPositionsType = o['addressPositions']['type'] if o['addressPositions'].has_key('type') else None
+            '''
+            coords = o['addressPositions'][0]['position']['coordinates'] if o['addressPositions'][0]['position'].has_key('coordinates') else None 
+            '''
             externalObjectId = o['externalObjectId'] if o.has_key('externalObjectId') else None    
             externalObjectIdScheme = o['externalObjectIdScheme'] if o.has_key('externalObjectIdScheme') else None    
             valuationReference = o['valuationReference'] if o.has_key('valuationReference') else None    
             certificateOfTitle = o['certificateOfTitle'] if o.has_key('certificateOfTitle') else None    
             appellation = o['appellation'] if o.has_key('appellation') else None    
-            addressPositionType = o['addressPosition']['type'] if o.has_key('addressPosition') and o['addressPosition'].has_key('type') else None
-            coords = o['addressPosition']['coordinates'] if o.has_key('addressPosition') and o['addressPosition'].has_key('coordinates') else None 
-
+            addressPositionsType = o['addressPositions']['type'] if o.has_key('addressPositions') and o['addressPositions'].has_key('type') else None
+            coords = o['addressPositions']['coordinates'] if o.has_key('addressPositions') and o['addressPositions'].has_key('coordinates') else None 
+            '''
             codes = e['properties']['codes'] 
             suburbLocalityId = codes['suburbLocalityId'] if codes.has_key('suburbLocalityId') else None  # does the user require these???
             townCityId = codes['townCityId'] if codes.has_key('townCityId') else None  # does the user require these???
@@ -288,21 +291,23 @@ class LayerManager(QObject):
                                 addressNumber,
                                 addressNumberSuffix,
                                 addressNumberHigh,
-                                version,
+                                
                                 addressId,
                                 externalAddressId,
-                                externalAddressIdScheme,
-                                addressableObjectId,
-                                objectType,
-                                objectName,
-                                addressPositionType,
-                                suburbLocalityId,
-                                parcelId,
-                                externalObjectId,
-                                externalObjectIdScheme,
-                                valuationReference,
-                                certificateOfTitle,
-                                appellation])
+                                externalAddressIdScheme])
+                                
+                                #addressableObjectId,
+                                #objectType,
+                                #objectName,
+                                #addressPositionsType,
+                                #suburbLocalityId,
+                                #parcelId,
+                                #externalObjectId,
+                                #externalObjectIdScheme,
+                                #valuationReference,
+                                #certificateOfTitle,
+                         
+                                #appellation])
             provider.addFeatures([fet])
 
         # commit to stop editing the layer

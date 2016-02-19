@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'AimsUI/AimsClient/Gui/Ui_ReviewQueueWidget.ui'
 #
-# Created: Fri Feb  5 15:35:31 2016
+# Created: Thu Feb 18 12:34:44 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -85,10 +85,10 @@ class Ui_ReviewQueueWidget(object):
         self.horizontalLayout_2.addWidget(self.uFeaturesTableView)
         self.verticalLayout_2 = QtGui.QVBoxLayout()
         self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
-        self.pushButton_3 = QtGui.QPushButton(self.horizontalLayoutWidget_2)
-        self.pushButton_3.setMaximumSize(QtCore.QSize(70, 16777215))
-        self.pushButton_3.setObjectName(_fromUtf8("pushButton_3"))
-        self.verticalLayout_2.addWidget(self.pushButton_3)
+        self.buttonDisplay = QtGui.QPushButton(self.horizontalLayoutWidget_2)
+        self.buttonDisplay.setMaximumSize(QtCore.QSize(70, 16777215))
+        self.buttonDisplay.setObjectName(_fromUtf8("buttonDisplay"))
+        self.verticalLayout_2.addWidget(self.buttonDisplay)
         spacerItem2 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.verticalLayout_2.addItem(spacerItem2)
         self.horizontalLayout_2.addLayout(self.verticalLayout_2)
@@ -104,10 +104,10 @@ class Ui_ReviewQueueWidget(object):
         self.verticalLayout_3.setObjectName(_fromUtf8("verticalLayout_3"))
         spacerItem3 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.verticalLayout_3.addItem(spacerItem3)
-        self.pushButton_4 = QtGui.QPushButton(self.horizontalLayoutWidget_3)
-        self.pushButton_4.setMaximumSize(QtCore.QSize(70, 16777215))
-        self.pushButton_4.setObjectName(_fromUtf8("pushButton_4"))
-        self.verticalLayout_3.addWidget(self.pushButton_4)
+        self.uUpdateButton = QtGui.QPushButton(self.horizontalLayoutWidget_3)
+        self.uUpdateButton.setMaximumSize(QtCore.QSize(70, 16777215))
+        self.uUpdateButton.setObjectName(_fromUtf8("uUpdateButton"))
+        self.verticalLayout_3.addWidget(self.uUpdateButton)
         self.horizontalLayout_3.addLayout(self.verticalLayout_3)
         self.verticalLayout_4.addWidget(self.splitter)
 
@@ -119,8 +119,8 @@ class Ui_ReviewQueueWidget(object):
         self.label_2.setText(_translate("ReviewQueueWidget", "Filter User:", None))
         self.pushButton.setText(_translate("ReviewQueueWidget", "Accept", None))
         self.pushButton_2.setText(_translate("ReviewQueueWidget", "Reject", None))
-        self.pushButton_3.setText(_translate("ReviewQueueWidget", "Display", None))
-        self.pushButton_4.setText(_translate("ReviewQueueWidget", "Update", None))
+        self.buttonDisplay.setText(_translate("ReviewQueueWidget", "Display", None))
+        self.uUpdateButton.setText(_translate("ReviewQueueWidget", "Update", None))
 
 from QueueModelView import QueueView
 from QueueEditorWidget import QueueEditorWidget

@@ -148,7 +148,7 @@ class Address(object):
     def setChangeId(self, changeId): 
         self._changeId = changeId
     def getChangeId(self): 
-        return self._changeId
+        return self._changeId    
     
     def setChangeType(self, changeType):
         self._changeType = changeType
@@ -163,47 +163,48 @@ class Address(object):
     def setAddressId (self, addressId): 
         self._components_addressId = addressId
     def getAddressId(self): 
-        return self._components_addressId
-        
+        return self._components_addressId        
     def setSourceReason (self, sourceReason): self._sourceReason = sourceReason
     def setAddressType( self, addressType ): 
-        self._components_addressType = addressType 
-           
+        self._components_addressType = addressType            
     def setExternalAddressId( self, externalAddressId ): 
         self._components_externalAddressId = externalAddressId 
-    def setExternalAddressIdScheme( self, externalAddressIdScheme ): self._externalAddressIdScheme = externalAddressIdScheme
+    def setExternalAddressIdScheme( self, externalAddressIdScheme ): 
+        self._components_externalAddressIdScheme = externalAddressIdScheme
     def setLifecycle( self, lifecycle ): 
-        self._components_lifecycle = lifecycle
-         
-    def setUnitType( self, unitType ): self._unitType = unitType 
-    def setUnitValue( self, unitValue ): self._unitValue = unitValue 
-    def setLevelType( self, levelType ): self._levelType = levelType 
-    def setLevelValue( self, levelValue ): self._levelValue = levelValue 
+        self._components_lifecycle = lifecycle         
+    def setUnitType( self, unitType ): 
+        self._components_unitType = unitType 
+    def setUnitValue( self, unitValue ): 
+        self._components_unitValue = unitValue 
+    def setLevelType( self, levelType ): 
+        self._components_levelType = levelType 
+    def setLevelValue( self, levelValue ): 
+        self._components_levelValue = levelValue 
     def setAddressNumberPrefix( self, addressNumberPrefix ): 
         self._components_addressNumberPrefix = addressNumberPrefix 
     def setAddressNumber( self, addressNumber ): 
-        self._components_addressNumber = addressNumber
-          
+        self._components_addressNumber = addressNumber          
     def setAddressNumberSuffix( self, addressNumberSuffix ): 
-        self._components_addressNumberSuffix = addressNumberSuffix
-         
-    def setAddressNumberHigh( self, addressNumberHigh ): self._addressNumberHigh = addressNumberHigh 
+        self._components_addressNumberSuffix = addressNumberSuffix         
+    def setAddressNumberHigh( self, addressNumberHigh ): 
+        self._components_addressNumberHigh = addressNumberHigh 
     def setRoadCentrelineId( self, roadCentrelineId ): 
-        self._components_roadCentrelineId = roadCentrelineId
-         
-    def setRoadPrefix( self, roadPrefix ): self._roadPrefix = roadPrefix 
+        self._components_roadCentrelineId = roadCentrelineId         
+    def setRoadPrefix( self, roadPrefix ): 
+        self._components_roadPrefix = roadPrefix 
     def setRoadName( self, roadName ): 
-        self._components_roadName = roadName
-         
+        self._components_roadName = roadName         
     def setRoadType( self, roadType ): 
-        self._components_roadType = roadType
-         
-    def setRoadSuffix( self, roadSuffix ): self._roadSuffix = roadSuffix 
-    def setWaterRoute( self, waterRoute ): self._waterRoute = waterRoute 
-    def setWaterName( self, waterName ): self._waterName = waterName 
+        self._components_roadType = roadType         
+    def setRoadSuffix( self, roadSuffix ): 
+        self._components_roadSuffix = roadSuffix 
+    def setWaterRoute( self, waterRoute ): 
+        self._components_waterRoute = waterRoute 
+    def setWaterName( self, waterName ): 
+        self._components_waterName = waterName 
     def setSuburbLocality( self, suburbLocality ): 
-        self._components_suburbLocality = suburbLocality
-         
+        self._components_suburbLocality = suburbLocality         
     def setTownCity( self, townCity ): 
         self._components_townCity = townCity
          
@@ -215,13 +216,15 @@ class Address(object):
     #def setCrsType( self, crsType ): self._crsType = crsType  
     #def setCrsProperties( self, crsProperties ): self._crsProperties = crsProperties
     def setExternalObjectId( self, externalObjectId ): 
-        self._addressedObject_externalObjectId = externalObjectId
-          
-    def setExternalObjectIdScheme( self, externalObjectIdScheme ): self._externalObjectIdScheme = externalObjectIdScheme  
-    def setValuationReference( self, valuationReference ): self._valuationReference = valuationReference  
-    def setCertificateOfTitle( self, certificateOfTitle ): self._certificateOfTitle = certificateOfTitle  
-    def setAppellation( self, appellation ): self._appellation = appellation
-          
+        self._addressedObject_externalObjectId = externalObjectId          
+    def setExternalObjectIdScheme( self, externalObjectIdScheme ): 
+        self._addressedObject_externalObjectIdScheme = externalObjectIdScheme  
+    def setValuationReference( self, valuationReference ): 
+        self._addressedObject_valuationReference = valuationReference  
+    def setCertificateOfTitle( self, certificateOfTitle ): 
+        self._addressedObject_certificateOfTitle = certificateOfTitle  
+    def setAppellation( self, appellation ): 
+        self._addressedObject_appellation = appellation          
     # realted to Features feed only
     def setFullAddressNumber (self, fullAddressNumber): 
         self._components_fullAddressNumber = fullAddressNumber
@@ -309,3 +312,4 @@ def test():
             
 if __name__ == '__main__':
     test()      
+

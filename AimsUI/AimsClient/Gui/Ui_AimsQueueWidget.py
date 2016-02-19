@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'AimsUI/AimsClient/Gui/Ui_AimsQueueWidget.ui'
 #
-# Created: Wed Feb  3 10:27:48 2016
+# Created: Thu Feb 18 10:49:45 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -60,7 +60,7 @@ class Ui_AimsQueueWidget(object):
         self.verticalLayout.addLayout(self.horizontalLayout_5)
 
         self.retranslateUi(AimsQueueWidget)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(AimsQueueWidget)
 
     def retranslateUi(self, AimsQueueWidget):

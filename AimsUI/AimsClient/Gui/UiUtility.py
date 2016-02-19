@@ -53,11 +53,12 @@ class UiUtility (object):
     def setFormCombos(obj):
         #all no have the first value set as None - modal specific defualts now need to be
         # set from the parent
-        obj.uAddressType.addItems([None,'Road', 'Water'])
-        obj.ulifeCycle.addItems([None,'Current', 'Proposed', 'Retired'])
+        obj.uAddressType.addItems(['Road', 'Water'])
+        obj.ulifeCycle.addItems(['Current', 'Proposed', 'Retired'])
         obj.uUnitType.addItems([None, 'Apartment', 'Kiosk', 'Room', 'Shop', 'Suite', 'Villa',  'Flat', 'Unit'])#require feed back as to approved values
         obj.uLevelType.addItems([None, 'Floor', "Level"])
         obj.uObjectType.addItems([None,'Parcel', 'Building'])
+        obj.uPositionType.addItems(['Unknown', 'Centroid', 'Label', 'Set Back off Road'])
         # if instance == chnagefeed or review object the also set 
         # uChangeType [new, update, retire]
         
@@ -136,7 +137,7 @@ class UiUtility (object):
         # Below must be int, else set to None ### Validation has made special handling of int redundant
         obj.feature.setAddressNumber(int(obj.uBase.text())) if obj.uBase.text().isnumeric() else obj.feature.setAddressNumber(None)
         obj.feature.setAddressNumberHigh(int(obj.uHigh.text())) if obj.uHigh.text().isnumeric() else obj.feature.setAddressNumberHigh(None)
-        obj.feature.setRoadCentrelineId(int(obj.uRoadCentrelineId.text())) if obj.uRoadCentrelineId.text().isnumeric() else obj.feature.setRoadCentrelineId(None)
+        obj.feature.setRoadCentrelineId(int(obj.uRclId.text())) if obj.uRclId.text().isnumeric() else obj.feature.setRoadCentrelineId(None)
         # ROADS
         obj.feature.setRoadPrefix(UiUtility.nullEqualsNone(str(obj.uRoadPrefix.text())))
         obj.feature.setRoadName(UiUtility.nullEqualsNone(obj.uRoadName.text().encode('utf-8')))
@@ -171,7 +172,7 @@ class UiUtility (object):
         obj.uBase.setText(UiUtility.nullEqualsNone(obj.feature._addressNumber))
         obj.uAlpha.setText(UiUtility.nullEqualsNone(obj.feature._addressNumberSuffix))
         obj.uHigh.setText(UiUtility.nullEqualsNone(obj.feature._addressNumberHigh))
-        obj.uRoadCentrelineId.setText(UiUtility.nullEqualsNone(obj.feature._roadCentrelineId))
+        obj.uRclId.setText(UiUtility.nullEqualsNone(obj.feature._roadCentrelineId))
         obj.uRoadPrefix.setText(UiUtility.nullEqualsNone(obj.feature._roadPrefix))
         obj.uRoadName.setText(UiUtility.nullEqualsNone(obj.feature._roadName))
         obj.uRoadTypeName.setText(UiUtility.nullEqualsNone(obj.feature._roadType))
