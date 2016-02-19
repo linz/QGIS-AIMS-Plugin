@@ -128,7 +128,7 @@ class Address(object):
     def __str__(self):
         #return 'ADR.{}.{}.{}.{}'.format(self._ref,self.type,self.getAddressId(),self._version)
         return 'ADR.{}.{}'.format(self._ref,self.type)
-                
+    
         
     #type filters, better queried off server but hardcoded for now
     RT = ('Road','Street','Avenue','Drive')
@@ -149,6 +149,16 @@ class Address(object):
         self._changeId = changeId
     def getChangeId(self): 
         return self._changeId
+    
+    def setChangeType(self, changeType):
+        self._changeType = changeType
+    def getChangeType(self):
+        return self._changeType    
+    
+    def setQueueStatus(self, queueStatus):
+        self._queueStatus = queueStatus
+    def getQueueStatus(self):
+        return self._queueStatus
     
     def setAddressId (self, addressId): 
         self._components_addressId = addressId

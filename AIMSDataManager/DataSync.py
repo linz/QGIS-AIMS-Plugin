@@ -43,6 +43,7 @@ PAGES_INIT = 10
 PAGE_LIMIT = 1000
 PAGES_PERIOCDIC = 3
 POOL_PAGE_CHECK_DELAY = 0.2
+QUEUE_CHECK_DELAY = 1
 LAST_PAGE_GUESS = 1000
 
 
@@ -78,19 +79,20 @@ class DataSync(threading.Thread):
 
     def run(self):
         '''Continual loop looking for input queue requests and running periodic updates'''
+        start = int(time.time())
         while True:
-            #if there are things in the input queue, process them, push to CF #TODO. there shouldnt ever be anything in the FF inq 
+            #if there are things in the input queue, process them, push to CF #TODO. there shouldnt ever be anything in the FF inq
+            now = int(time.time())
             if not self.inq.empty():
                 changelist = self.inq.get()    
                 aimslog.info('FT {} - found {} items in queue'.format(FeedType.reverse[self.ft],len(changelist)))
                 self.processInputQueue(changelist)
-                
-            #aimslog.debug('process Q={}'.format(len(self.duinst)))
-            self.syncFeeds(self.fetchFeedUpdates(self.ftracker['threads']))
-            #otherwise just keep doing reqular updates
-
-            aimslog.debug('FT {} sleeping {} with size(Qin)={}'.format(FeedType.reverse[self.ft],self.ftracker['interval'],self.inq.qsize())) 
-            time.sleep(self.ftracker['interval'])
+            
+            if (now-start) % self.ftracker['interval']:
+                #aimslog.debug('process Q={}'.format(len(self.duinst)))
+                self.syncFeeds(self.fetchFeedUpdates(self.ftracker['threads']))
+                aimslog.debug('FT {} sleeping {} with size(Qin)={}'.format(FeedType.reverse[self.ft],self.ftracker['interval'],self.inq.qsize())) 
+            time.sleep(QUEUE_CHECK_DELAY)
             
         
     def stop(self):
@@ -196,7 +198,7 @@ class DataSyncFeatures(DataSync):
     
     def __init__(self,params,queues):
         super(DataSyncFeatures,self).__init__(params,queues)
-        self.ftracker = {'page':[1,1],'index':1,'threads':5,'interval':60}    
+        self.ftracker = {'page':[1,1],'index':1,'threads':3,'interval':60}    
 
 
 class DataSyncFeeds(DataSync): 
@@ -247,7 +249,7 @@ class DataSyncFeeds(DataSync):
 
     def _statusFilter(self,alist):
         #something like this
-        return [a for a in alist if a._workflow_queueStatus not in ('expired','deleted')]
+        return [a for a in alist if a.getQueueStatus().lower() not in ('expired','deleted')]
     
     #Processes the input queue sending address changes to the API
     @LogWrap.timediff
@@ -268,13 +270,14 @@ class DataSyncChangeFeed(DataSyncFeeds):
       
     def __init__(self,params,queues):
         super(DataSyncChangeFeed,self).__init__(params,queues)
-        self.ftracker = {'page':[1,1],'index':1,'threads':1,'interval':600}
+        self.ftracker = {'page':[1,1],'index':1,'threads':1,'interval':10}
 
     def processAddress(self,at,addr):  
         at2 = ApprovalType.reverse[at][:3].capitalize()      
         ref = 'Req{0}.{1:%y%m%d.%H%M%S}'.format(at2,DT.now())
         params = (ref,self.conf,self.afactory)
         #self.ioq = {'in':Queue.Queue(),'out':Queue.Queue()}
+        print 'OOOOOOOOOOOOOOOOOOOOOOOOO'
         self.duinst[ref] = DataUpdaterAction(params,self.respq)
         self.duinst[ref].setup(at,addr)
         self.duinst[ref].setDaemon(False)

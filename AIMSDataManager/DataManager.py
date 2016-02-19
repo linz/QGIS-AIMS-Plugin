@@ -14,6 +14,7 @@ import pickle
 import copy
 import time
 import pprint
+import collections
 from Address import Address, AddressChange, AddressResolution
 from AddressFactory import AddressFactory
 #from DataUpdater import DataUpdater
@@ -126,7 +127,7 @@ class DataManager(object):
         
     #Push and Pull relate to features feed actions
     def push(self,newds):
-        return self._synchronise(newds)
+        return self._scan(newds)
         
     def pull(self):
         '''Return copy of the ADL. Speedup, insist on deepcopy at address level'''
@@ -161,45 +162,90 @@ class DataManager(object):
         return resp
         
         
-    def _synchronise(self,newds):
+    def _scan(self,ds):
         '''compare provided and current ADL. Split out deletes/adds/updates'''
-        self._synchroniseChangeFeed(newds)
-        self._synchroniseResolutionFeed(newds)
+        #self._synchroniseChangeFeed(ds)
+        #self._synchroniseResolutionFeed(ds)
+        self._scanChangeFeedChanges(ds[FeedType.CHANGEFEED])
+        self._scanResolutionFeedChanges(ds[FeedType.RESOLUTIONFEED])
+      
+    #convenience methods  
+    def addAddress(self,address):
+        address.setChangeType(ActionType.reverse[ActionType.ADD].title())
+        self.ioq[FeedType.CHANGEFEED]['in'].put({ActionType.ADD:(address,)})        
+    
+    def retireAddress(self,address):
+        address.setChangeType(ActionType.reverse[ActionType.RETIRE].title())
+        self.ioq[FeedType.CHANGEFEED]['in'].put({ActionType.RETIRE:(address,)})
+    
+    def updateAddress(self,address):
+        address.setChangeType(ActionType.reverse[ActionType.UPDATE].title())
+        self.ioq[FeedType.CHANGEFEED]['in'].put({ActionType.UPDATE:(address,)})    
+        
+    #----------------------------
+    def acceptAddress(self,address):
+        address.setQueueStatus(ApprovalType.revalt[ApprovalType.ACCEPT].title())
+        self.ioq[FeedType.RESOLUTIONFEED]['in'].put({ApprovalType.ACCEPT:(address,)})        
+    
+    def declineAddress(self,address):
+        address.setQueueStatus(ApprovalType.revalt[ApprovalType.DECLINE].title())
+        self.ioq[FeedType.RESOLUTIONFEED]['in'].put({ApprovalType.DECLINE:(address,)})
+    
+    def repairAddress(self,address):
+        address.setQueueStatus(ApprovalType.revalt[ApprovalType.UPDATE].title())
+        self.ioq[FeedType.RESOLUTIONFEED]['in'].put({ApprovalType.UPDATE:(address,)})
+        
+ 
+    def _enlist(self,address):
+        return address if isinstance(address,collectionsIterable) else [address,]
+        
   
+#     contention with bg updates would require a snapshot for comparison per pull        
+#     def _synchroniseChangeFeed(self,newds):
+#         '''compare provided and current ADL. Split out deletes/adds/updates'''
+#         #check changes etc
+#         changes = {}
+#         #identify changes in the feed and do the necessary updates by putting them in the queue
+#         home,away = self.persist.ADL[FeedType.CHANGEFEED],newds[FeedType.CHANGEFEED]
+#         changes[ActionType.ADD] = [a2 for a2 in away if a2 not in home]
+#         changes[ActionType.RETIRE] = [a1 for a1 in home if a1 not in away]
+#         #addresses not in adds/dels that have changed attributes
+#         changes[ActionType.UPDATE] = [a2 for a2 in [x for x in away if x not in changes[ActionType.ADD]] \
+#                                       for a1 in [x for x in home if x not in changes[ActionType.RETIRE]] \
+#                                       if a1==a2 and not a1.compare(a2)]    
+#         self.ioq[FeedType.CHANGEFEED]['in'].put(changes)
+#         
+#     def _synchroniseResolutionFeed(self,newds):
+#         '''compare provided and current ADL. Split out deletes/adds/updates'''
+#         #check changes etc
+#         changes = {}
+#         #identify changes in the feed and do the necessary updates by putting them in the queue
+#         home,away = self.persist.ADL[FeedType.RESOLUTIONFEED],newds[FeedType.RESOLUTIONFEED]
+#         changes[ApprovalType.ACCEPT] = [a2 for a2 in away if a2 not in home]
+#         changes[ApprovalType.DECLINE] = [a1 for a1 in home if a1 not in away]
+#         #addresses not in adds/dels that have changed attributes
+#         changes[ApprovalType.UPDATE] = [a2 for a2 in [x for x in away if x not in changes[ApprovalType.ACCEPT]] \
+#                                       for a1 in [x for x in home if x not in changes[ApprovalType.DECLINE]] \
+#                                       if a1==a2 and not a1.compare(a2)] 
+#             
+#         #TODO. add logic for what changes trigger what updates Or just get all updates
+#         self.ioq[FeedType.RESOLUTIONFEED]['in'].put(changes)
         
-    def _synchroniseChangeFeed(self,newds):
-        '''compare provided and current ADL. Split out deletes/adds/updates'''
-        #check changes etc
+    def _scanChangeFeedChanges(self,ds):
         changes = {}
-        #identify changes in the feed and do the necessary updates by putting them in the queue
-        home,away = self.persist.ADL[FeedType.CHANGEFEED],newds[FeedType.CHANGEFEED]
-        changes[ActionType.ADD] = [a2 for a2 in away if a2 not in home]
-        changes[ActionType.RETIRE] = [a1 for a1 in home if a1 not in away]
-        #addresses not in adds/dels that have changed attributes
-        changes[ActionType.UPDATE] = [a2 for a2 in [x for x in away if x not in changes[ActionType.ADD]] \
-                                      for a1 in [x for x in home if x not in changes[ActionType.RETIRE]] \
-                                      if a1==a2 and not a1.compare(a2)]     
+        changes[ApprovalType.ADD] = [a for a in ds if a.getChangeType()==ActionType.reverse[ActionType.ADD].title()]
+        changes[ApprovalType.RETIRE] = [a for a in ds if a.getChangeType()==ActionType.reverse[ActionType.RETIRE].title()]
+        changes[ApprovalType.UPDATE] = [a for a in ds if a.getChangeType()==ActionType.reverse[ActionType.UPDATE].title()]
+        self.ioq[FeedType.CHANGEFEED]['in'].put(changes)    
         
-    def _synchroniseResolutionFeed(self,newds):
-        '''compare provided and current ADL. Split out deletes/adds/updates'''
-        #check changes etc
+    def _scanResolutionFeedChanges(self,ds):
         changes = {}
-        #identify changes in the feed and do the necessary updates by putting them in the queue
-        home,away = self.persist.ADL[FeedType.RESOLUTIONFEED],newds[FeedType.RESOLUTIONFEED]
-        changes[ApprovalType.ACCEPT] = [a2 for a2 in away if a2 not in home]
-        changes[ApprovalType.DECLINE] = [a1 for a1 in home if a1 not in away]
-        #addresses not in adds/dels that have changed attributes
-        changes[ApprovalType.UPDATE] = [a2 for a2 in [x for x in away if x not in changes[ApprovalType.ACCEPT]] \
-                                      for a1 in [x for x in home if x not in changes[ApprovalType.DECLINE]] \
-                                      if a1==a2 and not a1.compare(a2)] 
-            
-        #TODO. add logic for what changes trigger what updates Or just get all updates
-        aq = self._process(changes)
+        changes[ApprovalType.ACCEPT] = [a for a in ds if a.getChangeType()==ApprovalType.reverse[ApprovalType.ACCEPT].title()]
+        changes[ApprovalType.DECLINE] = [a for a in ds if a.getChangeType()==ApprovalType.reverse[ApprovalType.DECLINE].title()]
+        changes[ApprovalType.UPDATE] = [a for a in ds if a.getChangeType()==ApprovalType.reverse[ApprovalType.UPDATE].title()]
+        #self.ioq[FeedType.RESOLUTIONFEED]['in'].put(changes)
+
         
-        
-    def _process(self,changes):
-        '''All user changes are posted to the CF inq'''
-        self.ioq[FeedType.CHANGEFEED]['in'].put(changes)
         
     #CM
         
@@ -283,7 +329,7 @@ def test1(dm,f3):
     #start DM
     print 'start'
     
-    dm.persist.ADL = testdata
+    #dm.persist.ADL = testdata
     #get some data
     dm.refresh()
     listofaddresses = dm.pull()
@@ -293,41 +339,67 @@ def test1(dm,f3):
     addr_7 = f3[0].getAddress('ninenintyseven')
     addr_8 = f3[0].getAddress('ninenintyeight')
     addr_9 = f3[0].getAddress('ninenintynine')
-    listofaddresses[FeedType.FEATURES].append(addr_7)
-    listofaddresses[FeedType.FEATURES].append(addr_8)
-    listofaddresses[FeedType.FEATURES].append(addr_9)
-    dm.push(listofaddresses)
+    
+    addr_c = f3[0].getAddress('change_add')
+    addr_r = f3[0].getAddress('resolution_accept')
+    
+
+    
+#     listofaddresses[FeedType.FEATURES].append(addr_7)
+#     listofaddresses[FeedType.FEATURES].append(addr_8)
+#     listofaddresses[FeedType.FEATURES].append(addr_9)
+#     dm.push(listofaddresses)
+#     time.sleep(5)
+#     testresp(dm)
+#     #del
+#     time.sleep(5)
+#     aimslog.info('*** Main RETIRE '+str(time.clock()))
+#     addr_0 = listofaddresses[FeedType.FEATURES][0]
+#     addr_1 = listofaddresses[FeedType.FEATURES][1]
+#     listofaddresses[FeedType.FEATURES].remove(addr_0)
+#     listofaddresses[FeedType.FEATURES].remove(addr_1)
+#     dm.push(listofaddresses)
+#     time.sleep(5)
+#     testresp(dm)
+#     #chg
+#     time.sleep(5)
+#     aimslog.info('*** Main UPDATE '+str(time.clock()))
+#     addr_2 = listofaddresses[FeedType.FEATURES][2]
+#     addr_3 = listofaddresses[FeedType.FEATURES][3]
+#     addr_2.setVersion(2222)
+#     addr_3.setVersion(3333)
+#     #listofaddresses[FeedType.FEATURES][2].setVersion(123456)
+#     #listofaddresses[FeedType.FEATURES][3].setVersion(123457)
+#     dm.push(listofaddresses)
+#     time.sleep(5)
+#     testresp(dm)
+#     #shift
+#     time.sleep(5)
+#     aimslog.info('*** Main SHIFT '+str(time.clock()))
+#     dm.setbb(sw=(174.76918,-41.28515), ne=(174.79509,-41.26491))
+#     time.sleep(5)
+#     testresp(dm)
+#     time.sleep(5)
+    
+    aimslog.info('*** Change ADD '+str(time.clock()))
+    #addr_c.setChangeType(ActionType.reverse[ActionType.ADD])
+    #listofaddresses[FeedType.CHANGEFEED].append(addr_c)
+    #dm.push(listofaddresses)
+    dm.addAddress(addr_c)
     time.sleep(5)
     testresp(dm)
-    #del
     time.sleep(5)
-    aimslog.info('*** Main RETIRE '+str(time.clock()))
-    addr_0 = listofaddresses[FeedType.FEATURES][0]
-    addr_1 = listofaddresses[FeedType.FEATURES][1]
-    listofaddresses[FeedType.FEATURES].remove(addr_0)
-    listofaddresses[FeedType.FEATURES].remove(addr_1)
-    dm.push(listofaddresses)
-    time.sleep(5)
-    testresp(dm)
-    #chg
-    time.sleep(5)
-    aimslog.info('*** Main UPDATE '+str(time.clock()))
-    addr_2 = listofaddresses[FeedType.FEATURES][2]
-    addr_3 = listofaddresses[FeedType.FEATURES][3]
-    addr_2.setVersion(2222)
-    addr_3.setVersion(3333)
-    #listofaddresses[FeedType.FEATURES][2].setVersion(123456)
-    #listofaddresses[FeedType.FEATURES][3].setVersion(123457)
-    dm.push(listofaddresses)
-    time.sleep(5)
-    testresp(dm)
-    #shift
-    time.sleep(5)
-    aimslog.info('*** Main SHIFT '+str(time.clock()))
-    dm.setbb(sw=(174.76918,-41.28515), ne=(174.79509,-41.26491))
+    
+    aimslog.info('*** Resolution ADD '+str(time.clock()))
+    #addr_r.setQueueStatus(ApprovalType.reverse[ApprovalType.ACCEPT])
+    #listofaddresses[FeedType.RESOLUTIONFEED].append(addr_r)
+    #dm.push(listofaddresses)
+    dm.acceptAddress(addr_r)
     time.sleep(5)
     testresp(dm)
     time.sleep(5)
+    
+    
     print 'entering response mode'
     while True:
         aimslog.info('*** Main TICK '+str(time.clock()))
