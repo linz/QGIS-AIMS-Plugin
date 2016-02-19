@@ -56,11 +56,16 @@ class IterEnum(object):
     
 class Enumeration():
     @staticmethod
-    def enum(*sequential, **named):
+    def enum(*seq, **named):
         #http://stackoverflow.com/questions/36932/how-can-i-represent-an-enum-in-python
-        enums = dict(zip(sequential, range(len(sequential))), **named)
+        enums = dict( zip([s.split(':')[0] for s in seq],range(len(seq))) ,**named)
+        alt = dict( zip([s.split(':')[1] for s in seq],range(len(seq))) ,**named) if all([s.find(':')+1 for s in seq]) else enums
+        
         reverse = dict((value, key) for key, value in enums.iteritems())
-        enums['reverse'] = reverse        
+        revalt = dict((value, key) for key, value in alt.iteritems())
+        enums['reverse'] = reverse 
+        enums['revalt'] = revalt  
+      
         #enums['__iter__'] = IterEnum.__iter__
         #enums['next'] = IterEnum.next
         #enums['index'] = 0
@@ -71,7 +76,7 @@ class Enumeration():
 class InvalidEnumerationType(Exception): pass
 
 ActionType = Enumeration.enum('ADD','RETIRE','UPDATE')
-ApprovalType = Enumeration.enum('ACCEPT','DECLINE','UPDATE')
+ApprovalType = Enumeration.enum('ACCEPT:Accepted','DECLINE:Declined','UPDATE:Under Review')
 FeedType = Enumeration.enum('FEATURES','CHANGEFEED','RESOLUTIONFEED')
 #RequestType = Enumeration.enum('BBOX','ADDRESS')
 
