@@ -154,7 +154,8 @@ class Address(object):
         self._components_addressId = addressId
     def getAddressId(self): 
         return self._components_addressId        
-    def setSourceReason (self, sourceReason): self._sourceReason = sourceReason
+    def setSourceReason (self, sourceReason): 
+        self._workflow_sourceReason = sourceReason
     def setAddressType( self, addressType ): 
         self._components_addressType = addressType            
     def setExternalAddressId( self, externalAddressId ): 
@@ -198,8 +199,10 @@ class Address(object):
     def setTownCity( self, townCity ): 
         self._components_townCity = townCity
          
-    #def setAoType( self, aoType ): self._aoType = aoType
-    #def setAoName( self, aoName ): self._aoName = aoName  
+    def setObjectType( self, objectType ): 
+        self._addressedObject_objectType = objectType    
+    def setObjectName( self, objectName ): 
+        self._addressedObject_objectName = objectName  
     #def setAoPositionType( self, aoPositionType ): self._aoPositionType = aoPositionType
     #def set_x( self, x ): self._x = x  
     #def set_y( self, y ): self._y = y  
@@ -208,6 +211,8 @@ class Address(object):
     def setExternalObjectId( self, externalObjectId ): 
         self._addressedObject_externalObjectId = externalObjectId          
     def setExternalObjectIdScheme( self, externalObjectIdScheme ): 
+        
+        
         self._addressedObject_externalObjectIdScheme = externalObjectIdScheme  
     def setValuationReference( self, valuationReference ): 
         self._addressedObject_valuationReference = valuationReference  
