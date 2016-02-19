@@ -6,33 +6,33 @@
         "submitterUserName":None,
         "submittedDate":'1970-01-01',
         "queueStatus":None,
-        "sourceOrganisation":None
-        "statusNotes"None
-        "sourceReason"None
+        "sourceOrganisation":None,
+        "statusNotes":None,
+        "sourceReason":None
     },
     "components":{
         "addressId":0,
         "addressType":None,
-        "primaryAddressId":0
-        "alternativeOfAddressId":0
-        "externalAddressId":None
-        "externalAddressIdScheme":None
+        "primaryAddressId":0,
+        "alternativeOfAddressId":0,
+        "externalAddressId":None,
+        "externalAddressIdScheme":None,
         "lifecycle":None,
-        "unitType":None
-        "unitValue":None
-        "levelType":None
-        "levelValue":None
-        "addressNumberPrefix":None
+        "unitType":None,
+        "unitValue":None,
+        "levelType":None,
+        "levelValue":None,
+        "addressNumberPrefix":None,
         "addressNumber":0,
-        "addressNumberSuffix":None
-        "addressNumberHigh":0
+        "addressNumberSuffix":None,
+        "addressNumberHigh":0,
         "roadCentrelineId":0,
-        "roadPrefix":None
+        "roadPrefix":None,
         "roadName":None,
-        "roadType":None
-        "roadSuffix":None
-        "waterRoute":None
-        "waterName":None
+        "roadType":None,
+        "roadSuffix":None,
+        "waterRoute":None,
+        "waterName":None,
         "suburbLocality":None,
         "townCity":None
     },
