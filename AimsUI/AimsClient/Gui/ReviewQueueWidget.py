@@ -5,6 +5,7 @@ from qgis.core import *
 from qgis.utils import *
 
 from Ui_ReviewQueueWidget import Ui_ReviewQueueWidget
+from QueueEditorWidget import QueueEditorWidget
 from QueueModelView import *
 #from UiUtility import UiUtility 
 
@@ -20,20 +21,25 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.setupUi(self)
         self.setController( controller )
         self.iface = self._controller.iface
-        self.uidm = self._controller.UidataManager        
-        self.reviewData = self.uidm.reviewData()
-        self.buttonDisplay.clicked.connect(self.display)
+        #self.reviewData = {(None, None, None ,None ,None ): [[None, None, None, None, None]]}
+        self.uidm = self._controller.UidataManager
+        self.reviewData = self.uidm.reviewData()   
         self.currentObjKey = None
+        #self.refreshData()
         
+        # Connections
+        self.uDisplayButton.clicked.connect(self.display)
+        self.uUpdateButton.clicked.connect(self.updateFeature)
+               
         # Features View 
         featuresHeader = ['Full Number', 'Full Road', 'Life Cycle', 'Town', 'Suburb Locality']
         self.featuresTableView = self.uFeaturesTableView
         self.featureModel = FeatureTableModel(self.reviewData, featuresHeader)
-        #VIEW <------> PROXY MODEL <------> DATA MODEL
         self.featuresTableView.setModel(self.featureModel)
         self.featuresTableView.rowSelected.connect(self.featureClicked)
         self.featuresTableView.resizeColumnsToContents()
         self.featuresTableView.setColumnHidden(5, True)
+        self.featuresTableView.selectRow(0)
         
         # Group View 
         self._groupProxyModel = QSortFilterProxyModel()
@@ -41,12 +47,11 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         groupHeader = ['Id', 'Change', 'Source Org.', 'Submitter Name', 'Date']   
         self.groupTableView = self.uGroupTableView
         self.groupModel = GroupTableModel(self.reviewData, self.featureModel, groupHeader)
-        #VIEW <------> PROXY MODEL <------> DATA MODEL
         self._groupProxyModel.setSourceModel(self.groupModel)
         self.groupTableView.setModel(self._groupProxyModel)
         self.groupTableView.resizeColumnsToContents()
         self.groupTableView.rowSelected.connect( self.selectAddress )
-
+        
         # connect combobox_users to view and model
         self.comboModelUser = QStandardItemModel()
         self.comboBoxUser.setView(QListView())
@@ -66,9 +71,9 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
             
     def featureClicked(self, row):
         self.currentObjKey = self.featureModel.listClicked(row)        
+        self.uQueueEditor.currentFeatureToUi(self.singleReviewObj(self.currentObjKey))
         #emit feature chnaged --> editwidget to connect to signal
         #self.featureSelected.emit( feature )
-        self.uQueueEditor.currentFeature(self.singleReviewObj(self.currentObjKey))
         
     def selectAddress( self, row ): #rename Select Group
         self.groupModel.listClicked(row)
@@ -113,6 +118,12 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
             #if len(rData) == 10: break
             rData[(v._changeId, v._changeType, 'orgPlaceHolder', v._workflow_submitterUserName, v._workflow_submittedDate )] = [[self.fullNumber(), self.fullRoad(k), v._lifecycle, v._townCity, v._suburbLocality ]]
         return rData
+    
+    def refreshData(self):
+        self.reviewData = self.uidm.reviewData()
+        
+    def updateFeature(self): # do i need this function or should i connect straight to the editor method
+        self.uQueueEditor.updateFeature(self.singleReviewObj(self.currentObjKey))
     
     def display(self):
         coords = self.uidm.reviewItemCoords(self.currentObjKey)
