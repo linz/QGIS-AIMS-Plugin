@@ -15,7 +15,7 @@ import copy
 import time
 import pprint
 import collections
-from Address import Address, AddressChange, AddressResolution
+from Address import Address, AddressChange, AddressResolution,Position
 from AddressFactory import AddressFactory
 #from DataUpdater import DataUpdater
 from DataSync import DataSync,DataSyncFeatures,DataSyncChangeFeed,DataSyncResolutionFeed
@@ -157,8 +157,8 @@ class DataManager(object):
     
     def response(self):
         resp = ()
-        while not self.ioq[FeedType.FEATURES]['resp'].empty():
-            resp += (self.ioq[FeedType.FEATURES]['resp'].get(),)
+        while not self.ioq[FeedType.CHANGEFEED]['resp'].empty():
+            resp += (self.ioq[FeedType.CHANGEFEED]['resp'].get(),)
         return resp
         
         
@@ -298,25 +298,25 @@ def test():
     aff = AddressFactory(FeedType.FEATURES)
     afc = AddressFactory(FeedType.CHANGEFEED)
     afr = AddressFactory(FeedType.RESOLUTIONFEED)
-    global testdata
-    testdata = {FeedType.FEATURES:[
-                aff.getAddress('one'), 
-                aff.getAddress('two'),
-                aff.getAddress('three'),
-                aff.getAddress('four'),
-                aff.getAddress('five')
-                ],
-            FeedType.CHANGEFEED:[
-                afc.getAddress('one_c'), 
-                afc.getAddress('two_c'), 
-                afc.getAddress('three_c')     
-                ],
-            FeedType.RESOLUTIONFEED:[
-                afr.getAddress('one_r'), 
-                afr.getAddress('two_r'), 
-                afr.getAddress('three_r')       
-                ]
-            } 
+#     global testdata
+#     testdata = {FeedType.FEATURES:[
+#                 aff.getAddress('one'), 
+#                 aff.getAddress('two'),
+#                 aff.getAddress('three'),
+#                 aff.getAddress('four'),
+#                 aff.getAddress('five')
+#                 ],
+#             FeedType.CHANGEFEED:[
+#                 afc.getAddress('one_c'), 
+#                 afc.getAddress('two_c'), 
+#                 afc.getAddress('three_c')     
+#                 ],
+#             FeedType.RESOLUTIONFEED:[
+#                 afr.getAddress('one_r'), 
+#                 afr.getAddress('two_r'), 
+#                 afr.getAddress('three_r')       
+#                 ]
+#             } 
     
     with DataManager() as dm:
         test1(dm,(aff,afc,afr))
@@ -334,7 +334,7 @@ def test1(dm,f3):
     dm.refresh()
     listofaddresses = dm.pull()
     #add
-    time.sleep(5)
+    #time.sleep(5)
     aimslog.info('*** Main ADD '+str(time.clock()))
     addr_7 = f3[0].getAddress('ninenintyseven')
     addr_8 = f3[0].getAddress('ninenintyeight')
@@ -343,7 +343,7 @@ def test1(dm,f3):
     addr_c = f3[0].getAddress('change_add')
     addr_r = f3[0].getAddress('resolution_accept')
     
-
+    addr_c1 = gettestdata(f3[0])
     
 #     listofaddresses[FeedType.FEATURES].append(addr_7)
 #     listofaddresses[FeedType.FEATURES].append(addr_8)
@@ -385,7 +385,10 @@ def test1(dm,f3):
     #addr_c.setChangeType(ActionType.reverse[ActionType.ADD])
     #listofaddresses[FeedType.CHANGEFEED].append(addr_c)
     #dm.push(listofaddresses)
-    dm.addAddress(addr_c)
+    addr_c.setAddressType('Road')
+    addr_c.setAddressNumber(100)
+    addr_c.setRoadName('Smith St')
+    dm.addAddress(addr_c1)
     time.sleep(5)
     testresp(dm)
     time.sleep(5)
@@ -394,10 +397,11 @@ def test1(dm,f3):
     #addr_r.setQueueStatus(ApprovalType.reverse[ApprovalType.ACCEPT])
     #listofaddresses[FeedType.RESOLUTIONFEED].append(addr_r)
     #dm.push(listofaddresses)
-    dm.acceptAddress(addr_r)
-    time.sleep(5)
-    testresp(dm)
-    time.sleep(5)
+    
+    #dm.acceptAddress(addr_r)
+    #time.sleep(5)
+    #testresp(dm)
+    #time.sleep(5)
     
     
     print 'entering response mode'
@@ -421,6 +425,36 @@ def testresp(dm):
         #aimslog.info('*** Main RESP {} - [{}]'.format(r,len(resp))) 
         aimslog.info('*** Main RESP {} [{}]'.format(r,len(resp)))
             
+def gettestdata(ff):
+    a = ff.getAddress('change_add')
+    p = Position.getInstance(
+    {'position':{'type':'Point','coordinates': [168.38392191667,-44.8511013],'crs':{'type':'name','properties':{'name':'urn:ogc:def:crs:EPSG::4167'}}},'positionType':'Centroid','primary':True}
+    )
+    a.setAddressType('Road')
+    a.setAddressNumber('16')
+    a.setAddressId('29')
+    a.setLifecycle('Current')
+    a.setRoadCentrelineId('11849')
+    a.setRoadName('Islay')
+    a.setRoadType('Street'),
+    a.setSuburbLocality('Glenorchy')
+    a.setFullAddressNumber('16')
+    a.setFullRoadName('Islay Street')
+    a.setFullAddress('16 Islay Street, Glenorchy')
+    a._addressedObject_addressableObjectId = '1416143'
+    a.setObjectType('Parcel')
+    
+    a.setUnitType('Unit')
+    a.setUnitValue('b')
+
+    a.setAddressPosition(p)
+
+    a._codes_suburbLocalityId = '2104'
+    a._codes_parcelId = '3132748'
+    a._codes_meshblock = '3174100'
+    return a
+
+    
 
             
 if __name__ == '__main__':

@@ -277,7 +277,6 @@ class DataSyncChangeFeed(DataSyncFeeds):
         ref = 'Req{0}.{1:%y%m%d.%H%M%S}'.format(at2,DT.now())
         params = (ref,self.conf,self.afactory)
         #self.ioq = {'in':Queue.Queue(),'out':Queue.Queue()}
-        print 'OOOOOOOOOOOOOOOOOOOOOOOOO'
         self.duinst[ref] = DataUpdaterAction(params,self.respq)
         self.duinst[ref].setup(at,addr)
         self.duinst[ref].setDaemon(False)
@@ -297,7 +296,6 @@ class DataSyncResolutionFeed(DataSyncFeeds):
         ref = 'Req{0}.{1:%y%m%d.%H%M%S}'.format(at2,DT.now())
         params = (ref,self.conf,self.afactory)
         #self.ioq = {'in':Queue.Queue(),'out':Queue.Queue()}
-        print 'XXXXXXXXXXXXXXXXXXXXXXXXX'
         self.duinst[ref] = DataUpdaterApproval(params,self.respq)
         self.duinst[ref].setup(at,addr)
         self.duinst[ref].setDaemon(False)

@@ -58,12 +58,13 @@ class Warning(object):
         
 #------------------------------------------------------------------------------
 # P O S I T I O N
-
+class InvalidPositionException(Exception):pass
 class Position(object):
     '''Position type for embedded address positions.
     Uses hardcoded attrs since it has a constant structure'''
     
     BRANCH = ('addressedObject','addressPositions')#'{}addressedObject{}addressPositions'.format(*2*(DEF_SEP,))
+    PDEF = {'position':{'type':'Point','coordinates':[0.0,0.0],'crs':{'type':'name','properties':{'name':'urn:ogc:def:crs:EPSG::4167'}}},'positionType':'Unknown','primary':True}
     
     def __init__(self, ref=None): 
         self._position_type = 'Point'
@@ -82,7 +83,7 @@ class Position(object):
         p.set(d)
         return p
         
-    def set(self,d):
+    def set(self,d = PDEF):
         self._set(
             d['position']['type'],
             d['position']['coordinates'],
@@ -148,7 +149,7 @@ class Address(object):
     def setChangeId(self, changeId): 
         self._changeId = changeId
     def getChangeId(self): 
-        return self._changeId    
+        return self._changeId
     
     def setChangeType(self, changeType):
         self._changeType = changeType
@@ -240,12 +241,23 @@ class Address(object):
     def setFullAddress (self, fullAddress): 
         self._components_fullAddress = fullAddress    
     
-    #---------------------------------------------------
-    def setAddressPositions(self,pdict):
-        '''adds ('add' not 'set' but setter recognised needs set) another position object'''
-        if not hasattr(self,'_addressedObject_addressPositions'): self._addressedObject_addressPositions = []
-        for p in pdict:
-            self._addressedObject_addressPositions.append(Position.getInstance(p))
+    #--------------------------------------------------- 
+    def setAddressPosition(self,p):
+        '''adds (nb 'add' not 'set', bcse setter recogniser needs set) another position object'''
+        if isinstance(p,Position): self._addressedObject_addressPositions = [p,]  
+        else: raise InvalidPositionException('Cannot set non Position type {}'.format(p))
+        
+    def addAddressPositions(self,p, flush=False):
+        '''adds (nb 'add' not 'set', bcse setter recogniser needs set) another position object'''
+        if flush or not hasattr(self,'_addressedObject_addressPositions'): self._addressedObject_addressPositions = []
+        if isinstance(p,Position):
+            self._addressedObject_addressPositions.append(p)
+        elif isinstance(p,dict):
+            self._addressedObject_addressPositions.append(Position.getInstance(p))   
+        elif isinstance(p,(tuple,list)): 
+            for pos in p: self.setAddressPositions(pos)
+        else: raise InvalidPositionException('Cannot parse/add Position {}'.format(p))
+            
         
     def getAddressPositions(self):
         '''return a list of dict'd position objects'''
