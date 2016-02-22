@@ -70,10 +70,10 @@ class Position(object):
     def __init__(self, ref=None): 
         self._position_type = 'Point'
         self._position_coordinates = [0.0,0.0]
-        self._position_crs_type = None
+        self._position_crs_type = 'name'
         self._position_crs_properties_name = 'urn:ogc:def:crs:EPSG::4167'
-        self._positionType = None
-        self._primary = None
+        self._positionType = 'Unknown'
+        self._primary = True
     
     def __str__(self):
         return 'POS'    

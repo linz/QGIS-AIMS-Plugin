@@ -295,9 +295,9 @@ class Persistence():
 
 testdata = []
 def test():
-    aff = AddressFactory(FeedType.FEATURES)
-    afc = AddressFactory(FeedType.CHANGEFEED)
-    afr = AddressFactory(FeedType.RESOLUTIONFEED)
+    aff = AddressFactory.getInstance(FeedType.FEATURES)
+    afc = AddressFactory.getInstance(FeedType.CHANGEFEED)
+    afr = AddressFactory.getInstance(FeedType.RESOLUTIONFEED)
 #     global testdata
 #     testdata = {FeedType.FEATURES:[
 #                 aff.getAddress('one'), 
