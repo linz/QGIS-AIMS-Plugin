@@ -43,12 +43,13 @@ class AimsApi(object):
         self.h = httplib2.Http(".cache")
         self.h.add_credentials(self.user, self._password)
    
-    def handleErrors(self, resp, content):
+    def handleErrors(self, url, resp, content):
         ''' Return the reason for any critical errors '''        
         criticalErrors = []
+        aimslog.error('Error {} fetching\n{}\nwith result\n{}'.format(resp,url,content))
         if str(resp) == '400': raise Http400Exception('400 {}'.format(content))
         elif str(resp) == '404': raise Http404Exception('404 {}'.format(content))
-        else: raise HttpException('{}'.format(resp))
+        else: raise AimsHttpException('Error {} fetching\n{}\nwith result\n{}'.format(resp,url,content))
 
   
     
@@ -68,14 +69,14 @@ class AimsApi(object):
 #             
 #         return ''.join(criticalErrors)
     
-    def handleResponse(self, resp, content):
+    def handleResponse(self, url, resp, content):
         ''' test http response
         [] == no errors, else list of critical errors'''
         if str(resp) in ('201', '200'): #to be more inclusive i.e. 200 ...
             return content #[]#i.e. no errors
         else:
             # list of validation errors
-            errors = self.handleErrors(resp, content)
+            errors = self.handleErrors(url, resp, content)
             if errors == []:
                 return errors #<-- there was an error but current only showing 'Reject'
             elif len(errors) > 0:
@@ -87,14 +88,14 @@ class AimsApi(object):
     def changefeedAdd(self, payload):
         ''' Add an address to the Change feed '''
         resp, content = self.h.request(self._url+'address/changefeed/add', "POST", json.dumps(payload), self._headers)
-        return self.handleResponse(resp["status"], json.loads(content) )
+        return self.handleResponse('',resp["status"], json.loads(content) )
      
     def changefeedRetire(self, retireFeatures):
         ''' Retire address via Change feed '''
         error = []
         for payload in retireFeatures:
             resp, content = self.h.request(self._url+'address/changefeed/retire', "POST", json.dumps(payload), self._headers)
-            errorHandling = (self.handleResponse(resp["status"], json.loads(content)))
+            errorHandling = (self.handleResponse('',resp["status"], json.loads(content)))
             if errorHandling == []:
                 continue
             else: error.append(errorHandling)
@@ -109,12 +110,12 @@ class AimsApi(object):
     def updateFeature(self, payload):
         ''' update aims address feature '''
         resp, content = self.h.request(self._url+'address/changefeed/update', "POST", json.dumps(payload),headers = self._headers)
-        return self.handleResponse(resp["status"], json.loads(content) )
+        return self.handleResponse('',resp["status"], json.loads(content) )
     
     def newGroup(self, payload):
         ''' opens a new group and returns the new groupId '''
         resp, content = self.h.request(self._url+'groups/changefeed/replace', "POST", json.dumps(payload),headers = self._headers)
-        return {'errors': self.handleResponse(resp["status"], json.loads(content)),
+        return {'errors': self.handleResponse('',resp["status"], json.loads(content)),
                 'data':{'groupId':json.loads(content)['properties']['changeGroupId'],
                 'groupVersionId':json.loads(content)['properties']['version']}}
 
@@ -123,7 +124,7 @@ class AimsApi(object):
         error = []
         for payload in groupData:
             resp, content = self.h.request(self._url+'groups/changefeed/{}/address/add/'.format(groupId),"POST" , json.dumps(payload), headers = self._headers)
-            errorHandling = (self.handleResponse(resp["status"], json.loads(content)))
+            errorHandling = (self.handleResponse('',resp["status"], json.loads(content)))
             if errorHandling == []:
                 continue
             else: error.append(errorHandling+payload['address'])
@@ -134,7 +135,7 @@ class AimsApi(object):
         error = []
         resp, content = self.h.request(self._url+'groups/changefeed/{}/submit/'.format(groupId),"POST" , json.dumps(payload), headers = self._headers)
         #error=self.handleResponse(resp["status"], json.loads(content))
-        errorHandling = (self.handleResponse(resp["status"], json.loads(content)))
+        errorHandling = (self.handleResponse('',resp["status"], json.loads(content)))
         if errorHandling != []:
             error.append(errorHandling)
         return {'errors': error}
@@ -142,7 +143,7 @@ class AimsApi(object):
     def groupVersion(self, groupId):
         ''' opens a new group and returns the new groupId '''
         resp, content = self.h.request(self._url+'groups/changefeed/{}'.format(groupId),'GET', headers = self._headers)
-        return {'errors': self.handleResponse(resp["status"], json.loads(content)),
+        return {'errors': self.handleResponse('',resp["status"], json.loads(content)),
                 'data':{'groupVersionId':json.loads(content)['properties']['version']}}
         
     def getResItemsHrefs (self):
@@ -190,14 +191,14 @@ class AimsApi(object):
             url = '{}/{}?count={}&page={}'.format(self._url,FeedType.reverse[ft].lower(),count,page)
         print 'REQUEST',url
         resp, content = self.h.request(url,'GET', headers = self._headers)
-        return self.handleResponse(resp["status"], json.loads(content)) ['entities']    
+        return self.handleResponse(url,resp["status"], json.loads(content)) ['entities']    
 
 
     def getWarnings(self,cid):
         '''get warnings for a changeId'd resolutionfeed address'''
         url = '{}/{}/{}'.format(self._url,FeedType.reverse[ft].lower(),self.cid)
         resp, content = self.h.request(url,"GET", headers = self._headers)
-        for entity in self.handleResponse(resp["status"], json.loads(content)):
+        for entity in self.handleResponse(url, resp["status"], json.loads(content)):
             warnlist += [Warning.getInstance(entity),]
         return warnlist
     
@@ -206,13 +207,13 @@ class AimsApi(object):
         '''Make a change to the feature list by posting a change on the changefeed'''
         url = '{}/changefeed/{}'.format(self._url,ActionType.reverse[at].lower())
         resp, content = self.h.request(url,"POST", json.dumps(payload), self._headers)
-        return self.handleResponse(resp["status"], json.loads(content) )    
+        return self.handleResponse(url,resp["status"], json.loads(content) )    
     
     def resolutionfeedApproveAddress(self,at,payload,cid):
         '''Approve/Decline a change by submitting address to resolutionfeed'''
         url = '{}/resolutionfeed/{}/{}'.format(self._url,cid,ApprovalType.reverse[at].lower())
         resp, content = self.h.request(url,"POST", json.dumps(payload), self._headers)
-        return self.handleResponse(resp["status"], json.loads(content) )
+        return self.handleResponse(url,resp["status"], json.loads(content) )
     
 
     

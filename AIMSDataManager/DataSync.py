@@ -93,6 +93,7 @@ class DataSync(threading.Thread):
         self.ref,self.ft,self.ftracker,self.conf = params
         self.afactory = AddressFactory.getInstance(self.ft)
         self.drc = DataRequestChannel(self)
+        self.drc.setDaemon(True)
         self.inq = queues['in']
         self.outq = queues['out']
         self.respq = queues['resp']
@@ -111,14 +112,14 @@ class DataSync(threading.Thread):
         start = int(time.time())
         while True:
             #if there are things in the input queue, process them, push to CF #TODO. there shouldnt ever be anything in the FF inq
-            now = int(time.time())            
-            if (now-start) % self.ftracker['interval']:
-                #aimslog.debug('process Q={}'.format(len(self.duinst)))
-                self.syncFeeds(self.fetchFeedUpdates(self.ftracker['threads']))
-                aimslog.debug('FT {} sleeping {} with size(Qin)={}'.format(FeedType.reverse[self.ft],self.ftracker['interval'],self.inq.qsize())) 
-            time.sleep(FEED_REFRESH_DELAY)
+            self.syncFeeds(self.fetchFeedUpdates(self.ftracker['threads']))
+            aimslog.debug('FT {} sleeping {} with size(Qin)={}'.format(FeedType.reverse[self.ft],self.ftracker['interval'],self.inq.qsize())) 
+            time.sleep(self.ftracker['interval'])
             
-        
+    #start = int(time.time())  
+    #now = int(time.time())   
+    #if (now-start) % self.ftracker['interval']:pass        
+    
     def stop(self):
         self.drc.stop()
         self._stop.set()
@@ -155,8 +156,10 @@ class DataSync(threading.Thread):
             for r in pool:
                 print 'checking page {}{} pool={}'.format(FeedType.reverse[self.ft][:2].capitalize(), r['page'],[p['page'] for p in pool]) 
                 du = self.duinst[r['ref']]
-                if self.stopped(): 
+                if self.stopped():
+                    print 'stopping du ',r['ref']
                     du.stop()
+                    du.join(10)
                     del self.duinst[r['ref']]
                     pool.remove(r)
                     continue
@@ -199,7 +202,7 @@ class DataSync(threading.Thread):
         self.duinst[ref] = DataUpdater(params,adrq)
         if self.ft==FeedType.FEATURES: self.duinst[ref].setup(self.ft,self.sw,self.ne,p)
         else: self.duinst[ref].setup(self.ft,None,None,p)
-        self.duinst[ref].setDaemon(False)
+        self.duinst[ref].setDaemon(True)
         self.duinst[ref].start()
         return ref
         #self.duinst[ref].join()
@@ -310,7 +313,7 @@ class DataSyncChangeFeed(DataSyncFeeds):
         #self.ioq = {'in':Queue.Queue(),'out':Queue.Queue()}
         self.duinst[ref] = DataUpdaterAction(params,self.respq)
         self.duinst[ref].setup(at,addr)
-        self.duinst[ref].setDaemon(False)
+        self.duinst[ref].setDaemon(True)
         self.duinst[ref].start()
         #self.duinst[ref].join()
         return ref
@@ -329,7 +332,7 @@ class DataSyncResolutionFeed(DataSyncFeeds):
         #self.ioq = {'in':Queue.Queue(),'out':Queue.Queue()}
         self.duinst[ref] = DataUpdaterApproval(params,self.respq)
         self.duinst[ref].setup(at,addr)
-        self.duinst[ref].setDaemon(False)
+        self.duinst[ref].setDaemon(True)
         self.duinst[ref].start()
         #self.duinst[ref].join()
         return ref

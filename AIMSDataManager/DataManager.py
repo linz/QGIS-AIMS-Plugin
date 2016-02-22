@@ -29,6 +29,7 @@ UPDATE_INTERVAL = 5#s
 LOGFILE = 'admlog'
 SW = (174.75918,-41.29515)
 NE = (174.78509,-41.27491)
+FEATURES_THREAD_TIMEOUT = 10
 
 
 aimslog = None
@@ -121,8 +122,10 @@ class DataManager(object):
             self.persist.coords['sw'],self.persist.coords['ne'] = sw,ne
             #kill the old features thread
             if self.ds[FeedType.FEATURES].isAlive():
+                aimslog.info('Attempting Features Thread STOP')
                 self.ds[FeedType.FEATURES].stop()
-            #self.ds[FeedType.FEATURES].join()
+                self.ds[FeedType.FEATURES].join(FEATURES_THREAD_TIMEOUT)
+            if self.ds[FeedType.FEATURES].isAlive(): aimslog.warn('Features Thread JOIN timeout')
             del self.ds[FeedType.FEATURES]
             #reinitialise a new features DataSync
             self._initFeedDS(FeedType.FEATURES,DataSyncFeatures)
@@ -374,8 +377,9 @@ def test1(dm,f3):
 #     dm.push(listofaddresses)
 #     time.sleep(5)
 #     testresp(dm)
-#     #shift
-#     time.sleep(5)
+
+    #shift
+    time.sleep(10)
     aimslog.info('*** Main SHIFT '+str(time.clock()))
     dm.setbb(sw=(174.76918,-41.28515), ne=(174.79509,-41.26491))
     time.sleep(30)
