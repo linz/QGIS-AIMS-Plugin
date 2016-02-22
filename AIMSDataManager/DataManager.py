@@ -113,13 +113,16 @@ class DataManager(object):
     #Client Access
     def setbb(self,sw=None,ne=None):
         '''Resetting the bounding box triggers a complete refresh of the features address data'''
+        #TODO and move threshold to prevent small moves triggering an update
         if self.persist.coords['sw'] != sw or self.persist.coords['ne'] != ne:
             #throw out the current features addresses
             self.persist.ADL[FeedType.FEATURES] = self.persist._initADL()[FeedType.FEATURES]
             #save the new coordinates
             self.persist.coords['sw'],self.persist.coords['ne'] = sw,ne
             #kill the old features thread
-            self.ds[FeedType.FEATURES].stop()
+            if self.ds[FeedType.FEATURES].isAlive():
+                self.ds[FeedType.FEATURES].stop()
+            #self.ds[FeedType.FEATURES].join()
             del self.ds[FeedType.FEATURES]
             #reinitialise a new features DataSync
             self._initFeedDS(FeedType.FEATURES,DataSyncFeatures)
@@ -373,11 +376,11 @@ def test1(dm,f3):
 #     testresp(dm)
 #     #shift
 #     time.sleep(5)
-#     aimslog.info('*** Main SHIFT '+str(time.clock()))
-#     dm.setbb(sw=(174.76918,-41.28515), ne=(174.79509,-41.26491))
-#     time.sleep(5)
-#     testresp(dm)
-#     time.sleep(5)
+    aimslog.info('*** Main SHIFT '+str(time.clock()))
+    dm.setbb(sw=(174.76918,-41.28515), ne=(174.79509,-41.26491))
+    time.sleep(30)
+    testresp(dm)
+    time.sleep(5)
     
     aimslog.info('*** Change ADD '+str(time.clock()))
     #addr_c.setChangeType(ActionType.reverse[ActionType.ADD])

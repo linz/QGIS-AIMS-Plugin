@@ -20,7 +20,7 @@ from gtk._gtk import PositionType
 DEF_SEP = '_'
 
 #------------------------------------------------------------------------------
-#W A R N I N G
+# W A R N I N G
 
 class Warning(object):
 
@@ -59,12 +59,13 @@ class Warning(object):
         
 #------------------------------------------------------------------------------
 # P O S I T I O N
+
 class InvalidPositionException(Exception):pass
 class Position(object):
     '''Position type for embedded address positions.
     Uses hardcoded attrs since it has a constant structure'''
-    
-    BRANCH = ('addressedObject','addressPositions')#'{}addressedObject{}addressPositions'.format(*2*(DEF_SEP,))
+    #branch in address structure where we should find position object
+    BRANCH = ('addressedObject','addressPositions')
     PDEF = {'position':{'type':'Point','coordinates':[0.0,0.0],'crs':{'type':'name','properties':{'name':'urn:ogc:def:crs:EPSG::4167'}}},'positionType':'Unknown','primary':True}
     
     def __init__(self, ref=None): 
@@ -233,8 +234,6 @@ class Address(object):
     def setExternalObjectId( self, externalObjectId ): 
         self._addressedObject_externalObjectId = externalObjectId          
     def setExternalObjectIdScheme( self, externalObjectIdScheme ): 
-        
-        
         self._addressedObject_externalObjectIdScheme = externalObjectIdScheme  
     def setValuationReference( self, valuationReference ): 
         self._addressedObject_valuationReference = valuationReference  
@@ -259,7 +258,7 @@ class Address(object):
         else: raise InvalidPositionException('Cannot set non Position type {}'.format(p))
         
     def addAddressPositions(self,p, flush=False):
-        '''adds (nb 'add' not 'set', bcse setter recogniser needs set) another position object'''
+        '''adds another/list-of position object'''
         if flush or not hasattr(self,'_addressedObject_addressPositions'): self._addressedObject_addressPositions = []
         if isinstance(p,Position):
             self._addressedObject_addressPositions.append(p)

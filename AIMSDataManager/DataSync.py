@@ -53,6 +53,7 @@ class DataRequestChannel(threading.Thread):
     def __init__(self,client):
         threading.Thread.__init__(self)
         self.client = client
+        self._stop = threading.Event()
         
     def run(self):
         '''Continual loop looking for input queue requests and running periodic updates'''
@@ -110,12 +111,7 @@ class DataSync(threading.Thread):
         start = int(time.time())
         while True:
             #if there are things in the input queue, process them, push to CF #TODO. there shouldnt ever be anything in the FF inq
-            now = int(time.time())
-#             if not self.inq.empty():
-#                 changelist = self.inq.get()    
-#                 aimslog.info('FT {} - found {} items in queue'.format(FeedType.reverse[self.ft],len(changelist)))
-#                 self.processInputQueue(changelist)
-            
+            now = int(time.time())            
             if (now-start) % self.ftracker['interval']:
                 #aimslog.debug('process Q={}'.format(len(self.duinst)))
                 self.syncFeeds(self.fetchFeedUpdates(self.ftracker['threads']))
@@ -128,7 +124,7 @@ class DataSync(threading.Thread):
         self._stop.set()
 
     def stopped(self):
-        return self._stop.isSet()
+        return self._stop.isSet() and self.drc.stopped() 
     
     def close(self):
         self.inq.task_done()
@@ -155,9 +151,15 @@ class DataSync(threading.Thread):
             r['ref'] = self.fetchPage(r['page'])
         
         while len(pool)>0:#any([p[2] for p in pool if p[2]>1])
+            print 'STOPPED', FeedType.reverse[self.ft][:2].capitalize(),self.stopped()
             for r in pool:
                 print 'checking page {}{} pool={}'.format(FeedType.reverse[self.ft][:2].capitalize(), r['page'],[p['page'] for p in pool]) 
                 du = self.duinst[r['ref']]
+                if self.stopped(): 
+                    du.stop()
+                    del self.duinst[r['ref']]
+                    pool.remove(r)
+                    continue
                 #print 'DU',du.isAlive()
                 #if len(pool) == 1 and r['page'] == 6: #DEBUG
                 #    print 'halt' 

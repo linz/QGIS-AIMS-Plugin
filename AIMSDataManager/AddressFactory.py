@@ -55,13 +55,14 @@ class AddressFactory(object):
     
     
     def getAddress(self,ref=None,adr=None,model=None,prefix=''):
-        '''Creates an address object from a model using a template if not provided'''
+        '''Creates an address object from a model (using the response template if model is not provided)'''
         adr = adr if adr else self.addrtype(ref)
         data = model if model else self.template['response']   
         for k in data:
             setter = 'set'+k[0].upper()+k[1:]
-            if isinstance(data[k],dict): adr = self.getAddress(ref=ref,adr=adr,model=data[k],prefix=prefix+DEF_SEP+k)
-            else: getattr(adr,setter)(data[k] or None) if hasattr(adr,setter) else setattr(adr,prefix+DEF_SEP+k,data[k] or None)
+            new_prefix = prefix+DEF_SEP+k
+            if isinstance(data[k],dict): adr = self.getAddress(ref=ref,adr=adr,model=data[k],prefix=new_prefix)
+            else: getattr(adr,setter)(data[k] or None) if hasattr(adr,setter) else setattr(adr,new_prefix,data[k] or None)
         return adr
         
 
@@ -117,7 +118,7 @@ class AddressFeedFactory(AddressFactory):
                 #if it != 'NULL' and it != None:
                 if it: new_obj.append(self._delNull(it))
         else: return obj
-        return type(obj)(new_obj)     
+        return type(obj)(new_obj)
 
             
         
@@ -137,9 +138,10 @@ class AddressResolutionFactory(AddressFeedFactory):
     def __init__(self,ref=None):
         super(AddressResolutionFactory,self).__init__(ref)
         
-    def getAddress(self,ref=None,adr=None,model=None,prefix=''):
+    def getAddress(self,ref=None,adr=None,model=None,prefix='',warnings=[]):
+        '''Sets a refault address object and adds empty warning attribute'''
         adrr = super(AddressResolutionFactory,self).getAddress(ref,adr,model,prefix)
-        adrr.setWarnings([])
+        adrr.setWarnings(warnings)
         return adrr
 
 
