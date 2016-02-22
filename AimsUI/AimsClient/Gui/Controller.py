@@ -48,7 +48,7 @@ class Controller(QObject):
         self.iface = iface
         self.api = AimsApi()
         self.user = self.api.user
-        self._currentAddress = None
+        #self.curResItem = [None, None]
 
         self._queues = None
         self._currentMapTool = None
@@ -63,7 +63,8 @@ class Controller(QObject):
         self._displayCrs = QgsCoordinateReferenceSystem()
         self._displayCrs.createFromOgcWmsCrs('EPSG:4167') 
         iface.mapCanvas().mapSettings().setDestinationCrs(self._displayCrs)
-
+    
+        
     def initGui(self):
         self._layers = LayerManager(self.iface, self)
                 
@@ -297,6 +298,8 @@ class Controller(QObject):
     
     def getResData(self):
         return self.api.getResData()
+    
+    
 
 # Singleton instance    
 def instance():

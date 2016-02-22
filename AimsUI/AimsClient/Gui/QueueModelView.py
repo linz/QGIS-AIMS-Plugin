@@ -40,14 +40,13 @@ class QueueView(QTableView):
 class FeatureTableModel(QAbstractTableModel):
  
     
-    def __init__(self, data , headerdata = None,parent=None):
+    def __init__(self, data = {} , headerdata = None,parent=None):
         QAbstractTableModel.__init__(self, parent)
-        #if data == {}: data = {('','', '', '', ''): [['', '', '', '', '','']]} # dummy data if nothing return from dm
+        if data == {}: data = {('','', '', '', ''): [['', '', '', '', '']]} # dummy data if nothing return from dm
         self._data = data
         self.headerdata = headerdata
-        
         self.dict_key = self._data.keys()[0] # on init, storing any old key until the users updates it. issue when none returned....
-        
+                        
     def set_key(self, key = None):
         self.beginResetModel()
         self.dict_key = key
@@ -76,8 +75,9 @@ class FeatureTableModel(QAbstractTableModel):
             
         
 class GroupTableModel(QAbstractTableModel):
-    def __init__(self, data, featureModel = None, headerdata = None, parent=None):
+    def __init__(self, data = {}, featureModel = None, headerdata = None, parent=None):
         QAbstractTableModel.__init__(self, parent)
+        if data == {}: data = {('','', '', '', ''): [['', '', '', '', '']]}
         self._data = sorted(data.keys())
         self.groupModel = featureModel
         self.headerdata = headerdata
