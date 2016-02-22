@@ -44,9 +44,33 @@ PAGE_LIMIT = 1000
 PAGES_PERIOCDIC = 3
 POOL_PAGE_CHECK_DELAY = 0.2
 QUEUE_CHECK_DELAY = 1
+FEED_REFRESH_DELAY = 10
 LAST_PAGE_GUESS = 1000
 
 
+class DataRequestChannel(threading.Thread):    
+    
+    def __init__(self,client):
+        threading.Thread.__init__(self)
+        self.client = client
+        
+    def run(self):
+        '''Continual loop looking for input queue requests and running periodic updates'''
+        while True:
+            #if there are things in the client's input queue, process them, push to CF #TODO. there shouldnt ever be anything in the FF inq
+            if not self.client.inq.empty():
+                changelist = self.client.inq.get()    
+                aimslog.info('DRC FT {} - found {} items in queue'.format(FeedType.reverse[self.client.ft],len(changelist)))
+                self.client.processInputQueue(changelist)
+                
+            time.sleep(QUEUE_CHECK_DELAY)
+            
+    def stop(self):
+        self._stop.set()
+
+    def stopped(self):
+        return self._stop.isSet()
+    
 class DataSync(threading.Thread):
     '''Background thread triggering periodic data updates and synchronising update requests from DM.  
     '''
@@ -67,6 +91,7 @@ class DataSync(threading.Thread):
         #thread reference, ft to AD/CF/RF, config info
         self.ref,self.ft,self.ftracker,self.conf = params
         self.afactory = AddressFactory.getInstance(self.ft)
+        self.drc = DataRequestChannel(self)
         self.inq = queues['in']
         self.outq = queues['out']
         self.respq = queues['resp']
@@ -79,23 +104,27 @@ class DataSync(threading.Thread):
 
     def run(self):
         '''Continual loop looking for input queue requests and running periodic updates'''
+        #start the request checker
+        self.drc.start()
+        #snap time
         start = int(time.time())
         while True:
             #if there are things in the input queue, process them, push to CF #TODO. there shouldnt ever be anything in the FF inq
             now = int(time.time())
-            if not self.inq.empty():
-                changelist = self.inq.get()    
-                aimslog.info('FT {} - found {} items in queue'.format(FeedType.reverse[self.ft],len(changelist)))
-                self.processInputQueue(changelist)
+#             if not self.inq.empty():
+#                 changelist = self.inq.get()    
+#                 aimslog.info('FT {} - found {} items in queue'.format(FeedType.reverse[self.ft],len(changelist)))
+#                 self.processInputQueue(changelist)
             
             if (now-start) % self.ftracker['interval']:
                 #aimslog.debug('process Q={}'.format(len(self.duinst)))
                 self.syncFeeds(self.fetchFeedUpdates(self.ftracker['threads']))
                 aimslog.debug('FT {} sleeping {} with size(Qin)={}'.format(FeedType.reverse[self.ft],self.ftracker['interval'],self.inq.qsize())) 
-            time.sleep(QUEUE_CHECK_DELAY)
+            time.sleep(FEED_REFRESH_DELAY)
             
         
     def stop(self):
+        self.drc.stop()
         self._stop.set()
 
     def stopped(self):
@@ -277,7 +306,6 @@ class DataSyncChangeFeed(DataSyncFeeds):
         ref = 'Req{0}.{1:%y%m%d.%H%M%S}'.format(at2,DT.now())
         params = (ref,self.conf,self.afactory)
         #self.ioq = {'in':Queue.Queue(),'out':Queue.Queue()}
-        print 'OOOOOOOOOOOOOOOOOOOOOOOOO'
         self.duinst[ref] = DataUpdaterAction(params,self.respq)
         self.duinst[ref].setup(at,addr)
         self.duinst[ref].setDaemon(False)
@@ -297,7 +325,6 @@ class DataSyncResolutionFeed(DataSyncFeeds):
         ref = 'Req{0}.{1:%y%m%d.%H%M%S}'.format(at2,DT.now())
         params = (ref,self.conf,self.afactory)
         #self.ioq = {'in':Queue.Queue(),'out':Queue.Queue()}
-        print 'XXXXXXXXXXXXXXXXXXXXXXXXX'
         self.duinst[ref] = DataUpdaterApproval(params,self.respq)
         self.duinst[ref].setup(at,addr)
         self.duinst[ref].setDaemon(False)

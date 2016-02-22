@@ -91,7 +91,7 @@ class DataUpdaterAction(DataUpdater):
         aimslog.info('ACT.{} {} - Addr{}'.format(self.ref,ActionType.reverse[self.ft],self.address))
         resp = self.api.changefeedActionAddress(self.ft,self.payload)
         chg_adr = self.afactory.getAddress(model=resp)
-        print 'CHG_ADR',res_adr
+        print 'CHG_ADR',chg_adr
         self.queue.put(chg_adr)
 
             

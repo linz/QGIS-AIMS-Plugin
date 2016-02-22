@@ -86,7 +86,7 @@ class AddressFeedFactory(AddressFactory):
         return dat
     
     def _assign(self,dat,adr,key):
-        '''validates address data value agains template requirements'''
+        '''validates address data value against template requirements'''
         required,oneof,default,datatype = 4*(None,)
         val = adr.__dict__[key] if hasattr(adr,key) else None
         dft =  dat[key[key.rfind(DEF_SEP)+1:]]
@@ -96,8 +96,10 @@ class AddressFeedFactory(AddressFactory):
             oneof = [pv[6:].strip('()').split('|') for pv in pi if pv.startswith('oneof')]
             default = oneof[0][0] if required and oneof else None
         if required and not val:
+            print 'error AddressFieldRequired',key
             raise AddressFieldRequiredException('Address field {} required'.format(key))
         if oneof and val and val not in oneof[0]:
+            print 'error AddressFieldIncorrect',key,val
             raise AddressFieldIncorrectException('Address field {}={} not one of {}'.format(key,val,oneof[0]))
         return val if val else default
     

@@ -14,6 +14,7 @@
 #http://devassgeo01:8080/aims/api/address/features - properties
 import re
 from AimsUtility import ActionType,FeedType
+from gtk._gtk import PositionType
 
 
 DEF_SEP = '_'
@@ -58,20 +59,21 @@ class Warning(object):
         
 #------------------------------------------------------------------------------
 # P O S I T I O N
-
+class InvalidPositionException(Exception):pass
 class Position(object):
     '''Position type for embedded address positions.
     Uses hardcoded attrs since it has a constant structure'''
     
     BRANCH = ('addressedObject','addressPositions')#'{}addressedObject{}addressPositions'.format(*2*(DEF_SEP,))
+    PDEF = {'position':{'type':'Point','coordinates':[0.0,0.0],'crs':{'type':'name','properties':{'name':'urn:ogc:def:crs:EPSG::4167'}}},'positionType':'Unknown','primary':True}
     
     def __init__(self, ref=None): 
         self._position_type = 'Point'
         self._position_coordinates = [0.0,0.0]
-        self._position_crs_type = None
+        self._position_crs_type = 'name'
         self._position_crs_properties_name = 'urn:ogc:def:crs:EPSG::4167'
-        self._positionType = None
-        self._primary = None
+        self._positionType = 'Unknown'
+        self._primary = True
     
     def __str__(self):
         return 'POS'    
@@ -82,7 +84,7 @@ class Position(object):
         p.set(d)
         return p
         
-    def set(self,d):
+    def set(self,d = PDEF):
         self._set(
             d['position']['type'],
             d['position']['coordinates'],
@@ -92,25 +94,35 @@ class Position(object):
             d['primary']
         )
         
-    def _set(self,p1type,coordinates,ctype,cprops=None,p2type=None,primary=None):
+    def _set(self,ptype,coordinates,ctype,cprops=None,positionType=None,primary=None):
         '''sets object parameters'''
-        self._position_type = p1type
-        self._position_coordinates = coordinates
-        self._position_crs_type = ctype
-        self._position_crs_properties_name = cprops
-        self._positionType = p2type
-        self._primary = primary
+        self.setType(ptype)
+        self.setCoordinates(coordinates)
+        self.setCrsType(ctype)
+        self.setCrsPropertiesName(cprops)
+        self.setPositionType(positionType)
+        self.setPrimary(primary)
         
+    def setType(self, _position_type): self._position_type = _position_type
+    def setCoordinates(self, _position_coordinates): self._position_coordinates = _position_coordinates
+    def setCrsType(self, _position_crs_type): self._position_crs_type = _position_crs_type
+    def setCrsPropertiesName(self, _position_crs_properties_name): self._position_crs_properties_name = _position_crs_properties_name
+    def setPositionType(self, _positionType): self._positionType = _positionType
+    def setPrimary(self, _primary): self._primary = _primary    
         
     def get(self):
         return {"position":{
                     "type":self._position_type,
-                        "coordinates":self._position_coordinates,
-                        "crs":{"type":self._position_crs_type,
-                            "properties":{"name":self._position_crs_properties_name}
-                        }},
-                    "positionType":self._positionType,
-                    "primary":self._primary
+                    "coordinates":self._position_coordinates,
+                    "crs":{
+                         "type":self._position_crs_type,
+                         "properties":{
+                            "name":self._position_crs_properties_name
+                         }
+                    }
+                },
+                "positionType":self._positionType,
+                "primary":self._primary
                 }
 
 #------------------------------------------------------------------------------
@@ -148,7 +160,7 @@ class Address(object):
     def setChangeId(self, changeId): 
         self._changeId = changeId
     def getChangeId(self): 
-        return self._changeId    
+        return self._changeId
     
     def setChangeType(self, changeType):
         self._changeType = changeType
@@ -238,12 +250,23 @@ class Address(object):
     def setFullAddress (self, fullAddress): 
         self._components_fullAddress = fullAddress    
     
-    #---------------------------------------------------
-    def setAddressPositions(self,pdict):
-        '''adds ('add' not 'set' but setter recognised needs set) another position object'''
-        if not hasattr(self,'_addressedObject_addressPositions'): self._addressedObject_addressPositions = []
-        for p in pdict:
-            self._addressedObject_addressPositions.append(Position.getInstance(p))
+    #--------------------------------------------------- 
+    def setAddressPosition(self,p):
+        '''adds (nb 'add' not 'set', bcse setter recogniser needs set) another position object'''
+        if isinstance(p,Position): self._addressedObject_addressPositions = [p,]  
+        else: raise InvalidPositionException('Cannot set non Position type {}'.format(p))
+        
+    def addAddressPositions(self,p, flush=False):
+        '''adds (nb 'add' not 'set', bcse setter recogniser needs set) another position object'''
+        if flush or not hasattr(self,'_addressedObject_addressPositions'): self._addressedObject_addressPositions = []
+        if isinstance(p,Position):
+            self._addressedObject_addressPositions.append(p)
+        elif isinstance(p,dict):
+            self._addressedObject_addressPositions.append(Position.getInstance(p))   
+        elif isinstance(p,(tuple,list)): 
+            for pos in p: self.setAddressPositions(pos)
+        else: raise InvalidPositionException('Cannot parse/add Position {}'.format(p))
+            
         
     def getAddressPositions(self):
         '''return a list of dict'd position objects'''

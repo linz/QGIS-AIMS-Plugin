@@ -18,13 +18,21 @@ from AimsUtility import ActionType,ApprovalType,FeedType,MAX_FEATURE_COUNT
 from AimsLogging import Logger
 
 
-aimslog = None
+aimslog = Logger.setup()
+
+class AimsHttpException(Exception):
+    def __init__(self,em,ll=aimslog.error): 
+        ll('{} - {}'.format(type(self).__name__,em))
+
+    
+class Http404Exception(AimsHttpException): pass
+class Http400Exception(AimsHttpException): pass
 
 class AimsApi(object):
     ''' make and receive all http requests / responses to AIMS API '''
       
-    global aimslog
-    aimslog = Logger.setup()
+    #global aimslog
+    #aimslog = Logger.setup()
     
     def __init__(self,config):
         self._url = config['url']
@@ -38,18 +46,27 @@ class AimsApi(object):
     def handleErrors(self, resp, content):
         ''' Return the reason for any critical errors '''        
         criticalErrors = []
-        if str(resp) in ('400', '404') and content.has_key('entities'):
-            for i in content['entities']:
-                if i['properties']['severity'] == 'Reject':
-                    criticalErrors.append( '- '+i['properties']['description']+'   \n' )
-                else: return [] # <-- the error was not critical
-        elif str(resp) == '409':
-            #criticalErrors.append(content['properties']['reason'] +'\n'+ content['properties']['message'])
-            criticalErrors.append('\n\n'+content['properties']['reason'] +' - '+ content['entities'][0]['properties']['description']+':'+'\n    ')
-        else:
-            criticalErrors = str(resp)
-            
-        return ''.join(criticalErrors)
+        if str(resp) == '400': raise Http400Exception('400 {}'.format(content))
+        elif str(resp) == '404': raise Http404Exception('404 {}'.format(content))
+        else: raise HttpException('{}'.format(resp))
+
+  
+    
+#     def _handleErrors(self, resp, content):
+#         ''' Return the reason for any critical errors '''        
+#         criticalErrors = []
+#         if str(resp) in ('400', '404') and content.has_key('entities'):
+#             for i in content['entities']:
+#                 if i['properties']['severity'] == 'Reject':
+#                     criticalErrors.append( '- '+i['properties']['description']+'   \n' )
+#                 else: return [] # <-- the error was not critical
+#         elif str(resp) == '409':
+#             #criticalErrors.append(content['properties']['reason'] +'\n'+ content['properties']['message'])
+#             criticalErrors.append('\n\n'+content['properties']['reason'] +' - '+ content['entities'][0]['properties']['description']+':'+'\n    ')
+#         else:
+#             criticalErrors = str(resp)
+#             
+#         return ''.join(criticalErrors)
     
     def handleResponse(self, resp, content):
         ''' test http response
@@ -187,13 +204,13 @@ class AimsApi(object):
         
     def changefeedActionAddress(self,at,payload):
         '''Make a change to the feature list by posting a change on the changefeed'''
-        url = '{}address/changefeed/{}'.format(self._url,ActionType.reverse[at].lower())
+        url = '{}/changefeed/{}'.format(self._url,ActionType.reverse[at].lower())
         resp, content = self.h.request(url,"POST", json.dumps(payload), self._headers)
         return self.handleResponse(resp["status"], json.loads(content) )    
     
     def resolutionfeedApproveAddress(self,at,payload,cid):
         '''Approve/Decline a change by submitting address to resolutionfeed'''
-        url = '{}address/resolutionfeed/{}/{}'.format(self._url,cid,ApprovalType.reverse[at].lower())
+        url = '{}/resolutionfeed/{}/{}'.format(self._url,cid,ApprovalType.reverse[at].lower())
         resp, content = self.h.request(url,"POST", json.dumps(payload), self._headers)
         return self.handleResponse(resp["status"], json.loads(content) )
     
