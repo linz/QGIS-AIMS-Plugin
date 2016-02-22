@@ -65,15 +65,16 @@ class NewAddressDialog(Ui_NewAddressDialog, QDialog):
     def submitAddress(self):
         ''' take users input from form and submit to AIMS API '''
         # Run through the setters
-        
         #self.feature.set_x(self.coords.x()) <-- joe building setter now 
         #self.feature.set_y(self.coords.y())
         UiUtility.formToObj(self)
-        
-        
+
         # submit address obj to DM
         self._controller.dm.addAddress(self.feature)
-
+        resp =self._controller.dm.response()
+ 
+        for r in resp:
+            pass
         
         #need to add error handeling
         
