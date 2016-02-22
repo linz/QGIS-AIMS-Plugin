@@ -14,6 +14,7 @@
 #http://devassgeo01:8080/aims/api/address/features - properties
 import re
 from AimsUtility import ActionType,FeedType
+from gtk._gtk import PositionType
 
 
 DEF_SEP = '_'
@@ -93,25 +94,35 @@ class Position(object):
             d['primary']
         )
         
-    def _set(self,p1type,coordinates,ctype,cprops=None,p2type=None,primary=None):
+    def _set(self,ptype,coordinates,ctype,cprops=None,positionType=None,primary=None):
         '''sets object parameters'''
-        self._position_type = p1type
-        self._position_coordinates = coordinates
-        self._position_crs_type = ctype
-        self._position_crs_properties_name = cprops
-        self._positionType = p2type
-        self._primary = primary
+        self.setType(ptype)
+        self.setCoordinates(coordinates)
+        self.setCrsType(ctype)
+        self.setCrsPropertiesName(cprops)
+        self.setPositionType(positionType)
+        self.setPrimary(primary)
         
+    def setType(self, _position_type): self._position_type = _position_type
+    def setCoordinates(self, _position_coordinates): self._position_coordinates = _position_coordinates
+    def setCrsType(self, _position_crs_type): self._position_crs_type = _position_crs_type
+    def setCrsPropertiesName(self, _position_crs_properties_name): self._position_crs_properties_name = _position_crs_properties_name
+    def setPositionType(self, _positionType): self._positionType = _positionType
+    def setPrimary(self, _primary): self._primary = _primary    
         
     def get(self):
         return {"position":{
                     "type":self._position_type,
-                        "coordinates":self._position_coordinates,
-                        "crs":{"type":self._position_crs_type,
-                            "properties":{"name":self._position_crs_properties_name}
-                        }},
-                    "positionType":self._positionType,
-                    "primary":self._primary
+                    "coordinates":self._position_coordinates,
+                    "crs":{
+                         "type":self._position_crs_type,
+                         "properties":{
+                            "name":self._position_crs_properties_name
+                         }
+                    }
+                },
+                "positionType":self._positionType,
+                "primary":self._primary
                 }
 
 #------------------------------------------------------------------------------

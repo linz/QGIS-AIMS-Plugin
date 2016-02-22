@@ -340,10 +340,8 @@ def test1(dm,f3):
     addr_8 = f3[0].getAddress('ninenintyeight')
     addr_9 = f3[0].getAddress('ninenintynine')
     
-    addr_c = f3[0].getAddress('change_add')
     addr_r = f3[0].getAddress('resolution_accept')
-    
-    addr_c1 = gettestdata(f3[0])
+    addr_c = gettestdata(f3[0])
     
 #     listofaddresses[FeedType.FEATURES].append(addr_7)
 #     listofaddresses[FeedType.FEATURES].append(addr_8)
@@ -385,10 +383,7 @@ def test1(dm,f3):
     #addr_c.setChangeType(ActionType.reverse[ActionType.ADD])
     #listofaddresses[FeedType.CHANGEFEED].append(addr_c)
     #dm.push(listofaddresses)
-    addr_c.setAddressType('Road')
-    addr_c.setAddressNumber(100)
-    addr_c.setRoadName('Smith St')
-    dm.addAddress(addr_c1)
+    dm.addAddress(addr_c)
     time.sleep(5)
     testresp(dm)
     time.sleep(5)
@@ -428,7 +423,7 @@ def testresp(dm):
 def gettestdata(ff):
     a = ff.getAddress('change_add')
     p = Position.getInstance(
-    {'position':{'type':'Point','coordinates': [168.38392191667,-44.8511013],'crs':{'type':'name','properties':{'name':'urn:ogc:def:crs:EPSG::4167'}}},'positionType':'Centroid','primary':True}
+        {'position':{'type':'Point','coordinates': [168.38392191667,-44.8511013],'crs':{'type':'name','properties':{'name':'urn:ogc:def:crs:EPSG::4167'}}},'positionType':'Centroid','primary':True}
     )
     a.setAddressType('Road')
     a.setAddressNumber('16')
