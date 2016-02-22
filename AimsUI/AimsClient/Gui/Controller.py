@@ -32,8 +32,9 @@ from AimsUI.LineageTool import LineageTool
 from AimsUI.GetRclTool import GetRcl
 from AimsUI.AimsClient.AimsApi import AimsApi
 from AimsQueueWidget import AimsQueueWidget
-from AddressList import AddressList
 from UiDataManager import UiDataManager
+from AIMSDataManager.DataManager import DataManager
+from AIMSDataManager.AddressFactory import AddressFactory
 
 from AimsUI import AimsLogging
 from AimsUI.AimsLogging import Logger
@@ -48,6 +49,8 @@ class Controller(QObject):
         self.iface = iface
         self.api = AimsApi()
         self.user = self.api.user
+        self.dm = DataManager()
+        self.af = AddressFactory()
         #self.curResItem = [None, None]
 
         self._queues = None
@@ -66,7 +69,7 @@ class Controller(QObject):
     
         
     def initGui(self):
-        self._layers = LayerManager(self.iface, self)
+        self._layerManager = LayerManager(self.iface, self)
                 
         # Build an action list from QGIS navigation toolbar
         actionList = self.iface.mapNavToolToolBar().actions()
@@ -87,7 +90,7 @@ class Controller(QObject):
         self._createnewaddressaction.setEnabled(False)
         self._createnewaddressaction.setCheckable(True)
         self._createnewaddressaction.triggered.connect( self.startNewAddressTool )
-        self._createnewaddresstool = CreateNewAddressTool( self.iface, self._layers, self)
+        self._createnewaddresstool = CreateNewAddressTool( self.iface, self._layerManager, self)
         self._createnewaddresstool.setAction( self._createnewaddressaction )
         self.actions.append(self._createnewaddressaction)
         
@@ -99,7 +102,7 @@ class Controller(QObject):
         self._deladdressaction.setEnabled(False)
         self._deladdressaction.setCheckable(True)
         self._deladdressaction.triggered.connect( self.startDelAddressTool )
-        self._deladdtool = DelAddressTool( self.iface, self._layers, self)
+        self._deladdtool = DelAddressTool( self.iface, self._layerManager, self)
         self._deladdtool.setAction( self._deladdressaction )        
         self.actions.append(self._deladdressaction)
         
@@ -111,7 +114,7 @@ class Controller(QObject):
         self._moveaddressaction.setEnabled(False)
         self._moveaddressaction.setCheckable(True)
         self._moveaddressaction.triggered.connect( self.startMoveAddressTool )
-        self._moveaddtool = MoveAddressTool( self.iface, self._layers, self)
+        self._moveaddtool = MoveAddressTool( self.iface, self._layerManager, self)
         self._moveaddtool.setAction( self._moveaddressaction )      
         self.actions.append(self._moveaddressaction)
         
@@ -123,12 +126,12 @@ class Controller(QObject):
         self._updateaddressaction.setEnabled(False)
         self._updateaddressaction.setCheckable(True)
         self._updateaddressaction.triggered.connect( self.startUpdateAddressTool )
-        self._updateaddtool = UpdateAddressTool( self.iface, self._layers, self)
+        self._updateaddtool = UpdateAddressTool( self.iface, self._layerManager, self)
         self._updateaddtool.setAction( self._updateaddressaction )  
         self.actions.append(self._updateaddressaction)
                     
         # RCL tools -- Not a QAction as triggered from many palaces but not the toolbar
-        self._rcltool = GetRcl(self.iface, self._layers, self, parent = None)
+        self._rcltool = GetRcl(self.iface, self._layerManager, self, parent = None)
        
         # Address lineage
         self._lineageaction = QAction(QIcon(':/plugins/QGIS-AIMS-Plugin/resources/lineage.png'), 
@@ -137,7 +140,7 @@ class Controller(QObject):
         self._lineageaction.setStatusTip('Build Lineage Relationships Between Features')
         self._lineageaction.setEnabled(False)
         self._lineageaction.setCheckable(True)
-        self._lineagetool = LineageTool( self.iface, self._layers, self)
+        self._lineagetool = LineageTool( self.iface, self._layerManager, self)
         self._lineageaction.triggered.connect(self._lineagetool.setEnabled)
         self.actions.append(self._lineageaction)
         
@@ -158,8 +161,8 @@ class Controller(QObject):
         self.iface.addPluginToMenu('&QGIS-AIMS-Plugin', self._moveaddressaction)
         
         # Make useful connections
-        self._layers.addressLayerAdded.connect(self.enableAddressLayer)
-        self._layers.addressLayerRemoved.connect(self.disableAddressLayer)
+        self._layerManager.addressLayerAdded.connect(self.enableAddressLayer)
+        self._layerManager.addressLayerRemoved.connect(self.disableAddressLayer)
         # capture maptool selection changes
         QObject.connect( self.iface.mapCanvas(), SIGNAL( "mapToolSet(QgsMapTool *)" ), self.mapToolChanged)
 
@@ -232,8 +235,8 @@ class Controller(QObject):
         return self._queues
     
     def loadLayers(self):
-        self._layers.initialiseExtentEvent()
-        self._layers.installRefLayers()
+        self._layerManager.initialiseExtentEvent()
+        self._layerManager.installRefLayers()
     
     def setPreviousMapTool(self):
         ''' this allows for roll back to the maptool that called get rcl
@@ -245,7 +248,7 @@ class Controller(QObject):
         self._createnewaddresstool.setEnabled(True)
     
     def startRclTool(self, parent = None):
-        self._rcltool = GetRcl(self.iface, self._layers, self, parent)
+        self._rcltool = GetRcl(self.iface, self._layerManager, self, parent)
         self.iface.mapCanvas().setMapTool(self._rcltool)
         self._rcltool.setEnabled(True)
     

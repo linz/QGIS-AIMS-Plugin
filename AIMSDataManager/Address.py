@@ -220,9 +220,7 @@ class Address(object):
     #def setCrsProperties( self, crsProperties ): self._crsProperties = crsProperties
     def setExternalObjectId( self, externalObjectId ): 
         self._addressedObject_externalObjectId = externalObjectId          
-    def setExternalObjectIdScheme( self, externalObjectIdScheme ): 
-        
-        
+    def setExternalObjectIdScheme( self, externalObjectIdScheme ):     
         self._addressedObject_externalObjectIdScheme = externalObjectIdScheme  
     def setValuationReference( self, valuationReference ): 
         self._addressedObject_valuationReference = valuationReference  

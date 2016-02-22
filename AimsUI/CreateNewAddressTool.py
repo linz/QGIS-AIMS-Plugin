@@ -19,6 +19,7 @@ from qgis.gui import *
 
 from AimsClient.Gui.NewAddressDialog import NewAddressDialog
 from AimsUI.AimsClient.Gui.UiUtility import UiUtility
+from AIMSDataManager.AimsUtility import FeedType
 
 class CreateNewAddressTool(QgsMapToolIdentify):
     ''' tool for creating new address information ''' 
@@ -84,7 +85,8 @@ class CreateNewAddressTool(QgsMapToolIdentify):
         coords = UiUtility.transform(self._iface, coords)    
         
         # init new address object and open form
-        addInstance = self._controller.initialiseAddressObj()
+        afc = self._controller.af.getInstance(FeedType.CHANGEFEED)
+        addInstance = afc.getAddress()#(adr='AddressChange',model='')
         NewAddressDialog.newAddress(addInstance, self._layers, self._controller, self._iface.mainWindow(), coords)
         self._canvas.scene().removeItem(self._marker)
         self._enabled = True

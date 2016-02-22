@@ -66,7 +66,7 @@ class UpdateAddressDialog(Ui_NewAddressDialog, QDialog):
     def submitAddress(self):
         ''' take users input from form and submit to AIMS API '''
         # Run through the setters
-        UiUtility.formToaddObj(self)
+        UiUtility.formToObj(self)
         # load address to AIMS Via API
         payload = self.feature.aimsObject()
         # Capture the returned response (response distilled down to list of errors)

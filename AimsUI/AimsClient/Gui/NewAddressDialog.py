@@ -65,18 +65,22 @@ class NewAddressDialog(Ui_NewAddressDialog, QDialog):
     def submitAddress(self):
         ''' take users input from form and submit to AIMS API '''
         # Run through the setters
-        self.feature.set_x(self.coords.x()) 
-        self.feature.set_y(self.coords.y())
-        UiUtility.formToaddObj(self)
-        # load address to AIMS Via API
-        payload = self.feature.aimsObject()
-        # Capture the returned response (response distilled down to list of errors)
-        valErrors = self._controller.newAddress(payload)
         
-        if len(valErrors) == 0:
-            self.closeDlg()
-        else:
-            QMessageBox.warning(iface.mainWindow(),"Create Address Point", valErrors)
+        #self.feature.set_x(self.coords.x()) <-- joe building setter now 
+        #self.feature.set_y(self.coords.y())
+        UiUtility.formToObj(self)
+        
+        
+        # submit address obj to DM
+        self._controller.dm.addAddress(self.feature)
+
+        
+        #need to add error handeling
+        
+        #if len(valErrors) == 0:
+        #    self.closeDlg()
+        #else:
+        #    QMessageBox.warning(iface.mainWindow(),"Create Address Point", valErrors)
                  
     def fullNumChanged(self, newnumber):
         UiUtility.fullNumChanged(self, newnumber)
