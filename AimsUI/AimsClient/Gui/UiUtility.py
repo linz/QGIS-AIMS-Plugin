@@ -10,7 +10,7 @@
 ################################################################################
 from qgis.core import *
 from qgis.gui import *
-from PyQt4.QtGui import QColor, QIntValidator, QRegExpValidator, QComboBox
+from PyQt4.QtGui import *
 from PyQt4.QtCore import QRegExp
 import re
 
@@ -19,7 +19,38 @@ import re
 class UiUtility (object):
     ''' Utility Class. Methods up for adoption
     Plans to find these a better home '''
-        
+    
+    uiObjMappings = {'uWarning':['_warning','setWarnings'],
+                        'uNotes':['_workflow_sourceReason','setSourceReason'],
+                        'uAddressType':['_components_addressType','setAddressType'], 
+                        'ulifeCycle':['_components_lifecycle','setLifecycle'],   
+                        'uLevelType':['_components_levelType','setLevelType'], 
+                        'uLevelValue':['_components_levelValue','setLevelValue'], 
+                        'uUnitType':['_components_unitType','setUnitType'],
+                        'uUnit':['_components_unitValue','setUnitValue'],
+                        'uPrefix':['_components_addressNumberPrefix','setAddressNumberPrefix'],
+                        'uBase':['_components_addressNumber','setAddressNumber'],
+                        'uAlpha':['_components_addressNumberSuffix','setAddressNumberSuffix'],
+                        'uHigh':['_components_addressNumberHigh','setAddressNumberHigh'],
+                        'uExternalIdScheme':['_components_externalAddressIdScheme','setExternalAddressIdScheme'],
+                        'uExternalAddId':['_components_externalAddressId','setExternalAddressId'], 
+                        'uRclId':['_components_roadCentrelineId','setRoadCentrelineId'],
+                        'uRoadPrefix':['_components_roadSuffix','setRoadSuffix'],
+                        'uRoadName':['_components_roadName','setRoadName'], 
+                        'uRoadTypeName':['_components_roadType','setRoadType'],   
+                        'uRoadSuffix':['_components_roadSuffix','setRoadSuffix'], 
+                        'uWaterName':['_components_waterName','setWaterName'], 
+                        'uWaterRouteName':['_components_waterRoute','setWaterRoute'],
+                        'uObjectType':['_addressedObject_objectType','setObjectType'],
+                        'uObjectName':['_addressedObject_objectName','setObjectName'],
+                        'uExtObjectIdScheme':['_addressedObject_externalObjectIdScheme','setExternalObjectIdScheme'],
+                        'uExternalObjectId':['_addressedObject_externalObjectId','setExternalObjectId'],
+                        'uValuationReference':['_addressedObject_valuationReference','setValuationReference'],
+                        'uCertificateOfTitle':['addressedObject_certificateOfTitle','setCertificateOfTitle'], 
+                        'uCertificateOfTitle':['_addressedObject_certificateOfTitle','setCertificateOfTitle'],
+                        'uAppellation':['_addressedObject_appellation','setAppellation'],
+                        }
+    
     @staticmethod
     def transform (iface, coords, tgt=4167):       
         src_crs = iface.mapCanvas().mapSettings().destinationCrs()
@@ -61,9 +92,7 @@ class UiUtility (object):
         obj.uPositionType.addItems(['Unknown', 'Centroid', 'Label', 'Set Back off Road'])
         # if instance == chnagefeed or review object the also set 
         # uChangeType [new, update, retire]
-        
-        
-        
+
     @staticmethod
     def formMask(obj):        
         intValidator = QIntValidator()    
@@ -123,7 +152,25 @@ class UiUtility (object):
         return feature
     
     @staticmethod
-    def formToaddObj(obj): 
+    def formToObj(obj):
+        ''' serves both the gathering of user data
+        from the purposes of new address creation and
+        address feature updates ''' # should expanded scope to include queue views to obj
+        #obj == ui vomponent
+        #obj.feature == address obj
+        for uiElement, objProp in UiUtility.uiObjMappings.items():              
+            if hasattr(obj, uiElement): # test if the ui widget/ form ... has the ui component
+ 
+                uiElement = getattr(obj, uiElement)                   
+                setter = getattr(obj.feature, objProp[1])
+                if isinstance(uiElement, QLineEdit) and uiElement.text() != '' and uiElement.text() != 'NULL':
+                    setter(uiElement.text())
+                if isinstance(uiElement, QComboBox) and uiElement.currentText() != '' and uiElement.currentText() != 'NULL':
+                        setter(uiElement.currentText().encode('utf-8'))
+                if isinstance(uiElement, QPlainTextEdit)and uiElement.toPlainText() != '' and uiElement.toPlainText() != 'NULL':
+                        setter(uiElement.toPlainText().encode('utf-8'))
+                    
+        '''          
         obj.feature.setAddressType(str(obj.uAddressType.currentText()))
         obj.feature.setExternalAddressId(UiUtility.nullEqualsNone(str(obj.uExternalAddId.text())))
         obj.feature.setExternalAddressIdScheme(UiUtility.nullEqualsNone(str(obj.uExternalAddressIdScheme.text())))
@@ -154,6 +201,7 @@ class UiUtility (object):
         obj.feature.setAppellation(UiUtility.nullEqualsNone(obj.uAppellation.text().encode('utf-8')))
         obj.feature.setSourceReason(obj.uNotes.toPlainText().encode('utf-8'))   
         # positionType??
+        '''
         
     @staticmethod
     def addObjToForm(obj, feature):      
