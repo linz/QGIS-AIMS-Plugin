@@ -57,6 +57,7 @@ class DataManager(object):
         '''initialise the data sync queues/threads'''
         self.ioq = {ft:None for ft in FeedType.reverse}
         self.ds = {ft:None for ft in FeedType.reverse}
+        self.stamp = {ft:time.time() for ft in FeedType.reverse}
         
         #init the three different feed threads
         self.dsr = {
@@ -123,13 +124,13 @@ class DataManager(object):
         
     def pull(self):
         '''Return copy of the ADL. Speedup, insist on deepcopy at address level'''
-        return copy.deepcopy(self.persist.ADL)
+        return self.persist.ADL
     
     def refresh(self):
         '''returns feed length counts without client having to do a pull/deepcopy'''
         self._restart()
         self._monitor()
-        return [len(self.persist.ADL[f]) for f in FeedType.reverse]
+        return [(self.stamp[ft],len(self.persist.ADL[f])) for f in FeedType.reverse]
         
     
     def action(self,at,address):
@@ -144,6 +145,7 @@ class DataManager(object):
             while not self.ioq[ft]['out'].empty():
                 #because the queue isnt populated till all pages are loaded we can just swap out the ADL
                 self.persist.ADL[ft] = self.ioq[ft]['out'].get()
+                self.stamp[ft] = time.time()
 
         #self.persist.write()
         return self.persist.ADL
@@ -237,38 +239,13 @@ class Persistence():
 
 testdata = []
 def test():
-    aff = AddressFactory.getInstance(FeedType.FEATURES)
-    afc = AddressFactory.getInstance(FeedType.CHANGEFEED)
-    afr = AddressFactory.getInstance(FeedType.RESOLUTIONFEED)
-#     global testdata
-#     testdata = {FeedType.FEATURES:[
-#                 aff.getAddress('one'https://spiritgothrecords.bandcamp.com/album/girlfight?from=feedfan-gavinhellyer), 
-#                 aff.getAddress('two'),
-#                 aff.getAddress('three'),
-#                 aff.getAddress('four'),
-#                 aff.getAddress('five')
-#                 ],
-#             FeedType.CHANGEFEED:[
-#                 afc.getAddress('one_c'), 
-#                 afc.getAddress('two_c'), 
-#                 afc.getAddress('three_c')     
-#                 ],
-#             FeedType.RESOLUTIONFEED:[
-#                 afr.getAddress('one_r'), 
-#                 afr.getAddress('two_r'), 
-#                 afr.getAddress('three_r')       
-#                 ]
-#             } 
-    
+    af = {ft:AddressFactory.getInstance(ft) for ft in FeedType.reverse}
+
     with DataManager() as dm:
-        test1(dm,(aff,afc,afr))
+        test1(dm,af)
         
         
-def test1(dm,f3):
-    #cd <path>/git/SP-QGIS-AIMS-Plugin/AIMSDataManager
-    #import sys
-    #from DataManager import DataManager
-    #start DM
+def test1(dm,af):
     print 'start'
     
     #dm.persist.ADL = testdata
@@ -280,7 +257,7 @@ def test1(dm,f3):
     testfeatureshift(dm)
     
     # TEST CF
-    testchangefeedAUR(dm,f3[0])
+    testchangefeedAUR(dm,af[FeedType.FEATURES])
     
     # TEST RF
     testresolutionfeedAUD(dm)
