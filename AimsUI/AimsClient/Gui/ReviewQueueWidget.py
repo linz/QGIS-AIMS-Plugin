@@ -25,11 +25,14 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.uidm = self._controller.UidataManager
         self.reviewData = self.uidm.reviewData()   
         self.currentObjKey = None
+        self.currentAdrCoord = [0,0]
         #self.refreshData()
         
         # Connections
         self.uDisplayButton.clicked.connect(self.display)
         self.uUpdateButton.clicked.connect(self.updateFeature)
+        self.uRejectButton.clicked.connect(self.decline)
+        self.uAcceptButton.clicked.connect(self.accept)
                
         # Features View 
         featuresHeader = ['Full Number', 'Full Road', 'Life Cycle', 'Town', 'Suburb Locality']
@@ -123,10 +126,23 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.reviewData = self.uidm.reviewData()
         
     def updateFeature(self): # do i need this function or should i connect straight to the editor method
-        self.uQueueEditor.updateFeature(self.singleReviewObj(self.currentObjKey))
+        currentObj = self.singleReviewObj(self.currentObjKey)
+        self.uQueueEditor.updateFeature(currentObj)
+        self._controller.dm.declineAddress(currentObj)
+        # at this point i need to refresh the review queue UI
+        # will create signals
+    
+    def decline(self):
+        self._controller.dm.declineAddress(self.singleReviewObj(self.currentObjKey))
+    
+    def accept(self):
+        self._controller.dm.acceptAddress(self.singleReviewObj(self.currentObjKey))
     
     def display(self):
         coords = self.uidm.reviewItemCoords(self.currentObjKey)
+        if self.currentAdrCoord == coords: 
+            return
+        self.currentAdrCoord = coords
         buffer = .00100
         extents = QgsRectangle( coords[0]-buffer,coords[1]-buffer,
                               coords[0]+buffer,coords[1]+buffer)

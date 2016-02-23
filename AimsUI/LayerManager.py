@@ -148,14 +148,14 @@ class LayerManager(QObject):
         self._controller
         
         # old api method below
-        #layerid = self._addressLayerId
-        #layer = self.findLayer(layerid)
-        #if layer:
-        #    QgsMapLayerRegistry.instance().removeMapLayer( layer.id() )
+        layerid = self._addressLayerId
+        layer = self.findLayer(layerid)
+        if layer:
+            QgsMapLayerRegistry.instance().removeMapLayer( layer.id() )
         #test if scale allows showing of features
-        #scale = self._iface.mapCanvas().mapSettings().scale()
-        #if scale <= 10000: # would be a bit of reconjiggering to ensure persistent layer but then we could get scale from user settings
-        #    self.getAimsFeatures()
+        scale = self._iface.mapCanvas().mapSettings().scale()
+        if scale <= 10000: # would be a bit of reconjiggering to ensure persistent layer but then we could get scale from user settings
+            self.getAimsFeatures()
     
     def getAimsFeatures(self):
         ext = self._iface.mapCanvas().extent()

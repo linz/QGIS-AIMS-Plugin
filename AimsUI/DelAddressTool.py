@@ -72,10 +72,10 @@ class DelAddressTool(QgsMapToolIdentify):
             
             # old api method below
             
-            #valErrors = self._controller.retireAddress(retireFeatures)
-            #if len(valErrors['errors']) != 0:
+            valErrors = self._controller.retireAddress(retireFeatures)
+            if len(valErrors['errors']) != 0:
                 #QMessageBox.warning(self._iface.mainWindow(),"Retire Address Point", valErrors)
-                #QMessageBox.warning(self._iface.mainWindow(),"Retire Feature Error", ''.join(valErrors['errors']))
+                QMessageBox.warning(self._iface.mainWindow(),"Retire Feature Error", ''.join(valErrors['errors']))
         return       
  
 class DelAddressDialog( Ui_DelAddressDialog, QDialog ):
