@@ -59,9 +59,13 @@ class DataManager(object):
         self.ds = {ft:None for ft in FeedType.reverse}
         
         #init the three different feed threads
-        self._initFeedDS(FeedType.FEATURES,DataSyncFeatures)
-        self._initFeedDS(FeedType.CHANGEFEED,DataSyncChangeFeed)
-        self._initFeedDS(FeedType.RESOLUTIONFEED,DataSyncResolutionFeed)
+        self.dsr = {
+            FeedType.FEATURES:DataSyncFeatures,
+            FeedType.CHANGEFEED:DataSyncChangeFeed,
+            FeedType.RESOLUTIONFEED:DataSyncResolutionFeed
+        }
+        for ref in self.dsr:
+            self._initFeedDS(ref,self.dsr[ref])
 
 
         
@@ -81,35 +85,15 @@ class DataManager(object):
             #ds.stop()
             pass
         self.persist.write()
-
-#     #==============================================================================================
-#     #SQLite Access (might use this for CF and RF)
-#     def _initDB(self):
-#         '''One time job to setup the initial db'''
-#         self.conn = sqlite3.connect(LOCALDB)
-#         c = self.conn.cursor()
-#         c.execute('create table CHANGEFEED (a int,b int)')
-#         c.execute('create table RESOLUTIONFEED (a int,b int)')
-#         self.conn.commit()
-#         self.conn.close()
-#          
-#     def _readDB(self):
-#         c = self.conn.cursor()
-#         for cfrow in c.execute('select * from CHANGEFEED'):
-#             self.ADL[FeedType.CHANGEFEED] += AddressChange._import(AddressChange(cfrow))
-#         for rfrow in c.execute('select * from RESOLUTIONFEED'):
-#             self.ADL[FeedType.RESOLUTIONFEED] += AddressResolution._import(AddressResolution(rfrow))
-#              
-#     def _writeDB(self):
-#         c = self.conn.cursor()
-#         for adr in self.ADL[FeedType.CHANGEFEED]:
-#             #changefeed is only ever insert
-#             c.execute('insert into CHANGEFEED values ({})'.format(adr.getInsert()))
-#         for adr in self.ADL[FeedType.RESOLUTIONFEED]:
-#             #resolutionfeed can be add/del
-#             c.execute('insert into RESOLUTIONFEED values ({})'.format(adr.getInsert()))
-#     #==============================================================================================
         
+    def _restart(self):
+        '''If a DataSync thread crashes restart it'''
+        for ft in FeedType.reverse:
+            if not self.ds[ft].isAlive():
+                aimslog.warn('DS thread {} has died, restarting'.format(ft))
+                del self.ds[ft]
+                self._initFeedDS(ref,self.dsr[ref])
+            
         
     #Client Access
     def setbb(self,sw=None,ne=None):
@@ -133,7 +117,8 @@ class DataManager(object):
         
     #Push and Pull relate to features feed actions
     def push(self,newds):
-        return self._scan(newds)
+        pass
+        #return self._scan(newds)
         
     def pull(self):
         '''Return copy of the ADL. Speedup, insist on deepcopy at address level'''
@@ -141,6 +126,7 @@ class DataManager(object):
     
     def refresh(self):
         '''returns feed length counts without client having to do a pull/deepcopy'''
+        self._restart()
         self._monitor()
         return [len(self.persist.ADL[f]) for f in FeedType.reverse]
         
@@ -161,10 +147,10 @@ class DataManager(object):
         #self.persist.write()
         return self.persist.ADL
     
-    def response(self):
+    def response(self,ft=FeedType.CHANGEFEED):
         resp = ()
-        while not self.ioq[FeedType.CHANGEFEED]['resp'].empty():
-            resp += (self.ioq[FeedType.CHANGEFEED]['resp'].get(),)
+        while not self.ioq[ft]['resp'].empty():
+            resp += (self.ioq[ft]['resp'].get(),)
         return resp
         
         
@@ -201,58 +187,7 @@ class DataManager(object):
         address.setQueueStatus(ApprovalType.revalt[ApprovalType.UPDATE].title())
         self.ioq[FeedType.RESOLUTIONFEED]['in'].put({ApprovalType.UPDATE:(address,)})
         
- 
-    def _enlist(self,address):
-        return address if isinstance(address,collectionsIterable) else [address,]
-        
-  
-#     contention with bg updates would require a snapshot for comparison per pull        
-#     def _synchroniseChangeFeed(self,newds):
-#         '''compare provided and current ADL. Split out deletes/adds/updates'''
-#         #check changes etc
-#         changes = {}
-#         #identify changes in the feed and do the necessary updates by putting them in the queue
-#         home,away = self.persist.ADL[FeedType.CHANGEFEED],newds[FeedType.CHANGEFEED]
-#         changes[ActionType.ADD] = [a2 for a2 in away if a2 not in home]
-#         changes[ActionType.RETIRE] = [a1 for a1 in home if a1 not in away]
-#         #addresses not in adds/dels that have changed attributes
-#         changes[ActionType.UPDATE] = [a2 for a2 in [x for x in away if x not in changes[ActionType.ADD]] \
-#                                       for a1 in [x for x in home if x not in changes[ActionType.RETIRE]] \
-#                                       if a1==a2 and not a1.compare(a2)]    
-#         self.ioq[FeedType.CHANGEFEED]['in'].put(changes)
-#         
-#     def _synchroniseResolutionFeed(self,newds):
-#         '''compare provided and current ADL. Split out deletes/adds/updates'''
-#         #check changes etc
-#         changes = {}
-#         #identify changes in the feed and do the necessary updates by putting them in the queue
-#         home,away = self.persist.ADL[FeedType.RESOLUTIONFEED],newds[FeedType.RESOLUTIONFEED]
-#         changes[ApprovalType.ACCEPT] = [a2 for a2 in away if a2 not in home]
-#         changes[ApprovalType.DECLINE] = [a1 for a1 in home if a1 not in away]
-#         #addresses not in adds/dels that have changed attributes
-#         changes[ApprovalType.UPDATE] = [a2 for a2 in [x for x in away if x not in changes[ApprovalType.ACCEPT]] \
-#                                       for a1 in [x for x in home if x not in changes[ApprovalType.DECLINE]] \
-#                                       if a1==a2 and not a1.compare(a2)] 
-#             
-#         #TODO. add logic for what changes trigger what updates Or just get all updates
-#         self.ioq[FeedType.RESOLUTIONFEED]['in'].put(changes)
-        
-    def _scanChangeFeedChanges(self,ds):
-        changes = {}
-        changes[ApprovalType.ADD] = [a for a in ds if a.getChangeType()==ActionType.reverse[ActionType.ADD].title()]
-        changes[ApprovalType.RETIRE] = [a for a in ds if a.getChangeType()==ActionType.reverse[ActionType.RETIRE].title()]
-        changes[ApprovalType.UPDATE] = [a for a in ds if a.getChangeType()==ActionType.reverse[ActionType.UPDATE].title()]
-        self.ioq[FeedType.CHANGEFEED]['in'].put(changes)    
-        
-    def _scanResolutionFeedChanges(self,ds):
-        changes = {}
-        changes[ApprovalType.ACCEPT] = [a for a in ds if a.getChangeType()==ApprovalType.reverse[ApprovalType.ACCEPT].title()]
-        changes[ApprovalType.DECLINE] = [a for a in ds if a.getChangeType()==ApprovalType.reverse[ApprovalType.DECLINE].title()]
-        changes[ApprovalType.UPDATE] = [a for a in ds if a.getChangeType()==ApprovalType.reverse[ApprovalType.UPDATE].title()]
-        #self.ioq[FeedType.RESOLUTIONFEED]['in'].put(changes)
 
-        
-        
     #CM
         
     def __enter__(self):
@@ -391,8 +326,9 @@ def test1(dm,f3):
     #listofaddresses[FeedType.CHANGEFEED].append(addr_c)
     #dm.push(listofaddresses)
     dm.addAddress(addr_c)
-    time.sleep(5)
-    testresp(dm)
+    time.sleep(10)
+    r = testresp(dm)
+    d = self.dm.pull()
     time.sleep(5)
     
     aimslog.info('*** Resolution ADD '+str(time.clock()))
@@ -413,10 +349,8 @@ def test1(dm,f3):
         time.sleep(5)
         
 def testresp(dm):
-    
-    aimslog.info('*** Main COUNT {}'.format(dm.refresh()))
-
-        
+    r = None
+    aimslog.info('*** Main COUNT {}'.format(dm.refresh()))  
     out = dm.pull()
     for o in out:
         #aimslog.info('*** Main OUTPUT {} - [{}]'.format(out[o],len(out[o])))
@@ -426,6 +360,8 @@ def testresp(dm):
     for r in resp:
         #aimslog.info('*** Main RESP {} - [{}]'.format(r,len(resp))) 
         aimslog.info('*** Main RESP {} [{}]'.format(r,len(resp)))
+        
+    return r
             
 def gettestdata(ff):
     a = ff.getAddress('change_add')

@@ -1,19 +1,24 @@
 {
         "changeId":None,
-        "changeType":None,
-        #"workflow":{
-        #    "submitterUserName":None,
-        #    "submittedDate":None,
-        #    "queueStatus":None
-        #},
+        "changeType":'#oneof=Add|Update|Retire',
+        "workflow":{    
+            "submitterUserName":None,
+            "submittedDate":None,
+            "reviewedUserName":None,
+            "reviewedDate":None,
+            "queueStatus":'#oneof=Submitted|Under Review|Accepted|Declined',
+            "statusNotes":None,
+            "sourceOrganisation":None,
+            "sourceReason":None
+        },
         "components":{
             "addressId":0,
-        	"addressType":None,
+        	"addressType":'#oneof=Road|Water',
 	        "primaryAddressId":0,
 	        "alternativeOfAddressId":0,
 	        "externalAddressId":None,
 	        "externalAddressIdScheme":None,
-	        "lifecycle":None,
+	        "lifecycle":'#oneof=Proposed|Current|Retired',
 	        "unitType":None,
 	        "unitValue":None,
 	        "levelType":None,
@@ -33,7 +38,7 @@
 	        "townCity":None
         },
         "addressedObject":{
-            "objectType":None,
+            "objectType":'#oneof=Parcel|Building',
             "objectName":None,
             "addressPositions":[
                 {
@@ -50,7 +55,7 @@
                             }
                         }
                     },
-                    "positionType":None,
+                    "positionType":'#oneof=Label|Set Back off Road|Unknown',
                     "primary":None
                 }
             ],        	
