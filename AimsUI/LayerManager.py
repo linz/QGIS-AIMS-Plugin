@@ -145,6 +145,9 @@ class LayerManager(QObject):
     def loadAimsFeatures(self):
         ''' load AIMS features '''
         # test if layer exists
+        self._controller
+        
+        # old api method below
         layerid = self._addressLayerId
         layer = self.findLayer(layerid)
         if layer:

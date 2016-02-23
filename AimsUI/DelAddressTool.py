@@ -67,6 +67,11 @@ class DelAddressTool(QgsMapToolIdentify):
             retireFeatures = dlg.selectFeatures(identifiedFeatures)
         
         if retireFeatures: # else the user hit 'ok' and did not select any records            
+            
+            # will nee to tie to DM once objects have been created for the layer
+            
+            # old api method below
+            
             valErrors = self._controller.retireAddress(retireFeatures)
             if len(valErrors['errors']) != 0:
                 #QMessageBox.warning(self._iface.mainWindow(),"Retire Address Point", valErrors)

@@ -58,7 +58,7 @@ class Controller(QObject):
         self.actions = []
         if Controller._instance == None:
             Controller._instance = self
-        self.UidataManager = UiDataManager(self.iface)
+        self.UidataManager = UiDataManager(self.iface, self)
       
         aimslog.debug(iface)
         

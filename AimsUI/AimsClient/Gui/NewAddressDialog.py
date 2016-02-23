@@ -14,10 +14,11 @@ from PyQt4.QtGui import *
 import re
 
 from Ui_NewAddressDialog import Ui_NewAddressDialog
-from AimsUI.AimsClient.Address import Address
+from AIMSDataManager.Address import Position, Address
 from AimsUI.AimsClient.Gui.UiUtility import UiUtility
 
 from qgis.utils import iface
+#from AIMSDataManager.Address import getInstance
 
 class NewAddressDialog(Ui_NewAddressDialog, QDialog):
     
@@ -66,22 +67,28 @@ class NewAddressDialog(Ui_NewAddressDialog, QDialog):
         ''' take users input from form and submit to AIMS API '''
         # Run through the setters
         
-        #self.feature.set_x(self.coords.x()) <-- joe building setter now 
-        #self.feature.set_y(self.coords.y())
+        cords = [self.coords.x(), self.coords.y()]
+        d = {"position":{
+                    "type":'Point',
+                    "coordinates":cords,
+                    "crs":{
+                         "type":'name',
+                         "properties":{
+                            "name":'urn:ogc:def:crs:EPSG::4167'
+                         }
+                    }
+                },
+                "positionType":'Unknown', # <-- need to add PT to form
+                "primary":True
+                }
+        
+        position = Position.getInstance(d)
+        self.feature.setAddressPosition(position)
         UiUtility.formToObj(self)
-        
-        
+
         # submit address obj to DM
         self._controller.dm.addAddress(self.feature)
-
-        
-        #need to add error handeling
-        
-        #if len(valErrors) == 0:
-        #    self.closeDlg()
-        #else:
-        #    QMessageBox.warning(iface.mainWindow(),"Create Address Point", valErrors)
-                 
+       
     def fullNumChanged(self, newnumber):
         UiUtility.fullNumChanged(self, newnumber)
         

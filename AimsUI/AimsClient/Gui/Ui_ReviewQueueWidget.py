@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'AimsUI/AimsClient/Gui/Ui_ReviewQueueWidget.ui'
 #
-# Created: Fri Feb 19 11:42:37 2016
+# Created: Tue Feb 23 12:38:47 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -63,14 +63,14 @@ class Ui_ReviewQueueWidget(object):
         self.horizontalLayout.addLayout(self.verticalLayout_6)
         self.verticalLayout = QtGui.QVBoxLayout()
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
-        self.pushButton = QtGui.QPushButton(self.horizontalLayoutWidget)
-        self.pushButton.setMaximumSize(QtCore.QSize(70, 16777215))
-        self.pushButton.setObjectName(_fromUtf8("pushButton"))
-        self.verticalLayout.addWidget(self.pushButton)
-        self.pushButton_2 = QtGui.QPushButton(self.horizontalLayoutWidget)
-        self.pushButton_2.setMaximumSize(QtCore.QSize(70, 16777215))
-        self.pushButton_2.setObjectName(_fromUtf8("pushButton_2"))
-        self.verticalLayout.addWidget(self.pushButton_2)
+        self.uAcceptButton = QtGui.QPushButton(self.horizontalLayoutWidget)
+        self.uAcceptButton.setMaximumSize(QtCore.QSize(70, 16777215))
+        self.uAcceptButton.setObjectName(_fromUtf8("uAcceptButton"))
+        self.verticalLayout.addWidget(self.uAcceptButton)
+        self.uRejectButton = QtGui.QPushButton(self.horizontalLayoutWidget)
+        self.uRejectButton.setMaximumSize(QtCore.QSize(70, 16777215))
+        self.uRejectButton.setObjectName(_fromUtf8("uRejectButton"))
+        self.verticalLayout.addWidget(self.uRejectButton)
         spacerItem1 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem1)
         self.horizontalLayout.addLayout(self.verticalLayout)
@@ -117,8 +117,8 @@ class Ui_ReviewQueueWidget(object):
     def retranslateUi(self, ReviewQueueWidget):
         ReviewQueueWidget.setWindowTitle(_translate("ReviewQueueWidget", "Form", None))
         self.label_2.setText(_translate("ReviewQueueWidget", "Filter User:", None))
-        self.pushButton.setText(_translate("ReviewQueueWidget", "Accept", None))
-        self.pushButton_2.setText(_translate("ReviewQueueWidget", "Reject", None))
+        self.uAcceptButton.setText(_translate("ReviewQueueWidget", "Accept", None))
+        self.uRejectButton.setText(_translate("ReviewQueueWidget", "Reject", None))
         self.uDisplayButton.setText(_translate("ReviewQueueWidget", "Display", None))
         self.uUpdateButton.setText(_translate("ReviewQueueWidget", "Update", None))
 

@@ -88,7 +88,7 @@ class UiUtility (object):
         obj.ulifeCycle.addItems(['Current', 'Proposed', 'Retired'])
         obj.uUnitType.addItems([None, 'Apartment', 'Kiosk', 'Room', 'Shop', 'Suite', 'Villa',  'Flat', 'Unit'])#require feed back as to approved values
         obj.uLevelType.addItems([None, 'Floor', "Level"])
-        obj.uObjectType.addItems([None,'Parcel', 'Building'])
+        obj.uObjectType.addItems(['Parcel', 'Building'])
         obj.uPositionType.addItems(['Unknown', 'Centroid', 'Label', 'Set Back off Road'])
         # if instance == chnagefeed or review object the also set 
         # uChangeType [new, update, retire]
