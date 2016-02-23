@@ -53,38 +53,29 @@ class AimsApi(object):
 
   
     
-    def handleErrors(self, url, resp, content):
+    def handleErrors(self, url, resp, jcontent):
         ''' Return the reason for any critical errors '''        
-        critical = []
-        if str(resp) in ('400', '404') and content.has_key('entities'):
-            for i in content['entities']:
-                if i['properties']['severity'] == 'Reject':
-                    critical.append( '- '+i['properties']['description']+'   \n' )
-                else: return 'Non critical error {}'.format(resp)
+        critical = ()
+        if str(resp) in ('400', '404') and jcontent.has_key('entities'):
+            for entity in jcontent['entities']:
+                if entity['properties']['severity'] == 'Reject':
+                    critical += (entity['properties']['description'],)
         elif str(resp) == '409':
             #criticalErrors.append(content['properties']['reason'] +'\n'+ content['properties']['message'])
-            critical.append('\n\n'+content['properties']['reason'] +' - '+ content['entities'][0]['properties']['description']+':'+'\n    ')
+            critical += ('{} - {}'.format(jcontent['properties']['reason'],jcontent['entities'][0]['properties']['description']),)
         else:
-            critical = str(resp)
+            critical += ('General Exception {}'.format(resp),)
              
-        return ''.join(critical)
+        return critical
     
-    def handleResponse(self, url, resp, content):
+    def handleResponse(self, url, resp, jcontent):
         ''' test http response
         [] == no errors, else list of critical errors'''
-        errors = ''
-        if str(resp) in ('201', '200'): #to be more inclusive i.e. 200 ...
-            return errors,content
-        else:
+        errors = ()
+        if str(resp) not in ('201', '200'):
             # list of validation errors
-            errors = self.handleErrors(url, resp, content)
-            if errors == '':
-                return errors,content
-            elif len(errors) > 0:
-                return errors,content
-            else:
-                # Failing that give the user the direct http response
-                return 'Undefined Error {}'.format(resp),content
+            errors = self.handleErrors(url, resp, jcontent)
+        return errors,jcontent
 
     def changefeedAdd(self, payload):
         ''' Add an address to the Change feed '''
@@ -192,7 +183,8 @@ class AimsApi(object):
             url = '{}/{}?count={}&page={}'.format(self._url,FeedType.reverse[ft].lower(),count,page)
         print 'REQUEST',url
         resp, content = self.h.request(url,'GET', headers = self._headers)
-        return self.handleResponse(url,resp["status"], json.loads(content)) ['entities']    
+        _,jcontent = self.handleResponse(url,resp["status"], json.loads(content))
+        return jcontent['entities']
 
 
     def getWarnings(self,cid):
@@ -209,7 +201,7 @@ class AimsApi(object):
         '''Make a change to the feature list by posting a change on the changefeed'''
         url = '{}/changefeed/{}'.format(self._url,ActionType.reverse[at].lower())
         resp, content = self.h.request(url,"POST", json.dumps(payload), self._headers)
-        return self.handleResponse(url,resp["status"], json.loads(content) )    
+        return self.handleResponse(url,resp["status"], json.loads(content) )  
     
     def resolutionfeedApproveAddress(self,at,payload,cid):
         '''Approve/Decline a change by submitting address to resolutionfeed'''

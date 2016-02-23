@@ -98,7 +98,7 @@ class DataManager(object):
     #Client Access
     def setbb(self,sw=None,ne=None):
         '''Resetting the bounding box triggers a complete refresh of the features address data'''
-        #TODO and move threshold to prevent small moves triggering an update
+        #TODO add move-threshold to prevent small moves triggering an update
         if self.persist.coords['sw'] != sw or self.persist.coords['ne'] != ne:
             #throw out the current features addresses
             self.persist.ADL[FeedType.FEATURES] = self.persist._initADL()[FeedType.FEATURES]
@@ -109,6 +109,7 @@ class DataManager(object):
                 aimslog.info('Attempting Features Thread STOP')
                 self.ds[FeedType.FEATURES].stop()
                 self.ds[FeedType.FEATURES].join(FEATURES_THREAD_TIMEOUT)
+            #TODO investigate thread non-stopping issues
             if self.ds[FeedType.FEATURES].isAlive(): aimslog.warn('Features Thread JOIN timeout')
             del self.ds[FeedType.FEATURES]
             #reinitialise a new features DataSync
@@ -241,7 +242,7 @@ def test():
     afr = AddressFactory.getInstance(FeedType.RESOLUTIONFEED)
 #     global testdata
 #     testdata = {FeedType.FEATURES:[
-#                 aff.getAddress('one'), 
+#                 aff.getAddress('one'https://spiritgothrecords.bandcamp.com/album/girlfight?from=feedfan-gavinhellyer), 
 #                 aff.getAddress('two'),
 #                 aff.getAddress('three'),
 #                 aff.getAddress('four'),
@@ -274,52 +275,36 @@ def test1(dm,f3):
     #get some data
     dm.refresh()
     listofaddresses = dm.pull()
-    #add
-    #time.sleep(5)
-    aimslog.info('*** Main ADD '+str(time.clock()))
-    addr_7 = f3[0].getAddress('ninenintyseven')
-    addr_8 = f3[0].getAddress('ninenintyeight')
-    addr_9 = f3[0].getAddress('ninenintynine')
     
-    addr_r = f3[0].getAddress('resolution_accept')
-    addr_c = gettestdata(f3[0])
+    #TEST SHIFT
+    testfeatureshift(dm)
     
-#     listofaddresses[FeedType.FEATURES].append(addr_7)
-#     listofaddresses[FeedType.FEATURES].append(addr_8)
-#     listofaddresses[FeedType.FEATURES].append(addr_9)
-#     dm.push(listofaddresses)
-#     time.sleep(5)
-#     testresp(dm)
-#     #del
-#     time.sleep(5)
-#     aimslog.info('*** Main RETIRE '+str(time.clock()))
-#     addr_0 = listofaddresses[FeedType.FEATURES][0]
-#     addr_1 = listofaddresses[FeedType.FEATURES][1]
-#     listofaddresses[FeedType.FEATURES].remove(addr_0)
-#     listofaddresses[FeedType.FEATURES].remove(addr_1)
-#     dm.push(listofaddresses)
-#     time.sleep(5)
-#     testresp(dm)
-#     #chg
-#     time.sleep(5)
-#     aimslog.info('*** Main UPDATE '+str(time.clock()))
-#     addr_2 = listofaddresses[FeedType.FEATURES][2]
-#     addr_3 = listofaddresses[FeedType.FEATURES][3]
-#     addr_2.setVersion(2222)
-#     addr_3.setVersion(3333)
-#     #listofaddresses[FeedType.FEATURES][2].setVersion(123456)
-#     #listofaddresses[FeedType.FEATURES][3].setVersion(123457)
-#     dm.push(listofaddresses)
-#     time.sleep(5)
-#     testresp(dm)
+    # TEST CF
+    testchangefeedAUR(dm,f3[0])
+    
+    # TEST RF
+    testresolutionfeedAUD(dm)
 
-    #shift
+    
+    aimslog.info('*** Resolution ADD '+str(time.clock()))    
+    
+    print 'entering response mode'
+    while True:
+        aimslog.info('*** Main TICK '+str(time.clock()))
+        testresp(dm)
+        time.sleep(5)
+        
+def testfeatureshift(dm):
     time.sleep(10)
     aimslog.info('*** Main SHIFT '+str(time.clock()))
     dm.setbb(sw=(174.76918,-41.28515), ne=(174.79509,-41.26491))
     time.sleep(30)
     testresp(dm)
     time.sleep(5)
+    
+    
+def testchangefeedAUR(dm,ff):
+    addr_c = gettestdata(ff)
     
     aimslog.info('*** Change ADD '+str(time.clock()))
     #addr_c.setChangeType(ActionType.reverse[ActionType.ADD])
@@ -328,26 +313,35 @@ def test1(dm,f3):
     dm.addAddress(addr_c)
     time.sleep(10)
     r = testresp(dm)
-    d = self.dm.pull()
+    d = dm.pull()
+    time.sleep(5)    
+    
+    aimslog.info('*** Change UPDATE '+str(time.clock()))
+    #addr_c.setChangeType(ActionType.reverse[ActionType.ADD])
+    #listofaddresses[FeedType.CHANGEFEED].append(addr_c)
+    #dm.push(listofaddresses)
+    addr_c.setFullAddress('Unit B, 16 Islay Street, Glenorchy')
+    dm.updateAddress(addr_c)
+    time.sleep(10)
+    r = testresp(dm)
+    d = dm.pull()
+    time.sleep(5)    
+    
+    
+    aimslog.info('*** Change RETIRE '+str(time.clock()))
+    #addr_c.setChangeType(ActionType.reverse[ActionType.ADD])
+    #listofaddresses[FeedType.CHANGEFEED].append(addr_c)
+    #dm.push(listofaddresses)
+    dm.retireAddress(addr_c)
+    time.sleep(10)
+    r = testresp(dm)
+    d = dm.pull()
     time.sleep(5)
     
-    aimslog.info('*** Resolution ADD '+str(time.clock()))
-    #addr_r.setQueueStatus(ApprovalType.reverse[ApprovalType.ACCEPT])
-    #listofaddresses[FeedType.RESOLUTIONFEED].append(addr_r)
-    #dm.push(listofaddresses)
-    
-    #dm.acceptAddress(addr_r)
-    #time.sleep(5)
-    #testresp(dm)
-    #time.sleep(5)
-    
-    
-    print 'entering response mode'
-    while True:
-        aimslog.info('*** Main TICK '+str(time.clock()))
-        testresp(dm)
-        time.sleep(5)
-        
+def testresolutionfeedAUD(dm):
+    addr_r = f3[0].getAddress('resolution_accept')
+
+
 def testresp(dm):
     r = None
     aimslog.info('*** Main COUNT {}'.format(dm.refresh()))  
