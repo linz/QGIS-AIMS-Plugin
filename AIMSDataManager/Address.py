@@ -179,6 +179,12 @@ class Address(object):
         return self._components_addressId        
     def setSourceReason (self, sourceReason): 
         self._workflow_sourceReason = sourceReason
+        
+    def setStatusNotes(self, statusNotes):
+        self._workflow_statusNotes = statusNotes
+    def getStatusNotes(self):
+        return self._workflow_statusNotes
+    
     def setAddressType( self, addressType ): 
         self._components_addressType = addressType            
     def setExternalAddressId( self, externalAddressId ): 

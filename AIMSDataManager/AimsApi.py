@@ -42,48 +42,49 @@ class AimsApi(object):
 
         self.h = httplib2.Http(".cache")
         self.h.add_credentials(self.user, self._password)
-   
-    def handleErrors(self, url, resp, content):
-        ''' Return the reason for any critical errors '''        
-        criticalErrors = []
-        aimslog.error('Error {} fetching\n{}\nwith result\n{}'.format(resp,url,content))
-        if str(resp) == '400': raise Http400Exception('400 {}'.format(content))
-        elif str(resp) == '404': raise Http404Exception('404 {}'.format(content))
-        else: raise AimsHttpException('Error {} fetching\n{}\nwith result\n{}'.format(resp,url,content))
+        
+#     def _handleErrors(self, url, resp, content):
+#         ''' Return the reason for any critical errors '''        
+#         criticalErrors = []
+#         aimslog.error('Error {} fetching\n{}\nwith result\n{}'.format(resp,url,content))
+#         if str(resp) == '400': raise Http400Exception('400 {}'.format(content))
+#         elif str(resp) == '404': raise Http404Exception('404 {}'.format(content))
+#         else: raise AimsHttpException('Error {} fetching\n{}\nwith result\n{}'.format(resp,url,content))
 
   
     
-#     def _handleErrors(self, resp, content):
-#         ''' Return the reason for any critical errors '''        
-#         criticalErrors = []
-#         if str(resp) in ('400', '404') and content.has_key('entities'):
-#             for i in content['entities']:
-#                 if i['properties']['severity'] == 'Reject':
-#                     criticalErrors.append( '- '+i['properties']['description']+'   \n' )
-#                 else: return [] # <-- the error was not critical
-#         elif str(resp) == '409':
-#             #criticalErrors.append(content['properties']['reason'] +'\n'+ content['properties']['message'])
-#             criticalErrors.append('\n\n'+content['properties']['reason'] +' - '+ content['entities'][0]['properties']['description']+':'+'\n    ')
-#         else:
-#             criticalErrors = str(resp)
-#             
-#         return ''.join(criticalErrors)
+    def handleErrors(self, url, resp, content):
+        ''' Return the reason for any critical errors '''        
+        critical = []
+        if str(resp) in ('400', '404') and content.has_key('entities'):
+            for i in content['entities']:
+                if i['properties']['severity'] == 'Reject':
+                    critical.append( '- '+i['properties']['description']+'   \n' )
+                else: return 'Non critical error {}'.format(resp)
+        elif str(resp) == '409':
+            #criticalErrors.append(content['properties']['reason'] +'\n'+ content['properties']['message'])
+            critical.append('\n\n'+content['properties']['reason'] +' - '+ content['entities'][0]['properties']['description']+':'+'\n    ')
+        else:
+            critical = str(resp)
+             
+        return ''.join(critical)
     
     def handleResponse(self, url, resp, content):
         ''' test http response
         [] == no errors, else list of critical errors'''
+        errors = ''
         if str(resp) in ('201', '200'): #to be more inclusive i.e. 200 ...
-            return content #[]#i.e. no errors
+            return errors,content
         else:
             # list of validation errors
             errors = self.handleErrors(url, resp, content)
-            if errors == []:
-                return errors #<-- there was an error but current only showing 'Reject'
+            if errors == '':
+                return errors,content
             elif len(errors) > 0:
-                return errors
+                return errors,content
             else:
                 # Failing that give the user the direct http response
-                return ' Please contact your system administrator \n HTTP Error:  ' + resp
+                return 'Undefined Error {}'.format(resp),content
 
     def changefeedAdd(self, payload):
         ''' Add an address to the Change feed '''
@@ -196,6 +197,7 @@ class AimsApi(object):
 
     def getWarnings(self,cid):
         '''get warnings for a changeId'd resolutionfeed address'''
+        warnlist = []
         url = '{}/{}/{}'.format(self._url,FeedType.reverse[ft].lower(),self.cid)
         resp, content = self.h.request(url,"GET", headers = self._headers)
         for entity in self.handleResponse(url, resp["status"], json.loads(content)):

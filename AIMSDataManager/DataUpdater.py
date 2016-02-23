@@ -67,6 +67,8 @@ class DataUpdater(threading.Thread):
         self.queue.put(addr)
 
         
+    def hijackStatus(self,adr,msg):
+        adr.setQueueStatus(msg)
         
     def stop(self):
         self._stop.set()
@@ -89,9 +91,10 @@ class DataUpdaterAction(DataUpdater):
     def run(self):
         '''address change action on the CF'''
         aimslog.info('ACT.{} {} - Addr{}'.format(self.ref,ActionType.reverse[self.ft],self.address))
-        resp = self.api.changefeedActionAddress(self.ft,self.payload)
+        err,resp = self.api.changefeedActionAddress(self.ft,self.payload)
         chg_adr = self.afactory.getAddress(model=resp)
         print 'CHG_ADR',chg_adr
+        if err: res_adr.setStatusNotes(err)
         self.queue.put(chg_adr)
 
             
@@ -107,10 +110,11 @@ class DataUpdaterApproval(DataUpdater):
     def run(self):
         '''approval action on the RF''' 
         aimslog.info('APP.{} {} - Addr{}'.format(self.ref,ApprovalType.reverse[self.ft],self.address))
-        resp = self.api.resolutionfeedApproveAddress(self.ft,self.payload,self.cid)
+        err,resp = self.api.resolutionfeedApproveAddress(self.ft,self.payload,self.cid)
         res_adr = self.afactory.getAddress(model=resp)
         print 'RES_ADR',res_adr
         res_adr.setWarning(self.api.getWarnings(self.cid))
+        if err: res_adr.setStatusNotes(err)
         self.queue.put(res_adr)
         #self.queue.put({'resp':resp,'warn':warn})
 

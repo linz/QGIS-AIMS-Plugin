@@ -92,8 +92,6 @@ class DataSync(threading.Thread):
         #thread reference, ft to AD/CF/RF, config info
         self.ref,self.ft,self.ftracker,self.conf = params
         self.afactory = AddressFactory.getInstance(self.ft)
-        self.drc = DataRequestChannel(self)
-        self.drc.setDaemon(True)
         self.inq = queues['in']
         self.outq = queues['out']
         self.respq = queues['resp']
@@ -106,12 +104,8 @@ class DataSync(threading.Thread):
 
     def run(self):
         '''Continual loop looking for input queue requests and running periodic updates'''
-        #start the request checker
-        self.drc.start()
-        #snap time
-        start = int(time.time())
         while True:
-            #if there are things in the input queue, process them, push to CF #TODO. there shouldnt ever be anything in the FF inq
+            #TODO. there shouldnt ever be anything in the FF inq
             self.syncFeeds(self.fetchFeedUpdates(self.ftracker['threads']))
             aimslog.debug('FT {} sleeping {} with size(Qin)={}'.format(FeedType.reverse[self.ft],self.ftracker['interval'],self.inq.qsize())) 
             time.sleep(self.ftracker['interval'])
@@ -121,22 +115,16 @@ class DataSync(threading.Thread):
     #if (now-start) % self.ftracker['interval']:pass        
     
     def stop(self):
-        self.drc.stop()
         self._stop.set()
 
     def stopped(self):
-        return self._stop.isSet() and self.drc.stopped() 
+        return self._stop.isSet()
     
     def close(self):
         self.inq.task_done()
         self.outq.task_done()
 
-    #--------------------------------------------------------------------------
-#     def fetchAllUpdates(self,pt):
-#         '''get full page loads from the three different queues, maybe split out layer'''
-#         for ft in FeedType.reverse:
-#             self.fetchFeedUpdates(ft, pt)
-            
+    #--------------------------------------------------------------------------            
 
     @LogWrap.timediff
     def fetchFeedUpdates(self,thr):
@@ -152,12 +140,13 @@ class DataSync(threading.Thread):
             r['ref'] = self.fetchPage(r['page'])
         
         while len(pool)>0:#any([p[2] for p in pool if p[2]>1])
-            print 'STOPPED', FeedType.reverse[self.ft][:2].capitalize(),self.stopped()
+            print '{} {}'.format(FeedType.reverse[self.ft].capitalize(),'STOP' if self.stopped() else 'RUN')
             for r in pool:
                 print 'checking page {}{} pool={}'.format(FeedType.reverse[self.ft][:2].capitalize(), r['page'],[p['page'] for p in pool]) 
                 du = self.duinst[r['ref']]
+                #close down on stop signal
                 if self.stopped():
-                    print 'stopping du ',r['ref']
+                    print 'Stopping DataUpdater thread ',r['ref']
                     du.stop()
                     du.join(10)
                     del self.duinst[r['ref']]
@@ -184,13 +173,12 @@ class DataSync(threading.Thread):
                             pool.append({'page':nextpage,'ref':ref})
                     else:
                         pass
-                        print 'no addresses in page {}{}'.format(FeedType.reverse[self.ft][:2].capitalize(),r['page'])
+                        print 'No addresses found in page {}{}'.format(FeedType.reverse[self.ft][:2].capitalize(),r['page'])
                 time.sleep(POOL_PAGE_CHECK_DELAY)
                 print '---------\n'
         #update CF tracker with latest page number
         self.managePage((backpage,lastpage))
-        print 'leaving {} with pool={}'.format(FeedType.reverse[self.ft][:2].capitalize(),[p['page'] for p in pool])
-        print [a.__str__() for a in newaddr]
+        print 'Leaving {} with pool={} and #adr={}'.format(FeedType.reverse[self.ft][:2].capitalize(),[p['page'] for p in pool],len(newaddr))
         return newaddr
             
     def fetchPage(self,p):
@@ -236,6 +224,23 @@ class DataSyncFeatures(DataSync):
 
 
 class DataSyncFeeds(DataSync): 
+    
+    def __init__(self,params,queues):
+        super(DataSyncFeeds,self).__init__(params,queues)
+        self.drc = DataRequestChannel(self)
+        self.drc.setDaemon(True)
+        
+    def run(self):
+        self.drc.start()
+        super(DataSyncFeeds,self).run()
+    
+    def stop(self):
+        self.drc.stop()
+        self._stop.set()
+
+    def stopped(self):
+        return self._stop.isSet() and self.drc.stopped() 
+    
     
     def fetchFeedUpdates(self,thr):
         '''run forward updates and tack on a single backfill, update page count accordingly'''

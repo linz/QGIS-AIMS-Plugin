@@ -28,10 +28,12 @@ TP = {FeedType.FEATURES:{},
 
 DEF_SEP = '_'
 SKIP_NULL = True
-
-    
-class AddressFieldRequiredException(Exception): pass
-class AddressFieldIncorrectException(Exception): pass
+ 
+class AddressException(Exception): pass    
+class AddressFieldRequiredException(AddressException): pass
+class AddressFieldIncorrectException(AddressException): pass
+class AddressConversionException(AddressException): pass
+class AddressCreationException(AddressException): pass
 
 class AddressFactory(object):
     ''' AddressFactory class used to build address objects without the overhead of re-reading templates each time''' 
@@ -58,11 +60,16 @@ class AddressFactory(object):
         '''Creates an address object from a model (using the response template if model is not provided)'''
         adr = adr if adr else self.addrtype(ref)
         data = model if model else self.template['response']   
-        for k in data:
-            setter = 'set'+k[0].upper()+k[1:]
-            new_prefix = prefix+DEF_SEP+k
-            if isinstance(data[k],dict): adr = self.getAddress(ref=ref,adr=adr,model=data[k],prefix=new_prefix)
-            else: getattr(adr,setter)(data[k] or None) if hasattr(adr,setter) else setattr(adr,new_prefix,data[k] or None)
+        try:
+            for k in data:
+                setter = 'set'+k[0].upper()+k[1:]
+                new_prefix = prefix+DEF_SEP+k
+                if isinstance(data[k],dict): adr = self.getAddress(ref=ref,adr=adr,model=data[k],prefix=new_prefix)
+                else: getattr(adr,setter)(data[k] or None) if hasattr(adr,setter) else setattr(adr,new_prefix,data[k] or None)
+        except Exception as e:
+            msg = 'Error creating address object using model {}'.format(data)
+            aimslog.error(msg)
+            raise AddressCreationException(msg)
         return adr
         
 
@@ -72,8 +79,15 @@ class AddressFeedFactory(AddressFactory):
     
     def convertAddress(self,adr,at):
         '''Converts an address into its json payload equivalent '''
-        full = self._convert(adr, copy.copy(self.template[self.reqtype.reverse[at]]), '')
-        return self._delNull(full) if SKIP_NULL else full
+        full = None
+        try:
+            full = self._convert(adr, copy.copy(self.template[self.reqtype.reverse[at]]), '')
+            full = self._delNull(full) if SKIP_NULL else full
+        except Exception as e:
+            msg = 'Error converting address object using AT {}'.format(at)
+            aimslog.error(msg)
+            raise AddressConversionException(msg)
+        return full
     
     def _convert(self,adr,dat,key):
         for attr in dat:
