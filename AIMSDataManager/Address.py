@@ -14,15 +14,18 @@
 #http://devassgeo01:8080/aims/api/address/features - properties
 import re
 from AimsUtility import ActionType,FeedType
+from AimsLogging import Logger
 from gtk._gtk import PositionType
 
 
 DEF_SEP = '_'
 
+aimslog = None
+
 #------------------------------------------------------------------------------
 # W A R N I N G
 
-class Warning(object):
+class AimsWarning(object):
 
     BRANCH = ('properties')
     
@@ -34,7 +37,7 @@ class Warning(object):
         
     @staticmethod
     def getInstance(d):
-        w = Warning()
+        w = AimsWarning()
         w.set(d)
         return w
     
@@ -134,6 +137,9 @@ class Address(object):
     
     type = FeedType.FEATURES
     
+    global aimslog
+    aimslog = Logger.setup()
+    
     def __init__(self, ref=None): 
         #aimslog.info('AdrRef.{}'.format(ref))
         self._ref = ref
@@ -156,7 +162,6 @@ class Address(object):
     
     # Set functions used to manipulate object properties   
     def setPublishDate(self,d): self._publishDate = d if Address._vDate(d) else None
-    def setVersion (self, version): self._version = version if Address._vInt(version) else None
     
     def setChangeId(self, changeId): 
         self._changeId = changeId
@@ -280,43 +285,44 @@ class Address(object):
         return [p.get() for p in self._addressedObject_addressPositions]
     #---------------------------------------------------
     
-#     def _delNull(self, o):
-#         if hasattr(o, 'items'):
-#             oo = type(o)()
-#             for k in o:
-#                 if k != 'NULL' and o[k] != 'NULL' and o[k] != None:
-#                     oo[k] = self._delNull(o[k])
-#         elif hasattr(o, '__iter__'):
-#             oo = [ ] 
-#             for it in o:
-#                 if it != 'NULL' and it != None:
-#                     oo.append(self._delNull(it))
-#         else: return o
-#         return type(o)(oo)
-
     
     def compare(self,other):
         '''Equality comparator'''
         #return False if isinstance(self,other) else hash(self)==hash(other)
         #IMPORTANT. Attribute value compare, relies on deep copy
         return all((getattr(self,a)==getattr(other,a) for a in self.__dict__.keys()))
-        
+    
+    
+    @staticmethod
+    def clone(a,b=None):
+        '''clones attributes of A to B and instantiates B (as type A) if not provided'''
+        if not b: b = AddressFactory.getInstance(a.type)
+        for attr in a.__dict__.keys(): setattr(b,attr,getattr(a,attr))
+        return b
+    
+
+
 #------------------------------------------------------------------------------
 
-class AddressChange(Address):
+class AddressRequestFeed(Address):          
+    def setVersion (self, version): self._version = version if Address._vInt(version) else None  
+
+#------------------------------------------------------------------------------
+
+class AddressChange(AddressRequestFeed):
     ''' UI address change class ''' 
     type = FeedType.CHANGEFEED
     #DA = DEF_ADDR[type]
     
     def __init__(self, ref=None): 
         super(AddressChange,self).__init__(ref)
-        
+    
     def filter(self):
         pass
         
 #------------------------------------------------------------------------------
         
-class AddressResolution(Address):
+class AddressResolution(AddressRequestFeed):
     ''' UI address res class ''' 
     type = FeedType.RESOLUTIONFEED
     #DA = DEF_ADDR[type]

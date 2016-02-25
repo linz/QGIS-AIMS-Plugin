@@ -93,7 +93,7 @@ class DataManager(object):
             if not self.ds[ft].isAlive():
                 aimslog.warn('DS thread {} has died, restarting'.format(ft))
                 del self.ds[ft]
-                self._initFeedDS(ref,self.dsr[ref])
+                self._initFeedDS(ft,self.dsr[ft])
             
         
     #Client Access
@@ -130,7 +130,7 @@ class DataManager(object):
         '''returns feed length counts without client having to do a pull/deepcopy'''
         self._restart()
         self._monitor()
-        return [(self.stamp[ft],len(self.persist.ADL[f])) for f in FeedType.reverse]
+        return [(self.stamp[f],len(self.persist.ADL[f])) for f in FeedType.reverse]
         
     
     def action(self,at,address):
@@ -156,13 +156,6 @@ class DataManager(object):
             resp += (self.ioq[ft]['resp'].get(),)
         return resp
         
-        
-    def _scan(self,ds):
-        '''compare provided and current ADL. Split out deletes/adds/updates'''
-        #self._synchroniseChangeFeed(ds)
-        #self._synchroniseResolutionFeed(ds)
-        self._scanChangeFeedChanges(ds[FeedType.CHANGEFEED])
-        self._scanResolutionFeedChanges(ds[FeedType.RESOLUTIONFEED])
       
     #convenience methods  
     def addAddress(self,address):
@@ -257,10 +250,10 @@ def test1(dm,af):
     testfeatureshift(dm)
     
     # TEST CF
-    testchangefeedAUR(dm,af[FeedType.FEATURES])
+    testchangefeedAUR(dm,af)
     
     # TEST RF
-    testresolutionfeedAUD(dm)
+    testresolutionfeedAUD(dm,af)
 
     
     aimslog.info('*** Resolution ADD '+str(time.clock()))    
@@ -280,15 +273,15 @@ def testfeatureshift(dm):
     time.sleep(5)
     
     
-def testchangefeedAUR(dm,ff):
-    addr_c = gettestdata(ff)
+def testchangefeedAUR(dm,af):
+    addr_c = gettestdata(af[FeedType.FEATURES])
     
     aimslog.info('*** Change ADD '+str(time.clock()))
     #addr_c.setChangeType(ActionType.reverse[ActionType.ADD])
     #listofaddresses[FeedType.CHANGEFEED].append(addr_c)
     #dm.push(listofaddresses)
     dm.addAddress(addr_c)
-    time.sleep(10)
+
     r = testresp(dm)
     d = dm.pull()
     time.sleep(5)    
@@ -297,7 +290,9 @@ def testchangefeedAUR(dm,ff):
     #addr_c.setChangeType(ActionType.reverse[ActionType.ADD])
     #listofaddresses[FeedType.CHANGEFEED].append(addr_c)
     #dm.push(listofaddresses)
+    addr_c = af[FeedType.CHANGEFEED].cast(addr_c)
     addr_c.setFullAddress('Unit B, 16 Islay Street, Glenorchy')
+    addr_c.setVersion('123456789')
     dm.updateAddress(addr_c)
     time.sleep(10)
     r = testresp(dm)
@@ -309,14 +304,15 @@ def testchangefeedAUR(dm,ff):
     #addr_c.setChangeType(ActionType.reverse[ActionType.ADD])
     #listofaddresses[FeedType.CHANGEFEED].append(addr_c)
     #dm.push(listofaddresses)
+    addr_c.setVersion('123456789')
     dm.retireAddress(addr_c)
     time.sleep(10)
     r = testresp(dm)
     d = dm.pull()
     time.sleep(5)
     
-def testresolutionfeedAUD(dm):
-    addr_r = f3[0].getAddress('resolution_accept')
+def testresolutionfeedAUD(dm,af):
+    pass#addr_r = af.getAddress('resolution_accept')
 
 
 def testresp(dm):

@@ -17,6 +17,7 @@ import os
 import copy
 from AimsUtility import ActionType,ApprovalType,FeedType,InvalidEnumerationType
 from Address import Address,AddressChange,AddressResolution,Position,DEF_SEP
+from AimsLogging import Logger
 
 P = os.path.join(os.path.dirname(__file__),'../resources/')
 
@@ -28,6 +29,8 @@ TP = {FeedType.FEATURES:{},
 
 DEF_SEP = '_'
 SKIP_NULL = True
+
+aimslog = None
  
 class AddressException(Exception): pass    
 class AddressFieldRequiredException(AddressException): pass
@@ -40,6 +43,9 @@ class AddressFactory(object):
     AFFT = FeedType.FEATURES
     addrtype = Address
     reqtype = None
+    
+    global aimslog
+    aimslog = Logger.setup()
     
     def __init__(self, ref=None): 
         self.template = TemplateReader().get()[self.AFFT]
@@ -58,19 +64,33 @@ class AddressFactory(object):
     
     def getAddress(self,ref=None,adr=None,model=None,prefix=''):
         '''Creates an address object from a model (using the response template if model is not provided)'''
-        adr = adr if adr else self.addrtype(ref)
-        data = model if model else self.template['response']   
+        #overwrite = model OR NOT(address)
+        overwrite = False
+        if not adr: 
+            overwrite = True
+            adr = self.addrtype(ref)
+            
+        if model:
+            data = model
+            overwrite = True
+        else: data = self.template['response']
+        
         try:
-            for k in data:
-                setter = 'set'+k[0].upper()+k[1:]
-                new_prefix = prefix+DEF_SEP+k
-                if isinstance(data[k],dict): adr = self.getAddress(ref=ref,adr=adr,model=data[k],prefix=new_prefix)
-                else: getattr(adr,setter)(data[k] or None) if hasattr(adr,setter) else setattr(adr,new_prefix,data[k] or None)
+            if overwrite:
+                for k in data:
+                    setter = 'set'+k[0].upper()+k[1:]
+                    new_prefix = prefix+DEF_SEP+k
+                    if isinstance(data[k],dict): adr = self.getAddress(ref=ref,adr=adr,model=data[k],prefix=new_prefix)
+                    else: getattr(adr,setter)(data[k] or None) if hasattr(adr,setter) else setattr(adr,new_prefix,data[k] or None)
         except Exception as e:
             msg = 'Error creating address object using model {}'.format(data)
             aimslog.error(msg)
             raise AddressCreationException(msg)
         return adr
+        
+    def cast(self,adr,ft=None):
+        '''casts address from curent to requested address-type'''
+        return Address.clone(adr, self.getAddress())
         
 
 class AddressFeedFactory(AddressFactory):

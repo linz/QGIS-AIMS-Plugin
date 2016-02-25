@@ -29,7 +29,7 @@ import threading
 import Queue
 
 
-from DataUpdater import DataUpdater,DataUpdaterAction,DataUpdaterApproval
+from DataUpdater import DataUpdater,DataUpdaterAction,DataUpdaterApproval,DataUpdaterWarning
 from AimsApi import AimsApi 
 from AimsLogging import Logger
 from AimsUtility import ActionType,ApprovalType,FeedType,LogWrap,MAX_FEATURE_COUNT
@@ -196,16 +196,17 @@ class DataSync(threading.Thread):
         #self.duinst[ref].join()
         #return adrq.get()
 
-    def syncFeeds(self,new_addr):
-        '''return all new addresses'''
-        new_hash = hash(frozenset(new_addr))
+    #NOTE. To override the behaviour, return feed once full, override this method
+    def syncFeeds(self,new_addresses):
+        '''check if the addresses are diferent from existing set and return in the out queue'''
+        new_hash = hash(frozenset(new_addresses))
         if self.data_hash != new_hash:
             self.data_hash = new_hash
-            self.outq.put(new_addr)
+            self.outq.put(new_addresses)
             
     def managePage(self,p):
         ''''default behaviour is to not manage page counts and re read features from scratch
-        for the CF (RF too?) we must read from the last saved page but reset on startup'''
+        for the CF (RF if its too slow?) we must read from the last saved page but reset on startup'''
         pass
     #--------------------------------------------------------------------------
     
@@ -312,6 +313,7 @@ class DataSyncChangeFeed(DataSyncFeeds):
         self.ftracker = {'page':[1,1],'index':1,'threads':1,'interval':10}
 
     def processAddress(self,at,addr):  
+        '''Do an Add/Retire/Update request'''
         at2 = ApprovalType.reverse[at][:3].capitalize()      
         ref = 'Req{0}.{1:%y%m%d.%H%M%S}'.format(at2,DT.now())
         params = (ref,self.conf,self.afactory)
@@ -330,7 +332,8 @@ class DataSyncResolutionFeed(DataSyncFeeds):
         super(DataSyncResolutionFeed,self).__init__(params,queues)
         self.ftracker = {'page':[1,1],'index':1,'threads':1,'interval':10}
         
-    def processAddress(self,at,addr):  
+    def processAddress(self,at,addr):
+        '''Do an Approve/Decline/Update request'''
         at2 = ApprovalType.reverse[at][:3].capitalize()      
         ref = 'Req{0}.{1:%y%m%d.%H%M%S}'.format(at2,DT.now())
         params = (ref,self.conf,self.afactory)
@@ -340,7 +343,33 @@ class DataSyncResolutionFeed(DataSyncFeeds):
         self.duinst[ref].setDaemon(True)
         self.duinst[ref].start()
         #self.duinst[ref].join()
-        return ref
+        return ref    
+    
+    def fetchFeedUpdates(self,thr):
+        '''Override feed updates adding an additional updater call fetching warning text per address'''
+        res = super(DataSyncResolutionFeed,self).fetchFeedUpdates(thr)
+        for adr in res:
+            cid = adr.getChangeId()
+            adr.setWarnings(self.updateWarnings(cid))
+        return res
+    
+    def updateWarnings(self,cid):   
+        ref = 'Warn.{0:%y%m%d.%H%M%S}'.format(DT.now())
+        params = (ref,self.conf,self.afactory)
+        #reuse response queue
+        duwarn = DataUpdaterWarning(params,self.respq)
+        duwarn.setup(self.ft,cid)
+        duwarn.setDaemon(True)
+        duwarn.start()
+        #run this as a single blocking process otherwise it will overwhelm the api
+        duwarn.join()
+        warn = self.respq.get()
+        #if err: aimslog.info('Received errors "{}" for cid={}'.format(err,cid))
+        if warn: aimslog.info('Received {} warnings for cid={}'.format(len(warn),cid))
+        return warn
+  
+        
+        
     
 
     
