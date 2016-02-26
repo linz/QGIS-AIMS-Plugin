@@ -40,6 +40,7 @@ class AddressCreationException(AddressException): pass
 
 class AddressFactory(object):
     ''' AddressFactory class used to build address objects without the overhead of re-reading templates each time''' 
+    PBRANCH = '{d}{}{d}{}'.format(d=DEF_SEP,*Position.BRANCH)
     AFFT = FeedType.FEATURES
     addrtype = Address
     reqtype = None
@@ -61,10 +62,10 @@ class AddressFactory(object):
         elif ft==FeedType.RESOLUTIONFEED: return AddressResolutionFactory(ft)
         else: raise InvalidEnumerationType('FeedType {} not available'.format(ft))
     
-    
+
     def getAddress(self,ref=None,adr=None,model=None,prefix=''):
         '''Creates an address object from a model (using the response template if model is not provided)'''
-        #overwrite = model OR NOT(address)
+        #overwrite = model OR NOT(address). If an address is provided only fill it with model provided, presume dont want template fill
         overwrite = False
         if not adr: 
             overwrite = True
@@ -75,45 +76,79 @@ class AddressFactory(object):
             overwrite = True
         else: data = self.template['response']
         
-        try:
-            if overwrite:
-                for k in data:
-                    setter = 'set'+k[0].upper()+k[1:]
-                    new_prefix = prefix+DEF_SEP+k
-                    if isinstance(data[k],dict): adr = self.getAddress(ref=ref,adr=adr,model=data[k],prefix=new_prefix)
-                    else: getattr(adr,setter)(data[k] or None) if hasattr(adr,setter) else setattr(adr,new_prefix,data[k] or None)
-        except Exception as e:
-            msg = 'Error creating address object using model {}'.format(data)
-            aimslog.error(msg)
-            raise AddressCreationException(msg)
+        if overwrite:
+            try:
+                adr = self._readAddress(adr, data, prefix)        
+            except Exception as e:
+                msg = 'Error creating address object using model {} with {}'.format(data,e)
+                aimslog.error(msg)
+                raise AddressCreationException(msg)
         return adr
+    
+#         try:
+#             if overwrite:
+#                 for k in data:
+#                     setter = 'set'+k[0].upper()+k[1:]
+#                     new_prefix = prefix+DEF_SEP+k
+#                     if isinstance(data[k],dict): adr = self.getAddress(ref=ref,adr=adr,model=data[k],prefix=new_prefix)
+#                     elif isinstance(data[k],list) and new_prefix == self.PBRANCH:
+#                         pstns = [] 
+#                         for pd in data[k]: pstns.append(Position.getInstance(pd,self))
+#                         adr.setAddressPositions(pstns)
+#                     else: getattr(adr,setter)(self.filterPI(data[k]) or None) if hasattr(adr,setter) else setattr(adr,new_prefix,self.filterPI(data[k]) or None)
+#         except Exception as e:
+#             msg = 'Error creating address object using model {} with {}'.format(data,e)
+#             aimslog.error(msg)
+#             raise AddressCreationException(msg)
+#         return adr
         
+    def _readAddress(self,adr,data,prefix):
+        '''nested address dict reader'''
+        for k in data:
+            setter = 'set'+k[0].upper()+k[1:]
+            new_prefix = prefix+DEF_SEP+k
+            if isinstance(data[k],dict): adr = self._readAddress(adr=adr,data=data[k],prefix=new_prefix)
+            elif isinstance(data[k],list) and new_prefix == self.PBRANCH:
+                pstns = [] 
+                for pd in data[k]: pstns.append(Position.getInstance(pd,self))
+                adr.setAddressPositions(pstns)
+            else: getattr(adr,setter)(self.filterPI(data[k]) or None) if hasattr(adr,setter) else setattr(adr,new_prefix,self.filterPI(data[k]) or None)
+        return adr
+    
     def cast(self,adr,ft=None):
         '''casts address from curent to requested address-type'''
         return Address.clone(adr, self.getAddress())
+    
+    @staticmethod
+    def filterPI(ppi):
+        '''filters out Possible Processing Instructions'''
+        sppi = str(ppi)
+        if sppi.find('#')>-1:
+            dflt = re.search('default=(\w+)',sppi)
+            oneof = re.search('oneof=(\w+)',sppi)#first as default
+            return dflt.group(1) if dflt else (oneof.group(1) if oneof else None)
+        return ppi
         
 
 class AddressFeedFactory(AddressFactory):
-        
-    PBRANCH = '{d}{}{d}{}'.format(d=DEF_SEP,*Position.BRANCH)
     
     def convertAddress(self,adr,at):
         '''Converts an address into its json payload equivalent '''
         full = None
         try:
-            full = self._convert(adr, copy.copy(self.template[self.reqtype.reverse[at]]), '')
+            full = self._convert(adr, copy.deepcopy(self.template[self.reqtype.reverse[at]]))
             full = self._delNull(full) if SKIP_NULL else full
         except Exception as e:
-            msg = 'Error converting address object using AT {}'.format(at)
+            msg = 'Error converting address object using AT{} with {}'.format(at,e)
             aimslog.error(msg)
             raise AddressConversionException(msg)
         return full
     
-    def _convert(self,adr,dat,key):
+    def _convert(self,adr,dat,key=''):
         for attr in dat:
             new_key = key+DEF_SEP+attr
             if new_key == self.PBRANCH:
-                dat[attr] = adr.getAddressPositions()
+                dat[attr] = adr.getConvertedAddressPositions()
             elif isinstance(dat[attr],dict):
                 dat[attr] = self._convert(adr, dat[attr],new_key)
             else:
@@ -122,6 +157,7 @@ class AddressFeedFactory(AddressFactory):
     
     def _assign(self,dat,adr,key):
         '''validates address data value against template requirements'''
+        #TODO add default or remove from filterpi
         required,oneof,default,datatype = 4*(None,)
         val = adr.__dict__[key] if hasattr(adr,key) else None
         dft =  dat[key[key.rfind(DEF_SEP)+1:]]

@@ -247,7 +247,7 @@ def test1(dm,af):
     listofaddresses = dm.pull()
     
     #TEST SHIFT
-    testfeatureshift(dm)
+    #testfeatureshift(dm)
     
     # TEST CF
     testchangefeedAUR(dm,af)
@@ -274,42 +274,52 @@ def testfeatureshift(dm):
     
     
 def testchangefeedAUR(dm,af):
+    ver = 1000000
+    #pull address from features (map)
     addr_c = gettestdata(af[FeedType.FEATURES])
-    
+    #cast to addresschange type, to do cf ops
+    addr_c = af[FeedType.CHANGEFEED].cast(addr_c)
+    addr_c.setVersion(ver)
     aimslog.info('*** Change ADD '+str(time.clock()))
     #addr_c.setChangeType(ActionType.reverse[ActionType.ADD])
     #listofaddresses[FeedType.CHANGEFEED].append(addr_c)
     #dm.push(listofaddresses)
     dm.addAddress(addr_c)
+    resp = None
+    while True: 
+        resp = testresp(dm)
+        if resp: break
+        time.sleep(5)
+    ver += 1
 
-    r = testresp(dm)
-    d = dm.pull()
-    time.sleep(5)    
     
     aimslog.info('*** Change UPDATE '+str(time.clock()))
     #addr_c.setChangeType(ActionType.reverse[ActionType.ADD])
     #listofaddresses[FeedType.CHANGEFEED].append(addr_c)
     #dm.push(listofaddresses)
-    addr_c = af[FeedType.CHANGEFEED].cast(addr_c)
     addr_c.setFullAddress('Unit B, 16 Islay Street, Glenorchy')
-    addr_c.setVersion('123456789')
+    addr_c.setVersion(ver)
     dm.updateAddress(addr_c)
-    time.sleep(10)
-    r = testresp(dm)
-    d = dm.pull()
-    time.sleep(5)    
+    resp = None
+    while True: 
+        resp = testresp(dm)
+        if resp: break
+        time.sleep(5)
+    ver += 1
     
     
     aimslog.info('*** Change RETIRE '+str(time.clock()))
     #addr_c.setChangeType(ActionType.reverse[ActionType.ADD])
     #listofaddresses[FeedType.CHANGEFEED].append(addr_c)
     #dm.push(listofaddresses)
-    addr_c.setVersion('123456789')
+    addr_c.setVersion(ver)
     dm.retireAddress(addr_c)
-    time.sleep(10)
-    r = testresp(dm)
-    d = dm.pull()
-    time.sleep(5)
+    resp = None
+    while not resp: 
+        resp = testresp(dm)
+        time.sleep(5)     
+    ver += 1
+
     
 def testresolutionfeedAUD(dm,af):
     pass#addr_r = af.getAddress('resolution_accept')
@@ -328,7 +338,7 @@ def testresp(dm):
         #aimslog.info('*** Main RESP {} - [{}]'.format(r,len(resp))) 
         aimslog.info('*** Main RESP {} [{}]'.format(r,len(resp)))
         
-    return r
+    return resp
             
 def gettestdata(ff):
     a = ff.getAddress('change_add')
@@ -352,7 +362,7 @@ def gettestdata(ff):
     a.setUnitType('Unit')
     a.setUnitValue('b')
 
-    a.setAddressPosition(p)
+    a.setAddressPositions(p)
 
     a._codes_suburbLocalityId = '2104'
     a._codes_parcelId = '3132748'

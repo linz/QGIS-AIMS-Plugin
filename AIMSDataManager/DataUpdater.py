@@ -9,7 +9,6 @@
 #
 ################################################################################
 
-from urllib2 import HTTPError, base64, ProxyHandler
 from datetime import datetime as DT
 #from functools import wraps
 
@@ -82,19 +81,19 @@ class DataUpdater(threading.Thread):
         
 class DataUpdaterAction(DataUpdater):
     
-    def setup(self,ft,address):
+    def setup(self,at,address):
         '''set address parameters'''
-        self.ft = ft
+        self.at = at
         self.address = address
-        self.payload = self.afactory.convertAddress(self.address,self.ft)
+        self.payload = self.afactory.convertAddress(self.address,self.at)
         
     def run(self):
         '''address change action on the CF'''
-        aimslog.info('ACT.{} {} - Addr{}'.format(self.ref,ActionType.reverse[self.ft],self.address))
-        err,resp = self.api.changefeedActionAddress(self.ft,self.payload)
+        aimslog.info('ACT.{} {} - Addr{}'.format(self.ref,ActionType.reverse[self.at],self.address))
+        err,resp = self.api.changefeedActionAddress(self.at,self.payload)
         chg_adr = self.afactory.getAddress(model=resp)
         print 'CHG_ADR',chg_adr
-        if err: res_adr.setStatusNotes(err)
+        if err: chg_adr.setStatusNotes(err)
         self.queue.put(chg_adr)
 
             
@@ -105,7 +104,6 @@ class DataUpdaterApproval(DataUpdater):
         '''set address parameters'''
         self.ft = ft
         self.address = address
-        #self.cid = address.getChangeId()
         self.payload = self.afactory.convertAddress(self.address,self.ft)
         
     def run(self):

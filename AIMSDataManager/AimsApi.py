@@ -192,9 +192,9 @@ class AimsApi(object):
         url = '{}/{}/{}'.format(self._url,FeedType.reverse[ft].lower(),cid)
         resp, content = self.h.request(url,"GET", headers = self._headers)
         err, jcontent = self.handleResponse(url, resp["status"], json.loads(content))
-        warnlist = [err,] if err else []
+        warnlist = {'error':err,'warn':()} if err else {'error':None,'warn':()}
         for entity in jcontent['entities']:
-            warnlist += [AimsWarning.getInstance(entity['properties']),]
+            warnlist['warn'] += (AimsWarning.getInstance(entity['properties']),)
         return warnlist
     
         

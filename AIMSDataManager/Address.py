@@ -13,7 +13,7 @@
 
 #http://devassgeo01:8080/aims/api/address/features - properties
 import re
-from AimsUtility import ActionType,FeedType
+from AimsUtility import ActionType,ApprovalType,FeedType
 from AimsLogging import Logger
 from gtk._gtk import PositionType
 
@@ -80,21 +80,22 @@ class Position(object):
         self._primary = True
     
     def __str__(self):
-        return 'POS'    
+        return 'POS.{}'.format(self._position_type)    
 
     @staticmethod
-    def getInstance(d):
+    def getInstance(d,af=None):
         p = Position()
-        p.set(d)
+        p.set(d,af)
         return p
         
-    def set(self,d = PDEF):
+    def set(self,d = PDEF,af=None):
+
         self._set(
             d['position']['type'],
             d['position']['coordinates'],
             d['position']['crs']['type'],
             d['position']['crs']['properties']['name'],
-            d['positionType'],
+            af.filterPI(d['positionType']) if af else d['positionType'],
             d['primary']
         )
         
@@ -147,10 +148,6 @@ class Address(object):
     def __str__(self):
         #return 'ADR.{}.{}.{}.{}'.format(self._ref,self.type,self.getAddressId(),self._version)
         return 'ADR.{}.{}'.format(self._ref,self.type)
-    
-        
-    #type filters, better queried off server but hardcoded for now
-    RT = ('Road','Street','Avenue','Drive')
     
     #generic validators
     @staticmethod
@@ -262,27 +259,32 @@ class Address(object):
     def setFullAddress (self, fullAddress): 
         self._components_fullAddress = fullAddress    
     
-    #--------------------------------------------------- 
-    def setAddressPosition(self,p):
+    #---------------------------------------------------         
+    def setAddressPositions(self,pl):
         '''adds (nb 'add' not 'set', bcse setter recogniser needs set) another position object'''
-        if isinstance(p,Position): self._addressedObject_addressPositions = [p,]  
-        else: raise InvalidPositionException('Cannot set non Position type {}'.format(p))
+        if isinstance(pl,list): self._addressedObject_addressPositions = pl  
+        elif isinstance(pl,Position): self._addressedObject_addressPositions = [pl,]  
+        else: raise InvalidPositionException('Cannot set non list-of-Position type {}'.format(pl))
         
-    def addAddressPositions(self,p, flush=False):
-        '''adds another/list-of position object'''
-        if flush or not hasattr(self,'_addressedObject_addressPositions'): self._addressedObject_addressPositions = []
-        if isinstance(p,Position):
-            self._addressedObject_addressPositions.append(p)
-        elif isinstance(p,dict):
-            self._addressedObject_addressPositions.append(Position.getInstance(p))   
-        elif isinstance(p,(tuple,list)): 
-            for pos in p: self.setAddressPositions(pos)
-        else: raise InvalidPositionException('Cannot parse/add Position {}'.format(p))
+#     def addAddressPositions(self,p, flush=False):
+#         '''adds another/list-of position object'''
+#         if flush or not hasattr(self,'_addressedObject_addressPositions'): self._addressedObject_addressPositions = []
+#         if isinstance(p,Position):
+#             self._addressedObject_addressPositions.append(p)
+#         elif isinstance(p,dict):
+#             self._addressedObject_addressPositions.append(Position.getInstance(p))   
+#         elif isinstance(p,(tuple,list)): 
+#             for pos in p: self.setAddressPosition(pos)
+#         else: raise InvalidPositionException('Cannot parse/add Position {}'.format(p))
             
         
-    def getAddressPositions(self):
+    def getConvertedAddressPositions(self):
         '''return a list of dict'd position objects'''
-        return [p.get() for p in self._addressedObject_addressPositions]
+        return [p.get() for p in self._addressedObject_addressPositions]    
+    
+    def getAddressPositions(self):
+        '''return a list of position objects'''
+        return self._addressedObject_addressPositions
     #---------------------------------------------------
     
     
@@ -315,7 +317,10 @@ class AddressChange(AddressRequestFeed):
     #DA = DEF_ADDR[type]
     
     def __init__(self, ref=None): 
-        super(AddressChange,self).__init__(ref)
+        super(AddressChange,self).__init__(ref)    
+        
+    def __str__(self):
+        return 'ADRC.{}.{}'.format(self._ref,self.type)
     
     def filter(self):
         pass
@@ -331,19 +336,39 @@ class AddressResolution(AddressRequestFeed):
         super(AddressResolution,self).__init__(ref)   
         self._warnings = None
         
+    def __str__(self):
+        return 'ADRR.{}.{}/{}'.format(self._ref,self.type,self._warnings)
+        
     def setWarnings(self,warnings):
         self._warnings = warnings
         
 def test():
     import pprint
-    a1 = Address._import(Address('one'))
-    a2 = AddressChange._import(AddressChange('two'))
-    a3 = AddressResolution._import(AddressResolution('three'))
+    from AddressFactory import AddressFactory
+    af1 = AddressFactory.getInstance(FeedType.FEATURES)
+    a1 = af1.getAddress(ref='one_feat')
+    
+    af2 = AddressFactory.getInstance(FeedType.CHANGEFEED)
+    a2 = af2.getAddress(ref='two_chg')
+    a2.setVersion(100)
+    a2.setObjectType('Parcel')
+    a2.setAddressNumber(100)
+    a2.setAddressId(100)
+    a2.setRoadName('Smith Street')
+    
+    af3 = AddressFactory.getInstance(FeedType.RESOLUTIONFEED)
+    a3 = af3.getAddress(ref='three_res')
+    a3.setChangeId(200)
+    a3.setVersion(200)
+    a3.setAddressNumber(200)
+    a3.setRoadName('Jones Road')
+    
+    
     print a1,a2,a3
-    r1 = Address._export(a1)
-    r2 = AddressChange._export(a2)
-    r3 = AddressResolution._export(a3)
-    pprint.pprint (r1)
+
+    r2 = af2.convertAddress(a2,ActionType.UPDATE)
+    r3 = af3.convertAddress(a3,ApprovalType.UPDATE)
+
     pprint.pprint (r2)
     pprint.pprint (r3)
 

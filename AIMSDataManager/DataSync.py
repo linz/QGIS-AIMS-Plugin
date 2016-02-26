@@ -9,7 +9,6 @@
 #
 ################################################################################
 
-from urllib2 import HTTPError, base64, ProxyHandler
 from datetime import datetime as DT
 #from functools import wraps
 
