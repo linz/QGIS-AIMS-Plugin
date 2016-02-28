@@ -226,14 +226,16 @@ class Persistence():
         '''unpickle local store'''  
         try:
             archive = pickle.load(open(localds,'rb'))
-            self.tracker,self.coords,self.ADL = archive
+            #self.tracker,self.coords,self.ADL = archive
+            self.tracker,self.ADL = archive
         except:
             return False
         return True
     
     def write(self, localds=LOCALADL):
         try:
-            archive = [self.tracker,self.coords,self.ADL]
+            #archive = [self.tracker,self.coords,self.ADL]
+            archive = [self.tracker,self.ADL]
             pickle.dump(archive, open(localds,'wb'))
         except:
             return False
