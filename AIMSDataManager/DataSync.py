@@ -220,7 +220,7 @@ class DataSyncFeatures(DataSync):
     
     def __init__(self,params,queues):
         super(DataSyncFeatures,self).__init__(params,queues)
-        self.ftracker = {'page':[1,1],'index':1,'threads':3,'interval':60}    
+        self.ftracker = {'page':[1,1],'index':1,'threads':1,'interval':60}    
 
 
 class DataSyncFeeds(DataSync): 
@@ -247,7 +247,8 @@ class DataSyncFeeds(DataSync):
         res = super(DataSyncFeeds,self).fetchFeedUpdates(thr)
         ps,pe = self.ftracker['page']
         #for i in range(5):#do a bunch of backfills?
-        res += self.backfillPage(ps)
+        if ps>1:
+            res += self.backfillPage(ps)
         return res
         
     def _findLastPage(self,p_end):
@@ -273,13 +274,13 @@ class DataSyncFeeds(DataSync):
                 
         ref = self.fetchPage(prevpage)
         du = self.duinst[ref]
-        while du.isAlive(): pass
+        while du.isAlive(): time.sleep(POOL_PAGE_CHECK_DELAY)
         alist = du.queue.get()
         acount = len(alist)
         newaddr += self._statusFilter(alist)
         del self.duinst[ref]
         if acount>0:
-            prevpage = max(0,prevpage-1)
+            prevpage = max(1,prevpage-1)
             ref = self.fetchPage(prevpage)                
                 
         #update CF tracker with latest page number

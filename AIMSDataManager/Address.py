@@ -265,17 +265,6 @@ class Address(object):
         if isinstance(pl,list): self._addressedObject_addressPositions = pl  
         elif isinstance(pl,Position): self._addressedObject_addressPositions = [pl,]  
         else: raise InvalidPositionException('Cannot set non list-of-Position type {}'.format(pl))
-        
-#     def addAddressPositions(self,p, flush=False):
-#         '''adds another/list-of position object'''
-#         if flush or not hasattr(self,'_addressedObject_addressPositions'): self._addressedObject_addressPositions = []
-#         if isinstance(p,Position):
-#             self._addressedObject_addressPositions.append(p)
-#         elif isinstance(p,dict):
-#             self._addressedObject_addressPositions.append(Position.getInstance(p))   
-#         elif isinstance(p,(tuple,list)): 
-#             for pos in p: self.setAddressPosition(pos)
-#         else: raise InvalidPositionException('Cannot parse/add Position {}'.format(p))
             
         
     def getConvertedAddressPositions(self):

@@ -27,9 +27,11 @@ LOCALADL = 'aimsdata'
 LOCALDB = 'aimsdata.sb'
 UPDATE_INTERVAL = 5#s
 LOGFILE = 'admlog'
-SW = (174.75918,-41.29515)
-NE = (174.78509,-41.27491)
-FEATURES_THREAD_TIMEOUT = 10
+#SW = (174.75918,-41.29515)
+#NE = (174.78509,-41.27491)
+SWz = (0.0, 0.0)
+NEz = (0.0, 0.0)
+FEATURES_THREAD_TIMEOUT = 5
 
 
 aimslog = None
@@ -66,9 +68,15 @@ class DataManager(object):
             FeedType.RESOLUTIONFEED:DataSyncResolutionFeed
         }
         for ref in self.dsr:
+            self._initFeedDSChecker(ref)
+
+    def _initFeedDSChecker(self,ref):
+        '''Starts a sync thread if conditions appropriate'''
+        if ref == FeedType.FEATURES and self.persist.coords['sw'] == SWz and self.persist.coords['ne'] == NEz:                
+            self.ds[ref] = None
+        else:
             self._initFeedDS(ref,self.dsr[ref])
-
-
+            
         
     def _initFeedDS(self,ft,feedclass): 
         ts = '{0:%y%m%d.%H%M%S}'.format(DT.now())
@@ -90,10 +98,10 @@ class DataManager(object):
     def _restart(self):
         '''If a DataSync thread crashes restart it'''
         for ft in FeedType.reverse:
-            if not self.ds[ft].isAlive():
+            if not self.ds[ft] or not self.ds[ft].isAlive():
                 aimslog.warn('DS thread {} has died, restarting'.format(ft))
                 del self.ds[ft]
-                self._initFeedDS(ft,self.dsr[ft])
+                self._initFeedDSChecker(ft)
             
         
     #Client Access
@@ -106,15 +114,15 @@ class DataManager(object):
             #save the new coordinates
             self.persist.coords['sw'],self.persist.coords['ne'] = sw,ne
             #kill the old features thread
-            if self.ds[FeedType.FEATURES].isAlive():
+            if self.ds[FeedType.FEATURES] and self.ds[FeedType.FEATURES].isAlive():
                 aimslog.info('Attempting Features Thread STOP')
                 self.ds[FeedType.FEATURES].stop()
                 self.ds[FeedType.FEATURES].join(FEATURES_THREAD_TIMEOUT)
-            #TODO investigate thread non-stopping issues
-            if self.ds[FeedType.FEATURES].isAlive(): aimslog.warn('Features Thread JOIN timeout')
+                #TODO investigate thread non-stopping issues
+                if self.ds[FeedType.FEATURES].isAlive(): aimslog.warn('Features Thread JOIN timeout')
             del self.ds[FeedType.FEATURES]
             #reinitialise a new features DataSync
-            self._initFeedDS(FeedType.FEATURES,DataSyncFeatures)
+            self._initFeedDSChecker(FeedType.FEATURES)
 
         
     #Push and Pull relate to features feed actions
@@ -141,11 +149,12 @@ class DataManager(object):
         
     def _monitor(self):
         '''for each feed check the out queue and put any new items into the ADL'''
-        for ft in FeedType.reverse:
-            while not self.ioq[ft]['out'].empty():
-                #because the queue isnt populated till all pages are loaded we can just swap out the ADL
-                self.persist.ADL[ft] = self.ioq[ft]['out'].get()
-                self.stamp[ft] = time.time()
+        for ft in self.ds:#FeedType.reverse:
+            if self.ds[ft]:
+                while not self.ioq[ft]['out'].empty():
+                    #because the queue isnt populated till all pages are loaded we can just swap out the ADL
+                    self.persist.ADL[ft] = self.ioq[ft]['out'].get()
+                    self.stamp[ft] = time.time()
 
         #self.persist.write()
         return self.persist.ADL
@@ -203,7 +212,7 @@ class Persistence():
 
         if not self.read():
             self.ADL = self._initADL() 
-            self.coords = {'sw':SW,'ne':NE}
+            self.coords = {'sw':SWz,'ne':NEz}
             #default tracker, gets overwritten
             self.tracker = {ft:{'page':[1,1],'index':1,'threads':1,'interval':5} for ft in FeedType.reverse}
             self.write() 
@@ -247,7 +256,7 @@ def test1(dm,af):
     listofaddresses = dm.pull()
     
     #TEST SHIFT
-    #testfeatureshift(dm)
+    testfeatureshift(dm)
     
     # TEST CF
     testchangefeedAUR(dm,af)
@@ -265,7 +274,7 @@ def test1(dm,af):
         time.sleep(5)
         
 def testfeatureshift(dm):
-    time.sleep(10)
+
     aimslog.info('*** Main SHIFT '+str(time.clock()))
     dm.setbb(sw=(174.76918,-41.28515), ne=(174.79509,-41.26491))
     time.sleep(30)
