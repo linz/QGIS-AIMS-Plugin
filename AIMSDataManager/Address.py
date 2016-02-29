@@ -287,7 +287,7 @@ class Address(object):
     @staticmethod
     def clone(a,b=None):
         '''clones attributes of A to B and instantiates B (as type A) if not provided'''
-        if not b: b = AddressFactory.getInstance(a.type)
+        if not b: b = AddressFactory.getInstance(a.type).getAddress()
         for attr in a.__dict__.keys(): setattr(b,attr,getattr(a,attr))
         return b
     

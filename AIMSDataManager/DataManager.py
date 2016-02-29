@@ -191,8 +191,18 @@ class DataManager(object):
     def repairAddress(self,address):
         address.setQueueStatus(ApprovalType.revalt[ApprovalType.UPDATE].title())
         self.ioq[FeedType.RESOLUTIONFEED]['in'].put({ApprovalType.UPDATE:(address,)})
-        
-
+    
+    #----------------------------
+    def getWarnings(self,address):
+        '''Manually request warnin messages per addrerss, useful if warnings not enabled by default'''
+        cid = address.getChangeId()
+        if address.type != FeedType.RESOLUTION:
+            aimslog.warn('Attempt to set warnings on non-resolution address, casting')
+            address = Address.clone(address, AddressFactory.getInstance(FeedType.RESOLUTIONFEED).getAddress())
+        dsrf = self._initFeedDSChecker(FeedType.RESOLUTIONFEED)
+        address.setWarnings( dsrf.updateWarnings(cid) )
+        dsrf.stop()
+        return address
     #CM
         
     def __enter__(self):
@@ -209,10 +219,9 @@ class Persistence():
     tracker,coords,ADL = 3*(None,)
     
     def __init__(self):
-
+        self.coords = {'sw':SWz,'ne':NEz}
         if not self.read():
             self.ADL = self._initADL() 
-            self.coords = {'sw':SWz,'ne':NEz}
             #default tracker, gets overwritten
             self.tracker = {ft:{'page':[1,1],'index':1,'threads':1,'interval':5} for ft in FeedType.reverse}
             self.write() 

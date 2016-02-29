@@ -44,8 +44,8 @@ PAGES_PERIOCDIC = 3
 POOL_PAGE_CHECK_DELAY = 0.2
 QUEUE_CHECK_DELAY = 1
 FEED_REFRESH_DELAY = 10
-LAST_PAGE_GUESS = 1000
-
+LAST_PAGE_GUESS = 100
+ENABLE_RESOLUTION_FEED_WARNINGS = False
 
 class DataRequestChannel(threading.Thread):    
     
@@ -348,9 +348,10 @@ class DataSyncResolutionFeed(DataSyncFeeds):
     def fetchFeedUpdates(self,thr):
         '''Override feed updates adding an additional updater call fetching warning text per address'''
         res = super(DataSyncResolutionFeed,self).fetchFeedUpdates(thr)
-        for adr in res:
-            cid = adr.getChangeId()
-            adr.setWarnings(self.updateWarnings(cid))
+        if ENABLE_RESOLUTION_FEED_WARNINGS:
+            for adr in res:
+                cid = adr.getChangeId()
+                adr.setWarnings(self.updateWarnings(cid))
         return res
     
     def updateWarnings(self,cid):   
