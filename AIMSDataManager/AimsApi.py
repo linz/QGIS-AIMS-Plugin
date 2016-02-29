@@ -12,7 +12,7 @@
 import json
 import httplib2
 
-from Address import Address,AddressChange,AddressResolution
+from Address import Address,AddressChange,AddressResolution,AimsWarning
 from Config import ConfigReader
 from AimsUtility import ActionType,ApprovalType,FeedType,MAX_FEATURE_COUNT
 from AimsLogging import Logger
@@ -187,13 +187,14 @@ class AimsApi(object):
         return jcontent['entities']
 
 
-    def getWarnings(self,cid):
+    def getWarnings(self,ft,cid):
         '''get warnings for a changeId'd resolutionfeed address'''
-        warnlist = []
-        url = '{}/{}/{}'.format(self._url,FeedType.reverse[ft].lower(),self.cid)
+        url = '{}/{}/{}'.format(self._url,FeedType.reverse[ft].lower(),cid)
         resp, content = self.h.request(url,"GET", headers = self._headers)
-        for entity in self.handleResponse(url, resp["status"], json.loads(content)):
-            warnlist += [Warning.getInstance(entity),]
+        err, jcontent = self.handleResponse(url, resp["status"], json.loads(content))
+        warnlist = {'error':err,'warn':()} if err else {'error':None,'warn':()}
+        for entity in jcontent['entities']:
+            warnlist['warn'] += (AimsWarning.getInstance(entity['properties']),)
         return warnlist
     
         

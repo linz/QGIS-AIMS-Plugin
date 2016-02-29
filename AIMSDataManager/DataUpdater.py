@@ -9,7 +9,6 @@
 #
 ################################################################################
 
-from urllib2 import HTTPError, base64, ProxyHandler
 from datetime import datetime as DT
 #from functools import wraps
 
@@ -82,29 +81,29 @@ class DataUpdater(threading.Thread):
         
 class DataUpdaterAction(DataUpdater):
     
-    def setup(self,ft,address):
+    def setup(self,at,address):
         '''set address parameters'''
-        self.ft = ft
+        self.at = at
         self.address = address
-        self.payload = self.afactory.convertAddress(self.address,self.ft)
+        self.payload = self.afactory.convertAddress(self.address,self.at)
         
     def run(self):
         '''address change action on the CF'''
-        aimslog.info('ACT.{} {} - Addr{}'.format(self.ref,ActionType.reverse[self.ft],self.address))
-        err,resp = self.api.changefeedActionAddress(self.ft,self.payload)
+        aimslog.info('ACT.{} {} - Addr{}'.format(self.ref,ActionType.reverse[self.at],self.address))
+        err,resp = self.api.changefeedActionAddress(self.at,self.payload)
         chg_adr = self.afactory.getAddress(model=resp)
         print 'CHG_ADR',chg_adr
-        if err: res_adr.setStatusNotes(err)
+        if err: chg_adr.setStatusNotes(err)
         self.queue.put(chg_adr)
 
             
 class DataUpdaterApproval(DataUpdater):
+    '''Updater to request and process response objects for resolution queue actions'''
     
     def setup(self,ft,address):
         '''set address parameters'''
         self.ft = ft
         self.address = address
-        self.cid = address.getChangeId()
         self.payload = self.afactory.convertAddress(self.address,self.ft)
         
     def run(self):
@@ -113,10 +112,26 @@ class DataUpdaterApproval(DataUpdater):
         err,resp = self.api.resolutionfeedApproveAddress(self.ft,self.payload,self.cid)
         res_adr = self.afactory.getAddress(model=resp)
         print 'RES_ADR',res_adr
-        res_adr.setWarning(self.api.getWarnings(self.cid))
+        #cid = res_adr.getChangeId()
+        #res_adr.setWarning(self.api.getWarnings(cid))#self.cid
         if err: res_adr.setStatusNotes(err)
         self.queue.put(res_adr)
         #self.queue.put({'resp':resp,'warn':warn})
+        
+        
+class DataUpdaterWarning(DataUpdater):
+    '''Updater to read warning messages on the resolution feed'''
+    
+    def setup(self,ft,cid):
+        '''set address parameters'''
+        self.ft = ft
+        self.cid = cid
+        
+    def run(self):
+        '''approval action on the RF''' 
+        aimslog.info('WRN.{} {}'.format(self.ref,self.cid))
+        resp = self.api.getWarnings(self.ft,self.cid)
+        self.queue.put(resp)
 
         
     

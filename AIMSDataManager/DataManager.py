@@ -27,9 +27,11 @@ LOCALADL = 'aimsdata'
 LOCALDB = 'aimsdata.sb'
 UPDATE_INTERVAL = 5#s
 LOGFILE = 'admlog'
-SW = (174.75918,-41.29515)
-NE = (174.78509,-41.27491)
-FEATURES_THREAD_TIMEOUT = 10
+#SW = (174.75918,-41.29515)
+#NE = (174.78509,-41.27491)
+SWz = (0.0, 0.0)
+NEz = (0.0, 0.0)
+FEATURES_THREAD_TIMEOUT = 5
 
 
 aimslog = None
@@ -66,9 +68,15 @@ class DataManager(object):
             FeedType.RESOLUTIONFEED:DataSyncResolutionFeed
         }
         for ref in self.dsr:
+            self._initFeedDSChecker(ref)
+
+    def _initFeedDSChecker(self,ref):
+        '''Starts a sync thread if conditions appropriate'''
+        if ref == FeedType.FEATURES and self.persist.coords['sw'] == SWz and self.persist.coords['ne'] == NEz:                
+            self.ds[ref] = None
+        else:
             self._initFeedDS(ref,self.dsr[ref])
-
-
+            
         
     def _initFeedDS(self,ft,feedclass): 
         ts = '{0:%y%m%d.%H%M%S}'.format(DT.now())
@@ -90,10 +98,10 @@ class DataManager(object):
     def _restart(self):
         '''If a DataSync thread crashes restart it'''
         for ft in FeedType.reverse:
-            if not self.ds[ft].isAlive():
+            if not self.ds[ft] or not self.ds[ft].isAlive():
                 aimslog.warn('DS thread {} has died, restarting'.format(ft))
                 del self.ds[ft]
-                self._initFeedDS(ref,self.dsr[ref])
+                self._initFeedDSChecker(ft)
             
         
     #Client Access
@@ -106,15 +114,15 @@ class DataManager(object):
             #save the new coordinates
             self.persist.coords['sw'],self.persist.coords['ne'] = sw,ne
             #kill the old features thread
-            if self.ds[FeedType.FEATURES].isAlive():
+            if self.ds[FeedType.FEATURES] and self.ds[FeedType.FEATURES].isAlive():
                 aimslog.info('Attempting Features Thread STOP')
                 self.ds[FeedType.FEATURES].stop()
                 self.ds[FeedType.FEATURES].join(FEATURES_THREAD_TIMEOUT)
-            #TODO investigate thread non-stopping issues
-            if self.ds[FeedType.FEATURES].isAlive(): aimslog.warn('Features Thread JOIN timeout')
+                #TODO investigate thread non-stopping issues
+                if self.ds[FeedType.FEATURES].isAlive(): aimslog.warn('Features Thread JOIN timeout')
             del self.ds[FeedType.FEATURES]
             #reinitialise a new features DataSync
-            self._initFeedDS(FeedType.FEATURES,DataSyncFeatures)
+            self._initFeedDSChecker(FeedType.FEATURES)
 
         
     #Push and Pull relate to features feed actions
@@ -141,11 +149,12 @@ class DataManager(object):
         
     def _monitor(self):
         '''for each feed check the out queue and put any new items into the ADL'''
-        for ft in FeedType.reverse:
-            while not self.ioq[ft]['out'].empty():
-                #because the queue isnt populated till all pages are loaded we can just swap out the ADL
-                self.persist.ADL[ft] = self.ioq[ft]['out'].get()
-                self.stamp[ft] = time.time()
+        for ft in self.ds:#FeedType.reverse:
+            if self.ds[ft]:
+                while not self.ioq[ft]['out'].empty():
+                    #because the queue isnt populated till all pages are loaded we can just swap out the ADL
+                    self.persist.ADL[ft] = self.ioq[ft]['out'].get()
+                    self.stamp[ft] = time.time()
 
         #self.persist.write()
         return self.persist.ADL
@@ -156,13 +165,6 @@ class DataManager(object):
             resp += (self.ioq[ft]['resp'].get(),)
         return resp
         
-        
-    def _scan(self,ds):
-        '''compare provided and current ADL. Split out deletes/adds/updates'''
-        #self._synchroniseChangeFeed(ds)
-        #self._synchroniseResolutionFeed(ds)
-        self._scanChangeFeedChanges(ds[FeedType.CHANGEFEED])
-        self._scanResolutionFeedChanges(ds[FeedType.RESOLUTIONFEED])
       
     #convenience methods  
     def addAddress(self,address):
@@ -189,8 +191,18 @@ class DataManager(object):
     def repairAddress(self,address):
         address.setQueueStatus(ApprovalType.revalt[ApprovalType.UPDATE].title())
         self.ioq[FeedType.RESOLUTIONFEED]['in'].put({ApprovalType.UPDATE:(address,)})
-        
-
+    
+    #----------------------------
+    def getWarnings(self,address):
+        '''Manually request warnin messages per addrerss, useful if warnings not enabled by default'''
+        cid = address.getChangeId()
+        if address.type != FeedType.RESOLUTION:
+            aimslog.warn('Attempt to set warnings on non-resolution address, casting')
+            address = Address.clone(address, AddressFactory.getInstance(FeedType.RESOLUTIONFEED).getAddress())
+        dsrf = self._initFeedDSChecker(FeedType.RESOLUTIONFEED)
+        address.setWarnings( dsrf.updateWarnings(cid) )
+        dsrf.stop()
+        return address
     #CM
         
     def __enter__(self):
@@ -207,10 +219,9 @@ class Persistence():
     tracker,coords,ADL = 3*(None,)
     
     def __init__(self):
-
+        self.coords = {'sw':SWz,'ne':NEz}
         if not self.read():
             self.ADL = self._initADL() 
-            self.coords = {'sw':SW,'ne':NE}
             #default tracker, gets overwritten
             self.tracker = {ft:{'page':[1,1],'index':1,'threads':1,'interval':5} for ft in FeedType.reverse}
             self.write() 
@@ -224,14 +235,16 @@ class Persistence():
         '''unpickle local store'''  
         try:
             archive = pickle.load(open(localds,'rb'))
-            self.tracker,self.coords,self.ADL = archive
+            #self.tracker,self.coords,self.ADL = archive
+            self.tracker,self.ADL = archive
         except:
             return False
         return True
     
     def write(self, localds=LOCALADL):
         try:
-            archive = [self.tracker,self.coords,self.ADL]
+            #archive = [self.tracker,self.coords,self.ADL]
+            archive = [self.tracker,self.ADL]
             pickle.dump(archive, open(localds,'wb'))
         except:
             return False
@@ -257,10 +270,10 @@ def test1(dm,af):
     testfeatureshift(dm)
     
     # TEST CF
-    testchangefeedAUR(dm,af[FeedType.FEATURES])
+    testchangefeedAUR(dm,af)
     
     # TEST RF
-    testresolutionfeedAUD(dm)
+    testresolutionfeedAUD(dm,af)
 
     
     aimslog.info('*** Resolution ADD '+str(time.clock()))    
@@ -272,7 +285,7 @@ def test1(dm,af):
         time.sleep(5)
         
 def testfeatureshift(dm):
-    time.sleep(10)
+
     aimslog.info('*** Main SHIFT '+str(time.clock()))
     dm.setbb(sw=(174.76918,-41.28515), ne=(174.79509,-41.26491))
     time.sleep(30)
@@ -280,43 +293,56 @@ def testfeatureshift(dm):
     time.sleep(5)
     
     
-def testchangefeedAUR(dm,ff):
-    addr_c = gettestdata(ff)
-    
+def testchangefeedAUR(dm,af):
+    ver = 1000000
+    #pull address from features (map)
+    addr_c = gettestdata(af[FeedType.FEATURES])
+    #cast to addresschange type, to do cf ops
+    addr_c = af[FeedType.CHANGEFEED].cast(addr_c)
+    addr_c.setVersion(ver)
     aimslog.info('*** Change ADD '+str(time.clock()))
     #addr_c.setChangeType(ActionType.reverse[ActionType.ADD])
     #listofaddresses[FeedType.CHANGEFEED].append(addr_c)
     #dm.push(listofaddresses)
     dm.addAddress(addr_c)
-    time.sleep(10)
-    r = testresp(dm)
-    d = dm.pull()
-    time.sleep(5)    
+    resp = None
+    while True: 
+        resp = testresp(dm)
+        if resp: break
+        time.sleep(5)
+    ver += 1
+
     
     aimslog.info('*** Change UPDATE '+str(time.clock()))
     #addr_c.setChangeType(ActionType.reverse[ActionType.ADD])
     #listofaddresses[FeedType.CHANGEFEED].append(addr_c)
     #dm.push(listofaddresses)
     addr_c.setFullAddress('Unit B, 16 Islay Street, Glenorchy')
+    addr_c.setVersion(ver)
     dm.updateAddress(addr_c)
-    time.sleep(10)
-    r = testresp(dm)
-    d = dm.pull()
-    time.sleep(5)    
+    resp = None
+    while True: 
+        resp = testresp(dm)
+        if resp: break
+        time.sleep(5)
+    ver += 1
     
     
     aimslog.info('*** Change RETIRE '+str(time.clock()))
     #addr_c.setChangeType(ActionType.reverse[ActionType.ADD])
     #listofaddresses[FeedType.CHANGEFEED].append(addr_c)
     #dm.push(listofaddresses)
+    addr_c.setVersion(ver)
     dm.retireAddress(addr_c)
-    time.sleep(10)
-    r = testresp(dm)
-    d = dm.pull()
-    time.sleep(5)
+    resp = None
+    while not resp: 
+        resp = testresp(dm)
+        time.sleep(5)     
+    ver += 1
+
     
-def testresolutionfeedAUD(dm):
-    addr_r = f3[0].getAddress('resolution_accept')
+def testresolutionfeedAUD(dm,af):
+    pass#addr_r = af.getAddress('resolution_accept')
 
 
 def testresp(dm):
@@ -332,7 +358,7 @@ def testresp(dm):
         #aimslog.info('*** Main RESP {} - [{}]'.format(r,len(resp))) 
         aimslog.info('*** Main RESP {} [{}]'.format(r,len(resp)))
         
-    return r
+    return resp
             
 def gettestdata(ff):
     a = ff.getAddress('change_add')
@@ -356,7 +382,7 @@ def gettestdata(ff):
     a.setUnitType('Unit')
     a.setUnitValue('b')
 
-    a.setAddressPosition(p)
+    a.setAddressPositions(p)
 
     a._codes_suburbLocalityId = '2104'
     a._codes_parcelId = '3132748'
