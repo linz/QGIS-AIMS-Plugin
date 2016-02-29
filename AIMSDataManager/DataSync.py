@@ -220,7 +220,7 @@ class DataSyncFeatures(DataSync):
     
     def __init__(self,params,queues):
         super(DataSyncFeatures,self).__init__(params,queues)
-        self.ftracker = {'page':[1,1],'index':1,'threads':3,'interval':60}    
+        self.ftracker = {'page':[1,1],'index':1,'threads':1,'interval':60}    
 
 
 class DataSyncFeeds(DataSync): 

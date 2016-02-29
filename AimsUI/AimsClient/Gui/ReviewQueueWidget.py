@@ -22,7 +22,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.setController( controller )
         self.iface = self._controller.iface
         #self.reviewData = {(None, None, None ,None ,None ): [[None, None, None, None, None]]}
-        self.uidm = self._controller.UidataManager
+        self.uidm = self._controller.uidm
         self.reviewData = self.uidm.reviewData()   
         self.currentObjKey = None
         self.currentAdrCoord = [0,0]

@@ -130,7 +130,7 @@ class DataManager(object):
         '''returns feed length counts without client having to do a pull/deepcopy'''
         self._restart()
         self._monitor()
-        return [(self.stamp[ft],len(self.persist.ADL[f])) for f in FeedType.reverse]
+        return [(self.stamp[f],len(self.persist.ADL[f])) for f in FeedType.reverse]
         
     
     def action(self,at,address):

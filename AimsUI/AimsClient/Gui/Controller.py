@@ -58,7 +58,7 @@ class Controller(QObject):
         self.actions = []
         if Controller._instance == None:
             Controller._instance = self
-        self.UidataManager = UiDataManager(self.iface, self)
+        self.uidm = UiDataManager(self.iface, self) # rename uidm
       
         aimslog.debug(iface)
         
@@ -240,7 +240,7 @@ class Controller(QObject):
     
     def setPreviousMapTool(self):
         ''' this allows for roll back to the maptool that called get rcl
-        for a better ux'''
+        for an efficient ux'''
         self.iface.mapCanvas().setMapTool(self._currentMapTool)
         
     def startNewAddressTool(self):
