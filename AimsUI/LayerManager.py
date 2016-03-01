@@ -87,10 +87,12 @@ class LayerManager(QObject):
         
         QgsMapLayerRegistry.instance().layerWillBeRemoved.connect(self.checkRemovedLayer)
         QgsMapLayerRegistry.instance().layerWasAdded.connect( self.checkNewLayer )
+        
     
     def initialiseExtentEvent(self):  
         ''' Once plugin loading triggered initialise loading of AIMS Feautres '''
         self._iface.mapCanvas().extentsChanged.connect(self.getAimsFeatures)
+        self._iface.mapCanvas().extentsChanged.connect(self.updateReviewLayer) # triggered for testing rev layer - TEMP
     
     def layerId(self, layer):
         idprop = self._propBaseName + 'Id' 
@@ -216,13 +218,17 @@ class LayerManager(QObject):
     
     def updateReviewLayer(self):
         # for testing this is triggered by extent changes but more triggers to come ...  
+        id = 'rev'
         layer = self.findLayer(id)
         #get reviewfeatures. in the fututre to be emitted(?)
+        provider = layer.dataProvider()
         for reviewItem in self._controller.uidm.reviewData().values():
             fet = QgsFeature()
             point = reviewItem._addressedObject_addressPositions[0]._position_coordinates
             fet.setGeometry(QgsGeometry.fromPoint(QgsPoint(point[0], point[1])))
-            fet.setAttributes([ reviewItem.getFullNumber()])
+            fet.setAttributes([ reviewItem.getFullNumber()]) # < -- should also add warning and then points can be styled as to 'points has warnings'
+            provider.addFeatures([fet])
+        layer.commitChanges()
             
     def getAimsFeatures(self):
         ext = self._iface.mapCanvas().extent()
