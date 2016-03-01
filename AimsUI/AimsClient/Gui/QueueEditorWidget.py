@@ -56,7 +56,6 @@ class QueueEditorWidget( Ui_QueueEditorWidget, QWidget ):
                 'uExternalObjectId':['_addressedObject_externalObjectId','setExternalObjectId'],
                 'uValuationReference':['_addressedObject_valuationReference','setValuationReference'],
                 'uCertificateOfTitle':['addressedObject_certificateOfTitle','setCertificateOfTitle'], 
-                'uCertificateOfTitle':['_addressedObject_certificateOfTitle','setCertificateOfTitle'],
                 'uAppellation':['_addressedObject_appellation','setAppellation']}
     
     def currentFeatureToUi(self, feature):
@@ -71,7 +70,6 @@ class QueueEditorWidget( Ui_QueueEditorWidget, QWidget ):
                     uiElement.setCurrentIndex(0)
                     uiElement.setCurrentIndex(QComboBox.findText(uiElement, str(getattr(feature, objProp[0]))))
      
-    def updateFeature(self, feature):
         for uiElement, objProp in self.uiToObjMappings.items():
             uiElement = getattr(self, uiElement)
             if uiElement != '' and uiElement != 'NULL':

@@ -24,6 +24,43 @@ aimslog = Logger.setup()
 class InvalidParameterException(Exception): pass
 
 class LayerManager(QObject):
+    adrLayerObjMappings = {'addressType':['_components_addressType', None], # potential for mapping class?
+                'fullAddress':['_components_fullAddress', None],
+                'fullAddressNumber':['_components_fullAddressNumber', None],
+                'fullRoadName':['_components_fullRoadName', None],
+                'suburbLocality':['_components_suburbLocality', None],
+                'townCity':['_components_townCity' '', None],
+                'meshblock':['_codes_meshblock', None],
+                'lifecycle':['_components_lifecycle', None], 
+                'roadPrefix':['_components_roadSuffix',None],
+                'roadName':['_components_roadName', None],                                
+                'roadType':['_components_roadType',None],
+                'roadSuffix':['_components_roadSuffix',None],
+                'roadCentrelineId':['_components_roadCentrelineId',None],
+                'waterRoute':['_components_waterRoute',None],
+                'waterName':['_components_waterName',None],
+                'unitValue':['_components_unitValue',None],
+                'unitType':['_components_unitType',None],
+                'levelType':['_components_levelType',None],
+                'levelValue':['_components_levelValue',None],
+                'addressNumberPrefix':['_components_addressNumberPrefix',None],
+                'addressNumber':['_components_addressNumber',None],
+                'addressNumberSuffix':['_components_addressNumberSuffix',None],
+                'addressNumberHigh':['_components_addressNumberHigh',None],
+                'addressId':['_components_addressId',None],
+                'externalAddressId':['_components_externalAddressId',None],
+                'externalAddressIdScheme':['_components_externalAddressIdScheme',None],
+                'addressableObjectId':['_addressedObject_externalObjectId',None],
+                'objectType':['_addressedObject_objectType',None],
+                'objectName':['_addressedObject_objectName',None],
+                #'addressPositionsType':["_addressedObject_addressPositions[0]['positionType']",None],
+                'suburbLocalityId':['_codes_suburbLocalityId',None],
+                'parcelId':['_codes_parcelId',None],
+                'externalObjectId':['_addressedObject_externalObjectId',None],
+                'externalObjectIdScheme':['_addressedObject_externalObjectIdScheme',None],
+                'valuationReference':['_addressedObject_valuationReference',None],
+                'certificateOfTitle':['_addressedObject_certificateOfTitle',None],
+                'appellation':['_addressedObject_appellation',None]}
 
     _propBaseName='AimsClient.'
     _styledir = join(dirname(abspath(__file__)),'styles')
@@ -143,6 +180,9 @@ class LayerManager(QObject):
         return rcl,par    
         
     def loadAimsFeatures(self):
+        
+        self.getAimsFeatures() 
+        """
         ''' load AIMS features '''
         # test if layer exists
         self._controller
@@ -156,161 +196,50 @@ class LayerManager(QObject):
         scale = self._iface.mapCanvas().mapSettings().scale()
         if scale <= 10000: # would be a bit of reconjiggering to ensure persistent layer but then we could get scale from user settings
             self.getAimsFeatures()
-    
+        """
     def getAimsFeatures(self):
         ext = self._iface.mapCanvas().extent()
-        r = self._controller.getFeatures(ext.xMaximum(), ext.yMaximum(), ext.xMinimum(), ext.yMinimum()) 
+        self._controller.uidm.setBbox(sw = (ext.xMaximum(), ext.yMaximum()), ne = (ext.xMinimum(), ext.yMinimum()))
+        featureData = self._controller.uidm.featureData()
+        if featureData:
+            self.createFeaturesLayer(featureData) # will move to once only initialisation 
+            #self.updateFeaturesLayer(featureData)
+            
+        #else: ????
+        '''
+        ext = self._iface.mapCanvas().extent()
+        # set bbbox
+        # refresh
+        #r = self._controller.getFeatures(ext.xMaximum(), ext.yMaximum(), ext.xMinimum(), ext.yMinimum()) 
         # all or nothing. i.e if the API limit of 1000 feature is met dont give the user any features
         if len(r['entities']) == 1000:
             return
         self.createFeaturesLayers(r)
-        
-    def createFeaturesLayers(self, r):
+        '''
+    
+    
+#                'addressPositionsType':["_addressedObject_addressPositions[0]['position']['coordinates']",None],
+ 
+    def createFeaturesLayer(self, featureData):
         id = self._addressLayerId
-        layer = QgsVectorLayer("Point?crs=EPSG:4167", "AIMS Features", "memory") #rather not hard code crs
+        layer = QgsVectorLayer("Point?crs=EPSG:4167", "AIMS Features", "memory") 
         self.setLayerId(layer, id)
         provider = layer.dataProvider()
-        provider.addAttributes([QgsField('addressType', QVariant.String),
-                                QgsField('fullAddress', QVariant.String),
-                                QgsField('fullAddressNumber', QVariant.String),
-                                QgsField('fullRoadName', QVariant.String),
-                                QgsField('suburbLocality', QVariant.String),
-                                QgsField('townCity', QVariant.String),
-                                QgsField('meshblock', QVariant.String),
-                                QgsField('lifecycle', QVariant.String), 
-                                QgsField('roadPrefix', QVariant.String),
-                                QgsField('roadName', QVariant.String),                                
-                                QgsField('roadType', QVariant.String),
-                                QgsField('roadSuffix', QVariant.String),
-                                QgsField('roadCentrelineId', QVariant.String),
-                                QgsField('waterRoute', QVariant.String),
-                                QgsField('waterName', QVariant.String),
-                                QgsField('unitValue', QVariant.String),
-                                QgsField('unitType', QVariant.String),
-                                QgsField('levelType', QVariant.String),
-                                QgsField('levelValue', QVariant.String),
-                                QgsField('addressNumberPrefix', QVariant.String),
-                                QgsField('addressNumber', QVariant.String),
-                                QgsField('addressNumberSuffix', QVariant.String),
-                                QgsField('addressNumberHigh', QVariant.String),
-                                QgsField('version', QVariant.String),
-                                QgsField('addressId', QVariant.String),
-                                QgsField('externalAddressId', QVariant.String),
-                                QgsField('externalAddressIdScheme', QVariant.String),
-                                QgsField('addressableObjectId', QVariant.String),
-                                QgsField('objectType', QVariant.String),
-                                QgsField('objectName', QVariant.String),
-                                QgsField('addressPositionsType', QVariant.String),
-                                QgsField('suburbLocalityId', QVariant.String),
-                                QgsField('parcelId', QVariant.String),
-                                QgsField('externalObjectId', QVariant.String),
-                                QgsField('externalObjectIdScheme', QVariant.String),
-                                QgsField('valuationReference', QVariant.String),
-                                QgsField('certificateOfTitle', QVariant.String),
-                                QgsField('appellation', QVariant.String)
-                                ])
-        # add fields
+        provider.addAttributes([QgsField(layerAttName, QVariant.String) for layerAttName in LayerManager.adrLayerObjMappings.keys()])
 
-       
+    
         layer.updateFields() # tell the vector layer to fetch changes from the provider
         
         # Fairly simple implementation (but simple to read and explicit) would like
         # would like to come back and do something more intelligent here
     
-        for e in r['entities']:
-            c = e['properties']['components']
-            fullAddress = c['fullAddress'] if c.has_key('fullAddress') else None
-            fullAddressNumber = c['fullAddressNumber'] if c.has_key('fullAddressNumber') else None
-            fullRoadName = c['fullRoadName'] if c.has_key('fullRoadName') else None 
-            addressId = c['addressId'] if c.has_key('addressId') else None 
-            externalAddressId = c['externalAddressId'] if c.has_key('externalAddressId') else None 
-            externalAddressIdScheme = c['externalAddressIdScheme'] if c.has_key('externalAddressIdScheme') else None 
-            addressType = c['addressType'] if c.has_key('addressType') else None 
-            lifecycle = c['lifecycle']if c.has_key('lifecycle') else None 
-            unitType =c['unitType'] if c.has_key('unitType') else None 
-            unitValue = c['unitValue'] if c.has_key('unitValue') else None 
-            levelType = c['levelType'] if c.has_key('levelType') else None 
-            levelValue = c['levelValue'] if c.has_key('levelValue') else None 
-            addressNumberPrefix = c['addressNumberPrefix'] if c.has_key('addressNumberPrefix') else None 
-            addressNumber = c['addressNumber'] if c.has_key('addressNumber') else None 
-            addressNumberSuffix = c['addressNumberSuffix'] if c.has_key('addressNumberSuffix') else None 
-            addressNumberHigh = c['addressNumberHigh'] if c.has_key('addressNumberHigh') else None 
-            roadCentrelineId = c['roadCentrelineId'] if c.has_key('roadCentrelineId') else None 
-            roadPrefix = c['roadPrefix'] if c.has_key('roadPrefix') else None 
-            roadName = c['roadName'] if c.has_key('roadName') else None 
-            roadType = c['roadType'] if c.has_key('roadType') else None 
-            roadSuffix = c['roadSuffix'] if c.has_key('roadSuffix') else None 
-            waterRoute = c['waterRoute'] if c.has_key('waterRoute') else None 
-            waterName = c['waterName'] if c.has_key('waterName') else None 
-            suburbLocality = c['suburbLocality'] if c.has_key('suburbLocality') else None
-            townCity = c['townCity'] if c.has_key('townCity') else None 
-            
-            
-            o = e['properties']['addressedObject']
-            '''
-            addressableObjectId = o['addressableObjectId'] if o.has_key('addressableObjectId') else None  
-            objectType = o['objectType'] if o.has_key('objectType') else None     
-            objectName = o['objectName'] if o.has_key('objectName') else None    
-            addressPositionsType = o['addressPositions']['type'] if o['addressPositions'].has_key('type') else None
-            '''
-            coords = o['addressPositions'][0]['position']['coordinates'] if o['addressPositions'][0]['position'].has_key('coordinates') else None 
-            '''
-            externalObjectId = o['externalObjectId'] if o.has_key('externalObjectId') else None    
-            externalObjectIdScheme = o['externalObjectIdScheme'] if o.has_key('externalObjectIdScheme') else None    
-            valuationReference = o['valuationReference'] if o.has_key('valuationReference') else None    
-            certificateOfTitle = o['certificateOfTitle'] if o.has_key('certificateOfTitle') else None    
-            appellation = o['appellation'] if o.has_key('appellation') else None    
-            addressPositionsType = o['addressPositions']['type'] if o.has_key('addressPositions') and o['addressPositions'].has_key('type') else None
-            coords = o['addressPositions']['coordinates'] if o.has_key('addressPositions') and o['addressPositions'].has_key('coordinates') else None 
-            '''
-            codes = e['properties']['codes'] 
-            suburbLocalityId = codes['suburbLocalityId'] if codes.has_key('suburbLocalityId') else None  # does the user require these???
-            townCityId = codes['townCityId'] if codes.has_key('townCityId') else None  # does the user require these???
-            parcelId = codes['parcelId'] if codes.has_key('parcelId') else None  # does the user require these???
-            meshblock = codes['meshblock'] if codes.has_key('meshblock') else None 
-                 
+    #def updateFeaturesLayer(self, featureData):
+        
+        for feature in featureData.itervalues():
             fet = QgsFeature()
-            fet.setGeometry(QgsGeometry.fromPoint(QgsPoint(coords[0],coords[1])))
-            fet.setAttributes([ addressType,
-                                fullAddress,
-                                fullAddressNumber,
-                                fullRoadName,
-                                suburbLocality,
-                                townCity,
-                                meshblock,
-                                lifecycle, 
-                                roadPrefix,
-                                roadName,                              
-                                roadType,
-                                roadSuffix,
-                                roadCentrelineId,
-                                waterRoute,
-                                waterName,
-                                unitValue,
-                                unitType,
-                                levelType,
-                                levelValue,
-                                addressNumberPrefix,
-                                addressNumber,
-                                addressNumberSuffix,
-                                addressNumberHigh,
-                                
-                                addressId,
-                                externalAddressId,
-                                externalAddressIdScheme])
-                                
-                                #addressableObjectId,
-                                #objectType,
-                                #objectName,
-                                #addressPositionsType,
-                                #suburbLocalityId,
-                                #parcelId,
-                                #externalObjectId,
-                                #externalObjectIdScheme,
-                                #valuationReference,
-                                #certificateOfTitle,
-                         
-                                #appellation])
+            point = feature._addressedObject_addressPositions[0]['position']['coordinates']
+            fet.setGeometry(QgsGeometry.fromPoint(QgsPoint(point[0], point[1])))
+            fet.setAttributes([getattr(feature, v[0]) if hasattr (feature, v[0]) else '' for v in LayerManager.adrLayerObjMappings.values()])
             provider.addFeatures([fet])
 
         # commit to stop editing the layer
