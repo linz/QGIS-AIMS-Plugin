@@ -27,25 +27,21 @@ import time
 import threading
 import Queue
 
-
 from DataUpdater import DataUpdater,DataUpdaterAction,DataUpdaterApproval,DataUpdaterWarning
 from AimsApi import AimsApi 
 from AimsLogging import Logger
-from AimsUtility import ActionType,ApprovalType,FeedType,LogWrap,MAX_FEATURE_COUNT
+from AimsUtility import ActionType,ApprovalType,FeedType,LogWrap
+from AimsUtility import MAX_FEATURE_COUNT,THREAD_JOIN_TIMEOUT,PAGE_LIMIT,POOL_PAGE_CHECK_DELAY,QUEUE_CHECK_DELAY,LAST_PAGE_GUESS,ENABLE_RESOLUTION_FEED_WARNINGS
 from AddressFactory import AddressFactory#,AddressChangeFactory,AddressResolutionFactory
 aimslog = None
 
 FPATH = os.path.join('..',os.path.dirname(__file__)) #base of local datastorage
-FNAME = 'data_hash'
+#FNAME = 'data_hash'
 
-PAGES_INIT = 10
-PAGE_LIMIT = 1000
-PAGES_PERIOCDIC = 3
-POOL_PAGE_CHECK_DELAY = 0.2
-QUEUE_CHECK_DELAY = 1
-FEED_REFRESH_DELAY = 10
-LAST_PAGE_GUESS = 100
-ENABLE_RESOLUTION_FEED_WARNINGS = False
+#PAGES_INIT = 10
+#PAGES_PERIOCDIC = 3
+#FEED_REFRESH_DELAY = 10
+
 
 class DataRequestChannel(threading.Thread):    
     
@@ -139,15 +135,16 @@ class DataSync(threading.Thread):
             r['ref'] = self.fetchPage(r['page'])
         
         while len(pool)>0:#any([p[2] for p in pool if p[2]>1])
-            print '{} {}'.format(FeedType.reverse[self.ft].capitalize(),'STOP' if self.stopped() else 'RUN')
+            #print '{} {}'.format(FeedType.reverse[self.ft].capitalize(),'STOP' if self.stopped() else 'RUN')
             for r in pool:
-                print 'checking page {}{} pool={}'.format(FeedType.reverse[self.ft][:2].capitalize(), r['page'],[p['page'] for p in pool]) 
+                aimslog.debug('### Page {}{} pool={}'.format(FeedType.reverse[self.ft][:2].capitalize(), r['page'],[p['page'] for p in pool])) 
                 du = self.duinst[r['ref']]
                 #close down on stop signal
                 if self.stopped():
-                    print 'Stopping DataUpdater thread ',r['ref']
+                    aimslog.info('Stopping DataUpdater thread {}'.format(r['ref']))
                     du.stop()
-                    du.join(10)
+                    du.join(THREAD_JOIN_TIMEOUT)
+                    if du.isAlive():aimslog.warn('Thread timeout {}'.format(r['ref']))
                     del self.duinst[r['ref']]
                     pool.remove(r)
                     continue
@@ -155,7 +152,7 @@ class DataSync(threading.Thread):
                 #if len(pool) == 1 and r['page'] == 6: #DEBUG
                 #    print 'halt' 
                 if not du.isAlive():
-                    print '{}{} finished'.format(FeedType.reverse[self.ft][:2].capitalize(),r['page'])
+                    #print '{}{} finished'.format(FeedType.reverse[self.ft][:2].capitalize(),r['page'])
                     alist = du.queue.get()
                     acount = len(alist)
                     newaddr += alist
@@ -172,12 +169,12 @@ class DataSync(threading.Thread):
                             pool.append({'page':nextpage,'ref':ref})
                     else:
                         pass
-                        print 'No addresses found in page {}{}'.format(FeedType.reverse[self.ft][:2].capitalize(),r['page'])
+                        #print 'No addresses found in page {}{}'.format(FeedType.reverse[self.ft][:2].capitalize(),r['page'])
                 time.sleep(POOL_PAGE_CHECK_DELAY)
-                print '---------\n'
+                #print '---------\n'
         #update CF tracker with latest page number
         self.managePage((backpage,lastpage))
-        print 'Leaving {} with pool={} and #adr={}'.format(FeedType.reverse[self.ft][:2].capitalize(),[p['page'] for p in pool],len(newaddr))
+        #print 'Leaving {} with pool={} and #adr={}'.format(FeedType.reverse[self.ft][:2].capitalize(),[p['page'] for p in pool],len(newaddr))
         return newaddr
             
     def fetchPage(self,p):
@@ -220,7 +217,7 @@ class DataSyncFeatures(DataSync):
     
     def __init__(self,params,queues):
         super(DataSyncFeatures,self).__init__(params,queues)
-        self.ftracker = {'page':[1,1],'index':1,'threads':1,'interval':60}    
+        self.ftracker = {'page':[1,1],'index':1,'threads':3,'interval':60}    
 
 
 class DataSyncFeeds(DataSync): 

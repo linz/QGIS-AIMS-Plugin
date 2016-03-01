@@ -13,7 +13,19 @@ from functools import wraps, partial
 import time
 from AimsLogging import Logger
 
+# C O N S T A N T S
+THREAD_JOIN_TIMEOUT = 5
 MAX_FEATURE_COUNT = 1000
+PAGE_LIMIT = 1000
+POOL_PAGE_CHECK_DELAY = 0.2
+QUEUE_CHECK_DELAY = 1
+LAST_PAGE_GUESS = 100
+ENABLE_RESOLUTION_FEED_WARNINGS = False
+LOCALADL = 'aimsdata'
+SWZERO = (0.0, 0.0)
+NEZERO = (0.0, 0.0)
+SKIP_NULL = True
+DEF_SEP = '_'
 
 aimslog = Logger.setup()
 
@@ -31,7 +43,7 @@ class LogWrap(object):
     #simple ligfile time stamp decorator 
     @classmethod
     def timediff(cls,func=None, prefix=''):
-        msg = 'TD {} {}'.format(prefix,func.__name__)        
+        msg = 'TIME {} {}'.format(prefix,func.__name__)        
         if func is None:
             return partial(cls.timediff)
 

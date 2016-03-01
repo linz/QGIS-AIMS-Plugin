@@ -21,22 +21,10 @@ from AddressFactory import AddressFactory
 from DataSync import DataSync,DataSyncFeatures,DataSyncChangeFeed,DataSyncResolutionFeed
 from datetime import datetime as DT
 from AimsUtility import ActionType,ApprovalType,FeedType,readConf
+from AimsUtility import THREAD_JOIN_TIMEOUT,LOCALADL,SWZERO,NEZERO
 from AimsLogging import Logger
 
-LOCALADL = 'aimsdata'
-LOCALDB = 'aimsdata.sb'
-UPDATE_INTERVAL = 5#s
-LOGFILE = 'admlog'
-#SW = (174.75918,-41.29515)
-#NE = (174.78509,-41.27491)
-SWz = (0.0, 0.0)
-NEz = (0.0, 0.0)
-FEATURES_THREAD_TIMEOUT = 5
-
-
 aimslog = None
-
-
 
 class DataManager(object):
     '''Initialises maintenance thread and provides queue accessors'''
@@ -72,7 +60,7 @@ class DataManager(object):
 
     def _initFeedDSChecker(self,ref):
         '''Starts a sync thread if conditions appropriate'''
-        if ref == FeedType.FEATURES and self.persist.coords['sw'] == SWz and self.persist.coords['ne'] == NEz:                
+        if ref == FeedType.FEATURES and self.persist.coords['sw'] == SWZERO and self.persist.coords['ne'] == NEZERO:                
             self.ds[ref] = None
         else:
             self._initFeedDS(ref,self.dsr[ref])
@@ -117,7 +105,7 @@ class DataManager(object):
             if self.ds[FeedType.FEATURES] and self.ds[FeedType.FEATURES].isAlive():
                 aimslog.info('Attempting Features Thread STOP')
                 self.ds[FeedType.FEATURES].stop()
-                self.ds[FeedType.FEATURES].join(FEATURES_THREAD_TIMEOUT)
+                self.ds[FeedType.FEATURES].join(THREAD_JOIN_TIMEOUT)
                 #TODO investigate thread non-stopping issues
                 if self.ds[FeedType.FEATURES].isAlive(): aimslog.warn('Features Thread JOIN timeout')
             del self.ds[FeedType.FEATURES]
@@ -219,7 +207,7 @@ class Persistence():
     tracker,coords,ADL = 3*(None,)
     
     def __init__(self):
-        self.coords = {'sw':SWz,'ne':NEz}
+        self.coords = {'sw':SWZERO,'ne':NEZERO}
         if not self.read():
             self.ADL = self._initADL() 
             #default tracker, gets overwritten
@@ -250,8 +238,12 @@ class Persistence():
             return False
         return True
 
-testdata = []
+
+refsnap = None
+
 def test():
+    global refsnap
+    refsnap = {0:None,1:None,2:None}
     af = {ft:AddressFactory.getInstance(ft) for ft in FeedType.reverse}
 
     with DataManager() as dm:
@@ -259,7 +251,7 @@ def test():
         
         
 def test1(dm,af):
-    print 'start'
+    print 'start test'
     
     #dm.persist.ADL = testdata
     #get some data
@@ -288,10 +280,33 @@ def testfeatureshift(dm):
 
     aimslog.info('*** Main SHIFT '+str(time.clock()))
     dm.setbb(sw=(174.76918,-41.28515), ne=(174.79509,-41.26491))
-    time.sleep(30)
-    testresp(dm)
-    time.sleep(5)
-    
+    time.sleep(10)
+    resp = None
+    while not checkrefresh(dm): 
+        resp = testresp(dm)
+        time.sleep(5)    
+        
+    dm.setbb(sw=(174.76928,-41.28515), ne=(174.79519,-41.26481))
+    time.sleep(10)
+    resp = None
+    while not checkrefresh(dm): 
+        resp = testresp(dm)
+        time.sleep(5)
+        
+    dm.setbb(sw=(174.76928,-41.28515), ne=(174.79529,-41.26471))
+    time.sleep(10)
+    resp = None
+    while not checkrefresh(dm): 
+        resp = testresp(dm)
+        time.sleep(5)
+        
+def checkrefresh(dm):        
+    global refsnap
+    rs2 = dm.refresh()
+    if rs2 != refsnap:
+        refsnap = rs2
+        return True
+    return False
     
 def testchangefeedAUR(dm,af):
     ver = 1000000

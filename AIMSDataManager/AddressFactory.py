@@ -16,7 +16,8 @@ import re
 import os
 import copy
 from AimsUtility import ActionType,ApprovalType,FeedType,InvalidEnumerationType
-from Address import Address,AddressChange,AddressResolution,Position,DEF_SEP
+from AimsUtility import SKIP_NULL, DEF_SEP
+from Address import Address,AddressChange,AddressResolution,Position
 from AimsLogging import Logger
 
 P = os.path.join(os.path.dirname(__file__),'../resources/')
@@ -26,9 +27,6 @@ TP = {FeedType.FEATURES:{},
       FeedType.RESOLUTIONFEED:{ApprovalType.reverse[at]:None for at in ApprovalType.reverse}}
 
 #AT = {FeedType.FEATURES:Address,FeedType.CHANGEFEED:AddressChange,FeedType.RESOLUTIONFEED:AddressResolution}
-
-DEF_SEP = '_'
-SKIP_NULL = True
 
 aimslog = None
  
@@ -84,23 +82,6 @@ class AddressFactory(object):
                 aimslog.error(msg)
                 raise AddressCreationException(msg)
         return adr
-    
-#         try:
-#             if overwrite:
-#                 for k in data:
-#                     setter = 'set'+k[0].upper()+k[1:]
-#                     new_prefix = prefix+DEF_SEP+k
-#                     if isinstance(data[k],dict): adr = self.getAddress(ref=ref,adr=adr,model=data[k],prefix=new_prefix)
-#                     elif isinstance(data[k],list) and new_prefix == self.PBRANCH:
-#                         pstns = [] 
-#                         for pd in data[k]: pstns.append(Position.getInstance(pd,self))
-#                         adr.setAddressPositions(pstns)
-#                     else: getattr(adr,setter)(self.filterPI(data[k]) or None) if hasattr(adr,setter) else setattr(adr,new_prefix,self.filterPI(data[k]) or None)
-#         except Exception as e:
-#             msg = 'Error creating address object using model {} with {}'.format(data,e)
-#             aimslog.error(msg)
-#             raise AddressCreationException(msg)
-#         return adr
         
     def _readAddress(self,adr,data,prefix):
         '''nested address dict reader'''
@@ -115,7 +96,7 @@ class AddressFactory(object):
             else: getattr(adr,setter)(self.filterPI(data[k]) or None) if hasattr(adr,setter) else setattr(adr,new_prefix,self.filterPI(data[k]) or None)
         return adr
     
-    def cast(self,adr,ft=None):
+    def cast(self,adr):
         '''casts address from curent to requested address-type'''
         return Address.clone(adr, self.getAddress())
     
@@ -167,10 +148,10 @@ class AddressFeedFactory(AddressFactory):
             oneof = [pv[6:].strip('()').split('|') for pv in pi if pv.startswith('oneof')]
             default = oneof[0][0] if required and oneof else None
         if required and not val:
-            print 'error AddressFieldRequired',key
+            aimslog.error('AddressFieldRequired {}'.format(key))
             raise AddressFieldRequiredException('Address field {} required'.format(key))
         if oneof and val and val not in oneof[0]:
-            print 'error AddressFieldIncorrect',key,val
+            aimslog.error('AddressFieldIncorrect {}={}'.format(key,val))
             raise AddressFieldIncorrectException('Address field {}={} not one of {}'.format(key,val,oneof[0]))
         return val if val else default
     

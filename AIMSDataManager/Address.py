@@ -17,9 +17,6 @@ from AimsUtility import ActionType,ApprovalType,FeedType
 from AimsLogging import Logger
 from gtk._gtk import PositionType
 
-
-DEF_SEP = '_'
-
 aimslog = None
 
 #------------------------------------------------------------------------------
@@ -280,13 +277,14 @@ class Address(object):
     def compare(self,other):
         '''Equality comparator'''
         #return False if isinstance(self,other) else hash(self)==hash(other)
-        #IMPORTANT. Attribute value compare, relies on deep copy
+        #IMPORTANT. Attribute value compare only useful with distinct (deepcopy'd) instances
         return all((getattr(self,a)==getattr(other,a) for a in self.__dict__.keys()))
     
     
     @staticmethod
     def clone(a,b=None):
         '''clones attributes of A to B and instantiates B (as type A) if not provided'''
+        #duplicates only attributes set in source object
         if not b: b = AddressFactory.getInstance(a.type).getAddress()
         for attr in a.__dict__.keys(): setattr(b,attr,getattr(a,attr))
         return b
