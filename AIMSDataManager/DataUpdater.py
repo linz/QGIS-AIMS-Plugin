@@ -92,7 +92,7 @@ class DataUpdaterAction(DataUpdater):
         aimslog.info('ACT.{} {} - Addr{}'.format(self.ref,ActionType.reverse[self.at],self.address))
         err,resp = self.api.changefeedActionAddress(self.at,self.payload)
         chg_adr = self.afactory.getAddress(model=resp)
-        print 'CHG_ADR',chg_adr
+        #print 'CHG_ADR',chg_adr
         if err: chg_adr.setStatusNotes(err)
         self.queue.put(chg_adr)
 
@@ -111,7 +111,7 @@ class DataUpdaterApproval(DataUpdater):
         aimslog.info('APP.{} {} - Addr{}'.format(self.ref,ApprovalType.reverse[self.ft],self.address))
         err,resp = self.api.resolutionfeedApproveAddress(self.ft,self.payload,self.cid)
         res_adr = self.afactory.getAddress(model=resp)
-        print 'RES_ADR',res_adr
+        #print 'RES_ADR',res_adr
         #cid = res_adr.getChangeId()
         #res_adr.setWarning(self.api.getWarnings(cid))#self.cid
         if err: res_adr.setStatusNotes(err)

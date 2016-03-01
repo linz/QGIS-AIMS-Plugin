@@ -181,7 +181,7 @@ class AimsApi(object):
             url = '{}/{}?count={}&bbox={}&page={}'.format(self._url,FeedType.reverse[ft].lower(),count,bb,page)
         else:
             url = '{}/{}?count={}&page={}'.format(self._url,FeedType.reverse[ft].lower(),count,page)
-        print 'REQUEST',url
+        aimslog.debug('1P REQUEST {}'.format(url))
         resp, content = self.h.request(url,'GET', headers = self._headers)
         _,jcontent = self.handleResponse(url,resp["status"], json.loads(content))
         return jcontent['entities']
