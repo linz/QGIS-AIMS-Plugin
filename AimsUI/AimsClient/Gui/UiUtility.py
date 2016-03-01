@@ -46,7 +46,6 @@ class UiUtility (object):
                         'uExtObjectIdScheme':['_addressedObject_externalObjectIdScheme','setExternalObjectIdScheme'],
                         'uExternalObjectId':['_addressedObject_externalObjectId','setExternalObjectId'],
                         'uValuationReference':['_addressedObject_valuationReference','setValuationReference'],
-                        'uCertificateOfTitle':['addressedObject_certificateOfTitle','setCertificateOfTitle'], 
                         'uCertificateOfTitle':['_addressedObject_certificateOfTitle','setCertificateOfTitle'],
                         'uAppellation':['_addressedObject_appellation','setAppellation'],
                         }
@@ -170,38 +169,6 @@ class UiUtility (object):
                 if isinstance(uiElement, QPlainTextEdit)and uiElement.toPlainText() != '' and uiElement.toPlainText() != 'NULL':
                         setter(uiElement.toPlainText().encode('utf-8'))
                     
-        '''          
-        obj.feature.setAddressType(str(obj.uAddressType.currentText()))
-        obj.feature.setExternalAddressId(UiUtility.nullEqualsNone(str(obj.uExternalAddId.text())))
-        obj.feature.setExternalAddressIdScheme(UiUtility.nullEqualsNone(str(obj.uExternalAddressIdScheme.text())))
-        obj.feature.setLifecycle(str(obj.ulifeCycle.currentText()))
-        obj.feature.setUnitType(UiUtility.nullEqualsNone(str(obj.uUnitType.currentText())))
-        obj.feature.setUnitValue(UiUtility.nullEqualsNone(str(obj.uUnit.text()).upper()))
-        obj.feature.setLevelType(UiUtility.nullEqualsNone(str(obj.uLevelType.currentText())))
-        obj.feature.setLevelValue(UiUtility.nullEqualsNone(str(obj.uLevelValue.text())))
-        obj.feature.setAddressNumberPrefix(UiUtility.nullEqualsNone(str(obj.uPrefix.text()).upper()))         
-        obj.feature.setAddressNumberSuffix(UiUtility.nullEqualsNone(str(obj.uAlpha.text()).upper()))     
-        # Below must be int, else set to None ### Validation has made special handling of int redundant
-        obj.feature.setAddressNumber(int(obj.uBase.text())) if obj.uBase.text().isnumeric() else obj.feature.setAddressNumber(None)
-        obj.feature.setAddressNumberHigh(int(obj.uHigh.text())) if obj.uHigh.text().isnumeric() else obj.feature.setAddressNumberHigh(None)
-        obj.feature.setRoadCentrelineId(int(obj.uRclId.text())) if obj.uRclId.text().isnumeric() else obj.feature.setRoadCentrelineId(None)
-        # ROADS
-        obj.feature.setRoadPrefix(UiUtility.nullEqualsNone(str(obj.uRoadPrefix.text())))
-        obj.feature.setRoadName(UiUtility.nullEqualsNone(obj.uRoadName.text().encode('utf-8')))
-        obj.feature.setRoadType(UiUtility.nullEqualsNone(str(obj.uRoadTypeName.text())))
-        obj.feature.setRoadSuffix(UiUtility.nullEqualsNone(str(obj.uRoadSuffix.text())))
-        obj.feature.setWaterRoute(UiUtility.nullEqualsNone(obj.uWaterRouteName.text().encode('utf-8')))
-        obj.feature.setWaterName(UiUtility.nullEqualsNone(str(obj.uWaterName.text())))
-        obj.feature.setAoType(str(obj.uObjectType.currentText()))
-        obj.feature.setAoName(UiUtility.nullEqualsNone(obj.uObjectName.text().encode('utf-8'))) 
-        obj.feature.setExternalObjectId(str(obj.uExternalObjectId.text()))
-        obj.feature.setExternalObjectIdScheme(str(obj.uExtObjectIdScheme.text()))
-        obj.feature.setValuationReference(str(obj.uValuationReference.text())) 
-        obj.feature.setCertificateOfTitle(UiUtility.nullEqualsNone(obj.uCertificateOfTitle.text().encode('utf-8')))
-        obj.feature.setAppellation(UiUtility.nullEqualsNone(obj.uAppellation.text().encode('utf-8')))
-        obj.feature.setSourceReason(obj.uNotes.toPlainText().encode('utf-8'))   
-        # positionType??
-        '''
         
     @staticmethod
     def addObjToForm(obj, feature):      
