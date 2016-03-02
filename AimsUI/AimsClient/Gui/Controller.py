@@ -237,6 +237,8 @@ class Controller(QObject):
     def loadLayers(self):
         self._layerManager.initialiseExtentEvent()
         self._layerManager.installRefLayers()
+        self._layerManager.installAimsLayer('adr', 'AIMS Features')
+        self._layerManager.installAimsLayer('rev', 'AIMS Review')
     
     def setPreviousMapTool(self):
         ''' this allows for roll back to the maptool that called get rcl

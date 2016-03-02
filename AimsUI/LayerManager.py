@@ -23,7 +23,8 @@ aimslog = Logger.setup()
 
 class InvalidParameterException(Exception): pass
 
-class LayerManager(QObject):
+class Mapping():
+    
     adrLayerObjMappings = {'addressType':['_components_addressType', None], # potential for mapping class?
                 'fullAddress':['_components_fullAddress', None],
                 'fullAddressNumber':['_components_fullAddressNumber', None],
@@ -53,7 +54,7 @@ class LayerManager(QObject):
                 'addressableObjectId':['_addressedObject_externalObjectId',None],
                 'objectType':['_addressedObject_objectType',None],
                 'objectName':['_addressedObject_objectName',None],
-                #'addressPositionsType':["_addressedObject_addressPositions[0]['positionType']",None],
+                'addressPositionsType':["_addressedObject_addressPositions[0]._positionType",None],
                 'suburbLocalityId':['_codes_suburbLocalityId',None],
                 'parcelId':['_codes_parcelId',None],
                 'externalObjectId':['_addressedObject_externalObjectId',None],
@@ -62,9 +63,13 @@ class LayerManager(QObject):
                 'certificateOfTitle':['_addressedObject_certificateOfTitle',None],
                 'appellation':['_addressedObject_appellation',None]}
 
+
+class LayerManager(QObject):
+    
     _propBaseName='AimsClient.'
     _styledir = join(dirname(abspath(__file__)),'styles')
     _addressLayerId='adr'
+    _reviewLayerId='rev'
     
     addressLayerAdded = pyqtSignal( QgsMapLayer, name="addressLayerAdded")
     addressLayerRemoved = pyqtSignal( name="addressLayerRemoved")
@@ -78,13 +83,16 @@ class LayerManager(QObject):
         self._rclLayer = None
         self._parLayer = None
         self._locLayer = None
+        self._revLayer = None
         
         QgsMapLayerRegistry.instance().layerWillBeRemoved.connect(self.checkRemovedLayer)
         QgsMapLayerRegistry.instance().layerWasAdded.connect( self.checkNewLayer )
+        
     
     def initialiseExtentEvent(self):  
         ''' Once plugin loading triggered initialise loading of AIMS Feautres '''
-        self._iface.mapCanvas().extentsChanged.connect(self.loadAimsFeatures)
+        self._iface.mapCanvas().extentsChanged.connect(self.getAimsFeatures)
+        self._iface.mapCanvas().extentsChanged.connect(self.updateReviewLayer) # triggered for testing rev layer - TEMP
     
     def layerId(self, layer):
         idprop = self._propBaseName + 'Id' 
@@ -143,6 +151,12 @@ class LayerManager(QObject):
                 return layer
         return None
 
+    def styleLayer(self, layer, id):
+        try:
+            layer.loadNamedStyle(join(self._styledir,id+'_style.qml'))
+        except:
+            pass
+    
     def installLayer(self, id, schema, table, key, estimated, where, displayname):
         ''' install AIMS postgres layers '''
         layer = self.findLayer(id)
@@ -160,10 +174,7 @@ class LayerManager(QObject):
             uri.setUseEstimatedMetadata( estimated )
             layer = QgsVectorLayer(uri.uri(),displayname,"postgres")
             self.setLayerId( layer, id )
-            try:
-                layer.loadNamedStyle(join(self._styledir,id+'_style.qml'))
-            except:
-                pass
+            self.styleLayer(layer, id)            
             QgsMapLayerRegistry.instance().addMapLayer(layer)
         finally:
             self._statusBar.showMessage("")
@@ -174,84 +185,87 @@ class LayerManager(QObject):
         
         schema = Database.aimsSchema()
         
-        rcl = self.installLayer( 'rcl', schema, 'aimsroads', 'roadcentrelineid', True, "",'Roads' )        
+        #rcl = self.installLayer( 'rcl', schema, 'aimsroads', 'roadcentrelineid', True, "",'Roads' ) <--- disable pending new schema        
         par = self.installLayer( 'par', schema, 'parcel', 'id', True, 
                             "parceltype not in ('ROAD','RLWY')",'Parcels' )
-        return rcl,par    
+        #return rcl,par <--- disable pending new schema       
+        return par
         
-    def loadAimsFeatures(self):
+    def installAimsLayer(self, id, displayname):
+        ''' initialise AIMS feautres and review layers '''
         
-        self.getAimsFeatures() 
-        """
-        ''' load AIMS features '''
-        # test if layer exists
-        self._controller
-        
-        # old api method below
-        layerid = self._addressLayerId
-        layer = self.findLayer(layerid)
-        if layer:
-            QgsMapLayerRegistry.instance().removeMapLayer( layer.id() )
-        #test if scale allows showing of features
-        scale = self._iface.mapCanvas().mapSettings().scale()
-        if scale <= 10000: # would be a bit of reconjiggering to ensure persistent layer but then we could get scale from user settings
-            self.getAimsFeatures()
-        """
+        layer = QgsVectorLayer("Point?crs=EPSG:4167", displayname, "memory") 
+        self.setLayerId(layer, id)
+        provider = layer.dataProvider()
+        if id == 'adr':
+            provider.addAttributes([QgsField(layerAttName, QVariant.String) for layerAttName in Mapping.adrLayerObjMappings.keys()])
+        elif id == 'rev':
+            provider.addAttributes([QgsField('AddressNumber', QVariant.String)])      
+        layer.updateFields()
+        self.styleLayer(layer, id)     
+        QgsMapLayerRegistry.instance().addMapLayer(layer)           
+
+    def removeFeatures(self, layer):
+        ids = [f.id() for f in layer.getFeatures()]
+        layer.startEditing()
+        for fid in ids:          
+            layer.deleteFeature(fid)
+        layer.commitChanges()
+    
+    def isVisible(self, layer):
+        scale = self._iface.mapCanvas().mapRenderer().scale()
+        return scale <= layer.maximumScale() and scale >= layer.minimumScale()
+    
+    def updateReviewLayer(self):
+        # for testing this is triggered by extent changes but more triggers to come ...  
+        id = 'rev'
+        layer = self.findLayer(id)
+        #get reviewfeatures. in the fututre to be emitted(?)
+        provider = layer.dataProvider()
+        for reviewItem in self._controller.uidm.reviewData().values():
+            fet = QgsFeature()
+            point = reviewItem._addressedObject_addressPositions[0]._position_coordinates
+            fet.setGeometry(QgsGeometry.fromPoint(QgsPoint(point[0], point[1])))
+            fet.setAttributes([ reviewItem.getFullNumber()]) # < -- should also add warning and then points can be styled as to 'points has warnings'
+            provider.addFeatures([fet])
+        layer.commitChanges()
+            
     def getAimsFeatures(self):
         ext = self._iface.mapCanvas().extent()
         self._controller.uidm.setBbox(sw = (ext.xMaximum(), ext.yMaximum()), ne = (ext.xMinimum(), ext.yMinimum()))
         featureData = self._controller.uidm.featureData()
-        if featureData:
-            self.createFeaturesLayer(featureData) # will move to once only initialisation 
-            #self.updateFeaturesLayer(featureData)
+        self.updateFeaturesLayer(featureData)
+              
+    def updateFeaturesLayer(self, featureData):
+        id = 'adr'
+        layer = self.findLayer(id) # need - if does not exist .. then create
+        # ensure the user has not removed the layer 
+        if not layer:
+            self.installFeatureLayer()
+            layer = self.findLayer(id) 
+        # ensure legend is visible
+        if not self.isVisible(layer):
+            return             
+        # ensure legend is visible
+        legend = self._iface.legendInterface()
+        if not legend.isLayerVisible(layer):
+            legend.setLayerVisible(layer, True)
+        # remove current features
+        self.removeFeatures(layer)
             
-        #else: ????
-        '''
-        ext = self._iface.mapCanvas().extent()
-        # set bbbox
-        # refresh
-        #r = self._controller.getFeatures(ext.xMaximum(), ext.yMaximum(), ext.xMinimum(), ext.yMinimum()) 
-        # all or nothing. i.e if the API limit of 1000 feature is met dont give the user any features
-        if len(r['entities']) == 1000:
-            return
-        self.createFeaturesLayers(r)
-        '''
-    
-    
-#                'addressPositionsType':["_addressedObject_addressPositions[0]['position']['coordinates']",None],
- 
-    def createFeaturesLayer(self, featureData):
-        id = self._addressLayerId
-        layer = QgsVectorLayer("Point?crs=EPSG:4167", "AIMS Features", "memory") 
-        self.setLayerId(layer, id)
         provider = layer.dataProvider()
-        provider.addAttributes([QgsField(layerAttName, QVariant.String) for layerAttName in LayerManager.adrLayerObjMappings.keys()])
-
-    
-        layer.updateFields() # tell the vector layer to fetch changes from the provider
-        
-        # Fairly simple implementation (but simple to read and explicit) would like
-        # would like to come back and do something more intelligent here
-    
-    #def updateFeaturesLayer(self, featureData):
-        
         for feature in featureData.itervalues():
             fet = QgsFeature()
-            point = feature._addressedObject_addressPositions[0]['position']['coordinates']
+            point = feature._addressedObject_addressPositions[0]._position_coordinates
             fet.setGeometry(QgsGeometry.fromPoint(QgsPoint(point[0], point[1])))
-            fet.setAttributes([getattr(feature, v[0]) if hasattr (feature, v[0]) else '' for v in LayerManager.adrLayerObjMappings.values()])
+            fet.setAttributes([getattr(feature, v[0]) if hasattr (feature, v[0]) else '' for v in Mapping.adrLayerObjMappings.values()])
             provider.addFeatures([fet])
 
         # commit to stop editing the layer
         layer.commitChanges()
+        
         # update layer's extent when new features have been added
         # because change of extent in provider is not propagated to the layer
         #layer.updateExtents()
-        try:
-            layer.loadNamedStyle(join(self._styledir,id+'_style.qml'))
-        except:
-            pass
-        QgsMapLayerRegistry.instance().addMapLayer(layer)
 
-        if layer.featureCount() > 1000:
-            self._iface.messageBar().pushMessage("Warning", "Not all features shown: API limit of 1000 features met", level=QgsMessageBar.CRITICAL)
+

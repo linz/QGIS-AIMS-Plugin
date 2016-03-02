@@ -23,7 +23,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.iface = self._controller.iface
         #self.reviewData = {(None, None, None ,None ,None ): [[None, None, None, None, None]]}
         self.uidm = self._controller.uidm
-        self.reviewData = self.uidm.reviewData()   
+        self.reviewData = self.uidm.reviewTableData()   
         self.currentObjKey = None
         self.currentAdrCoord = [0,0]
         #self.refreshData()
@@ -122,8 +122,8 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
             rData[(v._changeId, v._changeType, 'orgPlaceHolder', v._workflow_submitterUserName, v._workflow_submittedDate )] = [[self.fullNumber(), self.fullRoad(k), v._lifecycle, v._townCity, v._suburbLocality ]]
         return rData
     
-    def refreshData(self):
-        self.reviewData = self.uidm.reviewData()
+    #def refreshData(self):
+    #    self.reviewData = self.uidm.reviewTableData()
         
     def updateFeature(self): # do i need this function or should i connect straight to the editor method
         currentObj = self.singleReviewObj(self.currentObjKey)
@@ -139,7 +139,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self._controller.dm.acceptAddress(self.singleReviewObj(self.currentObjKey))
     
     def display(self):
-        coords = self.uidm.reviewItemCoords(self.currentObjKey)
+        coords = self.uidm.reviewItemCoords(self.currentObjKey) # should directly access coords
         if self.currentAdrCoord == coords: 
             return
         self.currentAdrCoord = coords
