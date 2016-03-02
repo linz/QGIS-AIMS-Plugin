@@ -37,13 +37,13 @@ class DataManager(object):
     aimslog = Logger.setup()
     
     
-    def __init__(self):
+    def __init__(self,start=(FeedType.FEATURES,FeedType.CHANGEFEED,FeedType.RESOLUTIONFEED)):
         #self.ioq = {'in':Queue.Queue(),'out':Queue.Queue()}        
         self.persist = Persistence()
         self.conf = readConf()
-        self._initDS()
+        self._initDS(start)
         
-    def _initDS(self):
+    def _initDS(self,start):
         '''initialise the data sync queues/threads'''
         self.ioq = {ft:None for ft in FeedType.reverse}
         self.ds = {ft:None for ft in FeedType.reverse}
@@ -56,8 +56,12 @@ class DataManager(object):
             FeedType.RESOLUTIONFEED:DataSyncResolutionFeed
         }
         for ref in self.dsr:
-            self._initFeedDSChecker(ref)
-
+            if start and hasattr(start,'__iter__') and ref in start: self.start(ref)
+            
+    def start(self,ft):
+        self._initFeedDSChecker(ft)
+        
+        
     def _initFeedDSChecker(self,ref):
         '''Starts a sync thread if conditions appropriate'''
         if ref == FeedType.FEATURES and self.persist.coords['sw'] == SWZERO and self.persist.coords['ne'] == NEZERO:                
@@ -246,6 +250,8 @@ def test():
     refsnap = {0:None,1:None,2:None}
     af = {ft:AddressFactory.getInstance(ft) for ft in FeedType.reverse}
 
+    #with DataManager(start=None) as dm:
+    #    dm.start(FeedType.CHANGEFEED)
     with DataManager() as dm:
         test1(dm,af)
         

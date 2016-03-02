@@ -44,7 +44,7 @@ FPATH = os.path.join('..',os.path.dirname(__file__)) #base of local datastorage
 
 
 class DataRequestChannel(threading.Thread):    
-    
+    '''Request response channel for user initiated actions eg add decline retire etc'''
     def __init__(self,client):
         threading.Thread.__init__(self)
         self.client = client

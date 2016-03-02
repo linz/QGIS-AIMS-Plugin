@@ -14,18 +14,32 @@ import time
 from AimsLogging import Logger
 
 # C O N S T A N T S
+
+#time to wait for threads to join after stop has been called eg On BB move (s)
 THREAD_JOIN_TIMEOUT = 5
+#max number of features to request per page 
 MAX_FEATURE_COUNT = 1000
+#upper limit on page number to request
 PAGE_LIMIT = 1000
+#time delay between thread checks to see if pooled page has returned (s) 
 POOL_PAGE_CHECK_DELAY = 0.2
+#time delay between thread checks to see if user action has returned a response (s) 
 QUEUE_CHECK_DELAY = 1
+#when backfilling pages guess start point to find last page in change feed
 LAST_PAGE_GUESS = 100
+#automatically inset warnings into resolution feed features. very slow, enable only if RF is small
 ENABLE_RESOLUTION_FEED_WARNINGS = False
+#filename for persisted feed data
 LOCALADL = 'aimsdata'
+#zero southwest coordinate used for instantiation and to prevent unnecessary feature fetching
 SWZERO = (0.0, 0.0)
+#zero northeast coordinate used for instantiation and to prevent unnecessary feature fetching
 NEZERO = (0.0, 0.0)
+#enable null value removal in json requests
 SKIP_NULL = True
+#address attribute to dict separator character
 DEF_SEP = '_'
+
 
 aimslog = Logger.setup()
 

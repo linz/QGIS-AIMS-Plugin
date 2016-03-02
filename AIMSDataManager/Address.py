@@ -329,6 +329,9 @@ class AddressResolution(AddressRequestFeed):
     def setWarnings(self,warnings):
         self._warnings = warnings
         
+    def getWarnings(self):
+        return self._warnings
+        
 def test():
     import pprint
     from AddressFactory import AddressFactory
