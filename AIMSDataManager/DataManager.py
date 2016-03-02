@@ -37,13 +37,14 @@ class DataManager(object):
     aimslog = Logger.setup()
     
     
-    def __init__(self,start=(FeedType.FEATURES,FeedType.CHANGEFEED,FeedType.RESOLUTIONFEED)):
-        #self.ioq = {'in':Queue.Queue(),'out':Queue.Queue()}        
+    def __init__(self,start=set( (FeedType.FEATURES,FeedType.CHANGEFEED,FeedType.RESOLUTIONFEED) )):
+        #self.ioq = {'in':Queue.Queue(),'out':Queue.Queue()}   
+        if start and hasattr(start,'__iter__'): self.start = set(start)
         self.persist = Persistence()
         self.conf = readConf()
-        self._initDS(start)
+        self._initDS()
         
-    def _initDS(self,start):
+    def _initDS(self):
         '''initialise the data sync queues/threads'''
         self.ioq = {ft:None for ft in FeedType.reverse}
         self.ds = {ft:None for ft in FeedType.reverse}
@@ -56,9 +57,10 @@ class DataManager(object):
             FeedType.RESOLUTIONFEED:DataSyncResolutionFeed
         }
         for ref in self.dsr:
-            if start and hasattr(start,'__iter__') and ref in start: self.start(ref)
+            if ref in start: self.start(ref)
             
     def start(self,ft):
+        self.start.update(ft)
         self._initFeedDSChecker(ft)
         
         
@@ -89,9 +91,9 @@ class DataManager(object):
         
     def _restart(self):
         '''If a DataSync thread crashes restart it'''
-        for ft in FeedType.reverse:
+        for ft in self.start:#FeedType.reverse:
             if not self.ds[ft] or not self.ds[ft].isAlive():
-                aimslog.warn('DS thread {} has died, restarting'.format(ft))
+                aimslog.warn('DS thread {} has died, restarting'.format(FeedType.reverse[ft]))
                 del self.ds[ft]
                 self._initFeedDSChecker(ft)
             
@@ -152,13 +154,15 @@ class DataManager(object):
         return self.persist.ADL
     
     def response(self,ft=FeedType.CHANGEFEED):
+        '''Returns any features lurking in the response queue'''
         resp = ()
         while not self.ioq[ft]['resp'].empty():
             resp += (self.ioq[ft]['resp'].get(),)
         return resp
         
       
-    #convenience methods  
+    #convenience methods 
+    #---------------------------- 
     def addAddress(self,address):
         address.setChangeType(ActionType.reverse[ActionType.ADD].title())
         self.ioq[FeedType.CHANGEFEED]['in'].put({ActionType.ADD:(address,)})        
