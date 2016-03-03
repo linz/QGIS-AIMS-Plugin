@@ -21,7 +21,7 @@ import unittest
 
 #bitmask imports
 IMASK = {'all':0xF,'adr':0x1,'db':0x2,'lm':0x4,'con':0x8,'xdb':0xD}
-BM=0xE
+BM=0xF
 
 if BM & IMASK['adr']:
     from Test.Address_Test import Test_0_AddressSelfTest as AT0

@@ -69,17 +69,29 @@ class DataManager(object):
         if ref == FeedType.FEATURES and self.persist.coords['sw'] == SWZERO and self.persist.coords['ne'] == NEZERO:                
             self.ds[ref] = None
         else:
-            self._initFeedDS(ref,self.dsr[ref])
+            #self._initFeedDS(ref,self.dsr[ref])
+            self.ds[ref] = self._initFeedDS(ref,self.dsr[ref])
+            self.ds[ref].start()
             
         
     def _initFeedDS(self,ft,feedclass): 
         ts = '{0:%y%m%d.%H%M%S}'.format(DT.now())
         params = ('ReqADU.{}.{}'.format(ft,ts),ft,self.persist.tracker[ft],self.conf)
         self.ioq[ft] = {n:Queue.Queue() for n in ('in','out','resp')}
-        self.ds[ft] = feedclass(params,self.ioq[ft])
-        self.ds[ft].setup(self.persist.coords['sw'],self.persist.coords['ne'])
-        self.ds[ft].setDaemon(True)
-        self.ds[ft].start()
+        ds = feedclass(params,self.ioq[ft])
+        ds.setup(self.persist.coords['sw'],self.persist.coords['ne'])
+        ds.setDaemon(True)
+        #ds.start()
+        return ds    
+        
+#     def _initFeedDS(self,ft,feedclass): 
+#         ts = '{0:%y%m%d.%H%M%S}'.format(DT.now())
+#         params = ('ReqADU.{}.{}'.format(ft,ts),ft,self.persist.tracker[ft],self.conf)
+#         self.ioq[ft] = {n:Queue.Queue() for n in ('in','out','resp')}
+#         self.ds[ft] = feedclass(params,self.ioq[ft])
+#         self.ds[ft].setup(self.persist.coords['sw'],self.persist.coords['ne'])
+#         self.ds[ft].setDaemon(True)
+#         self.ds[ft].start()
         
     def close(self):
         '''shutdown closing/stopping ds threads and persisting data'''
@@ -196,12 +208,14 @@ class DataManager(object):
     
     #----------------------------
     def getWarnings(self,address):
-        '''Manually request warning messages per addrerss, useful if warnings not enabled by default'''
+        '''Manually request warning messages per address, useful if warnings not enabled by default'''
+        return
         cid = address.getChangeId()
         if address.type != FeedType.RESOLUTION:
             aimslog.warn('Attempt to set warnings on non-resolution address, casting')
             address = Address.clone(address, AddressFactory.getInstance(FeedType.RESOLUTIONFEED).getAddress())
-        dsrf = self._initFeedDSChecker(FeedType.RESOLUTIONFEED)
+        #TODO. Fix! Not thinking straight here, this wont work
+        dsrf = self._initFeedDS(FeedType.RESOLUTIONFEED)
         address.setWarnings( dsrf.updateWarnings(cid) )
         dsrf.stop()
         return address
@@ -273,16 +287,16 @@ def test1(dm,af):
     #get some data
     dm.refresh()
     listofaddresses = dm.pull()
-    
-    #TEST SHIFT
-    #testfeatureshift(dm)
+
     
     # TEST CF
     testchangefeedAUR(dm,af)
     
     # TEST RF
     testresolutionfeedAUD(dm,af)
-
+    
+    #TEST SHIFT
+    testfeatureshift(dm)
     
     aimslog.info('*** Resolution ADD '+str(time.clock()))    
     
@@ -356,7 +370,7 @@ def testchangefeedAUR(dm,af):
     dm.updateAddress(addr_c)
     resp = None
     while True: 
-        resp = testresp(dm)
+        resp = testresp(dm,FeedType.CHANGEFEED)
         if resp: break
         time.sleep(5)
     ver += 1
@@ -370,7 +384,7 @@ def testchangefeedAUR(dm,af):
     dm.retireAddress(addr_c)
     resp = None
     while not resp: 
-        resp = testresp(dm)
+        resp = testresp(dm,FeedType.CHANGEFEED)
         time.sleep(5)     
     ver += 1
 
@@ -379,13 +393,14 @@ def testresolutionfeedAUD(dm,af):
     pass#addr_r = af.getAddress('resolution_accept')
 
 
-def testresp(dm,ft):
+def testresp(dm,ft=FeedType.CHANGEFEED):
     r = None
     aimslog.info('*** Main COUNT {}'.format(dm.refresh()))  
     out = dm.pull()
     for o in out:
         #aimslog.info('*** Main OUTPUT {} - [{}]'.format(out[o],len(out[o])))
         aimslog.info('*** Main OUTPUT {} [{}]'.format(o,len(out[o])))
+    
     
     resp = dm.response(ft)
     for r in resp:

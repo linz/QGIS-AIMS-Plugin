@@ -307,7 +307,14 @@ class AddressRequestFeed(Address):
         self.meta.requestId = requestId      
           
     def getRequestId(self):
-        return self.meta.requestId
+        return self.meta.requestId if hasattr(self,'meta') else None
+    
+    def setErrors(self,errors):
+        self.setMeta()
+        self.meta.errors = errors      
+          
+    def getErrors(self):
+        return self.meta.errors if hasattr(self,'meta') else None
 
         
 
@@ -372,9 +379,9 @@ class AddressMetaData(object):
     def warnings(self,warnings): self._warnings = warnings 
      
     @property
-    def statusNotes(self): return self._statusNotes  
-    @statusNotes.setter
-    def statusNotes(self,statusNotes): self._statusNotes = statusNotes
+    def errors(self): return self._errors  
+    @errors.setter
+    def errors(self,errors): self._errors = errors
     
 def test():
     import pprint

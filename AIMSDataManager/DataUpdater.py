@@ -90,8 +90,8 @@ class DataUpdaterAction(DataUpdater):
         err,resp = self.api.changefeedActionAddress(self.at,self.payload)
         chg_adr = self.afactory.getAddress(model=resp)
         #print 'CHG_ADR',chg_adr
-        if err: chg_adr.setStatusNotes(err)
-        chg_adr.setRequestId(self.requestId)
+        if err: chg_adr.setErrors(err)
+        if self.requestId: chg_adr.setRequestId(self.requestId)
         self.queue.put(chg_adr)
 
             
@@ -113,8 +113,8 @@ class DataUpdaterApproval(DataUpdater):
         #print 'RES_ADR',res_adr
         #cid = res_adr.getChangeId()
         #res_adr.setWarning(self.api.getWarnings(cid))#self.cid
-        if err: res_adr.setStatusNotes(err)
-        res_adr.setRequestId(self.requestId)
+        if err: res_adr.setErrors(err)
+        if self.requestId: res_adr.setRequestId(self.requestId)
         self.queue.put(res_adr)
         #self.queue.put({'resp':resp,'warn':warn})
         
