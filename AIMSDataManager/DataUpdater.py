@@ -64,10 +64,6 @@ class DataUpdater(threading.Thread):
         for entity in self.api.getOnePage(self.ft,self.sw,self.ne,self.page):
             addr += [self.afactory.getAddress(model=entity['properties']),]
         self.queue.put(addr)
-
-        
-    def hijackStatus(self,adr,msg):
-        adr.setQueueStatus(msg)
         
     def stop(self):
         self._stop.set()
@@ -85,6 +81,7 @@ class DataUpdaterAction(DataUpdater):
         '''set address parameters'''
         self.at = at
         self.address = address
+        self.requestId = address.getRequestId()
         self.payload = self.afactory.convertAddress(self.address,self.at)
         
     def run(self):
@@ -93,7 +90,8 @@ class DataUpdaterAction(DataUpdater):
         err,resp = self.api.changefeedActionAddress(self.at,self.payload)
         chg_adr = self.afactory.getAddress(model=resp)
         #print 'CHG_ADR',chg_adr
-        if err: chg_adr.setStatusNotes(err)
+        if err: chg_adr.setErrors(err)
+        if self.requestId: chg_adr.setRequestId(self.requestId)
         self.queue.put(chg_adr)
 
             
@@ -104,6 +102,7 @@ class DataUpdaterApproval(DataUpdater):
         '''set address parameters'''
         self.ft = ft
         self.address = address
+        self.requestId = address.getRequestId()
         self.payload = self.afactory.convertAddress(self.address,self.ft)
         
     def run(self):
@@ -114,7 +113,8 @@ class DataUpdaterApproval(DataUpdater):
         #print 'RES_ADR',res_adr
         #cid = res_adr.getChangeId()
         #res_adr.setWarning(self.api.getWarnings(cid))#self.cid
-        if err: res_adr.setStatusNotes(err)
+        if err: res_adr.setErrors(err)
+        if self.requestId: res_adr.setRequestId(self.requestId)
         self.queue.put(res_adr)
         #self.queue.put({'resp':resp,'warn':warn})
         

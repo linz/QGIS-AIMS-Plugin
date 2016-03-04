@@ -37,16 +37,18 @@ class AddressConversionException(AddressException): pass
 class AddressCreationException(AddressException): pass
 
 class AddressFactory(object):
-    ''' AddressFactory class used to build address objects without the overhead of re-reading templates each time''' 
+    ''' AddressFactory class used to build address objects without the overhead of re-reading templates each time an address is needed''' 
     PBRANCH = '{d}{}{d}{}'.format(d=DEF_SEP,*Position.BRANCH)
     AFFT = FeedType.FEATURES
+    DEF_REF = FeedType.reverse[AFFT]
     addrtype = Address
     reqtype = None
     
     global aimslog
     aimslog = Logger.setup()
     
-    def __init__(self, ref=None): 
+    def __init__(self, ref=DEF_REF):
+        self.ref = ref
         self.template = TemplateReader().get()[self.AFFT]
     
     def __str__(self):
@@ -54,7 +56,7 @@ class AddressFactory(object):
     
     @staticmethod
     def getInstance(ft):
-        '''gets a factory instance'''
+        '''Gets an instance of a factory to generate a particular (ft) type of address object'''
         if ft==FeedType.FEATURES: return AddressFactory(ft)
         elif ft==FeedType.CHANGEFEED: return AddressChangeFactory(ft)
         elif ft==FeedType.RESOLUTIONFEED: return AddressResolutionFactory(ft)
@@ -84,7 +86,7 @@ class AddressFactory(object):
         return adr
         
     def _readAddress(self,adr,data,prefix):
-        '''nested address dict reader'''
+        '''Recursive address dict reader'''
         for k in data:
             setter = 'set'+k[0].upper()+k[1:]
             new_prefix = prefix+DEF_SEP+k
@@ -102,7 +104,7 @@ class AddressFactory(object):
     
     @staticmethod
     def filterPI(ppi):
-        '''filters out Possible Processing Instructions'''
+        '''filters out possible Processing Instructions'''
         sppi = str(ppi)
         if sppi.find('#')>-1:
             dflt = re.search('default=(\w+)',sppi)
@@ -176,17 +178,19 @@ class AddressFeedFactory(AddressFactory):
         
 class AddressChangeFactory(AddressFeedFactory):
     AFFT = FeedType.CHANGEFEED
+    DEF_REF = FeedType.reverse[AFFT]
     addrtype = AddressChange
     reqtype = ActionType
-    def __init__(self,ref=None):
+    def __init__(self,ref=DEF_REF):
         super(AddressChangeFactory,self).__init__(ref)
 
 
 class AddressResolutionFactory(AddressFeedFactory):
     AFFT = FeedType.RESOLUTIONFEED
+    DEF_REF = FeedType.reverse[AFFT]
     addrtype = AddressResolution
     reqtype = ApprovalType
-    def __init__(self,ref=None):
+    def __init__(self,ref=DEF_REF):
         super(AddressResolutionFactory,self).__init__(ref)
         
     def getAddress(self,ref=None,adr=None,model=None,prefix='',warnings=[]):

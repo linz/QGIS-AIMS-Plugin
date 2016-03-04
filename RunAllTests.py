@@ -26,6 +26,9 @@ BM=0xF
 if BM & IMASK['adr']:
     from Test.Address_Test import Test_0_AddressSelfTest as AT0
     from Test.Address_Test import Test_1_AddressTestSetters as AT1
+    from Test.AddressFactory_Test import Test_0_TemplateReaderSelfTest as AFT0
+    from Test.AddressFactory_Test import Test_1_AddressFactorySelfTest as AFT1
+    from Test.AddressFactory_Test import Test_2_AddressTestSetters as AFT2
     
 if BM & IMASK['db']:
     from Test.Database_Test import Test_0_DatabaseSelfTest as DT0

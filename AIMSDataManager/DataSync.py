@@ -44,7 +44,7 @@ FPATH = os.path.join('..',os.path.dirname(__file__)) #base of local datastorage
 
 
 class DataRequestChannel(threading.Thread):    
-    
+    '''Request response channel for user initiated actions eg add decline retire etc'''
     def __init__(self,client):
         threading.Thread.__init__(self)
         self.client = client
@@ -101,9 +101,14 @@ class DataSync(threading.Thread):
         '''Continual loop looking for input queue requests and running periodic updates'''
         while True:
             #TODO. there shouldnt ever be anything in the FF inq
-            self.syncFeeds(self.fetchFeedUpdates(self.ftracker['threads']))
-            aimslog.debug('FT {} sleeping {} with size(Qin)={}'.format(FeedType.reverse[self.ft],self.ftracker['interval'],self.inq.qsize())) 
-            time.sleep(self.ftracker['interval'])
+            updates = self.fetchFeedUpdates(self.ftracker['threads'])
+            if updates != None: 
+                self.syncFeeds(updates)
+                aimslog.debug('FT {} sleeping {} with size(Qin)={}'.format(FeedType.reverse[self.ft],self.ftracker['interval'],self.inq.qsize())) 
+                time.sleep(self.ftracker['interval'])
+            else:
+                #if updates are none, stop has been called
+                return
             
     #start = int(time.time())  
     #now = int(time.time())   
@@ -138,19 +143,22 @@ class DataSync(threading.Thread):
             #print '{} {}'.format(FeedType.reverse[self.ft].capitalize(),'STOP' if self.stopped() else 'RUN')
             for r in pool:
                 aimslog.debug('### Page {}{} pool={}'.format(FeedType.reverse[self.ft][:2].capitalize(), r['page'],[p['page'] for p in pool])) 
-                du = self.duinst[r['ref']]
+                #du = self.duinst[r['ref']]
                 #close down on stop signal
                 if self.stopped():
-                    aimslog.info('Stopping DataUpdater thread {}'.format(r['ref']))
-                    du.stop()
-                    du.join(THREAD_JOIN_TIMEOUT)
-                    if du.isAlive():aimslog.warn('Thread timeout {}'.format(r['ref']))
-                    del self.duinst[r['ref']]
-                    pool.remove(r)
-                    continue
+                    self.stopSubs(pool)
+                    return None
+#                     aimslog.info('Stopping DataUpdater thread {}'.format(r['ref']))
+#                     self.duinst[r['ref']].stop()
+#                     self.duinst[r['ref']].join(THREAD_JOIN_TIMEOUT)
+#                     if self.duinst[r['ref']].isAlive():aimslog.warn('Thread timeout {}'.format(r['ref']))
+#                     del self.duinst[r['ref']]
+#                     pool.remove(r)
+#                     continue
                 #print 'DU',du.isAlive()
                 #if len(pool) == 1 and r['page'] == 6: #DEBUG
                 #    print 'halt' 
+                du = self.duinst[r['ref']]
                 if not du.isAlive():
                     #print '{}{} finished'.format(FeedType.reverse[self.ft][:2].capitalize(),r['page'])
                     alist = du.queue.get()
@@ -176,6 +184,17 @@ class DataSync(threading.Thread):
         self.managePage((backpage,lastpage))
         #print 'Leaving {} with pool={} and #adr={}'.format(FeedType.reverse[self.ft][:2].capitalize(),[p['page'] for p in pool],len(newaddr))
         return newaddr
+    
+    def stopSubs(self,pool):
+        '''Stop all subordinate threads'''
+        for r in pool:
+            aimslog.info('Stopping DataUpdater thread {}'.format(r['ref']))
+            self.duinst[r['ref']].stop()
+            self.duinst[r['ref']].join(THREAD_JOIN_TIMEOUT)
+            if self.duinst[r['ref']].isAlive():aimslog.warn('Thread timeout {}'.format(r['ref']))
+            del self.duinst[r['ref']]
+            pool.remove(r)
+
             
     def fetchPage(self,p):
         '''Regular page fetch, periodic or demand'''   
@@ -217,7 +236,7 @@ class DataSyncFeatures(DataSync):
     
     def __init__(self,params,queues):
         super(DataSyncFeatures,self).__init__(params,queues)
-        self.ftracker = {'page':[1,1],'index':1,'threads':3,'interval':60}    
+        self.ftracker = {'page':[1,1],'index':1,'threads':2,'interval':30}    
 
 
 class DataSyncFeeds(DataSync): 
@@ -307,7 +326,7 @@ class DataSyncChangeFeed(DataSyncFeeds):
       
     def __init__(self,params,queues):
         super(DataSyncChangeFeed,self).__init__(params,queues)
-        self.ftracker = {'page':[1,1],'index':1,'threads':1,'interval':10}
+        self.ftracker = {'page':[1,1],'index':1,'threads':1,'interval':125}
 
     def processAddress(self,at,addr):  
         '''Do an Add/Retire/Update request'''
@@ -351,7 +370,8 @@ class DataSyncResolutionFeed(DataSyncFeeds):
                 adr.setWarnings(self.updateWarnings(cid))
         return res
     
-    def updateWarnings(self,cid):   
+    def updateWarnings(self,cid):
+        '''Method to explicitly fetch warning message for a particular cid, blocks till return'''
         ref = 'Warn.{0:%y%m%d.%H%M%S}'.format(DT.now())
         params = (ref,self.conf,self.afactory)
         #reuse response queue

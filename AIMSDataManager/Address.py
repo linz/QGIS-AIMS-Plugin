@@ -292,9 +292,31 @@ class Address(object):
 
 
 #------------------------------------------------------------------------------
-
+    
 class AddressRequestFeed(Address):          
-    def setVersion (self, version): self._version = version if Address._vInt(version) else None  
+    def setVersion (self, version): self._version = version if Address._vInt(version) else None
+    
+    def setMeta(self, meta = None):
+        if not hasattr(self,'meta'): self.meta = meta if meta else AddressMetaData()
+        
+    def getMeta(self): 
+        return self.meta if hasattr(self, 'meta') else None    
+    
+    def setRequestId(self,requestId):
+        self.setMeta()
+        self.meta.requestId = requestId      
+          
+    def getRequestId(self):
+        return self.meta.requestId if hasattr(self,'meta') else None
+    
+    def setErrors(self,errors):
+        self.setMeta()
+        self.meta.errors = errors      
+          
+    def getErrors(self):
+        return self.meta.errors if hasattr(self,'meta') else None
+
+        
 
 #------------------------------------------------------------------------------
 
@@ -327,7 +349,9 @@ class AddressResolution(AddressRequestFeed):
         return 'ADRR.{}.{}/{}'.format(self._ref,self.type,self._warnings)
         
     def setWarnings(self,warnings):
-        self._warnings = warnings
+        self.setMeta()
+        self.meta.warnings = warnings
+        #self._warnings = warnings
 
     def getFullNumber(self):
         fullNumber = ''
@@ -337,6 +361,28 @@ class AddressResolution(AddressRequestFeed):
         if hasattr(self, '_components_addressNumberSuffix'):  fullNumber+=str(self._components_addressNumberSuffix)      
         return fullNumber 
         
+    def getWarnings(self):
+        return self.meta.warnings
+        #return self._warnings
+        
+#------------------------------------------------------------------------------      
+class AddressMetaData(object):
+    def __init__(self):self._requestId,self._statusMessage,self._warnings = 0,'',[]
+    @property
+    def requestId(self): return self._requestId
+    @requestId.setter
+    def requestId(self, requestId): self._requestId = requestId if Address._vInt(requestId) else None
+    
+    @property
+    def warnings(self): return self._warnings  
+    @warnings.setter
+    def warnings(self,warnings): self._warnings = warnings 
+     
+    @property
+    def errors(self): return self._errors  
+    @errors.setter
+    def errors(self,errors): self._errors = errors
+    
 def test():
     import pprint
     from AddressFactory import AddressFactory

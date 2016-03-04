@@ -23,10 +23,9 @@ import re
 import sys
 import os
 
-
 sys.path.append('../AIMSDataManager/')
 
-from Address import Address
+from ..AIMSDataManager.Address import Address,AddressChange,AddressResolution
 from AimsLogging import  Logger
 
 testlog = Logger.setup('test')
