@@ -349,13 +349,13 @@ def testchangefeedAUR(dm,af):
     #addr_c.setChangeType(ActionType.reverse[ActionType.ADD])
     #listofaddresses[FeedType.CHANGEFEED].append(addr_c)
     #dm.push(listofaddresses)
-    rqid = 1234321
-    dm.addAddress(addr_c,rqid)
+    rqid1 = 1234321
+    dm.addAddress(addr_c,rqid1)
     resp = None
     while True: 
         resp = testresp(dm,FeedType.CHANGEFEED)
         if resp: 
-            print rqid,resp[0].meta.requestId
+            print rqid1,resp[0].meta.requestId
             break
         time.sleep(5)
     ver += 1
@@ -365,13 +365,16 @@ def testchangefeedAUR(dm,af):
     #addr_c.setChangeType(ActionType.reverse[ActionType.ADD])
     #listofaddresses[FeedType.CHANGEFEED].append(addr_c)
     #dm.push(listofaddresses)
+    rqid2 = 2345432
     addr_c.setFullAddress('Unit B, 16 Islay Street, Glenorchy')
     addr_c.setVersion(ver)
-    dm.updateAddress(addr_c)
+    dm.updateAddress(addr_c,rqid2)
     resp = None
     while True: 
         resp = testresp(dm,FeedType.CHANGEFEED)
-        if resp: break
+        if resp: 
+            print rqid2,resp[0].meta.requestId
+            break
         time.sleep(5)
     ver += 1
     
@@ -380,11 +383,15 @@ def testchangefeedAUR(dm,af):
     #addr_c.setChangeType(ActionType.reverse[ActionType.ADD])
     #listofaddresses[FeedType.CHANGEFEED].append(addr_c)
     #dm.push(listofaddresses)
+    rqid3 = 3456543
     addr_c.setVersion(ver)
-    dm.retireAddress(addr_c)
+    dm.retireAddress(addr_c,rqid3)
     resp = None
     while not resp: 
         resp = testresp(dm,FeedType.CHANGEFEED)
+        if resp: 
+            print rqid3,resp[0].meta.requestId
+            break
         time.sleep(5)     
     ver += 1
 

@@ -316,7 +316,7 @@ class DataSyncFeeds(DataSync):
             #self.outq.put(act[addr](changelist[addr]))
             for address in changelist[at]:
                 resp = self.processAddress(at,address)
-                aimslog.info('{} finished'.format(str(resp)))
+                aimslog.info('{} thread started'.format(str(resp)))
                 
     def managePage(self,p):
         if p[0]: self.ftracker['page'][0] = p[0]
@@ -330,7 +330,7 @@ class DataSyncChangeFeed(DataSyncFeeds):
 
     def processAddress(self,at,addr):  
         '''Do an Add/Retire/Update request'''
-        at2 = ApprovalType.reverse[at][:3].capitalize()      
+        at2 = ActionType.reverse[at][:3].capitalize()      
         ref = 'Req{0}.{1:%y%m%d.%H%M%S}'.format(at2,DT.now())
         params = (ref,self.conf,self.afactory)
         #self.ioq = {'in':Queue.Queue(),'out':Queue.Queue()}
