@@ -343,16 +343,11 @@ class AddressResolution(AddressRequestFeed):
 
     def __init__(self, ref=None): 
         super(AddressResolution,self).__init__(ref)   
-        self._warnings = None
+        #self._warnings = None
         
     def __str__(self):
-        return 'ADRR.{}.{}/{}'.format(self._ref,self.type,self._warnings)
+        return 'ADRR.{}.{}/{}'.format(self._ref,self.type,self.getWarnings())
         
-    def setWarnings(self,warnings):
-        self.setMeta()
-        self.meta.warnings = warnings
-        #self._warnings = warnings
-
     def getFullNumber(self):
         fullNumber = ''
         if hasattr(self, '_components_unitValue'): fullNumber+=str(self._components_unitValue)+'/'
@@ -360,13 +355,20 @@ class AddressResolution(AddressRequestFeed):
         if hasattr(self, '_components_addressNumberHigh'):  fullNumber+= ('-'+str(self._components_addressNumberHigh))
         if hasattr(self, '_components_addressNumberSuffix'):  fullNumber+=str(self._components_addressNumberSuffix)      
         return fullNumber 
-        
+    
+    #NB. Warnings only available in res feed
+    
+    def setWarnings(self,warnings):
+        self.setMeta()
+        self.meta.warnings = warnings
+        #self._warnings = warnings        
     def getWarnings(self):
         return self.meta.warnings
         #return self._warnings
         
 #------------------------------------------------------------------------------      
 class AddressMetaData(object):
+    '''Embedded container for address meta information eg warnings, errors and tracking'''
     def __init__(self):self._requestId,self._statusMessage,self._warnings = 0,'',[]
     @property
     def requestId(self): return self._requestId

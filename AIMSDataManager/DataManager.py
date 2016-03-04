@@ -290,13 +290,13 @@ def test1(dm,af):
 
     
     # TEST CF
-    testchangefeedAUR(dm,af)
+    #testchangefeedAUR(dm,af)
     
     # TEST RF
     testresolutionfeedAUD(dm,af)
     
     #TEST SHIFT
-    testfeatureshift(dm)
+    #testfeatureshift(dm)
     
     aimslog.info('*** Resolution ADD '+str(time.clock()))    
     
@@ -341,14 +341,11 @@ def checkrefresh(dm):
 def testchangefeedAUR(dm,af):
     ver = 1000000
     #pull address from features (map)
-    addr_c = gettestdata(af[FeedType.FEATURES])
+    addr_f = gettestdata(af[FeedType.FEATURES])
     #cast to addresschange type, to do cf ops
-    addr_c = af[FeedType.CHANGEFEED].cast(addr_c)
+    addr_c = af[FeedType.CHANGEFEED].cast(addr_f)
     addr_c.setVersion(ver)
     aimslog.info('*** Change ADD '+str(time.clock()))
-    #addr_c.setChangeType(ActionType.reverse[ActionType.ADD])
-    #listofaddresses[FeedType.CHANGEFEED].append(addr_c)
-    #dm.push(listofaddresses)
     rqid1 = 1234321
     dm.addAddress(addr_c,rqid1)
     resp = None
@@ -362,9 +359,6 @@ def testchangefeedAUR(dm,af):
 
     
     aimslog.info('*** Change UPDATE '+str(time.clock()))
-    #addr_c.setChangeType(ActionType.reverse[ActionType.ADD])
-    #listofaddresses[FeedType.CHANGEFEED].append(addr_c)
-    #dm.push(listofaddresses)
     rqid2 = 2345432
     addr_c.setFullAddress('Unit B, 16 Islay Street, Glenorchy')
     addr_c.setVersion(ver)
@@ -380,9 +374,6 @@ def testchangefeedAUR(dm,af):
     
     
     aimslog.info('*** Change RETIRE '+str(time.clock()))
-    #addr_c.setChangeType(ActionType.reverse[ActionType.ADD])
-    #listofaddresses[FeedType.CHANGEFEED].append(addr_c)
-    #dm.push(listofaddresses)
     rqid3 = 3456543
     addr_c.setVersion(ver)
     dm.retireAddress(addr_c,rqid3)
@@ -397,7 +388,54 @@ def testchangefeedAUR(dm,af):
 
     
 def testresolutionfeedAUD(dm,af):
-    pass#addr_r = af.getAddress('resolution_accept')
+    ver = 1000000
+    cid = 2000000
+    #pull address from features (map)
+    addr_f = gettestdata(af[FeedType.FEATURES])
+    #cast to addresschange type, to do cf ops
+    addr_r = af[FeedType.RESOLUTIONFEED].cast(addr_f)
+    addr_r.setVersion(ver)
+    addr_r.setChangeId(cid)
+    aimslog.info('*** Resolution ACCEPT '+str(time.clock()))
+    rqid1 = 4567654
+    dm.acceptAddress(addr_r,rqid1)
+    resp = None
+    while True: 
+        resp = testresp(dm,FeedType.RESOLUTIONFEED)
+        if resp: 
+            print rqid1,resp[0].meta.requestId
+            break
+        time.sleep(5)
+    ver += 1
+
+    
+    aimslog.info('*** Resolution UPDATE '+str(time.clock()))
+    rqid2 = 5678765
+    addr_r.setFullAddress('Unit B, 16 Islay Street, Glenorchy')
+    addr_r.setVersion(ver)
+    dm.repairAddress(addr_r,rqid2)
+    resp = None
+    while True: 
+        resp = testresp(dm,FeedType.CHANGEFEED)
+        if resp: 
+            print rqid2,resp[0].meta.requestId
+            break
+        time.sleep(5)
+    ver += 1
+    
+    
+    aimslog.info('*** Change DECLINE '+str(time.clock()))
+    rqid3 = 6789876
+    addr_r.setVersion(ver)
+    dm.declineAddress(addr_r,rqid3)
+    resp = None
+    while not resp: 
+        resp = testresp(dm,FeedType.CHANGEFEED)
+        if resp: 
+            print rqid3,resp[0].meta.requestId
+            break
+        time.sleep(5)     
+    ver += 1
 
 
 def testresp(dm,ft=FeedType.CHANGEFEED):

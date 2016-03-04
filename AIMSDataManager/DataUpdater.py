@@ -27,7 +27,7 @@ import zipfile
 import threading
 import Queue
 from AimsApi import AimsApi 
-from AimsUtility import ActionType,FeedType
+from AimsUtility import ActionType,ApprovalType,FeedType
 
 from AimsLogging import Logger
 
@@ -98,17 +98,18 @@ class DataUpdaterAction(DataUpdater):
 class DataUpdaterApproval(DataUpdater):
     '''Updater to request and process response objects for resolution queue actions'''
     
-    def setup(self,ft,address):
+    def setup(self,at,address):
         '''set address parameters'''
-        self.ft = ft
+        self.at = at
         self.address = address
+        self.changeId = address.getChangeId()
         self.requestId = address.getRequestId()
-        self.payload = self.afactory.convertAddress(self.address,self.ft)
+        self.payload = self.afactory.convertAddress(self.address,self.at)
         
     def run(self):
         '''approval action on the RF''' 
-        aimslog.info('APP.{} {} - Addr{}'.format(self.ref,ApprovalType.reverse[self.ft],self.address))
-        err,resp = self.api.resolutionfeedApproveAddress(self.ft,self.payload,self.cid)
+        aimslog.info('APP.{} {} - Addr{}'.format(self.ref,ApprovalType.reverse[self.at],self.address))
+        err,resp = self.api.resolutionfeedApproveAddress(self.at,self.payload,self.changeId)
         res_adr = self.afactory.getAddress(model=resp)
         #print 'RES_ADR',res_adr
         #cid = res_adr.getChangeId()
