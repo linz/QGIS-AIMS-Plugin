@@ -39,7 +39,6 @@ class QueueView(QTableView):
 
 class FeatureTableModel(QAbstractTableModel):
  
-    
     def __init__(self, data = {} , headerdata = None,parent=None):
         QAbstractTableModel.__init__(self, parent)
         if data == {}: data = {('','', '', '', ''): [['', '', '', '', '']]} # dummy data if nothing return from dm
@@ -63,6 +62,12 @@ class FeatureTableModel(QAbstractTableModel):
         column = QModelIndex.column()
         if int_role == Qt.DisplayRole:
             return str(self._data[self.dict_key][row][column])
+    
+    def refreshData(self, data):
+        self._data = data
+        # reset dict key
+        self.dict_key = self._data.keys()[0]
+        
     
     def headerData(self, col, orientation, role):
         if orientation == Qt.Horizontal and role == Qt.DisplayRole:
@@ -99,6 +104,9 @@ class GroupTableModel(QAbstractTableModel):
         col =index.column()
         if int_role == Qt.DisplayRole:
             return str(self._data[row][col])
+    
+    def refreshData(self, data):
+        self._data = sorted(data.keys())
     
     def getData(self):
         return self._data 

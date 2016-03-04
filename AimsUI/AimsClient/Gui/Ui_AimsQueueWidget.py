@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'AimsUI/AimsClient/Gui/Ui_AimsQueueWidget.ui'
 #
-# Created: Thu Feb 18 10:49:45 2016
+# Created: Wed Mar  2 16:45:36 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -44,18 +44,6 @@ class Ui_AimsQueueWidget(object):
         self.uMessageLabel.setText(_fromUtf8(""))
         self.uMessageLabel.setObjectName(_fromUtf8("uMessageLabel"))
         self.horizontalLayout_5.addWidget(self.uMessageLabel)
-        self.uNewJob = QtGui.QPushButton(AimsQueueWidget)
-        self.uNewJob.setObjectName(_fromUtf8("uNewJob"))
-        self.horizontalLayout_5.addWidget(self.uNewJob)
-        self.uSelectJob = QtGui.QPushButton(AimsQueueWidget)
-        self.uSelectJob.setObjectName(_fromUtf8("uSelectJob"))
-        self.horizontalLayout_5.addWidget(self.uSelectJob)
-        self.uSysAdmin = QtGui.QPushButton(AimsQueueWidget)
-        self.uSysAdmin.setObjectName(_fromUtf8("uSysAdmin"))
-        self.horizontalLayout_5.addWidget(self.uSysAdmin)
-        self.uHelp = QtGui.QPushButton(AimsQueueWidget)
-        self.uHelp.setObjectName(_fromUtf8("uHelp"))
-        self.horizontalLayout_5.addWidget(self.uHelp)
         self.horizontalLayout_5.setStretch(0, 1)
         self.verticalLayout.addLayout(self.horizontalLayout_5)
 
@@ -67,10 +55,6 @@ class Ui_AimsQueueWidget(object):
         AimsQueueWidget.setWindowTitle(_translate("AimsQueueWidget", "Form", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.uChangeTab), _translate("AimsQueueWidget", "Change", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.uResolutionTab), _translate("AimsQueueWidget", "Review", None))
-        self.uNewJob.setText(_translate("AimsQueueWidget", "?", None))
-        self.uSelectJob.setText(_translate("AimsQueueWidget", "??", None))
-        self.uSysAdmin.setText(_translate("AimsQueueWidget", "???", None))
-        self.uHelp.setText(_translate("AimsQueueWidget", "Help", None))
 
 from ReviewQueueWidget import ReviewQueueWidget
 from ChangeQueueWidget import ChangeQueueWidget

@@ -13,7 +13,9 @@ class ChangeQueueWidget( Ui_ChangeQueueWidget, QWidget ):
      
     def __init__( self, parent=None, controller=None ):
         QWidget.__init__( self, parent )
+        '''
         self.setupUi(self)
+        
         self.setController( controller )
         
         self.mock_data = self.build_mock_data() # temp
@@ -98,3 +100,4 @@ class ChangeQueueWidget( Ui_ChangeQueueWidget, QWidget ):
                                                                                      ['10A', 'Road Way',  'Current','Somewhere Town', 'Somewhere',  'AddressObject4']], 
                  ('4098018','Retire', 'Rotorua', 'Yossarian', '2016-02-34'): [['100', 'The Terrace', 'Retire','Somewhere Town', 'Somewhere', 'AddressObject5']]
                  }
+    '''

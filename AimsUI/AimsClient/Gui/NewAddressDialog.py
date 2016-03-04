@@ -35,13 +35,9 @@ class NewAddressDialog(Ui_NewAddressDialog, QDialog):
         self.feature = addInstance
         self._layerManager = layerManager
         self._controller = controller
-                
-        # limit user inputs
-        UiUtility.formMask(self)
-        # set combo box defaults
-        UiUtility.setFormCombos(self)
                     
         # Make connections
+        self.uAddressType.currentIndexChanged.connect(self.setEditability)
         self.uFullNum.textEdited.connect(self.fullNumChanged)
         self.uPrefix.textEdited.connect(self.partNumChanged)
         self.uUnit.textEdited.connect(self.partNumChanged)
@@ -53,8 +49,18 @@ class NewAddressDialog(Ui_NewAddressDialog, QDialog):
         self.uAbort.clicked.connect(self.closeDlg)
         self.rejected.connect(self.closeDlg)
         self.uGetRclToolButton.clicked.connect(self.getRcl)
+        
+        # limit user inputs
+        UiUtility.formMask(self)
+        # set combo box defaults
+        UiUtility.setFormCombos(self)
+        # set addressType to trigger currentIndexChanged
+        self.uAddressType.setCurrentIndex(QComboBox.findText(self.uAddressType,'Road'))
         self.show()
     
+    def setEditability(self):
+        UiUtility.setEditability(self)
+        
     def getRcl(self):
         self._controller.startRclTool(self)
       
@@ -83,11 +89,13 @@ class NewAddressDialog(Ui_NewAddressDialog, QDialog):
                 }
         
         position = Position.getInstance(d)
-        self.feature.setAddressPosition(position)
+        self.feature.setAddressPositions(position)
         UiUtility.formToObj(self)
 
         # submit address obj to DM
         self._controller.dm.addAddress(self.feature)
+        # need to check the response 
+        self.closeDlg()
        
     def fullNumChanged(self, newnumber):
         UiUtility.fullNumChanged(self, newnumber)

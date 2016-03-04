@@ -7,7 +7,7 @@ from qgis.utils import *
 from Ui_ReviewQueueWidget import Ui_ReviewQueueWidget
 from QueueEditorWidget import QueueEditorWidget
 from QueueModelView import *
-#from UiUtility import UiUtility 
+from UiUtility import UiUtility 
 
 import sys # temp
 
@@ -21,18 +21,18 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.setupUi(self)
         self.setController( controller )
         self.iface = self._controller.iface
-        #self.reviewData = {(None, None, None ,None ,None ): [[None, None, None, None, None]]}
         self.uidm = self._controller.uidm
         self.reviewData = self.uidm.reviewTableData()   
         self.currentObjKey = None
         self.currentAdrCoord = [0,0]
-        #self.refreshData()
         
         # Connections
         self.uDisplayButton.clicked.connect(self.display)
         self.uUpdateButton.clicked.connect(self.updateFeature)
         self.uRejectButton.clicked.connect(self.decline)
         self.uAcceptButton.clicked.connect(self.accept)
+        self.uRefreshButton.clicked.connect(self.refreshData)
+
                
         # Features View 
         featuresHeader = ['Full Number', 'Full Road', 'Life Cycle', 'Town', 'Suburb Locality']
@@ -63,6 +63,13 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.comboBoxUser.view().pressed.connect(self.itemPressedUser) # or more probable, list item clicked
         self.popUserCombo()
     
+    def refreshData(self): # < -- ALSO NEED TO REFRESH THE FILTER
+        self.reviewData = self.uidm.reviewTableData()
+        self.groupModel.refreshData(self.reviewData)        
+        self.featureModel.refreshData(self.reviewData)
+        self.featureModel.layoutChanged.emit()
+        self.groupModel.layoutChanged.emit()
+                
     def setController( self, controller ):
         import Controller
         if not controller:
@@ -73,8 +80,9 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         return self.uidm.singleReviewObj(objKey)
             
     def featureClicked(self, row):
-        self.currentObjKey = self.featureModel.listClicked(row)        
-        self.uQueueEditor.currentFeatureToUi(self.singleReviewObj(self.currentObjKey))
+        self.currentObjKey = self.featureModel.listClicked(row)
+        if self.currentObjKey:              
+            self.uQueueEditor.currentFeatureToUi(self.singleReviewObj(self.currentObjKey))
         #emit feature chnaged --> editwidget to connect to signal
         #self.featureSelected.emit( feature )
         
@@ -136,19 +144,26 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self._controller.dm.declineAddress(self.singleReviewObj(self.currentObjKey))
     
     def accept(self):
-        self._controller.dm.acceptAddress(self.singleReviewObj(self.currentObjKey))
-    
+        curFeature = self.singleReviewObj(self.currentObjKey)
+        if curFeature: 
+            self._controller.dm.acceptAddress(curFeature)
+            r = self._controller.dm.response()
+            r = self._controller.dm.response()
+            r = self._controller.dm.response()
+            r = self._controller.dm.response()
+        
     def display(self):
-        coords = self.uidm.reviewItemCoords(self.currentObjKey) # should directly access coords
-        if self.currentAdrCoord == coords: 
-            return
-        self.currentAdrCoord = coords
-        buffer = .00100
-        extents = QgsRectangle( coords[0]-buffer,coords[1]-buffer,
-                              coords[0]+buffer,coords[1]+buffer)
-        self.iface.mapCanvas().setExtent( extents )
-        self.iface.mapCanvas().refresh()
-        #self.setMarker(coords) <-- perhaps the reveiw layer will suffice and no highlighted needed
+        if self.currentObjKey:
+            coords = self.uidm.reviewItemCoords(self.currentObjKey) # should directly access coords
+            if self.currentAdrCoord == coords: 
+                return
+            self.currentAdrCoord = coords
+            buffer = .00100
+            extents = QgsRectangle( coords[0]-buffer,coords[1]-buffer,
+                                  coords[0]+buffer,coords[1]+buffer)
+            self.iface.mapCanvas().setExtent( extents )
+            self.iface.mapCanvas().refresh()
+            #self.setMarker(coords) <-- perhaps the reveiw layer will suffice and no highlighted needed
     
     #def setMarker(self, coords):
     #    self._marker = UiUtility.highlight(self.iface, QgsPoint(coords[0],coords[1]))

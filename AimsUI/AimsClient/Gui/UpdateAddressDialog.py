@@ -49,11 +49,16 @@ class UpdateAddressDialog(Ui_NewAddressDialog, QDialog):
         self.uBase.textEdited.connect(self.partNumChanged)
         self.uHigh.textEdited.connect(self.partNumChanged)
         self.uAlpha.textEdited.connect(self.partNumChanged)
-        self.uGetRclToolButton.clicked.connect(self.getRcl)     
+        self.uGetRclToolButton.clicked.connect(self.getRcl) 
+        self.uAddressType.currentIndexChanged.connect(self.setEditability)    
         # set forms feature values
-        UiUtility.addObjToForm(self, self.feature)                   
+        #UiUtility.addObjToForm(self, self.feature) < -- old form population method          
+        UiUtility.featureToUi(self)     
         self.show()
-
+    
+    def setEditability(self):
+        UiUtility.setEditability(self)
+    
     def getRcl(self):
         self._controller.startRclTool(self)
     
@@ -67,6 +72,12 @@ class UpdateAddressDialog(Ui_NewAddressDialog, QDialog):
         ''' take users input from form and submit to AIMS API '''
         # Run through the setters
         UiUtility.formToObj(self)
+        # submit address obj to DM
+        self._controller.dm.updateAddress(self.feature)
+        # need to check the response 
+        self.closeDlg()
+        # old direct API method
+        ''' 
         # load address to AIMS Via API
         payload = self.feature.aimsObject()
         # Capture the returned response (response distilled down to list of errors)
@@ -76,7 +87,7 @@ class UpdateAddressDialog(Ui_NewAddressDialog, QDialog):
             self.closeDlg()
         else:
             QMessageBox.warning(iface.mainWindow(),"Create Address Point", valErrors)
-                 
+        '''
     def fullNumChanged(self, newnumber):
         UiUtility.fullNumChanged(self, newnumber)
     

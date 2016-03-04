@@ -53,8 +53,9 @@ class UpdateAddressTool(QgsMapToolIdentify):
             return
         elif len(results) == 1:
             # initialise an address object and populate from selected feature
-            self._feature = UiUtility.mapResultsToAddObj(results[0], self._controller)
-
+            #self._feature = UiUtility.mapResultsToAddObj(results[0], self._controller) <-- old method i.e direct to api
+            self._feature = self._controller.uidm.singleFeatureObj(results[0].mFeature.attribute('addressId'))
+            
         else: # Stacked points
             identifiedFeatures=[] 
             for i in range (0,len(results)):
@@ -70,7 +71,7 @@ class UpdateAddressTool(QgsMapToolIdentify):
 
                 for result in results:
                     if result.mFeature.attribute('addressId') in updFeatureIds:
-                        self._feature = UiUtility.mapResultsToAddObj(result, self._controller)
+                        self._feature = self._controller.uidm.singleFeatureObj(result.mFeature.attribute('addressId'))
                         break
         # Open form
         if self._feature:

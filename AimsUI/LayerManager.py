@@ -25,43 +25,46 @@ class InvalidParameterException(Exception): pass
 
 class Mapping():
     
-    adrLayerObjMappings = {'addressType':['_components_addressType', None], # potential for mapping class?
-                'fullAddress':['_components_fullAddress', None],
-                'fullAddressNumber':['_components_fullAddressNumber', None],
-                'fullRoadName':['_components_fullRoadName', None],
-                'suburbLocality':['_components_suburbLocality', None],
-                'townCity':['_components_townCity' '', None],
-                'meshblock':['_codes_meshblock', None],
-                'lifecycle':['_components_lifecycle', None], 
-                'roadPrefix':['_components_roadSuffix',None],
-                'roadName':['_components_roadName', None],                                
-                'roadType':['_components_roadType',None],
-                'roadSuffix':['_components_roadSuffix',None],
-                'roadCentrelineId':['_components_roadCentrelineId',None],
-                'waterRoute':['_components_waterRoute',None],
-                'waterName':['_components_waterName',None],
-                'unitValue':['_components_unitValue',None],
-                'unitType':['_components_unitType',None],
-                'levelType':['_components_levelType',None],
-                'levelValue':['_components_levelValue',None],
-                'addressNumberPrefix':['_components_addressNumberPrefix',None],
-                'addressNumber':['_components_addressNumber',None],
-                'addressNumberSuffix':['_components_addressNumberSuffix',None],
-                'addressNumberHigh':['_components_addressNumberHigh',None],
-                'addressId':['_components_addressId',None],
-                'externalAddressId':['_components_externalAddressId',None],
-                'externalAddressIdScheme':['_components_externalAddressIdScheme',None],
-                'addressableObjectId':['_addressedObject_externalObjectId',None],
-                'objectType':['_addressedObject_objectType',None],
-                'objectName':['_addressedObject_objectName',None],
-                'addressPositionsType':["_addressedObject_addressPositions[0]._positionType",None],
-                'suburbLocalityId':['_codes_suburbLocalityId',None],
-                'parcelId':['_codes_parcelId',None],
-                'externalObjectId':['_addressedObject_externalObjectId',None],
-                'externalObjectIdScheme':['_addressedObject_externalObjectIdScheme',None],
-                'valuationReference':['_addressedObject_valuationReference',None],
-                'certificateOfTitle':['_addressedObject_certificateOfTitle',None],
-                'appellation':['_addressedObject_appellation',None]}
+    adrLayerObjMappings = {
+        'addressType':['_components_addressType', None],
+        'fullAddress':['_components_fullAddress', None],
+        'fullAddressNumber':['_components_fullAddressNumber', None],
+        'fullRoadName':['_components_fullRoadName', None],
+        'suburbLocality':['_components_suburbLocality', None],
+        'townCity':['_components_townCity' '', None],
+        'meshblock':['_codes_meshblock', None],
+        'lifecycle':['_components_lifecycle', None], 
+        'roadPrefix':['_components_roadSuffix',None],
+        'roadName':['_components_roadName', None],                                
+        'roadType':['_components_roadType',None],
+        'roadSuffix':['_components_roadSuffix',None],
+        'roadCentrelineId':['_components_roadCentrelineId',None],
+        'waterRoute':['_components_waterRoute',None],
+        'waterName':['_components_waterName',None],
+        'unitValue':['_components_unitValue',None],
+        'unitType':['_components_unitType',None],
+        'levelType':['_components_levelType',None],
+        'levelValue':['_components_levelValue',None],
+        'addressNumberPrefix':['_components_addressNumberPrefix',None],
+        'addressNumber':['_components_addressNumber',None],
+        'addressNumberSuffix':['_components_addressNumberSuffix',None],
+        'addressNumberHigh':['_components_addressNumberHigh',None],
+        'addressId':['_components_addressId',None],
+        'externalAddressId':['_components_externalAddressId',None],
+        'externalAddressIdScheme':['_components_externalAddressIdScheme',None],
+        'addressableObjectId':['_addressedObject_externalObjectId',None],
+        'objectType':['_addressedObject_objectType',None],
+        'objectName':['_addressedObject_objectName',None],
+        'addressPositionsType':["_addressedObject_addressPositions[0]._positionType",None],
+        'suburbLocalityId':['_codes_suburbLocalityId',None],
+        'parcelId':['_codes_parcelId',None],
+        'externalObjectId':['_addressedObject_externalObjectId',None],
+        'externalObjectIdScheme':['_addressedObject_externalObjectIdScheme',None],
+        'valuationReference':['_addressedObject_valuationReference',None],
+        'certificateOfTitle':['_addressedObject_certificateOfTitle',None],
+        'appellation':['_addressedObject_appellation',None],
+        'version':['_version',None]
+        }
 
 
 class LayerManager(QObject):
@@ -84,16 +87,24 @@ class LayerManager(QObject):
         self._parLayer = None
         self._locLayer = None
         self._revLayer = None
+
         
         QgsMapLayerRegistry.instance().layerWillBeRemoved.connect(self.checkRemovedLayer)
         QgsMapLayerRegistry.instance().layerWasAdded.connect( self.checkNewLayer )
         
+    def defaultExtent(self):
+        ''' the extent the plugin first shows '''
+        self._iface.mapCanvas().setExtent(QgsRectangle(174.77303,-41.28648, 174.77561,-41.28427))
+        self._iface.mapCanvas().refresh()
+    
     
     def initialiseExtentEvent(self):  
         ''' Once plugin loading triggered initialise loading of AIMS Feautres '''
         self._iface.mapCanvas().extentsChanged.connect(self.getAimsFeatures)
         self._iface.mapCanvas().extentsChanged.connect(self.updateReviewLayer) # triggered for testing rev layer - TEMP
-    
+        #set defualt bb
+
+        
     def layerId(self, layer):
         idprop = self._propBaseName + 'Id' 
         res = layer.customProperty(idprop)
@@ -222,28 +233,31 @@ class LayerManager(QObject):
         layer = self.findLayer(id)
         #get reviewfeatures. in the fututre to be emitted(?)
         provider = layer.dataProvider()
-        for reviewItem in self._controller.uidm.reviewData().values():
-            fet = QgsFeature()
-            point = reviewItem._addressedObject_addressPositions[0]._position_coordinates
-            fet.setGeometry(QgsGeometry.fromPoint(QgsPoint(point[0], point[1])))
-            fet.setAttributes([ reviewItem.getFullNumber()]) # < -- should also add warning and then points can be styled as to 'points has warnings'
-            provider.addFeatures([fet])
-        layer.commitChanges()
-            
+        try:
+            for reviewItem in self._controller.uidm.reviewData().values():
+                fet = QgsFeature()
+                point = reviewItem._addressedObject_addressPositions[0]._position_coordinates
+                fet.setGeometry(QgsGeometry.fromPoint(QgsPoint(point[0], point[1])))
+                fet.setAttributes([ reviewItem.getFullNumber()])
+                provider.addFeatures([fet])
+            layer.commitChanges()
+        except: pass # no data returned 
+         
     def getAimsFeatures(self):
         ext = self._iface.mapCanvas().extent()
         self._controller.uidm.setBbox(sw = (ext.xMaximum(), ext.yMaximum()), ne = (ext.xMinimum(), ext.yMinimum()))
         featureData = self._controller.uidm.featureData()
-        self.updateFeaturesLayer(featureData)
+        if featureData:
+            self.updateFeaturesLayer(featureData)
               
     def updateFeaturesLayer(self, featureData):
         id = 'adr'
-        layer = self.findLayer(id) # need - if does not exist .. then create
+        layer = self.findLayer(id)
         # ensure the user has not removed the layer 
         if not layer:
-            self.installFeatureLayer()
+            self.installAimsLayer(id, 'AIMS Features')
             layer = self.findLayer(id) 
-        # ensure legend is visible
+        # test the layer is visible
         if not self.isVisible(layer):
             return             
         # ensure legend is visible
