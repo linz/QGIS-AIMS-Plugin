@@ -59,7 +59,7 @@ class MoveAddressTool(QgsMapToolIdentify):
                 coords = results[0].mFeature.geometry().asPoint()
                 self.setMarker(coords)
                 # create address object for feature. It is this obj properties that will be passed to API
-                self._features.append(UiUtility.mapResultsToAddObj(results[0], self._controller))
+                self._features.append(self._controller.uidm.singleFeatureObj(results[0].mFeature.attribute('addressId')))
                 self._sb.showMessage("Right click for features new location")
                 
             else: # Stacked points
@@ -81,7 +81,7 @@ class MoveAddressTool(QgsMapToolIdentify):
                     
                     for result in results:
                         if result.mFeature.attribute('addressId') in moveFeaturesIds:
-                            self._features.append(UiUtility.mapResultsToAddObj(result, self._controller))
+                            self._features.append(self._controller.uidm.singleFeatureObj(results[0].mFeature.attribute('addressId')))
                                            
                     self._sb.showMessage("Right click for features new location")
                     
@@ -101,13 +101,17 @@ class MoveAddressTool(QgsMapToolIdentify):
                 
                 # set new coords for all selected features
                 coords = UiUtility.transform(self._iface, coords)
-                for feature in self._features:          
-                        feature.set_x(coords[0])
-                        feature.set_y(coords[1])  
-                    
+                for feature in self._features:
+                    feature._addressedObject_addressPositions[0].setCoordinates(coords)
+                    self._controller.dm.updateAddress(feature)
+                
+                self._features = []
+                self._canvas.scene().removeItem(self._marker)
+                self._sb.clearMessage()
+
+            '''
                 payload = feature.aimsObject()
                 valErrors = self._controller.updateFeature(payload)
-            
                 if len(valErrors) == 0:
                     pass #no errors
                 else:
@@ -118,7 +122,7 @@ class MoveAddressTool(QgsMapToolIdentify):
                 self._sb.clearMessage()
                 
             else: QMessageBox.warning(self._iface.mainWindow(),"Move Feature", "You must first select a feature to move")
-
+            '''
 class MoveAddressDialog(Ui_MoveAddressDialog, QDialog ):
 
     def __init__( self, parent ):

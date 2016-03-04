@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'AimsUI/AimsClient/Gui/Ui_ReviewQueueWidget.ui'
 #
-# Created: Tue Feb 23 12:38:47 2016
+# Created: Wed Mar  2 16:47:33 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -71,6 +71,10 @@ class Ui_ReviewQueueWidget(object):
         self.uRejectButton.setMaximumSize(QtCore.QSize(70, 16777215))
         self.uRejectButton.setObjectName(_fromUtf8("uRejectButton"))
         self.verticalLayout.addWidget(self.uRejectButton)
+        self.uRefreshButton = QtGui.QPushButton(self.horizontalLayoutWidget)
+        self.uRefreshButton.setMaximumSize(QtCore.QSize(70, 16777215))
+        self.uRefreshButton.setObjectName(_fromUtf8("uRefreshButton"))
+        self.verticalLayout.addWidget(self.uRefreshButton)
         spacerItem1 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem1)
         self.horizontalLayout.addLayout(self.verticalLayout)
@@ -118,7 +122,8 @@ class Ui_ReviewQueueWidget(object):
         ReviewQueueWidget.setWindowTitle(_translate("ReviewQueueWidget", "Form", None))
         self.label_2.setText(_translate("ReviewQueueWidget", "Filter User:", None))
         self.uAcceptButton.setText(_translate("ReviewQueueWidget", "Accept", None))
-        self.uRejectButton.setText(_translate("ReviewQueueWidget", "Reject", None))
+        self.uRejectButton.setText(_translate("ReviewQueueWidget", "Decline", None))
+        self.uRefreshButton.setText(_translate("ReviewQueueWidget", "Refresh", None))
         self.uDisplayButton.setText(_translate("ReviewQueueWidget", "Display", None))
         self.uUpdateButton.setText(_translate("ReviewQueueWidget", "Update", None))
 

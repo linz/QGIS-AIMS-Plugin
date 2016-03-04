@@ -17,38 +17,39 @@ import re
 
 
 class UiUtility (object):
-    ''' Utility Class. Methods up for adoption
-    Plans to find these a better home '''
+    ''' Where modular methods live and are leveraged '''
     
     uiObjMappings = {'uWarning':['_warning','setWarnings'],
-                        'uNotes':['_workflow_sourceReason','setSourceReason'],
-                        'uAddressType':['_components_addressType','setAddressType'], 
-                        'ulifeCycle':['_components_lifecycle','setLifecycle'],   
-                        'uLevelType':['_components_levelType','setLevelType'], 
-                        'uLevelValue':['_components_levelValue','setLevelValue'], 
-                        'uUnitType':['_components_unitType','setUnitType'],
-                        'uUnit':['_components_unitValue','setUnitValue'],
-                        'uPrefix':['_components_addressNumberPrefix','setAddressNumberPrefix'],
-                        'uBase':['_components_addressNumber','setAddressNumber'],
-                        'uAlpha':['_components_addressNumberSuffix','setAddressNumberSuffix'],
-                        'uHigh':['_components_addressNumberHigh','setAddressNumberHigh'],
-                        'uExternalIdScheme':['_components_externalAddressIdScheme','setExternalAddressIdScheme'],
-                        'uExternalAddId':['_components_externalAddressId','setExternalAddressId'], 
-                        'uRclId':['_components_roadCentrelineId','setRoadCentrelineId'],
-                        'uRoadPrefix':['_components_roadSuffix','setRoadSuffix'],
-                        'uRoadName':['_components_roadName','setRoadName'], 
-                        'uRoadTypeName':['_components_roadType','setRoadType'],   
-                        'uRoadSuffix':['_components_roadSuffix','setRoadSuffix'], 
-                        'uWaterName':['_components_waterName','setWaterName'], 
-                        'uWaterRouteName':['_components_waterRoute','setWaterRoute'],
-                        'uObjectType':['_addressedObject_objectType','setObjectType'],
-                        'uObjectName':['_addressedObject_objectName','setObjectName'],
-                        'uExtObjectIdScheme':['_addressedObject_externalObjectIdScheme','setExternalObjectIdScheme'],
-                        'uExternalObjectId':['_addressedObject_externalObjectId','setExternalObjectId'],
-                        'uValuationReference':['_addressedObject_valuationReference','setValuationReference'],
-                        'uCertificateOfTitle':['_addressedObject_certificateOfTitle','setCertificateOfTitle'],
-                        'uAppellation':['_addressedObject_appellation','setAppellation'],
-                        }
+                    'uNotes':['_workflow_sourceReason','setSourceReason'],
+                    'uAddressType':['_components_addressType','setAddressType'], 
+                    'ulifeCycle':['_components_lifecycle','setLifecycle'],   
+                    'uLevelType':['_components_levelType','setLevelType'], 
+                    'uLevelValue':['_components_levelValue','setLevelValue'], 
+                    'uUnitType':['_components_unitType','setUnitType'],
+                    'uUnit':['_components_unitValue','setUnitValue'],
+                    'uPrefix':['_components_addressNumberPrefix','setAddressNumberPrefix'],
+                    'uBase':['_components_addressNumber','setAddressNumber'],
+                    'uAlpha':['_components_addressNumberSuffix','setAddressNumberSuffix'],
+                    'uHigh':['_components_addressNumberHigh','setAddressNumberHigh'],
+                    'uExternalIdScheme':['_components_externalAddressIdScheme','setExternalAddressIdScheme'],
+                    'uExternalAddId':['_components_externalAddressId','setExternalAddressId'], 
+                    'uRclId':['_components_roadCentrelineId','setRoadCentrelineId'],
+                    'uRoadPrefix':['_components_roadSuffix','setRoadSuffix'],
+                    'uRoadName':['_components_roadName','setRoadName'], 
+                    'uRoadTypeName':['_components_roadType','setRoadType'],   
+                    'uRoadSuffix':['_components_roadSuffix','setRoadSuffix'], 
+                    'uWaterName':['_components_waterName','setWaterName'], 
+                    'uWaterRouteName':['_components_waterRoute','setWaterRoute'],
+                    'uObjectType':['_addressedObject_objectType','setObjectType'],
+                    'uObjectName':['_addressedObject_objectName','setObjectName'],
+                    'uExtObjectIdScheme':['_addressedObject_externalObjectIdScheme','setExternalObjectIdScheme'],
+                    'uExternalObjectId':['_addressedObject_externalObjectId','setExternalObjectId'],
+                    'uValuationReference':['_addressedObject_valuationReference','setValuationReference'],
+                    'uCertificateOfTitle':['_addressedObject_certificateOfTitle','setCertificateOfTitle'],
+                    'uAppellation':['_addressedObject_appellation','setAppellation'],
+                    }
+    
+    
     
     @staticmethod
     def transform (iface, coords, tgt=4167):       
@@ -80,27 +81,27 @@ class UiUtility (object):
         return rclMarker
             
     @staticmethod
-    def setFormCombos(obj):
+    def setFormCombos(self):
         #all no have the first value set as None - modal specific defualts now need to be
         # set from the parent
-        obj.uAddressType.addItems(['Road', 'Water'])
-        obj.ulifeCycle.addItems(['Current', 'Proposed', 'Retired'])
-        obj.uUnitType.addItems([None, 'Apartment', 'Kiosk', 'Room', 'Shop', 'Suite', 'Villa',  'Flat', 'Unit'])#require feed back as to approved values
-        obj.uLevelType.addItems([None, 'Floor', "Level"])
-        obj.uObjectType.addItems(['Parcel', 'Building'])
-        obj.uPositionType.addItems(['Unknown', 'Centroid', 'Label', 'Set Back off Road'])
+        self.uAddressType.addItems(['Road', 'Water'])
+        self.ulifeCycle.addItems(['Current', 'Proposed', 'Retired'])
+        self.uUnitType.addItems([None, 'Apartment', 'Kiosk', 'Room', 'Shop', 'Suite', 'Villa',  'Flat', 'Unit'])#require feed back as to approved values
+        self.uLevelType.addItems([None, 'Floor', "Level"])
+        self.uObjectType.addItems(['Parcel', 'Building'])
+        self.uPositionType.addItems(['Unknown', 'Centroid', 'Label', 'Set Back off Road'])
         # if instance == chnagefeed or review object the also set 
         # uChangeType [new, update, retire]
 
     @staticmethod
-    def formMask(obj):        
+    def formMask(self):        
         intValidator = QIntValidator()    
-        obj.uExternalAddId.setValidator(intValidator)
-        obj.uBase.setValidator(intValidator)
-        obj.uHigh.setValidator(intValidator)
-        obj.uAlpha.setValidator(QRegExpValidator(QRegExp(r'^[A-Za-z]{0,3}'), obj))
-        obj.uUnit.setValidator(QRegExpValidator(QRegExp(r'^\w+'), obj))
-        obj.uPrefix.setValidator(QRegExpValidator(QRegExp(r'^\w+'), obj))
+        self.uExternalAddId.setValidator(intValidator)
+        self.uBase.setValidator(intValidator)
+        self.uHigh.setValidator(intValidator)
+        self.uAlpha.setValidator(QRegExpValidator(QRegExp(r'^[A-Za-z]{0,3}'), self))
+        self.uUnit.setValidator(QRegExpValidator(QRegExp(r'^\w+'), self))
+        self.uPrefix.setValidator(QRegExpValidator(QRegExp(r'^\w+'), self))
     
     @staticmethod
     def nullEqualsNone (uInput): #Now also handeling NULL
@@ -110,106 +111,65 @@ class UiUtility (object):
         else: return uInput
     
     @staticmethod
-    def mapResultsToAddObj (results, controller):
-        # init new address obj
-        feature = controller.initialiseAddressObj()
-        # set obj properties    
-        feature.setFullAddress(str(results.mFeature.attribute('fullAddress')))                     
-        feature.setAddressType(str(results.mFeature.attribute('addressType')))
-        feature.setSuburbLocality(str(results.mFeature.attribute('suburbLocality')))
-        feature.setTownCity(str(results.mFeature.attribute('townCity')))
-        feature.setLifecycle(str(results.mFeature.attribute('lifecycle'))) 
-        feature.setRoadPrefix(str(results.mFeature.attribute('roadPrefix')))
-        feature.setRoadName(str(results.mFeature.attribute('roadName')))      
-        feature.setRoadSuffix(str(results.mFeature.attribute('roadSuffix')))
-        feature.setRoadType(str(results.mFeature.attribute('roadType')))
-        feature.setRoadCentrelineId(str(results.mFeature.attribute('roadCentrelineId')))
-        feature.setWaterRoute(str(results.mFeature.attribute('waterRoute')))
-        feature.setWaterName(str(results.mFeature.attribute('waterName')))
-        feature.setUnitValue(str(results.mFeature.attribute('unitValue')))
-        feature.setUnitType(str(results.mFeature.attribute('unitType')))
-        feature.setLevelType(str(results.mFeature.attribute('levelType')))
-        feature.setLevelValue(str(results.mFeature.attribute('levelValue')))
-        feature.setAddressNumberPrefix(str(results.mFeature.attribute('addressNumberPrefix')))
-        feature.setAddressNumber(str(results.mFeature.attribute('addressNumber')))
-        feature.setAddressNumberSuffix(str(results.mFeature.attribute('addressNumberSuffix')))
-        feature.setAddressNumberHigh(str(results.mFeature.attribute('addressNumberHigh')))
-        feature.setVersion(str(results.mFeature.attribute('version')))
-        feature.setAddressId(str(results.mFeature.attribute('addressId')))
-        feature.setExternalAddressId(str(results.mFeature.attribute('externalAddressId')))
-        feature.setExternalAddressIdScheme(str(results.mFeature.attribute('externalAddressIdScheme')))
-        feature.setAoType(str(results.mFeature.attribute('objectType')))
-        feature.setAoName(str(results.mFeature.attribute('objectName')))
-        feature.setAoPositionType(str(results.mFeature.attribute('addressPositionType')))
-        feature.set_x(results.mFeature.geometry().asPoint()[0]) 
-        feature.set_y(results.mFeature.geometry().asPoint()[1])
-        feature.setExternalObjectId(str(results.mFeature.attribute('externalObjectId')))
-        feature.setExternalObjectIdScheme(str(results.mFeature.attribute('externalObjectIdScheme')))
-        feature.setValuationReference(str(results.mFeature.attribute('valuationReference')))
-        feature.setCertificateOfTitle(str(results.mFeature.attribute('certificateOfTitle')))
-        feature.setAppellation(str(results.mFeature.attribute('appellation')))  
-        return feature
+    def featureToUi(self):# currently supports update tool but should be expanded to support populating Queue 
+        UiUtility.setEditability(self)
+        
+        for ui, objProp in UiUtility.uiObjMappings.items():
+            if hasattr(self, ui): 
+                uiElement = getattr(self, ui)
+            else: 
+                continue
+            if isinstance(uiElement, QLineEdit) or isinstance(uiElement, QLabel):
+                uiElement.clear()
+                if hasattr(self.feature, objProp[0]):
+                    if ui == 'uWarning':# or ui == 'uNotes': # if a warning we need to undertake some formatting
+                        warnings = ''  
+                        for warning in getattr(self)['warn']:
+                            warnings+=(warning._severity).upper()+': '+warning._description+('\n'*2)
+                        uiElement.setText(warnings)
+                    else: 
+                        uiElement.setText(str(getattr(self.feature, objProp[0])))
+            elif isinstance(uiElement, QComboBox):
+                uiElement.setCurrentIndex(0)          
+                if hasattr(self.feature, objProp[0]):
+                    uiElement.setCurrentIndex(QComboBox.findText(uiElement, str(getattr(self.feature, objProp[0]))))
     
     @staticmethod
-    def formToObj(obj):
+    def formToObj(self):
         ''' serves both the gathering of user data
         from the purposes of new address creation and
         address feature updates ''' # should expanded scope to include queue views to obj
-        #obj == ui vomponent
-        #obj.feature == address obj
+
         for uiElement, objProp in UiUtility.uiObjMappings.items():              
-            if hasattr(obj, uiElement): # test if the ui widget/ form ... has the ui component
+            if hasattr(self, uiElement): # test if the ui widget/ form ... has the ui component
  
-                uiElement = getattr(obj, uiElement)                   
-                setter = getattr(obj.feature, objProp[1])
+                uiElement = getattr(self, uiElement)                   
+                setter = getattr(self.feature, objProp[1])
                 if isinstance(uiElement, QLineEdit) and uiElement.text() != '' and uiElement.text() != 'NULL':
-                    setter(uiElement.text())
-                if isinstance(uiElement, QComboBox) and uiElement.currentText() != '' and uiElement.currentText() != 'NULL':
-                        setter(uiElement.currentText().encode('utf-8'))
-                if isinstance(uiElement, QPlainTextEdit)and uiElement.toPlainText() != '' and uiElement.toPlainText() != 'NULL':
+                    setter(uiElement.text().encode('utf-8'))
+                elif isinstance(uiElement, QComboBox) and uiElement.currentText() != '' and uiElement.currentText() != 'NULL':
+                        setter(uiElement.currentText())
+                elif isinstance(uiElement, QPlainTextEdit)and uiElement.toPlainText() != '' and uiElement.toPlainText() != 'NULL':
                         setter(uiElement.toPlainText().encode('utf-8'))
-                    
+    
+    @staticmethod               
+    def setEditability(self):
+        widgetChildern = self.findChildren(QWidget, QRegExp(r'^u.*'))
+        for child in widgetChildern:
+            child.setEnabled(True)
         
-    @staticmethod
-    def addObjToForm(obj, feature):      
-        ''' used to populate the update form and 2x Queue Views
-            obj = form or widget
-            feature == the aims feature '''
-        obj.uAddressType.setCurrentIndex(QComboBox.findText(obj.uAddressType, obj.feature._addressType))
-        obj.uExternalAddId.setText(UiUtility.nullEqualsNone(obj.feature._externalAddressId))
-        obj.uExternalAddressIdScheme.setText(UiUtility.nullEqualsNone(obj.feature._externalAddressIdScheme))
-        obj.ulifeCycle.setCurrentIndex(QComboBox.findText(obj.ulifeCycle, obj.feature._lifecycle))
-        obj.uUnitType.setCurrentIndex(QComboBox.findText(obj.uUnitType, obj.feature._unitType))
-        obj.uUnit.setText(UiUtility.nullEqualsNone(obj.feature._unitValue))
-        obj.uLevelType.setCurrentIndex(QComboBox.findText(obj.uLevelType, obj.feature._levelType))
-        obj.uLevelValue.setText(UiUtility.nullEqualsNone(obj.feature._levelValue))
-        obj.uPrefix.setText(UiUtility.nullEqualsNone(obj.feature._addressNumberPrefix))
-        obj.uBase.setText(UiUtility.nullEqualsNone(obj.feature._addressNumber))
-        obj.uAlpha.setText(UiUtility.nullEqualsNone(obj.feature._addressNumberSuffix))
-        obj.uHigh.setText(UiUtility.nullEqualsNone(obj.feature._addressNumberHigh))
-        obj.uRclId.setText(UiUtility.nullEqualsNone(obj.feature._roadCentrelineId))
-        obj.uRoadPrefix.setText(UiUtility.nullEqualsNone(obj.feature._roadPrefix))
-        obj.uRoadName.setText(UiUtility.nullEqualsNone(obj.feature._roadName))
-        obj.uRoadTypeName.setText(UiUtility.nullEqualsNone(obj.feature._roadType))
-        obj.uRoadSuffix.setText(UiUtility.nullEqualsNone(obj.feature._roadSuffix))
-        obj.uWaterRouteName.setText(UiUtility.nullEqualsNone(obj.feature._waterRoute))
-        obj.uWaterName.setText(UiUtility.nullEqualsNone(obj.feature._waterName))
-        
-        # addressable object
-        obj.uObjectType.setCurrentIndex(QComboBox.findText(obj.uObjectType, obj.feature._aoType))
-        obj.uObjectName.setText(UiUtility.nullEqualsNone(obj.feature._aoName))
-        obj.uExternalObjectId.setText(UiUtility.nullEqualsNone(obj.feature._externalObjectId))
-        obj.uExtObjectIdScheme.setText(UiUtility.nullEqualsNone(obj.feature._externalObjectIdScheme))
-        obj.uValuationReference.setText(UiUtility.nullEqualsNone(obj.feature._valuationReference))
-        obj.uCertificateOfTitle.setText(UiUtility.nullEqualsNone(obj.feature._certificateOfTitle))
-        obj.uAppellation.setText(UiUtility.nullEqualsNone(obj.feature._appellation))
-        from QueueEditorWidget import QueueEditorWidget
-        if isinstance(obj, QueueEditorWidget):
-            pass
-            #warnings
-            #chnageType
-        
-        
+        if self.uAddressType.currentText() == 'Road':
+            waterChildern = self.findChildren(QWidget, QRegExp(r'Water.*'))
+            for child in waterChildern:
+                child.clear()
+                child.setDisabled(True)
+                
+        elif self.uAddressType.currentText() == 'Water':
+            roadChildern = self.findChildren(QWidget, QRegExp(r'Road.*'))
+            for child in roadChildern:
+                child.clear()
+                child.setDisabled(True)  
+
     @staticmethod
     def fullNumChanged(obj, newnumber):
         ''' splits a full (user inputted) address string into address components '''

@@ -184,7 +184,10 @@ class Controller(QObject):
         # Add our own actions
         for action in self.actions:
             group.addAction( action )
-    
+        
+        #zoom to default extent
+        self._layerManager.defaultExtent()
+                
     def mapToolChanged(self):
         if isinstance(self.iface.mapCanvas().mapTool(), GetRcl) == False:          
             self._currentMapTool = self.iface.mapCanvas().mapTool()
