@@ -31,7 +31,7 @@ from DataUpdater import DataUpdater,DataUpdaterAction,DataUpdaterApproval,DataUp
 from AimsApi import AimsApi 
 from AimsLogging import Logger
 from AimsUtility import ActionType,ApprovalType,FeedType,LogWrap
-from AimsUtility import MAX_FEATURE_COUNT,THREAD_JOIN_TIMEOUT,PAGE_LIMIT,POOL_PAGE_CHECK_DELAY,QUEUE_CHECK_DELAY,LAST_PAGE_GUESS,ENABLE_RESOLUTION_FEED_WARNINGS
+from AimsUtility import MAX_FEATURE_COUNT,THREAD_JOIN_TIMEOUT,PAGE_LIMIT,POOL_PAGE_CHECK_DELAY,QUEUE_CHECK_DELAY,FIRST_PAGE,LAST_PAGE_GUESS,ENABLE_RESOLUTION_FEED_WARNINGS
 from AddressFactory import AddressFactory#,AddressChangeFactory,AddressResolutionFactory
 aimslog = None
 
@@ -148,15 +148,6 @@ class DataSync(threading.Thread):
                 if self.stopped():
                     self.stopSubs(pool)
                     return None
-#                     aimslog.info('Stopping DataUpdater thread {}'.format(r['ref']))
-#                     self.duinst[r['ref']].stop()
-#                     self.duinst[r['ref']].join(THREAD_JOIN_TIMEOUT)
-#                     if self.duinst[r['ref']].isAlive():aimslog.warn('Thread timeout {}'.format(r['ref']))
-#                     del self.duinst[r['ref']]
-#                     pool.remove(r)
-#                     continue
-                #print 'DU',du.isAlive()
-                #if len(pool) == 1 and r['page'] == 6: #DEBUG
                 #    print 'halt' 
                 du = self.duinst[r['ref']]
                 if not du.isAlive():
@@ -263,7 +254,7 @@ class DataSyncFeeds(DataSync):
         res = super(DataSyncFeeds,self).fetchFeedUpdates(thr)
         ps,pe = self.ftracker['page']
         #for i in range(5):#do a bunch of backfills?
-        if ps>1:
+        if ps>FIRST_PAGE:
             res += self.backfillPage(ps)
         return res
         
@@ -316,7 +307,7 @@ class DataSyncFeeds(DataSync):
             #self.outq.put(act[addr](changelist[addr]))
             for address in changelist[at]:
                 resp = self.processAddress(at,address)
-                aimslog.info('{} finished'.format(str(resp)))
+                aimslog.info('{} thread started'.format(str(resp)))
                 
     def managePage(self,p):
         if p[0]: self.ftracker['page'][0] = p[0]
@@ -330,7 +321,7 @@ class DataSyncChangeFeed(DataSyncFeeds):
 
     def processAddress(self,at,addr):  
         '''Do an Add/Retire/Update request'''
-        at2 = ApprovalType.reverse[at][:3].capitalize()      
+        at2 = ActionType.reverse[at][:3].capitalize()      
         ref = 'Req{0}.{1:%y%m%d.%H%M%S}'.format(at2,DT.now())
         params = (ref,self.conf,self.afactory)
         #self.ioq = {'in':Queue.Queue(),'out':Queue.Queue()}

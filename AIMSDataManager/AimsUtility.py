@@ -19,6 +19,8 @@ from AimsLogging import Logger
 THREAD_JOIN_TIMEOUT = 5
 #max number of features to request per page 
 MAX_FEATURE_COUNT = 1000
+#first page (to not backfill past)
+FIRST_PAGE = 1
 #upper limit on page number to request
 PAGE_LIMIT = 1000
 #time delay between thread checks to see if pooled page has returned (s) 

@@ -210,20 +210,6 @@ class AimsApi(object):
         resp, content = self.h.request(url,"POST", json.dumps(payload), self._headers)
         return self.handleResponse(url,resp["status"], json.loads(content) )
     
-
-    
-    #not needed
-    def featureAddAddress(self,payload): return self.changefeedActionAddress(ActionType.ADD, payload)    
-    def featureRetireAddress(self,payload): return self.changefeedActionAddress(ActionType.RETIRE, payload)    
-    def featureUpdateAddress(self,payload): return self.changefeedActionAddress(ActionType.UPDATE, payload)    
-
-    def changefeedAddAddress(self,payload): return self.featureAddAddress(payload)
-    def changefeedRetireAddress(self,payload): return self.featureRetireAddress(payload)
-    def changefeedUpdateAddress(self,payload): return self.featureUpdateAddress(payload)
-       
-    def resolutionfeedApproveAddress(self,payload): return self.resolutionfeedApproveAddress(ApprovalType.APPROVE, payload)   
-    def resolutionfeedDeclineAddress(self,payload): return self.resolutionfeedApproveAddress(ApprovalType.DECLINE, payload)   
-    def resolutionfeedUpdateAddress(self,payload): return self.resolutionfeedApproveAddress(ApprovalType.UPDATE, payload)   
        
         
         
