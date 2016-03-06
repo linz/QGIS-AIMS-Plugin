@@ -62,10 +62,8 @@ class Mapping():
         'externalObjectIdScheme':['_addressedObject_externalObjectIdScheme',None],
         'valuationReference':['_addressedObject_valuationReference',None],
         'certificateOfTitle':['_addressedObject_certificateOfTitle',None],
-        'appellation':['_addressedObject_appellation',None],
-        'version':['_version',None]
+        'appellation':['_addressedObject_appellation',None]
         }
-
 
 class LayerManager(QObject):
     

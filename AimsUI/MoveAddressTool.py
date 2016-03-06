@@ -109,20 +109,6 @@ class MoveAddressTool(QgsMapToolIdentify):
                 self._canvas.scene().removeItem(self._marker)
                 self._sb.clearMessage()
 
-            '''
-                payload = feature.aimsObject()
-                valErrors = self._controller.updateFeature(payload)
-                if len(valErrors) == 0:
-                    pass #no errors
-                else:
-                    QMessageBox.warning(self._iface.mainWindow(),"Move Feature", valErrors +'\n'*2 + feature._fullAddress )
-                
-                self._features = []
-                self._canvas.scene().removeItem(self._marker)
-                self._sb.clearMessage()
-                
-            else: QMessageBox.warning(self._iface.mainWindow(),"Move Feature", "You must first select a feature to move")
-            '''
 class MoveAddressDialog(Ui_MoveAddressDialog, QDialog ):
 
     def __init__( self, parent ):

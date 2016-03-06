@@ -14,42 +14,38 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import QRegExp
 import re
 
-
-
 class UiUtility (object):
     ''' Where modular methods live and are leveraged '''
     
-    uiObjMappings = {'uWarning':['_warning','setWarnings'],
-                    'uNotes':['_workflow_sourceReason','setSourceReason'],
-                    'uAddressType':['_components_addressType','setAddressType'], 
-                    'ulifeCycle':['_components_lifecycle','setLifecycle'],   
-                    'uLevelType':['_components_levelType','setLevelType'], 
-                    'uLevelValue':['_components_levelValue','setLevelValue'], 
-                    'uUnitType':['_components_unitType','setUnitType'],
-                    'uUnit':['_components_unitValue','setUnitValue'],
-                    'uPrefix':['_components_addressNumberPrefix','setAddressNumberPrefix'],
-                    'uBase':['_components_addressNumber','setAddressNumber'],
-                    'uAlpha':['_components_addressNumberSuffix','setAddressNumberSuffix'],
-                    'uHigh':['_components_addressNumberHigh','setAddressNumberHigh'],
-                    'uExternalIdScheme':['_components_externalAddressIdScheme','setExternalAddressIdScheme'],
-                    'uExternalAddId':['_components_externalAddressId','setExternalAddressId'], 
-                    'uRclId':['_components_roadCentrelineId','setRoadCentrelineId'],
-                    'uRoadPrefix':['_components_roadSuffix','setRoadSuffix'],
-                    'uRoadName':['_components_roadName','setRoadName'], 
-                    'uRoadTypeName':['_components_roadType','setRoadType'],   
-                    'uRoadSuffix':['_components_roadSuffix','setRoadSuffix'], 
-                    'uWaterName':['_components_waterName','setWaterName'], 
-                    'uWaterRouteName':['_components_waterRoute','setWaterRoute'],
-                    'uObjectType':['_addressedObject_objectType','setObjectType'],
-                    'uObjectName':['_addressedObject_objectName','setObjectName'],
-                    'uExtObjectIdScheme':['_addressedObject_externalObjectIdScheme','setExternalObjectIdScheme'],
-                    'uExternalObjectId':['_addressedObject_externalObjectId','setExternalObjectId'],
-                    'uValuationReference':['_addressedObject_valuationReference','setValuationReference'],
-                    'uCertificateOfTitle':['_addressedObject_certificateOfTitle','setCertificateOfTitle'],
-                    'uAppellation':['_addressedObject_appellation','setAppellation'],
+    uiObjMappings = {'uWarning':['_warning','setWarnings', 'getWarnings'],
+                    'uNotes':['_workflow_sourceReason','setSourceReason', None],
+                    'uAddressType':['_components_addressType','setAddressType', None], 
+                    'ulifeCycle':['_components_lifecycle','setLifecycle', None],   
+                    'uLevelType':['_components_levelType','setLevelType', None], 
+                    'uLevelValue':['_components_levelValue','setLevelValue', None], 
+                    'uUnitType':['_components_unitType','setUnitType', None],
+                    'uUnit':['_components_unitValue','setUnitValue', None],
+                    'uPrefix':['_components_addressNumberPrefix','setAddressNumberPrefix', None],
+                    'uBase':['_components_addressNumber','setAddressNumber', None],
+                    'uAlpha':['_components_addressNumberSuffix','setAddressNumberSuffix', None],
+                    'uHigh':['_components_addressNumberHigh','setAddressNumberHigh', None],
+                    'uExternalIdScheme':['_components_externalAddressIdScheme','setExternalAddressIdScheme', None],
+                    'uExternalAddId':['_components_externalAddressId','setExternalAddressId', None], 
+                    'uRclId':['_components_roadCentrelineId','setRoadCentrelineId', None],
+                    'uRoadPrefix':['_components_roadSuffix','setRoadSuffix', None],
+                    'uRoadName':['_components_roadName','setRoadName', None], 
+                    'uRoadTypeName':['_components_roadType','setRoadType', None],   
+                    'uRoadSuffix':['_components_roadSuffix','setRoadSuffix', None], 
+                    'uWaterName':['_components_waterName','setWaterName', None], 
+                    'uWaterRouteName':['_components_waterRoute','setWaterRoute', None],
+                    'uObjectType':['_addressedObject_objectType','setObjectType', None],
+                    'uObjectName':['_addressedObject_objectName','setObjectName', None],
+                    'uExtObjectIdScheme':['_addressedObject_externalObjectIdScheme','setExternalObjectIdScheme', None],
+                    'uExternalObjectId':['_addressedObject_externalObjectId','setExternalObjectId', None],
+                    'uValuationReference':['_addressedObject_valuationReference','setValuationReference', None],
+                    'uCertificateOfTitle':['_addressedObject_certificateOfTitle','setCertificateOfTitle', None],
+                    'uAppellation':['_addressedObject_appellation','setAppellation', None],
                     }
-    
-    
     
     @staticmethod
     def transform (iface, coords, tgt=4167):       
@@ -111,28 +107,35 @@ class UiUtility (object):
         else: return uInput
     
     @staticmethod
-    def featureToUi(self):# currently supports update tool but should be expanded to support populating Queue 
+    def featureToUi(self):
+        """ for populating to update tool ui and queue edit ui """
         UiUtility.setEditability(self)
         
         for ui, objProp in UiUtility.uiObjMappings.items():
-            if hasattr(self, ui): 
+            # Test the UI has the relative UI component 
+            if hasattr(self, ui):
                 uiElement = getattr(self, ui)
             else: 
                 continue
-            if isinstance(uiElement, QLineEdit) or isinstance(uiElement, QLabel):
-                uiElement.clear()
-                if hasattr(self.feature, objProp[0]):
-                    if ui == 'uWarning':# or ui == 'uNotes': # if a warning we need to undertake some formatting
-                        warnings = ''  
-                        for warning in getattr(self)['warn']:
-                            warnings+=(warning._severity).upper()+': '+warning._description+('\n'*2)
-                        uiElement.setText(warnings)
+            # Test the object has the required property
+            if hasattr(self.feature, objProp[0]):                                     
+                if objProp[2]: 
+                    # use getter
+                    prop = str(getattr(self.feature, objProp[2]))
+                else:
+                    # go straight for the objects property 
+                    prop = str(getattr(self.feature, objProp[0]))
+                if isinstance(uiElement, QLineEdit) or isinstance(uiElement, QLabel):
+                    if ui == 'uWarning': pass# or ui == 'uNotes': # if a warning we need to undertake some formatting
+                    #    warnings = ''  
+                    #    for warning in getattr(self)['warn']:
+                    #        warnings+=(warning._severity).upper()+': '+warning._description+('\n'*2)
+                    #    uiElement.setText(warnings)
                     else: 
-                        uiElement.setText(str(getattr(self.feature, objProp[0])))
-            elif isinstance(uiElement, QComboBox):
-                uiElement.setCurrentIndex(0)          
-                if hasattr(self.feature, objProp[0]):
-                    uiElement.setCurrentIndex(QComboBox.findText(uiElement, str(getattr(self.feature, objProp[0]))))
+                        uiElement.setText(prop)
+                elif isinstance(uiElement, QComboBox):
+                    uiElement.setCurrentIndex(0)  
+                    uiElement.setCurrentIndex(QComboBox.findText(uiElement, prop))
     
     @staticmethod
     def formToObj(self):
@@ -154,20 +157,23 @@ class UiUtility (object):
     
     @staticmethod               
     def setEditability(self):
+        
         widgetChildern = self.findChildren(QWidget, QRegExp(r'^u.*'))
         for child in widgetChildern:
             child.setEnabled(True)
-        
+            if isinstance(child, QLineEdit) or isinstance(child, QLabel):
+                child.clear()
+            elif isinstance(child, QComboBox) and not self.uAddressType:
+                child.setCurrentIndex(0)
+                          
         if self.uAddressType.currentText() == 'Road':
             waterChildern = self.findChildren(QWidget, QRegExp(r'Water.*'))
             for child in waterChildern:
-                child.clear()
                 child.setDisabled(True)
                 
         elif self.uAddressType.currentText() == 'Water':
             roadChildern = self.findChildren(QWidget, QRegExp(r'Road.*'))
             for child in roadChildern:
-                child.clear()
                 child.setDisabled(True)  
 
     @staticmethod

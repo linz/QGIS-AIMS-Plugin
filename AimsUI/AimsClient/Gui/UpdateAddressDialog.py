@@ -15,6 +15,8 @@ import re
 
 from Ui_NewAddressDialog import Ui_NewAddressDialog
 from AimsUI.AimsClient.Address import Address
+from AIMSDataManager.AddressFactory import AddressFactory
+from AIMSDataManager.AimsUtility import FeedType
 from UiUtility import UiUtility
 
 #from AimsUI.GetRclTool import *
@@ -72,7 +74,9 @@ class UpdateAddressDialog(Ui_NewAddressDialog, QDialog):
         ''' take users input from form and submit to AIMS API '''
         # Run through the setters
         UiUtility.formToObj(self)
-        # submit address obj to DM
+        # submit address obj to DM     
+        af = {ft:AddressFactory.getInstance(ft) for ft in FeedType.reverse}
+        self.feature = af[FeedType.CHANGEFEED].cast(self.feature)
         self._controller.dm.updateAddress(self.feature)
         # need to check the response 
         self.closeDlg()
