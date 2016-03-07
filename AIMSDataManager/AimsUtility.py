@@ -28,7 +28,9 @@ POOL_PAGE_CHECK_DELAY = 0.2
 #time delay between thread checks to see if user action has returned a response (s) 
 QUEUE_CHECK_DELAY = 1
 #when backfilling pages guess start point to find last page in change feed
-LAST_PAGE_GUESS = 100
+LAST_PAGE_GUESS = 10
+#initial page number indicating page search is required
+NULL_PAGE_VALUE = 0
 #automatically inset warnings into resolution feed features. very slow, enable only if RF is small
 ENABLE_RESOLUTION_FEED_WARNINGS = False
 #filename for persisted feed data

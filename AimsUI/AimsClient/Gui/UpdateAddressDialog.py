@@ -77,21 +77,15 @@ class UpdateAddressDialog(Ui_NewAddressDialog, QDialog):
         # submit address obj to DM     
         af = {ft:AddressFactory.getInstance(ft) for ft in FeedType.reverse}
         self.feature = af[FeedType.CHANGEFEED].cast(self.feature)
-        self._controller.dm.updateAddress(self.feature)
+        self._controller.dm.updateAddress(self.feature, self.feature._components_addressId)
         # need to check the response 
-        self.closeDlg()
-        # old direct API method
-        ''' 
-        # load address to AIMS Via API
-        payload = self.feature.aimsObject()
-        # Capture the returned response (response distilled down to list of errors)
-        valErrors = self._controller.updateFeature(payload)
         
-        if len(valErrors) == 0:
-            self.closeDlg()
-        else:
-            QMessageBox.warning(iface.mainWindow(),"Create Address Point", valErrors)
-        '''
+        r = self._controller.dm.response(FeedType.CHANGEFEED)
+        r = self._controller.dm.response(FeedType.CHANGEFEED)
+        r = self._controller.dm.response(FeedType.CHANGEFEED)
+        
+        self.closeDlg()
+       
     def fullNumChanged(self, newnumber):
         UiUtility.fullNumChanged(self, newnumber)
     
