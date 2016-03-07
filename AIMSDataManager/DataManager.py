@@ -212,18 +212,18 @@ class DataManager(object):
         self.ioq[FeedType.RESOLUTIONFEED]['in'].put({ApprovalType.UPDATE:(address,)})
     
     #----------------------------
-    def getWarnings(self,address):
-        '''Manually request warning messages per address, useful if warnings not enabled by default'''
-        return
-        cid = address.getChangeId()
-        if address.type != FeedType.RESOLUTION:
-            aimslog.warn('Attempt to set warnings on non-resolution address, casting')
-            address = Address.clone(address, AddressFactory.getInstance(FeedType.RESOLUTIONFEED).getAddress())
-        #TODO. Fix! Not thinking straight here, this wont work
-        dsrf = self._initFeedDS(FeedType.RESOLUTIONFEED)
-        address.setWarnings( dsrf.updateWarnings(cid) )
-        dsrf.stop()
-        return address
+#     def getWarnings(self,address):
+#         '''Manually request warning messages per address, useful if warnings not enabled by default'''
+#         return
+#         cid = address.getChangeId()
+#         if address.type != FeedType.RESOLUTION:
+#             aimslog.warn('Attempt to set warnings on non-resolution address, casting')
+#             address = Address.clone(address, AddressFactory.getInstance(FeedType.RESOLUTIONFEED).getAddress())
+#         #TODO! Fix! Not thinking straight here, this wont work
+#         dsrf = self._initFeedDS(FeedType.RESOLUTIONFEED,None)
+#         address.setWarnings( dsrf.updateWarnings(cid) )
+#         dsrf.stop()
+#         return address
     #CM
         
     def __enter__(self):
@@ -302,16 +302,16 @@ def test1(dm,af):
     listofaddresses = dm.pull()
 
     #TEST SHIFT
-    #testfeatureshift(dm)
+    testfeatureshift(dm)
     
     # TEST CF
     testchangefeedAUR(dm,af)
     
     # TEST RF
-    #testresolutionfeedAUD(dm,af)
+    testresolutionfeedAUD(dm,af)
     
     #TEST SHIFT
-    #testfeatureshift(dm)
+    testfeatureshift(dm)
     
     aimslog.info('*** Resolution ADD '+str(time.clock()))    
     

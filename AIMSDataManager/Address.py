@@ -290,6 +290,7 @@ class Address(object):
     def clone(a,b=None):
         '''clones attributes of A to B and instantiates B (as type A) if not provided'''
         #duplicates only attributes set in source object
+        from AddressFactory import AddressFactory
         if not b: b = AddressFactory.getInstance(a.type).getAddress()
         for attr in a.__dict__.keys(): setattr(b,attr,getattr(a,attr))
         return b

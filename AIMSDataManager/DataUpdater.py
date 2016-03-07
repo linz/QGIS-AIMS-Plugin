@@ -72,8 +72,8 @@ class DataUpdater(threading.Thread):
         return self._stop.isSet()
     
     def close(self):
-        aimslog.info('Queue {} stopped'.format(self.outq.qsize()))
-        self.respq.task_done()
+        aimslog.info('Queue {} stopped'.format(self.queue.qsize()))
+        self.queue.task_done()
         
 class DataUpdaterAction(DataUpdater):
     

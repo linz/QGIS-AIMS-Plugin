@@ -156,20 +156,20 @@ class AimsApi(object):
     #--- A G G R E G A T E S  &  A L I A S E S -----------------------------------------------------------------------------
     #-----------------------------------------------------------------------------------------------------------------------
     
-    
-    def getAllPages(self,ft,count=MAX_FEATURE_COUNT):
-        '''Get all available pages sequentially'''
-        return self.getPageUp(ft, page=1, count=count)
-    
-    def getPageUp(self,ft,page,count=MAX_FEATURE_COUNT):
-        entities = 1
-        addrlist = {}
-        addrlist[ft] = ()
-        while entities:
-            addrlist[ft] += self.getOnePage(ft, page, count)
-            page += 1
-            aimslog.info('PageRef.{}'.format(page))
-        return (page,addrlist)
+#     
+#     def getAllPages(self,ft,count=MAX_FEATURE_COUNT):
+#         '''Get all available pages sequentially'''
+#         return self.getPageUp(ft, page=1, count=count)
+#     
+#     def getPageUp(self,ft,page,count=MAX_FEATURE_COUNT):
+#         entities = 1
+#         addrlist = {}
+#         addrlist[ft] = ()
+#         while entities:
+#             addrlist[ft] += self.getOnePage(ft, page, count)
+#             page += 1
+#             aimslog.info('PageRef.{}'.format(page))
+#         return (page,addrlist)
             
     #-----------------------------------------------------------
     
