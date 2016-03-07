@@ -30,7 +30,6 @@ from AimsUI.CreateNewAddressTool import CreateNewAddressTool
 from AimsUI.UpdateAddressTool import UpdateAddressTool
 from AimsUI.LineageTool import LineageTool
 from AimsUI.GetRclTool import GetRcl
-from AimsUI.AimsClient.AimsApi import AimsApi
 from AimsQueueWidget import AimsQueueWidget
 from UiDataManager import UiDataManager
 from AIMSDataManager.DataManager import DataManager
@@ -47,8 +46,6 @@ class Controller(QObject):
     def __init__(self, iface):
         QObject.__init__(self)
         self.iface = iface
-        self.api = AimsApi()
-        self.user = self.api.user
         self.dm = DataManager()
         self.af = AddressFactory()
         #self.curResItem = [None, None]
@@ -93,7 +90,7 @@ class Controller(QObject):
         self._createnewaddresstool = CreateNewAddressTool( self.iface, self._layerManager, self)
         self._createnewaddresstool.setAction( self._createnewaddressaction )
         self.actions.append(self._createnewaddressaction)
-        
+        md5122607d33ee8a0b0e07c9b2159aefb14
         # Delete address point
         self._deladdressaction = QAction(QIcon(':/plugins/QGIS-AIMS-Plugin/resources/deleteaddress.png'), 
             'Delete AIMS Feature', self.iface.mainWindow())
@@ -163,6 +160,7 @@ class Controller(QObject):
         # Make useful connections
         self._layerManager.addressLayerAdded.connect(self.enableAddressLayer)
         self._layerManager.addressLayerRemoved.connect(self.disableAddressLayer)
+               
         # capture maptool selection changes
         QObject.connect( self.iface.mapCanvas(), SIGNAL( "mapToolSet(QgsMapTool *)" ), self.mapToolChanged)
 
@@ -185,8 +183,7 @@ class Controller(QObject):
         for action in self.actions:
             group.addAction( action )
         
-        #zoom to default extent
-        self._layerManager.defaultExtent()
+
                 
     def mapToolChanged(self):
         if isinstance(self.iface.mapCanvas().mapTool(), GetRcl) == False:          
@@ -242,6 +239,8 @@ class Controller(QObject):
         self._layerManager.installRefLayers()
         self._layerManager.installAimsLayer('adr', 'AIMS Features')
         self._layerManager.installAimsLayer('rev', 'AIMS Review')
+        #zoom to default extent
+        self._layerManager.defaultExtent()
     
     def setPreviousMapTool(self):
         ''' this allows for roll back to the maptool that called get rcl
@@ -272,42 +271,7 @@ class Controller(QObject):
     def startLineageTool(self):
         self.iface.mapCanvas().setMapTool(self._lineagetool)
         self._deladdtool.setEnabled(True) 
-             
-    def initialiseAddressObj(self): 
-        return Address(self.user)
-  
-    # API Methods
-    def newAddress(self, payload):   
-        return self.api.changefeedAdd(payload)
-    
-    def retireAddress(self, retireFeatures):
-        return self.api.changefeedRetire(retireFeatures) 
-    
-    def getFeatures(self, xMaximum, yMaximum, xMinimum, yMinimum):
-        return self.api.getFeatures(xMaximum, yMaximum, xMinimum, yMinimum)
-    
-    def updateFeature(self, payload):
-        return self.api.updateFeature(payload)
-    
-    def newGroup(self, payload):
-        return self.api.newGroup(payload)
-    
-    def addToGroup(self, groupId, payload):
-        return self.api.addToGroup(groupId, payload)
-
-    def submitGroup(self, groupId, payload):
-        return self.api.submitGroup(groupId, payload)
-    
-    def groupVersion(self, groupId):
-        return self.api.groupVersion(groupId)
-    
-    def refreshlayer(self):
-        pass
-    
-    def getResData(self):
-        return self.api.getResData()
-    
-    
+ 
 
 # Singleton instance    
 def instance():

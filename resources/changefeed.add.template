@@ -1,6 +1,6 @@
 { 
 	"workflow":{
-        "sourceUser":#required',
+        "sourceUser":None,
         "sourceReason":None
     },
     "components":{

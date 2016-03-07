@@ -1,7 +1,7 @@
 {
     "version":'#required',
     "workflow":{
-        "sourceUser":#required',
+        "sourceUser":'#required',
         "sourceReason":None
     },
     "components":{
