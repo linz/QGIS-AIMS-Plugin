@@ -21,7 +21,7 @@ from AddressFactory import AddressFactory
 from DataSync import DataSync,DataSyncFeatures,DataSyncChangeFeed,DataSyncResolutionFeed
 from datetime import datetime as DT
 from AimsUtility import ActionType,ApprovalType,FeedType,readConf
-from AimsUtility import THREAD_JOIN_TIMEOUT,LOCALADL,SWZERO,NEZERO
+from AimsUtility import THREAD_JOIN_TIMEOUT,LOCALADL,SWZERO,NEZERO,NULL_PAGE_VALUE as NPV
 from AimsLogging import Logger
 
 aimslog = None
@@ -232,16 +232,24 @@ class DataManager(object):
 class Persistence():
     '''static class for persisting config/long-lived information'''
     
-    tracker,coords,ADL = 3*(None,)
+    tracker = {}
+    coords = {'sw':SWZERO,'ne':NEZERO}
+    ADL = None
     
     def __init__(self):
-        self.coords = {'sw':SWZERO,'ne':NEZERO}
+        '''read or setup the tracked data'''
         if not self.read():
             self.ADL = self._initADL() 
             #default tracker, gets overwritten
-            self.tracker = {ft:{'page':[1,1],'index':1,'threads':1,'interval':5} for ft in FeedType.reverse}
+            #page = (lowest page fetched, highest page number fetched)
+            self.tracker[FeedType.FEATURES] =       {'page':[1,1],    'index':1,'threads':2,'interval':30}    
+            self.tracker[FeedType.CHANGEFEED] =     {'page':[NPV,NPV],'index':1,'threads':1,'interval':125}  
+            self.tracker[FeedType.RESOLUTIONFEED] = {'page':[1,1],    'index':1,'threads':1,'interval':10}             
+            #self.tracker[FeedType.FEATURES] =       {'page':[1,1],'index':1,'threads':2,'interval':30}    
+            #self.tracker[FeedType.CHANGEFEED] =     {'page':[1,1],'index':1,'threads':1,'interval':1000}  
+            #self.tracker[FeedType.RESOLUTIONFEED] = {'page':[1,1],'index':1,'threads':1,'interval':1000} 
             self.write() 
-            
+    
     def _initADL(self):
         '''Read ADL from serial and update from API'''
         return {FeedType.FEATURES:[],FeedType.CHANGEFEED:[],FeedType.RESOLUTIONFEED:[]}
@@ -288,6 +296,8 @@ def test1(dm,af):
     dm.refresh()
     listofaddresses = dm.pull()
 
+    #TEST SHIFT
+    testfeatureshift(dm)
     
     # TEST CF
     #testchangefeedAUR(dm,af)
