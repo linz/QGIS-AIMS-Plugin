@@ -263,8 +263,8 @@ class DataSyncFeeds(DataSync):
         p_start = 0
         p_end = p_end*2
         while True:
-            p = int((pstart+p_end)/2)
-            ref = self.fetchPage((pstart+p_end)/2)
+            p = int((p_start+p_end)/2)
+            ref = self.fetchPage((p_start+p_end)/2)
             self.duinst[ref]
             if not self.duinst[ref].isAlive():
                 acount = len(du.queue.get())
