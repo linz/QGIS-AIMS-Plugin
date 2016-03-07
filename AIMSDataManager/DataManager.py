@@ -37,10 +37,10 @@ class DataManager(object):
     aimslog = Logger.setup()
     
     
-    def __init__(self,start=set( (FeedType.FEATURES,FeedType.CHANGEFEED,FeedType.RESOLUTIONFEED) )):
+    def __init__(self,start=set( (FeedType.FEATURES,FeedType.CHANGEFEED,FeedType.RESOLUTIONFEED) ),initialise=False):
         #self.ioq = {'in':Queue.Queue(),'out':Queue.Queue()}   
         if start and hasattr(start,'__iter__'): self._start = set(start)
-        self.persist = Persistence()
+        self.persist = Persistence(initialise)
         self.conf = readConf()
         self._initDS()
         
@@ -173,21 +173,26 @@ class DataManager(object):
         return resp
         
       
+    def _populate(self,address):
+        '''Fill in any required+missing fields if a default value is known (in this case the configured user)'''
+        if not hasattr(address,'_workflow_sourceUser') or not address.getSourceUser(): address.setSourceUser(self.conf['user'])
+        return address
+    
     #convenience methods 
     #---------------------------- 
     def addAddress(self,address,reqid=None):
         if reqid: address.setRequestId(reqid)
-        address.setChangeType(ActionType.reverse[ActionType.ADD].title())
+        self._populate(address).setChangeType(ActionType.reverse[ActionType.ADD].title())
         self.ioq[FeedType.CHANGEFEED]['in'].put({ActionType.ADD:(address,)})        
     
     def retireAddress(self,address,reqid=None):
         if reqid: address.setRequestId(reqid)
-        address.setChangeType(ActionType.reverse[ActionType.RETIRE].title())
+        self._populate(address).setChangeType(ActionType.reverse[ActionType.RETIRE].title())
         self.ioq[FeedType.CHANGEFEED]['in'].put({ActionType.RETIRE:(address,)})
     
-    def updateAddress(self,address,reqid=None):
+    def updateAddress(self,address,reqid=None,srcusr=None):
         if reqid: address.setRequestId(reqid)
-        address.setChangeType(ActionType.reverse[ActionType.UPDATE].title())
+        self._populate(address).setChangeType(ActionType.reverse[ActionType.UPDATE].title())
         self.ioq[FeedType.CHANGEFEED]['in'].put({ActionType.UPDATE:(address,)})    
         
     #----------------------------
@@ -236,9 +241,9 @@ class Persistence():
     coords = {'sw':SWZERO,'ne':NEZERO}
     ADL = None
     
-    def __init__(self):
+    def __init__(self,initialise=False):
         '''read or setup the tracked data'''
-        if not self.read():
+        if initialise or not self.read():
             self.ADL = self._initADL() 
             #default tracker, gets overwritten
             #page = (lowest page fetched, highest page number fetched)
@@ -297,13 +302,13 @@ def test1(dm,af):
     listofaddresses = dm.pull()
 
     #TEST SHIFT
-    testfeatureshift(dm)
+    #testfeatureshift(dm)
     
     # TEST CF
-    #testchangefeedAUR(dm,af)
+    testchangefeedAUR(dm,af)
     
     # TEST RF
-    testresolutionfeedAUD(dm,af)
+    #testresolutionfeedAUD(dm,af)
     
     #TEST SHIFT
     #testfeatureshift(dm)

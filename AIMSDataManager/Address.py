@@ -177,7 +177,12 @@ class Address(object):
     def getAddressId(self): 
         return self._components_addressId        
     def setSourceReason (self, sourceReason): 
-        self._workflow_sourceReason = sourceReason
+        self._workflow_sourceReason = sourceReason    
+        
+    def setSourceUser (self, sourceUser): 
+        self._workflow_sourceUser = sourceUser    
+    def getSourceUser (self): 
+        return self._workflow_sourceUser
         
     def setStatusNotes(self, statusNotes):
         self._workflow_statusNotes = statusNotes
