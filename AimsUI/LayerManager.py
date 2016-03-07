@@ -19,53 +19,54 @@ from AimsClient import Database
 from AimsUI.AimsClient.AimsApi import *
 from AimsUI.AimsLogging import Logger
 
+from collections import OrderedDict
+
 aimslog = Logger.setup()
 
 class InvalidParameterException(Exception): pass
 
 class Mapping():
-    
-    adrLayerObjMappings = {
-        'addressType':['_components_addressType', None],
-        'fullAddress':['_components_fullAddress', None],
-        'fullAddressNumber':['_components_fullAddressNumber', None],
-        'fullRoadName':['_components_fullRoadName', None],
-        'suburbLocality':['_components_suburbLocality', None],
-        'townCity':['_components_townCity' '', None],
-        'meshblock':['_codes_meshblock', None],
-        'lifecycle':['_components_lifecycle', None], 
-        'roadPrefix':['_components_roadSuffix',None],
-        'roadName':['_components_roadName', None],                                
-        'roadType':['_components_roadType',None],
-        'roadSuffix':['_components_roadSuffix',None],
-        'roadCentrelineId':['_components_roadCentrelineId',None],
-        'waterRoute':['_components_waterRoute',None],
-        'waterName':['_components_waterName',None],
-        'unitValue':['_components_unitValue',None],
-        'unitType':['_components_unitType',None],
-        'levelType':['_components_levelType',None],
-        'levelValue':['_components_levelValue',None],
-        'addressNumberPrefix':['_components_addressNumberPrefix',None],
-        'addressNumber':['_components_addressNumber',None],
-        'addressNumberSuffix':['_components_addressNumberSuffix',None],
-        'addressNumberHigh':['_components_addressNumberHigh',None],
-        'addressId':['_components_addressId',None],
-        'externalAddressId':['_components_externalAddressId',None],
-        'externalAddressIdScheme':['_components_externalAddressIdScheme',None],
-        'addressableObjectId':['_addressedObject_externalObjectId',None],
-        'objectType':['_addressedObject_objectType',None],
-        'objectName':['_addressedObject_objectName',None],
-        'addressPositionsType':["_addressedObject_addressPositions[0]._positionType",None],
-        'suburbLocalityId':['_codes_suburbLocalityId',None],
-        'parcelId':['_codes_parcelId',None],
-        'externalObjectId':['_addressedObject_externalObjectId',None],
-        'externalObjectIdScheme':['_addressedObject_externalObjectIdScheme',None],
-        'valuationReference':['_addressedObject_valuationReference',None],
-        'certificateOfTitle':['_addressedObject_certificateOfTitle',None],
-        'appellation':['_addressedObject_appellation',None],
-        'version':['_version',None]
-        }
-
+    #format = feildname: [objProp, getter]
+    adrLayerObjMappings = OrderedDict([
+        ('addressType',['_components_addressType', None]),
+        ('fullAddress',['_components_fullAddress', None]),
+        ('fullAddressNumber',['_components_fullAddressNumber', None]),
+        ('fullRoadName',['_components_fullRoadName', None]),
+        ('suburbLocality',['_components_suburbLocality', None]),
+        ('townCity',['_components_townCity' '', None]),
+        ('meshblock',['_codes_meshblock', None]),
+        ('lifecycle',['_components_lifecycle', None]), 
+        ('roadPrefix',['_components_roadSuffix',None]),
+        ('roadName',['_components_roadName', None]),                                
+        ('roadType',['_components_roadType',None]),
+        ('roadSuffix',['_components_roadSuffix',None]),
+        ('roadCentrelineId',['_components_roadCentrelineId',None]),
+        ('waterRoute',['_components_waterRoute',None]),
+        ('waterName',['_components_waterName',None]),
+        ('unitValue',['_components_unitValue',None]),
+        ('unitType',['_components_unitType',None]),
+        ('levelType',['_components_levelType',None]),
+        ('levelValue',['_components_levelValue',None]),
+        ('addressNumberPrefix',['_components_addressNumberPrefix',None]),
+        ('addressNumber',['_components_addressNumber',None]),
+        ('addressNumberSuffix',['_components_addressNumberSuffix',None]),
+        ('addressNumberHigh',['_components_addressNumberHigh',None]),
+        ('addressId',['_components_addressId',None]),
+        ('externalAddressId',['_components_externalAddressId',None]),
+        ('externalAddressIdScheme',['_components_externalAddressIdScheme',None]),
+        ('addressableObjectId',['_addressedObject_externalObjectId',None]),
+        ('objectType',['_addressedObject_objectType',None]),
+        ('objectName',['_addressedObject_objectName',None]),
+        ('addressPositionsType',["_addressedObject_addressPositions[0]._positionType",None]),
+        ('suburbLocalityId',['_codes_suburbLocalityId',None]),
+        ('parcelId',['_codes_parcelId',None]),
+        ('externalObjectId',['_addressedObject_externalObjectId',None]),
+        ('externalObjectIdScheme',['_addressedObject_externalObjectIdScheme',None]),
+        ('valuationReference',['_addressedObject_valuationReference',None]),
+        ('certificateOfTitle',['_addressedObject_certificateOfTitle',None]),
+        ('appellation',['_addressedObject_appellation',None]),
+        ('version',['_components_version',None])
+        ])
 
 class LayerManager(QObject):
     

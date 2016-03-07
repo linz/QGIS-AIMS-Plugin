@@ -1,7 +1,8 @@
 { 
 	"workflow":{
+        "sourceUser":None,
         "sourceReason":None
-     },
+    },
     "components":{
         "addressType":'#required,oneof=Road|Water',
         "primaryAddressId":None,
