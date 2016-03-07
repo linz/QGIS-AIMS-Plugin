@@ -97,8 +97,8 @@ class DataManager(object):
         '''shutdown closing/stopping ds threads and persisting data'''
         for ds in self.ds.values():
             #ds.close()
-            #ds.stop()
-            pass
+            ds.stop()
+            #pass
         self.persist.write()
         
     def _restart(self):
@@ -305,16 +305,17 @@ def test1(dm,af):
     testfeatureshift(dm)
     
     # TEST CF
-    testchangefeedAUR(dm,af)
+    #testchangefeedAUR(dm,af)
     
     # TEST RF
-    testresolutionfeedAUD(dm,af)
+    #testresolutionfeedAUD(dm,af)
     
     #TEST SHIFT
-    testfeatureshift(dm)
+    #testfeatureshift(dm)
     
-    aimslog.info('*** Resolution ADD '+str(time.clock()))    
-    
+    aimslog.info('*** Resolution ADD '+str(time.clock()))   
+    time.sleep(30) 
+    return
     print 'entering response mode'
     while True:
         aimslog.info('*** Main TICK '+str(time.clock()))
@@ -431,7 +432,7 @@ def testresolutionfeedAUD(dm,af):
     dm.repairAddress(addr_r,rqid2)
     resp = None
     while True: 
-        resp = testresp(dm,FeedType.CHANGEFEED)
+        resp = testresp(dm,FeedType.RESOLUTIONFEED)
         if resp: 
             print rqid2,resp[0].meta.requestId
             break
@@ -445,7 +446,7 @@ def testresolutionfeedAUD(dm,af):
     dm.declineAddress(addr_r,rqid3)
     resp = None
     while not resp: 
-        resp = testresp(dm,FeedType.CHANGEFEED)
+        resp = testresp(dm,FeedType.RESOLUTIONFEED)
         if resp: 
             print rqid3,resp[0].meta.requestId
             break

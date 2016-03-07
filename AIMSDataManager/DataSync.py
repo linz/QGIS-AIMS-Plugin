@@ -101,7 +101,7 @@ class DataSync(threading.Thread):
         '''Continual loop looking for input queue requests and running periodic updates'''
         while True:
             #TODO. there shouldnt ever be anything in the FF inq
-            updates,_ = self.fetchFeedUpdates(self.ftracker['threads'])
+            updates = self.fetchFeedUpdates(self.ftracker['threads'])
             if updates != None: 
                 self.syncFeeds(updates)
                 aimslog.debug('FT {} sleeping {} with size(Qin)={}'.format(FeedType.reverse[self.ft],self.ftracker['interval'],self.inq.qsize())) 
@@ -127,7 +127,7 @@ class DataSync(threading.Thread):
     #--------------------------------------------------------------------------            
 
     @LogWrap.timediff
-    def fetchFeedUpdates(self,thr,lastpage=FIRST_PAGE):
+    def _fetchFeedUpdates(self,thr,lastpage=FIRST_PAGE):
         '''get full page loads'''
         exhausted = PAGE_LIMIT
         newaddr = []
@@ -221,6 +221,10 @@ class DataSyncFeatures(DataSync):
     def __init__(self,params,queues):
         super(DataSyncFeatures,self).__init__(params,queues)
         #self.ftracker = {'page':[1,1],'index':1,'threads':2,'interval':30}    
+        
+    def fetchFeedUpdates(self,thr):
+        res,_ = super(DataSyncFeatures,self)._fetchFeedUpdates(thr)
+        return res
 
 
 class DataSyncFeeds(DataSync): 
@@ -246,13 +250,13 @@ class DataSyncFeeds(DataSync):
         '''run forward updates and tack on a single backfill, update page count accordingly'''
         pages = self.ftracker['page']
         bp,lp = pages if pages and pages!=[NPV,NPV] else 2*[self._findLastPage(LAST_PAGE_GUESS),]
-        res,lp = super(DataSyncFeeds,self).fetchFeedUpdates(thr,lp)
+        res,lp = super(DataSyncFeeds,self)._fetchFeedUpdates(thr,lp)
         #get just one backfill per fFU  #[for i in range(5):#do a bunch of backfills?]
         if bp>FIRST_PAGE:
             bdata,bp = self.backfillPage(bp-1)
             res += bdata
         self.managePage((bp,lp))
-        return res,lp
+        return res
         
     def _findLastPage(self,p_end):
         '''Inefficient way to find the last page in the feed sequence'''
@@ -353,12 +357,12 @@ class DataSyncResolutionFeed(DataSyncFeeds):
     
     def fetchFeedUpdates(self,thr):
         '''Override feed updates adding an additional updater call fetching warning text per address'''
-        res,_ = super(DataSyncResolutionFeed,self).fetchFeedUpdates(thr)
+        res,_ = super(DataSyncResolutionFeed,self)._fetchFeedUpdates(thr)
         if ENABLE_RESOLUTION_FEED_WARNINGS:
             for adr in res:
                 cid = adr.getChangeId()
                 adr.setWarnings(self.updateWarnings(cid))
-        return res,FIRST_PAGE
+        return res
     
     def updateWarnings(self,cid):
         '''Method to explicitly fetch warning message for a particular cid, blocks till return'''
