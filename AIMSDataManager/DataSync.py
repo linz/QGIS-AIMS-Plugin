@@ -121,8 +121,9 @@ class DataSync(threading.Thread):
         return self._stop.isSet()
     
     def close(self):
-        self.inq.task_done()
-        self.outq.task_done()
+        self.stop()
+        #self.inq.task_done()
+        #self.outq.task_done()
 
     #--------------------------------------------------------------------------            
 
@@ -206,6 +207,7 @@ class DataSync(threading.Thread):
         if self.data_hash[self.ft] != new_hash:
             self.data_hash[self.ft] = new_hash
             self.outq.put(new_addresses)
+        self.outq.task_done()
 
     #--------------------------------------------------------------------------
     

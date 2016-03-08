@@ -375,7 +375,7 @@ class AddressResolution(AddressRequestFeed):
 #------------------------------------------------------------------------------      
 class AddressMetaData(object):
     '''Embedded container for address meta information eg warnings, errors and tracking'''
-    def __init__(self):self._requestId,self._statusMessage,self._warnings = 0,'',[]
+    def __init__(self):self._requestId,self._statusMessage,self._errors,self._warnings = 0,'',[],[]
     @property
     def requestId(self): return self._requestId
     @requestId.setter

@@ -96,9 +96,7 @@ class DataManager(object):
     def close(self):
         '''shutdown closing/stopping ds threads and persisting data'''
         for ds in self.ds.values():
-            #ds.close()
-            ds.stop()
-            #pass
+            if ds: ds.close()
         self.persist.write()
         
     def _restart(self):
@@ -294,7 +292,6 @@ def test():
         
         
 def test1(dm,af):
-    print 'start test'
     
     #dm.persist.ADL = testdata
     #get some data
@@ -302,10 +299,10 @@ def test1(dm,af):
     listofaddresses = dm.pull()
 
     #TEST SHIFT
-    testfeatureshift(dm)
+    #testfeatureshift(dm)
     
     # TEST CF
-    #testchangefeedAUR(dm,af)
+    testchangefeedAUR(dm,af)
     
     # TEST RF
     #testresolutionfeedAUD(dm,af)
@@ -356,6 +353,7 @@ def checkrefresh(dm):
     
 def testchangefeedAUR(dm,af):
     ver = 1000000
+    cid = 2000000
     #pull address from features (map)
     addr_f = gettestdata(af[FeedType.FEATURES])
     #cast to addresschange type, to do cf ops
@@ -368,7 +366,11 @@ def testchangefeedAUR(dm,af):
     while True: 
         resp = testresp(dm,FeedType.CHANGEFEED)
         if resp: 
+            err = resp[0].getErrors()
             print rqid1,resp[0].meta.requestId
+            print 'e',err
+            if not err:
+                cid = resp[0].getChangeId()
             break
         time.sleep(5)
     ver += 1
@@ -376,14 +378,19 @@ def testchangefeedAUR(dm,af):
     
     aimslog.info('*** Change UPDATE '+str(time.clock()))
     rqid2 = 2345432
-    addr_c.setFullAddress('Unit B, 16 Islay Street, Glenorchy')
+    addr_c.setFullAddress('Unit C, 16 Islay Street, Glenorchy')
+    addr_c.setChangeId(cid)
     addr_c.setVersion(ver)
     dm.updateAddress(addr_c,rqid2)
     resp = None
     while True: 
         resp = testresp(dm,FeedType.CHANGEFEED)
         if resp: 
+            err = resp[0].getErrors()
             print rqid2,resp[0].meta.requestId
+            print 'e',err
+            if not err:
+                cid = resp[0].getChangeId()
             break
         time.sleep(5)
     ver += 1
@@ -391,14 +398,18 @@ def testchangefeedAUR(dm,af):
     
     aimslog.info('*** Change RETIRE '+str(time.clock()))
     rqid3 = 3456543
+    addr_c.setChangeId(cid)
     addr_c.setVersion(ver)
     dm.retireAddress(addr_c,rqid3)
     resp = None
     while not resp: 
         resp = testresp(dm,FeedType.CHANGEFEED)
         if resp: 
+            err = resp[0].getErrors()
             print rqid3,resp[0].meta.requestId
-            break
+            print 'e',err
+            if not err:
+                cid = resp[0].getChangeId()
         time.sleep(5)     
     ver += 1
 
@@ -503,4 +514,6 @@ def gettestdata(ff):
 
             
 if __name__ == '__main__':
+    print 'start'
     test()  
+    print 'finish'
