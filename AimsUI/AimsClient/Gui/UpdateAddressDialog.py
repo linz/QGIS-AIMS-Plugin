@@ -77,7 +77,9 @@ class UpdateAddressDialog(Ui_NewAddressDialog, QDialog):
         # submit address obj to DM     
         af = {ft:AddressFactory.getInstance(ft) for ft in FeedType.reverse}
         self.feature = af[FeedType.CHANGEFEED].cast(self.feature)
-        self._controller.dm.updateAddress(self.feature, self.feature._components_addressId)
+        self._controller.uidm.updateAddress(self.feature, self.feature._components_addressId)
+        #from AimsUI.AimsClient.AimsApi import AimsApi 
+        #AimsApi().updateFeature()
         # need to check the response 
         
         r = self._controller.dm.response(FeedType.CHANGEFEED)

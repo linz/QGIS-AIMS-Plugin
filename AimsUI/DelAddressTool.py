@@ -69,7 +69,7 @@ class DelAddressTool(QgsMapToolIdentify):
         if retireFeatures: # else the user hit 'ok' and did not select any records            
             for retireFeature in retireFeatures:
                 featureToRetire = self._controller.uidm.singleFeatureObj(retireFeature['components']['addressId'])
-                self._controller.dm.retireAddress(featureToRetire)
+                self._controller.uidm.retireAddress(featureToRetire)
             
             # old api method below
             

@@ -90,7 +90,7 @@ class Controller(QObject):
         self._createnewaddresstool = CreateNewAddressTool( self.iface, self._layerManager, self)
         self._createnewaddresstool.setAction( self._createnewaddressaction )
         self.actions.append(self._createnewaddressaction)
-        md5122607d33ee8a0b0e07c9b2159aefb14
+
         # Delete address point
         self._deladdressaction = QAction(QIcon(':/plugins/QGIS-AIMS-Plugin/resources/deleteaddress.png'), 
             'Delete AIMS Feature', self.iface.mainWindow())
