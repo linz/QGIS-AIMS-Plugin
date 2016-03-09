@@ -66,7 +66,6 @@ class DataManager(object):
         
     def notify(self, observable, *args, **kwargs):
         '''Do some housekeeping and notify listener'''
-        #TODO locking on notify
         aimslog.info('Notify A[{}], K[{}] - {}'.format(args,kwargs,observable))
         args += (self._monitor(args[0]),)
         if self.reg: self.reg.notify(observable, *args, **kwargs)

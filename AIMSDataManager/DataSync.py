@@ -42,6 +42,7 @@ FPATH = os.path.join('..',os.path.dirname(__file__)) #base of local datastorage
 #PAGES_PERIOCDIC = 3
 #FEED_REFRESH_DELAY = 10
 
+lock = threading.RLock()
 
 class DataRequestChannel(threading.Thread):    
     '''Request response channel for user initiated actions eg add decline retire etc'''
@@ -76,7 +77,9 @@ class Observable(threading.Thread):
     
     def notify(self, *args, **kwargs):
         for observer in self._observers:
-            observer.notify(self, *args, **kwargs)
+            with lock:
+                observer.notify(self, *args, **kwargs)
+
     
 class DataSync(Observable):
     '''Background thread triggering periodic data updates and synchronising update requests from DM.  
@@ -154,16 +157,14 @@ class DataSync(Observable):
             #print '{} {}'.format(FeedType.reverse[self.ft].capitalize(),'STOP' if self.stopped() else 'RUN')
             for r in pool:
                 aimslog.debug('### Page {}{} pool={}'.format(FeedType.reverse[self.ft][:2].capitalize(), r['page'],[p['page'] for p in pool])) 
-                #du = self.duinst[r['ref']]
-                #close down on stop signal
+                #terminate the pooled objects on stop signal
                 if self.stopped():
                     self.stopSubs(pool)
                     return None,None
                 #    print 'halt' 
-                du = self.duinst[r['ref']]
-                if not du.isAlive():
+                if self.duinst.has_key(r['ref']) and not self.duinst[r['ref']].isAlive(): 
                     #print '{}{} finished'.format(FeedType.reverse[self.ft][:2].capitalize(),r['page'])
-                    alist = du.queue.get()
+                    alist = self.duinst[r['ref']].queue.get()
                     acount = len(alist)
                     newaddr += alist
                     nextpage = max([r2['page'] for r2 in pool])+1
