@@ -63,6 +63,7 @@ class MoveAddressTool(QgsMapToolIdentify):
                 self._sb.showMessage("Right click for features new location")
                 
             else: # Stacked points
+                
                 identifiedFeatures=[] 
                 coords = results[0].mFeature.geometry().asPoint()
                 self.setMarker(coords)
@@ -103,7 +104,7 @@ class MoveAddressTool(QgsMapToolIdentify):
                 coords = UiUtility.transform(self._iface, coords)
                 for feature in self._features:
                     feature._addressedObject_addressPositions[0].setCoordinates(coords)
-                    self._controller.dm.updateAddress(feature)
+                    self._controller.uidm.updateAddress(feature)
                 
                 self._features = []
                 self._canvas.scene().removeItem(self._marker)

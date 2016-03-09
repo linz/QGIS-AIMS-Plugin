@@ -93,7 +93,7 @@ class NewAddressDialog(Ui_NewAddressDialog, QDialog):
         UiUtility.formToObj(self)
 
         # submit address obj to DM
-        self._controller.dm.addAddress(self.feature)
+        self._controller.uidm.addAddress(self.feature)
         # need to check the response 
         self.closeDlg()
        
