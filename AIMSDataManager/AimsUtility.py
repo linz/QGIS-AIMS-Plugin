@@ -47,16 +47,44 @@ DEF_SEP = '_'
 
 aimslog = Logger.setup()
 
-def readConf():
-    conf = {}
-    config = ConfigReader()
-    conf['url'] = config.configSectionMap('url')['api']
-    conf['user'] = config.configSectionMap('user')['name']
-    conf['password'] = config.configSectionMap('user')['pass']
-    conf['headers'] = {'content-type':'application/json', 'accept':'application/json'}
-    return conf
+# def constant(f):
+#     def fset(self, value):
+#         raise TypeError
+#     def fget(self):
+#         return f()
+#     return property(fget, fset)
+# 
+# class _Const(object):
+#     @constant 
+#     def FOO(): return 'foo'
+#     @constant
+#     def BAR(): return 'bar'
 
+class Configuration(object):
+    def __init__(self): 
+        self.config = ConfigReader()
+        self._setConst()
+        
+    def readConf(self):
+        conf = {}
+        conf['url'] = self.config.configSectionMap('url')['api']
+        conf['user'] = self.config.configSectionMap('user')['name']
+        conf['password'] = self.config.configSectionMap('user')['pass']
+        conf['headers'] = {'content-type':'application/json', 'accept':'application/json'}
+        return conf
+    
+    def _setConst(self):
+        for key in self.config.configSectionMap('const'):
+            val = self.config.configSectionMap('const')[key]
+            if val.isdigit(): val = int(val)
+            elif val.replace('.','',1).isdigit(): val = float(val)
+            elif val.lower() in ('true','false'): val = bool(val)
+            setattr(self, key.upper(), val)    
+            
+    #def __setattr__(self, *_):
+    #    pass
 
+    
 class LogWrap(object):
     #simple ligfile time stamp decorator 
     @classmethod

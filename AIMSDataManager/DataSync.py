@@ -67,7 +67,18 @@ class DataRequestChannel(threading.Thread):
     def stopped(self):
         return self._stop.isSet()
     
-class DataSync(threading.Thread):
+class Observable(threading.Thread):    
+    def __init__(self):
+        self._observers = []
+
+    def register(self, observer):
+        self._observers.append(observer)
+    
+    def notify(self, *args, **kwargs):
+        for observer in self._observers:
+            observer.notify(self, *args, **kwargs)
+    
+class DataSync(Observable):
     '''Background thread triggering periodic data updates and synchronising update requests from DM.  
     '''
     
@@ -83,6 +94,7 @@ class DataSync(threading.Thread):
     sw,ne = None,None
     
     def __init__(self,params,queues):
+        super(DataSync,self).__init__()
         threading.Thread.__init__(self)
         #thread reference, ft to AD/CF/RF, config info
         self.ref,self.ft,self.ftracker,self.conf = params
@@ -208,6 +220,7 @@ class DataSync(threading.Thread):
             self.data_hash[self.ft] = new_hash
             self.outq.put(new_addresses)
         self.outq.task_done()
+        self.notify(self.ft)
 
     #--------------------------------------------------------------------------
     
