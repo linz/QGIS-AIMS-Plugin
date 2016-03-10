@@ -125,7 +125,7 @@ class DataManager(object):
                 self.ds[FeedType.FEATURES].stop()
                 self.ds[FeedType.FEATURES].join(THREAD_JOIN_TIMEOUT)
                 #TODO investigate thread non-stopping issues
-                if self.ds[FeedType.FEATURES].isAlive(): aimslog.warn('Features Thread JOIN timeout')
+                if self.ds[FeedType.FEATURES].isAlive(): aimslog.warn('SetBB Features Thread JOIN timeout')
             del self.ds[FeedType.FEATURES]
             #reinitialise a new features DataSync
             self._initFeedDSChecker(FeedType.FEATURES)
@@ -136,6 +136,7 @@ class DataManager(object):
         #NB UI feature request. 
         self.ds[ft].stop() 
         self.ds[ft].join(THREAD_JOIN_TIMEOUT)
+        if self.ds[ft].isAlive(): aimslog.warn('{} Thread JOIN timeout'.format(FeedType.reverse[ft]))
         del self.ds[ft]
         self._initFeedDSChecker(ft)
 
@@ -256,9 +257,9 @@ class Persistence():
             self.ADL = self._initADL() 
             #default tracker, gets overwritten
             #page = (lowest page fetched, highest page number fetched)
-            self.tracker[FeedType.FEATURES] =       {'page':[1,1],    'index':1,'threads':2,'interval':30}    
-            self.tracker[FeedType.CHANGEFEED] =     {'page':[NPV,NPV],'index':1,'threads':1,'interval':125}  
-            self.tracker[FeedType.RESOLUTIONFEED] = {'page':[1,1],    'index':1,'threads':1,'interval':10}             
+            self.tracker[FeedType.FEATURES] =       {'page':[1,1],    'index':1,'threads':2,'interval':30}
+            self.tracker[FeedType.CHANGEFEED] =     {'page':[NPV,NPV],'index':1,'threads':1,'interval':125}
+            self.tracker[FeedType.RESOLUTIONFEED] = {'page':[1,1],    'index':1,'threads':1,'interval':10}
             #self.tracker[FeedType.FEATURES] =       {'page':[1,1],'index':1,'threads':2,'interval':30}    
             #self.tracker[FeedType.CHANGEFEED] =     {'page':[1,1],'index':1,'threads':1,'interval':1000}  
             #self.tracker[FeedType.RESOLUTIONFEED] = {'page':[1,1],'index':1,'threads':1,'interval':1000} 

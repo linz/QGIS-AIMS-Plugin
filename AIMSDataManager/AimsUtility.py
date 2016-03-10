@@ -63,7 +63,7 @@ aimslog = Logger.setup()
 class Configuration(object):
     def __init__(self): 
         self.config = ConfigReader()
-        self._setConst()
+        #self._setConst()
         
     def readConf(self):
         conf = {}
