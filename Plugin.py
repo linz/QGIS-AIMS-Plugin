@@ -10,13 +10,15 @@
 ################################################################################
 from AimsUI.AimsClient.Gui.Controller import Controller
 from AimsUI import AimsLogging
+import threading # temp - debugging only
 
 # Dev only - debugging
 try:
     import sys
     sys.path.append('/opt/eclipse/plugins/org.python.pydev_4.4.0.201510052309/pysrc')
-    from pydevd import settrace
+    from pydevd import settrace, GetGlobalDebugger
     settrace()
+    threading.settrace(GetGlobalDebugger().trace_dispatch)
 except:
     pass
 

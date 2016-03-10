@@ -12,7 +12,7 @@ import sys
 import Resources
 
 from os.path import dirname, abspath
-#sys.path.append('.qgis2/python/plugins/QGIS-AIMS-Plugin') 
+#sys.path.append('.qgis2/python/plugins/QGIS-A.IMS-Plugin') 
 sys.path.append('.qgis2/python/plugins/AIMS_Plugin_threaded') #temp
 
 from PyQt4.QtCore import *
@@ -21,7 +21,6 @@ from qgis.core import *
 from qgis.gui import *
 
 from DockWindow import DockWindow
-from AimsUI.AimsClient.Address import Address
 from AimsUI.LayerManager import LayerManager
 from NewAddressDialog import NewAddressDialog
 from AimsUI.DelAddressTool import DelAddressTool

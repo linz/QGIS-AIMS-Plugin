@@ -11,8 +11,9 @@
 
 import psycopg2
 from Error import Error
-import Config
-from Config import ConfigReader
+import AIMSDataManager.Config
+import getpass
+from AIMSDataManager.Config import ConfigReader
 from AimsUI.AimsLogging import Logger
 
 aimslog = Logger.setup()
@@ -25,8 +26,8 @@ config = ConfigReader()
 _host = config.configSectionMap('db')['host']
 _port = config.configSectionMap('db')['port']
 _name = config.configSectionMap('db')['name']
-_user = config.configSectionMap('db')['user']
-_password = config.configSectionMap('db')['password']
+_user=getpass.getuser()
+_password=''
 
 _aimsSchema='reference'
 

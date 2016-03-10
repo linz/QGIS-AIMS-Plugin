@@ -1,5 +1,5 @@
 <!DOCTYPE qgis PUBLIC 'http://mrcc.com/qgis.dtd' 'SYSTEM'>
-<qgis version="2.8.1-Wien" minimumScale="0" maximumScale="1e+08" simplifyDrawingHints="0" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" simplifyMaxScale="1" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
+<qgis version="2.8.1-Wien" minimumScale="-4.65661e-10" maximumScale="1e+08" simplifyDrawingHints="0" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" simplifyMaxScale="1" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
   <edittypes>
     <edittype widgetv2type="TextEdit" name="addressType">
       <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
@@ -70,9 +70,6 @@
     <edittype widgetv2type="TextEdit" name="addressNumberHigh">
       <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
     </edittype>
-    <edittype widgetv2type="TextEdit" name="version">
-      <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
-    </edittype>
     <edittype widgetv2type="TextEdit" name="addressId">
       <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
     </edittype>
@@ -91,7 +88,7 @@
     <edittype widgetv2type="TextEdit" name="objectName">
       <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
     </edittype>
-    <edittype widgetv2type="TextEdit" name="addressPositionType">
+    <edittype widgetv2type="TextEdit" name="addressPositionsType">
       <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
     </edittype>
     <edittype widgetv2type="TextEdit" name="suburbLocalityId">
@@ -115,11 +112,14 @@
     <edittype widgetv2type="TextEdit" name="appellation">
       <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
     </edittype>
+    <edittype widgetv2type="TextEdit" name="version">
+      <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
+    </edittype>
   </edittypes>
   <renderer-v2 symbollevels="0" type="RuleRenderer">
     <rules key="{a152eebe-1184-476d-a89f-39f4c8cebcec}">
       <rule filter="&quot;lifecycle&quot;  =  'Current'&#xa;" key="{cee852e9-2945-4cab-80c2-270085af96dc}" symbol="0" label="Current"/>
-      <rule filter="&quot;lifecycle&quot;  =  'Retired'&#xa;" key="{58ba39cd-88a7-43e1-b7a4-d4e279c6608c}" symbol="1" label="Retired"/>
+      <rule checkstate="0" filter="&quot;lifecycle&quot;  =  'Retired'&#xa;" key="{58ba39cd-88a7-43e1-b7a4-d4e279c6608c}" symbol="1" label="Retired"/>
     </rules>
     <symbols>
       <symbol alpha="1" type="marker" name="0">
