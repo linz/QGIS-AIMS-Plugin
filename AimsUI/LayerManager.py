@@ -120,7 +120,6 @@ class LayerManager(QObject):
 
     def layers(self):
         for layer in QgsMapLayerRegistry.instance().mapLayers().values():
-            if layer.type() == layer.VectorLayer and self.layerId(layer):
                 yield layer
     
     def addressLayer( self ):
@@ -193,7 +192,7 @@ class LayerManager(QObject):
 
     def installRefLayers(self):
         ''' install AIMS postgres ref data '''
-        rcl = self.installLayer( 'rcl', 'roads', 'road_name_label_view', 'gid', True, "",'Roads' )  
+        rcl = self.installLayer( 'rcl', 'roads', 'road_name_mview', 'gid', True, "",'Roads' )  
         par = self.installLayer( 'par', 'bde', 'crs_parcel', 'id', True, "status = 'CURR'",'Parcels' )
         return rcl,par
         
