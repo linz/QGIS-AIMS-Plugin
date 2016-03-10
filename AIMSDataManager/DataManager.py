@@ -69,7 +69,7 @@ class DataManager(object):
         aimslog.info('Notify A[{}], K[{}] - {}'.format(args,kwargs,observable))
         args += (self._monitor(args[0]),)
         if self.reg: self.reg.notify(observable, *args, **kwargs)
-        self._restart()
+        self._check()
         
     def register(self,reg):
         '''Register single class as a listener'''
@@ -101,7 +101,7 @@ class DataManager(object):
             if ds: ds.close()
         self.persist.write()
         
-    def _restart(self):
+    def _check(self):
         '''If a DataSync thread crashes restart it'''
         for ft in self._start:#FeedType.reverse:
             if not self.ds[ft] or not self.ds[ft].isAlive():
@@ -129,6 +129,15 @@ class DataManager(object):
             del self.ds[FeedType.FEATURES]
             #reinitialise a new features DataSync
             self._initFeedDSChecker(FeedType.FEATURES)
+    
+    #@Deprecated     
+    def restart(self,ft):
+        '''Restart a specific thread type'''
+        #NB UI feature request. 
+        self.ds[ft].stop() 
+        self.ds[ft].join(THREAD_JOIN_TIMEOUT)
+        del self.ds[ft]
+        self._initFeedDSChecker(ft)
 
         
     #Push and Pull relate to features feed actions

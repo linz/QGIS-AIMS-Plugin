@@ -112,6 +112,7 @@ class DataSync(Observable):
         self.sw,self.ne = sw,ne
         
 
+
     def run(self):
         '''Continual loop looking for input queue requests and running periodic updates'''
         while True:
@@ -127,7 +128,8 @@ class DataSync(Observable):
             
     #start = int(time.time())  
     #now = int(time.time())   
-    #if (now-start) % self.ftracker['interval']:pass        
+    #if (now-start) % self.ftracker['interval']:pass     
+    def fetchFeedUpdates(self,val): pass   
     
     def stop(self):
         self._stop.set()
