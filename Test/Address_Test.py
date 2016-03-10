@@ -25,7 +25,9 @@ import os
 
 sys.path.append('../AIMSDataManager/')
 
-from ..AIMSDataManager.Address import Address,AddressChange,AddressResolution
+from Address import Address,AddressChange,AddressResolution,Position
+from AddressFactory import AddressChangeFactory,AddressResolutionFactory
+from AimsUtility import ActionType
 from AimsLogging import  Logger
 
 testlog = Logger.setup('test')
@@ -58,6 +60,7 @@ class Test_1_AddressTestSetters(unittest.TestCase):
         testlog.debug('Instantiate null address, address.setter list')
         self._address = Address(user_text)
         self._address_setters = [i for i in dict(inspect.getmembers(Address, predicate=inspect.ismethod)) if i[:3]=='set']
+        #self._address_setters.remove('setAddressPositions')
 
         
     def tearDown(self):
@@ -77,49 +80,24 @@ class Test_1_AddressTestSetters(unittest.TestCase):
             getattr(self._address, asttr)(aval)
             self.assertEqual(getattr(self._address, aname), aval, 'set* : Setter {} not setting correct attribute value {}'.format(asttr,aval))
             
-    def test20_nullRemoval(self):
-        '''Tests whether null values are removed from the object array'''
-        #this function has moved to addressfactory
-        return
-        testlog.debug('Test_1.20 Instantiate sparse dict and test null removal')
-        td1 = {'a': 111, 'b': None, 'c': 333, 'd': 'NULL', 'e': 555, 'f':{'fa': 'NULL','fb': 777}}
-        td2 = {'a': 111, 'c': 333, 'e': 555, 'f': {'fb': 777}}
-        td3 = self._address._delNull(td1)
-        self.assertEqual(td3, td2, 'delNone : Dict null remover failure {}'.format(td3))
 
     #@unittest.skip("Test skipped awaiting finalisation of Address Class structure")
-    def test30_checkPopulatedAddressDict(self):
+    def test30_checkPopulatedAddressChangeDict(self):
         '''Tests whether JSON object gets created correctly'''
         #this function has moved to addressfactory
-        return
         testlog.debug('Test_1.30 Attributes set to match JSON sample and compare')
-        return True
-        
-        sample = {
-            'workflow':{
-                'sourceUser':'SU','sourceReason':'SR'},
-            'components':{
-                'addressType':'AT','externalAddressId':'EAI','externalAddressIdScheme':'EAIS',
-                'lifecycle':'L','unitType':'UT','unitValue':'UV','levelType':'LT','levelValue':'LV',
-                'addressNumberPrefix':'ANP','addressNumber':'AN',
-                'addressNumberSuffix':'ANS','addressNumberHigh':'ANH',
-                'roadCentrelineId':'RCLI','roadPrefix':'RP','roadName':'RN','roadType':'RTN','roadSuffix':'RS',
-                'waterRoute':'WRN','waterName':'WN',
-                'suburbLocality':'SL','townCity':'TC'},
-            'addressedObject':{
-                'objectType':'OT','objectName':'ON',
-                'addressPosition':{
-                    'type':'APT','coordinates':[1,1],
-                    'crs':{'type':'CT','properties':{'name':'CP'}}},
-            'externalObjectId':'EOI','externalObjectIdScheme':'EOIS',
-            'valuationReference':'VR','certificateOfTitle':'COT','appellation':'A'
-        }}
-        
+        #return True
+
         for asm in self._address_setters:
+            if asm == 'setAddressPositions':
+                getattr(self._address, asm)([Position(),])
+                continue
             aval = self._generateAttrVal(asm)
             getattr(self._address, asm)(aval)
-        jresult = self._address.objectify()
-        self.assertEqual(jresult, sample, 'JSON Address constructed incorrectly {}'.format(jresult))
+        self._address.setVersion(100)
+        for at in (ActionType.ADD,ActionType.RETIRE,ActionType.UPDATE):
+            jresult = AddressChangeFactory().convertAddress(self._address,at)
+            self.assertEqual(jresult, getTestData(at), 'JSON Address constructed incorrectly {}'.format(jresult))
         
     def test31_checkAddressDictNullRemoval(self):
         '''check whether JSON output is truncated correctly on null inputs'''
@@ -131,12 +109,45 @@ class Test_1_AddressTestSetters(unittest.TestCase):
         
 #------------------------------------------------------------------------------    
     def _generateAttrVal(self,setmthd):
+        s = self._special(setmthd)
+        if s: return s
         setmthd = re.match('set_*(.*)',setmthd).group(1)
         return setmthd[:1].upper()+''.join([s for s in setmthd[1:] if ord(s)>64 and ord(s)<91])
     
     def _generateAttrName(self,setmthd):
         setmthd = re.match('set_*(.*)',setmthd).group(1)
         return '_'+setmthd[:1].lower()+setmthd[1:]
+    
+    def _special(self,meth):
+        if meth == 'setObjectType':return 'Parcel'
+        if meth == 'setAddressType':return 'Road' 
+        if meth == 'setLifecycle':return 'Current'
+        return
+        
+    
+
+    
+def getTestData(at):
+#     return {
+#             'workflow':{
+#                 'sourceUser':'SU','sourceReason':'SR'},
+#             'components':{
+#                 'addressType':'AT','externalAddressId':'EAI','externalAddressIdScheme':'EAIS',
+#                 'lifecycle':'L','unitType':'UT','unitValue':'UV','levelType':'LT','levelValue':'LV',
+#                 'addressNumberPrefix':'ANP','addressNumber':'AN',
+#                 'addressNumberSuffix':'ANS','addressNumberHigh':'ANH',
+#                 'roadCentrelineId':'RCLI','roadPrefix':'RP','roadName':'RN','roadType':'RTN','roadSuffix':'RS',
+#                 'waterRoute':'WRN','waterName':'WN',
+#                 'suburbLocality':'SL','townCity':'TC'},
+#             'addressedObject':{
+#                 'objectType':'OT','objectName':'ON',
+#                 'addressPosition':{
+#                     'type':'APT','coordinates':[1,1],
+#                     'crs':{'type':'CT','properties':{'name':'CP'}}},
+#             'externalObjectId':'EOI','externalObjectIdScheme':'EOIS',
+#             'valuationReference':'VR','certificateOfTitle':'COT','appellation':'A'
+#         }}
+    return {'addressedObject': {'addressPositions': [{'position': {'crs': {'type': 'name', 'properties': {'name': 'urn:ogc:def:crs:EPSG::4167'}}, 'type': 'Point'}, 'positionType': 'Unknown', 'primary': True}], 'valuationReference': 'VR', 'externalObjectId': 'EOI', 'objectName': 'ON', 'certificateOfTitle': 'COT', 'externalObjectIdScheme': 'EOIS', 'objectType': 'Parcel'}, 'components': {'roadSuffix': 'RS', 'unitType': 'UT', 'addressType': 'Road', 'waterRoute': 'WR', 'levelType': 'LT', 'lifecycle': 'Current', 'addressNumberSuffix': 'ANS', 'addressNumberPrefix': 'ANP', 'roadName': 'RN', 'roadPrefix': 'RP', 'externalAddressIdScheme': 'EAIS', 'suburbLocality': 'SL', 'roadCentrelineId': 'RCI', 'waterName': 'WN', 'externalAddressId': 'EAI', 'roadType': 'RT', 'addressNumber': 'AN', 'levelValue': 'LV', 'townCity': 'TC', 'unitValue': 'UV'}, 'workflow': {'sourceUser': 'SU', 'sourceReason': 'SR'}}
 
 
 if __name__ == "__main__":
