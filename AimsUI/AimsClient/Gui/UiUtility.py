@@ -163,7 +163,7 @@ class UiUtility (object):
             child.setEnabled(True)
             if isinstance(child, QLineEdit) or isinstance(child, QLabel):
                 child.clear()
-            elif isinstance(child, QComboBox) and not self.uAddressType:
+            elif isinstance(child, QComboBox) and child.objectName() != self.uAddressType:
                 child.setCurrentIndex(0)
                           
         if self.uAddressType.currentText() == 'Road':

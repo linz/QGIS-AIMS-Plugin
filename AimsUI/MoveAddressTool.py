@@ -7,7 +7,6 @@ from qgis.core import *
 from qgis.gui import *
 
 from AimsUI.AimsClient.Gui.Ui_MoveAddressDialog import Ui_MoveAddressDialog
-from AimsUI.AimsClient.Address import Address
 from AimsUI.AimsClient.Gui.UiUtility import UiUtility
 
 class MoveAddressTool(QgsMapToolIdentify):

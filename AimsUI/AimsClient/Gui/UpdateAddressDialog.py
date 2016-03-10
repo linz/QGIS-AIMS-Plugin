@@ -14,7 +14,6 @@ from PyQt4.QtGui import *
 import re
 
 from Ui_NewAddressDialog import Ui_NewAddressDialog
-from AimsUI.AimsClient.Address import Address
 from AIMSDataManager.AddressFactory import AddressFactory
 from AIMSDataManager.AimsUtility import FeedType
 from UiUtility import UiUtility
@@ -78,8 +77,6 @@ class UpdateAddressDialog(Ui_NewAddressDialog, QDialog):
         af = {ft:AddressFactory.getInstance(ft) for ft in FeedType.reverse}
         self.feature = af[FeedType.CHANGEFEED].cast(self.feature)
         self._controller.uidm.updateAddress(self.feature, self.feature._components_addressId)
-        #from AimsUI.AimsClient.AimsApi import AimsApi 
-        #AimsApi().updateFeature()
         # need to check the response 
         
         r = self._controller.dm.response(FeedType.CHANGEFEED)

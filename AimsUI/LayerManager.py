@@ -16,7 +16,6 @@ from qgis.core import *
 from qgis.gui import *
 
 from AimsClient import Database
-from AimsUI.AimsClient.AimsApi import *
 from AimsUI.AimsLogging import Logger
 
 from collections import OrderedDict
@@ -194,14 +193,9 @@ class LayerManager(QObject):
 
     def installRefLayers(self):
         ''' install AIMS postgres ref data '''
-        
-        schema = Database.aimsSchema()
-        
-        #rcl = self.installLayer( 'rcl', schema, 'aimsroads', 'roadcentrelineid', True, "",'Roads' ) <--- disable pending new schema        
-        par = self.installLayer( 'par', schema, 'parcel', 'id', True, 
-                            "parceltype not in ('ROAD','RLWY')",'Parcels' )
-        #return rcl,par <--- disable pending new schema       
-        return par
+        rcl = self.installLayer( 'rcl', 'roads', 'road_name_label_view', 'gid', True, "",'Roads' )  
+        par = self.installLayer( 'par', 'bde', 'crs_parcel', 'id', True, "status = 'CURR'",'Parcels' )
+        return rcl,par
         
     def installAimsLayer(self, id, displayname):
         ''' initialise AIMS feautres and review layers '''
