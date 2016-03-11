@@ -39,11 +39,14 @@ class AimsWarning(object):
         return w
     
     def set(self,d):
-        self._set(
-            d['ruleId'],
-            d['description'],
-            d['severity']
-        )    
+        if isinstance(d,str):
+            self._set(None,d,None)
+        else:
+            self._set(
+                d['ruleId'],
+                d['description'],
+                d['severity']
+            )    
         
     def _set(self,ruleId, description,severity):
         '''sets object parameters'''

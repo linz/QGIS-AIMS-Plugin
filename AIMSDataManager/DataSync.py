@@ -395,7 +395,7 @@ class DataSyncResolutionFeed(DataSyncFeeds):
         duwarn.join()
         warn = self.respq.get()
         #if err: aimslog.info('Received errors "{}" for cid={}'.format(err,cid))
-        if warn: aimslog.info('Received {} warnings for cid={}'.format(len(warn),cid))
+        if warn: aimslog.info('Received warnings for cid={}'.format(cid))
         return warn
   
         

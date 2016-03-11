@@ -38,7 +38,7 @@ class DataManager(object):
     aimslog = Logger.setup()
     
     
-    def __init__(self,start=set( (FeedType.FEATURES,FeedType.CHANGEFEED,FeedType.RESOLUTIONFEED) ),initialise=False):
+    def __init__(self,start=set( (FeedType.CHANGEFEED,FeedType.RESOLUTIONFEED) ),initialise=False):
         #self.ioq = {'in':Queue.Queue(),'out':Queue.Queue()}   
         if start and hasattr(start,'__iter__'): self._start = set(start)
         self.persist = Persistence(initialise)
@@ -104,9 +104,9 @@ class DataManager(object):
     def _check(self):
         '''If a DataSync thread crashes restart it'''
         for ft in self._start:#FeedType.reverse:
-            if not self.ds[ft] or not self.ds[ft].isAlive():
-                aimslog.warn('DS thread {} has died, restarting'.format(FeedType.reverse[ft]))
-                del self.ds[ft]
+            if not self.ds.has_key(ft) or not self.ds[ft] or not self.ds[ft].isAlive():
+                aimslog.warn('DS thread {} terminated, restarting'.format(FeedType.reverse[ft]))
+                #del self.ds[ft]
                 self._initFeedDSChecker(ft)
             
         
@@ -125,7 +125,7 @@ class DataManager(object):
                 self.ds[FeedType.FEATURES].stop()
                 self.ds[FeedType.FEATURES].join(THREAD_JOIN_TIMEOUT)
                 #TODO investigate thread non-stopping issues
-                if self.ds[FeedType.FEATURES].isAlive(): aimslog.warn('Features Thread JOIN timeout')
+                if self.ds[FeedType.FEATURES].isAlive(): aimslog.warn('SetBB Features Thread JOIN timeout')
             del self.ds[FeedType.FEATURES]
             #reinitialise a new features DataSync
             self._initFeedDSChecker(FeedType.FEATURES)
@@ -134,11 +134,13 @@ class DataManager(object):
     def restart(self,ft):
         '''Restart a specific thread type'''
         #NB UI feature request. 
-        self.ds[ft].stop() 
-        self.ds[ft].join(THREAD_JOIN_TIMEOUT)
-        del self.ds[ft]
-        self._initFeedDSChecker(ft)
-
+        aimslog.warn('WARNING {} Thread Restart requested'.format(FeedType.reverse[ft]))
+        if self.ds.has_key(ft) and self.ds[ft]:#.isAlive():
+            self.ds[ft].stop() 
+            self.ds[ft].join(THREAD_JOIN_TIMEOUT)
+            if self.ds[ft].isAlive(): aimslog.warn('{} Thread JOIN timeout'.format(FeedType.reverse[ft]))
+        #del self.ds[ft]
+        self._check()
         
     #Push and Pull relate to features feed actions
     def push(self,newds):
@@ -256,9 +258,9 @@ class Persistence():
             self.ADL = self._initADL() 
             #default tracker, gets overwritten
             #page = (lowest page fetched, highest page number fetched)
-            self.tracker[FeedType.FEATURES] =       {'page':[1,1],    'index':1,'threads':2,'interval':30}    
-            self.tracker[FeedType.CHANGEFEED] =     {'page':[NPV,NPV],'index':1,'threads':1,'interval':125}  
-            self.tracker[FeedType.RESOLUTIONFEED] = {'page':[1,1],    'index':1,'threads':1,'interval':10}             
+            self.tracker[FeedType.FEATURES] =       {'page':[1,1],    'index':1,'threads':2,'interval':30}
+            self.tracker[FeedType.CHANGEFEED] =     {'page':[NPV,NPV],'index':1,'threads':1,'interval':125}
+            self.tracker[FeedType.RESOLUTIONFEED] = {'page':[1,1],    'index':1,'threads':1,'interval':10}
             #self.tracker[FeedType.FEATURES] =       {'page':[1,1],'index':1,'threads':2,'interval':30}    
             #self.tracker[FeedType.CHANGEFEED] =     {'page':[1,1],'index':1,'threads':1,'interval':1000}  
             #self.tracker[FeedType.RESOLUTIONFEED] = {'page':[1,1],'index':1,'threads':1,'interval':1000} 
@@ -317,12 +319,16 @@ class LocalTest():
         #dm.persist.ADL = testdata
         #get some data
         listofaddresses = dm.pull()
-    
+        print 'addr list before feed checkin',[len(l) for l in listofaddresses.values()]
+        
+        #TEST RESTART
+        #self.testrestartCR(dm)
+        
         #TEST SHIFT
-        self.testfeatureshift(dm)
+        #self.testfeatureshift(dm)
         
         # TEST CF
-        self.testchangefeedAUR(dm,af)
+        #self.testchangefeedAUR(dm,af)
         
         # TEST RF
         self.testresolutionfeedAUD(dm,af)
@@ -373,6 +379,15 @@ class LocalTest():
 #             refsnap = rs2
 #             return True
 #         return False
+        
+    def testrestartCR(self,dm):
+        time.sleep(10)
+        dm.restart(FeedType.FEATURES)
+        time.sleep(10)
+        dm.restart(FeedType.CHANGEFEED)
+        time.sleep(10)
+        dm.restart(FeedType.RESOLUTIONFEED)
+        
         
     def testchangefeedAUR(self,dm,af):
         ver = 1000000
@@ -438,40 +453,40 @@ class LocalTest():
     
         
     def testresolutionfeedAUD(self,dm,af):
-        ver = 1000000
-        cid = 2000000
+        ver = 6977370
+        cid = 4117724
         #pull address from features (map)
         addr_f = self.gettestdata(af[FeedType.FEATURES])
         #cast to addresschange type, to do cf ops
         addr_r = af[FeedType.RESOLUTIONFEED].cast(addr_f)
         addr_r.setVersion(ver)
         addr_r.setChangeId(cid)
-        aimslog.info('*** Resolution ACCEPT '+str(time.clock()))
-        rqid1 = 4567654
-        dm.acceptAddress(addr_r,rqid1)
-        resp = None
-        while True: 
-            resp = self.testresp(dm,FeedType.RESOLUTIONFEED)
-            if resp: 
-                print rqid1,resp[0].meta.requestId
-                break
-            time.sleep(5)
-        ver += 1
-    
-        
-        aimslog.info('*** Resolution UPDATE '+str(time.clock()))
-        rqid2 = 5678765
-        addr_r.setFullAddress('Unit B, 16 Islay Street, Glenorchy')
-        addr_r.setVersion(ver)
-        dm.repairAddress(addr_r,rqid2)
-        resp = None
-        while True: 
-            resp = self.testresp(dm,FeedType.RESOLUTIONFEED)
-            if resp: 
-                print rqid2,resp[0].meta.requestId
-                break
-            time.sleep(5)
-        ver += 1
+#         aimslog.info('*** Resolution ACCEPT '+str(time.clock()))
+#         rqid1 = 4567654
+#         dm.acceptAddress(addr_r,rqid1)
+#         resp = None
+#         while True: 
+#             resp = self.testresp(dm,FeedType.RESOLUTIONFEED)
+#             if resp: 
+#                 print rqid1,resp[0].meta.requestId
+#                 break
+#             time.sleep(5)
+#         ver += 1
+#     
+#         
+#         aimslog.info('*** Resolution UPDATE '+str(time.clock()))
+#         rqid2 = 5678765
+#         addr_r.setFullAddress('Unit B, 16 Islay Street, Glenorchy')
+#         addr_r.setVersion(ver)
+#         dm.repairAddress(addr_r,rqid2)
+#         resp = None
+#         while True: 
+#             resp = self.testresp(dm,FeedType.RESOLUTIONFEED)
+#             if resp: 
+#                 print rqid2,resp[0].meta.requestId
+#                 break
+#             time.sleep(5)
+#         ver += 1
         
         
         aimslog.info('*** Change DECLINE '+str(time.clock()))
