@@ -137,23 +137,19 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         curFeature = self.singleReviewObj(self.currentObjKey)
         if curFeature: 
             self.uQueueEditor.updateFeature(curFeature)
-            self._controller.dm.repairAddress(curFeature)
+            self.uidm.repairAddress(curFeature)
             # at this point i need to refresh the review queue UI
             # will create signals
         
     def decline(self):
         curFeature = self.singleReviewObj(self.currentObjKey)
         if curFeature:
-            self._controller.dm.declineAddress(curFeature)
+            self.uidm.decline(curFeature)
     
     def accept(self):
         curFeature = self.singleReviewObj(self.currentObjKey)
         if curFeature: 
-            self._controller.dm.acceptAddress(curFeature)
-            r = self._controller.dm.response()
-            r = self._controller.dm.response()
-            r = self._controller.dm.response()
-            r = self._controller.dm.response()
+            self.uidm.accept(curFeature)
         
     def display(self):
         if self.currentObjKey:
