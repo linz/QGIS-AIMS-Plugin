@@ -45,7 +45,7 @@ class AimsApi(object):
     
     def handleErrors(self, url, resp, jcontent):
         ''' Return the reason for any critical errors '''        
-        ce = {'critical':(),'error':()}
+        ce = {'critical':(),'error':(),'warn':()}
         if str(resp) in ('400', '404') and jcontent.has_key('entities'):
             for entity in jcontent['entities']:
                 if entity['properties']['severity'] == 'Reject':
@@ -63,20 +63,16 @@ class AimsApi(object):
     def handleResponse(self, url, resp, jcontent):
         ''' test http response
         [] == no errors, else list of critical errors'''
-        ce = ()
+        ce = {'critical':(),'error':(),'warn':()}
         if str(resp) not in ('201', '200'):
             # list of validation errors
             ce = self.handleErrors(url, resp, jcontent)
         return ce,jcontent
 
-
-            
-            
     #-----------------------------------------------------------------------------------------------------------------------
     #--- A G G R E G A T E S  &  A L I A S E S -----------------------------------------------------------------------------
     #-----------------------------------------------------------------------------------------------------------------------
 
-    
     def getOnePage(self,ft,sw,ne,page,count=MAX_FEATURE_COUNT):
         '''Get a numbered page'''
         addrlist = []
@@ -97,8 +93,11 @@ class AimsApi(object):
         url = '{}/{}/{}'.format(self._url,FeedType.reverse[ft].lower(),cid)
         resp, content = self.h.request(url,"GET", headers = self._headers)
         warnlist, jcontent = self.handleResponse(url, resp["status"], json.loads(content))
-        for entity in jcontent['entities']:
-            warnlist['warn'] += (AimsWarning.getInstance(entity['properties']),)
+        if jcontent.has_key('entities'):
+            for entity in jcontent['entities']:
+                warnlist['warn'] += (AimsWarning.getInstance(entity['properties']),)
+        else:
+            warnlist['error'] += (AimsWarning.getInstance('Entities not available in JSON response'),)
         return warnlist
 
         
@@ -113,24 +112,3 @@ class AimsApi(object):
         url = '{}/resolutionfeed/{}/{}'.format(self._url,cid,ApprovalType.reverse[at].lower())
         resp, content = self.h.request(url,"POST", json.dumps(payload), self._headers)
         return self.handleResponse(url,resp["status"], json.loads(content) )
-    
-       
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        

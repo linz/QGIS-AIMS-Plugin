@@ -32,7 +32,7 @@ LAST_PAGE_GUESS = 10
 #initial page number indicating page search is required
 NULL_PAGE_VALUE = 0
 #automatically inset warnings into resolution feed features. very slow, enable only if RF is small
-ENABLE_RESOLUTION_FEED_WARNINGS = False
+ENABLE_RESOLUTION_FEED_WARNINGS = True
 #filename for persisted feed data
 LOCALADL = 'aimsdata'
 #zero southwest coordinate used for instantiation and to prevent unnecessary feature fetching
