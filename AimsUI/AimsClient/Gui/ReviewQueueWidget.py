@@ -77,7 +77,8 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self._controller = controller
     
     def singleReviewObj(self, objKey):
-        return self.uidm.singleReviewObj(objKey)
+        if objKey: 
+            return self.uidm.singleReviewObj(objKey)
             
     def featureClicked(self, row):
         self.currentObjKey = self.featureModel.listClicked(row)
@@ -132,25 +133,23 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
     
     #def refreshData(self):
     #    self.reviewData = self.uidm.reviewTableData()
+    def updateFeature(self):
+        curFeature = self.singleReviewObj(self.currentObjKey)
+        if curFeature: 
+            self.uQueueEditor.updateFeature(curFeature)
+            self.uidm.repairAddress(curFeature)
+            # at this point i need to refresh the review queue UI
+            # will create signals
         
-    def updateFeature(self): # do i need this function or should i connect straight to the editor method
-        currentObj = self.singleReviewObj(self.currentObjKey)
-        self.uQueueEditor.updateFeature(currentObj)
-        self._controller.dm.declineAddress(currentObj)
-        # at this point i need to refresh the review queue UI
-        # will create signals
-    
     def decline(self):
-        self._controller.dm.declineAddress(self.singleReviewObj(self.currentObjKey))
+        curFeature = self.singleReviewObj(self.currentObjKey)
+        if curFeature:
+            self.uidm.decline(curFeature)
     
     def accept(self):
         curFeature = self.singleReviewObj(self.currentObjKey)
         if curFeature: 
-            self._controller.dm.acceptAddress(curFeature)
-            r = self._controller.dm.response()
-            r = self._controller.dm.response()
-            r = self._controller.dm.response()
-            r = self._controller.dm.response()
+            self.uidm.accept(curFeature)
         
     def display(self):
         if self.currentObjKey:

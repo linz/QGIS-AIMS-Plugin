@@ -31,7 +31,6 @@ from AimsUI.LineageTool import LineageTool
 from AimsUI.GetRclTool import GetRcl
 from AimsQueueWidget import AimsQueueWidget
 from UiDataManager import UiDataManager
-from AIMSDataManager.DataManager import DataManager
 from AIMSDataManager.AddressFactory import AddressFactory
 
 from AimsUI import AimsLogging
@@ -45,7 +44,6 @@ class Controller(QObject):
     def __init__(self, iface):
         QObject.__init__(self)
         self.iface = iface
-        self.dm = DataManager()
         self.af = AddressFactory()
         #self.curResItem = [None, None]
 
