@@ -84,21 +84,34 @@ class AimsApi(object):
         aimslog.debug('1P REQUEST {}'.format(url))
         resp, content = self.h.request(url,'GET', headers = self._headers)
         _,jcontent = self.handleResponse(url,resp["status"], json.loads(content))
-        return jcontent['entities']
+        return jcontent['entities']    
+    
+    def getOneFeature(self,ft,cid):
+        '''Get a CID numbered address including feature entities'''
+        url = '{}/{}/{}'.format(self._url,FeedType.reverse[ft].lower(),cid)
+        #aimslog.debug('FEAT REQUEST {}'.format(url))
+        resp, content = self.h.request(url,'GET', headers = self._headers)
+        _,jcontent = self.handleResponse(url,resp["status"], json.loads(content))
+        return jcontent
     
     # specific request response methods
 
-    def getWarnings(self,ft,cid):
-        '''Get warnings for a changeId'd resolutionfeed address'''
-        url = '{}/{}/{}'.format(self._url,FeedType.reverse[ft].lower(),cid)
-        resp, content = self.h.request(url,"GET", headers = self._headers)
-        warnlist, jcontent = self.handleResponse(url, resp["status"], json.loads(content))
-        if jcontent.has_key('entities'):
-            for entity in jcontent['entities']:
-                warnlist['warn'] += (AimsWarning.getInstance(entity['properties']),)
-        else:
-            warnlist['error'] += (AimsWarning.getInstance('Entities not available in JSON response'),)
-        return warnlist
+#     #@deprected?
+#     def getWarnings(self,ft,cid):
+#         '''Get warnings for a changeId'd resolutionfeed address'''
+#         url = '{}/{}/{}'.format(self._url,FeedType.reverse[ft].lower(),cid)
+#         resp, content = self.h.request(url,"GET", headers = self._headers)
+#         warnlist, jcontent = self.handleResponse(url, resp["status"], json.loads(content))
+#         #entities->warnings
+#         if jcontent.has_key('entities'):
+#             for entity in jcontent['entities']:
+#                 warnlist['warn'] += (AimsWarning.getInstance(entity['properties']),)
+#         else:
+#             warnlist['error'] += (AimsWarning.getInstance('Entities not available in JSON response'),)
+#         #properties->version
+#         if jcontent.has_key('properties') and jcontent['properties'].has_key('version'):
+#             warnlist['version'] = jcontent['properties']['version']
+#         return warnlist
 
         
     def changefeedActionAddress(self,at,payload):
@@ -112,3 +125,4 @@ class AimsApi(object):
         url = '{}/resolutionfeed/{}/{}'.format(self._url,cid,ApprovalType.reverse[at].lower())
         resp, content = self.h.request(url,"POST", json.dumps(payload), self._headers)
         return self.handleResponse(url,resp["status"], json.loads(content) )
+    

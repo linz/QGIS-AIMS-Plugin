@@ -27,8 +27,8 @@ import zipfile
 import threading
 import Queue
 from AimsApi import AimsApi 
-from AimsUtility import ActionType,ApprovalType,FeedType
-
+from AimsUtility import ActionType,ApprovalType,FeedType,ENABLE_RESOLUTION_FEED_WARNINGS
+from Address import Entity
 from AimsLogging import Logger
 
 aimslog = None
@@ -60,10 +60,25 @@ class DataUpdater(threading.Thread):
     def run(self):
         '''get single page of addresses from API'''
         aimslog.info('GET.{} {} - Page{}'.format(self.ref,FeedType.reverse[self.ft],self.page))
-        addr = []
+        addrlist = []
         for entity in self.api.getOnePage(self.ft,self.sw,self.ne,self.page):
-            addr += [self.afactory.getAddress(model=entity['properties']),]
-        self.queue.put(addr)
+            if self.ft == FeedType.RESOLUTIONFEED and ENABLE_RESOLUTION_FEED_WARNINGS:
+                cid = entity['properties']['changeId']
+                entitylist = []
+                feat = self.api.getOneFeature(self.ft,cid)
+                if feat == {u'class': [u'error']}: 
+                    aimslog.error('Invalid API response {}'.format(feat))
+                    a = self.afactory.getAddress(model=entity['properties'])
+                    a.setEntities([Entity.getInstance(),])
+                    continue
+                a = self.afactory.getAddress(model=feat['properties'])
+                for e in feat['entities']:
+                    entitylist.append(Entity.getInstance(e))
+                a.setEntities(entitylist)
+            else:
+                a = self.afactory.getAddress(model=entity['properties'])
+            addrlist += [a,]
+        self.queue.put(addrlist)
         
     def stop(self):
         self._stop.set()
@@ -76,7 +91,7 @@ class DataUpdater(threading.Thread):
         self.queue.task_done()
         
 class DataUpdaterAction(DataUpdater):
-    
+    ft = FeedType.CHANGEFEED
     def setup(self,at,address):
         '''set address parameters'''
         self.at = at
@@ -97,7 +112,7 @@ class DataUpdaterAction(DataUpdater):
             
 class DataUpdaterApproval(DataUpdater):
     '''Updater to request and process response objects for resolution queue actions'''
-    
+    ft=FeedType.RESOLUTIONFEED
     def setup(self,at,address):
         '''set address parameters'''
         self.at = at
@@ -113,26 +128,28 @@ class DataUpdaterApproval(DataUpdater):
         res_adr = self.afactory.getAddress(model=resp)
         #print 'RES_ADR',res_adr
         #cid = res_adr.getChangeId()
-        #res_adr.setWarning(self.api.getWarnings(cid))#self.cid
+        #res_adr.setWarning(self.api.getWarnings(cid))#self.cid        
+        #print 'ADDRESS',self.address
+        #res_adr.setWarnings(self.api.getWarnings(self.ft,self.changeId))#self.cid
         if err: res_adr.setErrors(err)
         if self.requestId: res_adr.setRequestId(self.requestId)
         self.queue.put(res_adr)
         #self.queue.put({'resp':resp,'warn':warn})
         
         
-class DataUpdaterWarning(DataUpdater):
-    '''Updater to read warning messages on the resolution feed'''
-    
-    def setup(self,ft,cid):
-        '''set address parameters'''
-        self.ft = ft
-        self.cid = cid
-        
-    def run(self):
-        '''approval action on the RF''' 
-        aimslog.info('WRN.{} {}'.format(self.ref,self.cid))
-        resp = self.api.getWarnings(self.ft,self.cid)
-        self.queue.put(resp)
+# class DataUpdaterWarning(DataUpdater):
+#     '''Updater to read warning messages on the resolution feed'''
+#     
+#     def setup(self,ft,cid):
+#         '''set address parameters'''
+#         self.ft = ft
+#         self.cid = cid
+#         
+#     def run(self):
+#         '''approval action on the RF''' 
+#         aimslog.info('WRN.{} {}'.format(self.ref,self.cid))
+#         resp = self.api.getWarnings(self.ft,self.cid)
+#         self.queue.put(resp)
 
         
     

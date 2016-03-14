@@ -196,7 +196,7 @@ class AddressResolutionFactory(AddressFeedFactory):
     def getAddress(self,ref=None,adr=None,model=None,prefix='',warnings=[]):
         '''Sets a refault address object and adds empty warning attribute'''
         adrr = super(AddressResolutionFactory,self).getAddress(ref,adr,model,prefix)
-        adrr.setWarnings(warnings)
+        #adrr.setWarnings(warnings)
         return adrr
 
 

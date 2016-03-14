@@ -83,7 +83,7 @@ class Position(object):
         return 'POS.{}'.format(self._position_type)    
 
     @staticmethod
-    def getInstance(d,af=None):
+    def getInstance(d = PDEF,af=None):
         p = Position()
         p.set(d,af)
         return p
@@ -129,7 +129,66 @@ class Position(object):
                 "positionType":self._positionType,
                 "primary":self._primary
                 }
+        
+#------------------------------------------------------------------------------
+# E N T I T Y 
 
+class Entity(object):
+    '''Entity Object'''
+    #assume class and rel are lists of strings
+    EDEF = {'class':[], 'rel':[],'properties':{'ruleId':None, 'description':None,'severity':None}}
+    def __init__(self, ref=None): 
+        #aimslog.info('AdrRef.{}'.format(ref))
+        self._ref = ref        
+        self._class = []
+        self._rel = []
+        self._properties_ruleId = None
+        self._properties_description = None
+        self._properties_severity = None
+    
+    def __str__(self):
+        return 'ETY.{}.{}'.format(self._ref,self._class)
+    
+    @staticmethod
+    def getInstance(d = EDEF):
+        e = Entity()
+        e.set(d)
+        return e
+        
+    def set(self,d = EDEF):
+        self._set(
+            d['class'],
+            d['rel'],
+            d['properties']['ruleId'],
+            d['properties']['description'],
+            d['properties']['severity']
+        )
+        
+    def _set(self,_class,rel,ruleId,description,severity):
+        '''sets object parameters'''
+        self.setClass(_class)
+        self.setRel(rel)
+        self.setRuleId(ruleId)
+        self.setDescription(description)
+        self.setSeverity(severity)        
+        
+    def setClass(self, _class): self._class = _class
+    def setRel(self,rel): self._rel = rel
+    def setRuleId(self,ruleId): self._ruleId = ruleId
+    def setDescription(self,description):self._description = description
+    def setSeverity(self,severity): self._severity = severity
+    
+    def get(self):
+        return {'class':self._class,
+                'rel':self._rel,
+                'properties':{
+                    'ruleId':self._ruleId,
+                    'description':self._description,
+                    'severity':self._severity
+                              }
+            }
+  
+        
 #------------------------------------------------------------------------------
 # A D D R E S S
 
@@ -355,39 +414,50 @@ class AddressResolution(AddressRequestFeed):
         #self._warnings = None
         
     def __str__(self):
-        return 'ADRR.{}.{}/{}'.format(self._ref,self.type,self.getWarnings())
+        return 'ADRR.{}.{}/{}'.format(self._ref,self.type,len(self.getEntities()))
         
     def getFullNumber(self):
         fullNumber = ''
         if hasattr(self, '_components_unitValue'): fullNumber+=str(self._components_unitValue)+'/'
         if hasattr(self, '_components_addressNumber'): fullNumber+=str(self._components_addressNumber) 
-        if hasattr(self, '_components_addressNumberHigh'):  fullNumber+= ('-'+str(self._components_addressNumberHigh))
-        if hasattr(self, '_components_addressNumberSuffix'):  fullNumber+=str(self._components_addressNumberSuffix)      
+        if hasattr(self, '_components_addressNumberHigh'): fullNumber+= ('-'+str(self._components_addressNumberHigh))
+        if hasattr(self, '_components_addressNumberSuffix'): fullNumber+=str(self._components_addressNumberSuffix)      
         return fullNumber 
     
     #NB. Warnings only available in res feed
     
-    def setWarnings(self,warnings):
+#     def setWarnings(self,warnings):
+#         self.setMeta()
+#         self.meta.warnings = warnings
+#         #self._warnings = warnings        
+#     def getWarnings(self):
+#         return self.meta.warnings
+#         #return self._warnings    
+        
+    def setEntities(self,entities):
         self.setMeta()
-        self.meta.warnings = warnings
-        #self._warnings = warnings        
-    def getWarnings(self):
-        return self.meta.warnings
-        #return self._warnings
+        self.meta.entities = entities
+ 
+    def getEntities(self):
+        return self.meta.entities
+
+        
+        
         
 #------------------------------------------------------------------------------      
 class AddressMetaData(object):
     '''Embedded container for address meta information eg warnings, errors and tracking'''
-    def __init__(self):self._requestId,self._statusMessage,self._errors,self._warnings = 0,'',[],[]
+    def __init__(self):self._requestId,self._statusMessage,self._errors,self._entities = 0,'',[],[]
+    
     @property
     def requestId(self): return self._requestId
     @requestId.setter
     def requestId(self, requestId): self._requestId = requestId if Address._vInt(requestId) else None
     
     @property
-    def warnings(self): return self._warnings  
-    @warnings.setter
-    def warnings(self,warnings): self._warnings = warnings 
+    def entities(self): return self._entities  
+    @entities.setter
+    def entities(self,entities): self._entities = entities 
      
     @property
     def errors(self): return self._errors  

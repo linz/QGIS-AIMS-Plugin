@@ -454,39 +454,41 @@ class LocalTest():
         
     def testresolutionfeedAUD(self,dm,af):
         ver = 6977370
-        cid = 4117724
+        #cid = 4117724
+        cid = 4117720
         #pull address from features (map)
         addr_f = self.gettestdata(af[FeedType.FEATURES])
         #cast to addresschange type, to do cf ops
         addr_r = af[FeedType.RESOLUTIONFEED].cast(addr_f)
         addr_r.setVersion(ver)
         addr_r.setChangeId(cid)
-#         aimslog.info('*** Resolution ACCEPT '+str(time.clock()))
-#         rqid1 = 4567654
-#         dm.acceptAddress(addr_r,rqid1)
-#         resp = None
-#         while True: 
-#             resp = self.testresp(dm,FeedType.RESOLUTIONFEED)
-#             if resp: 
-#                 print rqid1,resp[0].meta.requestId
-#                 break
-#             time.sleep(5)
-#         ver += 1
-#     
-#         
-#         aimslog.info('*** Resolution UPDATE '+str(time.clock()))
-#         rqid2 = 5678765
-#         addr_r.setFullAddress('Unit B, 16 Islay Street, Glenorchy')
-#         addr_r.setVersion(ver)
-#         dm.repairAddress(addr_r,rqid2)
-#         resp = None
-#         while True: 
-#             resp = self.testresp(dm,FeedType.RESOLUTIONFEED)
-#             if resp: 
-#                 print rqid2,resp[0].meta.requestId
-#                 break
-#             time.sleep(5)
-#         ver += 1
+        
+        aimslog.info('*** Resolution ACCEPT '+str(time.clock()))
+        rqid1 = 4567654
+        dm.acceptAddress(addr_r,rqid1)
+        resp = None
+        while True: 
+            resp = self.testresp(dm,FeedType.RESOLUTIONFEED)
+            if resp: 
+                print rqid1,resp[0].meta.requestId
+                break
+            time.sleep(5)
+        ver += 1
+     
+         
+        aimslog.info('*** Resolution UPDATE '+str(time.clock()))
+        rqid2 = 5678765
+        addr_r.setFullAddress('Unit B, 16 Islay Street, Glenorchy')
+        addr_r.setVersion(ver)
+        dm.repairAddress(addr_r,rqid2)
+        resp = None
+        while True: 
+            resp = self.testresp(dm,FeedType.RESOLUTIONFEED)
+            if resp: 
+                print rqid2,resp[0].meta.requestId
+                break
+            time.sleep(5)
+        ver += 1
         
         
         aimslog.info('*** Change DECLINE '+str(time.clock()))

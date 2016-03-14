@@ -27,7 +27,7 @@ import time
 import threading
 import Queue
 
-from DataUpdater import DataUpdater,DataUpdaterAction,DataUpdaterApproval,DataUpdaterWarning
+from DataUpdater import DataUpdater,DataUpdaterAction,DataUpdaterApproval#,DataUpdaterWarning
 from AimsApi import AimsApi 
 from AimsLogging import Logger
 from AimsUtility import ActionType,ApprovalType,FeedType,LogWrap
@@ -45,7 +45,7 @@ FPATH = os.path.join('..',os.path.dirname(__file__)) #base of local datastorage
 lock = threading.RLock()
 
 class DataRequestChannel(threading.Thread):    
-    '''Request response channel for user initiated actions eg add decline retire etc'''
+    '''Request response channel for user initiated actions eg add decline retire etc. One for each feed class, client, whose pIQ method is accessed'''
     def __init__(self,client):
         threading.Thread.__init__(self)
         self.client = client
@@ -248,11 +248,13 @@ class DataSyncFeatures(DataSync):
 class DataSyncFeeds(DataSync): 
     
     def __init__(self,params,queues):
+        '''Create an additional DRC thread to watch the feed input queue'''
         super(DataSyncFeeds,self).__init__(params,queues)
         self.drc = DataRequestChannel(self)
         self.drc.setDaemon(True)
         
     def run(self):
+        '''Start the DRC thread and then start self (doing periodic updates) using the super run'''
         self.drc.start()
         super(DataSyncFeeds,self).run()
     
@@ -373,30 +375,30 @@ class DataSyncResolutionFeed(DataSyncFeeds):
         #self.duinst[ref].join()
         return ref    
     
-    def fetchFeedUpdates(self,thr):
-        '''Override feed updates adding an additional updater call fetching warning text per address'''
-        res,_ = super(DataSyncResolutionFeed,self)._fetchFeedUpdates(thr)
-        if ENABLE_RESOLUTION_FEED_WARNINGS:
-            for adr in res:
-                cid = adr.getChangeId()
-                adr.setWarnings(self.updateWarnings(cid))
-        return res
-    
-    def updateWarnings(self,cid):
-        '''Method to explicitly fetch warning message for a particular cid, blocks till return'''
-        ref = 'Warn.{0:%y%m%d.%H%M%S}'.format(DT.now())
-        params = (ref,self.conf,self.afactory)
-        #reuse response queue
-        duwarn = DataUpdaterWarning(params,self.respq)
-        duwarn.setup(self.ft,cid)
-        duwarn.setDaemon(True)
-        duwarn.start()
-        #run this as a single blocking process otherwise it will overwhelm the api
-        duwarn.join()
-        warn = self.respq.get()
-        #if err: aimslog.info('Received errors "{}" for cid={}'.format(err,cid))
-        if warn: aimslog.info('Received warnings for cid={}'.format(cid))
-        return warn
+#     def fetchFeedUpdates(self,thr):
+#         '''Override feed updates adding an additional updater call fetching warning text per address'''
+#         res,_ = super(DataSyncResolutionFeed,self)._fetchFeedUpdates(thr)
+#         if ENABLE_RESOLUTION_FEED_WARNINGS:
+#             for adr in res:
+#                 cid = adr.getChangeId()
+#                 adr.setWarnings(self.updateWarnings(cid))
+#         return res
+#     
+#     def updateWarnings(self,cid):
+#         '''Method to explicitly fetch warning message for a particular cid, blocks till return'''
+#         ref = 'Warn.{0:%y%m%d.%H%M%S}'.format(DT.now())
+#         params = (ref,self.conf,self.afactory)
+#         #reuse response queue
+#         duwarn = DataUpdaterWarning(params,self.respq)
+#         duwarn.setup(self.ft,cid)
+#         duwarn.setDaemon(True)
+#         duwarn.start()
+#         #run this as a single blocking process otherwise it will overwhelm the api
+#         duwarn.join()
+#         warn = self.respq.get()
+#         #if err: aimslog.info('Received errors "{}" for cid={}'.format(err,cid))
+#         if warn: aimslog.info('Received warnings for cid={}'.format(cid))
+#         return warn
   
         
         
