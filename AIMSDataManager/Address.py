@@ -19,46 +19,46 @@ from gtk._gtk import PositionType
 
 aimslog = None
 
-#------------------------------------------------------------------------------
-# W A R N I N G
-
-class AimsWarning(object):
-
-    BRANCH = ('properties')
-    
-    def __init__(self):
-
-        self._ruleId = None,
-        self._description = None
-        self._severity = None    
-        
-    @staticmethod
-    def getInstance(d):
-        w = AimsWarning()
-        w.set(d)
-        return w
-    
-    def set(self,d):
-        if isinstance(d,str):
-            self._set(None,d,None)
-        else:
-            self._set(
-                d['ruleId'],
-                d['description'],
-                d['severity']
-            )    
-        
-    def _set(self,ruleId, description,severity):
-        '''sets object parameters'''
-        self._ruleId = ruleId
-        self._description = description
-        self._severity = severity     
-        
-    def get(self):
-        return {"ruleId":self._ruleId,
-                "description":self._description,
-                "severity":self._severity
-                }
+# #------------------------------------------------------------------------------
+# # W A R N I N G
+# 
+# class AimsWarning(object):
+# 
+#     BRANCH = ('properties')
+#     
+#     def __init__(self):
+# 
+#         self._ruleId = None,
+#         self._description = None
+#         self._severity = None    
+#         
+#     @staticmethod
+#     def getInstance(d):
+#         w = AimsWarning()
+#         w.set(d)
+#         return w
+#     
+#     def set(self,d):
+#         if isinstance(d,str):
+#             self._set(None,d,None)
+#         else:
+#             self._set(
+#                 d['ruleId'],
+#                 d['description'],
+#                 d['severity']
+#             )    
+#         
+#     def _set(self,ruleId, description,severity):
+#         '''sets object parameters'''
+#         self._ruleId = ruleId
+#         self._description = description
+#         self._severity = severity     
+#         
+#     def get(self):
+#         return {"ruleId":self._ruleId,
+#                 "description":self._description,
+#                 "severity":self._severity
+#                 }
         
 #------------------------------------------------------------------------------
 # P O S I T I O N
@@ -414,7 +414,7 @@ class AddressResolution(AddressRequestFeed):
         #self._warnings = None
         
     def __str__(self):
-        return 'ADRR.{}.{}/{}'.format(self._ref,self.type,len(self.getEntities()))
+        return 'ADRR.{}.{}/{}'.format(self._ref,self.type,len(self._getEntities()))
         
     def getFullNumber(self):
         fullNumber = ''
@@ -434,11 +434,11 @@ class AddressResolution(AddressRequestFeed):
 #         return self.meta.warnings
 #         #return self._warnings    
         
-    def setEntities(self,entities):
+    def _setEntities(self,entities):
         self.setMeta()
         self.meta.entities = entities
  
-    def getEntities(self):
+    def _getEntities(self):
         return self.meta.entities
 
         

@@ -209,17 +209,17 @@ class DataManager(object):
     #----------------------------
     def acceptAddress(self,address,reqid=None):
         if reqid: address.setRequestId(reqid)
-        address.setQueueStatus(ApprovalType.revalt[ApprovalType.ACCEPT].title())
+        address.setQueueStatus(ApprovalType.LABEL[ApprovalType.ACCEPT].title())
         self.ioq[FeedType.RESOLUTIONFEED]['in'].put({ApprovalType.ACCEPT:(address,)})        
     
     def declineAddress(self,address,reqid=None):
         if reqid: address.setRequestId(reqid)
-        address.setQueueStatus(ApprovalType.revalt[ApprovalType.DECLINE].title())
+        address.setQueueStatus(ApprovalType.LABEL[ApprovalType.DECLINE].title())
         self.ioq[FeedType.RESOLUTIONFEED]['in'].put({ApprovalType.DECLINE:(address,)})
     
     def repairAddress(self,address,reqid=None):
         if reqid: address.setRequestId(reqid)
-        address.setQueueStatus(ApprovalType.revalt[ApprovalType.UPDATE].title())
+        address.setQueueStatus(ApprovalType.LABEL[ApprovalType.UPDATE].title())
         self.ioq[FeedType.RESOLUTIONFEED]['in'].put({ApprovalType.UPDATE:(address,)})
     
     #----------------------------
@@ -258,12 +258,12 @@ class Persistence():
             self.ADL = self._initADL() 
             #default tracker, gets overwritten
             #page = (lowest page fetched, highest page number fetched)
-            self.tracker[FeedType.FEATURES] =       {'page':[1,1],    'index':1,'threads':2,'interval':30}
-            self.tracker[FeedType.CHANGEFEED] =     {'page':[NPV,NPV],'index':1,'threads':1,'interval':125}
-            self.tracker[FeedType.RESOLUTIONFEED] = {'page':[1,1],    'index':1,'threads':1,'interval':10}
-            #self.tracker[FeedType.FEATURES] =       {'page':[1,1],'index':1,'threads':2,'interval':30}    
-            #self.tracker[FeedType.CHANGEFEED] =     {'page':[1,1],'index':1,'threads':1,'interval':1000}  
-            #self.tracker[FeedType.RESOLUTIONFEED] = {'page':[1,1],'index':1,'threads':1,'interval':1000} 
+            #self.tracker[FeedType.FEATURES] =       {'page':[1,1],    'index':1,'threads':2,'interval':30}
+            #self.tracker[FeedType.CHANGEFEED] =     {'page':[NPV,NPV],'index':1,'threads':1,'interval':125}
+            #self.tracker[FeedType.RESOLUTIONFEED] = {'page':[1,1],    'index':1,'threads':1,'interval':10}
+            self.tracker[FeedType.FEATURES] =       {'page':[1,1],'index':1,'threads':2,'interval':1000}    
+            self.tracker[FeedType.CHANGEFEED] =     {'page':[1,1],'index':1,'threads':1,'interval':1000}  
+            self.tracker[FeedType.RESOLUTIONFEED] = {'page':[1,1],'index':1,'threads':1,'interval':1000} 
             self.write() 
     
     def _initADL(self):
@@ -388,7 +388,7 @@ class LocalTest():
         time.sleep(10)
         dm.restart(FeedType.RESOLUTIONFEED)
         
-        
+    #CHANGEFEED
     def testchangefeedAUR(self,dm,af):
         ver = 1000000
         cid = 2000000
@@ -522,7 +522,7 @@ class LocalTest():
         return resp
                 
     def gettestdata(self,ff):
-        a = ff.getAddress('change_add')
+        a = ff.getAddress('test_featuretype_address')
         p = Position.getInstance(
             {'position':{'type':'Point','coordinates': [168.38392191667,-44.8511013],'crs':{'type':'name','properties':{'name':'urn:ogc:def:crs:EPSG::4167'}}},'positionType':'Centroid','primary':True}
         )

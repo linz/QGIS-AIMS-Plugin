@@ -209,6 +209,7 @@ class DataSync(Observable):
         self.duinst[ref] = DataUpdater(params,adrq)
         if self.ft==FeedType.FEATURES: self.duinst[ref].setup(self.ft,self.sw,self.ne,p)
         else: self.duinst[ref].setup(self.ft,None,None,p)
+        self.duinst[ref].setName(ref)
         self.duinst[ref].setDaemon(True)
         self.duinst[ref].start()
         return ref
@@ -251,6 +252,7 @@ class DataSyncFeeds(DataSync):
         '''Create an additional DRC thread to watch the feed input queue'''
         super(DataSyncFeeds,self).__init__(params,queues)
         self.drc = DataRequestChannel(self)
+        self.drc.setName('DRC.{}'.format(params[0]))
         self.drc.setDaemon(True)
         
     def run(self):
@@ -350,6 +352,7 @@ class DataSyncChangeFeed(DataSyncFeeds):
         #self.ioq = {'in':Queue.Queue(),'out':Queue.Queue()}
         self.duinst[ref] = DataUpdaterAction(params,self.respq)
         self.duinst[ref].setup(at,addr)
+        self.duinst[ref].setName(ref)
         self.duinst[ref].setDaemon(True)
         self.duinst[ref].start()
         #self.duinst[ref].join()
@@ -370,6 +373,7 @@ class DataSyncResolutionFeed(DataSyncFeeds):
         #self.ioq = {'in':Queue.Queue(),'out':Queue.Queue()}
         self.duinst[ref] = DataUpdaterApproval(params,self.respq)
         self.duinst[ref].setup(at,addr)
+        self.duinst[ref].setName(ref)
         self.duinst[ref].setDaemon(True)
         self.duinst[ref].start()
         #self.duinst[ref].join()

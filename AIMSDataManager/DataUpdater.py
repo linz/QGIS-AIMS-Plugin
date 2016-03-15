@@ -63,19 +63,22 @@ class DataUpdater(threading.Thread):
         addrlist = []
         for entity in self.api.getOnePage(self.ft,self.sw,self.ne,self.page):
             if self.ft == FeedType.RESOLUTIONFEED and ENABLE_RESOLUTION_FEED_WARNINGS:
+                #get drill-down resolution address objects (if enabled)
                 cid = entity['properties']['changeId']
                 entitylist = []
                 feat = self.api.getOneFeature(self.ft,cid)
                 if feat == {u'class': [u'error']}: 
+                    #if the feature is the not-supposed-to-happen error, it gets special treatment
                     aimslog.error('Invalid API response {}'.format(feat))
                     a = self.afactory.getAddress(model=entity['properties'])
-                    a.setEntities([Entity.getInstance(),])
-                    continue
-                a = self.afactory.getAddress(model=feat['properties'])
-                for e in feat['entities']:
-                    entitylist.append(Entity.getInstance(e))
-                a.setEntities(entitylist)
+                    entitylist.append(Entity.getInstance())
+                else:
+                    a = self.afactory.getAddress(model=feat['properties'])
+                    for e in feat['entities']:
+                        entitylist.append(Entity.getInstance(e))
+                a._setEntities(entitylist)
             else:
+                #just return the main feedlevel address objects
                 a = self.afactory.getAddress(model=entity['properties'])
             addrlist += [a,]
         self.queue.put(addrlist)
@@ -127,29 +130,10 @@ class DataUpdaterApproval(DataUpdater):
         err,resp = self.api.resolutionfeedApproveAddress(self.at,self.payload,self.changeId)
         res_adr = self.afactory.getAddress(model=resp)
         #print 'RES_ADR',res_adr
-        #cid = res_adr.getChangeId()
-        #res_adr.setWarning(self.api.getWarnings(cid))#self.cid        
-        #print 'ADDRESS',self.address
-        #res_adr.setWarnings(self.api.getWarnings(self.ft,self.changeId))#self.cid
         if err: res_adr.setErrors(err)
         if self.requestId: res_adr.setRequestId(self.requestId)
         self.queue.put(res_adr)
-        #self.queue.put({'resp':resp,'warn':warn})
-        
-        
-# class DataUpdaterWarning(DataUpdater):
-#     '''Updater to read warning messages on the resolution feed'''
-#     
-#     def setup(self,ft,cid):
-#         '''set address parameters'''
-#         self.ft = ft
-#         self.cid = cid
-#         
-#     def run(self):
-#         '''approval action on the RF''' 
-#         aimslog.info('WRN.{} {}'.format(self.ref,self.cid))
-#         resp = self.api.getWarnings(self.ft,self.cid)
-#         self.queue.put(resp)
+
 
         
     

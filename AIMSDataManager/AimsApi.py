@@ -12,7 +12,7 @@
 import json
 import httplib2
 
-from Address import Address,AddressChange,AddressResolution,AimsWarning
+from Address import Address,AddressChange,AddressResolution#,AimsWarning
 from Config import ConfigReader
 from AimsUtility import ActionType,ApprovalType,FeedType,MAX_FEATURE_COUNT
 from AimsLogging import Logger
@@ -96,7 +96,7 @@ class AimsApi(object):
     
     # specific request response methods
 
-#     #@deprected?
+#     @deprected
 #     def getWarnings(self,ft,cid):
 #         '''Get warnings for a changeId'd resolutionfeed address'''
 #         url = '{}/{}/{}'.format(self._url,FeedType.reverse[ft].lower(),cid)
@@ -123,6 +123,6 @@ class AimsApi(object):
     def resolutionfeedApproveAddress(self,at,payload,cid):
         '''Approve/Decline a change by submitting address to resolutionfeed'''
         url = '{}/resolutionfeed/{}/{}'.format(self._url,cid,ApprovalType.reverse[at].lower())
-        resp, content = self.h.request(url,"POST", json.dumps(payload), self._headers)
+        resp, content = self.h.request(url,ApprovalType.HTTP[at], json.dumps(payload), self._headers)
         return self.handleResponse(url,resp["status"], json.loads(content) )
     

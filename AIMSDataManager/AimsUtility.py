@@ -104,37 +104,40 @@ class LogWrap(object):
     
 class IterEnum(object):
     index = 0
+    reverse = {}
     def __iter__(self): return self
     def next(self):
         res = None
         try: res = self.reverse[self.index]
         except: raise StopIteration
+        #self.index = (self.index + 1) % len(self.reverse)
         self.index += 1
-        return res
+        return res    
+
     
-class Enumeration():
+class Enumeration(object):
     @staticmethod
     def enum(*seq, **named):
         #http://stackoverflow.com/questions/36932/how-can-i-represent-an-enum-in-python
-        enums = dict( zip([s.split(':')[0] for s in seq],range(len(seq))) ,**named)
-        alt = dict( zip([s.split(':')[1] for s in seq],range(len(seq))) ,**named) if all([s.find(':')+1 for s in seq]) else enums
+        enums = dict( zip([s for s in seq],range(len(seq))) ,**named)
+        #enums = dict( zip([s.split(':')[0] for s in seq],range(len(seq))) ,**named)
+        #alt = dict( zip([s.split(':')[1] for s in seq],range(len(seq))) ,**named) if all([s.find(':')+1 for s in seq]) else enums
         
         reverse = dict((value, key) for key, value in enums.iteritems())
-        revalt = dict((value, key) for key, value in alt.iteritems())
         enums['reverse'] = reverse 
-        enums['revalt'] = revalt  
       
-        #enums['__iter__'] = IterEnum.__iter__
-        #enums['next'] = IterEnum.next
-        #enums['index'] = 0
+        enums['__iter__'] = IterEnum.__iter__
+        enums['next'] = IterEnum.next
+        enums['index'] = 0
         return type('Enum', (IterEnum,), enums)
-        #monkeypatch instance#t2 = type('eenum',(t,), {'next':IterEnum.next})
-        #return t
+
 
 class InvalidEnumerationType(Exception): pass
 
 ActionType = Enumeration.enum('ADD','RETIRE','UPDATE')
-ApprovalType = Enumeration.enum('ACCEPT:Accepted','DECLINE:Declined','UPDATE:Under Review')
+ApprovalType = Enumeration.enum('ACCEPT','DECLINE','UPDATE')
+ApprovalType.LABEL = ('Accepted','Declined','Under Review')
+ApprovalType.HTTP = ('POST','POST','PUT')
 FeedType = Enumeration.enum('FEATURES','CHANGEFEED','RESOLUTIONFEED')
 #RequestType = Enumeration.enum('BBOX','ADDRESS')
 
