@@ -16,6 +16,7 @@ import re
 from Ui_NewAddressDialog import Ui_NewAddressDialog
 from AIMSDataManager.Address import Position, Address
 from AimsUI.AimsClient.Gui.UiUtility import UiUtility
+from AIMSDataManager.AimsUtility import FeedType
 
 from qgis.utils import iface
 #from AIMSDataManager.Address import getInstance
@@ -95,6 +96,10 @@ class NewAddressDialog(Ui_NewAddressDialog, QDialog):
         # submit address obj to DM
         self._controller.uidm.addAddress(self.feature)
         # need to check the response 
+        r = self._controller.dm.response(FeedType.CHANGEFEED)
+        r = self._controller.dm.response(FeedType.CHANGEFEED)
+        r = self._controller.dm.response(FeedType.CHANGEFEED)
+
         self.closeDlg()
        
     def fullNumChanged(self, newnumber):

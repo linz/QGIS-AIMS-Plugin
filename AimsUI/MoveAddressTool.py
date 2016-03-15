@@ -8,6 +8,7 @@ from qgis.gui import *
 
 from AimsUI.AimsClient.Gui.Ui_MoveAddressDialog import Ui_MoveAddressDialog
 from AimsUI.AimsClient.Gui.UiUtility import UiUtility
+from AIMSDataManager.AimsUtility import FeedType
 
 class MoveAddressTool(QgsMapToolIdentify):
 
@@ -104,6 +105,10 @@ class MoveAddressTool(QgsMapToolIdentify):
                 for feature in self._features:
                     feature._addressedObject_addressPositions[0].setCoordinates(coords)
                     self._controller.uidm.updateAddress(feature)
+                            
+                    r = self._controller.dm.response(FeedType.CHANGEFEED)
+                    r = self._controller.dm.response(FeedType.CHANGEFEED)
+                    r = self._controller.dm.response(FeedType.CHANGEFEED)               
                 
                 self._features = []
                 self._canvas.scene().removeItem(self._marker)

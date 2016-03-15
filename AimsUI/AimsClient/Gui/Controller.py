@@ -12,6 +12,7 @@ import sys
 import Resources
 
 from os.path import dirname, abspath
+from AIMSDataManager.DataManager import DataManager
 #sys.path.append('.qgis2/python/plugins/QGIS-A.IMS-Plugin') 
 sys.path.append('.qgis2/python/plugins/AIMS_Plugin_threaded') #temp
 
@@ -45,6 +46,7 @@ class Controller(QObject):
         QObject.__init__(self)
         self.iface = iface
         self.af = AddressFactory()
+        self.dm = DataManager() # temp for testing
         #self.curResItem = [None, None]
 
         self._queues = None

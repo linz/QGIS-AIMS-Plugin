@@ -17,34 +17,36 @@ import re
 class UiUtility (object):
     ''' Where modular methods live and are leveraged '''
     
-    uiObjMappings = {'uWarning':['_warning','setWarnings', 'getWarnings'],
-                    'uNotes':['_workflow_sourceReason','setSourceReason', None],
-                    'uAddressType':['_components_addressType','setAddressType', None], 
-                    'ulifeCycle':['_components_lifecycle','setLifecycle', None],   
-                    'uLevelType':['_components_levelType','setLevelType', None], 
-                    'uLevelValue':['_components_levelValue','setLevelValue', None], 
-                    'uUnitType':['_components_unitType','setUnitType', None],
-                    'uUnit':['_components_unitValue','setUnitValue', None],
-                    'uPrefix':['_components_addressNumberPrefix','setAddressNumberPrefix', None],
-                    'uBase':['_components_addressNumber','setAddressNumber', None],
-                    'uAlpha':['_components_addressNumberSuffix','setAddressNumberSuffix', None],
-                    'uHigh':['_components_addressNumberHigh','setAddressNumberHigh', None],
-                    'uExternalIdScheme':['_components_externalAddressIdScheme','setExternalAddressIdScheme', None],
-                    'uExternalAddId':['_components_externalAddressId','setExternalAddressId', None], 
-                    'uRclId':['_components_roadCentrelineId','setRoadCentrelineId', None],
-                    'uRoadPrefix':['_components_roadSuffix','setRoadSuffix', None],
-                    'uRoadName':['_components_roadName','setRoadName', None], 
-                    'uRoadTypeName':['_components_roadType','setRoadType', None],   
-                    'uRoadSuffix':['_components_roadSuffix','setRoadSuffix', None], 
-                    'uWaterName':['_components_waterName','setWaterName', None], 
-                    'uWaterRouteName':['_components_waterRoute','setWaterRoute', None],
-                    'uObjectType':['_addressedObject_objectType','setObjectType', None],
-                    'uObjectName':['_addressedObject_objectName','setObjectName', None],
-                    'uExtObjectIdScheme':['_addressedObject_externalObjectIdScheme','setExternalObjectIdScheme', None],
-                    'uExternalObjectId':['_addressedObject_externalObjectId','setExternalObjectId', None],
-                    'uValuationReference':['_addressedObject_valuationReference','setValuationReference', None],
-                    'uCertificateOfTitle':['_addressedObject_certificateOfTitle','setCertificateOfTitle', None],
-                    'uAppellation':['_addressedObject_appellation','setAppellation', None],
+    retainInfo = [ 'v0005', 'v0006', 'v0007', 'v0012', 'v0023', 'RP001', 'RP002' ]
+        
+    uiObjMappings = {'uWarning':['_warning','setWarnings', 'getEntities'],
+                    'uNotes':['_workflow_sourceReason','setSourceReason', ''],
+                    'uAddressType':['_components_addressType','setAddressType', ''], 
+                    'ulifeCycle':['_components_lifecycle','setLifecycle', ''],   
+                    'uLevelType':['_components_levelType','setLevelType', ''], 
+                    'uLevelValue':['_components_levelValue','setLevelValue', ''], 
+                    'uUnitType':['_components_unitType','setUnitType', ''],
+                    'uUnit':['_components_unitValue','setUnitValue', ''],
+                    'uPrefix':['_components_addressNumberPrefix','setAddressNumberPrefix', ''],
+                    'uBase':['_components_addressNumber','setAddressNumber', ''],
+                    'uAlpha':['_components_addressNumberSuffix','setAddressNumberSuffix', ''],
+                    'uHigh':['_components_addressNumberHigh','setAddressNumberHigh', ''],
+                    'uExternalIdScheme':['_components_externalAddressIdScheme','setExternalAddressIdScheme', ''],
+                    'uExternalAddId':['_components_externalAddressId','setExternalAddressId', ''], 
+                    'uRclId':['_components_roadCentrelineId','setRoadCentrelineId', ''],
+                    'uRoadPrefix':['_components_roadSuffix','setRoadSuffix', ''],
+                    'uRoadName':['_components_roadName','setRoadName', ''], 
+                    'uRoadTypeName':['_components_roadType','setRoadType', ''],   
+                    'uRoadSuffix':['_components_roadSuffix','setRoadSuffix', ''], 
+                    'uWaterName':['_components_waterName','setWaterName', ''], 
+                    'uWaterRouteName':['_components_waterRoute','setWaterRoute', ''],
+                    'uObjectType':['_addressedObject_objectType','setObjectType', ''],
+                    'uObjectName':['_addressedObject_objectName','setObjectName', ''],
+                    'uExtObjectIdScheme':['_addressedObject_externalObjectIdScheme','setExternalObjectIdScheme', ''],
+                    'uExternalObjectId':['_addressedObject_externalObjectId','setExternalObjectId', ''],
+                    'uValuationReference':['_addressedObject_valuationReference','setValuationReference', ''],
+                    'uCertificateOfTitle':['_addressedObject_certificateOfTitle','setCertificateOfTitle', ''],
+                    'uAppellation':['_addressedObject_appellation','setAppellation', ''],
                     }
     
     @staticmethod
@@ -117,16 +119,22 @@ class UiUtility (object):
                 uiElement = getattr(self, ui)
             else: 
                 continue
-            # Test the object has the required property
-            if hasattr(self.feature, objProp[0]):                                     
+            # Test the object has the required property or a getter
+            if hasattr(self.feature, objProp[0]) or hasattr(self.feature, objProp[2]):                                     
                 if objProp[2]: 
                     # use getter
-                    prop = str(getattr(self.feature, objProp[2]))
+                    prop = (getattr(self.feature, objProp[2])())
                 else:
                     # go straight for the objects property 
                     prop = str(getattr(self.feature, objProp[0]))
                 if isinstance(uiElement, QLineEdit) or isinstance(uiElement, QLabel):
-                    if ui == 'uWarning': pass# or ui == 'uNotes': # if a warning we need to undertake some formatting
+                    if ui == 'uWarning':
+                        pass
+                        warnings = ''                        
+                        for i in prop:
+                            if i._severity == 'Info' and i._ruleId not in UiUtility.retainInfo: continue
+                            warnings += i._severity.upper()+': '+ i._description+('\n'*2)                             
+                        uiElement.setText(warnings)
                     #    warnings = ''  
                     #    for warning in getattr(self)['warn']:
                     #        warnings+=(warning._severity).upper()+': '+warning._description+('\n'*2)

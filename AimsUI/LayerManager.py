@@ -193,8 +193,8 @@ class LayerManager(QObject):
     def installRefLayers(self):
         ''' install AIMS postgres ref data '''
         rcl = self.installLayer( 'rcl', 'roads', 'road_name_mview', 'gid', True, "",'Roads' )  
-        par = self.installLayer( 'par', 'bde', 'crs_parcel', 'id', True, "status = 'CURR'",'Parcels' )
-        return rcl,par
+        #par = self.installLayer( 'par', 'bde', 'crs_parcel', 'id', True, "status = 'CURR'",'Parcels' )
+        return rcl#,par
         
     def installAimsLayer(self, id, displayname):
         ''' initialise AIMS feautres and review layers '''

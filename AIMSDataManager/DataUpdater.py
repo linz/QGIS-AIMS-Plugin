@@ -58,9 +58,6 @@ class DataUpdater(threading.Thread):
         self.ft = ft
         self.sw,self.ne = sw,ne
         self.page = page
-        
-    def fetchVersion(self):
-        return self.api.getOneFeature(self.ft,self.changeId)['properties']['version']
 
     def run(self):
         '''get single page of addresses from API'''
@@ -105,11 +102,14 @@ class DataUpdaterAction(DataUpdater):
         '''set address parameters'''
         self.at = at
         self.address = address
-        self.changeId = address.getChangeId()
+        self.addressId = address.getAddressId()
         self.requestId = address.getRequestId()
         self.address.setVersion(self.fetchVersion())
         self.payload = self.afactory.convertAddress(self.address,self.at)
         
+    def fetchVersion(self):
+        return self.api.getOneFeature(self.ft,self.addressId)['properties']['version']
+    
     def run(self):
         '''address change action on the CF'''
         aimslog.info('ACT.{} {} - Addr{}'.format(self.ref,ActionType.reverse[self.at],self.address))
@@ -133,6 +133,9 @@ class DataUpdaterApproval(DataUpdater):
         self.address.setVersion(self.fetchVersion())
         self.payload = self.afactory.convertAddress(self.address,self.at)
         
+    def fetchVersion(self):
+        return self.api.getOneFeature(self.ft,self.changeId)['properties']['version']
+    
     def run(self):
         '''approval action on the RF''' 
         aimslog.info('APP.{} {} - Addr{}'.format(self.ref,ApprovalType.reverse[self.at],self.address))

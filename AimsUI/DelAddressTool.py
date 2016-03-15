@@ -5,6 +5,7 @@ from qgis.core import *
 from qgis.gui import *
 
 from AimsUI.AimsClient.Gui.Ui_DelAddressDialog import Ui_DelAddressDialog
+from AIMSDataManager.AimsUtility import FeedType
 
 class DelAddressTool(QgsMapToolIdentify):
 
@@ -70,15 +71,11 @@ class DelAddressTool(QgsMapToolIdentify):
             for retireFeature in retireFeatures:
                 featureToRetire = self._controller.uidm.singleFeatureObj(retireFeature['components']['addressId'])
                 self._controller.uidm.retireAddress(featureToRetire)
-            
-            # old api method below
-            
-            #valErrors = self._controller.retireAddress(retireFeatures)
-            #if len(valErrors['errors']) != 0:
-                #QMessageBox.warning(self._iface.mainWindow(),"Retire Address Point", valErrors)
-                #QMessageBox.warning(self._iface.mainWindow(),"Retire Feature Error", ''.join(valErrors['errors']))
-        #return       
- 
+                
+                r = self._controller.dm.response(FeedType.CHANGEFEED)
+                r = self._controller.dm.response(FeedType.CHANGEFEED)
+                r = self._controller.dm.response(FeedType.CHANGEFEED)
+             
 class DelAddressDialog( Ui_DelAddressDialog, QDialog ):
 
     def __init__( self, parent ):
