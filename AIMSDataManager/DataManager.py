@@ -328,7 +328,7 @@ class LocalTest():
         #self.testfeatureshift(dm)
         
         # TEST CF
-        #self.testchangefeedAUR(dm,af)
+        self.testchangefeedAUR(dm,af)
         
         # TEST RF
         self.testresolutionfeedAUD(dm,af)
@@ -396,7 +396,7 @@ class LocalTest():
         addr_f = self.gettestdata(af[FeedType.FEATURES])
         #cast to addresschange type, to do cf ops
         addr_c = af[FeedType.CHANGEFEED].cast(addr_f)
-        addr_c.setVersion(ver)
+        #addr_c.setVersion(ver)
         aimslog.info('*** Change ADD '+str(time.clock()))
         rqid1 = 1234321
         dm.addAddress(addr_c,rqid1)
@@ -418,7 +418,7 @@ class LocalTest():
         rqid2 = 2345432
         addr_c.setFullAddress('Unit C, 16 Islay Street, Glenorchy')
         addr_c.setChangeId(cid)
-        addr_c.setVersion(ver)
+        #addr_c.setVersion(ver)
         dm.updateAddress(addr_c,rqid2)
         resp = None
         while True: 
@@ -437,7 +437,7 @@ class LocalTest():
         aimslog.info('*** Change RETIRE '+str(time.clock()))
         rqid3 = 3456543
         addr_c.setChangeId(cid)
-        addr_c.setVersion(ver)
+        #addr_c.setVersion(ver)
         dm.retireAddress(addr_c,rqid3)
         resp = None
         while not resp: 
@@ -460,7 +460,7 @@ class LocalTest():
         addr_f = self.gettestdata(af[FeedType.FEATURES])
         #cast to addresschange type, to do cf ops
         addr_r = af[FeedType.RESOLUTIONFEED].cast(addr_f)
-        addr_r.setVersion(ver)
+        #addr_r.setVersion(ver)
         addr_r.setChangeId(cid)
         
         aimslog.info('*** Resolution ACCEPT '+str(time.clock()))
@@ -479,7 +479,7 @@ class LocalTest():
         aimslog.info('*** Resolution UPDATE '+str(time.clock()))
         rqid2 = 5678765
         addr_r.setFullAddress('Unit B, 16 Islay Street, Glenorchy')
-        addr_r.setVersion(ver)
+        #addr_r.setVersion(ver)
         dm.repairAddress(addr_r,rqid2)
         resp = None
         while True: 
@@ -493,7 +493,7 @@ class LocalTest():
         
         aimslog.info('*** Change DECLINE '+str(time.clock()))
         rqid3 = 6789876
-        addr_r.setVersion(ver)
+        #addr_r.setVersion(ver)
         dm.declineAddress(addr_r,rqid3)
         resp = None
         while not resp: 

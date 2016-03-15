@@ -108,7 +108,7 @@ class DataUpdaterAction(DataUpdater):
         self.payload = self.afactory.convertAddress(self.address,self.at)
         
     def fetchVersion(self):
-        return self.api.getOneFeature(self.ft,self.addressId)['properties']['version']
+        return self.api.getOneFeature(FeedType.FEATURES,self.addressId)['properties']['version']
     
     def run(self):
         '''address change action on the CF'''
@@ -134,7 +134,7 @@ class DataUpdaterApproval(DataUpdater):
         self.payload = self.afactory.convertAddress(self.address,self.at)
         
     def fetchVersion(self):
-        return self.api.getOneFeature(self.ft,self.changeId)['properties']['version']
+        return self.api.getOneFeature(FeedType.CHANGEFEED,self.changeId)['properties']['version']
     
     def run(self):
         '''approval action on the RF''' 
