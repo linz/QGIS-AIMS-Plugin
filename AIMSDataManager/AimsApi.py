@@ -92,7 +92,7 @@ class AimsApi(object):
         #aimslog.debug('FEAT REQUEST {}'.format(url))
         resp, content = self.h.request(url,'GET', headers = self._headers)
         _,jcontent = self.handleResponse(url,resp["status"], json.loads(content))
-        return jcontent
+        return jcontent        
     
     # specific request response methods
 

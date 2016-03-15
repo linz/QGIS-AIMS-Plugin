@@ -38,8 +38,10 @@ class DataUpdater(threading.Thread):
     Instantiates an amisapi instance with wrappers for initialisation of local data store 
     and change/resolution feed updating
     '''
+    ft = FeedType.FEATURES
     address = None
     page = 0
+    changeId = 0
     
     global aimslog
     aimslog = Logger.setup()
@@ -56,6 +58,9 @@ class DataUpdater(threading.Thread):
         self.ft = ft
         self.sw,self.ne = sw,ne
         self.page = page
+        
+    def fetchVersion(self):
+        return self.api.getOneFeature(self.ft,self.changeId)['properties']['version']
 
     def run(self):
         '''get single page of addresses from API'''
@@ -92,6 +97,7 @@ class DataUpdater(threading.Thread):
     def close(self):
         aimslog.info('Queue {} stopped'.format(self.queue.qsize()))
         self.queue.task_done()
+     
         
 class DataUpdaterAction(DataUpdater):
     ft = FeedType.CHANGEFEED
@@ -99,7 +105,9 @@ class DataUpdaterAction(DataUpdater):
         '''set address parameters'''
         self.at = at
         self.address = address
+        self.changeId = address.getChangeId()
         self.requestId = address.getRequestId()
+        self.address.setVersion(self.fetchVersion())
         self.payload = self.afactory.convertAddress(self.address,self.at)
         
     def run(self):
@@ -122,6 +130,7 @@ class DataUpdaterApproval(DataUpdater):
         self.address = address
         self.changeId = address.getChangeId()
         self.requestId = address.getRequestId()
+        self.address.setVersion(self.fetchVersion())
         self.payload = self.afactory.convertAddress(self.address,self.at)
         
     def run(self):

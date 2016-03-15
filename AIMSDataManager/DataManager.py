@@ -201,7 +201,7 @@ class DataManager(object):
         self._populate(address).setChangeType(ActionType.reverse[ActionType.RETIRE].title())
         self.ioq[FeedType.CHANGEFEED]['in'].put({ActionType.RETIRE:(address,)})
     
-    def updateAddress(self,address,reqid=None,srcusr=None):
+    def updateAddress(self,address,reqid=None):
         if reqid: address.setRequestId(reqid)
         self._populate(address).setChangeType(ActionType.reverse[ActionType.UPDATE].title())
         self.ioq[FeedType.CHANGEFEED]['in'].put({ActionType.UPDATE:(address,)})    
