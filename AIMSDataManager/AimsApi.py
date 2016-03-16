@@ -75,12 +75,13 @@ class AimsApi(object):
 
     def getOnePage(self,ft,sw,ne,page,count=MAX_FEATURE_COUNT):
         '''Get a numbered page'''
+        et = EntityType.reverse[EntityType.ADDRESS].lower()
         addrlist = []
         if sw and ne:
             bb = '{},{},{},{}'.format(sw[0],sw[1],ne[0],ne[1])
-            url = '{}/{}?count={}&bbox={}&page={}'.format(self._url,FeedType.reverse[ft].lower(),count,bb,page)
+            url = '{}/{}/{}?count={}&bbox={}&page={}'.format(self._url,et,FeedType.reverse[ft].lower(),count,bb,page)
         else:
-            url = '{}/{}?count={}&page={}'.format(self._url,FeedType.reverse[ft].lower(),count,page)
+            url = '{}/{}/{}?count={}&page={}'.format(self._url,et,FeedType.reverse[ft].lower(),count,page)
         aimslog.debug('1P REQUEST {}'.format(url))
         resp, content = self.h.request(url,'GET', headers = self._headers)
         _,jcontent = self.handleResponse(url,resp["status"], json.loads(content))
@@ -88,7 +89,8 @@ class AimsApi(object):
     
     def getOneFeature(self,ft,cid):
         '''Get a CID numbered address including feature entities'''
-        url = '{}/{}/{}'.format(self._url,FeedType.reverse[ft].lower(),cid)
+        et = EntityType.reverse[EntityType.ADDRESS].lower()
+        url = '{}/{}/{}/{}'.format(self._url,et,FeedType.reverse[ft].lower(),str(cid))
         #aimslog.debug('FEAT REQUEST {}'.format(url))
         resp, content = self.h.request(url,'GET', headers = self._headers)
         _,jcontent = self.handleResponse(url,resp["status"], json.loads(content))
@@ -100,7 +102,7 @@ class AimsApi(object):
         '''Make a change to the feature list by posting a change on the changefeed'''
         et = EntityType.reverse[EntityType.ADDRESS].lower()
         ft = FeedType.reverse[FeedType.CHANGEFEED].lower()
-        url = '/'.join(self._url,et,ft,ActionType.reverse[at].lower())
+        url = '/'.join((self._url,et,ft,ActionType.reverse[at].lower()))
         resp, content = self.h.request(url,"POST", json.dumps(payload), self._headers)
         return self.handleResponse(url,resp["status"], json.loads(content) )  
     
@@ -108,7 +110,7 @@ class AimsApi(object):
         '''Approve/Decline a change by submitting address to resolutionfeed'''
         et = EntityType.reverse[EntityType.ADDRESS].lower()
         ft = FeedType.reverse[FeedType.RESOLUTIONFEED].lower()
-        url = '/'.join(self._url,et,ft,cid,ApprovalType.reverse[at].lower())
+        url = '/'.join((self._url,et,ft,str(cid),ApprovalType.reverse[at].lower()))
         resp, content = self.h.request(url,ApprovalType.HTTP[at], json.dumps(payload), self._headers)
         return self.handleResponse(url,resp["status"], json.loads(content) )
     
@@ -116,7 +118,7 @@ class AimsApi(object):
         '''Perform action on group changefeed'''
         et = EntityType.reverse[EntityType.GROUPS].lower()
         ft = FeedType.reverse[FeedType.CHANGEFEED].lower()
-        url = '/'.join(self._url,et,ft,cid,GroupActionType.PATH[gat].lower())
+        url = '/'.join((self._url,et,ft,str(cid),GroupActionType.PATH[gat].lower()))
         resp, content = self.h.request(url,GroupActionType.HTTP[gat], json.dumps(payload), self._headers)
         return self.handleResponse(url,resp["status"], json.loads(content) )
     

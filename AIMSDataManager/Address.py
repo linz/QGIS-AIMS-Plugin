@@ -24,13 +24,14 @@ aimslog = None
 # P O S I T I O N
 
 class InvalidPositionException(Exception):pass
+PDEF = {'position':{'type':'Point','coordinates':[0.0,0.0],'crs':{'type':'name','properties':{'name':'urn:ogc:def:crs:EPSG::4167'}}},'positionType':'Unknown','primary':True}
+    
 class Position(object):
     '''Position type for embedded address positions.
     Uses hardcoded attrs since it has a constant structure'''
     #branch in address structure where we should find position object
     BRANCH = ('addressedObject','addressPositions')
-    PDEF = {'position':{'type':'Point','coordinates':[0.0,0.0],'crs':{'type':'name','properties':{'name':'urn:ogc:def:crs:EPSG::4167'}}},'positionType':'Unknown','primary':True}
-    
+  
     def __init__(self, ref=None): 
         self._position_type = 'Point'
         self._position_coordinates = [0.0,0.0]
@@ -92,11 +93,9 @@ class Position(object):
         
 #------------------------------------------------------------------------------
 # E N T I T Y 
-
+EDEF = {'class':[], 'rel':[],'properties':{'ruleId':None, 'description':None,'severity':None}}
 class Entity(object):
     '''Entity Object'''
-    #assume class and rel are lists of strings
-    EDEF = {'class':[], 'rel':[],'properties':{'ruleId':None, 'description':None,'severity':None}}
     def __init__(self, ref=None): 
         #aimslog.info('AdrRef.{}'.format(ref))
         self._ref = ref        
@@ -112,10 +111,14 @@ class Entity(object):
     @staticmethod
     def getInstance(d = EDEF):
         e = Entity()
-        e.set(d)
+        #WORKAROUND
+        if d<>EDEF and d['class'][0]=='validation': e.set(d)
+        else: aimslog.warn('Entites non-validation type')
         return e
         
     def set(self,d = EDEF):
+        #try: print d['properties']['ruleId']
+        #except: pass
         self._set(
             d['class'],
             d['rel'],

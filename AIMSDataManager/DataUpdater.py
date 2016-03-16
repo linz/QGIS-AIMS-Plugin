@@ -95,7 +95,7 @@ class DataUpdater(threading.Thread):
         aimslog.info('Queue {} stopped'.format(self.queue.qsize()))
         self.queue.task_done()
      
-        
+
 class DataUpdaterAction(DataUpdater):
     ft = FeedType.CHANGEFEED
     def setup(self,at,address):
@@ -108,7 +108,13 @@ class DataUpdaterAction(DataUpdater):
         self.payload = self.afactory.convertAddress(self.address,self.at)
         
     def fetchVersion(self):
-        return self.api.getOneFeature(FeedType.FEATURES,self.addressId)['properties']['version']
+        jc = self.api.getOneFeature(FeedType.FEATURES,self.addressId)
+        if jc['properties'].has_key('version'):
+            return jc['properties']['version']
+        else:
+            #WORKAROUND
+            aimslog.warn('No version number available for addressId={}'.format(self.addressId))
+            return 1
     
     def run(self):
         '''address change action on the CF'''
@@ -134,8 +140,14 @@ class DataUpdaterApproval(DataUpdater):
         self.payload = self.afactory.convertAddress(self.address,self.at)
         
     def fetchVersion(self):
-        return self.api.getOneFeature(FeedType.CHANGEFEED,self.changeId)['properties']['version']
-    
+        jc = self.api.getOneFeature(FeedType.CHANGEFEED,self.changeId)
+        if jc['properties'].has_key('version'):
+            return jc['properties']['version']
+        else:
+            #WORKAROUND
+            aimslog.warn('No version number available for changeId={}'.format(self.changeId))
+            return 1
+        
     def run(self):
         '''approval action on the RF''' 
         aimslog.info('APP.{} {} - Addr{}'.format(self.ref,ApprovalType.reverse[self.at],self.address))
