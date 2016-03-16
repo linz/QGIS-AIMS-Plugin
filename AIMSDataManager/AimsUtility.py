@@ -120,12 +120,9 @@ class Enumeration(object):
     def enum(*seq, **named):
         #http://stackoverflow.com/questions/36932/how-can-i-represent-an-enum-in-python
         enums = dict( zip([s for s in seq],range(len(seq))) ,**named)
-        #enums = dict( zip([s.split(':')[0] for s in seq],range(len(seq))) ,**named)
-        #alt = dict( zip([s.split(':')[1] for s in seq],range(len(seq))) ,**named) if all([s.find(':')+1 for s in seq]) else enums
-        
         reverse = dict((value, key) for key, value in enums.iteritems())
+        
         enums['reverse'] = reverse 
-      
         enums['__iter__'] = IterEnum.__iter__
         enums['next'] = IterEnum.next
         enums['index'] = 0
@@ -134,11 +131,23 @@ class Enumeration(object):
 
 class InvalidEnumerationType(Exception): pass
 
-ActionType = Enumeration.enum('ADD','RETIRE','UPDATE')
-ApprovalType = Enumeration.enum('ACCEPT','DECLINE','UPDATE')
-ApprovalType.LABEL = ('Accepted','Declined','Under Review')
-ApprovalType.HTTP = ('POST','POST','PUT')
+
+
 FeedType = Enumeration.enum('FEATURES','CHANGEFEED','RESOLUTIONFEED')
-#RequestType = Enumeration.enum('BBOX','ADDRESS')
+EntityType = Enumeration.enum('ADDRESS','GROUPS')
+
+#address changefeed action
+ActionType = Enumeration.enum('ADD','RETIRE','UPDATE')
+
+#resolutionfeed approval action
+ApprovalType = Enumeration.enum('ACCEPT',  'DECLINE', 'UPDATE')
+ApprovalType.LABEL =           ('Accepted','Declined','Under Review')
+ApprovalType.HTTP =            ('POST',    'POST',    'PUT')
+
+#group changefeed action
+GroupActionType = Enumeration.enum('REPLACE','UPDATE','SUBMIT','CLOSE','ADD', 'REMOVE','ADDRESS')
+GroupActionType.PATH =            ('replace','',      'sumbit','close','add', 'remove','address','')
+GroupActionType.HTTP =            ('POST',   'PUT',   'POST',  'POST', 'POST','POST',  'GET')
+
 
    

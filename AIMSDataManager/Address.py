@@ -19,46 +19,6 @@ from gtk._gtk import PositionType
 
 aimslog = None
 
-# #------------------------------------------------------------------------------
-# # W A R N I N G
-# 
-# class AimsWarning(object):
-# 
-#     BRANCH = ('properties')
-#     
-#     def __init__(self):
-# 
-#         self._ruleId = None,
-#         self._description = None
-#         self._severity = None    
-#         
-#     @staticmethod
-#     def getInstance(d):
-#         w = AimsWarning()
-#         w.set(d)
-#         return w
-#     
-#     def set(self,d):
-#         if isinstance(d,str):
-#             self._set(None,d,None)
-#         else:
-#             self._set(
-#                 d['ruleId'],
-#                 d['description'],
-#                 d['severity']
-#             )    
-#         
-#     def _set(self,ruleId, description,severity):
-#         '''sets object parameters'''
-#         self._ruleId = ruleId
-#         self._description = description
-#         self._severity = severity     
-#         
-#     def get(self):
-#         return {"ruleId":self._ruleId,
-#                 "description":self._description,
-#                 "severity":self._severity
-#                 }
         
 #------------------------------------------------------------------------------
 # P O S I T I O N
@@ -423,16 +383,6 @@ class AddressResolution(AddressRequestFeed):
         if hasattr(self, '_components_addressNumberHigh'): fullNumber+= ('-'+str(self._components_addressNumberHigh))
         if hasattr(self, '_components_addressNumberSuffix'): fullNumber+=str(self._components_addressNumberSuffix)      
         return fullNumber 
-    
-    #NB. Warnings only available in res feed
-    
-#     def setWarnings(self,warnings):
-#         self.setMeta()
-#         self.meta.warnings = warnings
-#         #self._warnings = warnings        
-#     def getWarnings(self):
-#         return self.meta.warnings
-#         #return self._warnings    
         
     def _setEntities(self,entities):
         self.setMeta()

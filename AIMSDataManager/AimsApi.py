@@ -14,7 +14,7 @@ import httplib2
 
 from Address import Address,AddressChange,AddressResolution#,AimsWarning
 from Config import ConfigReader
-from AimsUtility import ActionType,ApprovalType,FeedType,MAX_FEATURE_COUNT
+from AimsUtility import EntityType,ActionType,ApprovalType,FeedType,MAX_FEATURE_COUNT
 from AimsLogging import Logger
 
 
@@ -95,34 +95,28 @@ class AimsApi(object):
         return jcontent        
     
     # specific request response methods
-
-#     @deprected
-#     def getWarnings(self,ft,cid):
-#         '''Get warnings for a changeId'd resolutionfeed address'''
-#         url = '{}/{}/{}'.format(self._url,FeedType.reverse[ft].lower(),cid)
-#         resp, content = self.h.request(url,"GET", headers = self._headers)
-#         warnlist, jcontent = self.handleResponse(url, resp["status"], json.loads(content))
-#         #entities->warnings
-#         if jcontent.has_key('entities'):
-#             for entity in jcontent['entities']:
-#                 warnlist['warn'] += (AimsWarning.getInstance(entity['properties']),)
-#         else:
-#             warnlist['error'] += (AimsWarning.getInstance('Entities not available in JSON response'),)
-#         #properties->version
-#         if jcontent.has_key('properties') and jcontent['properties'].has_key('version'):
-#             warnlist['version'] = jcontent['properties']['version']
-#         return warnlist
-
         
     def changefeedActionAddress(self,at,payload):
         '''Make a change to the feature list by posting a change on the changefeed'''
-        url = '{}/changefeed/{}'.format(self._url,ActionType.reverse[at].lower())
+        et = EntityType.reverse[EntityType.ADDRESS].lower()
+        ft = FeedType.reverse[FeedType.CHANGEFEED].lower()
+        url = '/'.join(self._url,et,ft,ActionType.reverse[at].lower())
         resp, content = self.h.request(url,"POST", json.dumps(payload), self._headers)
         return self.handleResponse(url,resp["status"], json.loads(content) )  
     
     def resolutionfeedApproveAddress(self,at,payload,cid):
         '''Approve/Decline a change by submitting address to resolutionfeed'''
-        url = '{}/resolutionfeed/{}/{}'.format(self._url,cid,ApprovalType.reverse[at].lower())
+        et = EntityType.reverse[EntityType.ADDRESS].lower()
+        ft = FeedType.reverse[FeedType.RESOLUTIONFEED].lower()
+        url = '/'.join(self._url,et,ft,cid,ApprovalType.reverse[at].lower())
         resp, content = self.h.request(url,ApprovalType.HTTP[at], json.dumps(payload), self._headers)
+        return self.handleResponse(url,resp["status"], json.loads(content) )
+    
+    def groupActionAddress(self,gat):
+        '''Perform action on group changefeed'''
+        et = EntityType.reverse[EntityType.GROUPS].lower()
+        ft = FeedType.reverse[FeedType.CHANGEFEED].lower()
+        url = '/'.join(self._url,et,ft,cid,GroupActionType.PATH[gat].lower())
+        resp, content = self.h.request(url,GroupActionType.HTTP[gat], json.dumps(payload), self._headers)
         return self.handleResponse(url,resp["status"], json.loads(content) )
     
