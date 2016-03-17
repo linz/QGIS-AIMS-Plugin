@@ -25,7 +25,7 @@ P = os.path.join(os.path.dirname(__file__),'../resources/')
 
 ET = EntityType.ADDRESS
 
-TP = {a:b for a,b in zip(
+TP = {'{}.{}'.format(EntityType.reverse[ET].lower(),a):b for a,b in zip(
         [FeedType.reverse[ft].lower() for ft in FeedType.reverse],
         [   {},
             {ActionType.reverse[at].lower():None for at in ActionType.reverse},
@@ -56,7 +56,8 @@ class AddressFactory(object):
     
     def __init__(self, ref=DEF_REF):
         self.ref = ref
-        self.template = TemplateReader().get()[FeedType.reverse[ref].lower()]
+        key = '{}.{}'.format(EntityType.reverse[ET].lower(),FeedType.reverse[ref].lower())
+        self.template = TemplateReader().get()[key]
     
     def __str__(self):
         return 'AFC.{}'.format(FeedType.reverse(self.AFFT)[:3])
@@ -208,11 +209,11 @@ class AddressResolutionFactory(AddressFeedFactory):
 
 
 class TemplateReader(object):
-    tp = TP     
+    tp = TP
     def __init__(self):
         for t1 in self.tp:
             for t2 in self.tp[t1]:
-                with open(os.path.join(P,'{}.{}.{}.template'.format(EntityType.reverse[ET].lower(),t1,t2)),'r') as handle:
+                with open(os.path.join(P,'{}.{}.template'.format(t1,t2)),'r') as handle:
                     tstr = handle.read()
                     #print 'read template',t1t,t2t
                     self.tp[t1][t2] = eval(tstr) if tstr else ''

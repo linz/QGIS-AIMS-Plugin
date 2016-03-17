@@ -1,0 +1,11 @@
+{           
+    "changeId":None,
+    "changeType":None,
+    "changeGroupId":None,
+    "workflow":{
+        "submitterUserName":None,
+        "submittedDate":None,
+        "queueStatus":None,
+        "sourceReason":None
+    }
+}

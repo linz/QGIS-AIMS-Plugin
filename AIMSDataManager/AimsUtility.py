@@ -137,7 +137,9 @@ FeedType = Enumeration.enum('FEATURES','CHANGEFEED','RESOLUTIONFEED')
 EntityType = Enumeration.enum('ADDRESS','GROUPS')
 
 #address changefeed action
-ActionType = Enumeration.enum('ADD','RETIRE','UPDATE')
+ActionType = Enumeration.enum('ADD', 'RETIRE','UPDATE')
+ActionType.PATH =            ('add', 'retire','')
+ActionType.HTTP =            ('POST','POST',  'PUT')
 
 #resolutionfeed approval action
 ApprovalType = Enumeration.enum('ACCEPT',  'DECLINE', 'UPDATE')
