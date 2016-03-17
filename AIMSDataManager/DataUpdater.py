@@ -140,7 +140,7 @@ class DataUpdaterApproval(DataUpdater):
         self.payload = self.afactory.convertAddress(self.address,self.at)
         
     def fetchVersion(self):
-        jc = self.api.getOneFeature(FeedType.CHANGEFEED,self.changeId)
+        jc = self.api.getOneFeature(FeedType.RESOLUTIONFEED,self.changeId)
         if jc['properties'].has_key('version'):
             return jc['properties']['version']
         else:
