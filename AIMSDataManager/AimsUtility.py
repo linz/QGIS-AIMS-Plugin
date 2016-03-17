@@ -142,6 +142,7 @@ ActionType = Enumeration.enum('ADD','RETIRE','UPDATE')
 #resolutionfeed approval action
 ApprovalType = Enumeration.enum('ACCEPT',  'DECLINE', 'UPDATE')
 ApprovalType.LABEL =           ('Accepted','Declined','Under Review')
+ApprovalType.PATH =            ('accept',  'decline', '')
 ApprovalType.HTTP =            ('POST',    'POST',    'PUT')
 
 #group changefeed action

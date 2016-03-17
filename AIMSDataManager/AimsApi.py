@@ -78,14 +78,14 @@ class AimsApi(object):
         et = EntityType.reverse[EntityType.ADDRESS].lower()
         addrlist = []
         if sw and ne:
-            bb = '{},{},{},{}'.format(sw[0],sw[1],ne[0],ne[1])
+            bb = ','.join((sw[0],sw[1],ne[0],ne[1]))
             url = '{}/{}/{}?count={}&bbox={}&page={}'.format(self._url,et,FeedType.reverse[ft].lower(),count,bb,page)
         else:
             url = '{}/{}/{}?count={}&page={}'.format(self._url,et,FeedType.reverse[ft].lower(),count,page)
         aimslog.debug('1P REQUEST {}'.format(url))
         resp, content = self.h.request(url,'GET', headers = self._headers)
         _,jcontent = self.handleResponse(url,resp["status"], json.loads(content))
-        return jcontent['entities']    
+        return jcontent['entities']
     
     def getOneFeature(self,ft,cid):
         '''Get a CID numbered address including feature entities'''
@@ -110,7 +110,7 @@ class AimsApi(object):
         '''Approve/Decline a change by submitting address to resolutionfeed'''
         et = EntityType.reverse[EntityType.ADDRESS].lower()
         ft = FeedType.reverse[FeedType.RESOLUTIONFEED].lower()
-        url = '/'.join((self._url,et,ft,str(cid),ApprovalType.reverse[at].lower()))
+        url = '/'.join((self._url,et,ft,str(cid),ApprovalType.PATH[at].lower()))
         resp, content = self.h.request(url,ApprovalType.HTTP[at], json.dumps(payload), self._headers)
         return self.handleResponse(url,resp["status"], json.loads(content) )
     

@@ -15,17 +15,24 @@
 import re
 import os
 import copy
-from AimsUtility import ActionType,ApprovalType,FeedType,InvalidEnumerationType
+from AimsUtility import EntityType,ActionType,ApprovalType,FeedType,InvalidEnumerationType
 from AimsUtility import SKIP_NULL, DEF_SEP
 from Address import Address,AddressChange,AddressResolution,Position
 from AimsLogging import Logger
 
 P = os.path.join(os.path.dirname(__file__),'../resources/')
 
-TP = {FeedType.FEATURES:{},
-      FeedType.CHANGEFEED:{ActionType.reverse[at]:None for at in ActionType.reverse},
-      FeedType.RESOLUTIONFEED:{ApprovalType.reverse[at]:None for at in ApprovalType.reverse}}
 
+ET = EntityType.ADDRESS
+
+TP = {a:b for a,b in zip(
+        [FeedType.reverse[ft].lower() for ft in FeedType.reverse],
+        [   {},
+            {ActionType.reverse[at].lower():None for at in ActionType.reverse},
+            {ApprovalType.reverse[at].lower():None for at in ApprovalType.reverse}
+        ]
+        )
+    }
 #AT = {FeedType.FEATURES:Address,FeedType.CHANGEFEED:AddressChange,FeedType.RESOLUTIONFEED:AddressResolution}
 
 aimslog = None
@@ -49,7 +56,7 @@ class AddressFactory(object):
     
     def __init__(self, ref=DEF_REF):
         self.ref = ref
-        self.template = TemplateReader().get()[self.AFFT]
+        self.template = TemplateReader().get()[FeedType.reverse[ref].lower()]
     
     def __str__(self):
         return 'AFC.{}'.format(FeedType.reverse(self.AFFT)[:3])
@@ -119,7 +126,7 @@ class AddressFeedFactory(AddressFactory):
         '''Converts an address into its json payload equivalent '''
         full = None
         try:
-            full = self._convert(adr, copy.deepcopy(self.template[self.reqtype.reverse[at]]))
+            full = self._convert(adr, copy.deepcopy(self.template[self.reqtype.reverse[at].lower()]))
             full = self._delNull(full) if SKIP_NULL else full
         except Exception as e:
             msg = 'Error converting address object using AT{} with {}'.format(at,e)
@@ -201,19 +208,16 @@ class AddressResolutionFactory(AddressFeedFactory):
 
 
 class TemplateReader(object):
-    tp = TP
+    tp = TP     
     def __init__(self):
         for t1 in self.tp:
-            t1t = FeedType.reverse[t1].lower()
             for t2 in self.tp[t1]:
-                #t2t = ActionType.reverse[t2].lower()
-                t2t = t2.lower()
-                with open(os.path.join(P,'{}.{}.template'.format(t1t,t2t)),'r') as handle:
+                with open(os.path.join(P,'{}.{}.{}.template'.format(EntityType.reverse[ET].lower(),t1,t2)),'r') as handle:
                     tstr = handle.read()
                     #print 'read template',t1t,t2t
                     self.tp[t1][t2] = eval(tstr) if tstr else ''
             #response address type is the template of the address-json we get from the api
-            with open(os.path.join(P,'{}.response.template'.format(t1t)),'r') as handle:
+            with open(os.path.join(P,'{}.response.template'.format(t1)),'r') as handle:
                 tstr = handle.read()
                 self.tp[t1]['response'] = eval(tstr) if tstr else ''
 
