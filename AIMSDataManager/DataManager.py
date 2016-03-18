@@ -209,7 +209,8 @@ class DataManager(object):
     #----------------------------
     def acceptAddress(self,address,reqid=None):
         if reqid: address.setRequestId(reqid)
-        address.setQueueStatus(ApprovalType.LABEL[ApprovalType.ACCEPT].title())
+        self._populate(address).setQueueStatus(ApprovalType.LABEL[ApprovalType.ACCEPT].title())
+        #address.setQueueStatus(ApprovalType.LABEL[ApprovalType.ACCEPT].title())
         self.ioq[FeedType.RESOLUTIONFEED]['in'].put({ApprovalType.ACCEPT:(address,)})        
     
     def declineAddress(self,address,reqid=None):
@@ -292,269 +293,269 @@ class Persistence():
 
 
 refsnap = None
-
-class LocalTest():
-    flag = False
-    
-    def notify(self,observable,args,kwargs):
-        self.flag = True
-        print observable
-        print args
-        print kwargs
-        
-    def test(self):
-        global refsnap
-        refsnap = {0:None,1:None,2:None}
-        af = {ft:AddressFactory.getInstance(ft) for ft in FeedType.reverse}
-    
-        #with DataManager(start=None) as dm:
-        #    dm.start(FeedType.CHANGEFEED)
-        with DataManager() as dm:
-            dm.register(self)
-            self.test1(dm,af)
-            
-            
-    def test1(self,dm,af):
-        
-        #dm.persist.ADL = testdata
-        #get some data
-        listofaddresses = dm.pull()
-        print 'addr list before feed checkin',[len(l) for l in listofaddresses.values()]
-        
-        #TEST RESTART
-        #self.testrestartCR(dm)
-        
-        #TEST SHIFT
-        #self.testfeatureshift(dm)
-        
-        # TEST CF
-        self.testchangefeedAUR(dm,af)
-        
-        # TEST RF
-        self.testresolutionfeedAUD(dm,af)
-        
-        #TEST SHIFT
-        self.testfeatureshift(dm)
-        
-        aimslog.info('*** Resolution ADD '+str(time.clock()))   
-        time.sleep(30) 
-        #return
-        print 'entering response mode'
-        while True:
-            aimslog.info('*** Main TICK '+str(time.clock()))
-            self.testresp(dm)
-            time.sleep(5)
-            
-    def testfeatureshift(self,dm):
-    
-        aimslog.info('*** Main SHIFT '+str(time.clock()))
-        dm.setbb(sw=(174.76918,-41.28515), ne=(174.79509,-41.26491))
-        time.sleep(10)
-        resp = None
-        while not self.flag: 
-            time.sleep(5)   
-        else:
-            resp = self.testresp(dm) 
-            
-        dm.setbb(sw=(174.76928,-41.28515), ne=(174.79519,-41.26481))
-        time.sleep(10)
-        resp = None
-        while not self.flag: 
-            time.sleep(5)   
-        else:
-            resp = self.testresp(dm) 
-            
-        dm.setbb(sw=(174.76928,-41.28515), ne=(174.79529,-41.26471))
-        time.sleep(10)
-        resp = None
-        while not self.flag: 
-            time.sleep(5)   
-        else:
-            resp = self.testresp(dm) 
-            
-#     def checkrefresh(self,dm):        
+# 
+# class LocalTest():
+#     flag = False
+#     
+#     def notify(self,observable,args,kwargs):
+#         self.flag = True
+#         print observable
+#         print args
+#         print kwargs
+#         
+#     def test(self):
 #         global refsnap
-#         rs2 = dm.refresh()
-#         if rs2 != refsnap:
-#             refsnap = rs2
-#             return True
-#         return False
-        
-    def testrestartCR(self,dm):
-        time.sleep(10)
-        dm.restart(FeedType.FEATURES)
-        time.sleep(10)
-        dm.restart(FeedType.CHANGEFEED)
-        time.sleep(10)
-        dm.restart(FeedType.RESOLUTIONFEED)
-        
-    #CHANGEFEED
-    def testchangefeedAUR(self,dm,af):
-        ver = 1000000
-        cid = 2000000
-        #pull address from features (map)
-        addr_f = self.gettestdata(af[FeedType.FEATURES])
-        #cast to addresschange type, to do cf ops
-        addr_c = af[FeedType.CHANGEFEED].cast(addr_f)
-        #addr_c.setVersion(ver)
-        aimslog.info('*** Change ADD '+str(time.clock()))
-        rqid1 = 1234321
-        dm.addAddress(addr_c,rqid1)
-        resp = None
-        while True: 
-            resp = self.testresp(dm,FeedType.CHANGEFEED)
-            if resp: 
-                err = resp[0].getErrors()
-                print rqid1,resp[0].meta.requestId
-                print 'e',err
-                if not err:
-                    cid = resp[0].getChangeId()
-                break
-            time.sleep(5)
-        ver += 1
-    
-        
-        aimslog.info('*** Change UPDATE '+str(time.clock()))
-        rqid2 = 2345432
-        addr_c.setFullAddress('Unit C, 16 Islay Street, Glenorchy')
-        addr_c.setChangeId(cid)
-        #addr_c.setVersion(ver)
-        dm.updateAddress(addr_c,rqid2)
-        resp = None
-        while True: 
-            resp = self.testresp(dm,FeedType.CHANGEFEED)
-            if resp: 
-                err = resp[0].getErrors()
-                print rqid2,resp[0].meta.requestId
-                print 'e',err
-                if not err:
-                    cid = resp[0].getChangeId()
-                break
-            time.sleep(5)
-        ver += 1
-        
-        
-        aimslog.info('*** Change RETIRE '+str(time.clock()))
-        rqid3 = 3456543
-        addr_c.setChangeId(cid)
-        #addr_c.setVersion(ver)
-        dm.retireAddress(addr_c,rqid3)
-        resp = None
-        while not resp: 
-            resp = self.testresp(dm,FeedType.CHANGEFEED)
-            if resp: 
-                err = resp[0].getErrors()
-                print rqid3,resp[0].meta.requestId
-                print 'e',err
-                if not err:
-                    cid = resp[0].getChangeId()
-            time.sleep(5)     
-        ver += 1
-    
-        
-    def testresolutionfeedAUD(self,dm,af):
-        ver = 6977370
-        #cid = 4117724
-        cid = 4117720
-        #pull address from features (map)
-        addr_f = self.gettestdata(af[FeedType.FEATURES])
-        #cast to addresschange type, to do cf ops
-        addr_r = af[FeedType.RESOLUTIONFEED].cast(addr_f)
-        #addr_r.setVersion(ver)
-        addr_r.setChangeId(cid)
-        
-        aimslog.info('*** Resolution ACCEPT '+str(time.clock()))
-        rqid1 = 4567654
-        dm.acceptAddress(addr_r,rqid1)
-        resp = None
-        while True: 
-            resp = self.testresp(dm,FeedType.RESOLUTIONFEED)
-            if resp: 
-                print rqid1,resp[0].meta.requestId
-                break
-            time.sleep(5)
-        ver += 1
-     
-         
-        aimslog.info('*** Resolution UPDATE '+str(time.clock()))
-        rqid2 = 5678765
-        addr_r.setFullAddress('Unit B, 16 Islay Street, Glenorchy')
-        #addr_r.setVersion(ver)
-        dm.repairAddress(addr_r,rqid2)
-        resp = None
-        while True: 
-            resp = self.testresp(dm,FeedType.RESOLUTIONFEED)
-            if resp: 
-                print rqid2,resp[0].meta.requestId
-                break
-            time.sleep(5)
-        ver += 1
-        
-        
-        aimslog.info('*** Change DECLINE '+str(time.clock()))
-        rqid3 = 6789876
-        #addr_r.setVersion(ver)
-        dm.declineAddress(addr_r,rqid3)
-        resp = None
-        while not resp: 
-            resp = self.testresp(dm,FeedType.RESOLUTIONFEED)
-            if resp: 
-                print rqid3,resp[0].meta.requestId
-                break
-            time.sleep(5)     
-        ver += 1
-    
-    
-    def testresp(self,dm,ft=FeedType.CHANGEFEED):
-        r = None
-        #aimslog.info('*** Main COUNT {}'.format(dm.refresh()))  
-        out = dm.pull()
-        for o in out:
-            #aimslog.info('*** Main OUTPUT {} - [{}]'.format(out[o],len(out[o])))
-            aimslog.info('*** Main OUTPUT {} [{}]'.format(o,len(out[o])))
-        
-        
-        resp = dm.response(ft)
-        for r in resp:
-            #aimslog.info('*** Main RESP {} - [{}]'.format(r,len(resp))) 
-            aimslog.info('*** Main RESP {} [{}]'.format(r,len(resp)))
-            
-        return resp
-                
-    def gettestdata(self,ff):
-        a = ff.getAddress('test_featuretype_address')
-        p = Position.getInstance(
-            {'position':{'type':'Point','coordinates': [168.38392191667,-44.8511013],'crs':{'type':'name','properties':{'name':'urn:ogc:def:crs:EPSG::4167'}}},'positionType':'Centroid','primary':True}
-        )
-        a.setAddressType('Road')
-        a.setAddressNumber('16')
-        a.setAddressId('29')
-        a.setLifecycle('Current')
-        a.setRoadCentrelineId('11849')
-        a.setRoadName('Islay')
-        a.setRoadType('Street'),
-        a.setSuburbLocality('Glenorchy')
-        a.setFullAddressNumber('16')
-        a.setFullRoadName('Islay Street')
-        a.setFullAddress('16 Islay Street, Glenorchy')
-        a._addressedObject_addressableObjectId = '1416143'
-        a.setObjectType('Parcel')
-        
-        a.setUnitType('Unit')
-        a.setUnitValue('b')
-    
-        a.setAddressPositions(p)
-    
-        a._codes_suburbLocalityId = '2104'
-        a._codes_parcelId = '3132748'
-        a._codes_meshblock = '3174100'
-        return a
-
-    
-
-            
-if __name__ == '__main__':
-    print 'start'
-    lt = LocalTest()
-    lt.test()  
-    print 'finish'
+#         refsnap = {0:None,1:None,2:None}
+#         af = {ft:AddressFactory.getInstance(ft) for ft in FeedType.reverse}
+#     
+#         #with DataManager(start=None) as dm:
+#         #    dm.start(FeedType.CHANGEFEED)
+#         with DataManager() as dm:
+#             dm.register(self)
+#             self.test1(dm,af)
+#             
+#             
+#     def test1(self,dm,af):
+#         
+#         #dm.persist.ADL = testdata
+#         #get some data
+#         listofaddresses = dm.pull()
+#         print 'addr list before feed checkin',[len(l) for l in listofaddresses.values()]
+#         
+#         #TEST RESTART
+#         #self.testrestartCR(dm)
+#         
+#         #TEST SHIFT
+#         #self.testfeatureshift(dm)
+#         
+#         # TEST CF
+#         self.testchangefeedAUR(dm,af)
+#         
+#         # TEST RF
+#         self.testresolutionfeedAUD(dm,af)
+#         
+#         #TEST SHIFT
+#         self.testfeatureshift(dm)
+#         
+#         aimslog.info('*** Resolution ADD '+str(time.clock()))   
+#         time.sleep(30) 
+#         #return
+#         print 'entering response mode'
+#         while True:
+#             aimslog.info('*** Main TICK '+str(time.clock()))
+#             self.testresp(dm)
+#             time.sleep(5)
+#             
+#     def testfeatureshift(self,dm):
+#     
+#         aimslog.info('*** Main SHIFT '+str(time.clock()))
+#         dm.setbb(sw=(174.76918,-41.28515), ne=(174.79509,-41.26491))
+#         time.sleep(10)
+#         resp = None
+#         while not self.flag: 
+#             time.sleep(5)   
+#         else:
+#             resp = self.testresp(dm) 
+#             
+#         dm.setbb(sw=(174.76928,-41.28515), ne=(174.79519,-41.26481))
+#         time.sleep(10)
+#         resp = None
+#         while not self.flag: 
+#             time.sleep(5)   
+#         else:
+#             resp = self.testresp(dm) 
+#             
+#         dm.setbb(sw=(174.76928,-41.28515), ne=(174.79529,-41.26471))
+#         time.sleep(10)
+#         resp = None
+#         while not self.flag: 
+#             time.sleep(5)   
+#         else:
+#             resp = self.testresp(dm) 
+#             
+# #     def checkrefresh(self,dm):        
+# #         global refsnap
+# #         rs2 = dm.refresh()
+# #         if rs2 != refsnap:
+# #             refsnap = rs2
+# #             return True
+# #         return False
+#         
+#     def testrestartCR(self,dm):
+#         time.sleep(10)
+#         dm.restart(FeedType.FEATURES)
+#         time.sleep(10)
+#         dm.restart(FeedType.CHANGEFEED)
+#         time.sleep(10)
+#         dm.restart(FeedType.RESOLUTIONFEED)
+#         
+#     #CHANGEFEED
+#     def testchangefeedAUR(self,dm,af):
+#         ver = 1000000
+#         cid = 2000000
+#         #pull address from features (map)
+#         addr_f = self.gettestdata(af[FeedType.FEATURES])
+#         #cast to addresschange type, to do cf ops
+#         addr_c = af[FeedType.CHANGEFEED].cast(addr_f)
+#         #addr_c.setVersion(ver)
+#         aimslog.info('*** Change ADD '+str(time.clock()))
+#         rqid1 = 1234321
+#         dm.addAddress(addr_c,rqid1)
+#         resp = None
+#         while True: 
+#             resp = self.testresp(dm,FeedType.CHANGEFEED)
+#             if resp: 
+#                 err = resp[0].getErrors()
+#                 print rqid1,resp[0].meta.requestId
+#                 print 'e',err
+#                 if not err:
+#                     cid = resp[0].getChangeId()
+#                 break
+#             time.sleep(5)
+#         ver += 1
+#     
+#         
+#         aimslog.info('*** Change UPDATE '+str(time.clock()))
+#         rqid2 = 2345432
+#         addr_c.setFullAddress('Unit C, 16 Islay Street, Glenorchy')
+#         addr_c.setChangeId(cid)
+#         #addr_c.setVersion(ver)
+#         dm.updateAddress(addr_c,rqid2)
+#         resp = None
+#         while True: 
+#             resp = self.testresp(dm,FeedType.CHANGEFEED)
+#             if resp: 
+#                 err = resp[0].getErrors()
+#                 print rqid2,resp[0].meta.requestId
+#                 print 'e',err
+#                 if not err:
+#                     cid = resp[0].getChangeId()
+#                 break
+#             time.sleep(5)
+#         ver += 1
+#         
+#         
+#         aimslog.info('*** Change RETIRE '+str(time.clock()))
+#         rqid3 = 3456543
+#         addr_c.setChangeId(cid)
+#         #addr_c.setVersion(ver)
+#         dm.retireAddress(addr_c,rqid3)
+#         resp = None
+#         while not resp: 
+#             resp = self.testresp(dm,FeedType.CHANGEFEED)
+#             if resp: 
+#                 err = resp[0].getErrors()
+#                 print rqid3,resp[0].meta.requestId
+#                 print 'e',err
+#                 if not err:
+#                     cid = resp[0].getChangeId()
+#             time.sleep(5)     
+#         ver += 1
+#     
+#         
+#     def testresolutionfeedAUD(self,dm,af):
+#         ver = 6977370
+#         #cid = 4117724
+#         cid = 4117720
+#         #pull address from features (map)
+#         addr_f = self.gettestdata(af[FeedType.FEATURES])
+#         #cast to addresschange type, to do cf ops
+#         addr_r = af[FeedType.RESOLUTIONFEED].cast(addr_f)
+#         #addr_r.setVersion(ver)
+#         addr_r.setChangeId(cid)
+#         
+#         aimslog.info('*** Resolution ACCEPT '+str(time.clock()))
+#         rqid1 = 4567654
+#         dm.acceptAddress(addr_r,rqid1)
+#         resp = None
+#         while True: 
+#             resp = self.testresp(dm,FeedType.RESOLUTIONFEED)
+#             if resp: 
+#                 print rqid1,resp[0].meta.requestId
+#                 break
+#             time.sleep(5)
+#         ver += 1
+#      
+#          
+#         aimslog.info('*** Resolution UPDATE '+str(time.clock()))
+#         rqid2 = 5678765
+#         addr_r.setFullAddress('Unit B, 16 Islay Street, Glenorchy')
+#         #addr_r.setVersion(ver)
+#         dm.repairAddress(addr_r,rqid2)
+#         resp = None
+#         while True: 
+#             resp = self.testresp(dm,FeedType.RESOLUTIONFEED)
+#             if resp: 
+#                 print rqid2,resp[0].meta.requestId
+#                 break
+#             time.sleep(5)
+#         ver += 1
+#         
+#         
+#         aimslog.info('*** Change DECLINE '+str(time.clock()))
+#         rqid3 = 6789876
+#         #addr_r.setVersion(ver)
+#         dm.declineAddress(addr_r,rqid3)
+#         resp = None
+#         while not resp: 
+#             resp = self.testresp(dm,FeedType.RESOLUTIONFEED)
+#             if resp: 
+#                 print rqid3,resp[0].meta.requestId
+#                 break
+#             time.sleep(5)     
+#         ver += 1
+#     
+#     
+#     def testresp(self,dm,ft=FeedType.CHANGEFEED):
+#         r = None
+#         #aimslog.info('*** Main COUNT {}'.format(dm.refresh()))  
+#         out = dm.pull()
+#         for o in out:
+#             #aimslog.info('*** Main OUTPUT {} - [{}]'.format(out[o],len(out[o])))
+#             aimslog.info('*** Main OUTPUT {} [{}]'.format(o,len(out[o])))
+#         
+#         
+#         resp = dm.response(ft)
+#         for r in resp:
+#             #aimslog.info('*** Main RESP {} - [{}]'.format(r,len(resp))) 
+#             aimslog.info('*** Main RESP {} [{}]'.format(r,len(resp)))
+#             
+#         return resp
+#                 
+#     def gettestdata(self,ff):
+#         a = ff.getAddress('test_featuretype_address')
+#         p = Position.getInstance(
+#             {'position':{'type':'Point','coordinates': [168.38392191667,-44.8511013],'crs':{'type':'name','properties':{'name':'urn:ogc:def:crs:EPSG::4167'}}},'positionType':'Centroid','primary':True}
+#         )
+#         a.setAddressType('Road')
+#         a.setAddressNumber('16')
+#         a.setAddressId('29')
+#         a.setLifecycle('Current')
+#         a.setRoadCentrelineId('11849')
+#         a.setRoadName('Islay')
+#         a.setRoadType('Street'),
+#         a.setSuburbLocality('Glenorchy')
+#         a.setFullAddressNumber('16')
+#         a.setFullRoadName('Islay Street')
+#         a.setFullAddress('16 Islay Street, Glenorchy')
+#         a._addressedObject_addressableObjectId = '1416143'
+#         a.setObjectType('Parcel')
+#         
+#         a.setUnitType('Unit')
+#         a.setUnitValue('b')
+#     
+#         a.setAddressPositions(p)
+#     
+#         a._codes_suburbLocalityId = '2104'
+#         a._codes_parcelId = '3132748'
+#         a._codes_meshblock = '3174100'
+#         return a
+# 
+#     
+# 
+#             
+# if __name__ == '__main__':
+#     print 'start'
+#     lt = LocalTest()
+#     lt.test()  
+#     print 'finish'

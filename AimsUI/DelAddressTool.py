@@ -6,6 +6,7 @@ from qgis.gui import *
 
 from AimsUI.AimsClient.Gui.Ui_DelAddressDialog import Ui_DelAddressDialog
 from AIMSDataManager.AimsUtility import FeedType
+from AIMSDataManager.AddressFactory import AddressFactory
 
 class DelAddressTool(QgsMapToolIdentify):
 
@@ -70,6 +71,8 @@ class DelAddressTool(QgsMapToolIdentify):
         if retireFeatures: # else the user hit 'ok' and did not select any records            
             for retireFeature in retireFeatures:
                 featureToRetire = self._controller.uidm.singleFeatureObj(retireFeature['components']['addressId'])
+                af = {ft:AddressFactory.getInstance(ft) for ft in FeedType.reverse}
+                featureToRetire = af[FeedType.CHANGEFEED].cast(featureToRetire)
                 self._controller.uidm.retireAddress(featureToRetire)
                 
                 r = self._controller.dm.response(FeedType.CHANGEFEED)

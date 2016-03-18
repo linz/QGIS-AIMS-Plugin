@@ -11,7 +11,7 @@
 from AimsUI.AimsClient.Gui.Controller import Controller
 from AimsUI import AimsLogging
 import threading # temp - debugging only
-
+from qgis.core import QgsRectangle
 # Dev only - debugging
 try:
     import sys
@@ -34,6 +34,6 @@ class Plugin(object):
         
     def initGui(self):
         self.controller.initGui()
-
+        
     def unload(self): 
         self.controller.unload()

@@ -87,10 +87,11 @@ class LayerManager(QObject):
         self._parLayer = None
         self._locLayer = None
         self._revLayer = None
-
+       
         
         QgsMapLayerRegistry.instance().layerWillBeRemoved.connect(self.checkRemovedLayer)
         QgsMapLayerRegistry.instance().layerWasAdded.connect( self.checkNewLayer )
+        self.defaultExtent()
         
     def defaultExtent(self):
         ''' the extent the plugin first shows '''
@@ -239,11 +240,15 @@ class LayerManager(QObject):
          
     def getAimsFeatures(self):
         ext = self._iface.mapCanvas().extent()
+        # if the map is at the bounds on nzgd dont show
+        if (ext.toString() == '174.7729355126953124,-41.2864799999999974 : 174.7757044873046937,-41.2842699999999994'
+                or ext.toString() == '163.8084601236508604,-47.6596082687378200 : 181.4207421468571795,-33.6027284622192823'):
+            return            
         self._controller.uidm.setBbox(sw = (ext.xMaximum(), ext.yMaximum()), ne = (ext.xMinimum(), ext.yMinimum()))
         featureData = self._controller.uidm.featureData()
         if featureData:
             self.updateFeaturesLayer(featureData)
-              
+
     def updateFeaturesLayer(self, featureData):
         id = 'adr'
         layer = self.findLayer(id)

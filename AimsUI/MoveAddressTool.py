@@ -9,6 +9,7 @@ from qgis.gui import *
 from AimsUI.AimsClient.Gui.Ui_MoveAddressDialog import Ui_MoveAddressDialog
 from AimsUI.AimsClient.Gui.UiUtility import UiUtility
 from AIMSDataManager.AimsUtility import FeedType
+from AIMSDataManager.AddressFactory import AddressFactory
 
 class MoveAddressTool(QgsMapToolIdentify):
 
@@ -101,11 +102,14 @@ class MoveAddressTool(QgsMapToolIdentify):
                     coords = results[0].mFeature.geometry().asPoint()    
                 
                 # set new coords for all selected features
-                coords = UiUtility.transform(self._iface, coords)
+                coords = list(UiUtility.transform(self._iface, coords))
+
                 for feature in self._features:
                     feature._addressedObject_addressPositions[0].setCoordinates(coords)
+                    af = {ft:AddressFactory.getInstance(ft) for ft in FeedType.reverse}
+                    feature = af[FeedType.CHANGEFEED].cast(feature)
                     self._controller.uidm.updateAddress(feature)
-                            
+                         
                     r = self._controller.dm.response(FeedType.CHANGEFEED)
                     r = self._controller.dm.response(FeedType.CHANGEFEED)
                     r = self._controller.dm.response(FeedType.CHANGEFEED)               

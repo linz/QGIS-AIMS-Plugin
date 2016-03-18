@@ -78,7 +78,7 @@ class AimsApi(object):
         et = EntityType.reverse[EntityType.ADDRESS].lower()
         addrlist = []
         if sw and ne:
-            bb = ','.join((sw[0],sw[1],ne[0],ne[1]))
+            bb = ('{},{},{},{}').format(sw[0],sw[1],ne[0],ne[1])
             url = '{}/{}/{}?count={}&bbox={}&page={}'.format(self._url,et,FeedType.reverse[ft].lower(),count,bb,page)
         else:
             url = '{}/{}/{}?count={}&page={}'.format(self._url,et,FeedType.reverse[ft].lower(),count,page)
