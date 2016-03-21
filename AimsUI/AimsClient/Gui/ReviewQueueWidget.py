@@ -6,6 +6,7 @@ from qgis.utils import *
 
 from Ui_ReviewQueueWidget import Ui_ReviewQueueWidget
 from QueueEditorWidget import QueueEditorWidget
+from AIMSDataManager.AimsUtility import FeedType
 from QueueModelView import *
 from UiUtility import UiUtility 
 
@@ -25,6 +26,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.reviewData = self.uidm.reviewTableData()   
         self.currentObjKey = None
         self.currentAdrCoord = [0,0]
+        self.feature = None
         
         # Connections
         self.uDisplayButton.clicked.connect(self.display)
@@ -64,11 +66,14 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.popUserCombo()
     
     def refreshData(self): # < -- ALSO NEED TO REFRESH THE FILTER
+        self.uidm.restartDm(FeedType.RESOLUTIONFEED)
         self.reviewData = self.uidm.reviewTableData()
+        self.groupModel.beginResetModel()
+        self.featureModel.beginResetModel()
         self.groupModel.refreshData(self.reviewData)        
         self.featureModel.refreshData(self.reviewData)
-        self.featureModel.layoutChanged.emit()
-        self.groupModel.layoutChanged.emit()
+        self.groupModel.endResetModel()
+        self.featureModel.endResetModel()
                 
     def setController( self, controller ):
         import Controller
@@ -134,22 +139,30 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
     #def refreshData(self):
     #    self.reviewData = self.uidm.reviewTableData()
     def updateFeature(self):
-        curFeature = self.singleReviewObj(self.currentObjKey)
-        if curFeature: 
-            self.uQueueEditor.updateFeature(curFeature)
-            self.uidm.repairAddress(curFeature)
+        self.feature = self.singleReviewObj(self.currentObjKey)
+        if self.feature: 
+            UiUtility.formToObj(self)
+            #self.uQueueEditor.updateFeature(curFeature)
+            self.uidm.repairAddress(self.feature)
+            self.feature = None
             # at this point i need to refresh the review queue UI
             # will create signals
         
     def decline(self):
-        curFeature = self.singleReviewObj(self.currentObjKey)
-        if curFeature:
-            self.uidm.decline(curFeature)
+        #curFeature = self.singleReviewObj(self.currentObjKey)
+        for row in self.groupTableView.selectionModel().selectedRows():
+            objRef = self.groupModel.getObjRef(row)
+            reviewObj = self.singleReviewObj(objRef)
+            if reviewObj: 
+                self.uidm.decline(reviewObj)
     
     def accept(self):
-        curFeature = self.singleReviewObj(self.currentObjKey)
-        if curFeature: 
-            self.uidm.accept(curFeature)
+        #curFeature = self.singleReviewObj(self.currentObjKey)
+        for row in self.groupTableView.selectionModel().selectedRows():
+            objRef = self.groupModel.getObjRef(row)
+            reviewObj = self.singleReviewObj(objRef)
+            if reviewObj: 
+                self.uidm.accept(reviewObj)
         
     def display(self):
         if self.currentObjKey:

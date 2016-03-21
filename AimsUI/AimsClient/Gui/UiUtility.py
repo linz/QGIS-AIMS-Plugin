@@ -19,7 +19,7 @@ class UiUtility (object):
     
     retainInfo = [ 'v0005', 'v0006', 'v0007', 'v0012', 'v0023', 'RP001', 'RP002' ]
         
-    uiObjMappings = {'uWarning':['_warning','setWarnings', 'getEntities'],
+    uiObjMappings = {'uWarning':['_warning','setWarnings', '_getEntities' ],
                     'uNotes':['_workflow_sourceReason','setSourceReason', ''],
                     'uAddressType':['_components_addressType','setAddressType', ''], 
                     'ulifeCycle':['_components_lifecycle','setLifecycle', ''],   
@@ -112,6 +112,7 @@ class UiUtility (object):
     def featureToUi(self):
         """ for populating to update tool ui and queue edit ui """
         UiUtility.setEditability(self)
+        UiUtility.clearForm(self)
         
         for ui, objProp in UiUtility.uiObjMappings.items():
             # Test the UI has the relative UI component 
@@ -129,11 +130,12 @@ class UiUtility (object):
                     prop = str(getattr(self.feature, objProp[0]))
                 if isinstance(uiElement, QLineEdit) or isinstance(uiElement, QLabel):
                     if ui == 'uWarning':
-                        pass
                         warnings = ''                        
                         for i in prop:
-                            if i._severity == 'Info' and i._ruleId not in UiUtility.retainInfo: continue
-                            warnings += i._severity.upper()+': '+ i._description+('\n'*2)                             
+                            try: #<-- temp. currently retires are under going reformatting at the api level - then this can be removed 
+                                if i._severity == 'Info' and i._ruleId not in UiUtility.retainInfo: continue
+                                warnings += i._severity.upper()+': '+ i._description+('\n'*2)
+                            except: pass #temp                             
                         uiElement.setText(warnings)
                     #    warnings = ''  
                     #    for warning in getattr(self)['warn']:
@@ -150,39 +152,49 @@ class UiUtility (object):
         ''' serves both the gathering of user data
         from the purposes of new address creation and
         address feature updates ''' # should expanded scope to include queue views to obj
-
-        for uiElement, objProp in UiUtility.uiObjMappings.items():              
-            if hasattr(self, uiElement): # test if the ui widget/ form ... has the ui component
- 
-                uiElement = getattr(self, uiElement)                   
-                setter = getattr(self.feature, objProp[1])
-                if isinstance(uiElement, QLineEdit) and uiElement.text() != '' and uiElement.text() != 'NULL':
-                    setter(uiElement.text().encode('utf-8'))
-                elif isinstance(uiElement, QComboBox) and uiElement.currentText() != '' and uiElement.currentText() != 'NULL':
-                        setter(uiElement.currentText())
-                elif isinstance(uiElement, QPlainTextEdit)and uiElement.toPlainText() != '' and uiElement.toPlainText() != 'NULL':
-                        setter(uiElement.toPlainText().encode('utf-8'))
-    
-    @staticmethod               
-    def setEditability(self):
+        try: 
+            form = self.uQueueEditor 
+        except: 
+            form = self
         
+        for uiElement, objProp in UiUtility.uiObjMappings.items():
+            #user can not mod warnings ... continiue              
+            if self.uQueueEditor and uiElement == 'uWarning':
+                continue
+            if hasattr(form, uiElement): # test if the ui widget/ form ... has the ui component
+ 
+                uiElement = getattr(form, uiElement)                   
+                setter = getattr(self.feature, objProp[1])
+                if isinstance(uiElement, QLineEdit):# and uiElement.text() != '' and uiElement.text() != 'NULL':
+                    setter(uiElement.text().encode('utf-8'))
+                elif isinstance(uiElement, QComboBox):# and uiElement.currentText() != '' and uiElement.currentText() != 'NULL':
+                        setter(uiElement.currentText())
+                elif isinstance(uiElement, QPlainTextEdit):#and uiElement.toPlainText() != '' and uiElement.toPlainText() != 'NULL':
+                        setter(uiElement.toPlainText().encode('utf-8'))
+    @staticmethod 
+    def clearForm(self):      
         widgetChildern = self.findChildren(QWidget, QRegExp(r'^u.*'))
         for child in widgetChildern:
             child.setEnabled(True)
             if isinstance(child, QLineEdit) or isinstance(child, QLabel):
                 child.clear()
-            elif isinstance(child, QComboBox) and child.objectName() != self.uAddressType:
+            elif isinstance(child, QComboBox) and child.objectName() != 'uAddressType':
                 child.setCurrentIndex(0)
-                          
+        
+    @staticmethod               
+    def setEditability(self):                       
         if self.uAddressType.currentText() == 'Road':
             waterChildern = self.findChildren(QWidget, QRegExp(r'Water.*'))
             for child in waterChildern:
+                child.clear() 
                 child.setDisabled(True)
                 
         elif self.uAddressType.currentText() == 'Water':
             roadChildern = self.findChildren(QWidget, QRegExp(r'Road.*'))
             for child in roadChildern:
-                child.setDisabled(True)  
+                child.clear() 
+                child.setDisabled(True)
+                   
 
     @staticmethod
     def fullNumChanged(obj, newnumber):

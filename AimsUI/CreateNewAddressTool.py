@@ -27,11 +27,11 @@ class CreateNewAddressTool(QgsMapToolIdentify):
     def __init__(self, iface, layerManager, controller=None):        
         QgsMapToolIdentify.__init__(self, iface.mapCanvas())
         self._iface = iface
-        self._controller = controller
-        self.activate()
         self._layers = layerManager
+        self._controller = controller
         self._canvas = iface.mapCanvas()
-
+        self.activate()
+        
     def activate(self):
         QgsMapTool.activate(self)
         sb = self._iface.mainWindow().statusBar()
@@ -44,7 +44,7 @@ class CreateNewAddressTool(QgsMapToolIdentify):
         sb.clearMessage()
 
     def setEnabled(self, enabled):
-        self._enabled = enabled
+        self._enabled = True #enabled
         if enabled:
             self.activate()
         else:

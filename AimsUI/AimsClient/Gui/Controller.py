@@ -45,7 +45,7 @@ class Controller(QObject):
     def __init__(self, iface):
         QObject.__init__(self)
         self.iface = iface
-        self.af = AddressFactory()
+        #self.af = AddressFactory()
         self.dm = DataManager() # temp for testing
         #self.curResItem = [None, None]
 

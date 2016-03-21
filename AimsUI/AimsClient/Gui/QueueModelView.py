@@ -90,7 +90,7 @@ class GroupTableModel(QAbstractTableModel):
     def listClicked(self, row):
         key = self._data[row]
         self.groupModel.set_key(key)
-        
+
     def rowCount(self, QModelIndex_parent=None, *args, **kwargs):
         return len(self._data)
     
@@ -108,8 +108,8 @@ class GroupTableModel(QAbstractTableModel):
     def refreshData(self, data):
         self._data = sorted(data.keys())
     
-    def getData(self):
-        return self._data 
+    def getObjRef(self, rowIndex):
+        return self._data[rowIndex.row()][0] 
     
     def getUsers(self):
         return list(set([i[3] for i in self._data]))

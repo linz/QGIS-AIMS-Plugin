@@ -221,7 +221,7 @@ class DataManager(object):
         if reqid: address.setRequestId(reqid)
         address.setQueueStatus(ApprovalType.LABEL[ApprovalType.ACCEPT].title())
         self.ioq[(EntityType.ADDRESS,FeedType.RESOLUTIONFEED)]['in'].put({ApprovalType.ACCEPT:(address,)})        
-    
+
     def declineAddress(self,address,reqid=None):
         if reqid: address.setRequestId(reqid)
         address.setQueueStatus(ApprovalType.LABEL[ApprovalType.DECLINE].title())
@@ -378,6 +378,7 @@ class LocalTest():
             resp = self.testresp(dm) 
             
 #     def checkrefresh(self,dm):        
+
 #         global refsnap
 #         rs2 = dm.refresh()
 #         if rs2 != refsnap:
