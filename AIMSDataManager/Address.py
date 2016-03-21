@@ -13,7 +13,7 @@
 
 #http://devassgeo01:8080/aims/api/address/features - properties
 import re
-from AimsUtility import ActionType,ApprovalType,FeedType
+from AimsUtility import EntityType,ActionType,ApprovalType,FeedType
 from AimsLogging import Logger
 from gtk._gtk import PositionType
 
@@ -158,6 +158,7 @@ class Entity(object):
 class Address(object):
     ''' UI address class ''' 
     
+    entity = EntityType.ADDRESS
     type = FeedType.FEATURES
     
     global aimslog
@@ -316,7 +317,7 @@ class Address(object):
         '''clones attributes of A to B and instantiates B (as type A) if not provided'''
         #duplicates only attributes set in source object
         from AddressFactory import AddressFactory
-        if not b: b = AddressFactory.getInstance(a.type).getAddress()
+        if not b: b = EntityFactory.getInstance(self.entity,et,a.type).getAddress()
         for attr in a.__dict__.keys(): setattr(b,attr,getattr(a,attr))
         return b
     
@@ -419,11 +420,11 @@ class AddressMetaData(object):
     
 def test():
     import pprint
-    from AddressFactory import AddressFactory
-    af1 = AddressFactory.getInstance(FeedType.FEATURES)
+    from EntityFactory import EntityFactory
+    af1 = EntityFactory.getInstance(EntityType.ADDRESS,FeedType.FEATURES)
     a1 = af1.getAddress(ref='one_feat')
     
-    af2 = AddressFactory.getInstance(FeedType.CHANGEFEED)
+    af2 = EntityFactory.getInstance(EntityType.ADDRESS,FeedType.CHANGEFEED)
     a2 = af2.getAddress(ref='two_chg')
     a2.setVersion(100)
     a2.setObjectType('Parcel')
@@ -431,7 +432,7 @@ def test():
     a2.setAddressId(100)
     a2.setRoadName('Smith Street')
     
-    af3 = AddressFactory.getInstance(FeedType.RESOLUTIONFEED)
+    af3 = EntityFactory.getInstance(EntityType.ADDRESS,FeedType.RESOLUTIONFEED)
     a3 = af3.getAddress(ref='three_res')
     a3.setChangeId(200)
     a3.setVersion(200)

@@ -15,17 +15,25 @@
 import re
 import os
 import copy
-from AimsUtility import EntityType,GroupActionType,ApprovalType,FeedType,InvalidEnumerationType
+from EntityFactory import EntityFactory
+from AimsUtility import EntityType,GroupActionType,GroupApprovalType,FeedType
 from AimsUtility import SKIP_NULL, DEF_SEP
-from Group import Group
+from Group import GroupChange,GroupResolution
 from AimsLogging import Logger
 
 P = os.path.join(os.path.dirname(__file__),'../resources/')
 
 ET = EntityType.GROUPS
 
-TP = {'{}.{}'.format(EntityType.reverse[ET].lower(),FeedType.reverse[FeedType.CHANGEFEED].lower()):{b.lower():None for b in GroupActionType.reverse.values()}}
+#TP = {'{}.{}'.format(EntityType.reverse[ET].lower(),FeedType.reverse[FeedType.CHANGEFEED].lower()):{b.lower():None for b in GroupActionType.reverse.values()}}
 
+TP = {'{}.{}'.format(EntityType.reverse[ET].lower(),a):b for a,b in zip(
+        [FeedType.reverse[ft].lower() for ft in (FeedType.CHANGEFEED,FeedType.RESOLUTIONFEED)],
+        [   {GroupActionType.reverse[at].lower():None for at in GroupActionType.reverse},
+            {GroupApprovalType.reverse[at].lower():None for at in GroupApprovalType.reverse}
+        ]
+        )
+    }
 aimslog = None
 
 class GroupException(Exception): pass    
@@ -34,13 +42,13 @@ class GroupFieldIncorrectException(GroupException): pass
 class GroupConversionException(GroupException): pass
 class GroupCreationException(GroupException): pass
 
-class GroupFactory(object):
+class GroupFactory(EntityFactory):
     ''' AddressFactory class used to build address objects without the overhead of re-reading templates each time an address is needed''' 
     #PBRANCH = '{d}{}{d}{}'.format(d=DEF_SEP,*Position.BRANCH)
     GFFT = FeedType.CHANGEFEED
     DEF_REF = FeedType.reverse[GFFT]
-    grptype = Group
-    reqtype = GroupActionType
+    #grptype = Group
+    #reqtype = GroupActionType
     
     global aimslog
     aimslog = Logger.setup()
@@ -58,7 +66,8 @@ class GroupFactory(object):
         '''Gets an instance of a factory to generate a particular (ft) type of address object'''
         return GroupFactory(ft)
     
-
+    #HACK to save rewriting getaddress at gfactory call
+    def getAddress(self,ref=None,adr=None,model=None,prefix=''):self.getGroup(ref,adr,model,prefix)
     def getGroup(self,ref=None,grp=None,model=None,prefix=''):
         '''Creates an address object from a model (using the response template if model is not provided)'''
         #overwrite = model OR NOT(address). If an address is provided only fill it with model provided, presume dont want template fill
@@ -98,15 +107,15 @@ class GroupFactory(object):
         '''casts groups from curent to requested group-type'''
         return Group.clone(grp, self.getGroup())
     
-    @staticmethod
-    def filterPI(ppi):
-        '''filters out possible Processing Instructions'''
-        sppi = str(ppi)
-        if sppi.find('#')>-1:
-            dflt = re.search('default=(\w+)',sppi)
-            oneof = re.search('oneof=(\w+)',sppi)#first as default
-            return dflt.group(1) if dflt else (oneof.group(1) if oneof else None)
-        return ppi
+#     @staticmethod
+#     def filterPI(ppi):
+#         '''filters out possible Processing Instructions'''
+#         sppi = str(ppi)
+#         if sppi.find('#')>-1:
+#             dflt = re.search('default=(\w+)',sppi)
+#             oneof = re.search('oneof=(\w+)',sppi)#first as default
+#             return dflt.group(1) if dflt else (oneof.group(1) if oneof else None)
+#         return ppi
         
      
     def convertGroup(self,grp,gat):
@@ -166,34 +175,25 @@ class GroupFactory(object):
                 if it: new_obj.append(self._delNull(it))
         else: return obj
         return type(obj)(new_obj)
-# 
-#             
-#         
-#         
-# class AddressChangeFactory(AddressFeedFactory):
-#     AFFT = FeedType.CHANGEFEED
-#     DEF_REF = FeedType.reverse[AFFT]
-#     grptype = AddressChange
-#     reqtype = ActionType
-#     def __init__(self,ref=DEF_REF):
-#         super(AddressChangeFactory,self).__init__(ref)
-# 
-# 
-# class AddressResolutionFactory(AddressFeedFactory):
-#     AFFT = FeedType.RESOLUTIONFEED
-#     DEF_REF = FeedType.reverse[AFFT]
-#     grptype = AddressResolution
-#     reqtype = ApprovalType
-#     def __init__(self,ref=DEF_REF):
-#         super(AddressResolutionFactory,self).__init__(ref)
-#         
-#     def getAddress(self,ref=None,adr=None,model=None,prefix='',warnings=[]):
-#         '''Sets a refault address object and adds empty warning attribute'''
-#         adrr = super(AddressResolutionFactory,self).getAddress(ref,adr,model,prefix)
-#         #adrr.setWarnings(warnings)
-#         return adrr
+
+class GroupChangeFactory(GroupFactory):
+    GFFT = FeedType.CHANGEFEED
+    DEF_REF = FeedType.reverse[GFFT]
+    grptype = GroupChange
+    reqtype = GroupActionType
+    def __init__(self,ref=DEF_REF):
+        super(GroupChangeFactory,self).__init__(ref)
 
 
+class GroupResolutionFactory(GroupFactory):
+    GFFT = FeedType.RESOLUTIONFEED
+    DEF_REF = FeedType.reverse[GFFT]
+    grptype = GroupResolution
+    reqtype = GroupApprovalType
+    def __init__(self,ref=DEF_REF):
+        super(GroupResolutionFactory,self).__init__(ref)
+
+    
 class TemplateReader(object):
     tp = TP     
     def __init__(self):

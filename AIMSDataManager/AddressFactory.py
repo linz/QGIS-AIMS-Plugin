@@ -15,6 +15,7 @@
 import re
 import os
 import copy
+from EntityFactory import EntityFactory
 from AimsUtility import EntityType,ActionType,ApprovalType,FeedType,InvalidEnumerationType
 from AimsUtility import SKIP_NULL, DEF_SEP
 from Address import Address,AddressChange,AddressResolution,Position
@@ -43,7 +44,7 @@ class AddressFieldIncorrectException(AddressException): pass
 class AddressConversionException(AddressException): pass
 class AddressCreationException(AddressException): pass
 
-class AddressFactory(object):
+class AddressFactory(EntityFactory):
     ''' AddressFactory class used to build address objects without the overhead of re-reading templates each time an address is needed''' 
     PBRANCH = '{d}{}{d}{}'.format(d=DEF_SEP,*Position.BRANCH)
     AFFT = FeedType.FEATURES
@@ -62,13 +63,13 @@ class AddressFactory(object):
     def __str__(self):
         return 'AFC.{}'.format(FeedType.reverse(self.AFFT)[:3])
     
-    @staticmethod
-    def getInstance(ft):
-        '''Gets an instance of a factory to generate a particular (ft) type of address object'''
-        if ft==FeedType.FEATURES: return AddressFactory(ft)
-        elif ft==FeedType.CHANGEFEED: return AddressChangeFactory(ft)
-        elif ft==FeedType.RESOLUTIONFEED: return AddressResolutionFactory(ft)
-        else: raise InvalidEnumerationType('FeedType {} not available'.format(ft))
+#     @staticmethod
+#     def getInstance(ft):
+#         '''Gets an instance of a factory to generate a particular (ft) type of address object'''
+#         if ft==FeedType.FEATURES: return AddressFactory(ft)
+#         elif ft==FeedType.CHANGEFEED: return AddressChangeFactory(ft)
+#         elif ft==FeedType.RESOLUTIONFEED: return AddressResolutionFactory(ft)
+#         else: raise InvalidEnumerationType('FeedType {} not available'.format(ft))
     
 
     def getAddress(self,ref=None,adr=None,model=None,prefix=''):
@@ -110,15 +111,15 @@ class AddressFactory(object):
         '''casts address from curent to requested address-type'''
         return Address.clone(adr, self.getAddress())
     
-    @staticmethod
-    def filterPI(ppi):
-        '''filters out possible Processing Instructions'''
-        sppi = str(ppi)
-        if sppi.find('#')>-1:
-            dflt = re.search('default=(\w+)',sppi)
-            oneof = re.search('oneof=(\w+)',sppi)#first as default
-            return dflt.group(1) if dflt else (oneof.group(1) if oneof else None)
-        return ppi
+#     @staticmethod
+#     def filterPI(ppi):
+#         '''filters out possible Processing Instructions'''
+#         sppi = str(ppi)
+#         if sppi.find('#')>-1:
+#             dflt = re.search('default=(\w+)',sppi)
+#             oneof = re.search('oneof=(\w+)',sppi)#first as default
+#             return dflt.group(1) if dflt else (oneof.group(1) if oneof else None)
+#         return ppi
         
 
 class AddressFeedFactory(AddressFactory):
@@ -202,7 +203,7 @@ class AddressResolutionFactory(AddressFeedFactory):
         super(AddressResolutionFactory,self).__init__(ref)
         
     def getAddress(self,ref=None,adr=None,model=None,prefix='',warnings=[]):
-        '''Sets a refault address object and adds empty warning attribute'''
+        '''Sets a default address object and adds empty warning attribute'''
         adrr = super(AddressResolutionFactory,self).getAddress(ref,adr,model,prefix)
         #adrr.setWarnings(warnings)
         return adrr
@@ -228,9 +229,9 @@ class TemplateReader(object):
     
 def test():
     from pprint import pprint as pp
-    af_f = AddressFactory.getInstance(FeedType.FEATURES)
-    af_c = AddressFactory.getInstance(FeedType.CHANGEFEED)
-    af_r = AddressFactory.getInstance(FeedType.RESOLUTIONFEED)
+    af_f = EntityFactory.getInstance(EntityType.ADDRESS,FeedType.FEATURES)
+    af_c = EntityFactory.getInstance(EntityType.ADDRESS,FeedType.CHANGEFEED)
+    af_r = EntityFactory.getInstance(EntityType.ADDRESS,FeedType.RESOLUTIONFEED)
     
     
     axx = af_r.getAddress()

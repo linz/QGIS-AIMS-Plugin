@@ -87,7 +87,33 @@ class  Group(object):
         return b
     
     
+class GroupChange(Group):
+    ''' UI address change class ''' 
+    type = FeedType.CHANGEFEED
+    #DA = DEF_ADDR[type]
     
+    def __init__(self, ref=None): 
+        super(GroupChange,self).__init__(ref)    
+        
+    def __str__(self):
+        return 'GRPC.{}.{}'.format(self._ref,self.type)
+    
+    def filter(self):
+        pass
+    
+class GroupResolution(Group):
+    ''' UI address change class ''' 
+    type = FeedType.RESOLUTIONFEED
+    #DA = DEF_ADDR[type]
+    
+    def __init__(self, ref=None): 
+        super(GroupResolution,self).__init__(ref)    
+        
+    def __str__(self):
+        return 'GRPR.{}.{}'.format(self._ref,self.type)
+    
+    def filter(self):
+        pass
     
     
     

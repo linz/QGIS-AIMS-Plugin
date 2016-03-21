@@ -16,17 +16,30 @@ import time
 import pprint
 import collections
 from Address import Address, AddressChange, AddressResolution,Position
-from AddressFactory import AddressFactory
+from EntityFactory import EntityFactory
 #from DataUpdater import DataUpdater
-from DataSync import DataSync,DataSyncFeatures,DataSyncChangeFeed,DataSyncResolutionFeed
+from DataSync import DataSync,DataSyncFeatures,DataSyncChangeFeed,DataSyncResolutionFeed,DataSyncGroupChangeFeed,DataSyncGroupResolutionFeed
 from datetime import datetime as DT
-from AimsUtility import ActionType,ApprovalType,FeedType,Configuration#,readConf
+from AimsUtility import ActionType,ApprovalType,EntityType,FeedType,Configuration,FEEDS,FIRST
 from AimsUtility import THREAD_JOIN_TIMEOUT,LOCALADL,SWZERO,NEZERO,NULL_PAGE_VALUE as NPV
 from AimsLogging import Logger
 
 
 aimslog = None
 
+
+# FEEDS = set((
+#              FeedRef((EntityType.ADDRESS,FeedType.FEATURES)),
+#              FeedRef((EntityType.ADDRESS,FeedType.CHANGEFEED)),
+#              FeedRef((EntityType.ADDRESS,FeedType.RESOLUTIONFEED)),
+#              FeedRef((EntityType.GROUPS,FeedType.CHANGEFEED))
+#              ))
+# FIRST = set((
+#              FeedRef((EntityType.ADDRESS,FeedType.CHANGEFEED)),
+#              FeedRef((EntityType.ADDRESS,FeedType.RESOLUTIONFEED)),
+#              FeedRef((EntityType.GROUPS,FeedType.CHANGEFEED))
+#              ))
+    
 class DataManager(object):
     '''Initialises maintenance thread and provides queue accessors'''
     # ADL - Address-Data List
@@ -37,8 +50,8 @@ class DataManager(object):
     global aimslog
     aimslog = Logger.setup()
     
-    
-    def __init__(self,start=set( (FeedType.CHANGEFEED,FeedType.RESOLUTIONFEED) ),initialise=False):
+  
+    def __init__(self,start=FIRST,initialise=False):
         #self.ioq = {'in':Queue.Queue(),'out':Queue.Queue()}   
         if start and hasattr(start,'__iter__'): self._start = set(start)
         self.persist = Persistence(initialise)
@@ -47,49 +60,51 @@ class DataManager(object):
         
     def _initDS(self):
         '''initialise the data sync queues/threads'''
-        self.ioq = {ft:None for ft in FeedType.reverse}
-        self.ds = {ft:None for ft in FeedType.reverse}
-        self.stamp = {ft:time.time() for ft in FeedType.reverse}
+        self.ioq = {etft:None for etft in FEEDS}
+        self.ds = {etft:None for etft in FEEDS}
+        self.stamp = {etft:time.time() for etft in FEEDS}
         
         #init the three different feed threads
         self.dsr = {
-            FeedType.FEATURES:DataSyncFeatures,
-            FeedType.CHANGEFEED:DataSyncChangeFeed,
-            FeedType.RESOLUTIONFEED:DataSyncResolutionFeed
+            (EntityType.ADDRESS,FeedType.FEATURES):DataSyncFeatures,
+            (EntityType.ADDRESS,FeedType.CHANGEFEED):DataSyncChangeFeed,
+            (EntityType.ADDRESS,FeedType.RESOLUTIONFEED):DataSyncResolutionFeed,
+            (EntityType.GROUPS,FeedType.CHANGEFEED):DataSyncGroupChangeFeed,
+            (EntityType.GROUPS,FeedType.RESOLUTIONFEED):DataSyncGroupResolutionFeed
         }
         for ref in self.dsr:
             if ref in self._start: self.start(ref)
             
-    def start(self,ft):
-        self._start.update((ft,))
-        self._initFeedDSChecker(ft)
+    def start(self,etft):
+        self._start.update((etft,))
+        self._initFeedDSChecker(etft)
         
     def notify(self, observable, *args, **kwargs):
         '''Do some housekeeping and notify listener'''
         aimslog.info('Notify A[{}], K[{}] - {}'.format(args,kwargs,observable))
         args += (self._monitor(args[0]),)
-        if self.reg: self.reg.notify(observable, *args, **kwargs)
+        if hasattr(self,'reg') and self.reg: self.reg.notify(observable, *args, **kwargs)
         self._check()
         
     def register(self,reg):
         '''Register single class as a listener'''
         self.reg = reg if hasattr(reg, 'notify') else None        
         
-    def _initFeedDSChecker(self,ref):
-        '''Starts a sync thread if conditions appropriate'''
-        if ref == FeedType.FEATURES and self.persist.coords['sw'] == SWZERO and self.persist.coords['ne'] == NEZERO:                
-            self.ds[ref] = None
+    def _initFeedDSChecker(self,etft):
+        '''Starts a sync thread unless its features with a zero bbox'''
+        if etft == (EntityType.ADDRESS,FeedType.FEATURES) and self.persist.coords['sw'] == SWZERO and self.persist.coords['ne'] == NEZERO:                
+            self.ds[etft] = None
         else:
-            self.ds[ref] = self._initFeedDS(ref,self.dsr[ref])
-            self.ds[ref].register(self)            
-            self.ds[ref].start()
+            self.ds[etft] = self._initFeedDS(etft,self.dsr[etft])
+            self.ds[etft].register(self)            
+            self.ds[etft].start()
             
         
-    def _initFeedDS(self,ft,feedclass): 
+    def _initFeedDS(self,etft,feedclass): 
         ts = '{0:%y%m%d.%H%M%S}'.format(DT.now())
-        params = ('ReqADU.{}.{}'.format(ft,ts),ft,self.persist.tracker[ft],self.conf)
-        self.ioq[ft] = {n:Queue.Queue() for n in ('in','out','resp')}
-        ds = feedclass(params,self.ioq[ft])
+        params = ('ReqADU.{}{}.{ts}'.format(*etft,ts=ts),etft,self.persist.tracker[etft],self.conf)
+        self.ioq[etft] = {n:Queue.Queue() for n in ('in','out','resp')}
+        ds = feedclass(params,self.ioq[etft])
         ds.setup(self.persist.coords['sw'],self.persist.coords['ne'])
         ds.setDaemon(True)
         #ds.start()
@@ -103,11 +118,11 @@ class DataManager(object):
         
     def _check(self):
         '''If a DataSync thread crashes restart it'''
-        for ft in self._start:#FeedType.reverse:
-            if not self.ds.has_key(ft) or not self.ds[ft] or not self.ds[ft].isAlive():
-                aimslog.warn('DS thread {} terminated, restarting'.format(FeedType.reverse[ft]))
-                #del self.ds[ft]
-                self._initFeedDSChecker(ft)
+        for etft in self._start:#FeedType.reverse:
+            if not self.ds.has_key(etft) or not self.ds[etft] or not self.ds[etft].isAlive():
+                aimslog.warn('DS thread {} terminated, restarting'.format(EntityType.reverse[etft[0]],FeedType.reverse[etft[1]]))
+                #del self.ds[etft]
+                self._initFeedDSChecker(etft)
             
         
     #Client Access
@@ -116,30 +131,31 @@ class DataManager(object):
         #TODO add move-threshold to prevent small moves triggering an update
         if self.persist.coords['sw'] != sw or self.persist.coords['ne'] != ne:
             #throw out the current features addresses
-            self.persist.ADL[FeedType.FEATURES] = self.persist._initADL()[FeedType.FEATURES]
+            etft = (EntityType.ADDRESS,FeedType.FEATURES)
+            self.persist.ADL[etft] = self.persist._initADL()[etft]
             #save the new coordinates
             self.persist.coords['sw'],self.persist.coords['ne'] = sw,ne
             #kill the old features thread
-            if self.ds[FeedType.FEATURES] and self.ds[FeedType.FEATURES].isAlive():
+            if self.ds[etft] and self.ds[etft].isAlive():
                 aimslog.info('Attempting Features Thread STOP')
-                self.ds[FeedType.FEATURES].stop()
-                self.ds[FeedType.FEATURES].join(THREAD_JOIN_TIMEOUT)
+                self.ds[etft].stop()
+                self.ds[etft].join(THREAD_JOIN_TIMEOUT)
                 #TODO investigate thread non-stopping issues
-                if self.ds[FeedType.FEATURES].isAlive(): aimslog.warn('SetBB Features Thread JOIN timeout')
-            del self.ds[FeedType.FEATURES]
+                if self.ds[etft].isAlive(): aimslog.warn('SetBB Features Thread JOIN timeout')
+            del self.ds[etft]
             #reinitialise a new features DataSync
-            self._initFeedDSChecker(FeedType.FEATURES)
+            self._initFeedDSChecker(etft)
     
     #@Deprecated     
-    def restart(self,ft):
+    def restart(self,etft):
         '''Restart a specific thread type'''
         #NB UI feature request. 
-        aimslog.warn('WARNING {} Thread Restart requested'.format(FeedType.reverse[ft]))
-        if self.ds.has_key(ft) and self.ds[ft]:#.isAlive():
-            self.ds[ft].stop() 
-            self.ds[ft].join(THREAD_JOIN_TIMEOUT)
-            if self.ds[ft].isAlive(): aimslog.warn('{} Thread JOIN timeout'.format(FeedType.reverse[ft]))
-        #del self.ds[ft]
+        aimslog.warn('WARNING {}{} Thread Restart requested'.format(EntityType.reverse[etft[0]],FeedType.reverse[etft[1]]))
+        if self.ds.has_key(etft) and self.ds[etft]:#.isAlive():
+            self.ds[etft].stop() 
+            self.ds[etft].join(THREAD_JOIN_TIMEOUT)
+            if self.ds[etft].isAlive(): aimslog.warn('{}{} Thread JOIN timeout'.format(EntityType.reverse[etft[0]],FeedType.reverse[etft[1]]))
+        #del self.ds[etft]
         self._check()
         
     #Push and Pull relate to features feed actions
@@ -155,32 +171,26 @@ class DataManager(object):
 #         '''returns feed length counts without client having to do a pull/deepcopy'''
 #         self._restart()
 #         self._monitor()
-#         return [(self.stamp[f],len(self.persist.ADL[f])) for f in FeedType.reverse]
+#         return [(self.stamp[f],len(self.persist.ADL[f])) for f in FeedType.reverse]        
         
-    
-    def action(self,at,address):
-        '''Some user initiated approval action'''
-        action = {at:[address,]}
-        self.ioq[FeedType.RESOLUTIONFEED]['in'].put(action)
-        
-        
-    def _monitor(self,ft):
+    def _monitor(self,etft):
         '''for each feed check the out queue and put any new items into the ADL'''
-        #for ft in self.ds:#FeedType.reverse:
-        if self.ds[ft]:
-            while not self.ioq[ft]['out'].empty():
+        #for etft in self.ds:#FeedType.reverse:
+        if self.ds[etft]:
+            while not self.ioq[etft]['out'].empty():
                 #because the queue isnt populated till all pages are loaded we can just swap out the ADL
-                self.persist.ADL[ft] = self.ioq[ft]['out'].get()
-                self.stamp[ft] = time.time()
+                self.persist.ADL[etft] = self.ioq[etft]['out'].get()
+                self.stamp[etft] = time.time()
 
         #self.persist.write()
-        return self.persist.ADL[ft]
+        return self.persist.ADL[etft]
     
-    def response(self,ft=FeedType.RESOLUTIONFEED):
+    def response(self,et=EntityType.ADDRESS,ft=FeedType.RESOLUTIONFEED):
         '''Returns any features lurking in the response queue'''
         resp = ()
-        while not self.ioq[ft]['resp'].empty():
-            resp += (self.ioq[ft]['resp'].get(),)
+        #while self.ioq.has_key((et,ft)) and not self.ioq[(et,ft)]['resp'].empty():
+        while (et,ft) in FEEDS and not self.ioq[(et,ft)]['resp'].empty():
+            resp += (self.ioq[(et,ft)]['resp'].get(),)
         return resp
         
       
@@ -194,47 +204,35 @@ class DataManager(object):
     def addAddress(self,address,reqid=None):
         if reqid: address.setRequestId(reqid)
         self._populate(address).setChangeType(ActionType.reverse[ActionType.ADD].title())
-        self.ioq[FeedType.CHANGEFEED]['in'].put({ActionType.ADD:(address,)})        
+        self.ioq[(EntityType.ADDRESS,FeedType.CHANGEFEED)]['in'].put({ActionType.ADD:(address,)})        
     
     def retireAddress(self,address,reqid=None):
         if reqid: address.setRequestId(reqid)
         self._populate(address).setChangeType(ActionType.reverse[ActionType.RETIRE].title())
-        self.ioq[FeedType.CHANGEFEED]['in'].put({ActionType.RETIRE:(address,)})
+        self.ioq[(EntityType.ADDRESS,FeedType.CHANGEFEED)]['in'].put({ActionType.RETIRE:(address,)})
     
     def updateAddress(self,address,reqid=None):
         if reqid: address.setRequestId(reqid)
         self._populate(address).setChangeType(ActionType.reverse[ActionType.UPDATE].title())
-        self.ioq[FeedType.CHANGEFEED]['in'].put({ActionType.UPDATE:(address,)})    
+        self.ioq[(EntityType.ADDRESS,FeedType.CHANGEFEED)]['in'].put({ActionType.UPDATE:(address,)})    
         
     #----------------------------
     def acceptAddress(self,address,reqid=None):
         if reqid: address.setRequestId(reqid)
         address.setQueueStatus(ApprovalType.LABEL[ApprovalType.ACCEPT].title())
-        self.ioq[FeedType.RESOLUTIONFEED]['in'].put({ApprovalType.ACCEPT:(address,)})        
+        self.ioq[(EntityType.ADDRESS,FeedType.RESOLUTIONFEED)]['in'].put({ApprovalType.ACCEPT:(address,)})        
     
     def declineAddress(self,address,reqid=None):
         if reqid: address.setRequestId(reqid)
         address.setQueueStatus(ApprovalType.LABEL[ApprovalType.DECLINE].title())
-        self.ioq[FeedType.RESOLUTIONFEED]['in'].put({ApprovalType.DECLINE:(address,)})
+        self.ioq[(EntityType.ADDRESS,FeedType.RESOLUTIONFEED)]['in'].put({ApprovalType.DECLINE:(address,)})
     
     def repairAddress(self,address,reqid=None):
         if reqid: address.setRequestId(reqid)
         address.setQueueStatus(ApprovalType.LABEL[ApprovalType.UPDATE].title())
-        self.ioq[FeedType.RESOLUTIONFEED]['in'].put({ApprovalType.UPDATE:(address,)})
+        self.ioq[(EntityType.ADDRESS,FeedType.RESOLUTIONFEED)]['in'].put({ApprovalType.UPDATE:(address,)})
     
     #----------------------------
-#     def getWarnings(self,address):
-#         '''Manually request warning messages per address, useful if warnings not enabled by default'''
-#         return
-#         cid = address.getChangeId()
-#         if address.type != FeedType.RESOLUTION:
-#             aimslog.warn('Attempt to set warnings on non-resolution address, casting')
-#             address = Address.clone(address, AddressFactory.getInstance(FeedType.RESOLUTIONFEED).getAddress())
-#         #TODO! Fix! Not thinking straight here, this wont work
-#         dsrf = self._initFeedDS(FeedType.RESOLUTIONFEED,None)
-#         address.setWarnings( dsrf.updateWarnings(cid) )
-#         dsrf.stop()
-#         return address
     #CM
         
     def __enter__(self):
@@ -258,17 +256,24 @@ class Persistence():
             self.ADL = self._initADL() 
             #default tracker, gets overwritten
             #page = (lowest page fetched, highest page number fetched)
-            #self.tracker[FeedType.FEATURES] =       {'page':[1,1],    'index':1,'threads':2,'interval':30}
-            #self.tracker[FeedType.CHANGEFEED] =     {'page':[NPV,NPV],'index':1,'threads':1,'interval':125}
-            #self.tracker[FeedType.RESOLUTIONFEED] = {'page':[1,1],    'index':1,'threads':1,'interval':10}
-            self.tracker[FeedType.FEATURES] =       {'page':[1,1],'index':1,'threads':2,'interval':1000}    
-            self.tracker[FeedType.CHANGEFEED] =     {'page':[1,1],'index':1,'threads':1,'interval':1000}  
-            self.tracker[FeedType.RESOLUTIONFEED] = {'page':[1,1],'index':1,'threads':1,'interval':1000} 
+            self.tracker[(EntityType.ADDRESS,FeedType.FEATURES)] =       {'page':[1,1],    'index':1,'threads':2,'interval':30}    
+            self.tracker[(EntityType.ADDRESS,FeedType.CHANGEFEED)] =     {'page':[NPV,NPV],'index':1,'threads':1,'interval':125}  
+            self.tracker[(EntityType.ADDRESS,FeedType.RESOLUTIONFEED)] = {'page':[1,1],    'index':1,'threads':1,'interval':10} 
+            self.tracker[(EntityType.GROUPS, FeedType.CHANGEFEED)] =     {'page':[1,1],    'index':1,'threads':1,'interval':130}  
+            self.tracker[(EntityType.GROUPS, FeedType.RESOLUTIONFEED)] = {'page':[1,1],    'index':1,'threads':1,'interval':55}             
+            
+#             self.tracker[(EntityType.ADDRESS,FeedType.FEATURES)] =       {'page':[1,1],'index':1,'threads':2,'interval':1000}    
+#             self.tracker[(EntityType.ADDRESS,FeedType.CHANGEFEED)] =     {'page':[1,1],'index':1,'threads':1,'interval':1000}  
+#             self.tracker[(EntityType.ADDRESS,FeedType.RESOLUTIONFEED)] = {'page':[1,1],'index':1,'threads':1,'interval':1000} 
+#             self.tracker[(EntityType.GROUPS, FeedType.CHANGEFEED)] =     {'page':[1,1],'index':1,'threads':1,'interval':1000} 
             self.write() 
     
     def _initADL(self):
         '''Read ADL from serial and update from API'''
-        return {FeedType.FEATURES:[],FeedType.CHANGEFEED:[],FeedType.RESOLUTIONFEED:[]}
+        return {(EntityType.ADDRESS,FeedType.FEATURES):[],
+                (EntityType.ADDRESS,FeedType.CHANGEFEED):[],
+                (EntityType.ADDRESS,FeedType.RESOLUTIONFEED):[],
+                (EntityType.GROUPS,FeedType.CHANGEFEED):[]}
     
     #Disk Access
     def read(self,localds=LOCALADL):
@@ -305,8 +310,8 @@ class LocalTest():
     def test(self):
         global refsnap
         refsnap = {0:None,1:None,2:None}
-        af = {ft:AddressFactory.getInstance(ft) for ft in FeedType.reverse}
-    
+        af = {ft:EntityFactory.getInstance(EntityType.ADDRESS,ft) for ft in FeedType.reverse}
+        af[3] = EntityFactory.getInstance(EntityType.GROUPS,FeedType.CHANGEFEED)
         #with DataManager(start=None) as dm:
         #    dm.start(FeedType.CHANGEFEED)
         with DataManager() as dm:
@@ -322,10 +327,10 @@ class LocalTest():
         print 'addr list before feed checkin',[len(l) for l in listofaddresses.values()]
         
         #TEST RESTART
-        #self.testrestartCR(dm)
+        self.testrestartCR(dm)
         
         #TEST SHIFT
-        #self.testfeatureshift(dm)
+        self.testfeatureshift(dm)
         
         # TEST CF
         self.testchangefeedAUR(dm,af)
@@ -382,11 +387,11 @@ class LocalTest():
         
     def testrestartCR(self,dm):
         time.sleep(10)
-        dm.restart(FeedType.FEATURES)
+        dm.restart((EntityType.ADDRESS,FeedType.FEATURES))
         time.sleep(10)
-        dm.restart(FeedType.CHANGEFEED)
+        dm.restart((EntityType.ADDRESS,FeedType.CHANGEFEED))
         time.sleep(10)
-        dm.restart(FeedType.RESOLUTIONFEED)
+        dm.restart((EntityType.ADDRESS,FeedType.RESOLUTIONFEED))
         
     #CHANGEFEED
     def testchangefeedAUR(self,dm,af):

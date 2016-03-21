@@ -27,7 +27,7 @@ import zipfile
 import threading
 import Queue
 from AimsApi import AimsApi 
-from AimsUtility import ActionType,ApprovalType,FeedType,ENABLE_RESOLUTION_FEED_WARNINGS
+from AimsUtility import ActionType,ApprovalType,EntityType,FeedType,ENABLE_RESOLUTION_FEED_WARNINGS
 from Address import Entity
 from AimsLogging import Logger
 
@@ -38,6 +38,7 @@ class DataUpdater(threading.Thread):
     Instantiates an amisapi instance with wrappers for initialisation of local data store 
     and change/resolution feed updating
     '''
+    et = EntityType.ADDRESS
     ft = FeedType.FEATURES
     address = None
     page = 0
@@ -53,22 +54,22 @@ class DataUpdater(threading.Thread):
         self._stop = threading.Event()
         self.api = AimsApi(self.conf)    
         
-    def setup(self,ft,sw,ne,page):
+    def setup(self,etft,sw,ne,page):
         '''request a page'''
-        self.ft = ft
+        self.etft = etft
         self.sw,self.ne = sw,ne
         self.page = page
 
     def run(self):
         '''get single page of addresses from API'''
-        aimslog.info('GET.{} {} - Page{}'.format(self.ref,FeedType.reverse[self.ft],self.page))
+        aimslog.info('GET.{} {}{} - Page{}'.format(self.ref,EntityType.reverse[self.et],FeedType.reverse[self.ft],self.page))
         addrlist = []
-        for entity in self.api.getOnePage(self.ft,self.sw,self.ne,self.page):
-            if self.ft == FeedType.RESOLUTIONFEED and ENABLE_RESOLUTION_FEED_WARNINGS:
+        for entity in self.api.getOnePage(self.etft,self.sw,self.ne,self.page):
+            if self.etft[1] == FeedType.RESOLUTIONFEED and ENABLE_RESOLUTION_FEED_WARNINGS:
                 #get drill-down resolution address objects (if enabled)
                 cid = entity['properties']['changeId']
                 entitylist = []
-                feat = self.api.getOneFeature(self.ft,cid)
+                feat = self.api.getOneFeature((self.et,self.ft),cid)
                 if feat == {u'class': [u'error']}: 
                     #if the feature is the not-supposed-to-happen error, it gets special treatment
                     aimslog.error('Invalid API response {}'.format(feat))
@@ -97,7 +98,9 @@ class DataUpdater(threading.Thread):
      
 
 class DataUpdaterAction(DataUpdater):
-    ft = FeedType.CHANGEFEED
+    et = EntityType.ADDRESS
+    ft = FeedType.CHANGEFEED 
+    oft = FeedType.FEATURES
     def setup(self,at,address):
         '''set address parameters'''
         self.at = at
@@ -108,7 +111,7 @@ class DataUpdaterAction(DataUpdater):
         self.payload = self.afactory.convertAddress(self.address,self.at)
         
     def fetchVersion(self):
-        jc = self.api.getOneFeature(FeedType.FEATURES,self.addressId)
+        jc = self.api.getOneFeature((self.et,self.oft),self.addressId)
         if jc['properties'].has_key('version'):
             return jc['properties']['version']
         else:
@@ -119,7 +122,7 @@ class DataUpdaterAction(DataUpdater):
     def run(self):
         '''address change action on the CF'''
         aimslog.info('ACT.{} {} - Addr{}'.format(self.ref,ActionType.reverse[self.at],self.address))
-        err,resp = self.api.changefeedActionAddress(self.at,self.payload)
+        err,resp = self.api.addressAction(self.at,self.payload)
         chg_adr = self.afactory.getAddress(model=resp)
         #print 'CHG_ADR',chg_adr
         if err: chg_adr.setErrors(err)
@@ -129,7 +132,9 @@ class DataUpdaterAction(DataUpdater):
             
 class DataUpdaterApproval(DataUpdater):
     '''Updater to request and process response objects for resolution queue actions'''
-    ft=FeedType.RESOLUTIONFEED
+    et = EntityType.ADDRESS
+    ft = FeedType.RESOLUTIONFEED
+    oft = FeedType.RESOLUTIONFEED
     def setup(self,at,address):
         '''set address parameters'''
         self.at = at
@@ -140,7 +145,7 @@ class DataUpdaterApproval(DataUpdater):
         self.payload = self.afactory.convertAddress(self.address,self.at)
         
     def fetchVersion(self):
-        jc = self.api.getOneFeature(FeedType.RESOLUTIONFEED,self.changeId)
+        jc = self.api.getOneFeature((self.et,self.oft),self.changeId)
         if jc['properties'].has_key('version'):
             return jc['properties']['version']
         else:
@@ -151,7 +156,7 @@ class DataUpdaterApproval(DataUpdater):
     def run(self):
         '''approval action on the RF''' 
         aimslog.info('APP.{} {} - Addr{}'.format(self.ref,ApprovalType.reverse[self.at],self.address))
-        err,resp = self.api.resolutionfeedApproveAddress(self.at,self.payload,self.changeId)
+        err,resp = self.api.addressApprove(self.at,self.payload,self.changeId)
         res_adr = self.afactory.getAddress(model=resp)
         #print 'RES_ADR',res_adr
         if err: res_adr.setErrors(err)

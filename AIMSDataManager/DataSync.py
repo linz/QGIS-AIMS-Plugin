@@ -30,9 +30,9 @@ import Queue
 from DataUpdater import DataUpdater,DataUpdaterAction,DataUpdaterApproval#,DataUpdaterWarning
 from AimsApi import AimsApi 
 from AimsLogging import Logger
-from AimsUtility import ActionType,ApprovalType,FeedType,LogWrap
+from AimsUtility import ActionType,ApprovalType,FeedType,EntityType,LogWrap
 from AimsUtility import MAX_FEATURE_COUNT,THREAD_JOIN_TIMEOUT,PAGE_LIMIT,POOL_PAGE_CHECK_DELAY,QUEUE_CHECK_DELAY,FIRST_PAGE,LAST_PAGE_GUESS,ENABLE_RESOLUTION_FEED_WARNINGS,NULL_PAGE_VALUE as NPV
-from AddressFactory import AddressFactory#,AddressChangeFactory,AddressResolutionFactory
+from EntityFactory import EntityFactory#,AddressChangeFactory,AddressResolutionFactory
 aimslog = None
 
 FPATH = os.path.join('..',os.path.dirname(__file__)) #base of local datastorage
@@ -42,7 +42,8 @@ FPATH = os.path.join('..',os.path.dirname(__file__)) #base of local datastorage
 #PAGES_PERIOCDIC = 3
 #FEED_REFRESH_DELAY = 10
 
-lock = threading.RLock()
+notify_lock = threading.RLock()
+sync_lock = threading.RLock()
 
 class DataRequestChannel(threading.Thread):    
     '''Request response channel for user initiated actions eg add decline retire etc. One for each feed class, client, whose pIQ method is accessed'''
@@ -57,7 +58,8 @@ class DataRequestChannel(threading.Thread):
             #if there are things in the client's input queue, process them, push to CF #TODO. there shouldnt ever be anything in the FF inq
             if not self.client.inq.empty():
                 changelist = self.client.inq.get()    
-                aimslog.info('DRC FT {} - found {} items in queue'.format(FeedType.reverse[self.client.ft],len(changelist)))
+                et,ft = EntityType.reverse[self.client.etft[0]],FeedType.reverse[self.client.etft[1]]
+                aimslog.info('DRC FT {}{} - found {} items in queue'.format(et,ft,len(changelist)))
                 self.client.processInputQueue(changelist)
                 
             time.sleep(QUEUE_CHECK_DELAY)
@@ -77,7 +79,7 @@ class Observable(threading.Thread):
     
     def notify(self, *args, **kwargs):
         for observer in self._observers:
-            with lock:
+            with notify_lock:
                 observer.notify(self, *args, **kwargs)
 
     
@@ -88,20 +90,22 @@ class DataSync(Observable):
     global aimslog
     aimslog = Logger.setup()
     
-    lock = threading.Lock()
     duinst = {}
     
     #hash to compare latest fetched data
-    data_hash = {ft:0 for ft in FeedType.reverse}
+    #from DataManager import FEEDS
+    #data_hash = {dh:0 for dh in DataManager.FEEDS}
     
     sw,ne = None,None
     
     def __init__(self,params,queues):
+        from DataManager import FEEDS
         super(DataSync,self).__init__()
         threading.Thread.__init__(self)
         #thread reference, ft to AD/CF/RF, config info
-        self.ref,self.ft,self.ftracker,self.conf = params
-        self.afactory = AddressFactory.getInstance(self.ft)
+        self.ref,self.etft,self.ftracker,self.conf = params
+        self.data_hash = {dh:0 for dh in FEEDS}
+        self.afactory = EntityFactory.getInstance(*self.etft)
         self.inq = queues['in']
         self.outq = queues['out']
         self.respq = queues['resp']
@@ -120,7 +124,7 @@ class DataSync(Observable):
             updates = self.fetchFeedUpdates(self.ftracker['threads'])
             if updates != None: 
                 self.syncFeeds(updates)
-                aimslog.debug('FT {} sleeping {} with size(Qin)={}'.format(FeedType.reverse[self.ft],self.ftracker['interval'],self.inq.qsize())) 
+                aimslog.debug('ETFT {}{} sleeping {} with size(Qin)={}'.format(EntityType.reverse[self.etft[0]].capitalize(),FeedType.reverse[self.etft[1]].capitalize(),self.ftracker['interval'],self.inq.qsize())) 
                 time.sleep(self.ftracker['interval'])
             else:
                 #if updates are none, stop has been called
@@ -154,11 +158,11 @@ class DataSync(Observable):
         pool = [{'page':p,'ref':None} for p in range(lastpage,lastpage+thr)]
         for r in pool:
             r['ref'] = self.fetchPage(r['page'])
-        
-        while len(pool)>0:#any([p[2] for p in pool if p[2]>1])
+
+        while len(pool)>0:#any([p[2] for p in pool if p[2]>1]) 
             #print '{} {}'.format(FeedType.reverse[self.ft].capitalize(),'STOP' if self.stopped() else 'RUN')
             for r in pool:
-                aimslog.debug('### Page {}{} pool={}'.format(FeedType.reverse[self.ft][:2].capitalize(), r['page'],[p['page'] for p in pool])) 
+                aimslog.debug('### Page {}{} pool={}'.format(EntityType.reverse[self.etft[0]].capitalize(),FeedType.reverse[self.etft[1]].capitalize(), r['page'],[p['page'] for p in pool])) 
                 #terminate the pooled objects on stop signal
                 if self.stopped():
                     self.stopSubs(pool)
@@ -202,13 +206,13 @@ class DataSync(Observable):
             
     def fetchPage(self,p):
         '''Regular page fetch, periodic or demand'''   
-        ft2 = FeedType.reverse[self.ft][:2].capitalize()
+        ft2 = EntityType.reverse[self.etft[0]][:2].capitalize()+FeedType.reverse[self.etft[1]][:2].capitalize()
         ref = 'Get.{0}.Page{1}.{2:%y%m%d.%H%M%S}.p{3}'.format(ft2,p,DT.now(),p)
         params = (ref,self.conf,self.afactory)
         adrq = Queue.Queue()
         self.duinst[ref] = DataUpdater(params,adrq)
-        if self.ft==FeedType.FEATURES: self.duinst[ref].setup(self.ft,self.sw,self.ne,p)
-        else: self.duinst[ref].setup(self.ft,None,None,p)
+        if self.etft==(EntityType.ADDRESS,FeedType.FEATURES): self.duinst[ref].setup(self.etft,self.sw,self.ne,p)
+        else: self.duinst[ref].setup(self.etft,None,None,p)
         self.duinst[ref].setName(ref)
         self.duinst[ref].setDaemon(True)
         self.duinst[ref].start()
@@ -216,15 +220,16 @@ class DataSync(Observable):
         #self.duinst[ref].join()
         #return adrq.get()
 
-    #NOTE. To override the behaviour, return feed once full, override this method
+    #NOTE. To override the behaviour, return feed once full, override this method RLock
     def syncFeeds(self,new_addresses):
         '''check if the addresses are diferent from existing set and return in the out queue'''
         new_hash = hash(frozenset(new_addresses))
-        if self.data_hash[self.ft] != new_hash:
-            self.data_hash[self.ft] = new_hash
+        if self.data_hash[self.etft] != new_hash:
+            self.data_hash[self.etft] = new_hash
+            #with sync_lock:
             self.outq.put(new_addresses)
-        self.outq.task_done()
-        self.notify(self.ft)
+            self.outq.task_done()
+        self.notify(self.etft)
 
     #--------------------------------------------------------------------------
     
@@ -357,6 +362,26 @@ class DataSyncChangeFeed(DataSyncFeeds):
         self.duinst[ref].start()
         #self.duinst[ref].join()
         return ref
+    
+class DataSyncGroupChangeFeed(DataSyncFeeds):
+      
+    def __init__(self,params,queues):
+        super(DataSyncGroupChangeFeed,self).__init__(params,queues)
+        #self.ftracker = {'page':[1,1],'index':1,'threads':1,'interval':125}
+
+    def processAddress(self,at,addr):  
+        '''Do an Add/Retire/Update request'''
+        gat2 = GroupActionType.reverse[at][:3].capitalize()      
+        ref = 'Req{0}.{1:%y%m%d.%H%M%S}'.format(gat2,DT.now())
+        params = (ref,self.conf,self.afactory)
+        #self.ioq = {'in':Queue.Queue(),'out':Queue.Queue()}
+        self.duinst[ref] = DataUpdaterAction(params,self.respq)
+        self.duinst[ref].setup(at,addr)
+        self.duinst[ref].setName(ref)
+        self.duinst[ref].setDaemon(True)
+        self.duinst[ref].start()
+        #self.duinst[ref].join()
+        return ref
 
 
 class DataSyncResolutionFeed(DataSyncFeeds):
@@ -379,30 +404,26 @@ class DataSyncResolutionFeed(DataSyncFeeds):
         #self.duinst[ref].join()
         return ref    
     
-#     def fetchFeedUpdates(self,thr):
-#         '''Override feed updates adding an additional updater call fetching warning text per address'''
-#         res,_ = super(DataSyncResolutionFeed,self)._fetchFeedUpdates(thr)
-#         if ENABLE_RESOLUTION_FEED_WARNINGS:
-#             for adr in res:
-#                 cid = adr.getChangeId()
-#                 adr.setWarnings(self.updateWarnings(cid))
-#         return res
-#     
-#     def updateWarnings(self,cid):
-#         '''Method to explicitly fetch warning message for a particular cid, blocks till return'''
-#         ref = 'Warn.{0:%y%m%d.%H%M%S}'.format(DT.now())
-#         params = (ref,self.conf,self.afactory)
-#         #reuse response queue
-#         duwarn = DataUpdaterWarning(params,self.respq)
-#         duwarn.setup(self.ft,cid)
-#         duwarn.setDaemon(True)
-#         duwarn.start()
-#         #run this as a single blocking process otherwise it will overwhelm the api
-#         duwarn.join()
-#         warn = self.respq.get()
-#         #if err: aimslog.info('Received errors "{}" for cid={}'.format(err,cid))
-#         if warn: aimslog.info('Received warnings for cid={}'.format(cid))
-#         return warn
+class DataSyncGroupResolutionFeed(DataSyncFeeds):
+    
+    def __init__(self,params,queues):
+        super(DataSyncGroupResolutionFeed,self).__init__(params,queues)
+        #self.ftracker = {'page':[1,1],'index':1,'threads':1,'interval':10}
+        
+    def processAddress(self,at,addr):
+        '''Do an Approve/Decline/Update request'''
+        at2 = ApprovalType.reverse[at][:3].capitalize()      
+        ref = 'Req{0}.{1:%y%m%d.%H%M%S}'.format(at2,DT.now())
+        params = (ref,self.conf,self.afactory)
+        #self.ioq = {'in':Queue.Queue(),'out':Queue.Queue()}
+        self.duinst[ref] = DataUpdaterApproval(params,self.respq)
+        self.duinst[ref].setup(at,addr)
+        self.duinst[ref].setName(ref)
+        self.duinst[ref].setDaemon(True)
+        self.duinst[ref].start()
+        #self.duinst[ref].join()
+        return ref    
+
   
         
         

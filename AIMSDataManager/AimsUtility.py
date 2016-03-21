@@ -14,7 +14,8 @@ import time
 from AimsLogging import Logger
 
 # C O N S T A N T S
-
+#turn test mode on or off, on appends test path to all request urls
+TEST_MODE = False
 #time to wait for threads to join after stop has been called eg On BB move (s)
 THREAD_JOIN_TIMEOUT = 5
 #max number of features to request per page 
@@ -128,6 +129,19 @@ class Enumeration(object):
         enums['index'] = 0
         return type('Enum', (IterEnum,), enums)
 
+class FeedRef(object):
+    '''Convenience class holding Entity/Feed type key'''
+    def __init__(self,etft):
+        self.etft = etft
+        self.et = etft[0]
+        self.ft = etft[1]
+        
+    def __str__(self,trunc=3):
+        return '{}{}'.format(EntityType.reverse[self.et].title()[:trunc],FeedType.reverse[self.ft].title()[:trunc])
+    
+    def et(self): return self.et
+    def ft(self): return self.ft
+    
 
 class InvalidEnumerationType(Exception): pass
 
@@ -151,6 +165,23 @@ ApprovalType.HTTP =            ('POST',    'POST',    'PUT')
 GroupActionType = Enumeration.enum('REPLACE','UPDATE','SUBMIT','CLOSE','ADD', 'REMOVE','ADDRESS')
 GroupActionType.PATH =            ('replace','',      'sumbit','close','add', 'remove','address','')
 GroupActionType.HTTP =            ('POST',   'PUT',   'POST',  'POST', 'POST','POST',  'GET')
+
+#group resolutionfeed approval
+GroupApprovalType = Enumeration.enum('ACCEPT',  'DECLINE', 'ADDRESS', 'UPDATE')
+#GroupApprovalType.LABEL =           ('Accepted','Declined','Under Review')
+GroupApprovalType.PATH =            ('accept',  'decline', 'address', '')
+GroupApprovalType.HTTP =            ('POST',    'POST',    'GET',     'PUT')
+
+
+FIRST = set(((EntityType.ADDRESS,FeedType.CHANGEFEED),(EntityType.ADDRESS,FeedType.RESOLUTIONFEED),
+             (EntityType.GROUPS,FeedType.CHANGEFEED),(EntityType.GROUPS,FeedType.RESOLUTIONFEED)))
+FEEDS = set(((EntityType.ADDRESS,FeedType.FEATURES),(EntityType.ADDRESS,FeedType.CHANGEFEED),(EntityType.ADDRESS,FeedType.RESOLUTIONFEED),
+             (EntityType.GROUPS,FeedType.CHANGEFEED),(EntityType.GROUPS,FeedType.RESOLUTIONFEED)))
+
+# FEEDS = {'AF':FeedRef((EntityType.ADDRESS,FeedType.FEATURES)),'AC':FeedRef((EntityType.ADDRESS,FeedType.CHANGEFEED)),
+#          'AR':FeedRef((EntityType.ADDRESS,FeedType.RESOLUTIONFEED)),'GC':FeedRef((EntityType.GROUPS,FeedType.CHANGEFEED))}
+# FIRST = {'AC':FeedRef((EntityType.ADDRESS,FeedType.CHANGEFEED)),'AR':FeedRef((EntityType.ADDRESS,FeedType.RESOLUTIONFEED)),
+#          'GC':FeedRef((EntityType.GROUPS,FeedType.CHANGEFEED))}
 
 
    
