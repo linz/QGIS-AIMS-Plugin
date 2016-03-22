@@ -20,6 +20,7 @@ from AimsUtility import EntityType,GroupActionType,GroupApprovalType,FeedType
 from AimsUtility import SKIP_NULL, DEF_SEP
 from Group import GroupChange,GroupResolution
 from AimsLogging import Logger
+#from EntityFactory import TemplateReader
 
 P = os.path.join(os.path.dirname(__file__),'../resources/')
 
@@ -56,7 +57,7 @@ class GroupFactory(EntityFactory):
     def __init__(self, ref=DEF_REF):
         self.ref = ref
         key = '{}.{}'.format(EntityType.reverse[ET].lower(),FeedType.reverse[ref].lower())
-        self.template = TemplateReader().get()[key]
+        self.template = self.readTemplate(TP)[key]
     
     def __str__(self):
         return 'AFC.{}'.format(FeedType.reverse(self.GFFT)[:3])
@@ -194,22 +195,6 @@ class GroupResolutionFactory(GroupFactory):
         super(GroupResolutionFactory,self).__init__(ref)
 
     
-class TemplateReader(object):
-    tp = TP     
-    def __init__(self):
-        for t1 in self.tp:
-            for t2 in self.tp[t1]:
-                with open(os.path.join(P,'{}.{}.template'.format(t1,t2)),'r') as handle:
-                    tstr = handle.read()
-                    #print 'read template',t1t,t2t
-                    self.tp[t1][t2] = eval(tstr) if tstr else ''
-            #response address type is the template of the address-json we get from the api
-            with open(os.path.join(P,'{}.response.template'.format(t1)),'r') as handle:
-                tstr = handle.read()
-                self.tp[t1]['response'] = eval(tstr) if tstr else ''
-
-    def get(self):
-        return self.tp
     
     
 def test():

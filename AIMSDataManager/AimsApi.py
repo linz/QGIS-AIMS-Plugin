@@ -94,7 +94,7 @@ class AimsApi(object):
         '''Get a CID numbered address including feature entities'''
         et = EntityType.reverse[etft[0]].lower()
         ft = FeedType.reverse[etft[1]].lower()
-        url = '/'.join((self._url,et,ft.lower(),str(cid)))
+        url = '/'.join((self._url,et,ft.lower(),str(cid) if cid else '')).rstrip('/')
         #aimslog.debug('FEAT REQUEST {}'.format(url))
         resp, content = self.h.request(url,'GET', headers = self._headers)
         _,jcontent = self.handleResponse(url,resp["status"], json.loads(content))

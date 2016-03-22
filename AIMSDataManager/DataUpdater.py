@@ -38,8 +38,8 @@ class DataUpdater(threading.Thread):
     Instantiates an amisapi instance with wrappers for initialisation of local data store 
     and change/resolution feed updating
     '''
-    et = EntityType.ADDRESS
-    ft = FeedType.FEATURES
+    #et = EntityType.ADDRESS
+    #ft = FeedType.FEATURES
     address = None
     page = 0
     changeId = 0
@@ -62,14 +62,14 @@ class DataUpdater(threading.Thread):
 
     def run(self):
         '''get single page of addresses from API'''
-        aimslog.info('GET.{} {}{} - Page{}'.format(self.ref,EntityType.reverse[self.et],FeedType.reverse[self.ft],self.page))
+        aimslog.info('GET.{} {}{} - Page{}'.format(self.ref,EntityType.reverse[self.etft[0]],FeedType.reverse[self.etft[1]],self.page))
         addrlist = []
         for entity in self.api.getOnePage(self.etft,self.sw,self.ne,self.page):
             if self.etft[1] == FeedType.RESOLUTIONFEED and ENABLE_RESOLUTION_FEED_WARNINGS:
                 #get drill-down resolution address objects (if enabled)
                 cid = entity['properties']['changeId']
                 entitylist = []
-                feat = self.api.getOneFeature((self.et,self.ft),cid)
+                feat = self.api.getOneFeature(self.etft,cid)
                 if feat == {u'class': [u'error']}: 
                     #if the feature is the not-supposed-to-happen error, it gets special treatment
                     aimslog.error('Invalid API response {}'.format(feat))

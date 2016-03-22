@@ -22,17 +22,16 @@ from AimsLogging import Logger
 
 P = os.path.join(os.path.dirname(__file__),'../resources/')
 
-
-ET = EntityType.ADDRESS
-
-TP = {'{}.{}'.format(EntityType.reverse[ET].lower(),a):b for a,b in zip(
-        [FeedType.reverse[ft].lower() for ft in FeedType.reverse],
-        [   {},
-            {ActionType.reverse[at].lower():None for at in ActionType.reverse},
-            {ApprovalType.reverse[at].lower():None for at in ApprovalType.reverse}
-        ]
-        )
-    }
+# ET = EntityType.ADDRESS
+# 
+# TP = {'{}.{}'.format(EntityType.reverse[ET].lower(),a):b for a,b in zip(
+#         [FeedType.reverse[ft].lower() for ft in FeedType.reverse],
+#         [   {},
+#             {ActionType.reverse[at].lower():None for at in ActionType.reverse},
+#             {ApprovalType.reverse[at].lower():None for at in ApprovalType.reverse}
+#         ]
+#         )
+#     }
 #AT = {FeedType.FEATURES:Address,FeedType.CHANGEFEED:AddressChange,FeedType.RESOLUTIONFEED:AddressResolution}
 
 aimslog = None
@@ -90,4 +89,20 @@ class EntityFactory(object):
             oneof = re.search('oneof=(\w+)',sppi)#first as default
             return dflt.group(1) if dflt else (oneof.group(1) if oneof else None)
         return ppi
+    
+    @staticmethod
+    def readTemplate(tp):
+        for t1 in tp:
+            for t2 in tp[t1]:
+                with open(os.path.join(P,'{}.{}.template'.format(t1,t2)),'r') as handle:
+                    tstr = handle.read()
+                    #print 'read template',t1t,t2t
+                    tp[t1][t2] = eval(tstr) if tstr else ''
+            #response address type is the template of the address-json we get from the api
+            with open(os.path.join(P,'{}.response.template'.format(t1)),'r') as handle:
+                tstr = handle.read()
+                tp[t1]['response'] = eval(tstr) if tstr else ''
+        return tp
+
+    
            
