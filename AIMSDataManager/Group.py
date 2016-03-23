@@ -54,10 +54,10 @@ class  Group(object):
         self._changeGroupId = changeGroupId
     def getChangeGroupId(self): 
         return self._changeGroupId
-    def setAddressId (self, addressId): 
-        self._components_addressId = addressId
-    def getAddressId(self): 
-        return self._components_addressId   
+#     def setAddressId (self, addressId): 
+#         self._components_addressId = addressId
+#     def getAddressId(self): 
+#         return self._components_addressId   
           
     def setSourceReason (self, sourceReason): 
         self._workflow_sourceReason = sourceReason       

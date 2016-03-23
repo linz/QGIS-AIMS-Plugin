@@ -16,29 +16,16 @@ import time
 import pprint
 import collections
 from Address import Address, AddressChange, AddressResolution,Position
-from EntityFactory import EntityFactory
+from FeatureFactory import FeatureFactory
 #from DataUpdater import DataUpdater
-from DataSync import DataSync,DataSyncFeatures,DataSyncChangeFeed,DataSyncResolutionFeed,DataSyncGroupChangeFeed,DataSyncGroupResolutionFeed
+from DataSync import DataSync,DataSyncFeatures,DataSyncFeeds#,DataSyncChangeFeed,DataSyncResolutionFeed,DataSyncGroupChangeFeed,DataSyncGroupResolutionFeed
 from datetime import datetime as DT
-from AimsUtility import ActionType,ApprovalType,EntityType,FeedType,Configuration,FEEDS,FIRST
+from AimsUtility import FeedRef,ActionType,ApprovalType,FeatureType,FeedType,Configuration,FEEDS,FIRST
 from AimsUtility import THREAD_JOIN_TIMEOUT,LOCALADL,SWZERO,NEZERO,NULL_PAGE_VALUE as NPV
 from AimsLogging import Logger
 
 
 aimslog = None
-
-
-# FEEDS = set((
-#              FeedRef((EntityType.ADDRESS,FeedType.FEATURES)),
-#              FeedRef((EntityType.ADDRESS,FeedType.CHANGEFEED)),
-#              FeedRef((EntityType.ADDRESS,FeedType.RESOLUTIONFEED)),
-#              FeedRef((EntityType.GROUPS,FeedType.CHANGEFEED))
-#              ))
-# FIRST = set((
-#              FeedRef((EntityType.ADDRESS,FeedType.CHANGEFEED)),
-#              FeedRef((EntityType.ADDRESS,FeedType.RESOLUTIONFEED)),
-#              FeedRef((EntityType.GROUPS,FeedType.CHANGEFEED))
-#              ))
     
 class DataManager(object):
     '''Initialises maintenance thread and provides queue accessors'''
@@ -53,30 +40,32 @@ class DataManager(object):
   
     def __init__(self,start=FIRST,initialise=False):
         #self.ioq = {'in':Queue.Queue(),'out':Queue.Queue()}   
-        if start and hasattr(start,'__iter__'): self._start = set(start)
+        if start and hasattr(start,'__iter__'): self._start = start.values()
         self.persist = Persistence(initialise)
         self.conf = Configuration().readConf()
         self._initDS()
         
     def _initDS(self):
         '''initialise the data sync queues/threads'''
-        self.ioq = {etft:None for etft in FEEDS}
-        self.ds = {etft:None for etft in FEEDS}
-        self.stamp = {etft:time.time() for etft in FEEDS}
+        self.ioq = {etft:None for etft in FEEDS.values()}
+        self.ds = {etft:None for etft in FEEDS.values()}
+        self.stamp = {etft:time.time() for etft in FEEDS.values()}
         
         #init the three different feed threads
-        self.dsr = {
-            (EntityType.ADDRESS,FeedType.FEATURES):DataSyncFeatures,
-            (EntityType.ADDRESS,FeedType.CHANGEFEED):DataSyncChangeFeed,
-            (EntityType.ADDRESS,FeedType.RESOLUTIONFEED):DataSyncResolutionFeed,
-            (EntityType.GROUPS,FeedType.CHANGEFEED):DataSyncGroupChangeFeed,
-            (EntityType.GROUPS,FeedType.RESOLUTIONFEED):DataSyncGroupResolutionFeed
-        }
+        self.dsr = {f:DataSyncFeeds for f in FIRST.values()}
+        self.dsr[FeedRef((FeatureType.ADDRESS,FeedType.FEATURES))] = DataSyncFeatures
+#         self.dsr = {
+#             (FeatureType.ADDRESS,FeedType.FEATURES):DataSyncFeatures,
+#             (FeatureType.ADDRESS,FeedType.CHANGEFEED):DataSyncChangeFeed,
+#             (FeatureType.ADDRESS,FeedType.RESOLUTIONFEED):DataSyncResolutionFeed,
+#             (FeatureType.GROUPS,FeedType.CHANGEFEED):DataSyncGroupChangeFeed,
+#             (FeatureType.GROUPS,FeedType.RESOLUTIONFEED):DataSyncGroupResolutionFeed
+#         }
         for ref in self.dsr:
             if ref in self._start: self.start(ref)
             
     def start(self,etft):
-        self._start.update((etft,))
+        #self._start.update((etft,))
         self._initFeedDSChecker(etft)
         
     def notify(self, observable, *args, **kwargs):
@@ -92,7 +81,7 @@ class DataManager(object):
         
     def _initFeedDSChecker(self,etft):
         '''Starts a sync thread unless its features with a zero bbox'''
-        if etft == (EntityType.ADDRESS,FeedType.FEATURES) and self.persist.coords['sw'] == SWZERO and self.persist.coords['ne'] == NEZERO:                
+        if etft == FEEDS['AF'] and self.persist.coords['sw'] == SWZERO and self.persist.coords['ne'] == NEZERO:                
             self.ds[etft] = None
         else:
             self.ds[etft] = self._initFeedDS(etft,self.dsr[etft])
@@ -102,11 +91,12 @@ class DataManager(object):
         
     def _initFeedDS(self,etft,feedclass): 
         ts = '{0:%y%m%d.%H%M%S}'.format(DT.now())
-        params = ('ReqADU.{}{}.{ts}'.format(*etft,ts=ts),etft,self.persist.tracker[etft],self.conf)
+        params = ('DSF..{}.{ts}'.format(etft,ts=ts),etft,self.persist.tracker[etft],self.conf)
         self.ioq[etft] = {n:Queue.Queue() for n in ('in','out','resp')}
         ds = feedclass(params,self.ioq[etft])
         ds.setup(self.persist.coords['sw'],self.persist.coords['ne'])
         ds.setDaemon(True)
+        ds.setName('DS{}'.format(etft))
         #ds.start()
         return ds    
         
@@ -118,9 +108,9 @@ class DataManager(object):
         
     def _check(self):
         '''If a DataSync thread crashes restart it'''
-        for etft in self._start:#FeedType.reverse:
+        for etft in self._start:
             if not self.ds.has_key(etft) or not self.ds[etft] or not self.ds[etft].isAlive():
-                aimslog.warn('DS thread {} terminated, restarting'.format(EntityType.reverse[etft[0]],FeedType.reverse[etft[1]]))
+                aimslog.warn('DS thread {} terminated, restarting'.format(etft))
                 #del self.ds[etft]
                 self._initFeedDSChecker(etft)
             
@@ -131,7 +121,7 @@ class DataManager(object):
         #TODO add move-threshold to prevent small moves triggering an update
         if self.persist.coords['sw'] != sw or self.persist.coords['ne'] != ne:
             #throw out the current features addresses
-            etft = (EntityType.ADDRESS,FeedType.FEATURES)
+            etft = FEEDS['AF']#(FeatureType.ADDRESS,FeedType.FEATURES)
             self.persist.ADL[etft] = self.persist._initADL()[etft]
             #save the new coordinates
             self.persist.coords['sw'],self.persist.coords['ne'] = sw,ne
@@ -150,11 +140,11 @@ class DataManager(object):
     def restart(self,etft):
         '''Restart a specific thread type'''
         #NB UI feature request. 
-        aimslog.warn('WARNING {}{} Thread Restart requested'.format(EntityType.reverse[etft[0]],FeedType.reverse[etft[1]]))
+        aimslog.warn('WARNING {} Thread Restart requested'.format(etft))
         if self.ds.has_key(etft) and self.ds[etft]:#.isAlive():
             self.ds[etft].stop() 
             self.ds[etft].join(THREAD_JOIN_TIMEOUT)
-            if self.ds[etft].isAlive(): aimslog.warn('{}{} Thread JOIN timeout'.format(EntityType.reverse[etft[0]],FeedType.reverse[etft[1]]))
+            if self.ds[etft].isAlive(): aimslog.warn('{} Thread JOIN timeout'.format(etft))
         #del self.ds[etft]
         self._check()
         
@@ -165,13 +155,7 @@ class DataManager(object):
         
     def pull(self):
         '''Return copy of the ADL. Speedup, insist on deepcopy at address level'''
-        return self.persist.ADL
-    
-#     def refresh(self):
-#         '''returns feed length counts without client having to do a pull/deepcopy'''
-#         self._restart()
-#         self._monitor()
-#         return [(self.stamp[f],len(self.persist.ADL[f])) for f in FeedType.reverse]        
+        return self.persist.ADL    
         
     def _monitor(self,etft):
         '''for each feed check the out queue and put any new items into the ADL'''
@@ -185,7 +169,7 @@ class DataManager(object):
         #self.persist.write()
         return self.persist.ADL[etft]
     
-    def response(self,et=EntityType.ADDRESS,ft=FeedType.RESOLUTIONFEED):
+    def response(self,et=FeatureType.ADDRESS,ft=FeedType.RESOLUTIONFEED):
         '''Returns any features lurking in the response queue'''
         resp = ()
         #while self.ioq.has_key((et,ft)) and not self.ioq[(et,ft)]['resp'].empty():
@@ -194,44 +178,82 @@ class DataManager(object):
         return resp
         
       
-    def _populate(self,address):
+    def _populate(self,entity):
         '''Fill in any required+missing fields if a default value is known (in this case the configured user)'''
-        if not hasattr(address,'_workflow_sourceUser') or not address.getSourceUser(): address.setSourceUser(self.conf['user'])
-        return address
+        if not hasattr(entity,'_workflow_sourceUser') or not entity.getSourceUser(): entity.setSourceUser(self.conf['user'])
+        return entity
     
     #convenience methods 
     #---------------------------- 
     def addAddress(self,address,reqid=None):
-        if reqid: address.setRequestId(reqid)
-        self._populate(address).setChangeType(ActionType.reverse[ActionType.ADD].title())
-        self.ioq[(EntityType.ADDRESS,FeedType.CHANGEFEED)]['in'].put({ActionType.ADD:(address,)})        
+        self._addressAction(address,ActionType.ADD,reqid)      
     
     def retireAddress(self,address,reqid=None):
-        if reqid: address.setRequestId(reqid)
-        self._populate(address).setChangeType(ActionType.reverse[ActionType.RETIRE].title())
-        self.ioq[(EntityType.ADDRESS,FeedType.CHANGEFEED)]['in'].put({ActionType.RETIRE:(address,)})
+        self._addressAction(address,ActionType.RETIRE,reqid)
     
     def updateAddress(self,address,reqid=None):
+        self._addressAction(address,ActionType.UPDATE,reqid)
+        
+    def _addressAction(self,address,at,reqid=None):
         if reqid: address.setRequestId(reqid)
-        self._populate(address).setChangeType(ActionType.reverse[ActionType.UPDATE].title())
-        self.ioq[(EntityType.ADDRESS,FeedType.CHANGEFEED)]['in'].put({ActionType.UPDATE:(address,)})    
+        self._populate(address).setChangeType(ActionType.reverse[at].title())
+        self.ioq[FeedRef((FeatureType.ADDRESS,FeedType.CHANGEFEED))]['in'].put({at:(address,)})   
         
     #----------------------------
     def acceptAddress(self,address,reqid=None):
-        if reqid: address.setRequestId(reqid)
-        address.setQueueStatus(ApprovalType.LABEL[ApprovalType.ACCEPT].title())
-        self.ioq[(EntityType.ADDRESS,FeedType.RESOLUTIONFEED)]['in'].put({ApprovalType.ACCEPT:(address,)})        
+        self._addressApprove(addrss,ApprovalType.ACCEPT,reqid)    
 
     def declineAddress(self,address,reqid=None):
-        if reqid: address.setRequestId(reqid)
-        address.setQueueStatus(ApprovalType.LABEL[ApprovalType.DECLINE].title())
-        self.ioq[(EntityType.ADDRESS,FeedType.RESOLUTIONFEED)]['in'].put({ApprovalType.DECLINE:(address,)})
+        self._addressApprove(addrss,ApprovalType.DECLINE,reqid)
     
     def repairAddress(self,address,reqid=None):
+        self._addressApprove(addrss,ApprovalType.UPDATE,reqid) 
+        
+    def _addressApprove(self,address,at,reqid=None):
         if reqid: address.setRequestId(reqid)
-        address.setQueueStatus(ApprovalType.LABEL[ApprovalType.UPDATE].title())
-        self.ioq[(EntityType.ADDRESS,FeedType.RESOLUTIONFEED)]['in'].put({ApprovalType.UPDATE:(address,)})
+        address.setQueueStatus(ApprovalType.LABEL[at].title())
+        self.ioq[FeedRef((FeatureType.ADDRESS,FeedType.RESOLUTIONFEED))]['in'].put({at:(address,)})
+        
+    #============================
+    def acceptGroup(self,group,reqid=None):
+        self._groupApprove(group, GroupApprovalType.ACCEPT, reqid)
+        
+    def declineGroup(self,group,reqid=None):
+        self._groupApprove(group, GroupApprovalType.DECLINE, reqid) 
+        
+    def repairGroup(self,group,reqid=None):
+        self._groupApprove(group, GroupApprovalType.UPDATE, reqid)   
+        
+    def _groupApprove(self,group,gat,reqid=None):
+        if reqid: group.setRequestId(reqid)
+        group.setQueueStatus(GroupApprovalType.LABEL[gat].title())
+        self.ioq[FeedRef((FeatureType.GROUPS,FeedType.RESOLUTIONFEED))]['in'].put({gat:(address,)}) 
+         
+    #----------------------------
+    def replaceGroup(self,group,reqid=None):
+        self._groupAction(group, GroupActionType.REPLACE, reqid)       
+        
+    def updateGroup(self,group,reqid=None):
+        self._groupAction(group, GroupActionType.UPDATE, reqid)       
+        
+    def submitGroup(self,group,reqid=None):
+        self._groupAction(group, GroupActionType.SUBMIT, reqid)    
     
+    def closeGroup(self,group,reqid=None):
+        self._groupAction(group, GroupActionType.CLOSE, reqid)
+        
+    def addGroup(self,group,reqid=None):
+        self._groupAction(group, GroupActionType.ADD, reqid)
+             
+    def removeGroup(self,group,reqid=None):
+        self._groupAction(group, GroupActionType.REMOVE, reqid)        
+  
+    def _groupAction(self,group,gat,reqid=None):        
+        if reqid: group.setRequestId(reqid)
+        #self._populate(group).setChangeType(GroupActionType.reverse[gat].title())
+        self.setChangeType(GroupActionType.reverse[gat].title())
+        self.ioq[FeedRef((FeatureType.GROUPS,FeedType.CHANGEFEED))]['in'].put({gat:(address,)})   
+        
     #----------------------------
     #CM
         
@@ -256,24 +278,25 @@ class Persistence():
             self.ADL = self._initADL() 
             #default tracker, gets overwritten
             #page = (lowest page fetched, highest page number fetched)
-            self.tracker[(EntityType.ADDRESS,FeedType.FEATURES)] =       {'page':[1,1],    'index':1,'threads':2,'interval':30}    
-            self.tracker[(EntityType.ADDRESS,FeedType.CHANGEFEED)] =     {'page':[NPV,NPV],'index':1,'threads':1,'interval':125}  
-            self.tracker[(EntityType.ADDRESS,FeedType.RESOLUTIONFEED)] = {'page':[1,1],    'index':1,'threads':1,'interval':10} 
-            self.tracker[(EntityType.GROUPS, FeedType.CHANGEFEED)] =     {'page':[1,1],    'index':1,'threads':1,'interval':130}  
-            self.tracker[(EntityType.GROUPS, FeedType.RESOLUTIONFEED)] = {'page':[1,1],    'index':1,'threads':1,'interval':55}             
+            self.tracker[FEEDS['AF']] = {'page':[1,1],    'index':1,'threads':2,'interval':30}    
+            self.tracker[FEEDS['AC']] = {'page':[NPV,NPV],'index':1,'threads':1,'interval':125}  
+            self.tracker[FEEDS['AR']] = {'page':[1,1],    'index':1,'threads':1,'interval':10} 
+            self.tracker[FEEDS['GC']] = {'page':[1,1],    'index':1,'threads':1,'interval':130}  
+            self.tracker[FEEDS['GR']] = {'page':[1,1],    'index':1,'threads':1,'interval':55}             
             
-#             self.tracker[(EntityType.ADDRESS,FeedType.FEATURES)] =       {'page':[1,1],'index':1,'threads':2,'interval':1000}    
-#             self.tracker[(EntityType.ADDRESS,FeedType.CHANGEFEED)] =     {'page':[1,1],'index':1,'threads':1,'interval':1000}  
-#             self.tracker[(EntityType.ADDRESS,FeedType.RESOLUTIONFEED)] = {'page':[1,1],'index':1,'threads':1,'interval':1000} 
-#             self.tracker[(EntityType.GROUPS, FeedType.CHANGEFEED)] =     {'page':[1,1],'index':1,'threads':1,'interval':1000} 
+#             self.tracker[(FeatureType.ADDRESS,FeedType.FEATURES)] =       {'page':[1,1],'index':1,'threads':2,'interval':1000}    
+#             self.tracker[(FeatureType.ADDRESS,FeedType.CHANGEFEED)] =     {'page':[1,1],'index':1,'threads':1,'interval':1000}  
+#             self.tracker[(FeatureType.ADDRESS,FeedType.RESOLUTIONFEED)] = {'page':[1,1],'index':1,'threads':1,'interval':1000} 
+#             self.tracker[(FeatureType.GROUPS, FeedType.CHANGEFEED)] =     {'page':[1,1],'index':1,'threads':1,'interval':1000} 
             self.write() 
     
     def _initADL(self):
         '''Read ADL from serial and update from API'''
-        return {(EntityType.ADDRESS,FeedType.FEATURES):[],
-                (EntityType.ADDRESS,FeedType.CHANGEFEED):[],
-                (EntityType.ADDRESS,FeedType.RESOLUTIONFEED):[],
-                (EntityType.GROUPS,FeedType.CHANGEFEED):[]}
+        return {f:[] for f in FEEDS.values()}
+#         return {(FeatureType.ADDRESS,FeedType.FEATURES):[],
+#                 (FeatureType.ADDRESS,FeedType.CHANGEFEED):[],
+#                 (FeatureType.ADDRESS,FeedType.RESOLUTIONFEED):[],
+#                 (FeatureType.GROUPS,FeedType.CHANGEFEED):[]}
     
     #Disk Access
     def read(self,localds=LOCALADL):
@@ -310,8 +333,8 @@ class LocalTest():
     def test(self):
         global refsnap
         refsnap = {0:None,1:None,2:None}
-        af = {ft:EntityFactory.getInstance(EntityType.ADDRESS,ft) for ft in FeedType.reverse}
-        af[3] = EntityFactory.getInstance(EntityType.GROUPS,FeedType.CHANGEFEED)
+        af = {ft:FeatureFactory.getInstance(FeedRef((FeatureType.ADDRESS,ft))) for ft in FeedType.reverse}
+        af[3] = FeatureFactory.getInstance(FeedRef((FeatureType.GROUPS,FeedType.CHANGEFEED)))
         #with DataManager(start=None) as dm:
         #    dm.start(FeedType.CHANGEFEED)
         with DataManager() as dm:
@@ -388,11 +411,11 @@ class LocalTest():
         
     def testrestartCR(self,dm):
         time.sleep(10)
-        dm.restart((EntityType.ADDRESS,FeedType.FEATURES))
+        dm.restart(FEEDS['AF'])
         time.sleep(10)
-        dm.restart((EntityType.ADDRESS,FeedType.CHANGEFEED))
+        dm.restart(FEEDS['AC'])
         time.sleep(10)
-        dm.restart((EntityType.ADDRESS,FeedType.RESOLUTIONFEED))
+        dm.restart(FEEDS['AR'])
         
     #CHANGEFEED
     def testchangefeedAUR(self,dm,af):

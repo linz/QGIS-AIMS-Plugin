@@ -15,16 +15,16 @@
 import re
 import os
 import copy
-from AimsUtility import EntityType,ActionType,ApprovalType,FeedType,InvalidEnumerationType
+from AimsUtility import FeatureType,ActionType,ApprovalType,FeedType,InvalidEnumerationType
 from AimsUtility import SKIP_NULL, DEF_SEP
 from Address import Address,AddressChange,AddressResolution,Position
 from AimsLogging import Logger
 
 P = os.path.join(os.path.dirname(__file__),'../resources/')
 
-# ET = EntityType.ADDRESS
+# ET = FeatureType.ADDRESS
 # 
-# TP = {'{}.{}'.format(EntityType.reverse[ET].lower(),a):b for a,b in zip(
+# TP = {'{}.{}'.format(FeatureType.reverse[ET].lower(),a):b for a,b in zip(
 #         [FeedType.reverse[ft].lower() for ft in FeedType.reverse],
 #         [   {},
 #             {ActionType.reverse[at].lower():None for at in ActionType.reverse},
@@ -42,7 +42,7 @@ class AddressFieldIncorrectException(AddressException): pass
 class AddressConversionException(AddressException): pass
 class AddressCreationException(AddressException): pass
 
-class EntityFactory(object):
+class FeatureFactory(object):
     ''' AddressFactory class used to build address objects without the overhead of re-reading templates each time an address is needed''' 
     PBRANCH = '{d}{}{d}{}'.format(d=DEF_SEP,*Position.BRANCH)
     AFFT = FeedType.FEATURES
@@ -56,28 +56,28 @@ class EntityFactory(object):
     def __init__(self, ref=DEF_REF):
         pass
         #self.ref = ref
-        #key = '{}.{}'.format(EntityType.reverse[ET].lower(),FeedType.reverse[ref].lower())
+        #key = '{}.{}'.format(FeatureType.reverse[ET].lower(),FeedType.reverse[ref].lower())
         #self.template = TemplateReader().get()[key]
     
     #def __str__(self):
     #    return 'AFC.{}'.format(FeedType.reverse(self.AFFT)[:3])
     
     @staticmethod
-    def getInstance(et,ft):
+    def getInstance(etft):
         '''Gets an instance of a factory to generate a particular (ft) type of address object'''
         #NOTE. Double duty for ft, consider (et,ft) - since enums are just ints et.g=ft.f
-        if et==EntityType.GROUPS:
+        if etft.et==FeatureType.GROUPS:
             from GroupFactory import GroupChangeFactory,GroupResolutionFactory
-            if ft==FeedType.CHANGEFEED: return GroupChangeFactory(ft)
-            elif ft==FeedType.RESOLUTIONFEED: return GroupResolutionFactory(ft)
-            else: raise InvalidEnumerationType('FeedType {} not available'.format(ft))
-        elif et==EntityType.ADDRESS:
+            if etft.ft==FeedType.CHANGEFEED: return GroupChangeFactory(etft)
+            elif etft.ft==FeedType.RESOLUTIONFEED: return GroupResolutionFactory(etft)
+            else: raise InvalidEnumerationType('FeedType {} not available'.format(etft))
+        elif etft.et==FeatureType.ADDRESS:
             from AddressFactory import AddressFactory,AddressChangeFactory,AddressResolutionFactory
-            if ft==FeedType.FEATURES: return AddressFactory(ft)
-            elif ft==FeedType.CHANGEFEED: return AddressChangeFactory(ft)
-            elif ft==FeedType.RESOLUTIONFEED: return AddressResolutionFactory(ft)
-            else: raise InvalidEnumerationType('FeedType {} not available'.format(ft))
-        else: raise InvalidEnumerationType('EntityType {} not available'.format(ft))
+            if etft.ft==FeedType.FEATURES: return AddressFactory(etft)
+            elif etft.ft==FeedType.CHANGEFEED: return AddressChangeFactory(etft)
+            elif etft.ft==FeedType.RESOLUTIONFEED: return AddressResolutionFactory(etft)
+            else: raise InvalidEnumerationType('FeedType {} not available'.format(etft.ft))
+        else: raise InvalidEnumerationType('FeatureType {} not available'.format(etft.et))
     
     
     @staticmethod

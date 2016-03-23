@@ -15,19 +15,19 @@
 import re
 import os
 import copy
-from EntityFactory import EntityFactory
-from AimsUtility import EntityType,ActionType,ApprovalType,FeedType,InvalidEnumerationType
+from FeatureFactory import FeatureFactory
+from AimsUtility import FeatureType,ActionType,ApprovalType,FeedType,InvalidEnumerationType
 from AimsUtility import SKIP_NULL, DEF_SEP
 from Address import Address,AddressChange,AddressResolution,Position
 from AimsLogging import Logger
-#from EntityFactory import TemplateReader
+#from FeatureFactory import TemplateReader
 
 P = os.path.join(os.path.dirname(__file__),'../resources/')
 
 
-ET = EntityType.ADDRESS
+ET = FeatureType.ADDRESS
 
-TP = {'{}.{}'.format(EntityType.reverse[ET].lower(),a):b for a,b in zip(
+TP = {'{}.{}'.format(FeatureType.reverse[ET].lower(),a):b for a,b in zip(
         [FeedType.reverse[ft].lower() for ft in FeedType.reverse],
         [   {},
             {ActionType.reverse[at].lower():None for at in ActionType.reverse},
@@ -45,7 +45,7 @@ class AddressFieldIncorrectException(AddressException): pass
 class AddressConversionException(AddressException): pass
 class AddressCreationException(AddressException): pass
 
-class AddressFactory(EntityFactory):
+class AddressFactory(FeatureFactory):
     ''' AddressFactory class used to build address objects without the overhead of re-reading templates each time an address is needed''' 
     PBRANCH = '{d}{}{d}{}'.format(d=DEF_SEP,*Position.BRANCH)
     AFFT = FeedType.FEATURES
@@ -56,10 +56,9 @@ class AddressFactory(EntityFactory):
     global aimslog
     aimslog = Logger.setup()
     
-    def __init__(self, ref=DEF_REF):
+    def __init__(self, ref):
         self.ref = ref
-        key = '{}.{}'.format(EntityType.reverse[ET].lower(),FeedType.reverse[ref].lower())
-        self.template = self.readTemplate(TP)[key]
+        self.template = self.readTemplate(TP)[ref.k]
     
     def __str__(self):
         return 'AFC.{}'.format(FeedType.reverse(self.AFFT)[:3])
@@ -191,7 +190,7 @@ class AddressChangeFactory(AddressFeedFactory):
     DEF_REF = FeedType.reverse[AFFT]
     addrtype = AddressChange
     reqtype = ActionType
-    def __init__(self,ref=DEF_REF):
+    def __init__(self,ref):
         super(AddressChangeFactory,self).__init__(ref)
 
 
@@ -200,7 +199,7 @@ class AddressResolutionFactory(AddressFeedFactory):
     DEF_REF = FeedType.reverse[AFFT]
     addrtype = AddressResolution
     reqtype = ApprovalType
-    def __init__(self,ref=DEF_REF):
+    def __init__(self,ref):
         super(AddressResolutionFactory,self).__init__(ref)
         
     def getAddress(self,ref=None,adr=None,model=None,prefix='',warnings=[]):
@@ -212,9 +211,9 @@ class AddressResolutionFactory(AddressFeedFactory):
     
 def test():
     from pprint import pprint as pp
-    af_f = EntityFactory.getInstance(EntityType.ADDRESS,FeedType.FEATURES)
-    af_c = EntityFactory.getInstance(EntityType.ADDRESS,FeedType.CHANGEFEED)
-    af_r = EntityFactory.getInstance(EntityType.ADDRESS,FeedType.RESOLUTIONFEED)
+    af_f = FeatureFactory.getInstance(FeatureType.ADDRESS,FeedType.FEATURES)
+    af_c = FeatureFactory.getInstance(FeatureType.ADDRESS,FeedType.CHANGEFEED)
+    af_r = FeatureFactory.getInstance(FeatureType.ADDRESS,FeedType.RESOLUTIONFEED)
     
     
     axx = af_r.getAddress()

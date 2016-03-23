@@ -30,9 +30,9 @@ import Queue
 from DataUpdater import DataUpdater,DataUpdaterAction,DataUpdaterApproval#,DataUpdaterWarning
 from AimsApi import AimsApi 
 from AimsLogging import Logger
-from AimsUtility import ActionType,ApprovalType,FeedType,EntityType,LogWrap
+from AimsUtility import ActionType,ApprovalType,GroupActionType,GroupApprovalType,FeedType,FeatureType,FeedRef,LogWrap,FEEDS
 from AimsUtility import MAX_FEATURE_COUNT,THREAD_JOIN_TIMEOUT,PAGE_LIMIT,POOL_PAGE_CHECK_DELAY,QUEUE_CHECK_DELAY,FIRST_PAGE,LAST_PAGE_GUESS,ENABLE_RESOLUTION_FEED_WARNINGS,NULL_PAGE_VALUE as NPV
-from EntityFactory import EntityFactory#,AddressChangeFactory,AddressResolutionFactory
+from FeatureFactory import FeatureFactory#,AddressChangeFactory,AddressResolutionFactory
 aimslog = None
 
 FPATH = os.path.join('..',os.path.dirname(__file__)) #base of local datastorage
@@ -58,8 +58,8 @@ class DataRequestChannel(threading.Thread):
             #if there are things in the client's input queue, process them, push to CF #TODO. there shouldnt ever be anything in the FF inq
             if not self.client.inq.empty():
                 changelist = self.client.inq.get()    
-                et,ft = EntityType.reverse[self.client.etft[0]],FeedType.reverse[self.client.etft[1]]
-                aimslog.info('DRC FT {}{} - found {} items in queue'.format(et,ft,len(changelist)))
+                
+                aimslog.info('DRC {} - found {} items in queue'.format(self.client.etft,len(changelist)))
                 self.client.processInputQueue(changelist)
                 
             time.sleep(QUEUE_CHECK_DELAY)
@@ -104,8 +104,8 @@ class DataSync(Observable):
         threading.Thread.__init__(self)
         #thread reference, ft to AD/CF/RF, config info
         self.ref,self.etft,self.ftracker,self.conf = params
-        self.data_hash = {dh:0 for dh in FEEDS}
-        self.afactory = EntityFactory.getInstance(*self.etft)
+        self.data_hash = {dh:0 for dh in FEEDS.values()}
+        self.afactory = FeatureFactory.getInstance(self.etft)
         self.inq = queues['in']
         self.outq = queues['out']
         self.respq = queues['resp']
@@ -124,7 +124,7 @@ class DataSync(Observable):
             updates = self.fetchFeedUpdates(self.ftracker['threads'])
             if updates != None: 
                 self.syncFeeds(updates)
-                aimslog.debug('ETFT {}{} sleeping {} with size(Qin)={}'.format(EntityType.reverse[self.etft[0]].capitalize(),FeedType.reverse[self.etft[1]].capitalize(),self.ftracker['interval'],self.inq.qsize())) 
+                aimslog.debug('ETFT {} sleeping {} with size(Qin)={}'.format(self.etft,self.ftracker['interval'],self.inq.qsize())) 
                 time.sleep(self.ftracker['interval'])
             else:
                 #if updates are none, stop has been called
@@ -162,7 +162,7 @@ class DataSync(Observable):
         while len(pool)>0:#any([p[2] for p in pool if p[2]>1]) 
             #print '{} {}'.format(FeedType.reverse[self.ft].capitalize(),'STOP' if self.stopped() else 'RUN')
             for r in pool:
-                aimslog.debug('### Page {}{} pool={}'.format(EntityType.reverse[self.etft[0]].capitalize(),FeedType.reverse[self.etft[1]].capitalize(), r['page'],[p['page'] for p in pool])) 
+                aimslog.debug('### Page {} pool={}'.format(self.etft, r['page'],[p['page'] for p in pool])) 
                 #terminate the pooled objects on stop signal
                 if self.stopped():
                     self.stopSubs(pool)
@@ -206,12 +206,11 @@ class DataSync(Observable):
             
     def fetchPage(self,p):
         '''Regular page fetch, periodic or demand'''   
-        ft2 = EntityType.reverse[self.etft[0]][:2].capitalize()+FeedType.reverse[self.etft[1]][:2].capitalize()
-        ref = 'Get.{0}.Page{1}.{2:%y%m%d.%H%M%S}.p{3}'.format(ft2,p,DT.now(),p)
+        ref = 'FP.{0}.Page{1}.{2:%y%m%d.%H%M%S}.p{3}'.format(self.etft,p,DT.now(),p)
         params = (ref,self.conf,self.afactory)
         adrq = Queue.Queue()
         self.duinst[ref] = DataUpdater(params,adrq)
-        if self.etft==(EntityType.ADDRESS,FeedType.FEATURES): self.duinst[ref].setup(self.etft,self.sw,self.ne,p)
+        if self.etft==FEEDS['AF']: self.duinst[ref].setup(self.etft,self.sw,self.ne,p)
         else: self.duinst[ref].setup(self.etft,None,None,p)
         self.duinst[ref].setName(ref)
         self.duinst[ref].setDaemon(True)
@@ -252,6 +251,12 @@ class DataSyncFeatures(DataSync):
 
 
 class DataSyncFeeds(DataSync): 
+    
+    parameters = {FeedRef((FeatureType.ADDRESS,FeedType.CHANGEFEED)):{'atype':ActionType,'action':DataUpdaterAction},
+                  FeedRef((FeatureType.ADDRESS,FeedType.RESOLUTIONFEED)):{'atype':ApprovalType,'action':DataUpdaterApproval},
+                  FeedRef((FeatureType.GROUPS,FeedType.CHANGEFEED)):{'atype':GroupActionType,'action':DataUpdaterAction},
+                  FeedRef((FeatureType.GROUPS,FeedType.RESOLUTIONFEED)):{'atype':GroupApprovalType,'action':DataUpdaterApproval}
+                  }
     
     def __init__(self,params,queues):
         '''Create an additional DRC thread to watch the feed input queue'''
@@ -337,93 +342,22 @@ class DataSyncFeeds(DataSync):
                 
     def processAddress(self,at,address): 
         '''override'''
-        pass
+        at2 = self.parameters[self.etft]['atype'].reverse[at][:3].capitalize()      
+        ref = 'PR.{0}.{1:%y%m%d.%H%M%S}'.format(at2,DT.now())
+        params = (ref,self.conf,self.afactory)
+        #self.ioq = {'in':Queue.Queue(),'out':Queue.Queue()}
+        self.duinst[ref] = self.parameters[self.etft]['action'](params,self.respq)
+        self.duinst[ref].setup(self.etft,at,address)
+        self.duinst[ref].setName(ref)
+        self.duinst[ref].setDaemon(True)
+        self.duinst[ref].start()
+        #self.duinst[ref].join()
+        return ref
     
     def managePage(self,p):
         if p[0]: self.ftracker['page'][0] = p[0]
         if p[1]: self.ftracker['page'][1] = p[1]
-
-class DataSyncChangeFeed(DataSyncFeeds):
-      
-    def __init__(self,params,queues):
-        super(DataSyncChangeFeed,self).__init__(params,queues)
-        #self.ftracker = {'page':[1,1],'index':1,'threads':1,'interval':125}
-
-    def processAddress(self,at,addr):  
-        '''Do an Add/Retire/Update request'''
-        at2 = ActionType.reverse[at][:3].capitalize()      
-        ref = 'Req{0}.{1:%y%m%d.%H%M%S}'.format(at2,DT.now())
-        params = (ref,self.conf,self.afactory)
-        #self.ioq = {'in':Queue.Queue(),'out':Queue.Queue()}
-        self.duinst[ref] = DataUpdaterAction(params,self.respq)
-        self.duinst[ref].setup(at,addr)
-        self.duinst[ref].setName(ref)
-        self.duinst[ref].setDaemon(True)
-        self.duinst[ref].start()
-        #self.duinst[ref].join()
-        return ref
-    
-class DataSyncGroupChangeFeed(DataSyncFeeds):
-      
-    def __init__(self,params,queues):
-        super(DataSyncGroupChangeFeed,self).__init__(params,queues)
-        #self.ftracker = {'page':[1,1],'index':1,'threads':1,'interval':125}
-
-    def processAddress(self,at,addr):  
-        '''Do an Add/Retire/Update request'''
-        gat2 = GroupActionType.reverse[at][:3].capitalize()      
-        ref = 'Req{0}.{1:%y%m%d.%H%M%S}'.format(gat2,DT.now())
-        params = (ref,self.conf,self.afactory)
-        #self.ioq = {'in':Queue.Queue(),'out':Queue.Queue()}
-        self.duinst[ref] = DataUpdaterAction(params,self.respq)
-        self.duinst[ref].setup(at,addr)
-        self.duinst[ref].setName(ref)
-        self.duinst[ref].setDaemon(True)
-        self.duinst[ref].start()
-        #self.duinst[ref].join()
-        return ref
-
-
-class DataSyncResolutionFeed(DataSyncFeeds):
-    
-    def __init__(self,params,queues):
-        super(DataSyncResolutionFeed,self).__init__(params,queues)
-        #self.ftracker = {'page':[1,1],'index':1,'threads':1,'interval':10}
         
-    def processAddress(self,at,addr):
-        '''Do an Approve/Decline/Update request'''
-        at2 = ApprovalType.reverse[at][:3].capitalize()      
-        ref = 'Req{0}.{1:%y%m%d.%H%M%S}'.format(at2,DT.now())
-        params = (ref,self.conf,self.afactory)
-        #self.ioq = {'in':Queue.Queue(),'out':Queue.Queue()}
-        self.duinst[ref] = DataUpdaterApproval(params,self.respq)
-        self.duinst[ref].setup(at,addr)
-        self.duinst[ref].setName(ref)
-        self.duinst[ref].setDaemon(True)
-        self.duinst[ref].start()
-        #self.duinst[ref].join()
-        return ref    
-    
-class DataSyncGroupResolutionFeed(DataSyncFeeds):
-    
-    def __init__(self,params,queues):
-        super(DataSyncGroupResolutionFeed,self).__init__(params,queues)
-        #self.ftracker = {'page':[1,1],'index':1,'threads':1,'interval':10}
-        
-    def processAddress(self,at,addr):
-        '''Do an Approve/Decline/Update request'''
-        at2 = ApprovalType.reverse[at][:3].capitalize()      
-        ref = 'Req{0}.{1:%y%m%d.%H%M%S}'.format(at2,DT.now())
-        params = (ref,self.conf,self.afactory)
-        #self.ioq = {'in':Queue.Queue(),'out':Queue.Queue()}
-        self.duinst[ref] = DataUpdaterApproval(params,self.respq)
-        self.duinst[ref].setup(at,addr)
-        self.duinst[ref].setName(ref)
-        self.duinst[ref].setDaemon(True)
-        self.duinst[ref].start()
-        #self.duinst[ref].join()
-        return ref    
-
   
         
         

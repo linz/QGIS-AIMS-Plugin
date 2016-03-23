@@ -15,20 +15,20 @@
 import re
 import os
 import copy
-from EntityFactory import EntityFactory
-from AimsUtility import EntityType,GroupActionType,GroupApprovalType,FeedType
+from FeatureFactory import FeatureFactory
+from AimsUtility import FeatureType,GroupActionType,GroupApprovalType,FeedType
 from AimsUtility import SKIP_NULL, DEF_SEP
 from Group import GroupChange,GroupResolution
 from AimsLogging import Logger
-#from EntityFactory import TemplateReader
+#from FeatureFactory import TemplateReader
 
 P = os.path.join(os.path.dirname(__file__),'../resources/')
 
-ET = EntityType.GROUPS
+ET = FeatureType.GROUPS
 
-#TP = {'{}.{}'.format(EntityType.reverse[ET].lower(),FeedType.reverse[FeedType.CHANGEFEED].lower()):{b.lower():None for b in GroupActionType.reverse.values()}}
+#TP = {'{}.{}'.format(FeatureType.reverse[ET].lower(),FeedType.reverse[FeedType.CHANGEFEED].lower()):{b.lower():None for b in GroupActionType.reverse.values()}}
 
-TP = {'{}.{}'.format(EntityType.reverse[ET].lower(),a):b for a,b in zip(
+TP = {'{}.{}'.format(FeatureType.reverse[ET].lower(),a):b for a,b in zip(
         [FeedType.reverse[ft].lower() for ft in (FeedType.CHANGEFEED,FeedType.RESOLUTIONFEED)],
         [   {GroupActionType.reverse[at].lower():None for at in GroupActionType.reverse},
             {GroupApprovalType.reverse[at].lower():None for at in GroupApprovalType.reverse}
@@ -43,7 +43,7 @@ class GroupFieldIncorrectException(GroupException): pass
 class GroupConversionException(GroupException): pass
 class GroupCreationException(GroupException): pass
 
-class GroupFactory(EntityFactory):
+class GroupFactory(FeatureFactory):
     ''' AddressFactory class used to build address objects without the overhead of re-reading templates each time an address is needed''' 
     #PBRANCH = '{d}{}{d}{}'.format(d=DEF_SEP,*Position.BRANCH)
     GFFT = FeedType.CHANGEFEED
@@ -56,8 +56,7 @@ class GroupFactory(EntityFactory):
     
     def __init__(self, ref=DEF_REF):
         self.ref = ref
-        key = '{}.{}'.format(EntityType.reverse[ET].lower(),FeedType.reverse[ref].lower())
-        self.template = self.readTemplate(TP)[key]
+        self.template = self.readTemplate(TP)[ref.k]
     
     def __str__(self):
         return 'AFC.{}'.format(FeedType.reverse(self.GFFT)[:3])
@@ -182,7 +181,7 @@ class GroupChangeFactory(GroupFactory):
     DEF_REF = FeedType.reverse[GFFT]
     grptype = GroupChange
     reqtype = GroupActionType
-    def __init__(self,ref=DEF_REF):
+    def __init__(self,ref):
         super(GroupChangeFactory,self).__init__(ref)
 
 
@@ -191,7 +190,7 @@ class GroupResolutionFactory(GroupFactory):
     DEF_REF = FeedType.reverse[GFFT]
     grptype = GroupResolution
     reqtype = GroupApprovalType
-    def __init__(self,ref=DEF_REF):
+    def __init__(self,ref):
         super(GroupResolutionFactory,self).__init__(ref)
 
     
