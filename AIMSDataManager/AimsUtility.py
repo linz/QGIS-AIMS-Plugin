@@ -17,7 +17,7 @@ from AimsLogging import Logger
 #turn test mode on or off, on appends test path to all request urls
 TEST_MODE = False
 #time to wait for threads to join after stop has been called eg On BB move (s)
-THREAD_JOIN_TIMEOUT = 5
+THREAD_JOIN_TIMEOUT = 30
 #max number of features to request per page 
 MAX_FEATURE_COUNT = 1000
 #first page (to not backfill past)

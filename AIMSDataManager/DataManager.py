@@ -54,19 +54,11 @@ class DataManager(object):
         #init the three different feed threads
         self.dsr = {f:DataSyncFeeds for f in FIRST.values()}
         self.dsr[FeedRef((FeatureType.ADDRESS,FeedType.FEATURES))] = DataSyncFeatures
-#         self.dsr = {
-#             (FeatureType.ADDRESS,FeedType.FEATURES):DataSyncFeatures,
-#             (FeatureType.ADDRESS,FeedType.CHANGEFEED):DataSyncChangeFeed,
-#             (FeatureType.ADDRESS,FeedType.RESOLUTIONFEED):DataSyncResolutionFeed,
-#             (FeatureType.GROUPS,FeedType.CHANGEFEED):DataSyncGroupChangeFeed,
-#             (FeatureType.GROUPS,FeedType.RESOLUTIONFEED):DataSyncGroupResolutionFeed
-#         }
-        for ref in self.dsr:
-            if ref in self._start: self.start(ref)
+        for etft in self._start: self._checkDS(etft)
             
     def start(self,etft):
-        #self._start.update((etft,))
-        self._initFeedDSChecker(etft)
+        if not etft in self._start: self._start.append(etft)
+        self._checkDS(etft)
         
     def notify(self, observable, *args, **kwargs):
         '''Do some housekeeping and notify listener'''
@@ -79,17 +71,17 @@ class DataManager(object):
         '''Register single class as a listener'''
         self.reg = reg if hasattr(reg, 'notify') else None        
         
-    def _initFeedDSChecker(self,etft):
+    def _checkDS(self,etft):
         '''Starts a sync thread unless its features with a zero bbox'''
         if etft == FEEDS['AF'] and self.persist.coords['sw'] == SWZERO and self.persist.coords['ne'] == NEZERO:                
             self.ds[etft] = None
         else:
-            self.ds[etft] = self._initFeedDS(etft,self.dsr[etft])
+            self.ds[etft] = self._spawnDS(etft,self.dsr[etft])
             self.ds[etft].register(self)            
             self.ds[etft].start()
             
         
-    def _initFeedDS(self,etft,feedclass): 
+    def _spawnDS(self,etft,feedclass): 
         ts = '{0:%y%m%d.%H%M%S}'.format(DT.now())
         params = ('DSF..{}.{ts}'.format(etft,ts=ts),etft,self.persist.tracker[etft],self.conf)
         self.ioq[etft] = {n:Queue.Queue() for n in ('in','out','resp')}
@@ -112,7 +104,7 @@ class DataManager(object):
             if not self.ds.has_key(etft) or not self.ds[etft] or not self.ds[etft].isAlive():
                 aimslog.warn('DS thread {} terminated, restarting'.format(etft))
                 #del self.ds[etft]
-                self._initFeedDSChecker(etft)
+                self._checkDS(etft)
             
         
     #Client Access
@@ -131,10 +123,11 @@ class DataManager(object):
                 self.ds[etft].stop()
                 self.ds[etft].join(THREAD_JOIN_TIMEOUT)
                 #TODO investigate thread non-stopping issues
-                if self.ds[etft].isAlive(): aimslog.warn('SetBB Features Thread JOIN timeout')
+                if self.ds[etft].isAlive(): aimslog.warn('SetBB Features. ! Thread JOIN timeout')
             del self.ds[etft]
             #reinitialise a new features DataSync
-            self._initFeedDSChecker(etft)
+            #self._initFeedDSChecker(etft)
+            self.start(etft)
     
     #@Deprecated     
     def restart(self,etft):
@@ -144,7 +137,7 @@ class DataManager(object):
         if self.ds.has_key(etft) and self.ds[etft]:#.isAlive():
             self.ds[etft].stop() 
             self.ds[etft].join(THREAD_JOIN_TIMEOUT)
-            if self.ds[etft].isAlive(): aimslog.warn('{} Thread JOIN timeout'.format(etft))
+            if self.ds[etft].isAlive(): aimslog.warn('{} ! Thread JOIN timeout'.format(etft))
         #del self.ds[etft]
         self._check()
         
