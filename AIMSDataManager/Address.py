@@ -12,12 +12,14 @@
 ################################################################################
 
 #http://devassgeo01:8080/aims/api/address/features - properties
-import re
 from AimsUtility import FeatureType,ActionType,ApprovalType,FeedType
 from AimsLogging import Logger
+from Feature import Feature,FeatureMetaData
 
 
-aimslog = None
+#aimslog = None
+#global aimslog
+aimslog = Logger.setup()
 
         
 #------------------------------------------------------------------------------
@@ -93,10 +95,11 @@ class Position(object):
         
 #------------------------------------------------------------------------------
 # E N T I T Y 
+
 EDEF = {'class':[], 'rel':[],'properties':{'ruleId':None, 'description':None,'severity':None}}
 class Entity(object):
     '''Entity Object'''
-    #TODO Fix naming confusion between address held entities and Address/Group super entity
+    #TODO Fix naming confusion between address held entities and Address/Group super feature
     def __init__(self, ref=None): 
         #aimslog.info('AdrRef.{}'.format(ref))
         self._ref = ref        
@@ -152,34 +155,31 @@ class Entity(object):
                               }
             }
   
-        
+class ValidationEntity(Entity):
+    pass
+
+class AddressEntity(Entity):
+    pass
+
 #------------------------------------------------------------------------------
 # A D D R E S S
 
-class Address(object):
+class Address(Feature):
     ''' UI address class ''' 
     
-    entity = FeatureType.ADDRESS
+    feature = FeatureType.ADDRESS
     type = FeedType.FEATURES
     
-    global aimslog
-    aimslog = Logger.setup()
+    #global aimslog
+    #aimslog = Logger.setup()
     
     def __init__(self, ref=None): 
         #aimslog.info('AdrRef.{}'.format(ref))
-        self._ref = ref
+        super(Address,self).__init__(ref)
     
     def __str__(self):
-        #return 'ADR.{}.{}.{}.{}'.format(self._ref,self.type,self.getAddressId(),self._version)
         return 'ADR.{}.{}'.format(self._ref,self.type)
     
-    #generic validators
-    @staticmethod
-    def _vString(sval): return isinstance(sval,str) #alpha only filter?
-    @staticmethod
-    def _vInt(ival): return isinstance(ival, int) #range filter?
-    @staticmethod
-    def _vDate(date): return Address._vString(date) and bool(re.match('^\d{4}-\d{2}-\d{2}$',date)) 
     
     # Set functions used to manipulate object properties   
     def setPublishDate(self,d): self._publishDate = d if Address._vDate(d) else None
@@ -318,7 +318,7 @@ class Address(object):
         '''clones attributes of A to B and instantiates B (as type A) if not provided'''
         #duplicates only attributes set in source object
         from AddressFactory import AddressFactory
-        if not b: b = FeatureFactory.getInstance(self.entity,et,a.type).getAddress()
+        if not b: b = FeatureFactory.getInstance(self.feature,et,a.type).getAddress()
         for attr in a.__dict__.keys(): setattr(b,attr,getattr(a,attr))
         return b
     
@@ -330,7 +330,7 @@ class AddressRequestFeed(Address):
     def setVersion (self, version): self._version = version if Address._vInt(version) else None
     
     def setMeta(self, meta = None):
-        if not hasattr(self,'meta'): self.meta = meta if meta else AddressMetaData()
+        if not hasattr(self,'meta'): self.meta = meta if meta else FeatureMetaData()
         
     def getMeta(self): 
         return self.meta if hasattr(self, 'meta') else None    
@@ -398,27 +398,7 @@ class AddressResolution(AddressRequestFeed):
 
                 
 #------------------------------------------------------------------------------   
-   
-class AddressMetaData(object):
-    '''Embedded container for address meta information eg warnings, errors and tracking'''
-    def __init__(self):self._requestId,self._statusMessage,self._errors,self._entities = 0,'',[],[]
-    
-    @property
-    def requestId(self): return self._requestId
-    @requestId.setter
-    def requestId(self, requestId): self._requestId = requestId if Address._vInt(requestId) else None
-    
-    @property
-    def entities(self): return self._entities  
-    @entities.setter
-    def entities(self,entities): self._entities = entities 
-     
-    @property
-    def errors(self): return self._errors  
-    @errors.setter
-    def errors(self,errors): self._errors = errors
-         
-#------------------------------------------------------------------------------      
+  
    
    
    

@@ -33,7 +33,7 @@ LAST_PAGE_GUESS = 10
 #initial page number indicating page search is required
 NULL_PAGE_VALUE = 0
 #automatically inset warnings into resolution feed features. very slow, enable only if RF is small
-ENABLE_RESOLUTION_FEED_WARNINGS = True
+ENABLE_ENTITY_EVALUATION = True
 #filename for persisted feed data
 LOCALADL = 'aimsdata'
 #zero southwest coordinate used for instantiation and to prevent unnecessary feature fetching
@@ -152,11 +152,11 @@ class FeedRef(object):
     @property
     def et(self): return self._et
     @et.setter
-    def et(self,et): self._et = et
+    def et(self,et): pass#self._et = et
     @property
     def ft(self): return self._ft
     @ft.setter
-    def ft(self,ft): self._ft = ft
+    def ft(self,ft): pass#self._ft = ft
     
 
 class InvalidEnumerationType(Exception): pass
@@ -188,11 +188,6 @@ GroupApprovalType = Enumeration.enum('ACCEPT',  'DECLINE', 'ADDRESS', 'UPDATE')
 GroupApprovalType.PATH =            ('accept',  'decline', 'address', '')
 GroupApprovalType.HTTP =            ('POST',    'POST',    'GET',     'PUT')
 
-
-# FIRST = set(((FeatureType.ADDRESS,FeedType.CHANGEFEED),(FeatureType.ADDRESS,FeedType.RESOLUTIONFEED),
-#              (FeatureType.GROUPS,FeedType.CHANGEFEED),(FeatureType.GROUPS,FeedType.RESOLUTIONFEED)))
-# FEEDS = set(((FeatureType.ADDRESS,FeedType.FEATURES),(FeatureType.ADDRESS,FeedType.CHANGEFEED),(FeatureType.ADDRESS,FeedType.RESOLUTIONFEED),
-#              (FeatureType.GROUPS,FeedType.CHANGEFEED),(FeatureType.GROUPS,FeedType.RESOLUTIONFEED)))
 
 FEEDS = {'AF':FeedRef((FeatureType.ADDRESS,FeedType.FEATURES)),'AC':FeedRef((FeatureType.ADDRESS,FeedType.CHANGEFEED)),
          'AR':FeedRef((FeatureType.ADDRESS,FeedType.RESOLUTIONFEED)),'GC':FeedRef((FeatureType.GROUPS,FeedType.CHANGEFEED)),

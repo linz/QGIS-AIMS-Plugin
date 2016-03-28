@@ -27,12 +27,12 @@ import time
 import threading
 import Queue
 
-from DataUpdater import DataUpdater,DataUpdaterAction,DataUpdaterApproval#,DataUpdaterWarning
+from DataUpdater import DataUpdater,DataUpdaterAction,DataUpdaterApproval
 from AimsApi import AimsApi 
 from AimsLogging import Logger
 from AimsUtility import ActionType,ApprovalType,GroupActionType,GroupApprovalType,FeedType,FeatureType,FeedRef,LogWrap,FEEDS
-from AimsUtility import MAX_FEATURE_COUNT,THREAD_JOIN_TIMEOUT,PAGE_LIMIT,POOL_PAGE_CHECK_DELAY,QUEUE_CHECK_DELAY,FIRST_PAGE,LAST_PAGE_GUESS,ENABLE_RESOLUTION_FEED_WARNINGS,NULL_PAGE_VALUE as NPV
-from FeatureFactory import FeatureFactory#,AddressChangeFactory,AddressResolutionFactory
+from AimsUtility import MAX_FEATURE_COUNT,THREAD_JOIN_TIMEOUT,PAGE_LIMIT,POOL_PAGE_CHECK_DELAY,QUEUE_CHECK_DELAY,FIRST_PAGE,LAST_PAGE_GUESS,ENABLE_ENTITY_EVALUATION,NULL_PAGE_VALUE as NPV
+from FeatureFactory import FeatureFactory
 aimslog = None
 
 FPATH = os.path.join('..',os.path.dirname(__file__)) #base of local datastorage
@@ -106,6 +106,7 @@ class DataSync(Observable):
         self.ref,self.etft,self.ftracker,self.conf = params
         self.data_hash = {dh:0 for dh in FEEDS.values()}
         self.afactory = FeatureFactory.getInstance(self.etft)
+        self.updater = DataUpdater.getInstance(self.etft)
         self.inq = queues['in']
         self.outq = queues['out']
         self.respq = queues['resp']
@@ -209,7 +210,7 @@ class DataSync(Observable):
         ref = 'FP.{0}.Page{1}.{2:%y%m%d.%H%M%S}.p{3}'.format(self.etft,p,DT.now(),p)
         params = (ref,self.conf,self.afactory)
         adrq = Queue.Queue()
-        self.duinst[ref] = DataUpdater(params,adrq)
+        self.duinst[ref] = self.updater(params,adrq)
         if self.etft==FEEDS['AF']: self.duinst[ref].setup(self.etft,self.sw,self.ne,p)
         else: self.duinst[ref].setup(self.etft,None,None,p)
         self.duinst[ref].setName(ref)

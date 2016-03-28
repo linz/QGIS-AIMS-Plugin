@@ -18,7 +18,7 @@ import collections
 from Address import Address, AddressChange, AddressResolution,Position
 from FeatureFactory import FeatureFactory
 #from DataUpdater import DataUpdater
-from DataSync import DataSync,DataSyncFeatures,DataSyncFeeds#,DataSyncChangeFeed,DataSyncResolutionFeed,DataSyncGroupChangeFeed,DataSyncGroupResolutionFeed
+from DataSync import DataSync,DataSyncFeatures,DataSyncFeeds
 from datetime import datetime as DT
 from AimsUtility import FeedRef,ActionType,ApprovalType,FeatureType,FeedType,Configuration,FEEDS,FIRST
 from AimsUtility import THREAD_JOIN_TIMEOUT,LOCALADL,SWZERO,NEZERO,NULL_PAGE_VALUE as NPV
@@ -171,10 +171,10 @@ class DataManager(object):
         return resp
         
       
-    def _populate(self,entity):
+    def _populate(self,feature):
         '''Fill in any required+missing fields if a default value is known (in this case the configured user)'''
-        if not hasattr(entity,'_workflow_sourceUser') or not entity.getSourceUser(): entity.setSourceUser(self.conf['user'])
-        return entity
+        if not hasattr(feature,'_workflow_sourceUser') or not feature.getSourceUser(): feature.setSourceUser(self.conf['user'])
+        return feature
     
     #convenience methods 
     #---------------------------- 
@@ -286,10 +286,6 @@ class Persistence():
     def _initADL(self):
         '''Read ADL from serial and update from API'''
         return {f:[] for f in FEEDS.values()}
-#         return {(FeatureType.ADDRESS,FeedType.FEATURES):[],
-#                 (FeatureType.ADDRESS,FeedType.CHANGEFEED):[],
-#                 (FeatureType.ADDRESS,FeedType.RESOLUTIONFEED):[],
-#                 (FeatureType.GROUPS,FeedType.CHANGEFEED):[]}
     
     #Disk Access
     def read(self,localds=LOCALADL):

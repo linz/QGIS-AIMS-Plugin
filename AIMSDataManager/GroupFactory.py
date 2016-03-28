@@ -67,7 +67,7 @@ class GroupFactory(FeatureFactory):
         return GroupFactory(ft)
     
     #HACK to save rewriting getaddress at gfactory call
-    def getAddress(self,ref=None,adr=None,model=None,prefix=''):self.getGroup(ref,adr,model,prefix)
+    #def getAddress(self,ref=None,adr=None,model=None,prefix=''):self.getGroup(ref,adr,model,prefix)
     def getGroup(self,ref=None,grp=None,model=None,prefix=''):
         '''Creates an address object from a model (using the response template if model is not provided)'''
         #overwrite = model OR NOT(address). If an address is provided only fill it with model provided, presume dont want template fill
