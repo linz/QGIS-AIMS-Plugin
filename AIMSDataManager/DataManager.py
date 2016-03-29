@@ -57,6 +57,7 @@ class DataManager(object):
         for etft in self._start: self._checkDS(etft)
             
     def start(self,etft):
+        '''Add new thread to startup list and initialise'''
         if not etft in self._start: self._start.append(etft)
         self._checkDS(etft)
         
@@ -73,7 +74,7 @@ class DataManager(object):
         
     def _checkDS(self,etft):
         '''Starts a sync thread unless its features with a zero bbox'''
-        if etft == FEEDS['AF'] and self.persist.coords['sw'] == SWZERO and self.persist.coords['ne'] == NEZERO:                
+        if (etft == FEEDS['AF'] and self.persist.coords['sw'] == SWZERO and self.persist.coords['ne'] == NEZERO) or int(self.persist.tracker[etft]['threads'])==0:                
             self.ds[etft] = None
         else:
             self.ds[etft] = self._spawnDS(etft,self.dsr[etft])
@@ -101,12 +102,15 @@ class DataManager(object):
     def _check(self):
         '''If a DataSync thread crashes restart it'''
         for etft in self._start:
-            if not self.ds.has_key(etft) or not self.ds[etft] or not self.ds[etft].isAlive():
-                aimslog.warn('DS thread {} terminated, restarting'.format(etft))
+            if self._confirmstart(etft):
+                aimslog.warn('DS thread {} absent, starting'.format(etft))
                 #del self.ds[etft]
                 self._checkDS(etft)
-            
-        
+                
+    def _confirmstart(self,etft):    
+        '''simple test to determine whether thread shoule be started or not'''    
+        return int(self.persist.tracker[etft]['threads'])>0 and not (self.ds.has_key(etft) and self.ds[etft] and self.ds[etft].isAlive())
+    
     #Client Access
     def setbb(self,sw=None,ne=None):
         '''Resetting the bounding box triggers a complete refresh of the features address data'''
@@ -271,9 +275,9 @@ class Persistence():
             self.ADL = self._initADL() 
             #default tracker, gets overwrittens
             #page = (lowest page fetched, highest page number fetched)
-            self.tracker[FEEDS['AF']] = {'page':[1,1],    'index':1,'threads':2,'interval':30}    
-            self.tracker[FEEDS['AC']] = {'page':[NPV,NPV],'index':1,'threads':1,'interval':125}  
-            self.tracker[FEEDS['AR']] = {'page':[1,1],    'index':1,'threads':1,'interval':10} 
+            self.tracker[FEEDS['AF']] = {'page':[1,1],    'index':1,'threads':0,'interval':30}    
+            self.tracker[FEEDS['AC']] = {'page':[NPV,NPV],'index':1,'threads':0,'interval':125}  
+            self.tracker[FEEDS['AR']] = {'page':[1,1],    'index':1,'threads':0,'interval':10} 
             self.tracker[FEEDS['GC']] = {'page':[1,1],    'index':1,'threads':1,'interval':130}  
             self.tracker[FEEDS['GR']] = {'page':[1,1],    'index':1,'threads':1,'interval':55}             
             

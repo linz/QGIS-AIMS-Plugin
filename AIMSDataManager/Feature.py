@@ -44,6 +44,19 @@ class Feature(object):
 
     #---------------------------------------------------
     
+    def _setEntities(self,entities):
+        self.setMeta()
+        self.meta.entities = entities
+ 
+    def _getEntities(self):
+        return self.meta.entities
+    
+    def setMeta(self, meta = None):
+        if not hasattr(self,'meta'): self.meta = meta if meta else FeatureMetaData()
+        
+    def getMeta(self): 
+        return self.meta if hasattr(self, 'meta') else None    
+    
     
     def compare(self,other):
         '''Equality comparator'''

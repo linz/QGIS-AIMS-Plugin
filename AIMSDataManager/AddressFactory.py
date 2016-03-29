@@ -61,16 +61,7 @@ class AddressFactory(FeatureFactory):
         self.template = self.readTemplate(TP)[ref.k]
     
     def __str__(self):
-        return 'AFC.{}'.format(FeedType.reverse(self.AFFT)[:3])
-    
-#     @staticmethod
-#     def getInstance(ft):
-#         '''Gets an instance of a factory to generate a particular (ft) type of address object'''
-#         if ft==FeedType.FEATURES: return AddressFactory(ft)
-#         elif ft==FeedType.CHANGEFEED: return AddressChangeFactory(ft)
-#         elif ft==FeedType.RESOLUTIONFEED: return AddressResolutionFactory(ft)
-#         else: raise InvalidEnumerationType('FeedType {} not available'.format(ft))
-    
+        return 'AFC.{}'.format(FeedType.reverse(self.AFFT)[:3])    
 
     def getAddress(self,ref=None,adr=None,model=None,prefix=''):
         '''Creates an address object from a model (using the response template if model is not provided)'''
@@ -110,16 +101,6 @@ class AddressFactory(FeatureFactory):
     def cast(self,adr):
         '''casts address from curent to requested address-type'''
         return Address.clone(adr, self.getAddress())
-    
-#     @staticmethod
-#     def filterPI(ppi):
-#         '''filters out possible Processing Instructions'''
-#         sppi = str(ppi)
-#         if sppi.find('#')>-1:
-#             dflt = re.search('default=(\w+)',sppi)
-#             oneof = re.search('oneof=(\w+)',sppi)#first as default
-#             return dflt.group(1) if dflt else (oneof.group(1) if oneof else None)
-#         return ppi
         
 
 class AddressFeedFactory(AddressFactory):

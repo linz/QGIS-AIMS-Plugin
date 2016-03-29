@@ -78,25 +78,25 @@ class  Group(Feature):
 class GroupRequestFeed(Group):          
     def setVersion (self, version): self._version = version if Group._vInt(version) else None
     
-    def setMeta(self, meta = None):
-        if not hasattr(self,'meta'): self.meta = meta if meta else FeatureMetaData()
-        
-    def getMeta(self): 
-        return self.meta if hasattr(self, 'meta') else None    
-    
-    def setRequestId(self,requestId):
-        self.setMeta()
-        self.meta.requestId = requestId      
-          
-    def getRequestId(self):
-        return self.meta.requestId if hasattr(self,'meta') else None
-    
-    def setErrors(self,errors):
-        self.setMeta()
-        self.meta.errors = errors      
-          
-    def getErrors(self):
-        return self.meta.errors if hasattr(self,'meta') else None
+#     def setMeta(self, meta = None):
+#         if not hasattr(self,'meta'): self.meta = meta if meta else FeatureMetaData()
+#         
+#     def getMeta(self): 
+#         return self.meta if hasattr(self, 'meta') else None    
+#     
+#     def setRequestId(self,requestId):
+#         self.setMeta()
+#         self.meta.requestId = requestId      
+#           
+#     def getRequestId(self):
+#         return self.meta.requestId if hasattr(self,'meta') else None
+#     
+#     def setErrors(self,errors):
+#         self.setMeta()
+#         self.meta.errors = errors      
+#           
+#     def getErrors(self):
+#         return self.meta.errors if hasattr(self,'meta') else None
     
       
 class GroupChange(GroupRequestFeed):
