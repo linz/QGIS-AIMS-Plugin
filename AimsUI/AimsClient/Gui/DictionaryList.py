@@ -1,4 +1,13 @@
-
+################################################################################
+#
+# Copyright 2015 Crown copyright (c)
+# Land Information New Zealand and the New Zealand Government.
+# All rights reserved
+#
+# This program is released under the terms of the 3 clause BSD license. See the 
+# LICENSE file for more information.
+#
+################################################################################
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from qgis.core import * # temp for testing
@@ -16,7 +25,10 @@ class DictionaryListView( QTableView ):
     def __init__( self, parent=None ):
         QTableView.__init__( self, parent )
         # Change default settings
-        # self.setSelectionMode(QAbstractItemView.ExtendedSelection) <-- relying on the setting of this via the UI_ modules
+        if parent.__class__.__name__ in  ('DelAddressDialog', 'MoveAddressDialog'):            
+            self.setSelectionMode(QAbstractItemView.ExtendedSelection)
+        else: 
+            self.setSelectionMode(QAbstractItemView.SingleSelection)
         self.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.horizontalHeader().setStretchLastSection(True)
         self.horizontalHeader().setHighlightSections(False)
@@ -35,7 +47,7 @@ class DictionaryListView( QTableView ):
         self.doubleClicked.connect( self.onDoubleClicked )
 
     # Reimplemented QTableView functions
-
+    
     def selectionChanged( self, selected, deselected ):
         QTableView.selectionChanged( self, selected, deselected )
         self.rowSelectionChanged.emit()

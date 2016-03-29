@@ -1,8 +1,13 @@
-'''
-Created on 29/01/2016
-
-@author: splanzer
-'''
+################################################################################
+#
+# Copyright 2015 Crown copyright (c)
+# Land Information New Zealand and the New Zealand Government.
+# All rights reserved
+#
+# This program is released under the terms of the 3 clause BSD license. See the 
+# LICENSE file for more information.
+#
+################################################################################
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
@@ -23,7 +28,20 @@ class QueueView(QTableView):
         self.setSortingEnabled(True)
         self.setEditTriggers(QAbstractItemView.AllEditTriggers)
         self.setStyleSheet("* { gridline-color: gray }")
-           
+        
+        p = QPalette(self.palette())
+        #This two for setting text color
+        p.setBrush(QPalette.Active, QPalette.HighlightedText,
+                    QBrush(QColor("red")))
+        p.setBrush(QPalette.Inactive, QPalette.HighlightedText,
+                    QBrush(QColor("red")))
+        
+        #this two for setting background color
+        p.setBrush(QPalette.Inactive, QPalette.Highlight,
+                    QBrush(QColor(255,0,0,127)))
+        p.setBrush(QPalette.Active, QPalette.Highlight,
+                    QBrush(QColor(255,0,0,127)))
+                
     def selectionChanged( self, selected, deselected ): #1
         QTableView.selectionChanged( self, selected, deselected )
         self.rowSelectionChanged.emit()

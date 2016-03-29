@@ -269,7 +269,7 @@ class Persistence():
         '''read or setup the tracked data'''
         if initialise or not self.read():
             self.ADL = self._initADL() 
-            #default tracker, gets overwritten
+            #default tracker, gets overwrittens
             #page = (lowest page fetched, highest page number fetched)
             self.tracker[FEEDS['AF']] = {'page':[1,1],    'index':1,'threads':2,'interval':30}    
             self.tracker[FEEDS['AC']] = {'page':[NPV,NPV],'index':1,'threads':1,'interval':125}  

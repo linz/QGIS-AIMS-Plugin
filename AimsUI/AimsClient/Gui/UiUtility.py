@@ -13,9 +13,18 @@ from qgis.gui import *
 from PyQt4.QtGui import *
 from PyQt4.QtCore import QRegExp
 import re
+import time
+
+from AIMSDataManager.AimsLogging import Logger
+
+uilog = None
 
 class UiUtility (object):
     ''' Where modular methods live and are leveraged '''
+
+    # logging
+    global uilog
+    uilog = Logger.setup(lf='uiLog')
     
     retainInfo = [ 'v0005', 'v0006', 'v0007', 'v0012', 'v0023', 'RP001', 'RP002' ]
         
@@ -59,7 +68,7 @@ class UiUtility (object):
             
     @staticmethod
     def highlight (iface, coords, iconType = QgsVertexMarker.ICON_BOX):
-    #function may be moved later to a 'highlight' module
+        ''' highlight aims features '''
         adrMarker = QgsVertexMarker(iface.mapCanvas())
         adrMarker.setIconSize(15)
         adrMarker.setPenWidth(2)
@@ -70,6 +79,7 @@ class UiUtility (object):
     
     @staticmethod
     def rclHighlight(canvas, geom, rclLayer):
+        ''' highlight selected road centreline '''
         rclMarker = QgsRubberBand(canvas,False)
         rclMarker.hide()
         rclMarker.setWidth(3)
@@ -80,19 +90,18 @@ class UiUtility (object):
             
     @staticmethod
     def setFormCombos(self):
-        #all no have the first value set as None - modal specific defualts now need to be
+        ''' set combo boxes to defualt values '''
         # set from the parent
         self.uAddressType.addItems(['Road', 'Water'])
         self.ulifeCycle.addItems(['Current', 'Proposed', 'Retired'])
-        self.uUnitType.addItems([None, 'Apartment', 'Kiosk', 'Room', 'Shop', 'Suite', 'Villa',  'Flat', 'Unit'])#require feed back as to approved values
+        self.uUnitType.addItems([None, 'Apartment', 'Kiosk', 'Room', 'Shop', 'Suite', 'Villa',  'Flat', 'Unit'])
         self.uLevelType.addItems([None, 'Floor', "Level"])
         self.uObjectType.addItems(['Parcel', 'Building'])
         self.uPositionType.addItems(['Unknown', 'Centroid', 'Label', 'Set Back off Road'])
-        # if instance == chnagefeed or review object the also set 
-        # uChangeType [new, update, retire]
 
     @staticmethod
-    def formMask(self):        
+    def formMask(self): 
+        ''' mask form input values '''       
         intValidator = QIntValidator()    
         self.uExternalAddId.setValidator(intValidator)
         self.uBase.setValidator(intValidator)
@@ -102,7 +111,7 @@ class UiUtility (object):
         self.uPrefix.setValidator(QRegExpValidator(QRegExp(r'^\w+'), self))
     
     @staticmethod
-    def nullEqualsNone (uInput): #Now also handeling NULL
+    def nullEqualsNone (uInput): #Now also handling NULL
         ''' convert whitespace to None '''
         if uInput == '' or uInput == 'NULL':
             return None
@@ -110,7 +119,7 @@ class UiUtility (object):
     
     @staticmethod
     def featureToUi(self):
-        """ for populating to update tool ui and queue edit ui """
+        """ populates update form and review editor queue from aims obj """
         UiUtility.setEditability(self)
         UiUtility.clearForm(self)
         
@@ -137,10 +146,6 @@ class UiUtility (object):
                                 warnings += i._severity.upper()+': '+ i._description+('\n'*2)
                             except: pass #temp                             
                         uiElement.setText(warnings)
-                    #    warnings = ''  
-                    #    for warning in getattr(self)['warn']:
-                    #        warnings+=(warning._severity).upper()+': '+warning._description+('\n'*2)
-                    #    uiElement.setText(warnings)
                     else: 
                         uiElement.setText(prop)
                 elif isinstance(uiElement, QComboBox):
@@ -149,9 +154,8 @@ class UiUtility (object):
     
     @staticmethod
     def formToObj(self):
-        ''' serves both the gathering of user data
-        from the purposes of new address creation and
-        address feature updates ''' # should expanded scope to include queue views to obj
+        ''' maps user input fromt he new and update form
+            as well as queue editor widget to AIM objects '''
         try: 
             form = self.uQueueEditor 
         except: 
@@ -159,10 +163,10 @@ class UiUtility (object):
         
         for uiElement, objProp in UiUtility.uiObjMappings.items():
             #user can not mod warnings ... continiue              
-            if self.uQueueEditor and uiElement == 'uWarning':
-                continue
-            if hasattr(form, uiElement): # test if the ui widget/ form ... has the ui component
- 
+            if uiElement == 'uWarning':            
+                continue            
+            # test if the ui widget/ form ... has the ui component
+            if hasattr(form, uiElement): 
                 uiElement = getattr(form, uiElement)                   
                 setter = getattr(self.feature, objProp[1])
                 if isinstance(uiElement, QLineEdit):# and uiElement.text() != '' and uiElement.text() != 'NULL':
@@ -171,8 +175,10 @@ class UiUtility (object):
                         setter(uiElement.currentText())
                 elif isinstance(uiElement, QPlainTextEdit):#and uiElement.toPlainText() != '' and uiElement.toPlainText() != 'NULL':
                         setter(uiElement.toPlainText().encode('utf-8'))
+                        
     @staticmethod 
-    def clearForm(self):      
+    def clearForm(self):
+        ''' clear UI forms and widgets '''              
         widgetChildern = self.findChildren(QWidget, QRegExp(r'^u.*'))
         for child in widgetChildern:
             child.setEnabled(True)
@@ -182,7 +188,12 @@ class UiUtility (object):
                 child.setCurrentIndex(0)
         
     @staticmethod               
-    def setEditability(self):                       
+    def setEditability(self):  
+        ''' toggle editable relevant fields depending 
+            on the objects Address Type (road or water) '''
+        for child in self.findChildren(QWidget):
+            child.setEnabled(True)
+                             
         if self.uAddressType.currentText() == 'Road':
             waterChildern = self.findChildren(QWidget, QRegExp(r'Water.*'))
             for child in waterChildern:
@@ -194,7 +205,6 @@ class UiUtility (object):
             for child in roadChildern:
                 child.clear() 
                 child.setDisabled(True)
-                   
 
     @staticmethod
     def fullNumChanged(obj, newnumber):
@@ -224,4 +234,42 @@ class UiUtility (object):
             except:
                 pass #silently  
     
+    @staticmethod
+    def displayWarnings (warnings, iface):
+        ''' raise warning to the user '''
+        message = ''
+        for warning in warnings:
+            message += u'\u2022 {}\n'.format(warning)
+        QMessageBox.warning(iface.mainWindow(),"Create Address Point", message)
+    
+    @staticmethod
+    def processWarnings (resp, respId, iface, feedType, i):
+        ''' compile al ist of warnings that are at the "Reject" level '''
+        warnings = []
+        for r in resp:
+            if r.meta._requestId == respId:  
+                #logging
+                uilog.info('response received from DM for respId: {0} of type: {1} after {2} seconds'.format(respId, feedType, i))    
+                for warning in r._entities:
+                    if warning['properties']['severity'] in ('Reject', 'critical'):
+                        warnings.append(warning['properties']['description'])
+                if warnings:
+                    UiUtility.displayWarnings(warnings, iface)
+                return True
+    
+    @staticmethod
+    def handleResp(respId, controller, feedType, iface):
+        ''' test for a response in the response
+            queue with the relevant repId'''
+        for i in range(0,25):
+            time.sleep(1)
+            resp = controller.uidm.response(feedType)
+            if resp:
+                if UiUtility.processWarnings(resp, respId, iface, feedType, i):
+                    return
+            #logging 
+        uilog.info('Time Out ({0} seconds): No response received from DM for respId: {1} of feedtype: {2}'.format(i, respId, feedType))    
+   
+           
         
+            

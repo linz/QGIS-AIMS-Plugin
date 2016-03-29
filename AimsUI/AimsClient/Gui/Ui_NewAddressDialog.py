@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'AimsUI/AimsClient/Gui/Ui_NewAddressDialog.ui'
 #
-# Created: Mon Feb 22 13:53:09 2016
+# Created: Tue Mar 22 13:45:15 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,7 +26,7 @@ except AttributeError:
 class Ui_NewAddressDialog(object):
     def setupUi(self, NewAddressDialog):
         NewAddressDialog.setObjectName(_fromUtf8("NewAddressDialog"))
-        NewAddressDialog.resize(386, 938)
+        NewAddressDialog.resize(386, 968)
         self.verticalLayout = QtGui.QVBoxLayout(NewAddressDialog)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         self.horizontalLayout_2 = QtGui.QHBoxLayout()

@@ -17,6 +17,7 @@ from Ui_NewAddressDialog import Ui_NewAddressDialog
 from AIMSDataManager.Address import Position, Address
 from AimsUI.AimsClient.Gui.UiUtility import UiUtility
 from AIMSDataManager.AimsUtility import FeedType
+import time
 
 from qgis.utils import iface
 #from AIMSDataManager.Address import getInstance
@@ -68,7 +69,7 @@ class NewAddressDialog(Ui_NewAddressDialog, QDialog):
     def closeDlg (self):
         ''' close form '''
         self._controller.setPreviousMapTool() # revert back to NewAddTool
-        self.reject()
+        self.close()
         
     def submitAddress(self):
         ''' take users input from form and submit to AIMS API '''
@@ -92,14 +93,14 @@ class NewAddressDialog(Ui_NewAddressDialog, QDialog):
         position = Position.getInstance(d)
         self.feature.setAddressPositions(position)
         UiUtility.formToObj(self)
+        
+        respId = int(time.time())
 
         # submit address obj to DM
-        self._controller.uidm.addAddress(self.feature)
-        # need to check the response 
-        r = self._controller.dm.response(FeedType.CHANGEFEED)
-        r = self._controller.dm.response(FeedType.CHANGEFEED)
-        r = self._controller.dm.response(FeedType.CHANGEFEED)
-
+        self._controller.uidm.addAddress(self.feature, respId)
+        # check the response 
+        UiUtility.handleResp(respId, self._controller, FeedType.CHANGEFEED, self._iface)
+              
         self.closeDlg()
        
     def fullNumChanged(self, newnumber):

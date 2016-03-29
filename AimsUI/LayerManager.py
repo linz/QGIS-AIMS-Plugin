@@ -91,20 +91,16 @@ class LayerManager(QObject):
         
         QgsMapLayerRegistry.instance().layerWillBeRemoved.connect(self.checkRemovedLayer)
         QgsMapLayerRegistry.instance().layerWasAdded.connect( self.checkNewLayer )
-        self.defaultExtent()
         
     def defaultExtent(self):
         ''' the extent the plugin first shows '''
         self._iface.mapCanvas().setExtent(QgsRectangle(174.77303,-41.28648, 174.77561,-41.28427))
-        self._iface.mapCanvas().refresh()
-    
+        self._iface.mapCanvas().refresh()    
     
     def initialiseExtentEvent(self):  
         ''' Once plugin loading triggered initialise loading of AIMS Feautres '''
         self._iface.mapCanvas().extentsChanged.connect(self.getAimsFeatures)
         self._iface.mapCanvas().extentsChanged.connect(self.updateReviewLayer) # triggered for testing rev layer - TEMP
-        #set defualt bb
-
         
     def layerId(self, layer):
         idprop = self._propBaseName + 'Id' 
@@ -193,23 +189,37 @@ class LayerManager(QObject):
 
     def installRefLayers(self):
         ''' install AIMS postgres ref data '''
-        rcl = self.installLayer( 'rcl', 'roads', 'road_name_mview', 'gid', True, "",'Roads' )  
-        par = self.installLayer( 'par', 'bde', 'crs_parcel', 'id', True, "status = 'CURR'",'Parcels' )
-        return rcl,par
         
+        refLayers ={'rcl':( 'rcl', 'roads', 'road_name_mview', 'gid', True, "",'Roads' ),
+                    'par':( 'par', 'lds', 'all_parcels', 'id', True, "status = 'Current'",'Parcels' )
+                    }
+   
+        for layerId , layerProps in refLayers.items():
+            if not self.findLayer(layerId):
+                self.installLayer(* layerProps) 
+
+        #return rcl,par
+    def addAimsFields(self, layer, provider, id, fields):
+        provider.addAttributes(fields)
+        layer.updateFields()
+        self.styleLayer(layer, id)     
+        QgsMapLayerRegistry.instance().addMapLayer(layer)    
+    
     def installAimsLayer(self, id, displayname):
         ''' initialise AIMS feautres and review layers '''
         
         layer = QgsVectorLayer("Point?crs=EPSG:4167", displayname, "memory") 
         self.setLayerId(layer, id)
         provider = layer.dataProvider()
-        if id == 'adr':
-            provider.addAttributes([QgsField(layerAttName, QVariant.String) for layerAttName in Mapping.adrLayerObjMappings.keys()])
-        elif id == 'rev':
-            provider.addAttributes([QgsField('AddressNumber', QVariant.String)])      
-        layer.updateFields()
-        self.styleLayer(layer, id)     
-        QgsMapLayerRegistry.instance().addMapLayer(layer)           
+        if id == 'adr' and not self.findLayer(id):
+            self.addAimsFields(layer, provider, id, [QgsField(layerAttName, QVariant.String) for layerAttName in Mapping.adrLayerObjMappings.keys()] )
+            #provider.addAttributes([QgsField(layerAttName, QVariant.String) for layerAttName in Mapping.adrLayerObjMappings.keys()])
+        elif id == 'rev' and not self.findLayer(id):
+            self.addAimsFields(layer, provider, id, [QgsField('AddressNumber', QVariant.String)])
+            #provider.addAttributes([QgsField('AddressNumber', QVariant.String)])      
+        #layer.updateFields()
+        #self.styleLayer(layer, id)     
+        #QgsMapLayerRegistry.instance().addMapLayer(layer)           
 
     def removeFeatures(self, layer):
         ids = [f.id() for f in layer.getFeatures()]
@@ -228,6 +238,7 @@ class LayerManager(QObject):
         layer = self.findLayer(id)
         #get reviewfeatures. in the fututre to be emitted(?)
         provider = layer.dataProvider()
+        self.removeFeatures(layer)
         try:
             for reviewItem in self._controller.uidm.reviewData().values():
                 fet = QgsFeature()
@@ -240,15 +251,16 @@ class LayerManager(QObject):
          
     def getAimsFeatures(self):
         ext = self._iface.mapCanvas().extent()
-        # if the map is at the bounds on nzgd dont show
-        if (ext.toString() == '174.7729355126953124,-41.2864799999999974 : 174.7757044873046937,-41.2842699999999994'
-                or ext.toString() == '163.8084601236508604,-47.6596082687378200 : 181.4207421468571795,-33.6027284622192823'):
+        # if the map is at the bounds of nzgd, dont show - must be a better way to do this
+        #if (ext.toString() == '174.7729355126953124,-41.2864799999999974 : 174.7757044873046937,-41.2842699999999994'
+        #        or ext.toString() == '163.8084601236508604,-47.6596082687378200 : 181.4207421468571795,-33.6027284622192823'):
+        if ext.width() > 10:
             return            
         self._controller.uidm.setBbox(sw = (ext.xMaximum(), ext.yMaximum()), ne = (ext.xMinimum(), ext.yMinimum()))
         featureData = self._controller.uidm.featureData()
         if featureData:
             self.updateFeaturesLayer(featureData)
-
+ 
     def updateFeaturesLayer(self, featureData):
         id = 'adr'
         layer = self.findLayer(id)
@@ -257,8 +269,8 @@ class LayerManager(QObject):
             self.installAimsLayer(id, 'AIMS Features')
             layer = self.findLayer(id) 
         # test the layer is visible
-        if not self.isVisible(layer):
-            return             
+        #if not self.isVisible(layer):
+        #    return             
         # ensure legend is visible
         legend = self._iface.legendInterface()
         if not legend.isLayerVisible(layer):
@@ -279,4 +291,5 @@ class LayerManager(QObject):
         
         # update layer's extent when new features have been added
         # because change of extent in provider is not propagated to the layer
-        #layer.updateExtents()
+        layer.updateExtents()
+        self._iface.mapCanvas()
