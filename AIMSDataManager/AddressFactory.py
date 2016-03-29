@@ -15,17 +15,19 @@
 import re
 import os
 import copy
-from AimsUtility import EntityType,ActionType,ApprovalType,FeedType,InvalidEnumerationType
+from FeatureFactory import FeatureFactory
+from AimsUtility import FeatureType,ActionType,ApprovalType,FeedType,InvalidEnumerationType
 from AimsUtility import SKIP_NULL, DEF_SEP
 from Address import Address,AddressChange,AddressResolution,Position
 from AimsLogging import Logger
+#from FeatureFactory import TemplateReader
 
 P = os.path.join(os.path.dirname(__file__),'../resources/')
 
 
-ET = EntityType.ADDRESS
+ET = FeatureType.ADDRESS
 
-TP = {'{}.{}'.format(EntityType.reverse[ET].lower(),a):b for a,b in zip(
+TP = {'{}.{}'.format(FeatureType.reverse[ET].lower(),a):b for a,b in zip(
         [FeedType.reverse[ft].lower() for ft in FeedType.reverse],
         [   {},
             {ActionType.reverse[at].lower():None for at in ActionType.reverse},
@@ -43,7 +45,7 @@ class AddressFieldIncorrectException(AddressException): pass
 class AddressConversionException(AddressException): pass
 class AddressCreationException(AddressException): pass
 
-class AddressFactory(object):
+class AddressFactory(FeatureFactory):
     ''' AddressFactory class used to build address objects without the overhead of re-reading templates each time an address is needed''' 
     PBRANCH = '{d}{}{d}{}'.format(d=DEF_SEP,*Position.BRANCH)
     AFFT = FeedType.FEATURES
@@ -54,21 +56,20 @@ class AddressFactory(object):
     global aimslog
     aimslog = Logger.setup()
     
-    def __init__(self, ref=DEF_REF):
+    def __init__(self, ref):
         self.ref = ref
-        key = '{}.{}'.format(EntityType.reverse[ET].lower(),FeedType.reverse[ref].lower())
-        self.template = TemplateReader().get()[key]
+        self.template = self.readTemplate(TP)[ref.k]
     
     def __str__(self):
         return 'AFC.{}'.format(FeedType.reverse(self.AFFT)[:3])
     
-    @staticmethod
-    def getInstance(ft):
-        '''Gets an instance of a factory to generate a particular (ft) type of address object'''
-        if ft==FeedType.FEATURES: return AddressFactory(ft)
-        elif ft==FeedType.CHANGEFEED: return AddressChangeFactory(ft)
-        elif ft==FeedType.RESOLUTIONFEED: return AddressResolutionFactory(ft)
-        else: raise InvalidEnumerationType('FeedType {} not available'.format(ft))
+#     @staticmethod
+#     def getInstance(ft):
+#         '''Gets an instance of a factory to generate a particular (ft) type of address object'''
+#         if ft==FeedType.FEATURES: return AddressFactory(ft)
+#         elif ft==FeedType.CHANGEFEED: return AddressChangeFactory(ft)
+#         elif ft==FeedType.RESOLUTIONFEED: return AddressResolutionFactory(ft)
+#         else: raise InvalidEnumerationType('FeedType {} not available'.format(ft))
     
 
     def getAddress(self,ref=None,adr=None,model=None,prefix=''):
@@ -110,15 +111,15 @@ class AddressFactory(object):
         '''casts address from curent to requested address-type'''
         return Address.clone(adr, self.getAddress())
     
-    @staticmethod
-    def filterPI(ppi):
-        '''filters out possible Processing Instructions'''
-        sppi = str(ppi)
-        if sppi.find('#')>-1:
-            dflt = re.search('default=(\w+)',sppi)
-            oneof = re.search('oneof=(\w+)',sppi)#first as default
-            return dflt.group(1) if dflt else (oneof.group(1) if oneof else None)
-        return ppi
+#     @staticmethod
+#     def filterPI(ppi):
+#         '''filters out possible Processing Instructions'''
+#         sppi = str(ppi)
+#         if sppi.find('#')>-1:
+#             dflt = re.search('default=(\w+)',sppi)
+#             oneof = re.search('oneof=(\w+)',sppi)#first as default
+#             return dflt.group(1) if dflt else (oneof.group(1) if oneof else None)
+#         return ppi
         
 
 class AddressFeedFactory(AddressFactory):
@@ -189,7 +190,7 @@ class AddressChangeFactory(AddressFeedFactory):
     DEF_REF = FeedType.reverse[AFFT]
     addrtype = AddressChange
     reqtype = ActionType
-    def __init__(self,ref=DEF_REF):
+    def __init__(self,ref):
         super(AddressChangeFactory,self).__init__(ref)
 
 
@@ -198,39 +199,21 @@ class AddressResolutionFactory(AddressFeedFactory):
     DEF_REF = FeedType.reverse[AFFT]
     addrtype = AddressResolution
     reqtype = ApprovalType
-    def __init__(self,ref=DEF_REF):
+    def __init__(self,ref):
         super(AddressResolutionFactory,self).__init__(ref)
         
     def getAddress(self,ref=None,adr=None,model=None,prefix='',warnings=[]):
-        '''Sets a refault address object and adds empty warning attribute'''
+        '''Sets a default address object and adds empty warning attribute'''
         adrr = super(AddressResolutionFactory,self).getAddress(ref,adr,model,prefix)
         #adrr.setWarnings(warnings)
         return adrr
 
-
-class TemplateReader(object):
-    tp = TP
-    def __init__(self):
-        for t1 in self.tp:
-            for t2 in self.tp[t1]:
-                with open(os.path.join(P,'{}.{}.template'.format(t1,t2)),'r') as handle:
-                    tstr = handle.read()
-                    #print 'read template',t1t,t2t
-                    self.tp[t1][t2] = eval(tstr) if tstr else ''
-            #response address type is the template of the address-json we get from the api
-            with open(os.path.join(P,'{}.response.template'.format(t1)),'r') as handle:
-                tstr = handle.read()
-                self.tp[t1]['response'] = eval(tstr) if tstr else ''
-
-    def get(self):
-        return self.tp
-    
     
 def test():
     from pprint import pprint as pp
-    af_f = AddressFactory.getInstance(FeedType.FEATURES)
-    af_c = AddressFactory.getInstance(FeedType.CHANGEFEED)
-    af_r = AddressFactory.getInstance(FeedType.RESOLUTIONFEED)
+    af_f = FeatureFactory.getInstance(FeatureType.ADDRESS,FeedType.FEATURES)
+    af_c = FeatureFactory.getInstance(FeatureType.ADDRESS,FeedType.CHANGEFEED)
+    af_r = FeatureFactory.getInstance(FeatureType.ADDRESS,FeedType.RESOLUTIONFEED)
     
     
     axx = af_r.getAddress()

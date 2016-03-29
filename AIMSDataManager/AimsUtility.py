@@ -14,9 +14,10 @@ import time
 from AimsLogging import Logger
 
 # C O N S T A N T S
-
+#turn test mode on or off, on appends test path to all request urls
+TEST_MODE = False
 #time to wait for threads to join after stop has been called eg On BB move (s)
-THREAD_JOIN_TIMEOUT = 5
+THREAD_JOIN_TIMEOUT = 30
 #max number of features to request per page 
 MAX_FEATURE_COUNT = 1000
 #first page (to not backfill past)
@@ -32,7 +33,7 @@ LAST_PAGE_GUESS = 10
 #initial page number indicating page search is required
 NULL_PAGE_VALUE = 0
 #automatically inset warnings into resolution feed features. very slow, enable only if RF is small
-ENABLE_RESOLUTION_FEED_WARNINGS = True
+ENABLE_ENTITY_EVALUATION = True
 #filename for persisted feed data
 LOCALADL = 'aimsdata'
 #zero southwest coordinate used for instantiation and to prevent unnecessary feature fetching
@@ -128,13 +129,42 @@ class Enumeration(object):
         enums['index'] = 0
         return type('Enum', (IterEnum,), enums)
 
+class FeedRef(object):
+    '''Convenience container class holding Entity/Feed type key'''
+    def __init__(self,et_ft):
+        self._et = et_ft[0]
+        self._ft = et_ft[1]
+        
+    def __str__(self,trunc=3):
+        return '{}{}'.format(FeatureType.reverse[self._et].title()[:trunc],FeedType.reverse[self._ft].title()[:trunc]) 
+    
+    def __hash__(self):
+        return hash((self._et, self._ft))
+
+    def __eq__(self, other):
+        return isinstance(other,FeedRef) and self._et==other._et and self._ft==other._ft    
+
+    def __ne__(self, other):
+        return not(self == other)
+    
+    @property
+    def k(self): return '{}.{}'.format(FeatureType.reverse[self._et].lower(),FeedType.reverse[self._ft].lower()) 
+    @property
+    def et(self): return self._et
+    @et.setter
+    def et(self,et): pass#self._et = et
+    @property
+    def ft(self): return self._ft
+    @ft.setter
+    def ft(self,ft): pass#self._ft = ft
+    
 
 class InvalidEnumerationType(Exception): pass
 
 
 
 FeedType = Enumeration.enum('FEATURES','CHANGEFEED','RESOLUTIONFEED')
-EntityType = Enumeration.enum('ADDRESS','GROUPS')
+FeatureType = Enumeration.enum('ADDRESS','GROUPS')
 
 #address changefeed action
 ActionType = Enumeration.enum('ADD', 'RETIRE','UPDATE')
@@ -151,6 +181,19 @@ ApprovalType.HTTP =            ('POST',    'POST',    'PUT')
 GroupActionType = Enumeration.enum('REPLACE','UPDATE','SUBMIT','CLOSE','ADD', 'REMOVE','ADDRESS')
 GroupActionType.PATH =            ('replace','',      'sumbit','close','add', 'remove','address','')
 GroupActionType.HTTP =            ('POST',   'PUT',   'POST',  'POST', 'POST','POST',  'GET')
+
+#group resolutionfeed approval
+GroupApprovalType = Enumeration.enum('ACCEPT',  'DECLINE', 'ADDRESS', 'UPDATE')
+#GroupApprovalType.LABEL =           ('Accepted','Declined','Information','Under Review')
+GroupApprovalType.PATH =            ('accept',  'decline', 'address', '')
+GroupApprovalType.HTTP =            ('POST',    'POST',    'GET',     'PUT')
+
+
+FEEDS = {'AF':FeedRef((FeatureType.ADDRESS,FeedType.FEATURES)),'AC':FeedRef((FeatureType.ADDRESS,FeedType.CHANGEFEED)),
+         'AR':FeedRef((FeatureType.ADDRESS,FeedType.RESOLUTIONFEED)),'GC':FeedRef((FeatureType.GROUPS,FeedType.CHANGEFEED)),
+         'GR':FeedRef((FeatureType.GROUPS,FeedType.RESOLUTIONFEED))}
+FIRST = {'AC':FeedRef((FeatureType.ADDRESS,FeedType.CHANGEFEED)),'AR':FeedRef((FeatureType.ADDRESS,FeedType.RESOLUTIONFEED)),
+         'GC':FeedRef((FeatureType.GROUPS,FeedType.CHANGEFEED)), 'GR':FeedRef((FeatureType.GROUPS,FeedType.RESOLUTIONFEED))}
 
 
    

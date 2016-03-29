@@ -12,37 +12,28 @@
 ################################################################################
 
 #http://devassgeo01:8080/aims/api/address/features - properties
-import re
 from AimsUtility import ActionType,ApprovalType,FeedType
 from AimsLogging import Logger
-from gtk._gtk import PositionType
+from Feature import Feature 
 
-aimslog = None
+
+#aimslog = None
 
         
 #------------------------------------------------------------------------------
 # G R O U P 
 
-class  Group(object):
+class  Group(Feature):
     
-    global aimslog
-    aimslog = Logger.setup()
+    #global aimslog
+    #aimslog = Logger.setup()
     
     def __init__(self, ref=None): 
         #aimslog.info('AdrRef.{}'.format(ref))
-        self._ref = ref
+        super(Group,self).__init__(ref)
     
     def __str__(self):
-        #return 'ADR.{}.{}.{}.{}'.format(self._ref,self.type,self.getAddressId(),self._version)
         return 'GRP.{}.{}'.format(self._ref,self.type)
-    
-    #generic validators
-    @staticmethod
-    def _vString(sval): return isinstance(sval,str) #alpha only filter?
-    @staticmethod
-    def _vInt(ival): return isinstance(ival, int) #range filter?
-    @staticmethod
-    def _vDate(date): return Group._vString(date) and bool(re.match('^\d{4}-\d{2}-\d{2}$',date)) 
     
     
     def setVersion (self, version): 
@@ -54,10 +45,7 @@ class  Group(object):
         self._changeGroupId = changeGroupId
     def getChangeGroupId(self): 
         return self._changeGroupId
-    def setAddressId (self, addressId): 
-        self._components_addressId = addressId
-    def getAddressId(self): 
-        return self._components_addressId   
+
           
     def setSourceReason (self, sourceReason): 
         self._workflow_sourceReason = sourceReason       
@@ -86,8 +74,58 @@ class  Group(object):
         for attr in a.__dict__.keys(): setattr(b,attr,getattr(a,attr))
         return b
     
+
+class GroupRequestFeed(Group):          
+    def setVersion (self, version): self._version = version if Group._vInt(version) else None
     
+    def setMeta(self, meta = None):
+        if not hasattr(self,'meta'): self.meta = meta if meta else FeatureMetaData()
+        
+    def getMeta(self): 
+        return self.meta if hasattr(self, 'meta') else None    
     
+    def setRequestId(self,requestId):
+        self.setMeta()
+        self.meta.requestId = requestId      
+          
+    def getRequestId(self):
+        return self.meta.requestId if hasattr(self,'meta') else None
+    
+    def setErrors(self,errors):
+        self.setMeta()
+        self.meta.errors = errors      
+          
+    def getErrors(self):
+        return self.meta.errors if hasattr(self,'meta') else None
+    
+      
+class GroupChange(GroupRequestFeed):
+    ''' UI address change class ''' 
+    type = FeedType.CHANGEFEED
+    #DA = DEF_ADDR[type]
+    
+    def __init__(self, ref=None): 
+        super(GroupChange,self).__init__(ref)    
+        
+    def __str__(self):
+        return 'GRPC.{}.{}'.format(self._ref,self.type)
+    
+    def filter(self):
+        pass
+    
+class GroupResolution(GroupRequestFeed):
+    ''' UI address change class ''' 
+    type = FeedType.RESOLUTIONFEED
+    #DA = DEF_ADDR[type]
+    
+    def __init__(self, ref=None): 
+        super(GroupResolution,self).__init__(ref)    
+        
+    def __str__(self):
+        return 'GRPR.{}.{}'.format(self._ref,self.type)
+    
+    def filter(self):
+        pass
     
     
     
