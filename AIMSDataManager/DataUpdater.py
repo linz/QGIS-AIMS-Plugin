@@ -30,6 +30,7 @@ from AimsApi import AimsApi
 from AimsUtility import FeedRef,ActionType,ApprovalType,FeatureType,FeedType,ENABLE_ENTITY_EVALUATION
 from Address import Entity
 from AimsLogging import Logger
+from FeatureFactory import FeatureFactory
 
 aimslog = None
 
@@ -65,42 +66,55 @@ class DataUpdater(threading.Thread):
     def run(self):
         '''Main updater run method for feed cycling gets single page of addresses from API'''
         aimslog.info('GET.{} {} - Page{}'.format(self.ref,self.etft,self.page))
-        addrlist = []
+        featlist = []
         for feature in self.api.getOnePage(self.etft,self.sw,self.ne,self.page):
-            #This applies to both groups and address, only get res feed nested data
-            if self.etft.ft == FeedType.RESOLUTIONFEED and ENABLE_ENTITY_EVALUATION:
-                cid = self.cid(feature)#feature['properties']['changeId']
-                featurelist = []
-                feat = self.api.getOneFeature(self.etft,cid)
-                if feat == {u'class': [u'error']}: 
-                    #if the feature request returns the not-supposed-to-happen error, it gets special treatment
-                    aimslog.error('Invalid API response {}'.format(feat))
-                    a = self.getfeat(model=feature['properties'])
-                    featurelist.append(Entity.getInstance())
-                #elif feat['class'] == 'validation':
-                #    e = Entity.getInstance('validation')
-                #    e = self.getEntityInstance()
-                #elif self.etft.et==FeatureType.GROUPS:#feat['class'] == 'address':
-                #    e = Entity.getInstance('address')
-                else:
-                    a = self.getfeat(model=feat['properties'])
-                    for e in feat['entities']:
-                        featurelist.append(Entity.getInstance(e))
-                a._setEntities(featurelist)
-            else:
-                #just return the main feedlevel address objects
-                a = self.getfeat(model=feature['properties'])
-            addrlist += [a,]
-        self.queue.put(addrlist)
+            featlist.append(self.process(feature,self.etft))            
+        self.queue.put(featlist)
         
-#     def version(self):
-#         jc = self.api.getOneFeature(FeedRef((self.etft.et,self.oft)),self.identifier)
-#         if jc['properties'].has_key('version'):
-#             return jc['properties']['version']
-#         else:
-#             #WORKAROUND
-#             aimslog.warn('No version number available for addressId={}'.format(self.identifier))
-#             return 1
+    def process(self,feature,etft):
+        '''process an individual feature, pulling nested entities on 3E'''
+        if etft.ft == FeedType.RESOLUTIONFEED and ENABLE_ENTITY_EVALUATION:
+            cid = self.cid(feature)#feature['properties']['changeId']
+            featurelist = []
+            feat = self.api.getOneFeature(etft,cid)
+            if feat == {u'class': [u'error']}: 
+                #if the feature request returns the not-supposed-to-happen error, it gets special treatment
+                aimslog.error('Invalid API response {}'.format(feat))
+                a = self.getfeat(model=feature['properties'])
+                featurelist.append(Entity.getInstance())
+            elif feat['class'][0] == 'validation':
+                e = Entity.getInstance('validation')
+                e = self.getEntityInstance()
+            #HACK (until we figure out what eS is delivering in next patch)
+            #-------------------------------
+            elif feat['class'][0] == 'resolutiongroup':
+                g = self.getfeat(model=feat['properties'])#group
+                feat2 = self.api.getOneFeature(etft,'{}/address'.format(cid))#group entity/adr list
+                etft2 = FeedRef((FeatureType.ADDRESS,FeedType.RESOLUTIONFEED))
+                afactory2 = FeatureFactory.getInstance(etft2)
+                for f in feat2['entities']:
+                    a = afactory2.getAddress(model=f['properties'])
+                    flist2 = []
+                    for e in f['entities']:
+                        flist2.append(Entity.getInstance(e))
+                    a._setEntities(flist2)
+                    featurelist.append(a)
+                g._setEntities(featurelist)
+                return g
+            #--------------------------------    
+            #elif etft.et==FeatureType.GROUPS:#feat['class'] == 'address':
+            #    e = Entity.getInstance('address')
+            else:
+                #process any nested entities
+                a = self.getfeat(model=feat['properties'])
+                for e in feat['entities']:
+                    featurelist.append(Entity.getInstance(e))
+            a._setEntities(featurelist)
+        else:
+            #just return the main feedlevel address objects
+            a = self.getfeat(model=feature['properties'])
+        return a
+        
         
     @staticmethod
     def getInstance(etft):
@@ -140,7 +154,7 @@ class DataUpdaterGroup(DataUpdater):
         self.getfeat = self.afactory.getGroup   
          
     def cid(self,f):
-        return f['properties']['groupChangeId']
+        return f['properties']['changeGroupId']
         
     def getEntityInstance(self):
         return Entity.getInstance('validation')

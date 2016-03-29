@@ -329,25 +329,19 @@ class Address(Feature):
 class AddressRequestFeed(Address):          
     def setVersion (self, version): self._version = version if Address._vInt(version) else None
     
-    def setMeta(self, meta = None):
-        if not hasattr(self,'meta'): self.meta = meta if meta else FeatureMetaData()
-        
-    def getMeta(self): 
-        return self.meta if hasattr(self, 'meta') else None    
-    
-    def setRequestId(self,requestId):
-        self.setMeta()
-        self.meta.requestId = requestId      
-          
-    def getRequestId(self):
-        return self.meta.requestId if hasattr(self,'meta') else None
-    
-    def setErrors(self,errors):
-        self.setMeta()
-        self.meta.errors = errors      
-          
-    def getErrors(self):
-        return self.meta.errors if hasattr(self,'meta') else None
+#     def setRequestId(self,requestId):
+#         self.setMeta()
+#         self.meta.requestId = requestId      
+#           
+#     def getRequestId(self):
+#         return self.meta.requestId if hasattr(self,'meta') else None
+#     
+#     def setErrors(self,errors):
+#         self.setMeta()
+#         self.meta.errors = errors      
+#           
+#     def getErrors(self):
+#         return self.meta.errors if hasattr(self,'meta') else None
 
         
 
@@ -388,13 +382,6 @@ class AddressResolution(AddressRequestFeed):
         if hasattr(self, '_components_addressNumberHigh'): fullNumber+= ('-'+str(self._components_addressNumberHigh))
         if hasattr(self, '_components_addressNumberSuffix'): fullNumber+=str(self._components_addressNumberSuffix)      
         return fullNumber 
-        
-    def _setEntities(self,entities):
-        self.setMeta()
-        self.meta.entities = entities
- 
-    def _getEntities(self):
-        return self.meta.entities
 
                 
 #------------------------------------------------------------------------------   
