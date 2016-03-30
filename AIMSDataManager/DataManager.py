@@ -20,7 +20,7 @@ from FeatureFactory import FeatureFactory
 #from DataUpdater import DataUpdater
 from DataSync import DataSync,DataSyncFeatures,DataSyncFeeds
 from datetime import datetime as DT
-from AimsUtility import FeedRef,ActionType,ApprovalType,FeatureType,FeedType,Configuration,FEEDS,FIRST
+from AimsUtility import FeedRef,ActionType,ApprovalType,GroupActionType,GroupApprovalType,FeatureType,FeedType,Configuration,FEEDS,FIRST
 from AimsUtility import THREAD_JOIN_TIMEOUT,LOCALADL,SWZERO,NEZERO,NULL_PAGE_VALUE as NPV
 from AimsLogging import Logger
 
@@ -198,13 +198,13 @@ class DataManager(object):
         
     #----------------------------
     def acceptAddress(self,address,reqid=None):
-        self._addressApprove(addrss,ApprovalType.ACCEPT,reqid)    
+        self._addressApprove(address,ApprovalType.ACCEPT,reqid)    
 
     def declineAddress(self,address,reqid=None):
-        self._addressApprove(addrss,ApprovalType.DECLINE,reqid)
+        self._addressApprove(address,ApprovalType.DECLINE,reqid)
     
     def repairAddress(self,address,reqid=None):
-        self._addressApprove(addrss,ApprovalType.UPDATE,reqid) 
+        self._addressApprove(address,ApprovalType.UPDATE,reqid) 
         
     def _addressApprove(self,address,at,reqid=None):
         if reqid: address.setRequestId(reqid)
@@ -275,16 +275,12 @@ class Persistence():
             self.ADL = self._initADL() 
             #default tracker, gets overwritten
             #page = (lowest page fetched, highest page number fetched)
-            self.tracker[FEEDS['AF']] = {'page':[1,1],    'index':1,'threads':0,'interval':30}    
-            self.tracker[FEEDS['AC']] = {'page':[NPV,NPV],'index':1,'threads':0,'interval':125}  
-            self.tracker[FEEDS['AR']] = {'page':[1,1],    'index':1,'threads':0,'interval':10} 
+            self.tracker[FEEDS['AF']] = {'page':[1,1],    'index':1,'threads':2,'interval':30}    
+            self.tracker[FEEDS['AC']] = {'page':[NPV,NPV],'index':1,'threads':1,'interval':125}  
+            self.tracker[FEEDS['AR']] = {'page':[1,1],    'index':1,'threads':1,'interval':10} 
             self.tracker[FEEDS['GC']] = {'page':[1,1],    'index':1,'threads':1,'interval':130}  
             self.tracker[FEEDS['GR']] = {'page':[1,1],    'index':1,'threads':1,'interval':55}             
             
-#             self.tracker[(FeatureType.ADDRESS,FeedType.FEATURES)] =       {'page':[1,1],'index':1,'threads':2,'interval':1000}    
-#             self.tracker[(FeatureType.ADDRESS,FeedType.CHANGEFEED)] =     {'page':[1,1],'index':1,'threads':1,'interval':1000}  
-#             self.tracker[(FeatureType.ADDRESS,FeedType.RESOLUTIONFEED)] = {'page':[1,1],'index':1,'threads':1,'interval':1000} 
-#             self.tracker[(FeatureType.GROUPS, FeedType.CHANGEFEED)] =     {'page':[1,1],'index':1,'threads':1,'interval':1000} 
             self.write() 
     
     def _initADL(self):
