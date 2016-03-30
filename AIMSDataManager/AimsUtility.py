@@ -61,6 +61,10 @@ aimslog = Logger.setup()
 #     @constant
 #     def BAR(): return 'bar'
 
+
+class AimsException(Exception):
+    def __init__(self,em,ll=aimslog.error): ll('ERR {} - {}'.format(type(self).__name__,em))
+
 class Configuration(object):
     def __init__(self): 
         self.config = ConfigReader()
@@ -159,7 +163,7 @@ class FeedRef(object):
     def ft(self,ft): pass#self._ft = ft
     
 
-class InvalidEnumerationType(Exception): pass
+class InvalidEnumerationType(AimsException): pass
 
 
 

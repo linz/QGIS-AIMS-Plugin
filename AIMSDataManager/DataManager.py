@@ -143,6 +143,10 @@ class DataManager(object):
             self.ds[etft].join(THREAD_JOIN_TIMEOUT)
             if self.ds[etft].isAlive(): aimslog.warn('{} ! Thread JOIN timeout'.format(etft))
         #del self.ds[etft]
+        elif not isinstance(etft,FeedRef):
+            aimslog.error('Invalid FeedRef:STOP requested')
+        else:
+            aimslog.warn('Requested thread {} does not exist')
         self._check()
         
     #Push and Pull relate to features feed actions

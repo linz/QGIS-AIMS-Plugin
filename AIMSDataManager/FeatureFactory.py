@@ -15,7 +15,7 @@
 import re
 import os
 import copy
-from AimsUtility import FeatureType,ActionType,ApprovalType,FeedType,InvalidEnumerationType
+from AimsUtility import FeatureType,ActionType,ApprovalType,FeedType,InvalidEnumerationType,AimsException
 from AimsUtility import SKIP_NULL, DEF_SEP
 from Address import Address,AddressChange,AddressResolution,Position
 from AimsLogging import Logger
@@ -36,7 +36,7 @@ P = os.path.join(os.path.dirname(__file__),'../resources/')
 
 aimslog = None
  
-class AddressException(Exception): pass    
+class AddressException(AimsException): pass    
 class AddressFieldRequiredException(AddressException): pass
 class AddressFieldIncorrectException(AddressException): pass
 class AddressConversionException(AddressException): pass

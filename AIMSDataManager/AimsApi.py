@@ -14,7 +14,7 @@ import httplib2
 
 from Address import Address,AddressChange,AddressResolution#,AimsWarning
 from Config import ConfigReader
-from AimsUtility import FeatureType,ActionType,ApprovalType,GroupActionType,GroupApprovalType,FeedType
+from AimsUtility import FeatureType,ActionType,ApprovalType,GroupActionType,GroupApprovalType,FeedType,AimsException
 from AimsUtility import MAX_FEATURE_COUNT,TEST_MODE
 from AimsLogging import Logger
 
@@ -22,7 +22,7 @@ from AimsLogging import Logger
 aimslog = Logger.setup()
 TESTPATH = 'test' if TEST_MODE else ''
 
-class AimsHttpException(Exception):
+class AimsHttpException(AimsException):
     def __init__(self,em,ll=aimslog.error): 
         ll('{} - {}'.format(type(self).__name__,em))
 

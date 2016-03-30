@@ -22,7 +22,7 @@ from collections import OrderedDict
 
 aimslog = Logger.setup()
 
-class InvalidParameterException(Exception): pass
+class InvalidParameterException(AimsException): pass
 
 class Mapping():
     #format = feildname: [objProp, getter]

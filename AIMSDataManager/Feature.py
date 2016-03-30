@@ -39,7 +39,7 @@ class Feature(object):
     @staticmethod
     def _vInt(ival): return isinstance(ival, int) #range filter?
     @staticmethod
-    def _vDate(date): return Address._vString(date) and bool(re.match('^\d{4}-\d{2}-\d{2}$',date)) 
+    def _vDate(date): return Feature._vString(date) and bool(re.match('^\d{4}-\d{2}-\d{2}$',date)) 
     
 
     #---------------------------------------------------

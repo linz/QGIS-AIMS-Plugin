@@ -76,7 +76,7 @@ class  Group(Feature):
     
 
 class GroupRequestFeed(Group):          
-    def setVersion (self, version): self._version = version if Group._vInt(version) else None
+    def setVersion (self, version): self._version = version if Feature._vInt(version) else None
     
 #     def setMeta(self, meta = None):
 #         if not hasattr(self,'meta'): self.meta = meta if meta else FeatureMetaData()

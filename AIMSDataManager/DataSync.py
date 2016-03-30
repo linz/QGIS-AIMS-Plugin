@@ -198,10 +198,13 @@ class DataSync(Observable):
         '''Stop all subordinate threads'''
         for r in pool:
             aimslog.info('Stopping DataUpdater thread {}'.format(r['ref']))
-            self.duinst[r['ref']].stop()
-            self.duinst[r['ref']].join(THREAD_JOIN_TIMEOUT)
-            if self.duinst[r['ref']].isAlive():aimslog.warn('Thread timeout {}'.format(r['ref']))
-            del self.duinst[r['ref']]
+            try:
+                self.duinst[r['ref']].stop()
+                self.duinst[r['ref']].join(THREAD_JOIN_TIMEOUT)
+                if self.duinst[r['ref']].isAlive():aimslog.warn('Thread timeout {}'.format(r['ref']))
+                del self.duinst[r['ref']]
+            except Exception as e:
+                aimslog.warn('Error stopping {}. {} '.format(r['ref'],e))
             pool.remove(r)
 
             
