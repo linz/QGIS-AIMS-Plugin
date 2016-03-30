@@ -22,7 +22,7 @@ from Address import Address,AddressChange,AddressResolution,Position
 from AimsLogging import Logger
 #from FeatureFactory import TemplateReader
 
-P = os.path.join(os.path.dirname(__file__),'../resources/')
+#P = os.path.join(os.path.dirname(__file__),'../resources/')
 
 
 ET = FeatureType.ADDRESS

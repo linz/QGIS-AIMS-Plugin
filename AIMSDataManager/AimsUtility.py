@@ -11,6 +11,7 @@
 from Config import ConfigReader
 from functools import wraps, partial
 import time
+import os
 from AimsLogging import Logger
 
 # C O N S T A N T S
@@ -34,8 +35,6 @@ LAST_PAGE_GUESS = 10
 NULL_PAGE_VALUE = 0
 #automatically inset warnings into resolution feed features. very slow, enable only if RF is small
 ENABLE_ENTITY_EVALUATION = True
-#filename for persisted feed data
-LOCALADL = 'aimsdata'
 #zero southwest coordinate used for instantiation and to prevent unnecessary feature fetching
 SWZERO = (0.0, 0.0)
 #zero northeast coordinate used for instantiation and to prevent unnecessary feature fetching
@@ -44,7 +43,10 @@ NEZERO = (0.0, 0.0)
 SKIP_NULL = True
 #address attribute to dict separator character
 DEF_SEP = '_'
-
+#path to resources directory
+RES_PATH = os.path.join(os.path.dirname(__file__),'../resources/')
+#filename for persisted feed data
+LOCAL_ADL = 'aimsdata'
 
 aimslog = Logger.setup()
 
@@ -63,7 +65,9 @@ aimslog = Logger.setup()
 
 
 class AimsException(Exception):
-    def __init__(self,em,ll=aimslog.error): ll('ERR {} - {}'.format(type(self).__name__,em))
+    def __init__(self,em,al=aimslog.error): al('ERR {} - {}'.format(type(self).__name__,em))
+    
+class InvalidEnumerationType(AimsException): pass
 
 class Configuration(object):
     def __init__(self): 
@@ -161,10 +165,6 @@ class FeedRef(object):
     def ft(self): return self._ft
     @ft.setter
     def ft(self,ft): pass#self._ft = ft
-    
-
-class InvalidEnumerationType(AimsException): pass
-
 
 
 FeedType = Enumeration.enum('FEATURES','CHANGEFEED','RESOLUTIONFEED')

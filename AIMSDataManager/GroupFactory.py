@@ -22,7 +22,7 @@ from Group import GroupChange,GroupResolution
 from AimsLogging import Logger
 #from FeatureFactory import TemplateReader
 
-P = os.path.join(os.path.dirname(__file__),'../resources/')
+#P = os.path.join(os.path.dirname(__file__),'../resources/')
 
 ET = FeatureType.GROUPS
 
