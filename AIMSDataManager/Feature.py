@@ -64,6 +64,23 @@ class Feature(object):
         #IMPORTANT. Attribute value compare only useful with distinct (deepcopy'd) instances
         return all((getattr(self,a)==getattr(other,a) for a in self.__dict__.keys()))
     
+    
+    #---------------------------------
+    
+    def setRequestId(self,requestId):
+        self.setMeta()
+        self.meta.requestId = requestId      
+           
+    def getRequestId(self):
+        return self.meta.requestId if hasattr(self,'meta') else None
+     
+    def setErrors(self,errors):
+        self.setMeta()
+        self.meta.errors = errors      
+           
+    def getErrors(self):
+        return self.meta.errors if hasattr(self,'meta') else None
+    
 class FeatureMetaData(object):
     '''Embedded container for address meta information eg warnings, errors and tracking'''
     def __init__(self):self._requestId,self._statusMessage,self._errors,self._entities = 0,'',[],[]
@@ -71,7 +88,7 @@ class FeatureMetaData(object):
     @property
     def requestId(self): return self._requestId
     @requestId.setter
-    def requestId(self, requestId): self._requestId = requestId if Address._vInt(requestId) else None
+    def requestId(self, requestId): self._requestId = requestId if Feature._vInt(requestId) else None
     
     @property
     def entities(self): return self._entities  

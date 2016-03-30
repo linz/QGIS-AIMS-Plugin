@@ -78,8 +78,6 @@ class AddressFactory(FeatureFactory):
         
         if overwrite:
             try:
-                if data.has_key('codes') and data['codes']['parcelId']==6702011:
-                    pass
                 adr = self._readAddress(adr, data, prefix)        
             except Exception as e:
                 msg = 'Error creating address object using model {} with message "{}"'.format(data,e)
