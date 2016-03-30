@@ -12,6 +12,7 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 import re
+import time 
 
 from Ui_NewAddressDialog import Ui_NewAddressDialog
 from AIMSDataManager.FeatureFactory import FeatureFactory
@@ -66,7 +67,7 @@ class UpdateAddressDialog(Ui_NewAddressDialog, QDialog):
     def closeDlg (self):
         ''' close form '''
         self._controller.setPreviousMapTool()
-        self.reject()
+        self.close()
     
     # now that 'update' requires the same concept - seems like this needs to be shipped somewhere modular
     def submitAddress(self):
@@ -76,13 +77,11 @@ class UpdateAddressDialog(Ui_NewAddressDialog, QDialog):
         # submit address obj to DM     
         af = {ft:FeatureFactory.getInstance(FeatureType.ADDRESS,ft) for ft in FeedType.reverse}
         self.feature = af[FeedType.CHANGEFEED].cast(self.feature)
-        self._controller.uidm.updateAddress(self.feature, self.feature._components_addressId)
-        # need to check the response 
-        
-        r = self._controller.dm.response(FeedType.CHANGEFEED)
-        r = self._controller.dm.response(FeedType.CHANGEFEED)
-        r = self._controller.dm.response(FeedType.CHANGEFEED)
-        
+        respId = int(time.time()) 
+        self._controller.uidm.updateAddress(self.feature, respId)
+        # check the response 
+        UiUtility.handleResp(respId, self._controller, FeedType.CHANGEFEED, self.iface)
+               
         self.closeDlg()
        
     def fullNumChanged(self, newnumber):

@@ -4,54 +4,42 @@
     <edittype widgetv2type="TextEdit" name="id">
       <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
     </edittype>
-    <edittype widgetv2type="TextEdit" name="ldt_loc_id">
+    <edittype widgetv2type="TextEdit" name="appellation">
       <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
     </edittype>
-    <edittype widgetv2type="TextEdit" name="img_id">
-      <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
-    </edittype>
-    <edittype widgetv2type="TextEdit" name="fen_id">
-      <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
-    </edittype>
-    <edittype widgetv2type="TextEdit" name="toc_code">
-      <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
-    </edittype>
-    <edittype widgetv2type="TextEdit" name="alt_id">
-      <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
-    </edittype>
-    <edittype widgetv2type="TextEdit" name="area">
-      <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
-    </edittype>
-    <edittype widgetv2type="TextEdit" name="nonsurvey_def">
-      <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
-    </edittype>
-    <edittype widgetv2type="TextEdit" name="appellation_date">
+    <edittype widgetv2type="TextEdit" name="affected_surveys">
       <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
     </edittype>
     <edittype widgetv2type="TextEdit" name="parcel_intent">
       <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
     </edittype>
+    <edittype widgetv2type="TextEdit" name="topology_type">
+      <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
+    </edittype>
     <edittype widgetv2type="TextEdit" name="status">
       <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
     </edittype>
-    <edittype widgetv2type="TextEdit" name="total_area">
+    <edittype widgetv2type="TextEdit" name="statutory_actions">
       <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
     </edittype>
-    <edittype widgetv2type="TextEdit" name="calculated_area">
+    <edittype widgetv2type="TextEdit" name="land_district">
       <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
     </edittype>
-    <edittype widgetv2type="TextEdit" name="audit_id">
+    <edittype widgetv2type="TextEdit" name="titles">
       <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
     </edittype>
-    <edittype widgetv2type="TextEdit" name="se_row_id">
+    <edittype widgetv2type="TextEdit" name="survey_area">
+      <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
+    </edittype>
+    <edittype widgetv2type="TextEdit" name="calc_area">
       <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
     </edittype>
   </edittypes>
   <renderer-v2 symbollevels="0" type="RuleRenderer">
     <rules key="{82d4af77-548f-4edc-8573-82ad95044023}">
-      <rule filter=" &quot;parcel_intent&quot; not in ('ROAD', 'RAIL', 'HYDR')" key="{fa341051-8aae-45fe-952d-5f72fa479e5a}" symbol="0" label="Land"/>
-      <rule filter="&quot;parcel_intent&quot;  =  'HYDR'&#xa;" key="{2e4f5ef6-636c-4406-8457-a792e9223030}" symbol="1" label="Hydro"/>
-      <rule filter="&quot;parcel_intent&quot;  =  'RLWY or&#xa;&quot;parcel_intent&quot;  =  'ROAD'" key="{aab1ca16-7351-4415-9a58-c83e7263ad6d}" symbol="2" label="Road Rail"/>
+      <rule filter=" &quot;parcel_intent&quot; not in ('Road', 'Railway', 'Hydro')" key="{fa341051-8aae-45fe-952d-5f72fa479e5a}" symbol="0" label="Land"/>
+      <rule filter="&quot;parcel_intent&quot;  =  'Hydro'&#xa;" key="{2e4f5ef6-636c-4406-8457-a792e9223030}" symbol="1" label="Hydro"/>
+      <rule filter="&quot;parcel_intent&quot;  =  'Railway or&#xa;&quot;parcel_intent&quot;  =  'Road'" key="{aab1ca16-7351-4415-9a58-c83e7263ad6d}" symbol="2" label="Road Rail"/>
     </rules>
     <symbols>
       <symbol alpha="0.0980392" type="fill" name="0">
@@ -88,7 +76,7 @@
       </symbol>
       <symbol alpha="0.0980392" type="fill" name="1">
         <layer pass="0" class="ShapeburstFill" locked="0">
-          <prop k="blur_radius" v="0"/>
+          <prop k="blur_radius" v="3"/>
           <prop k="color" v="69,191,251,255"/>
           <prop k="color1" v="0,0,255,255"/>
           <prop k="color2" v="0,255,0,255"/>

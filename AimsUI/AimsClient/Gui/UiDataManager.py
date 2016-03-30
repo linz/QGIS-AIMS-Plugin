@@ -4,13 +4,19 @@ Created on 11/02/2016
 @author: splanzer
 '''
 from AIMSDataManager.DataManager import DataManager
+from AIMSDataManager.AimsLogging import Logger
+from AIMSDataManager.AimsUtility import FeedType
 from PyQt4.QtCore import *
 from qgis.core import QgsRectangle
 import time
 
+uilog = None
 
 class UiDataManager(QObject):
     #dataChangedSignal = pyqtSignal()  <-- cannot have a non terminating program while testing
+    #logging 
+    global uilog
+    uilog = Logger.setup(lf='uiLog')
     
     def __init__(self, iface, controller=None):
         QObject.__init__(self)
@@ -23,8 +29,8 @@ class UiDataManager(QObject):
         self.feedNum = 9
         self.data = {0:[],1:[],2:[]}
         
-    def returnData(self):
-        return self.data
+    #def returnData(self): < -- redundant?
+    #    return self.data
         
     def keyData(self, listofAddresses, feedtype):
         if listofAddresses:
@@ -33,7 +39,7 @@ class UiDataManager(QObject):
             li = dict((getattr(x, id), x) for x in listofAddresses)
             self.data[feedtype] = li  
 
-    def setdata(self, dataRefresh, FeedType):        
+    def setData(self, dataRefresh, FeedType):        
         self.keyData(dataRefresh, FeedType)
         #self.dataChangedSignal.emit()
     
@@ -48,19 +54,25 @@ class UiDataManager(QObject):
         self.uptdData = kwargs
         self.feedNum = args
         
-    def refresh(self, feedType): 
+    def refresh(self, feedType):
+        uilog.info('awaitng "notify" from observer for feedtype: {0}'.format(feedType))
         self.uptdData = []
-        self.feedNum = 9
-            
-        for i in range(0,15):
+        self.feedNum = 9            
+        for i in range(0,16):
             time.sleep(1)
             if feedType == self.feedNum and self.uptdData :
-                self.setdata(self.uptdData, feedType)
+                self.setData(self.uptdData, feedType)
                 break
-
-
+        #logging
+        if i != 16:
+            uilog.info('retrieved new data (feedType: {0}) via observer after {1} seconds '.format(feedType, i))
+        else: 
+            uilog.info('no new data retrieved via observer after {0} seconds '.format(i))
+            
     def setBbox(self, sw, ne):
-        self.dm.setbb(sw ,ne)   
+        self.dm.setbb(sw ,ne) 
+        #logging
+        uilog.info('new bbox passed to dm.setbb')
 
     def featureData(self):
         ''' update data and return AIMS features '''
@@ -70,39 +82,49 @@ class UiDataManager(QObject):
             return self.data.get(0)
         except: 
             return None
+         
+#     def reviewData(self):
+#         ''' update data and return Review Items '''
+#         self.refresh(2)
+#         try:
+#             return self.data.get(2)
+#         except: 
+#             return None
         
-    def reviewData(self):
-        ''' update data and return Review Items '''
-        self.refresh(2)
-        try:
-            return self.data.get(2)
-        except: 
-            return None
-    
+        # Temp 
+        #data = self.dm.pull()
+        #self.setData(data[2], 2)
+        
     def restartDm(self, feedType):
+        uilog.info('request sent to restart feed: {0}'.format(feedType))
         self.dm.restart(feedType)
     
-    def addAddress(self, feature):
-        self.dm.addAddress(feature)
+    def addAddress(self, feature, respId = None):
+        uilog.info('obj with respId: {0} passed to convenience method "{1}" '.format(respId, 'addAddress'))
+        self.dm.addAddress(feature, respId)
         
-    def retireAddress(self, feature):
-        self.dm.retireAddress(feature)
+    def retireAddress(self, feature, respId = None):
+        uilog.info('obj with respId: {0} passed to convenience method "{1}" '.format(respId, 'retireAddress'))
+        self.dm.retireAddress(feature, respId)
         
     def updateAddress(self, feature, respId = None):
+        uilog.info('obj with respId: {0} passed to convenience method "{1}" '.format(respId, 'updateAddress'))
         self.dm.updateAddress(feature, respId)        
 
-    def decline(self, feature):
-        self.dm.declineAddress(feature)
+    def decline(self, feature, respId = None):
+        uilog.info('obj with respId: {0} passed to convenience method "{1}" '.format(respId, 'declineAddress'))
+        self.dm.declineAddress(feature, respId)
     
-    def accept(self, feature):
-        self.dm.acceptAddress(feature)
-        r = self.dm.response()
-        r = self.dm.response()
-        r = self.dm.response()
+    def accept(self, feature, respId = None):
+        uilog.info('obj with respId: {0} passed to convenience method "{1}" '.format(respId, 'acceptAddress'))
+        self.dm.acceptAddress(feature, respId)
+    
+    def repairAddress(self, feature, respId = None):
+        uilog.info('obj with respId: {0} passed to convenience method "{1}" '.format(respId, 'repairAddress'))
+        self.dm.repairAddress(feature, respId)
         
-    
-    def repairAddress(self, feature):
-        self.dm.repairAddress(feature)
+    def response (self, feedtype = None):
+        return self.dm.response(feedtype)
 
     def fullNumber(self, k):  # this has now been added to the review class. TO BE REMOVED
         ''' compiles a full number 'label' for the UI '''
@@ -128,7 +150,10 @@ class UiDataManager(QObject):
 
     def reviewTableData(self):
         ''' review data as formatted for the review data model '''
-        self.refresh(2)
+        #restart feed
+        self.restartDm(FeedType.RESOLUTIONFEED)
+        self.refresh(2) 
+
         rData = {}
         kProperties = ['_changeId', '_changeType', '_workflow_sourceOrganisation', '_workflow_submitterUserName', '_workflow_submittedDate']
         vProperties = ['_components_lifecycle', '_components_townCity' , '_components_suburbLocality']
@@ -152,7 +177,6 @@ class UiDataManager(QObject):
     
     def singleFeatureObj(self, objkey):
         return self.data.get(0).get(objkey)
-    
     def singleReviewObj(self, objkey):
         return self.data.get(2).get(objkey)
     

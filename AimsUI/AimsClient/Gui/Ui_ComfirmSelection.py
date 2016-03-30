@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'AimsUI/Ui_UpdAddressDialog.ui'
+# Form implementation generated from reading ui file 'AimsUI/AimsClient/Gui/Ui_ComfirmSelection.ui'
 #
-# Created: Fri Dec 11 09:55:58 2015
+# Created: Wed Mar 23 16:37:12 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -23,32 +23,32 @@ except AttributeError:
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig)
 
-class Ui_UpdAddressDialog(object):
-    def setupUi(self, DelAddressDialog):
-        DelAddressDialog.setObjectName(_fromUtf8("DelAddressDialog"))
-        DelAddressDialog.resize(621, 270)
-        self.verticalLayout_2 = QtGui.QVBoxLayout(DelAddressDialog)
+class Ui_ComfirmSelection(object):
+    def setupUi(self, ComfirmSelection):
+        ComfirmSelection.setObjectName(_fromUtf8("ComfirmSelection"))
+        ComfirmSelection.resize(621, 270)
+        self.verticalLayout_2 = QtGui.QVBoxLayout(ComfirmSelection)
         self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
-        self.label_2 = QtGui.QLabel(DelAddressDialog)
+        self.label_2 = QtGui.QLabel(ComfirmSelection)
         self.label_2.setObjectName(_fromUtf8("label_2"))
         self.verticalLayout_2.addWidget(self.label_2)
-        self.uSadListView = DictionaryListView(DelAddressDialog)
+        self.uSadListView = DictionaryListView(ComfirmSelection)
         self.uSadListView.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
         self.uSadListView.setObjectName(_fromUtf8("uSadListView"))
         self.verticalLayout_2.addWidget(self.uSadListView)
-        self.buttonBox = QtGui.QDialogButtonBox(DelAddressDialog)
+        self.buttonBox = QtGui.QDialogButtonBox(ComfirmSelection)
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
         self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName(_fromUtf8("buttonBox"))
         self.verticalLayout_2.addWidget(self.buttonBox)
 
-        self.retranslateUi(DelAddressDialog)
-        QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("accepted()")), DelAddressDialog.accept)
-        QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("rejected()")), DelAddressDialog.reject)
-        QtCore.QMetaObject.connectSlotsByName(DelAddressDialog)
+        self.retranslateUi(ComfirmSelection)
+        QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("accepted()")), ComfirmSelection.accept)
+        QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("rejected()")), ComfirmSelection.reject)
+        QtCore.QMetaObject.connectSlotsByName(ComfirmSelection)
 
-    def retranslateUi(self, DelAddressDialog):
-        DelAddressDialog.setWindowTitle(_translate("DelAddressDialog", "Select feature to update", None))
-        self.label_2.setText(_translate("DelAddressDialog", "Select feature to update", None))
+    def retranslateUi(self, ComfirmSelection):
+        ComfirmSelection.setWindowTitle(_translate("ComfirmSelection", "Select feature to update", None))
+        self.label_2.setText(_translate("ComfirmSelection", "Please Confirm Your Selection:", None))
 
 from AimsUI.AimsClient.Gui.DictionaryList import DictionaryListView

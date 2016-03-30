@@ -7,7 +7,7 @@ from qgis.core import *
 from qgis.gui import *
 
 from AimsClient.Gui.UpdateAddressDialog import UpdateAddressDialog
-from AimsUI.AimsClient.Gui.Ui_UpdAddressDialog import Ui_UpdAddressDialog
+from AimsUI.AimsClient.Gui.Ui_ComfirmSelection import Ui_ComfirmSelection
 from AimsUI.AimsClient.Gui.UiUtility import UiUtility
 
 
@@ -81,7 +81,7 @@ class UpdateAddressTool(QgsMapToolIdentify):
             UpdateAddressDialog.updateAddress(self._feature, self._layers, self._controller, self._iface.mainWindow())
             self._canvas.scene().removeItem(self._marker)
 
-class updateAddressDialog(Ui_UpdAddressDialog, QDialog ):
+class updateAddressDialog(Ui_ComfirmSelection, QDialog ):
 
     def __init__( self, parent ):
         QDialog.__init__(self,parent)

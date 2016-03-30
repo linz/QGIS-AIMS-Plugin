@@ -6,12 +6,20 @@ from PyQt4.QtGui import *
 from qgis.core import *
 from qgis.gui import *
 
-from AimsUI.AimsClient.Gui.Ui_MoveAddressDialog import Ui_MoveAddressDialog
+import time
+
+from AimsUI.AimsClient.Gui.Ui_ComfirmSelection import Ui_ComfirmSelection
 from AimsUI.AimsClient.Gui.UiUtility import UiUtility
 from AIMSDataManager.AimsUtility import FeedType
 from AIMSDataManager.AddressFactory import AddressFactory
+from AIMSDataManager.AimsLogging import Logger
+
+uilog = None
 
 class MoveAddressTool(QgsMapToolIdentify):
+    # logging
+    global uilog
+    uilog = Logger.setup(lf='uiLog')
 
     def __init__(self, iface, layerManager, controller):
         QgsMapToolIdentify.__init__(self, iface.mapCanvas())
@@ -108,17 +116,15 @@ class MoveAddressTool(QgsMapToolIdentify):
                     feature._addressedObject_addressPositions[0].setCoordinates(coords)
                     af = {ft:AddressFactory.getInstance(ft) for ft in FeedType.reverse}
                     feature = af[FeedType.CHANGEFEED].cast(feature)
-                    self._controller.uidm.updateAddress(feature)
-                         
-                    r = self._controller.dm.response(FeedType.CHANGEFEED)
-                    r = self._controller.dm.response(FeedType.CHANGEFEED)
-                    r = self._controller.dm.response(FeedType.CHANGEFEED)               
+                    respId = int(time.time()) 
+                    self._controller.uidm.updateAddress(feature, respId)
+                    UiUtility.handleResp(respId, self._controller, FeedType.CHANGEFEED, self._iface)
                 
                 self._features = []
                 self._canvas.scene().removeItem(self._marker)
                 self._sb.clearMessage()
 
-class MoveAddressDialog(Ui_MoveAddressDialog, QDialog ):
+class MoveAddressDialog(Ui_ComfirmSelection, QDialog ):
 
     def __init__( self, parent ):
         QDialog.__init__(self,parent)

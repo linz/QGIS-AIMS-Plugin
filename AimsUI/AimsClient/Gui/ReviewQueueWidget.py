@@ -1,4 +1,13 @@
-
+################################################################################
+#
+# Copyright 2015 Crown copyright (c)
+# Land Information New Zealand and the New Zealand Government.
+# All rights reserved
+#
+# This program is released under the terms of the 3 clause BSD license. See the 
+# LICENSE file for more information.
+#
+################################################################################
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 from qgis.core import *
@@ -9,6 +18,7 @@ from QueueEditorWidget import QueueEditorWidget
 from AIMSDataManager.AimsUtility import FeedType
 from QueueModelView import *
 from UiUtility import UiUtility 
+import time
 
 import sys # temp
 
@@ -66,7 +76,6 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.popUserCombo()
     
     def refreshData(self): # < -- ALSO NEED TO REFRESH THE FILTER
-        self.uidm.restartDm(FeedType.RESOLUTIONFEED)
         self.reviewData = self.uidm.reviewTableData()
         self.groupModel.beginResetModel()
         self.featureModel.beginResetModel()
@@ -143,7 +152,9 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         if self.feature: 
             UiUtility.formToObj(self)
             #self.uQueueEditor.updateFeature(curFeature)
-            self.uidm.repairAddress(self.feature)
+            respId = int(time.time())
+            self.uidm.repairAddress(self.feature, respId)
+            UiUtility.handleResp(respId, self._controller, FeedType.RESOLUTIONFEED, self.iface)
             self.feature = None
             # at this point i need to refresh the review queue UI
             # will create signals
@@ -154,15 +165,19 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
             objRef = self.groupModel.getObjRef(row)
             reviewObj = self.singleReviewObj(objRef)
             if reviewObj: 
-                self.uidm.decline(reviewObj)
+                respId = int(time.time()) 
+                self.uidm.decline(reviewObj, respId)
+                UiUtility.handleResp(respId, self._controller, FeedType.RESOLUTIONFEED, self.iface)
     
     def accept(self):
         #curFeature = self.singleReviewObj(self.currentObjKey)
         for row in self.groupTableView.selectionModel().selectedRows():
             objRef = self.groupModel.getObjRef(row)
             reviewObj = self.singleReviewObj(objRef)
-            if reviewObj: 
-                self.uidm.accept(reviewObj)
+            if reviewObj:
+                respId = int(time.time()) 
+                self.uidm.accept(reviewObj, respId)
+                UiUtility.handleResp(respId, self._controller, FeedType.RESOLUTIONFEED, self.iface)
         
     def display(self):
         if self.currentObjKey:

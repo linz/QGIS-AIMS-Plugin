@@ -1,12 +1,25 @@
+################################################################################
+#
+# Copyright 2015 Crown copyright (c)
+# Land Information New Zealand and the New Zealand Government.
+# All rights reserved
+#
+# This program is released under the terms of the 3 clause BSD license. See the 
+# LICENSE file for more information.
+#
+################################################################################
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
 from qgis.core import *
 from qgis.gui import *
 
-from AimsUI.AimsClient.Gui.Ui_DelAddressDialog import Ui_DelAddressDialog
+import time
+
+from AimsUI.AimsClient.Gui.Ui_ComfirmSelection import Ui_ComfirmSelection
 from AIMSDataManager.AimsUtility import FeedType
 from AIMSDataManager.AddressFactory import AddressFactory
+from AimsUI.AimsClient.Gui.UiUtility import UiUtility
 
 class DelAddressTool(QgsMapToolIdentify):
 
@@ -73,13 +86,11 @@ class DelAddressTool(QgsMapToolIdentify):
                 featureToRetire = self._controller.uidm.singleFeatureObj(retireFeature['components']['addressId'])
                 af = {ft:AddressFactory.getInstance(ft) for ft in FeedType.reverse}
                 featureToRetire = af[FeedType.CHANGEFEED].cast(featureToRetire)
-                self._controller.uidm.retireAddress(featureToRetire)
-                
-                r = self._controller.dm.response(FeedType.CHANGEFEED)
-                r = self._controller.dm.response(FeedType.CHANGEFEED)
-                r = self._controller.dm.response(FeedType.CHANGEFEED)
+                respId = int(time.time()) 
+                self._controller.uidm.retireAddress(featureToRetire, respId)
+                UiUtility.handleResp(respId, self._controller, FeedType.CHANGEFEED, self._iface)
              
-class DelAddressDialog( Ui_DelAddressDialog, QDialog ):
+class DelAddressDialog( Ui_ComfirmSelection, QDialog ):
 
     def __init__( self, parent ):
         QDialog.__init__(self,parent)

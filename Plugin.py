@@ -18,7 +18,7 @@ try:
     sys.path.append('/opt/eclipse/plugins/org.python.pydev_4.4.0.201510052309/pysrc')
     from pydevd import settrace, GetGlobalDebugger
     settrace()
-    threading.settrace(GetGlobalDebugger().trace_dispatch)
+
 except:
     pass
 

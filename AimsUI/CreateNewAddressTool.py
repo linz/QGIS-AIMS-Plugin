@@ -19,7 +19,8 @@ from qgis.gui import *
 
 from AimsClient.Gui.NewAddressDialog import NewAddressDialog
 from AimsUI.AimsClient.Gui.UiUtility import UiUtility
-from AIMSDataManager.AimsUtility import FeedType
+from AIMSDataManager.AimsUtility import FeedType, FeatureType, FeedRef
+from AIMSDataManager.AddressFactory import AddressFactory
 
 class CreateNewAddressTool(QgsMapToolIdentify):
     ''' tool for creating new address information ''' 
@@ -30,6 +31,7 @@ class CreateNewAddressTool(QgsMapToolIdentify):
         self._layers = layerManager
         self._controller = controller
         self._canvas = iface.mapCanvas()
+        self.af = AddressFactory.getInstance(FeedRef((FeatureType.ADDRESS, FeedType.CHANGEFEED)))
         self.activate()
         
     def activate(self):
@@ -55,12 +57,7 @@ class CreateNewAddressTool(QgsMapToolIdentify):
         
         if mouseEvent.button() == Qt.LeftButton:
             results = self.identify(mouseEvent.x(), mouseEvent.y(), self.ActiveLayer, self.VectorLayer)
-            # Ensure feature list and highlighting is reset
-            
-            if not self._enabled:
-                # The tool is disabled
-                return
-            
+            # Ensure feature list and highlighting is reset            
             if len(results) == 0: 
                 # no results - therefore we ain't snapping
                 coords = self.toMapCoordinates(QPoint(mouseEvent.x(), mouseEvent.y()))
@@ -68,24 +65,17 @@ class CreateNewAddressTool(QgsMapToolIdentify):
                 # snap by taking the coords from the point within the 
                 # tolerance as defined by QGIS maptool settings under options
                 coords = results[0].mFeature.geometry().asPoint()
-             
-            try:
-                self.setPoint(coords)
-            except:
-                msg = str(sys.exc_info()[1])
-                QMessageBox.warning(self._iface.mainWindow(),"Error creating point",msg)
+            self.setPoint(coords)
     
     def setMarker(self, coords):
         self._marker = UiUtility.highlight(self._iface, coords, QgsVertexMarker.ICON_X)
    
     def setPoint( self, coords ):
         ''' guarantee srs and pass to the API '''
-        self._enabled = False
         self.setMarker(coords)
-        coords = UiUtility.transform(self._iface, coords)    
-        
+        coords = UiUtility.transform(self._iface, coords)            
         # init new address object and open form
-        afc = self._controller.af.getInstance(FeedType.CHANGEFEED)
+        afc = self.af.getInstance(FeedType.CHANGEFEED)
         addInstance = afc.getAddress()#(adr='AddressChange',model='')
         NewAddressDialog.newAddress(addInstance, self._layers, self._controller, self._iface.mainWindow(), coords)
         self._canvas.scene().removeItem(self._marker)
