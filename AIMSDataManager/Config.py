@@ -18,6 +18,7 @@ UNAME = os.environ['USERNAME'] if re.search('win',sys.platform) else os.environ[
 DEF_CONFIG = {'db':{'host':'127.0.0.1'},'user':{'name':UNAME}}
 AIMS_CONFIG = os.path.join(os.path.dirname(__file__),'aimsConfig.ini')
 
+
 class ConfigReader(object):
     
     cp = ConfigParser.ConfigParser()
@@ -26,6 +27,7 @@ class ConfigReader(object):
         self.cp.read(AIMS_CONFIG)
         self._readConfig()
         self._fillConfig()
+        #self._setConst()
         
     def _readConfig(self):
         '''Read the CP to a dict'''
@@ -54,7 +56,6 @@ class ConfigReader(object):
     def configSectionMap(self,section=None):
         '''per section config matcher'''
         return self.d[section] if section else self.d
-        
-    
-        
+            
+
         

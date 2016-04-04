@@ -9,6 +9,8 @@
 #
 ################################################################################
 
+import os
+import sys
 import Queue
 import pickle
 import copy
@@ -21,8 +23,8 @@ from FeatureFactory import FeatureFactory
 from DataSync import DataSync,DataSyncFeatures,DataSyncFeeds
 from datetime import datetime as DT
 from AimsUtility import FeedRef,ActionType,ApprovalType,GroupActionType,GroupApprovalType,FeatureType,FeedType,Configuration,FEEDS,FIRST
-from AimsUtility import THREAD_JOIN_TIMEOUT,RES_PATH,LOCAL_ADL,SWZERO,NEZERO,NULL_PAGE_VALUE as NPV
 from AimsLogging import Logger
+from Const import THREAD_JOIN_TIMEOUT,RES_PATH,LOCAL_ADL,SWZERO,NEZERO,NULL_PAGE_VALUE as NPV
 
 
 aimslog = None
@@ -138,21 +140,16 @@ class DataManager(object):
         '''Restart a specific thread type'''
         #NB UI feature request. 
         aimslog.warn('WARNING {} Thread Restart requested'.format(etft))
-        if self.ds.has_key(etft) and self.ds[etft]:#.isAlive():
+        if self.ds.has_key(etft) and self.ds[etft] and self.ds[etft].isAlive():
             self.ds[etft].stop() 
             self.ds[etft].join(THREAD_JOIN_TIMEOUT)
             if self.ds[etft].isAlive(): aimslog.warn('{} ! Thread JOIN timeout'.format(etft))
         #del self.ds[etft]
         elif not isinstance(etft,FeedRef):
-            aimslog.error('Invalid FeedRef:STOP requested')
+            aimslog.error('Invalid FeedRef on STOP request')
         else:
             aimslog.warn('Requested thread {} does not exist')
         self._check()
-        
-    #Push and Pull relate to features feed actions
-    def push(self,newds):
-        pass
-        #return self._scan(newds)
         
     def pull(self):
         '''Return copy of the ADL. Speedup, insist on deepcopy at address level'''
@@ -170,18 +167,25 @@ class DataManager(object):
         #self.persist.write()
         return self.persist.ADL[etft]
     
-    def response(self,et=FeatureType.ADDRESS,ft=FeedType.RESOLUTIONFEED):
+    def response(self,etft=FeedRef((FeatureType.ADDRESS,FeedType.RESOLUTIONFEED))):
         '''Returns any features lurking in the response queue'''
         resp = ()
         #while self.ioq.has_key((et,ft)) and not self.ioq[(et,ft)]['resp'].empty():
-        while (et,ft) in FEEDS and not self.ioq[(et,ft)]['resp'].empty():
-            resp += (self.ioq[(et,ft)]['resp'].get(),)
+        while etft in FEEDS and not self.ioq[etft]['resp'].empty():
+            resp += (self.ioq[etft]['resp'].get(),)
         return resp
         
       
-    def _populate(self,feature):
+    def _populateAddress(self,feature):
         '''Fill in any required+missing fields if a default value is known (in this case the configured user)'''
         if not hasattr(feature,'_workflow_sourceUser') or not feature.getSourceUser(): feature.setSourceUser(self.conf['user'])
+        if not hasattr(feature,'_workflow_sourceOrganisation') or not feature.getSourceOrganisation(): feature.setSourceOrganisation(self.conf['org'])
+        return feature    
+    
+    def _populateGroup(self,feature):
+        '''Fill in any required+missing fields if a default value is known (in this case the configured user)'''
+        if not hasattr(feature,'_workflow_sourceUser') or not feature.getSourceUser(): feature.setSourceUser(self.conf['user'])
+        if not hasattr(feature,'_submitterUserName') or not feature.getSubmitterUserName(): feature.setSubmitterUserName(self.conf['user'])
         return feature
     
     #convenience methods 
@@ -197,7 +201,7 @@ class DataManager(object):
         
     def _addressAction(self,address,at,reqid=None):
         if reqid: address.setRequestId(reqid)
-        self._populate(address).setChangeType(ActionType.reverse[at].title())
+        self._populateAddress(address).setChangeType(ActionType.reverse[at].title())
         self.ioq[FeedRef((FeatureType.ADDRESS,FeedType.CHANGEFEED))]['in'].put({at:(address,)})   
         
     #----------------------------
@@ -228,7 +232,7 @@ class DataManager(object):
     def _groupApprove(self,group,gat,reqid=None):
         if reqid: group.setRequestId(reqid)
         group.setQueueStatus(GroupApprovalType.LABEL[gat].title())
-        self.ioq[FeedRef((FeatureType.GROUPS,FeedType.RESOLUTIONFEED))]['in'].put({gat:(address,)}) 
+        self.ioq[FeedRef((FeatureType.GROUPS,FeedType.RESOLUTIONFEED))]['in'].put({gat:(group,)}) 
          
     #----------------------------
     def replaceGroup(self,group,reqid=None):
@@ -251,9 +255,8 @@ class DataManager(object):
   
     def _groupAction(self,group,gat,reqid=None):        
         if reqid: group.setRequestId(reqid)
-        #self._populate(group).setChangeType(GroupActionType.reverse[gat].title())
-        self.setChangeType(GroupActionType.reverse[gat].title())
-        self.ioq[FeedRef((FeatureType.GROUPS,FeedType.CHANGEFEED))]['in'].put({gat:(address,)})   
+        self._populateGroup(group).setChangeType(GroupActionType.reverse[gat].title())
+        self.ioq[FeedRef((FeatureType.GROUPS,FeedType.CHANGEFEED))]['in'].put({gat:(group,)})   
         
     #----------------------------
     #CM
@@ -272,6 +275,7 @@ class Persistence():
     tracker = {}
     coords = {'sw':SWZERO,'ne':NEZERO}
     ADL = None
+    RP = os.path.join(os.path.dirname(__file__),'..',RES_PATH)
     
     def __init__(self,initialise=False):
         '''read or setup the tracked data'''
@@ -292,7 +296,7 @@ class Persistence():
         return {f:[] for f in FEEDS.values()}
     
     #Disk Access
-    def read(self,localds=RES_PATH+LOCAL_ADL):
+    def read(self,localds=RP+LOCAL_ADL):
         '''unpickle local store'''  
         try:
             archive = pickle.load(open(localds,'rb'))
@@ -302,7 +306,7 @@ class Persistence():
             return False
         return True
     
-    def write(self, localds=RES_PATH+LOCAL_ADL):
+    def write(self, localds=RP+LOCAL_ADL):
         try:
             #archive = [self.tracker,self.coords,self.ADL]
             archive = [self.tracker,self.ADL]
@@ -316,6 +320,14 @@ refsnap = None
 
 class LocalTest():
     flag = False
+    
+    def t2(self):
+        #from Config import ConfigReader as CR
+        import sys
+        ref = sys.modules
+        import Const# import const
+        print Const.DEF_SEP
+        
     
     def notify(self,observable,args,kwargs):
         self.flag = True
@@ -535,8 +547,8 @@ class LocalTest():
             #aimslog.info('*** Main OUTPUT {} - [{}]'.format(out[o],len(out[o])))
             aimslog.info('*** Main OUTPUT {} [{}]'.format(o,len(out[o])))
         
-        
-        resp = dm.response(ft)
+        etft = FeedRef((FeatureType.ADDRESS,ft))
+        resp = dm.response(etft)
         for r in resp:
             #aimslog.info('*** Main RESP {} - [{}]'.format(r,len(resp))) 
             aimslog.info('*** Main RESP {} [{}]'.format(r,len(resp)))
@@ -578,5 +590,6 @@ class LocalTest():
 if __name__ == '__main__':
     print 'start'
     lt = LocalTest()
+    #lt.t2()
     lt.test()  
     print 'finish'

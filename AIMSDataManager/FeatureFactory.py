@@ -14,9 +14,10 @@
 #http://devassgeo01:8080/aims/api/address/features - properties
 import re
 import os
+import sys
 import copy
 from AimsUtility import FeatureType,ActionType,ApprovalType,FeedType,InvalidEnumerationType,AimsException
-from AimsUtility import SKIP_NULL, DEF_SEP,RES_PATH
+from Const import SKIP_NULL, DEF_SEP,RES_PATH
 from Address import Address,AddressChange,AddressResolution,Position
 from AimsLogging import Logger
 
@@ -49,6 +50,8 @@ class FeatureFactory(object):
     DEF_REF = FeedType.reverse[AFFT]
     addrtype = Address
     reqtype = None
+    #RP = eval(RES_PATH)
+    RP = os.path.join(os.path.dirname(__file__),'..',RES_PATH)
     
     global aimslog
     aimslog = Logger.setup()
@@ -94,12 +97,12 @@ class FeatureFactory(object):
     def readTemplate(tp):
         for t1 in tp:
             for t2 in tp[t1]:
-                with open(os.path.join(RES_PATH,'{}.{}.template'.format(t1,t2)),'r') as handle:
+                with open(os.path.join(self.RP,'{}.{}.template'.format(t1,t2)),'r') as handle:
                     tstr = handle.read()
                     #print 'read template',t1t,t2t
                     tp[t1][t2] = eval(tstr) if tstr else ''
             #response address type is the template of the address-json we get from the api
-            with open(os.path.join(RES_PATH,'{}.response.template'.format(t1)),'r') as handle:
+            with open(os.path.join(self.RP,'{}.response.template'.format(t1)),'r') as handle:
                 tstr = handle.read()
                 tp[t1]['response'] = eval(tstr) if tstr else ''
         return tp

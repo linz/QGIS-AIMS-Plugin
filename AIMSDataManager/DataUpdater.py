@@ -28,7 +28,7 @@ import threading
 import Queue
 from AimsApi import AimsApi 
 from AimsUtility import FeedRef,ActionType,ApprovalType,FeatureType,FeedType,AimsException
-from AimsUtility import ENABLE_ENTITY_EVALUATION
+from Const import ENABLE_ENTITY_EVALUATION
 from Address import Entity
 from AimsLogging import Logger
 from FeatureFactory import FeatureFactory
