@@ -232,7 +232,7 @@ class Controller(QObject):
         if isinstance(self.iface.mapCanvas().mapTool(), GetRcl) == False:          
             self._currentMapTool = self.iface.mapCanvas().mapTool()
             # logging 
-            uilog.info('{0} started'.format(self.iface.mapCanvas().mapTool())) 
+            uilog.info('*** TOOL CHNAGE ***    {0} started'.format(self.iface.mapCanvas().mapTool())) 
         
     
     def setPreviousMapTool(self):

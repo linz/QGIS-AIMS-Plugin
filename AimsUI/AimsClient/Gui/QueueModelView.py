@@ -27,20 +27,8 @@ class QueueView(QTableView):
         self.verticalHeader().setDefaultSectionSize(17)
         self.setSortingEnabled(True)
         self.setEditTriggers(QAbstractItemView.AllEditTriggers)
-        self.setStyleSheet("* { gridline-color: gray }")
+        #self.setStyleSheet("* { gridline-color: gray }")
         
-        p = QPalette(self.palette())
-        #This two for setting text color
-        p.setBrush(QPalette.Active, QPalette.HighlightedText,
-                    QBrush(QColor("red")))
-        p.setBrush(QPalette.Inactive, QPalette.HighlightedText,
-                    QBrush(QColor("red")))
-        
-        #this two for setting background color
-        p.setBrush(QPalette.Inactive, QPalette.Highlight,
-                    QBrush(QColor(255,0,0,127)))
-        p.setBrush(QPalette.Active, QPalette.Highlight,
-                    QBrush(QColor(255,0,0,127)))
                 
     def selectionChanged( self, selected, deselected ): #1
         QTableView.selectionChanged( self, selected, deselected )
@@ -93,8 +81,10 @@ class FeatureTableModel(QAbstractTableModel):
         return None
 
     def listClicked(self, index):
-        ''' return the associated obj '''
-        return self.dict_key[0]
+        ''' return the clicked on objs key '''
+        if type(self._data[self.dict_key][index][0]) is int:
+            return self._data[self.dict_key][index][0]
+        else: return self._data[self.dict_key][index][0][0]
             
         
 class GroupTableModel(QAbstractTableModel):
@@ -108,6 +98,7 @@ class GroupTableModel(QAbstractTableModel):
     def listClicked(self, row):
         key = self._data[row]
         self.groupModel.set_key(key)
+        return (self._data[row][0],self._data[row][1])
 
     def rowCount(self, QModelIndex_parent=None, *args, **kwargs):
         return len(self._data)
@@ -127,7 +118,7 @@ class GroupTableModel(QAbstractTableModel):
         self._data = sorted(data.keys())
     
     def getObjRef(self, rowIndex):
-        return self._data[rowIndex.row()][0] 
+        return (self._data[rowIndex.row()][0], self._data[rowIndex.row()][1]) 
     
     def getUsers(self):
         return list(set([i[3] for i in self._data]))

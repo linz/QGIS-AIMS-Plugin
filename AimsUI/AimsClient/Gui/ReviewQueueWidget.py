@@ -15,7 +15,7 @@ from qgis.utils import *
 
 from Ui_ReviewQueueWidget import Ui_ReviewQueueWidget
 from QueueEditorWidget import QueueEditorWidget
-from AIMSDataManager.AimsUtility import FeedType
+from AIMSDataManager.AimsUtility import FeedType, FEEDS
 from QueueModelView import *
 from UiUtility import UiUtility 
 import time
@@ -33,10 +33,11 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.setController( controller )
         self.iface = self._controller.iface
         self.uidm = self._controller.uidm
-        self.reviewData = self.uidm.reviewTableData()   
-        self.currentObjKey = None
+        self.reviewData = self.uidm.reviewTableData((FEEDS['AR'], FEEDS['GR']))   
+        self.currentFeatureKey = None
         self.currentAdrCoord = [0,0]
         self.feature = None
+        self.currentGroup = () #(id, type)
         
         # Connections
         self.uDisplayButton.clicked.connect(self.display)
@@ -47,11 +48,11 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
 
                
         # Features View 
-        featuresHeader = ['Full Number', 'Full Road', 'Life Cycle', 'Town', 'Suburb Locality']
+        featuresHeader = ['Id','Full Num', 'Full Road', 'Life Cycle', 'Town', 'Suburb Locality']
         self.featuresTableView = self.uFeaturesTableView
         self.featureModel = FeatureTableModel(self.reviewData, featuresHeader)
         self.featuresTableView.setModel(self.featureModel)
-        self.featuresTableView.rowSelected.connect(self.featureClicked)
+        self.featuresTableView.rowSelected.connect(self.featureSelected)
         self.featuresTableView.resizeColumnsToContents()
         self.featuresTableView.setColumnHidden(5, True)
         self.featuresTableView.selectRow(0)
@@ -65,8 +66,8 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self._groupProxyModel.setSourceModel(self.groupModel)
         self.groupTableView.setModel(self._groupProxyModel)
         self.groupTableView.resizeColumnsToContents()
-        self.groupTableView.rowSelected.connect( self.selectAddress )
-        
+        self.groupTableView.rowSelected.connect( self.groupSelected )
+                
         # connect combobox_users to view and model
         self.comboModelUser = QStandardItemModel()
         self.comboBoxUser.setView(QListView())
@@ -76,7 +77,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.popUserCombo()
     
     def refreshData(self): # < -- ALSO NEED TO REFRESH THE FILTER
-        self.reviewData = self.uidm.reviewTableData()
+        self.reviewData = self.uidm.reviewTableData((FEEDS['AR'], FEEDS['GR']))  
         self.groupModel.beginResetModel()
         self.featureModel.beginResetModel()
         self.groupModel.refreshData(self.reviewData)        
@@ -90,19 +91,24 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
             controller = Controller.instance()
         self._controller = controller
     
-    def singleReviewObj(self, objKey):
+    def singleReviewObj(self, feedType, objKey):
         if objKey: 
-            return self.uidm.singleReviewObj(objKey)
+            return self.uidm.singleReviewObj(feedType, objKey)
+    
+    def currentReviewFeature(self):
+        return self.uidm.currentReviewFeature(self.currentGroup, self.currentFeatureKey)
             
-    def featureClicked(self, row):
-        self.currentObjKey = self.featureModel.listClicked(row)
-        if self.currentObjKey:              
-            self.uQueueEditor.currentFeatureToUi(self.singleReviewObj(self.currentObjKey))
+    def featureSelected(self, row):
+        self.currentFeatureKey = self.featureModel.listClicked(row)
+        if self.currentGroup:              
+            self.uQueueEditor.currentFeatureToUi(self.currentReviewFeature())
         #emit feature chnaged --> editwidget to connect to signal
         #self.featureSelected.emit( feature )
         
-    def selectAddress( self, row ): #rename Select Group
-        self.groupModel.listClicked(row)
+    def groupSelected( self, row ): #rename Select Group
+        proxy_index = self.groupTableView.selectionModel().currentIndex()
+        sourceIndex = self._groupProxyModel.mapToSource(proxy_index)
+        self.currentGroup = self.groupModel.listClicked(sourceIndex.row())
         self.featuresTableView.selectRow(0)
    
     def itemPressedUser(self, index):
@@ -148,40 +154,36 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
     #def refreshData(self):
     #    self.reviewData = self.uidm.reviewTableData()
     def updateFeature(self):
-        self.feature = self.singleReviewObj(self.currentObjKey)
+        self.feature = self.singleReviewObj(self.currentFeatureKey)
         if self.feature: 
             UiUtility.formToObj(self)
-            #self.uQueueEditor.updateFeature(curFeature)
             respId = int(time.time())
             self.uidm.repairAddress(self.feature, respId)
             UiUtility.handleResp(respId, self._controller, FeedType.RESOLUTIONFEED, self.iface)
             self.feature = None
-            # at this point i need to refresh the review queue UI
-            # will create signals
-        
-    def decline(self):
-        #curFeature = self.singleReviewObj(self.currentObjKey)
+    
+    def reviewResolution(self, action):
         for row in self.groupTableView.selectionModel().selectedRows():
+            objRef = ()
             objRef = self.groupModel.getObjRef(row)
-            reviewObj = self.singleReviewObj(objRef)
+            feedType = FEEDS['GR'] if objRef[1] == 'Replace' else FEEDS['AR']
+            reviewObj = self.singleReviewObj(feedType, objRef[0])
             if reviewObj: 
                 respId = int(time.time()) 
-                self.uidm.decline(reviewObj, respId)
-                UiUtility.handleResp(respId, self._controller, FeedType.RESOLUTIONFEED, self.iface)
+                if action == 'accept':
+                    self.uidm.decline(reviewObj, respId)
+                elif action == 'decline':
+                    self.uidm.decline(reviewObj, respId)
+                #UiUtility.handleResp(respId, self._controller, FeedType.RESOLUTIONFEED, self.iface)
     
+    def decline(self):
+        self.reviewResolution('decline')
     def accept(self):
-        #curFeature = self.singleReviewObj(self.currentObjKey)
-        for row in self.groupTableView.selectionModel().selectedRows():
-            objRef = self.groupModel.getObjRef(row)
-            reviewObj = self.singleReviewObj(objRef)
-            if reviewObj:
-                respId = int(time.time()) 
-                self.uidm.accept(reviewObj, respId)
-                UiUtility.handleResp(respId, self._controller, FeedType.RESOLUTIONFEED, self.iface)
+        self.reviewResolution('accept')
         
     def display(self):
-        if self.currentObjKey:
-            coords = self.uidm.reviewItemCoords(self.currentObjKey) # should directly access coords
+        if self.currentFeatureKey:
+            coords = self.uidm.reviewItemCoords(self.currentFeatureKey) # should directly access coords
             if self.currentAdrCoord == coords: 
                 return
             self.currentAdrCoord = coords
