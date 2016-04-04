@@ -1,19 +1,14 @@
-'''
-v.0.0.1
 
-QGIS-AIMS-Plugin - AimsLogging
-
-Copyright 2011 Crown copyright (c)
-Land Information New Zealand and the New Zealand Government.
-All rights reserved
-
-This program is released under the terms of the new BSD license. See the 
-LICENSE file for more information.
-
-Created on 29/10/2015
-
-@author: jramsay
-'''
+################################################################################
+#
+# Copyright 2015 Crown copyright (c)
+# Land Information New Zealand and the New Zealand Government.
+# All rights reserved
+#
+# This program is released under the terms of the 3 clause BSD license. See the 
+# LICENSE file for more information.
+#
+################################################################################
 
 import logging
 import os

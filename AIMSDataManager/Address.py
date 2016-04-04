@@ -188,12 +188,7 @@ class Address(Feature):
     def setChangeId(self, changeId): 
         self._changeId = changeId
     def getChangeId(self): 
-        return self._changeId
-    
-    def setChangeType(self, changeType):
-        self._changeType = changeType
-    def getChangeType(self):
-        return self._changeType    
+        return self._changeId 
     
     def setQueueStatus(self, queueStatus):
         self._queueStatus = queueStatus
@@ -206,11 +201,6 @@ class Address(Feature):
         return self._components_addressId        
     def setSourceReason (self, sourceReason): 
         self._workflow_sourceReason = sourceReason    
-        
-    def setSourceUser (self, sourceUser): 
-        self._workflow_sourceUser = sourceUser    
-    def getSourceUser (self): 
-        return self._workflow_sourceUser
         
     def setStatusNotes(self, statusNotes):
         self._workflow_statusNotes = statusNotes

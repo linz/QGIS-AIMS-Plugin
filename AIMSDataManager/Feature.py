@@ -42,6 +42,21 @@ class Feature(object):
     def _vDate(date): return Feature._vString(date) and bool(re.match('^\d{4}-\d{2}-\d{2}$',date)) 
     
 
+    #COMMON---------------------------------------------    
+    
+    def setSourceUser (self, sourceUser): 
+        self._workflow_sourceUser = sourceUser    
+    def getSourceUser (self): 
+        return self._workflow_sourceUser    
+    def setSourceOrganisation (self, sourceOrganisation): 
+        self._workflow_sourceOrganisation = sourceOrganisation    
+    def getSourceOrganisation (self): 
+        return self._workflow_sourceOrganisation
+    def setChangeType(self, changeType):
+        self._changeType = changeType
+    def getChangeType(self):
+        return self._changeType   
+    
     #---------------------------------------------------
     
     def _setEntities(self,entities):

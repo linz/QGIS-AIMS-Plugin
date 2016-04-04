@@ -14,10 +14,11 @@
 #http://devassgeo01:8080/aims/api/address/features - properties
 import re
 import os
+import sys
 import copy
 from FeatureFactory import FeatureFactory
 from AimsUtility import FeatureType,GroupActionType,GroupApprovalType,FeedType,AimsException
-from AimsUtility import SKIP_NULL, DEF_SEP
+from Const import SKIP_NULL, DEF_SEP
 from Group import GroupChange,GroupResolution
 from AimsLogging import Logger
 #from FeatureFactory import TemplateReader

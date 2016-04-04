@@ -10,12 +10,13 @@
 #
 ################################################################################
 import json
+import sys
 import httplib2
 
 from Address import Address,AddressChange,AddressResolution#,AimsWarning
 from Config import ConfigReader
 from AimsUtility import FeatureType,ActionType,ApprovalType,GroupActionType,GroupApprovalType,FeedType,AimsException
-from AimsUtility import MAX_FEATURE_COUNT,TEST_MODE
+from Const import MAX_FEATURE_COUNT,TEST_MODE
 from AimsLogging import Logger
 
 

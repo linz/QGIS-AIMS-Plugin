@@ -57,6 +57,11 @@ class  Group(Feature):
     def getSourceUser (self): 
         return self._workflow_sourceUser
     
+    def setSubmitterUserName (self, submitterUserName): 
+        self._submitterUserName = submitterUserName    
+    def getSubmitterUserName (self): 
+        return self._submitterUserName   
+    
     
     def compare(self,other):
         '''Equality comparator'''
