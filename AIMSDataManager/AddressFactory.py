@@ -16,13 +16,13 @@ import re
 import os
 import copy
 from FeatureFactory import FeatureFactory
-from AimsUtility import FeatureType,ActionType,ApprovalType,FeedType,InvalidEnumerationType
+from AimsUtility import FeatureType,ActionType,ApprovalType,FeedType,InvalidEnumerationType,AimsException
 from AimsUtility import SKIP_NULL, DEF_SEP
 from Address import Address,AddressChange,AddressResolution,Position
 from AimsLogging import Logger
 #from FeatureFactory import TemplateReader
 
-P = os.path.join(os.path.dirname(__file__),'../resources/')
+#P = os.path.join(os.path.dirname(__file__),'../resources/')
 
 
 ET = FeatureType.ADDRESS
@@ -39,7 +39,7 @@ TP = {'{}.{}'.format(FeatureType.reverse[ET].lower(),a):b for a,b in zip(
 
 aimslog = None
  
-class AddressException(Exception): pass    
+class AddressException(AimsException): pass    
 class AddressFieldRequiredException(AddressException): pass
 class AddressFieldIncorrectException(AddressException): pass
 class AddressConversionException(AddressException): pass
@@ -80,8 +80,7 @@ class AddressFactory(FeatureFactory):
             try:
                 adr = self._readAddress(adr, data, prefix)        
             except Exception as e:
-                msg = 'Error creating address object using model {} with {}'.format(data,e)
-                aimslog.error(msg)
+                msg = 'Error creating address object using model {} with message "{}"'.format(data,e)
                 raise AddressCreationException(msg)
         return adr
         

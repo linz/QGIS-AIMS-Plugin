@@ -13,7 +13,7 @@
 ################################################################################
 
 #http://devassgeo01:8080/aims/api/address/features - properties
-from AimsUtility import FeatureType,ActionType,ApprovalType,FeedType
+from AimsUtility import FeatureType,ActionType,ApprovalType,FeedType,AimsException
 from AimsLogging import Logger
 from Feature import Feature,FeatureMetaData
 
@@ -26,7 +26,7 @@ aimslog = Logger.setup()
 #------------------------------------------------------------------------------
 # P O S I T I O N
 
-class InvalidPositionException(Exception):pass
+class InvalidPositionException(AimsException):pass
 PDEF = {'position':{'type':'Point','coordinates':[0.0,0.0],'crs':{'type':'name','properties':{'name':'urn:ogc:def:crs:EPSG::4167'}}},'positionType':'Unknown','primary':True}
     
 class Position(object):
@@ -183,7 +183,7 @@ class Address(Feature):
     
     
     # Set functions used to manipulate object properties   
-    def setPublishDate(self,d): self._publishDate = d if Address._vDate(d) else None
+    def setPublishDate(self,d): self._publishDate = d if Feature._vDate(d) else None
     
     def setChangeId(self, changeId): 
         self._changeId = changeId
@@ -328,7 +328,7 @@ class Address(Feature):
 #------------------------------------------------------------------------------
     
 class AddressRequestFeed(Address):          
-    def setVersion (self, version): self._version = version if Address._vInt(version) else None
+    def setVersion (self, version): self._version = version if Feature._vInt(version) else None
     
 #     def setRequestId(self,requestId):
 #         self.setMeta()

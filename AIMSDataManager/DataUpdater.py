@@ -27,14 +27,15 @@ import zipfile
 import threading
 import Queue
 from AimsApi import AimsApi 
-from AimsUtility import FeedRef,ActionType,ApprovalType,FeatureType,FeedType,ENABLE_ENTITY_EVALUATION
+from AimsUtility import FeedRef,ActionType,ApprovalType,FeatureType,FeedType,AimsException
+from AimsUtility import ENABLE_ENTITY_EVALUATION
 from Address import Entity
 from AimsLogging import Logger
 from FeatureFactory import FeatureFactory
 
 aimslog = None
 
-class DataUpdaterSelectionException(Exception):pass
+class DataUpdaterSelectionException(AimsException):pass
 
 class DataUpdater(threading.Thread):
     '''Mantenence thread comtrolling data updates and api interaction

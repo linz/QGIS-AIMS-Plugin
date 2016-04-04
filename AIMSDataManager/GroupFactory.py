@@ -16,13 +16,13 @@ import re
 import os
 import copy
 from FeatureFactory import FeatureFactory
-from AimsUtility import FeatureType,GroupActionType,GroupApprovalType,FeedType
+from AimsUtility import FeatureType,GroupActionType,GroupApprovalType,FeedType,AimsException
 from AimsUtility import SKIP_NULL, DEF_SEP
 from Group import GroupChange,GroupResolution
 from AimsLogging import Logger
 #from FeatureFactory import TemplateReader
 
-P = os.path.join(os.path.dirname(__file__),'../resources/')
+#P = os.path.join(os.path.dirname(__file__),'../resources/')
 
 ET = FeatureType.GROUPS
 
@@ -37,7 +37,7 @@ TP = {'{}.{}'.format(FeatureType.reverse[ET].lower(),a):b for a,b in zip(
     }
 aimslog = None
 
-class GroupException(Exception): pass    
+class GroupException(AimsException): pass    
 class GroupFieldRequiredException(GroupException): pass
 class GroupFieldIncorrectException(GroupException): pass
 class GroupConversionException(GroupException): pass

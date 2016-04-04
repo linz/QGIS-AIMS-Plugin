@@ -21,7 +21,7 @@ from FeatureFactory import FeatureFactory
 from DataSync import DataSync,DataSyncFeatures,DataSyncFeeds
 from datetime import datetime as DT
 from AimsUtility import FeedRef,ActionType,ApprovalType,GroupActionType,GroupApprovalType,FeatureType,FeedType,Configuration,FEEDS,FIRST
-from AimsUtility import THREAD_JOIN_TIMEOUT,LOCALADL,SWZERO,NEZERO,NULL_PAGE_VALUE as NPV
+from AimsUtility import THREAD_JOIN_TIMEOUT,RES_PATH,LOCAL_ADL,SWZERO,NEZERO,NULL_PAGE_VALUE as NPV
 from AimsLogging import Logger
 
 
@@ -143,6 +143,10 @@ class DataManager(object):
             self.ds[etft].join(THREAD_JOIN_TIMEOUT)
             if self.ds[etft].isAlive(): aimslog.warn('{} ! Thread JOIN timeout'.format(etft))
         #del self.ds[etft]
+        elif not isinstance(etft,FeedRef):
+            aimslog.error('Invalid FeedRef:STOP requested')
+        else:
+            aimslog.warn('Requested thread {} does not exist')
         self._check()
         
     #Push and Pull relate to features feed actions
@@ -288,7 +292,7 @@ class Persistence():
         return {f:[] for f in FEEDS.values()}
     
     #Disk Access
-    def read(self,localds=LOCALADL):
+    def read(self,localds=RES_PATH+LOCAL_ADL):
         '''unpickle local store'''  
         try:
             archive = pickle.load(open(localds,'rb'))
@@ -298,7 +302,7 @@ class Persistence():
             return False
         return True
     
-    def write(self, localds=LOCALADL):
+    def write(self, localds=RES_PATH+LOCAL_ADL):
         try:
             #archive = [self.tracker,self.coords,self.ADL]
             archive = [self.tracker,self.ADL]

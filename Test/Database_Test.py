@@ -37,7 +37,7 @@ TIMEOUT = 30
 #Bypass for timeout error raise. Delete in production
 BYPASS = False
 
-class TimeoutError(Exception): pass
+class TimeoutError(AimsException): pass
 
 def timeout(seconds=5, message="Timeout"):
     def decorator(func):
