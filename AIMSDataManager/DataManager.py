@@ -339,6 +339,7 @@ class LocalTest():
         global refsnap
         refsnap = {0:None,1:None,2:None}
         af = {ft:FeatureFactory.getInstance(FeedRef((FeatureType.ADDRESS,ft))) for ft in FeedType.reverse}
+        gf = {ft:FeatureFactory.getInstance(FeedRef((FeatureType.GROUPS,ft))) for ft in (FeedType.CHANGEFEED,FeedType.RESOLUTIONFEED)}
         af[3] = FeatureFactory.getInstance(FeedRef((FeatureType.GROUPS,FeedType.CHANGEFEED)))
         #with DataManager(start=None) as dm:
         #    dm.start(FeedType.CHANGEFEED)
@@ -373,10 +374,12 @@ class LocalTest():
         time.sleep(30) 
         #return
         print 'entering response mode'
-        while True:
+        countdown = 10
+        while countdown:
             aimslog.info('*** Main TICK '+str(time.clock()))
             self.testresp(dm)
-            time.sleep(5)
+            time.sleep(30)
+            countdown -= 1
             
     def testfeatureshift(self,dm):
     

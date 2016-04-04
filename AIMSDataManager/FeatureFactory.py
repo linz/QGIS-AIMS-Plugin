@@ -97,12 +97,12 @@ class FeatureFactory(object):
     def readTemplate(tp):
         for t1 in tp:
             for t2 in tp[t1]:
-                with open(os.path.join(self.RP,'{}.{}.template'.format(t1,t2)),'r') as handle:
+                with open(os.path.join(FeatureFactory.RP,'{}.{}.template'.format(t1,t2)),'r') as handle:
                     tstr = handle.read()
                     #print 'read template',t1t,t2t
                     tp[t1][t2] = eval(tstr) if tstr else ''
             #response address type is the template of the address-json we get from the api
-            with open(os.path.join(self.RP,'{}.response.template'.format(t1)),'r') as handle:
+            with open(os.path.join(FeatureFactory.RP,'{}.response.template'.format(t1)),'r') as handle:
                 tstr = handle.read()
                 tp[t1]['response'] = eval(tstr) if tstr else ''
         return tp
