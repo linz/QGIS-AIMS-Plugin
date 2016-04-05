@@ -528,7 +528,7 @@ class LocalTest():
         ver += 1
         
         
-        aimslog.info('*** Change DECLINE '+str(time.clock()))
+        aimslog.info('*** Resolution DECLINE '+str(time.clock()))
         rqid3 = 6789876
         #addr_r.setVersion(ver)
         dm.declineAddress(addr_r,rqid3)
