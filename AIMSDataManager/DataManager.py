@@ -356,10 +356,10 @@ class LocalTest():
         print 'addr list before feed checkin',[len(l) for l in listofaddresses.values()]
         
         #TEST RESTART
-        self.testrestartCR(dm)
+        #self.testrestartCR(dm)
         
         #TEST SHIFT
-        self.testfeatureshift(dm)
+        #self.testfeatureshift(dm)
         
         # TEST CF
         self.testchangefeedAUR(dm,af)
