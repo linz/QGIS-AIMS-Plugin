@@ -284,6 +284,7 @@ class DataSyncFeeds(DataSync):
     
     def fetchFeedUpdates(self,thr):
         '''run forward updates and tack on a single backfill, update page count accordingly'''
+        #TODO. If feeds are empty lastpage finder fails and loops, fix this
         pages = self.ftracker['page']
         bp,lp = pages if pages and pages!=[NPV,NPV] else 2*[self._findLastPage(LAST_PAGE_GUESS),]
         res,lp = super(DataSyncFeeds,self)._fetchFeedUpdates(thr,lp)
@@ -306,7 +307,7 @@ class DataSyncFeeds(DataSync):
                 time.sleep(POOL_PAGE_CHECK_DELAY)
             else:
                 acount = len(du.queue.get())
-                aimslog.debug('Page Find p{}={}'.format(p,acount))
+                aimslog.debug('Page Find p{} has {} features'.format(p,acount))
                 if acount==MAX_FEATURE_COUNT:
                     if p == p_start: p_end = p_end*2 
                     p_start = p
@@ -314,7 +315,7 @@ class DataSyncFeeds(DataSync):
                 else: p_end = p         
     
     def backfillPage(self,prevpage):
-        '''backfills pages from requested page. non-pooled/non-tracked since non critical'''
+        '''backfills pages from requested page. non-pooled/non-tracked since no longer critical'''
         newaddr = []
                 
         ref = self.fetchPage(prevpage)
