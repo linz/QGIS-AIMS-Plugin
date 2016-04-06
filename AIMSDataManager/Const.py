@@ -22,14 +22,11 @@ class const:
         CR = ConfigReader()
         for key in CR.configSectionMap('const'):
             val = CR.configSectionMap('const')[key]
-            if val.isdigit(): val = int(val)
-            elif val.replace('.','',1).isdigit(): val = float(val)
-            elif val.lower() in ('true','false'): val = bool(val)
             setattr(self, key.upper(), val) 
              
     def __setattr__(self,name,value):
         if self.__dict__.has_key(name):
-            raise self.ConstError, "Can't rebind const(%s)"%name
+            raise self.ConstError('Can\'t rebind const {}'.format(name))
         self.__dict__[name]=value
         
 _ref, sys.modules[__name__] = sys.modules[__name__], const()
