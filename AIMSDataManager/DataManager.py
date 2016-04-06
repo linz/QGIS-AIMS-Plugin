@@ -171,7 +171,7 @@ class DataManager(object):
         '''Returns any features lurking in the response queue'''
         resp = ()
         #while self.ioq.has_key((et,ft)) and not self.ioq[(et,ft)]['resp'].empty():
-        while etft in FEEDS and not self.ioq[etft]['resp'].empty():
+        while etft in FEEDS.values() and not self.ioq[etft]['resp'].empty():
             resp += (self.ioq[etft]['resp'].get(),)
         return resp
         
@@ -359,7 +359,7 @@ class LocalTest():
         #self.testrestartCR(dm)
         
         #TEST SHIFT
-        self.testfeatureshift(dm)
+        #self.testfeatureshift(dm)
         
         # TEST CF
         self.testchangefeedAUR(dm,af)
