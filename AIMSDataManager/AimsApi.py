@@ -103,7 +103,7 @@ class AimsApi(object):
     
     # specific request response methods
         
-    def addressAction(self,at,payload):
+    def addressAction(self,at,payload,cid):
         '''Make a change to the feature list by posting a change on the changefeed'''
         et = FeatureType.reverse[FeatureType.ADDRESS].lower()
         ft = FeedType.reverse[FeedType.CHANGEFEED].lower()
@@ -134,4 +134,5 @@ class AimsApi(object):
         url = '/'.join((self._url,et,ft,str(cid),GroupApprovalType.PATH[gat].lower(),TESTPATH)).rstrip('/')
         resp, content = self.h.request(url,GroupApprovalType.HTTP[gat], json.dumps(payload), self._headers)
         return self.handleResponse(url,resp["status"], json.loads(content) )
+    
     

@@ -285,7 +285,7 @@ class Persistence():
             #page = (lowest page fetched, highest page number fetched)
             self.tracker[FEEDS['AF']] = {'page':[1,1],    'index':1,'threads':2,'interval':30}    
             self.tracker[FEEDS['AC']] = {'page':[NPV,NPV],'index':1,'threads':1,'interval':125}  
-            self.tracker[FEEDS['AR']] = {'page':[1,1],    'index':1,'threads':1,'interval':10} 
+            self.tracker[FEEDS['AR']] = {'page':[1,1],    'index':1,'threads':1,'interval':25} 
             self.tracker[FEEDS['GC']] = {'page':[1,1],    'index':1,'threads':1,'interval':130}  
             self.tracker[FEEDS['GR']] = {'page':[1,1],    'index':1,'threads':1,'interval':55}             
             
@@ -359,7 +359,7 @@ class LocalTest():
         #self.testrestartCR(dm)
         
         #TEST SHIFT
-        #self.testfeatureshift(dm)
+        self.testfeatureshift(dm)
         
         # TEST CF
         self.testchangefeedAUR(dm,af)
