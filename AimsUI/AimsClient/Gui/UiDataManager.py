@@ -34,7 +34,7 @@ class UiDataManager(QObject):
                         FEEDS['GC']:[],
                         FEEDS['GR']:[]
                     }
-    
+                                
     def exlopdeGroup(self):
         gDict = {}
         for gId, gFeats in self.data[FEEDS['GR']].items():
@@ -196,44 +196,30 @@ class UiDataManager(QObject):
                 fValues = self.iterFeatProps(f, featProperties, feedtype)
                 fValuesList.append(fValues)
             return fValuesList   
-#     def formatFeatureTableData(self, feat, featProperties, feedtype):
-#         if feedtype == FEEDS['AR']:
-#             fValues = []
-#             fValues.extend([getattr(feat, '_changeId'),self.fullNumber(feat, feedtype), self.fullRoad(feat ,feedtype)]) # address and road labels                
-#             for prop in featProperties:                                        
-#                 if hasattr(feat, prop):
-#                     fValues.append(getattr(feat, prop))
-#                 else: fValues.append('')
-#             return fValues
-#         else:
-#             fValuesList = []
-#             for f in feat.values():
-#                 fValues = []
-#                 fValues.extend([getattr(f, '_changeId'),self.fullNumber(f, feedtype), self.fullRoad(f ,feedtype)]) # address and road labels                
-#                 for prop in featProperties:                                        
-#                     if hasattr(f, prop):
-#                         fValues.append(getattr(f, prop))
-#                     else: fValues.append('')
-#                 fValuesList.append(fValues)
-#             return fValuesList   
+ 
+    def addClassProps(self, feedtype):
+        prop = {'AR':{'kProperties' : ['_changeId', '_changeType', '_workflow_sourceOrganisation', '_workflow_submitterUserName', '_workflow_submittedDate'],
+                     'vProperties'  : ['_components_lifecycle', '_components_townCity' , '_components_suburbLocality']},
+               'GR':{'kProperties'  : ['_changeGroupId', '_groupType', '_workflow_sourceOrganisation', '_submitterUserName', '_submittedDate'],
+                     'vProperties'  : ['_components_lifecycle', '_components_townCity' , '_components_suburbLocality']}}
+        
+        if feedtype == FEEDS['AR']:
+            return (prop['AR']['kProperties'],prop['AR']['vProperties'])
+        return (prop['GR']['kProperties'],prop['AR']['vProperties'])
+    
     def reviewTableData(self, feedtypes):
         ''' review data as formatted for the review data model '''
         fData = {}
         for feedtype in feedtypes:
-            #if feedtype == FEEDS['AR']: continue # testing only
-            
+           
             # Restart the DM  feed and catch the new data
             self.restartDm(feedtype)
             self.refresh(feedtype) 
-            if self.refreshSuccess == True:  
+            if self.refreshSuccess:  
                 # turn this in to a dict and init it              
-                if feedtype == FEEDS['AR']:
-                    kProperties = ['_changeId', '_changeType', '_workflow_sourceOrganisation', '_workflow_submitterUserName', '_workflow_submittedDate']
-                    vProperties = ['_components_lifecycle', '_components_townCity' , '_components_suburbLocality']
-                elif feedtype == FEEDS['GR']: # if groups
-                    kProperties = ['_changeGroupId', '_groupType', '_workflow_sourceOrganisation', '_submitterUserName', '_submittedDate']
-                    vProperties = ['_components_lifecycle', '_components_townCity' , '_components_suburbLocality']
- 
+                props = self.addClassProps(feedtype)
+                kProperties = props[0] 
+                vProperties = props[1] 
                 for k, v in self.data.get(feedtype).items():
                     featureValues = [] 
                     if feedtype == FEEDS['AR']:
@@ -244,57 +230,17 @@ class UiDataManager(QObject):
                         groupValues = self.formatGroupTableData(k[1],kProperties) 
                         featureValues = self.formatFeatureTableData(v,vProperties, feedtype)
                     fData[tuple(groupValues)] = featureValues
-                    uilog.info('*** DATA *** {0}'.format(fData))
-
-        return fData # need to test a return == {}
-    
-# Was
-    
-#     def reviewTableData(self, feedtypes):
-#         ''' review data as formatted for the review data model '''
-#         fData = {}
-#         for feedtype in feedtypes:
-#             #if feedtype == FEEDS['AR']: continue # testing only
-#             self.restartDm(feedtype)
-#             self.refresh(feedtype) 
-#             if self.refreshSuccess == True:
-#                         
-#                 if feedtype == FEEDS['AR']:
-#                     kProperties = ['_changeId', '_changeType', '_workflow_sourceOrganisation', '_workflow_submitterUserName', '_workflow_submittedDate']
-#                     vProperties = ['_components_lifecycle', '_components_townCity' , '_components_suburbLocality']
-#                 elif feedtype == FEEDS['GR']: # if groups
-#                     kProperties = ['_changeGroupId', '_groupType', '_workflow_sourceOrganisation', '_submitterUserName', '_submittedDate']
-#                     vProperties = ['_components_lifecycle', '_components_townCity' , '_components_suburbLocality']
-#                 
-#                 #try: # need to add another loop here to iter all objs (i.e to handle groups
-#                 
-#                 if feedtype == FEEDS['AR']:
-#                     fData = {}
-#                     try:
-#                         for k, obj in self.data.get(feedtype).items():
-#                             groupValues = self.formatGroupTableData(obj,kProperties) 
-#                             featureValues = self.formatFeatureTableData(obj,vProperties, feedtype)
-#                             fData[tuple(groupValues)] = [featureValues]
-#                             uilog.info('*** DATA *** {0}'.format(fData))
-#                     except: pass
-#                 elif feedtype == FEEDS['GR']:                
-#                     try:
-#                         for group, features in self.data.get(feedtype).items():
-#                             featureValues = []                    
-#                             groupValues = self.formatGroupTableData(group[1],kProperties) 
-#                             featureValues = self.formatFeatureTableData(features,vProperties, feedtype)
-#                             fData[tuple(groupValues)] = featureValues
-#                             uilog.info('*** DATA *** {0}'.format(fData))
-#                     except: pass
-#         return fData # need to test a return == {}
+        if fData:
+            return fData # need to test a return == {}    
     
     def singleFeatureObj(self, objkey):
-        return self.data.get(0).get(objkey)
+        return self.data.get(FEEDS['AF'])[(objkey)]
     
     def singleReviewObj(self, feedtype, objkey):
         return self.data.get(feedtype).get(objkey)
     
     def currentReviewFeature(self, currentGroup, currentFeatureKey):
+        ''' return aims feautre object as per supplied data key(s) '''
         if currentGroup[1] in ('Replace', 'AddLineage'):
             for group in self.data.get(FEEDS['GR']).values():
                 if group.has_key(currentFeatureKey):
@@ -302,7 +248,7 @@ class UiDataManager(QObject):
         else: 
             return self.data.get(FEEDS['AR']).get(currentFeatureKey)
     
-    def reviewItemCoords(self, objkey):
-        obj = self.data.get(2).get(objkey)
+    def reviewItemCoords(self, currentGroup, currentFeatureKey):
+        obj = self.currentReviewFeature(currentGroup, currentFeatureKey)
         #currently only storing one position, Hence the '[0]'
         return obj._addressedObject_addressPositions[0]._position_coordinates

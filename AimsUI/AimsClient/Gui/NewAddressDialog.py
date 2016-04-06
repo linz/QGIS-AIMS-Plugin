@@ -16,7 +16,7 @@ import re
 from Ui_NewAddressDialog import Ui_NewAddressDialog
 from AIMSDataManager.Address import Position, Address
 from AimsUI.AimsClient.Gui.UiUtility import UiUtility
-from AIMSDataManager.AimsUtility import FeedType
+from AIMSDataManager.AimsUtility import FeedType, FEEDS
 import time
 
 from qgis.utils import iface
@@ -99,7 +99,7 @@ class NewAddressDialog(Ui_NewAddressDialog, QDialog):
         # submit address obj to DM
         self._controller.uidm.addAddress(self.feature, respId)
         # check the response 
-        UiUtility.handleResp(respId, self._controller, FeedType.CHANGEFEED, self._iface)
+        UiUtility.handleResp(respId, self._controller, FEEDS['AC'], self._iface)
               
         self.closeDlg()
        

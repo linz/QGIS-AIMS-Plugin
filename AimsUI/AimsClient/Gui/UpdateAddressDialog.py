@@ -16,7 +16,7 @@ import time
 
 from Ui_NewAddressDialog import Ui_NewAddressDialog
 from AIMSDataManager.FeatureFactory import FeatureFactory
-from AIMSDataManager.AimsUtility import FeedType
+from AIMSDataManager.AimsUtility import FeedType, FEEDS
 from UiUtility import UiUtility
 
 #from AimsUI.GetRclTool import *
@@ -36,6 +36,7 @@ class UpdateAddressDialog(Ui_NewAddressDialog, QDialog):
         self.feature = feature
         self._layerManager = layerManager
         self._controller = controller
+        self.af = {ft:FeatureFactory.getInstance(FEEDS['AC']) for ft in FeedType.reverse}
         
         # limit user inputs
         UiUtility.formMask(self)
@@ -75,8 +76,7 @@ class UpdateAddressDialog(Ui_NewAddressDialog, QDialog):
         # Run through the setters
         UiUtility.formToObj(self)
         # submit address obj to DM     
-        af = {ft:FeatureFactory.getInstance(FeatureType.ADDRESS,ft) for ft in FeedType.reverse}
-        self.feature = af[FeedType.CHANGEFEED].cast(self.feature)
+        self.feature = self.af[FeedType.CHANGEFEED].cast(self.feature)
         respId = int(time.time()) 
         self._controller.uidm.updateAddress(self.feature, respId)
         # check the response 

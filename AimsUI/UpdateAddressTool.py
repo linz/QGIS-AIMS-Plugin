@@ -91,5 +91,5 @@ class updateAddressDialog(Ui_ComfirmSelection, QDialog ):
         self.uSadListView.setList(identifiedFeatures,
                                  ['fullAddress','addressId'])
         if self.exec_() == QDialog.Accepted:
-            return self.uSadListView.selectedItems()
+            return self.uSadListView.confirmSelection()
         return None

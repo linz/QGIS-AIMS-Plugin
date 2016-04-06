@@ -33,7 +33,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.setController( controller )
         self.iface = self._controller.iface
         self.uidm = self._controller.uidm
-        self.reviewData = self.uidm.reviewTableData((FEEDS['AR'], FEEDS['GR']))   
+        self.reviewData = self.uidm.reviewTableData((FEEDS['AR'],))   
         self.currentFeatureKey = None
         self.currentAdrCoord = [0,0]
         self.feature = None
@@ -77,13 +77,17 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.popUserCombo()
     
     def refreshData(self): # < -- ALSO NEED TO REFRESH THE FILTER
-        self.reviewData = self.uidm.reviewTableData((FEEDS['AR'], FEEDS['GR']))  
+        if self.uGroupFeedCheckBox.isChecked():
+            self.reviewData = self.uidm.reviewTableData((FEEDS['AR'], FEEDS['GR']))
+        else:
+            self.reviewData = self.uidm.reviewTableData((FEEDS['AR'],))
         self.groupModel.beginResetModel()
         self.featureModel.beginResetModel()
         self.groupModel.refreshData(self.reviewData)        
         self.featureModel.refreshData(self.reviewData)
         self.groupModel.endResetModel()
         self.featureModel.endResetModel()
+        self.popUserCombo()
                 
     def setController( self, controller ):
         import Controller
@@ -99,8 +103,8 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         return self.uidm.currentReviewFeature(self.currentGroup, self.currentFeatureKey)
             
     def featureSelected(self, row):
-        self.currentFeatureKey = self.featureModel.listClicked(row)
-        if self.currentGroup:              
+        if self.currentGroup:    
+            self.currentFeatureKey = self.featureModel.listClicked(row)   
             self.uQueueEditor.currentFeatureToUi(self.currentReviewFeature())
         #emit feature chnaged --> editwidget to connect to signal
         #self.featureSelected.emit( feature )
@@ -147,14 +151,15 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
     def formatUiData(self):
         rData = {}
         for k, v in self.reviewData.items():
-            #if len(rData) == 10: break
-            rData[(v._changeId, v._changeType, 'orgPlaceHolder', v._workflow_submitterUserName, v._workflow_submittedDate )] = [[self.fullNumber(), self.fullRoad(k), v._lifecycle, v._townCity, v._suburbLocality ]]
+            rData[(v._changeId, v._changeType, 'orgPlaceHolder', v._workflow_submitterUserName, v._workflow_submittedDate )] = [
+                    [self.fullNumber(), self.fullRoad(k), v._lifecycle, v._townCity, v._suburbLocality ]
+                    ]
         return rData
     
     #def refreshData(self):
     #    self.reviewData = self.uidm.reviewTableData()
     def updateFeature(self):
-        self.feature = self.singleReviewObj(self.currentFeatureKey)
+        self.feature = self.singleReviewObj(FEEDS['AR'],self.currentFeatureKey) # needs to modified to also search 'GR' 
         if self.feature: 
             UiUtility.formToObj(self)
             respId = int(time.time())
@@ -171,19 +176,20 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
             if reviewObj: 
                 respId = int(time.time()) 
                 if action == 'accept':
-                    self.uidm.decline(reviewObj, respId)
+                    self.uidm.accept(reviewObj, respId)
                 elif action == 'decline':
                     self.uidm.decline(reviewObj, respId)
-                #UiUtility.handleResp(respId, self._controller, FeedType.RESOLUTIONFEED, self.iface)
+                UiUtility.handleResp(respId, self._controller,feedType, self.iface)
     
     def decline(self):
         self.reviewResolution('decline')
+    
     def accept(self):
         self.reviewResolution('accept')
         
     def display(self):
         if self.currentFeatureKey:
-            coords = self.uidm.reviewItemCoords(self.currentFeatureKey) # should directly access coords
+            coords = self.uidm.reviewItemCoords(self.currentGroup, self.currentFeatureKey) # should directly access coords
             if self.currentAdrCoord == coords: 
                 return
             self.currentAdrCoord = coords

@@ -22,8 +22,6 @@ from collections import OrderedDict
 
 aimslog = Logger.setup()
 
-class InvalidParameterException(AimsException): pass
-
 class Mapping():
     #format = feildname: [objProp, getter]
     adrLayerObjMappings = OrderedDict([
@@ -173,10 +171,9 @@ class LayerManager(QObject):
                 legend.setLayerVisible(layer, True)
             return layer
         self._statusBar.showMessage("Loading layer " + displayname)
-        layer = None
         try:
             uri = QgsDataSourceURI()
-            uri.setConnection(Database.host(),Database.port(),Database.database(),Database.user(),Database.password())
+            uri.setConnection(Database.host(),str(Database.port()),Database.database(),Database.user(),Database.password())
             uri.setDataSource(schema,table,'shape',where,key)
             uri.setUseEstimatedMetadata( estimated )
             layer = QgsVectorLayer(uri.uri(),displayname,"postgres")

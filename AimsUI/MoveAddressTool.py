@@ -10,7 +10,7 @@ import time
 
 from AimsUI.AimsClient.Gui.Ui_ComfirmSelection import Ui_ComfirmSelection
 from AimsUI.AimsClient.Gui.UiUtility import UiUtility
-from AIMSDataManager.AimsUtility import FeedType
+from AIMSDataManager.AimsUtility import FeedType, FEEDS
 from AIMSDataManager.AddressFactory import AddressFactory
 from AIMSDataManager.AimsLogging import Logger
 
@@ -27,6 +27,7 @@ class MoveAddressTool(QgsMapToolIdentify):
         self._canvas = iface.mapCanvas()
         self._layers = layerManager
         self._controller = controller
+        self.af = {ft:AddressFactory.getInstance(FEEDS['AC']) for ft in FeedType.reverse}
         self._features = []
         self._marker = None
         self._sb = self._iface.mainWindow().statusBar()
@@ -114,11 +115,10 @@ class MoveAddressTool(QgsMapToolIdentify):
 
                 for feature in self._features:
                     feature._addressedObject_addressPositions[0].setCoordinates(coords)
-                    af = {ft:AddressFactory.getInstance(ft) for ft in FeedType.reverse}
-                    feature = af[FeedType.CHANGEFEED].cast(feature)
+                    feature = self.af[FeedType.CHANGEFEED].cast(feature)
                     respId = int(time.time()) 
                     self._controller.uidm.updateAddress(feature, respId)
-                    UiUtility.handleResp(respId, self._controller, FeedType.CHANGEFEED, self._iface)
+                    UiUtility.handleResp(respId, self._controller, FEEDS['AC'], self._iface)
                 
                 self._features = []
                 self._canvas.scene().removeItem(self._marker)
@@ -134,5 +134,5 @@ class MoveAddressDialog(Ui_ComfirmSelection, QDialog ):
         self.uSadListView.setList(identifiedFeatures,
                                  ['fullAddress','addressId'])
         if self.exec_() == QDialog.Accepted:
-            return self.uSadListView.selectedItems()
+            return self.uSadListView.confirmSelection()
         return None

@@ -24,7 +24,7 @@
    <item>
     <widget class="DictionaryListView" name="uSadListView">
      <property name="selectionMode">
-      <enum>QAbstractItemView::SingleSelection</enum>
+      <enum>QAbstractItemView::MultiSelection</enum>
      </property>
     </widget>
    </item>

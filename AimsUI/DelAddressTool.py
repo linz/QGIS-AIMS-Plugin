@@ -17,7 +17,7 @@ from qgis.gui import *
 import time
 
 from AimsUI.AimsClient.Gui.Ui_ComfirmSelection import Ui_ComfirmSelection
-from AIMSDataManager.AimsUtility import FeedType
+from AIMSDataManager.AimsUtility import FeedType, FeedRef, FeatureType, FEEDS
 from AIMSDataManager.AddressFactory import AddressFactory
 from AimsUI.AimsClient.Gui.UiUtility import UiUtility
 
@@ -28,6 +28,7 @@ class DelAddressTool(QgsMapToolIdentify):
         self._iface = iface
         self._layers = layerManager
         self._controller = controller
+        self.af = {ft:AddressFactory.getInstance(FEEDS['AC']) for ft in FeedType.reverse}
         self.activate()
     
     def activate(self):
@@ -84,11 +85,10 @@ class DelAddressTool(QgsMapToolIdentify):
         if retireFeatures: # else the user hit 'ok' and did not select any records            
             for retireFeature in retireFeatures:
                 featureToRetire = self._controller.uidm.singleFeatureObj(retireFeature['components']['addressId'])
-                af = {ft:AddressFactory.getInstance(ft) for ft in FeedType.reverse}
-                featureToRetire = af[FeedType.CHANGEFEED].cast(featureToRetire)
+                featureToRetire = self.af[FeedType.CHANGEFEED].cast(featureToRetire)
                 respId = int(time.time()) 
                 self._controller.uidm.retireAddress(featureToRetire, respId)
-                UiUtility.handleResp(respId, self._controller, FeedType.CHANGEFEED, self._iface)
+                UiUtility.handleResp(respId, self._controller, FeedRef((FeatureType.ADDRESS,FeedType.RESOLUTIONFEED)), self._iface)
              
 class DelAddressDialog( Ui_ComfirmSelection, QDialog ):
 
@@ -112,6 +112,6 @@ class DelAddressDialog( Ui_ComfirmSelection, QDialog ):
         self.uSadListView.setList(identifiedFeatures,
                                  ['fullAddress','version','addressId'])
         if self.exec_() == QDialog.Accepted:
-            return self.selectionToRetirementJson(self.uSadListView.selectedItems())
+            return self.selectionToRetirementJson(self.uSadListView.confirmSelection())
         return None
     

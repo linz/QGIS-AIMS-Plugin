@@ -45,9 +45,9 @@ class QueueView(QTableView):
 
 class FeatureTableModel(QAbstractTableModel):
  
-    def __init__(self, data = {} , headerdata = None,parent=None):
+    def __init__(self, data, headerdata = None,parent=None):
         QAbstractTableModel.__init__(self, parent)
-        if data == {}: data = {('','', '', '', ''): [['', '', '', '', '']]} # dummy data if nothing return from dm
+        if not data: data = {('','', '', '', ''): [['', '', '', '', '']]} # dummy data if nothing return from dm
         self._data = data
         self.headerdata = headerdata
         self.dict_key = self._data.keys()[0] # on init, storing any old key until the users updates it. issue when none returned....
@@ -83,14 +83,14 @@ class FeatureTableModel(QAbstractTableModel):
     def listClicked(self, index):
         ''' return the clicked on objs key '''
         if type(self._data[self.dict_key][index][0]) is int:
-            return self._data[self.dict_key][index][0]
-        else: return self._data[self.dict_key][index][0][0]
-            
+            fData = self._data[self.dict_key][index][0]
+        else: fData = self._data[self.dict_key][index][0][0]
+        if fData: return fData
         
 class GroupTableModel(QAbstractTableModel):
-    def __init__(self, data = {}, featureModel = None, headerdata = None, parent=None):
+    def __init__(self, data, featureModel = None, headerdata = None, parent=None):
         QAbstractTableModel.__init__(self, parent)
-        if data == {}: data = {('','', '', '', ''): [['', '', '', '', '']]}
+        if not data: data = {('','', '', '', ''): [['', '', '', '', '']]}
         self._data = sorted(data.keys())
         self.groupModel = featureModel
         self.headerdata = headerdata

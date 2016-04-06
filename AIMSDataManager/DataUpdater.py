@@ -29,7 +29,7 @@ import Queue
 from AimsApi import AimsApi 
 from AimsUtility import FeedRef,ActionType,ApprovalType,FeatureType,FeedType,AimsException
 from Const import ENABLE_ENTITY_EVALUATION
-from Address import Entity
+from Address import Entity, EntityValidation, EntityAddress
 from AimsLogging import Logger
 from FeatureFactory import FeatureFactory
 
@@ -50,6 +50,8 @@ class DataUpdater(threading.Thread):
     
     global aimslog
     aimslog = Logger.setup()
+    
+    getfeat = None
     
     def __init__(self,params,queue):
         threading.Thread.__init__(self)
@@ -133,6 +135,9 @@ class DataUpdater(threading.Thread):
         aimslog.info('Queue {} stopped'.format(self.queue.qsize()))
         self.queue.task_done()
         
+    #executed by subclass
+    def cid(self): pass
+        
 #---------------------------------------------------------------
     
 #simple subclasses to assign getaddress/getgroup function    
@@ -146,7 +151,7 @@ class DataUpdaterAddress(DataUpdater):
     
     def getEntityInstance(self):
         return Entity.getInstance('validation')
-        return EntityValidation()
+        return EntityValidation()#TODO
         
         
 class DataUpdaterGroup(DataUpdater):
@@ -159,12 +164,15 @@ class DataUpdaterGroup(DataUpdater):
         
     def getEntityInstance(self):
         return Entity.getInstance('validation')
-        return EntityAddress()
+        return EntityAddress()#TODO
     
 
 #TODO Consolidate group/address + action/approve subclasses. might be enough variation to retain seperate classes
 #NOTES variables incl; oft=FF/RF,id=addressId/changeId/groupChangeId, action=approve/action/groupaction
 class DataUpdaterDRC(DataUpdater):
+    #instantiated in subclass
+    oft,etft,identifier,payload,action,agobj,at,build,requestId = 9*(None,)
+    
     def version(self):
         jc = self.api.getOneFeature(FeedRef((self.etft.et,self.oft)),self.identifier)
         if jc['properties'].has_key('version'):
@@ -196,7 +204,7 @@ class DataUpdaterAction(DataUpdaterDRC):
         self.agobj = address
         self.identifier = self.agobj.getAddressId()
         self.requestId = self.agobj.getRequestId()
-        self.agobj.setVersion(self.version())
+        if at!=ActionType.ADD: self.agobj.setVersion(self.version())
         self.payload = self.afactory.convertAddress(self.agobj,self.at)
         #run actions
         self.action = self.api.addressAction

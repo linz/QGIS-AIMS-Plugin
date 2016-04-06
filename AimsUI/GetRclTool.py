@@ -28,10 +28,11 @@ class GetRcl(QgsMapToolIdentifyFeature):
         self.parent = parent
         self._marker = None
         self._canvas = iface.mapCanvas()
-        self.activate()
+        #self.activate() # re,ove?
         
     def activate(self):
         QgsMapTool.activate(self)
+        self.removeMarker()
         self._iface.setActiveLayer(self._layers.rclLayer())
         sb = self._iface.mainWindow().statusBar()
         sb.showMessage('Click map to select road centerline')
@@ -41,6 +42,10 @@ class GetRcl(QgsMapToolIdentifyFeature):
         self._canvas.scene().removeItem(self._marker) 
         sb.clearMessage()
     
+    def removeMarker(self):
+        if self._marker:
+            self._canvas.scene().removeItem(self._marker)
+        
     def setEnabled(self, enabled):
         self._enabled = enabled
         if enabled:
@@ -68,8 +73,9 @@ class GetRcl(QgsMapToolIdentifyFeature):
             else:
                 self.parent.uRclId.setText(UiUtility.nullEqualsNone(str(results[0].mFeature.attribute('road_section_id'))))
                 self.parent.uWaterRouteName.setText(UiUtility.nullEqualsNone(str(results[0].mFeature.attribute('road_name_body'))))
-
-            self._marker = UiUtility.rclHighlight(self._canvas, coords,rclLayer)
-            #if isinstance(parent, ReviewQueue):
-                #self._controller.setPreviousMapTool() 
+            
+            if self.parent.__class__.__name__ != 'QueueEditorWidget':
+                self._marker = UiUtility.rclHighlight(self._canvas, coords,rclLayer)
+            else:
+                self._controller.setPreviousMapTool() 
    

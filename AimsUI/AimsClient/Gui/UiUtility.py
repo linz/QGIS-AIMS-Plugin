@@ -261,7 +261,8 @@ class UiUtility (object):
     def handleResp(respId, controller, feedType, iface):
         ''' test for a response in the response
             queue with the relevant repId'''
-        for i in range(0,25):
+        #return # temp
+        for i in range(0,15):
             time.sleep(1)
             resp = controller.uidm.response(feedType)
             if resp:

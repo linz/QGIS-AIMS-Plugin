@@ -26,7 +26,7 @@ class DictionaryListView( QTableView ):
         QTableView.__init__( self, parent )
         # Change default settings
         if parent.__class__.__name__ in  ('DelAddressDialog', 'MoveAddressDialog'):            
-            self.setSelectionMode(QAbstractItemView.ExtendedSelection)
+            self.setSelectionMode(QAbstractItemView.MultiSelection)
         else: 
             self.setSelectionMode(QAbstractItemView.SingleSelection)
         self.setSelectionBehavior(QAbstractItemView.SelectRows)
@@ -137,6 +137,12 @@ class DictionaryListView( QTableView ):
         if self._dictionaryList:
             list = self._dictionaryList
             return [list.getItem(r) for r in self.selectedIndexes()]
+        return []
+
+    def confirmSelection(self):
+        if self._dictionaryList:
+            list = self._dictionaryList
+            return [list.getItem(r) for r in self.selectedRows()]
         return []
 
     def rowCount( self ):

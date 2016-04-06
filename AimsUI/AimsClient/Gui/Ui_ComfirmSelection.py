@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'AimsUI/AimsClient/Gui/Ui_ComfirmSelection.ui'
 #
-# Created: Wed Mar 23 16:37:12 2016
+# Created: Tue Apr  5 09:49:13 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -33,7 +33,7 @@ class Ui_ComfirmSelection(object):
         self.label_2.setObjectName(_fromUtf8("label_2"))
         self.verticalLayout_2.addWidget(self.label_2)
         self.uSadListView = DictionaryListView(ComfirmSelection)
-        self.uSadListView.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
+        self.uSadListView.setSelectionMode(QtGui.QAbstractItemView.MultiSelection)
         self.uSadListView.setObjectName(_fromUtf8("uSadListView"))
         self.verticalLayout_2.addWidget(self.uSadListView)
         self.buttonBox = QtGui.QDialogButtonBox(ComfirmSelection)

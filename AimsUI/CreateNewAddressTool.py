@@ -19,8 +19,8 @@ from qgis.gui import *
 
 from AimsClient.Gui.NewAddressDialog import NewAddressDialog
 from AimsUI.AimsClient.Gui.UiUtility import UiUtility
-from AIMSDataManager.AimsUtility import FeedType, FeatureType, FeedRef
-from AIMSDataManager.AddressFactory import AddressFactory
+from AIMSDataManager.AimsUtility import FeedType, FeatureType, FEEDS
+from AIMSDataManager.FeatureFactory import FeatureFactory
 
 class CreateNewAddressTool(QgsMapToolIdentify):
     ''' tool for creating new address information ''' 
@@ -31,7 +31,8 @@ class CreateNewAddressTool(QgsMapToolIdentify):
         self._layers = layerManager
         self._controller = controller
         self._canvas = iface.mapCanvas()
-        self.af = AddressFactory.getInstance(FeedRef((FeatureType.ADDRESS, FeedType.CHANGEFEED)))
+        self.af = FeatureFactory.getInstance(FEEDS['AC'])
+        self.formActive = False
         self.activate()
         
     def activate(self):
@@ -46,7 +47,7 @@ class CreateNewAddressTool(QgsMapToolIdentify):
         sb.clearMessage()
 
     def setEnabled(self, enabled):
-        self._enabled = True #enabled
+        self._enabled = enabled
         if enabled:
             self.activate()
         else:
@@ -71,12 +72,13 @@ class CreateNewAddressTool(QgsMapToolIdentify):
         self._marker = UiUtility.highlight(self._iface, coords, QgsVertexMarker.ICON_X)
    
     def setPoint( self, coords ):
-        ''' guarantee srs and pass to the API '''
-        self.setMarker(coords)
-        coords = UiUtility.transform(self._iface, coords)            
+        ''' guarantee srs and pass to the API '''      
         # init new address object and open form
-        afc = self.af.getInstance(FeedType.CHANGEFEED)
-        addInstance = afc.getAddress()#(adr='AddressChange',model='')
+        if self.formActive: return
+        self.formActive = True
+        self.setMarker(coords)
+        coords = UiUtility.transform(self._iface, coords)     
+        addInstance = self.af.getAddress()
         NewAddressDialog.newAddress(addInstance, self._layers, self._controller, self._iface.mainWindow(), coords)
         self._canvas.scene().removeItem(self._marker)
-        self._enabled = True
+        self.formActive = False
