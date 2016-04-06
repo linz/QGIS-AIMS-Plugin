@@ -40,7 +40,7 @@ class ConfigReader(object):
     def _retype(self,val):    
         if val.isdigit(): val = int(val)
         elif val.replace('.','',1).isdigit(): val = float(val)
-        elif val.lower() in ('true','false'): val = bool(val=='true')
+        elif val.lower() in ('true','false'): val = bool(val.lower()=='true')
         return val
                 
     def _fillConfig(self):

@@ -14,55 +14,7 @@ import time
 import os
 from AimsLogging import Logger
 
-# # C O N S T A N T S
-# #turn test mode on or off, on appends test path to all request urls
-# TEST_MODE = False
-# #time to wait for threads to join after stop has been called eg On BB move (s)
-# THREAD_JOIN_TIMEOUT = 30
-# #max number of features to request per page 
-# MAX_FEATURE_COUNT = 1000
-# #first page (to not backfill past)
-# FIRST_PAGE = 1
-# #upper limit on page number to request
-# PAGE_LIMIT = 1000
-# #time delay between thread checks to see if pooled page has returned (s) 
-# POOL_PAGE_CHECK_DELAY = 0.2
-# #time delay between thread checks to see if user action has returned a response (s) 
-# QUEUE_CHECK_DELAY = 1
-# #when backfilling pages guess start point to find last page in change feed
-# LAST_PAGE_GUESS = 10
-# #initial page number indicating page search is required
-# NULL_PAGE_VALUE = 0
-# #automatically inset warnings into resolution feed features. very slow, enable only if RF is small
-# ENABLE_ENTITY_EVALUATION = True
-# #zero southwest coordinate used for instantiation and to prevent unnecessary feature fetching
-# SWZERO = (0.0, 0.0)
-# #zero northeast coordinate used for instantiation and to prevent unnecessary feature fetching
-# NEZERO = (0.0, 0.0)
-# #enable null value removal in json requests
-# SKIP_NULL = True
-# #address attribute to dict separator character
-# DEF_SEP = '_'
-# #path to resources directory
-# RES_PATH = os.path.join(os.path.dirname(__file__),'../resources/')
-# #filename for persisted feed data
-# LOCAL_ADL = 'aimsdata'
-
 aimslog = Logger.setup()
-
-# def constant(f):
-#     def fset(self, value):
-#         raise TypeError
-#     def fget(self):
-#         return f()
-#     return property(fget, fset)
-# 
-# class _Const(object):
-#     @constant 
-#     def FOO(): return 'foo'
-#     @constant
-#     def BAR(): return 'bar'
-
 
 class AimsException(Exception):
     def __init__(self,em,al=aimslog.error): al('ERR {} - {}'.format(type(self).__name__,em))

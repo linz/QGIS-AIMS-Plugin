@@ -75,7 +75,7 @@ class DataUpdater(threading.Thread):
     def process(self,feature,etft):
         '''process an individual feature, pulling nested entities on 3E'''
         if etft.ft == FeedType.RESOLUTIONFEED and ENABLE_ENTITY_EVALUATION:
-            cid = self.cid(feature)#feature['properties']['changeId']
+            cid = self.cid(feature)
             featurelist = []
             feat = self.api.getOneFeature(etft,cid)
             if feat == {u'class': [u'error']}: 
