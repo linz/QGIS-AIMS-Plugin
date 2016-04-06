@@ -249,13 +249,14 @@ class UiUtility (object):
         for r in resp:
             if r.meta._requestId == respId:  
                 #logging
-                uilog.info('response received from DM for respId: {0} of type: {1} after {2} seconds'.format(respId, feedType, i))    
-                for warning in r._entities:
-                    if warning['properties']['severity'] in ('Reject', 'critical'):
-                        warnings.append(warning['properties']['description'])
-                if warnings:
-                    UiUtility.displayWarnings(warnings, iface)
-                return True
+                uilog.info(' *** DATA ***    response received from DM for respId: {0} of type: {1} after {2} seconds'.format(respId, feedType, i))    
+                if r._entities:
+                    for warning in r._entities:
+                        if warning['properties']['severity'] in ('Reject', 'critical'):
+                            warnings.append(warning['properties']['description'])
+                    if warnings:
+                        UiUtility.displayWarnings(warnings, iface)
+                    return True
     
     @staticmethod
     def handleResp(respId, controller, feedType, iface):
@@ -269,7 +270,7 @@ class UiUtility (object):
                 if UiUtility.processWarnings(resp, respId, iface, feedType, i):
                     return
             #logging 
-        uilog.info('Time Out ({0} seconds): No response received from DM for respId: {1} of feedtype: {2}'.format(i, respId, feedType))    
+        uilog.info(' *** DATA ***    Time Out ({0} seconds): No response received from DM for respId: {1} of feedtype: {2}'.format(i, respId, feedType))    
    
            
         
