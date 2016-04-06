@@ -35,7 +35,7 @@ class ConfigReader(object):
             self.d[sect] = {}
             for opt in self.cp.options(sect):
                 val = self._retype(self.cp.get(sect,opt).replace('"','').strip("'"))
-                self.d[sect][opt] = val or None
+                self.d[sect][opt] = val# or None (doesn't work if tryng to assign x=False)
                             
     def _retype(self,val):    
         if val.isdigit(): val = int(val)
