@@ -119,7 +119,7 @@ class AimsApi(object):
         resp, content = self.h.request(url,ApprovalType.HTTP[at], json.dumps(payload), self._headers)
         return self.handleResponse(url,resp["status"], json.loads(content) )
     
-    def groupAction(self,gat):
+    def groupAction(self,gat,payload,cid):
         '''Perform action on group changefeed'''
         et = FeatureType.reverse[FeatureType.GROUPS].lower()
         ft = FeedType.reverse[FeedType.CHANGEFEED].lower()
