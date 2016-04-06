@@ -117,17 +117,14 @@ class AddressFeedFactory(AddressFactory):
         return full
     
     def _convert(self,adr,dat,key=''):
-        try:
-            for attr in dat:
-                new_key = key+DEF_SEP+attr
-                if new_key == self.PBRANCH:
-                    dat[attr] = adr.getConvertedAddressPositions()
-                elif isinstance(dat[attr],dict):
-                    dat[attr] = self._convert(adr, dat[attr],new_key)
-                else:
-                    dat[attr] = self._assign(dat,adr,new_key)
-        except: 
-            pass
+        for attr in dat:
+            new_key = key+DEF_SEP+attr
+            if new_key == self.PBRANCH:
+                dat[attr] = adr.getConvertedAddressPositions()
+            elif isinstance(dat[attr],dict):
+                dat[attr] = self._convert(adr, dat[attr],new_key)
+            else:
+                dat[attr] = self._assign(dat,adr,new_key)
         return dat
     
     def _assign(self,dat,adr,key):
