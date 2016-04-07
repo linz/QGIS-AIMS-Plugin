@@ -170,7 +170,7 @@ class DataUpdaterGroup(DataUpdater):
 #TODO Consolidate group/address + action/approve subclasses. might be enough variation to retain seperate classes
 #NOTES variables incl; oft=FF/RF,id=addressId/changeId/groupChangeId, action=approve/action/groupaction
 class DataUpdaterDRC(DataUpdater):
-    #unstantiated in subclass
+    #instantiated in subclass
     oft,etft,identifier,payload,action,agobj,at,build,requestId = 9*(None,)
     
     def version(self):
@@ -202,7 +202,7 @@ class DataUpdaterAction(DataUpdaterDRC):
         self.etft = etft
         self.at = at
         self.agobj = address
-        self.identifier = None#self.agobj.getAddressId()
+        self.identifier = self.agobj.getAddressId()
         self.requestId = self.agobj.getRequestId()
         if at!=ActionType.ADD: self.agobj.setVersion(self.version())
         self.payload = self.afactory.convertAddress(self.agobj,self.at)
