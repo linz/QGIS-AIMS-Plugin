@@ -177,7 +177,7 @@ class DataUpdaterDRC(DataUpdater):
     def run(self):
         '''group change action on the CF'''
         aimslog.info('DUr.{} {} - Adr-Grp{}'.format(self.ref,ActionType.reverse[self.at],self.agobj))
-        err,resp = self.action(self.at,self.payload)
+        err,resp = self.action(self.at,self.payload,self.identifier)
         feature = self.build(model=resp)
         #print 'feature',feature
         if err: feature.setErrors(err)
