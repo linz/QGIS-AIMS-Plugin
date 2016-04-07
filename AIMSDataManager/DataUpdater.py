@@ -202,9 +202,9 @@ class DataUpdaterAction(DataUpdaterDRC):
         self.etft = etft
         self.at = at
         self.agobj = address
-        self.identifier = self.agobj.getAddressId()
+        self.identifier = None#self.agobj.getAddressId()
         self.requestId = self.agobj.getRequestId()
-        self.agobj.setVersion(self.version())
+        if at!=ActionType.ADD: self.agobj.setVersion(self.version())
         self.payload = self.afactory.convertAddress(self.agobj,self.at)
         #run actions
         self.action = self.api.addressAction
