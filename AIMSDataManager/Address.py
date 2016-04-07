@@ -156,10 +156,10 @@ class Entity(object):
                               }
             }
   
-class ValidationEntity(Entity):
+class EntityValidation(Entity):
     pass
 
-class AddressEntity(Entity):
+class EntityAddress(Entity):
     pass
 
 #------------------------------------------------------------------------------
