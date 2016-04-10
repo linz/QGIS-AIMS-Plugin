@@ -9,6 +9,7 @@ from qgis.gui import *
 from AimsClient.Gui.UpdateAddressDialog import UpdateAddressDialog
 from AimsUI.AimsClient.Gui.Ui_ComfirmSelection import Ui_ComfirmSelection
 from AimsUI.AimsClient.Gui.UiUtility import UiUtility
+from AimsUI.AimsClient.Gui.ResponseHandler import ResponseHandler
 
 
 class UpdateAddressTool(QgsMapToolIdentify):

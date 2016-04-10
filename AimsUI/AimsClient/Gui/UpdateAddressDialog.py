@@ -80,8 +80,8 @@ class UpdateAddressDialog(Ui_NewAddressDialog, QDialog):
         respId = int(time.time()) 
         self._controller.uidm.updateAddress(self.feature, respId)
         # check the response 
-        UiUtility.handleResp(respId, self._controller, FeedType.CHANGEFEED, self.iface)
-               
+        self._controller.RespHandler.handleResp(respId, FEEDS['AC'])
+                       
         self.closeDlg()
        
     def fullNumChanged(self, newnumber):

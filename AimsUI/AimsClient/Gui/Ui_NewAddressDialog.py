@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'AimsUI/AimsClient/Gui/Ui_NewAddressDialog.ui'
 #
-# Created: Tue Mar 22 13:45:15 2016
+# Created: Sun Apr 10 15:28:40 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!

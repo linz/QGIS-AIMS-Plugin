@@ -33,7 +33,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.setController( controller )
         self.iface = self._controller.iface
         self.uidm = self._controller.uidm
-        self.reviewData = self.uidm.reviewTableData((FEEDS['AR'],))   
+        self.reviewData = self.uidm.refreshTableData((FEEDS['AR'],))   
         self.currentFeatureKey = None
         self.currentAdrCoord = [0,0]
         self.feature = None
@@ -45,8 +45,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.uRejectButton.clicked.connect(self.decline)
         self.uAcceptButton.clicked.connect(self.accept)
         self.uRefreshButton.clicked.connect(self.refreshData)
-
-               
+          
         # Features View 
         featuresHeader = ['Id','Full Num', 'Full Road', 'Life Cycle', 'Town', 'Suburb Locality']
         self.featuresTableView = self.uFeaturesTableView
@@ -202,7 +201,11 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
     
     #def setMarker(self, coords):
     #    self._marker = UiUtility.highlight(self.iface, QgsPoint(coords[0],coords[1]))
-
+    
+    @pyqtSlot()
+    def rDataChanged (self):
+        self._queues.uResolutionTab.refreshData()
+    
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     

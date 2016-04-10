@@ -9,7 +9,8 @@ from qgis.gui import *
 import time
 
 from AimsUI.AimsClient.Gui.Ui_ComfirmSelection import Ui_ComfirmSelection
-from AimsUI.AimsClient.Gui.UiUtility import UiUtility
+from AimsUI.AimsClient.Gui.UiUtility import UiUtility # remove?
+from AimsUI.AimsClient.Gui.ResponseHandler import ResponseHandler
 from AIMSDataManager.AimsUtility import FeedType, FEEDS
 from AIMSDataManager.AddressFactory import AddressFactory
 from AIMSDataManager.AimsLogging import Logger
@@ -27,6 +28,7 @@ class MoveAddressTool(QgsMapToolIdentify):
         self._canvas = iface.mapCanvas()
         self._layers = layerManager
         self._controller = controller
+        self.RespHandler = ResponseHandler(self._iface, self._controller.uidm)
         self.af = {ft:AddressFactory.getInstance(FEEDS['AC']) for ft in FeedType.reverse}
         self._features = []
         self._marker = None
@@ -118,8 +120,8 @@ class MoveAddressTool(QgsMapToolIdentify):
                     feature = self.af[FeedType.CHANGEFEED].cast(feature)
                     respId = int(time.time()) 
                     self._controller.uidm.updateAddress(feature, respId)
-                    UiUtility.handleResp(respId, self._controller, FEEDS['AC'], self._iface)
-                
+                    self.RespHandler.handleResp(respId, FEEDS['AC'])
+                        
                 self._features = []
                 self._canvas.scene().removeItem(self._marker)
                 self._sb.clearMessage()

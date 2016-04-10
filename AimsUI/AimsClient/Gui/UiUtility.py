@@ -153,7 +153,7 @@ class UiUtility (object):
                     uiElement.setCurrentIndex(QComboBox.findText(uiElement, prop))
     
     @staticmethod
-    def formToObj(self):
+    def formToObj(self):  
         ''' maps user input fromt he new and update form
             as well as queue editor widget to AIM objects '''
         try: 
@@ -235,6 +235,10 @@ class UiUtility (object):
                 pass #silently  
     
     @staticmethod
+    def tempARFeature():
+        pass
+    
+    @staticmethod
     def displayWarnings (warnings, iface):
         ''' raise warning to the user '''
         message = ''
@@ -246,29 +250,33 @@ class UiUtility (object):
     def processWarnings (resp, respId, iface, feedType, i):
         ''' compile al ist of warnings that are at the "Reject" level '''
         warnings = []
-        for r in resp:
-            if r.meta._requestId == respId:  
+        for respObj in resp:
+            if respObj.meta._requestId == respId:  
                 #logging
                 uilog.info(' *** DATA ***    response received from DM for respId: {0} of type: {1} after {2} seconds'.format(respId, feedType, i))    
-                if r._entities:
-                    for warning in r._entities:
+                if respObj._entities:
+                    for warning in respObj._entities:
                         if warning['properties']['severity'] in ('Reject', 'critical'):
                             warnings.append(warning['properties']['description'])
                     if warnings:
                         UiUtility.displayWarnings(warnings, iface)
-                    return True
+                    return respObj
     
     @staticmethod
-    def handleResp(respId, controller, feedType, iface):
+    def handleResp(respId, controller, feedType, iface, updateFlag = False):
         ''' test for a response in the response
             queue with the relevant repId'''
         #return # temp
         for i in range(0,15):
             time.sleep(1)
             resp = controller.uidm.response(feedType)
-            if resp:
+            if resp: # found and processed response
                 if UiUtility.processWarnings(resp, respId, iface, feedType, i):
-                    return
+                    if updateFlag:
+                        UiUtility.tempARFeature()
+                        return
+                else: return
+                
             #logging 
         uilog.info(' *** DATA ***    Time Out ({0} seconds): No response received from DM for respId: {1} of feedtype: {2}'.format(i, respId, feedType))    
    

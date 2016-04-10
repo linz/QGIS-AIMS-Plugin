@@ -31,7 +31,8 @@ from AimsUI.UpdateAddressTool import UpdateAddressTool
 from AimsUI.LineageTool import LineageTool
 from AimsUI.GetRclTool import GetRcl
 from AimsQueueWidget import AimsQueueWidget
-from UiDataManager import UiDataManager
+from AimsUI.AimsClient.Gui.UiDataManager import UiDataManager
+from AimsUI.AimsClient.Gui.ResponseHandler import ResponseHandler
 
 from AIMSDataManager.AimsLogging import Logger
 
@@ -52,8 +53,10 @@ class Controller(QObject):
         self.actions = []
         if Controller._instance == None:
             Controller._instance = self
-        self.uidm = None 
-         
+        # move the below to initGui
+        self.uidm = UiDataManager(self.iface, self)
+        self.RespHandler = ResponseHandler(self.iface, self.uidm)
+        
     def initGui(self):
         # set srs
         self._displayCrs = QgsCoordinateReferenceSystem()
@@ -70,7 +73,7 @@ class Controller(QObject):
             'QGIS-AIMS-Plugin', self.iface.mainWindow())
         self._loadaction.setWhatsThis('Open the QGIS-AIMS-Plugin')
         self._loadaction.setStatusTip('Open the QGIS-AIMS-Plugin')
-        self._loadaction.triggered.connect(self.startDm)
+        #self._loadaction.triggered.connect(self.startDm)
         self._loadaction.triggered.connect(self.loadQueues)
         self._loadaction.triggered.connect(self.loadLayers)
         self._loadaction.triggered.connect(self.enableAddressLayer)
@@ -191,8 +194,8 @@ class Controller(QObject):
         self.iface.removePluginMenu('&QGIS-AIMS-Plugin', self._moveaddressaction)
         self.iface.removePluginMenu('&QGIS-AIMS-Plugin', self._lineageaction)
     
-    def startDm(self):
-        self.uidm = UiDataManager(self.iface, self)
+    #def startDm(self):
+    #    self.uidm = UiDataManager(self.iface, self)
     
     def loadQueues( self ):
         ''' load the queue widgets '''
@@ -271,6 +274,11 @@ class Controller(QObject):
         ''' activate the "lineage" map tool '''
         self.iface.mapCanvas().setMapTool(self._lineagetool)
         self._deladdtool.setEnabled(True) 
+ 
+    @pyqtSlot()
+    def rDataChanged(self):
+        self._queues.uResolutionTab.refreshData()
+        self._layerManager.updateReviewLayer()
  
 # Singleton instance    
 def instance():

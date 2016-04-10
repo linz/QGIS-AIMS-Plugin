@@ -372,7 +372,7 @@ class AddressResolution(AddressRequestFeed):
         if hasattr(self, '_components_addressNumber'): fullNumber+=str(self._components_addressNumber) 
         if hasattr(self, '_components_addressNumberHigh'): fullNumber+= ('-'+str(self._components_addressNumberHigh))
         if hasattr(self, '_components_addressNumberSuffix'): fullNumber+=str(self._components_addressNumberSuffix)      
-        return 'fullNumber' 
+        return fullNumber
 
                 
 #------------------------------------------------------------------------------   

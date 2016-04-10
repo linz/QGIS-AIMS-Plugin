@@ -88,8 +88,8 @@ class DelAddressTool(QgsMapToolIdentify):
                 featureToRetire = self.af[FeedType.CHANGEFEED].cast(featureToRetire)
                 respId = int(time.time()) 
                 self._controller.uidm.retireAddress(featureToRetire, respId)
-                UiUtility.handleResp(respId, self._controller, FeedRef((FeatureType.ADDRESS,FeedType.RESOLUTIONFEED)), self._iface)
-             
+                self._controller.RespHandler.handleResp(respId, FEEDS['AC'])
+                
 class DelAddressDialog( Ui_ComfirmSelection, QDialog ):
 
     def __init__( self, parent ):

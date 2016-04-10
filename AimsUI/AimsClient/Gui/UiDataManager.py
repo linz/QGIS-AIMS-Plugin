@@ -3,23 +3,28 @@ Created on 11/02/2016
 
 @author: splanzer
 '''
-from AIMSDataManager.DataManager import DataManager
-from AIMSDataManager.AimsLogging import Logger
-from AIMSDataManager.AimsUtility import FeedType, FeedRef, FeatureType, FEEDS
+
 from PyQt4.QtCore import *
 from qgis.core import QgsRectangle
 import time
 
+from AIMSDataManager.DataManager import DataManager
+from AIMSDataManager.AimsLogging import Logger
+from AIMSDataManager.AimsUtility import FeedType, FeedRef, FeatureType, FEEDS
+from AimsUI.AimsClient.Gui.ReviewQueueWidget import ReviewQueueWidget
+
 uilog = None
 
 class UiDataManager(QObject):
+    rDataChangedSignal = pyqtSignal()
     #dataChangedSignal = pyqtSignal()  <-- cannot have a non terminating program while testing
     #logging 
     global uilog
     uilog = Logger.setup(lf='uiLog')
     
-    def __init__(self, iface, controller=None):
+    def __init__(self, iface, controller):
         QObject.__init__(self)
+        self._controller = controller
         self.dm = DataManager()
         #self.featData = []
         #self.resData = []
@@ -28,13 +33,16 @@ class UiDataManager(QObject):
         self.uptdRData = None
         self.uptdFeedRef = None
         self.refreshSuccess = False
-        self.data = {   FEEDS['AF']:[],
-                        FEEDS['AC']:[],
-                        FEEDS['AR']:[],
-                        FEEDS['GC']:[],
-                        FEEDS['GR']:[]
+        self.data = {   FEEDS['AF']:{},
+                        FEEDS['AC']:{},
+                        FEEDS['AR']:{},
+                        FEEDS['GC']:{},
+                        FEEDS['GR']:{}
                     }
-                                
+        
+        self.rDataChangedSignal.connect(self._controller.rDataChanged)
+        #self.rDataChangedSignal.connect(ReviewQueueWidget.rDataChanged)
+        
     def exlopdeGroup(self):
         gDict = {}
         for gId, gFeats in self.data[FEEDS['GR']].items():
@@ -63,11 +71,18 @@ class UiDataManager(QObject):
         if feedtype == FEEDS['GR']:
             # key group objects
            self.exlopdeGroup()
+    
+    def keyDatum(self, aimsFeature):
+        pass
 
     def setData(self, dataRefresh, FeedType):        
         self.keyData(dataRefresh, FeedType)
         #self.dataChangedSignal.emit()
     
+    def extentData(self, aimsFeature):
+        self.data[FEEDS['AR']][aimsFeature._changeId] = aimsFeature
+        self.rDataChangedSignal.emit()
+        
     '''
     @pyqtSlot()  <-- cannot have a non terminating program while testing
     def dataChanged(self):
@@ -105,7 +120,11 @@ class UiDataManager(QObject):
         self.dm.setbb(sw ,ne) 
         #logging
         uilog.info('new bbox passed to dm.setbb')
-
+    
+    def reviewData(self):
+        ''' update data and return AIMS features '''
+        return self.data.get(FEEDS['AR'])
+    
     def featureData(self):
         ''' update data and return AIMS features '''
         self.restartDm(FEEDS['AF'])
@@ -207,29 +226,35 @@ class UiDataManager(QObject):
             return (prop['AR']['kProperties'],prop['AR']['vProperties'])
         return (prop['GR']['kProperties'],prop['AR']['vProperties'])
     
+    def refreshTableData(self, feedtype):
+        ''' temp until threading ''' 
+        self.restartDm(feedtype)
+        self.refresh(feedtype) 
+        self.reviewTableData(feedtype)
+    
     def reviewTableData(self, feedtypes):
         ''' review data as formatted for the review data model '''
         fData = {}
         for feedtype in feedtypes:
            
             # Restart the DM  feed and catch the new data
-            self.restartDm(feedtype)
-            self.refresh(feedtype) 
-            if self.refreshSuccess:  
+            #self.restartDm(feedtype)
+            #self.refresh(feedtype) 
+            #if self.refreshSuccess:  
                 # turn this in to a dict and init it              
-                props = self.addClassProps(feedtype)
-                kProperties = props[0] 
-                vProperties = props[1] 
-                for k, v in self.data.get(feedtype).items():
-                    featureValues = [] 
-                    if feedtype == FEEDS['AR']:
-                        groupValues = self.formatGroupTableData(v,kProperties) 
-                        featureValues = [self.formatFeatureTableData(v,vProperties, feedtype)]
-                    else:
-                        featureValues = []                    
-                        groupValues = self.formatGroupTableData(k[1],kProperties) 
-                        featureValues = self.formatFeatureTableData(v,vProperties, feedtype)
-                    fData[tuple(groupValues)] = featureValues
+            props = self.addClassProps(feedtype)
+            kProperties = props[0] 
+            vProperties = props[1] 
+            for k, v in self.data.get(feedtype).items():
+                featureValues = [] 
+                if feedtype == FEEDS['AR']:
+                    groupValues = self.formatGroupTableData(v,kProperties) 
+                    featureValues = [self.formatFeatureTableData(v,vProperties, feedtype)]
+                else:
+                    featureValues = []                    
+                    groupValues = self.formatGroupTableData(k[1],kProperties) 
+                    featureValues = self.formatFeatureTableData(v,vProperties, feedtype)
+                fData[tuple(groupValues)] = featureValues
         if fData:
             return fData # need to test a return == {}    
     

@@ -98,9 +98,10 @@ class NewAddressDialog(Ui_NewAddressDialog, QDialog):
 
         # submit address obj to DM
         self._controller.uidm.addAddress(self.feature, respId)
+        
         # check the response 
-        UiUtility.handleResp(respId, self._controller, FEEDS['AC'], self._iface)
-              
+        self._controller.RespHandler.handleResp(respId, FEEDS['AC'])
+ 
         self.closeDlg()
        
     def fullNumChanged(self, newnumber):

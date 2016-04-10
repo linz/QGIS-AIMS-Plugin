@@ -98,8 +98,7 @@ class LayerManager(QObject):
     def initialiseExtentEvent(self):  
         ''' Once plugin loading triggered initialise loading of AIMS Feautres '''
         self._iface.mapCanvas().extentsChanged.connect(self.getAimsFeatures)
-        self._iface.mapCanvas().extentsChanged.connect(self.updateReviewLayer) # triggered for testing rev layer - TEMP
-        
+                
     def layerId(self, layer):
         idprop = self._propBaseName + 'Id' 
         res = layer.customProperty(idprop)
@@ -236,15 +235,15 @@ class LayerManager(QObject):
         #get reviewfeatures. in the fututre to be emitted(?)
         provider = layer.dataProvider()
         self.removeFeatures(layer)
-        try:
-            for reviewItem in self._controller.uidm.reviewData().values():
-                fet = QgsFeature()
-                point = reviewItem._addressedObject_addressPositions[0]._position_coordinates
-                fet.setGeometry(QgsGeometry.fromPoint(QgsPoint(point[0], point[1])))
-                fet.setAttributes([ reviewItem.getFullNumber()])
-                provider.addFeatures([fet])
-            layer.commitChanges()
-        except: pass # no data returned 
+        #try:
+        for reviewItem in self._controller.uidm.reviewData().values():
+            fet = QgsFeature()
+            point = reviewItem._addressedObject_addressPositions[0]['position']['coordinates']
+            fet.setGeometry(QgsGeometry.fromPoint(QgsPoint(point[0], point[1])))
+            fet.setAttributes([ reviewItem.getFullNumber()])
+            provider.addFeatures([fet])
+        layer.commitChanges()
+        #except: pass # no data returned 
          
     def getAimsFeatures(self):
         ext = self._iface.mapCanvas().extent()

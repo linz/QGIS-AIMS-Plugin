@@ -32,7 +32,6 @@ class GetRcl(QgsMapToolIdentifyFeature):
         
     def activate(self):
         QgsMapTool.activate(self)
-        self.removeMarker()
         self._iface.setActiveLayer(self._layers.rclLayer())
         sb = self._iface.mainWindow().statusBar()
         sb.showMessage('Click map to select road centerline')
@@ -43,8 +42,7 @@ class GetRcl(QgsMapToolIdentifyFeature):
         sb.clearMessage()
     
     def removeMarker(self):
-        if self._marker:
-            self._canvas.scene().removeItem(self._marker)
+        self._canvas.scene().removeItem(self._marker)
         
     def setEnabled(self, enabled):
         self._enabled = enabled
@@ -54,28 +52,30 @@ class GetRcl(QgsMapToolIdentifyFeature):
             self.deactivate()
 
     def canvasReleaseEvent(self, mouseEvent):
-        rclLayer = self._layers.rclLayer()        
-        results = self.identify(mouseEvent.x(), mouseEvent.y(), self.ActiveLayer, self.VectorLayer)
-        
-        if len(results) == 0: 
-            return
-        if len(results) == 1:            
-            self._canvas.scene().removeItem(self._marker) 
-            addressClass = self.parent.uAddressType.currentText()        
-            coords = results[0].mFeature.geometry()
+        try:
+            self.removeMarker()
+        finally:
+            rclLayer = self._layers.rclLayer()        
+            results = self.identify(mouseEvent.x(), mouseEvent.y(), self.ActiveLayer, self.VectorLayer)
             
-            if addressClass == 'Road':
-                self.parent.uRclId.setText(UiUtility.nullEqualsNone(str(results[0].mFeature.attribute('road_section_id'))))
-                self.parent.uRoadPrefix.setText(UiUtility.nullEqualsNone(str(results[0].mFeature.attribute('road_name_prefix_value'))))
-                self.parent.uRoadName.setText(UiUtility.nullEqualsNone(str(results[0].mFeature.attribute('road_name_body'))))#
-                self.parent.uRoadTypeName.setText(UiUtility.nullEqualsNone(str(results[0].mFeature.attribute('road_name_type_value'))))
-                self.parent.uRoadSuffix.setText(UiUtility.nullEqualsNone(str(results[0].mFeature.attribute('road_name_suffix_value')))) 
-            else:
-                self.parent.uRclId.setText(UiUtility.nullEqualsNone(str(results[0].mFeature.attribute('road_section_id'))))
-                self.parent.uWaterRouteName.setText(UiUtility.nullEqualsNone(str(results[0].mFeature.attribute('road_name_body'))))
-            
-            if self.parent.__class__.__name__ != 'QueueEditorWidget':
-                self._marker = UiUtility.rclHighlight(self._canvas, coords,rclLayer)
-            else:
-                self._controller.setPreviousMapTool() 
-   
+            if len(results) == 0: 
+                return
+            if len(results) == 1:            
+                addressClass = self.parent.uAddressType.currentText()        
+                coords = results[0].mFeature.geometry()
+                
+                if addressClass == 'Road':
+                    self.parent.uRclId.setText(UiUtility.nullEqualsNone(str(results[0].mFeature.attribute('road_section_id'))))
+                    self.parent.uRoadPrefix.setText(UiUtility.nullEqualsNone(str(results[0].mFeature.attribute('road_name_prefix_value'))))
+                    self.parent.uRoadName.setText(UiUtility.nullEqualsNone(str(results[0].mFeature.attribute('road_name_body'))))#
+                    self.parent.uRoadTypeName.setText(UiUtility.nullEqualsNone(str(results[0].mFeature.attribute('road_name_type_value'))))
+                    self.parent.uRoadSuffix.setText(UiUtility.nullEqualsNone(str(results[0].mFeature.attribute('road_name_suffix_value')))) 
+                else:
+                    self.parent.uRclId.setText(UiUtility.nullEqualsNone(str(results[0].mFeature.attribute('road_section_id'))))
+                    self.parent.uWaterRouteName.setText(UiUtility.nullEqualsNone(str(results[0].mFeature.attribute('road_name_body'))))
+                
+                if self.parent.__class__.__name__ != 'QueueEditorWidget':
+                    self._marker = UiUtility.rclHighlight(self._canvas, coords,rclLayer)
+                else:
+                    self._controller.setPreviousMapTool() 
+       
