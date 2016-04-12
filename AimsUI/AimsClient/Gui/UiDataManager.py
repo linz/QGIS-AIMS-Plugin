@@ -1,9 +1,13 @@
-'''
-Created on 11/02/2016
-
-@author: splanzer
-'''
-
+################################################################################
+#
+# Copyright 2015 Crown copyright (c)
+# Land Information New Zealand and the New Zealand Government.
+# All rights reserved
+#
+# This program is released under the terms of the 3 clause BSD license. See the 
+# LICENSE file for more information.
+#
+################################################################################
 from PyQt4.QtCore import *
 from qgis.core import QgsRectangle
 import time
@@ -14,10 +18,10 @@ from AIMSDataManager.AimsUtility import FeedType, FeedRef, FeatureType, FEEDS
 from AimsUI.AimsClient.Gui.ReviewQueueWidget import ReviewQueueWidget
 
 uilog = None
-
+    
 class UiDataManager(QObject):
     rDataChangedSignal = pyqtSignal()
-    #dataChangedSignal = pyqtSignal()  <-- cannot have a non terminating program while testing
+
     #logging 
     global uilog
     uilog = Logger.setup(lf='uiLog')
@@ -26,13 +30,12 @@ class UiDataManager(QObject):
         QObject.__init__(self)
         self._controller = controller
         self.dm = DataManager()
-        #self.featData = []
-        #self.resData = []
-        self.dm.register(self)
+        self.dm.register(self) # reg with dm observer
         self.uptdFData = None
         self.uptdRData = None
         self.uptdFeedRef = None
         self.refreshSuccess = False
+        self._observers = []
         self.data = {   FEEDS['AF']:{},
                         FEEDS['AC']:{},
                         FEEDS['AR']:{},
@@ -41,8 +44,22 @@ class UiDataManager(QObject):
                     }
         
         self.rDataChangedSignal.connect(self._controller.rDataChanged)
-        #self.rDataChangedSignal.connect(ReviewQueueWidget.rDataChanged)
-        
+    
+    ### Observer Methods ###
+    def register(self, observer):
+        self._observers.append(observer)
+         
+    def notify(self,observable,args,kwargs):
+        uilog.info('*** NOTIFY ***     Notify A[{}]'.format(args))
+        self.uptdData = kwargs # related to soon to be redundant refresh ...
+        self.uptdFeedRef = args   # related to soon to be redundant refresh ...
+        self.setData(kwargs,args)
+        # if self.reg has a observer pass down the chain
+        # in this case, layeMmanager and eeviewQueueWidget
+        for observer in self._observers:
+            observer.notify()
+    
+    ### Data Methods ###
     def exlopdeGroup(self):
         gDict = {}
         for gId, gFeats in self.data[FEEDS['GR']].items():
@@ -66,11 +83,10 @@ class UiDataManager(QObject):
             keyId = self.idProperty(feedtype)
             li = dict((getattr(feat, keyId), feat) for feat in listofFeatures)
             self.data[feedtype] = li
-            # [GroupKey:{AdKey:}]
-            
+            # [GroupKey:{AdKey:}]            
         if feedtype == FEEDS['GR']:
             # key group objects
-           self.exlopdeGroup()
+            self.exlopdeGroup()
     
     def keyDatum(self, aimsFeature):
         pass
@@ -82,20 +98,12 @@ class UiDataManager(QObject):
     def extentData(self, aimsFeature):
         self.data[FEEDS['AR']][aimsFeature._changeId] = aimsFeature
         self.rDataChangedSignal.emit()
-        
-    '''
-    @pyqtSlot()  <-- cannot have a non terminating program while testing
-    def dataChanged(self):
-        print self.data    
-        print self.dm.refresh()  
-    '''
-    
-    def notify(self,observable,args,kwargs):
-        uilog.info('*** NOTIFY ***     Notify A[{}]'.format(args))
-        self.uptdData = kwargs
-        self.uptdFeedRef = args
-        
+
+    # remove under new threaded observer regime????    
     def refresh(self, feedType):
+        ''' stop the feed related to supplied feedtype and returns
+        the most current data from the api for said feed type''' 
+        
         self.refreshSuccess = False
         uilog.info('*** NOTIFY ***    awaitng "notify" from observer for feedtype: {0}'.format(feedType))
         self.uptdData = []
@@ -107,8 +115,6 @@ class UiDataManager(QObject):
                 self.refreshSuccess = True
                 break
             else: time.sleep(1)
-        # else it has failed to get data and the old data remains - 
-        # should it remove data or keep the stale data?
         
         #logging
         if i != 15:
@@ -227,21 +233,15 @@ class UiDataManager(QObject):
         return (prop['GR']['kProperties'],prop['AR']['vProperties'])
     
     def refreshTableData(self, feedtype):
-        ''' temp until threading ''' 
+        ''' At start up and refresh button emit, return table data ''' 
         self.restartDm(feedtype)
         self.refresh(feedtype) 
-        self.reviewTableData(feedtype)
+        return self.formatTableData(feedtype)
     
-    def reviewTableData(self, feedtypes):
-        ''' review data as formatted for the review data model '''
+    def formatTableData(self, feedtypes):
+        ''' return review data formatted for the review data model '''
         fData = {}
         for feedtype in feedtypes:
-           
-            # Restart the DM  feed and catch the new data
-            #self.restartDm(feedtype)
-            #self.refresh(feedtype) 
-            #if self.refreshSuccess:  
-                # turn this in to a dict and init it              
             props = self.addClassProps(feedtype)
             kProperties = props[0] 
             vProperties = props[1] 

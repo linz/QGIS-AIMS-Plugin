@@ -80,6 +80,7 @@ class LayerManager(QObject):
         self._iface = iface
         self._controller = controller
         self._statusBar = iface.mainWindow().statusBar()
+        #self._controller.uidm.register(self)
         self._adrLayer = None
         self._rclLayer = None
         self._parLayer = None
@@ -244,7 +245,7 @@ class LayerManager(QObject):
             provider.addFeatures([fet])
         layer.commitChanges()
         #except: pass # no data returned 
-         
+       
     def getAimsFeatures(self):
         ext = self._iface.mapCanvas().extent()
         # if the map is at the bounds of nzgd, dont show - must be a better way to do this
@@ -256,7 +257,10 @@ class LayerManager(QObject):
         featureData = self._controller.uidm.featureData()
         if featureData:
             self.updateFeaturesLayer(featureData)
- 
+    
+    def notify(self):
+        self.updateReviewLayer()
+    
     def updateFeaturesLayer(self, featureData):
         id = 'adr'
         layer = self.findLayer(id)

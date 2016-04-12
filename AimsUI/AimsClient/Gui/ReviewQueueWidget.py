@@ -25,7 +25,6 @@ import sys # temp
 class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
     ''' connects View <--> Proxy <--> Data Model 
         and passed data to data model'''
-    #featureSelected = pyqtSignal( Address, name="featureSelected" )
      
     def __init__( self, parent=None, controller=None ):
         QWidget.__init__( self, parent )
@@ -33,6 +32,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.setController( controller )
         self.iface = self._controller.iface
         self.uidm = self._controller.uidm
+        self.uidm.register(self)
         self.reviewData = self.uidm.refreshTableData((FEEDS['AR'],))   
         self.currentFeatureKey = None
         self.currentAdrCoord = [0,0]
@@ -75,11 +75,14 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.comboBoxUser.view().pressed.connect(self.itemPressedUser) # or more probable, list item clicked
         self.popUserCombo()
     
+    def notify(self):
+        self.refreshData()
+    
     def refreshData(self): # < -- ALSO NEED TO REFRESH THE FILTER
         if self.uGroupFeedCheckBox.isChecked():
-            self.reviewData = self.uidm.reviewTableData((FEEDS['AR'], FEEDS['GR']))
+            self.reviewData = self.uidm.formatTableData((FEEDS['AR'], FEEDS['GR']))
         else:
-            self.reviewData = self.uidm.reviewTableData((FEEDS['AR'],))
+            self.reviewData = self.uidm.formatTableData((FEEDS['AR'],))
         self.groupModel.beginResetModel()
         self.featureModel.beginResetModel()
         self.groupModel.refreshData(self.reviewData)        
@@ -155,8 +158,6 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
                     ]
         return rData
     
-    #def refreshData(self):
-    #    self.reviewData = self.uidm.reviewTableData()
     def updateFeature(self):
         self.feature = self.singleReviewObj(FEEDS['AR'],self.currentFeatureKey) # needs to modified to also search 'GR' 
         if self.feature: 
