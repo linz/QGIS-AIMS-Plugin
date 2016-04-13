@@ -440,47 +440,47 @@ class LocalTest():
         #cast to addresschange type, to do cf ops
         addr_c = dm.castTo(FeedType.CHANGEFEED,addr_f)
         #addr_c.setVersion(ver)
-#         aimslog.info('*** Change ADD '+str(time.clock()))
-#         rqid1 = 1234321
-#         dm.addAddress(addr_c,rqid1)
-#         resp = None
-#         tout = 10
-#         while True: 
-#             resp = self.testresp(dm,FeedType.CHANGEFEED)
-#             if resp: 
-#                 err = resp[0].getErrors()
-#                 print rqid1,resp[0].meta.requestId
-#                 print 'e',err
-#                 if not err:
-#                     cid = resp[0].getChangeId()
-#                 break
-#             if not tout: break
-#             tout +- 1
-#             time.sleep(5)
-#         ver += 1
-#       
-#           
-#         aimslog.info('*** Change UPDATE '+str(time.clock()))
-#         rqid2 = 2345432
-#         addr_c.setFullAddress('Unit C, 16 Islay Street, Glenorchy')
-#         addr_c.setChangeId(cid)
-#         #addr_c.setVersion(ver)
-#         dm.updateAddress(addr_c,rqid2)
-#         resp = None
-#         tout = 10
-#         while True: 
-#             resp = self.testresp(dm,FeedType.CHANGEFEED)
-#             if resp: 
-#                 err = resp[0].getErrors()
-#                 print rqid2,resp[0].meta.requestId
-#                 print 'e',err
-#                 if not err:
-#                     cid = resp[0].getChangeId()
-#                 break
-#             if not tout: break
-#             tout -= 1
-#             time.sleep(5)
-#         ver += 1
+        aimslog.info('*** Change ADD '+str(time.clock()))
+        rqid1 = 1234321
+        dm.addAddress(addr_c,rqid1)
+        resp = None
+        tout = 10
+        while True: 
+            resp = self.testresp(dm,FeedType.CHANGEFEED)
+            if resp: 
+                err = resp[0].getErrors()
+                print rqid1,resp[0].meta.requestId
+                print 'e',err
+                if not err:
+                    cid = resp[0].getChangeId()
+                break
+            if not tout: break
+            tout +- 1
+            time.sleep(5)
+        ver += 1
+       
+           
+        aimslog.info('*** Change UPDATE '+str(time.clock()))
+        rqid2 = 2345432
+        addr_c.setFullAddress('Unit C, 16 Islay Street, Glenorchy')
+        addr_c.setChangeId(cid)
+        #addr_c.setVersion(ver)
+        dm.updateAddress(addr_c,rqid2)
+        resp = None
+        tout = 10
+        while True: 
+            resp = self.testresp(dm,FeedType.CHANGEFEED)
+            if resp: 
+                err = resp[0].getErrors()
+                print rqid2,resp[0].meta.requestId
+                print 'e',err
+                if not err:
+                    cid = resp[0].getChangeId()
+                break
+            if not tout: break
+            tout -= 1
+            time.sleep(5)
+        ver += 1
         
         
         aimslog.info('*** Change RETIRE '+str(time.clock()))

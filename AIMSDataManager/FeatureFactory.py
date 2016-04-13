@@ -106,6 +106,21 @@ class FeatureFactory(object):
                 tstr = handle.read()
                 tp[t1]['response'] = eval(tstr) if tstr else ''
         return tp
-
+    
+    def _delNull(self, obj):
+        if hasattr(obj, 'items'):
+            new_obj = type(obj)()
+            for k in obj:
+                #if k != 'NULL' and obj[k] != 'NULL' and obj[k] != None:
+                if k and obj[k]:
+                    res = self._delNull(obj[k])
+                    if res: new_obj[k] = res
+        elif hasattr(obj, '__iter__'):
+            new_obj = [] 
+            for it in obj:
+                #if it != 'NULL' and it != None:
+                if it: new_obj.append(self._delNull(it))
+        else: return obj
+        return type(obj)(new_obj)
     
            

@@ -374,6 +374,9 @@ class AddressResolution(AddressRequestFeed):
         if hasattr(self, '_components_addressNumberSuffix'): fullNumber+=str(self._components_addressNumberSuffix)      
         return fullNumber
 
+    def _getFullNumber(self):
+        d = {'unitValue':'{}/','addressNumber':'{}','addressNumberHigh':'-{}','addressNumberSuffix':'{}'}
+        reduce(lambda x,y: x+y,d)
                 
 #------------------------------------------------------------------------------   
   

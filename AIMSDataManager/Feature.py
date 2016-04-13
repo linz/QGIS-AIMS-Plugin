@@ -83,6 +83,7 @@ class Feature(object):
         '''Merges new (other) atributes into existing (self) object'''
         for key in other.__dict__.keys():
             setattr(self,key, getattr(other,key))
+        return self
     
     
     #---------------------------------
