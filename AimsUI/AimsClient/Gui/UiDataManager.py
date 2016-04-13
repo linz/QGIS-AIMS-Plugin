@@ -93,10 +93,15 @@ class UiDataManager(QObject):
 
     def setData(self, dataRefresh, FeedType):        
         self.keyData(dataRefresh, FeedType)
-        #self.dataChangedSignal.emit()
+
     
-    def extentData(self, aimsFeature):
-        self.data[FEEDS['AR']][aimsFeature._changeId] = aimsFeature
+    def updateRdata(self, respFeature, feedType):
+        # remove from data
+        if respFeature._queueStatus in ('Declined', 'Accepted'):
+            del self.data[FEEDS['AR']][respFeature._changeId]
+        else:                                
+            # add to data 
+            self.data[FEEDS['AR']][respFeature._changeId] = respFeature
         self.rDataChangedSignal.emit()
 
     # remove under new threaded observer regime????    
@@ -127,9 +132,26 @@ class UiDataManager(QObject):
         #logging
         uilog.info('new bbox passed to dm.setbb')
     
+#     def combineFeeds(self, data1, data2):
+#         '''Given two dicts, merge them into a new dict as a shallow copy.'''
+#         combinedDict = data1.copy()
+#         combinedDict.update(data2)
+#         return combinedDict
+    
     def reviewData(self):
-        ''' update data and return AIMS features '''
+        ''' return (single and group) review data '''
+#         grData = {}
+#         # un-nest the group data
+#         for features in self.data.get(FEEDS['GR']).values():
+#             for k , v in features.items():
+#                 grData[k] = v        
+#         return self.combineFeeds(grData, self.data.get(FEEDS['AR']))
+        
+        # Above commented out as... do we want to set the 
+        # individual group entities as these are already published
         return self.data.get(FEEDS['AR'])
+
+    
     
     def featureData(self):
         ''' update data and return AIMS features '''

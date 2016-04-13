@@ -22,6 +22,8 @@ from collections import OrderedDict
 
 aimslog = Logger.setup()
 
+uilog = None
+
 class Mapping():
     #format = feildname: [objProp, getter]
     adrLayerObjMappings = OrderedDict([
@@ -67,6 +69,10 @@ class Mapping():
 
 class LayerManager(QObject):
     
+    # logging
+    global uilog
+    uilog = Logger.setup(lf='uiLog')
+    
     _propBaseName='AimsClient.'
     _styledir = join(dirname(abspath(__file__)),'styles')
     _addressLayerId='adr'
@@ -80,12 +86,17 @@ class LayerManager(QObject):
         self._iface = iface
         self._controller = controller
         self._statusBar = iface.mainWindow().statusBar()
-        #self._controller.uidm.register(self)
+        self._controller.uidm.register(self)
         self._adrLayer = None
         self._rclLayer = None
         self._parLayer = None
         self._locLayer = None
         self._revLayer = None
+        
+        self.sw_x = -170.8900
+        self.sw_y = -55.9500
+        self.ne_x =  157.4100
+        self.ne_y = -22.7400
        
         
         QgsMapLayerRegistry.instance().layerWillBeRemoved.connect(self.checkRemovedLayer)
@@ -212,7 +223,7 @@ class LayerManager(QObject):
             self.addAimsFields(layer, provider, id, [QgsField(layerAttName, QVariant.String) for layerAttName in Mapping.adrLayerObjMappings.keys()] )
             #provider.addAttributes([QgsField(layerAttName, QVariant.String) for layerAttName in Mapping.adrLayerObjMappings.keys()])
         elif id == 'rev' and not self.findLayer(id):
-            self.addAimsFields(layer, provider, id, [QgsField('AddressNumber', QVariant.String)])
+            self.addAimsFields(layer, provider, id, [QgsField('AddressNumber', QVariant.String),QgsField('Action', QVariant.String)])
             #provider.addAttributes([QgsField('AddressNumber', QVariant.String)])      
         #layer.updateFields()
         #self.styleLayer(layer, id)     
@@ -230,30 +241,43 @@ class LayerManager(QObject):
         return scale <= layer.maximumScale() and scale >= layer.minimumScale()
     
     def updateReviewLayer(self):
-        # for testing this is triggered by extent changes but more triggers to come ...  
         id = 'rev'
         layer = self.findLayer(id)
-        #get reviewfeatures. in the fututre to be emitted(?)
         provider = layer.dataProvider()
         self.removeFeatures(layer)
-        #try:
         for reviewItem in self._controller.uidm.reviewData().values():
             fet = QgsFeature()
-            point = reviewItem._addressedObject_addressPositions[0]['position']['coordinates']
+            try: # try,becuase currently retire data is not complete
+                point = reviewItem._addressedObject_addressPositions[0]._position_coordinates
+            except: # this is the manor of a resp object
+                # need to standardise
+                pass
+                #point =  reviewItem._addressedObject_addressPositions[0]['position']['coordinates']
             fet.setGeometry(QgsGeometry.fromPoint(QgsPoint(point[0], point[1])))
-            fet.setAttributes([ reviewItem.getFullNumber()])
+            fet.setAttributes([ reviewItem.getFullNumber(), reviewItem._changeType])
             provider.addFeatures([fet])
         layer.commitChanges()
-        #except: pass # no data returned 
-       
+    
+#     def isZoomin(self, ext):
+#         ''' Test if the extent change was merely a zoom''' 
+#         isZoomin = (ext.xMaximum() >= self.sw_x and ext.yMaximum() >= self.sw_y and 
+#                     ext.xMinimum() >= self.ne_x and ext.yMinimum() >= self.ne_y)
+#         
+#         self.sw_x, self.sw_y, self.ne_x, self.ne_y = (ext.xMaximum(), ext.yMaximum(), ext.xMinimum(), ext.yMinimum())
+#         return isZoomin                                             
+                                                      
     def getAimsFeatures(self):
         ext = self._iface.mapCanvas().extent()
         # if the map is at the bounds of nzgd, dont show - must be a better way to do this
         #if (ext.toString() == '174.7729355126953124,-41.2864799999999974 : 174.7757044873046937,-41.2842699999999994'
         #        or ext.toString() == '163.8084601236508604,-47.6596082687378200 : 181.4207421468571795,-33.6027284622192823'):
         if ext.width() > 10:
-            return            
-        self._controller.uidm.setBbox(sw = (ext.xMaximum(), ext.yMaximum()), ne = (ext.xMinimum(), ext.yMinimum()))
+            return 
+        
+#         if self.isZoomin(ext):
+#             return
+        
+        self._controller.uidm.setBbox(sw = (self.sw_x, self.sw_y), ne = (self.ne_x, self.ne_y))
         featureData = self._controller.uidm.featureData()
         if featureData:
             self.updateFeaturesLayer(featureData)

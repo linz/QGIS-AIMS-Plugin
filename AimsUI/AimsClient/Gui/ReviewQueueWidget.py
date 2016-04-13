@@ -164,7 +164,8 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
             UiUtility.formToObj(self)
             respId = int(time.time())
             self.uidm.repairAddress(self.feature, respId)
-            UiUtility.handleResp(respId, self._controller, FeedType.RESOLUTIONFEED, self.iface)
+            #UiUtility.handleResp(respId, self._controller, FeedType.RESOLUTIONFEED, self.iface)
+            self._controller.RespHandler.handleResp(respId, FEEDS['AR'])
             self.feature = None
     
     def reviewResolution(self, action):
@@ -179,7 +180,8 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
                     self.uidm.accept(reviewObj, respId)
                 elif action == 'decline':
                     self.uidm.decline(reviewObj, respId)
-                UiUtility.handleResp(respId, self._controller,feedType, self.iface)
+                #UiUtility.handleResp(respId, self._controller,feedType, self.iface)
+                self._controller.RespHandler.handleResp(respId, FEEDS['AR'])
     
     def decline(self):
         self.reviewResolution('decline')
