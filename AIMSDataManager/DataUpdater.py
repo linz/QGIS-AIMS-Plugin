@@ -28,7 +28,7 @@ import threading
 import Queue
 from AimsApi import AimsApi 
 from AimsUtility import FeedRef,ActionType,ApprovalType,FeatureType,FeedType,AimsException
-from Const import ENABLE_ENTITY_EVALUATION
+from Const import ENABLE_ENTITY_EVALUATION, MERGE_RESPONSE
 from Address import Entity, EntityValidation, EntityAddress
 from AimsLogging import Logger
 from FeatureFactory import FeatureFactory
@@ -186,10 +186,11 @@ class DataUpdaterDRC(DataUpdater):
         '''group change action on the CF'''
         aimslog.info('DUr.{} {} - Adr-Grp{}'.format(self.ref,ActionType.reverse[self.at],self.agobj))
         err,resp = self.action(self.at,self.payload,self.identifier)
-        feature = self.build(model=resp)
+        feature = self.build(model=resp['properties'])
         #print 'feature',feature
         if err: feature.setErrors(err)
         if self.requestId: feature.setRequestId(self.requestId)
+        if MERGE_RESPONSE: feature = self.agobj.merge(feature)
         self.queue.put(feature)
         
         

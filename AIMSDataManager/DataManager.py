@@ -257,7 +257,14 @@ class DataManager(object):
         if reqid: group.setRequestId(reqid)
         self._populateGroup(group).setChangeType(GroupActionType.reverse[gat].title())
         self.ioq[FeedRef((FeatureType.GROUPS,FeedType.CHANGEFEED))]['in'].put({gat:(group,)})   
-        
+    
+    #----------------------------
+    
+    #convenience method for address casting
+    def castTo(self,requiredtype,address):
+        if not requiredtype in FeedType.reverse.keys(): raise Exception('unknown feed/address type')
+        return FeatureFactory.getInstance(FeedRef((FeatureType.ADDRESS,requiredtype))).cast(address)
+    
     #----------------------------
     #CM
         
@@ -418,7 +425,6 @@ class LocalTest():
 #         return False
         
     def testrestartCR(self,dm):
-        time.sleep(10)
         dm.restart(FEEDS['AF'])
         time.sleep(10)
         dm.restart(FEEDS['AC'])
@@ -432,52 +438,60 @@ class LocalTest():
         #pull address from features (map)
         addr_f = self.gettestdata(af[FeedType.FEATURES])
         #cast to addresschange type, to do cf ops
-        addr_c = af[FeedType.CHANGEFEED].cast(addr_f)
+        addr_c = dm.castTo(FeedType.CHANGEFEED,addr_f)
         #addr_c.setVersion(ver)
-        aimslog.info('*** Change ADD '+str(time.clock()))
-        rqid1 = 1234321
-        dm.addAddress(addr_c,rqid1)
-        resp = None
-        while True: 
-            resp = self.testresp(dm,FeedType.CHANGEFEED)
-            if resp: 
-                err = resp[0].getErrors()
-                print rqid1,resp[0].meta.requestId
-                print 'e',err
-                if not err:
-                    cid = resp[0].getChangeId()
-                break
-            time.sleep(5)
-        ver += 1
-    
-        
-        aimslog.info('*** Change UPDATE '+str(time.clock()))
-        rqid2 = 2345432
-        addr_c.setFullAddress('Unit C, 16 Islay Street, Glenorchy')
-        addr_c.setChangeId(cid)
-        #addr_c.setVersion(ver)
-        dm.updateAddress(addr_c,rqid2)
-        resp = None
-        while True: 
-            resp = self.testresp(dm,FeedType.CHANGEFEED)
-            if resp: 
-                err = resp[0].getErrors()
-                print rqid2,resp[0].meta.requestId
-                print 'e',err
-                if not err:
-                    cid = resp[0].getChangeId()
-                break
-            time.sleep(5)
-        ver += 1
+#         aimslog.info('*** Change ADD '+str(time.clock()))
+#         rqid1 = 1234321
+#         dm.addAddress(addr_c,rqid1)
+#         resp = None
+#         tout = 10
+#         while True: 
+#             resp = self.testresp(dm,FeedType.CHANGEFEED)
+#             if resp: 
+#                 err = resp[0].getErrors()
+#                 print rqid1,resp[0].meta.requestId
+#                 print 'e',err
+#                 if not err:
+#                     cid = resp[0].getChangeId()
+#                 break
+#             if not tout: break
+#             tout +- 1
+#             time.sleep(5)
+#         ver += 1
+#       
+#           
+#         aimslog.info('*** Change UPDATE '+str(time.clock()))
+#         rqid2 = 2345432
+#         addr_c.setFullAddress('Unit C, 16 Islay Street, Glenorchy')
+#         addr_c.setChangeId(cid)
+#         #addr_c.setVersion(ver)
+#         dm.updateAddress(addr_c,rqid2)
+#         resp = None
+#         tout = 10
+#         while True: 
+#             resp = self.testresp(dm,FeedType.CHANGEFEED)
+#             if resp: 
+#                 err = resp[0].getErrors()
+#                 print rqid2,resp[0].meta.requestId
+#                 print 'e',err
+#                 if not err:
+#                     cid = resp[0].getChangeId()
+#                 break
+#             if not tout: break
+#             tout -= 1
+#             time.sleep(5)
+#         ver += 1
         
         
         aimslog.info('*** Change RETIRE '+str(time.clock()))
         rqid3 = 3456543
-        addr_c.setChangeId(cid)
+        addr_c.setChangeId(4328647)#cid)
         #addr_c.setVersion(ver)
+        addr_c.setAddressId(1)#1,10,9,8
         dm.retireAddress(addr_c,rqid3)
         resp = None
-        while not resp: 
+        tout = 10
+        while True: 
             resp = self.testresp(dm,FeedType.CHANGEFEED)
             if resp: 
                 err = resp[0].getErrors()
@@ -485,6 +499,9 @@ class LocalTest():
                 print 'e',err
                 if not err:
                     cid = resp[0].getChangeId()
+                break
+            if not tout: break
+            tout -= 1
             time.sleep(5)     
         ver += 1
     
@@ -496,7 +513,8 @@ class LocalTest():
         #pull address from features (map)
         addr_f = self.gettestdata(af[FeedType.FEATURES])
         #cast to addresschange type, to do cf ops
-        addr_r = af[FeedType.RESOLUTIONFEED].cast(addr_f)
+        addr_r = dm.castTo(FeedType.RESOLUTIONFEED,addr_f)
+        #addr_r = af[FeedType.RESOLUTIONFEED].cast(addr_f)
         #addr_r.setVersion(ver)
         addr_r.setChangeId(cid)
         
