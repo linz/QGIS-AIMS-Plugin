@@ -190,8 +190,8 @@ class DataUpdaterDRC(DataUpdater):
         #print 'feature',feature
         if err: feature.setErrors(err)
         if self.requestId: feature.setRequestId(self.requestId)
-        if MERGE_RESPONSE: feature = self.agobj.merge(feature)
-        self.queue.put(feature)
+        if MERGE_RESPONSE: self.queue.put(self.agobj.merge(feature))
+        else: self.queue.put(feature)
         
         
 class DataUpdaterAction(DataUpdaterDRC):

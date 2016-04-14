@@ -84,6 +84,7 @@ class GroupFactory(FeatureFactory):
         
         if overwrite:
             try:
+                #if SKIP_NULL: data = self._delNull(data)
                 grp = self._readGroup(grp, data, prefix)        
             except Exception as e:
                 msg = 'Error creating address object using model {} with {}'.format(data,e)
@@ -124,7 +125,7 @@ class GroupFactory(FeatureFactory):
         full = None
         try:
             full = self._convert(grp, copy.deepcopy(self.template[self.reqtype.reverse[gat].lower()]))
-            full = self._delNull(full) if SKIP_NULL else full
+            if SKIP_NULL: full = self._delNull(full)
         except Exception as e:
             msg = 'Error converting group object using AT{} with {}'.format(gat,e)
             aimslog.error(msg)
@@ -160,22 +161,6 @@ class GroupFactory(FeatureFactory):
             aimslog.error('AddressFieldIncorrect {}={}'.format(key,val))
             raise GroupFieldIncorrectException('Address field {}={} not one of {}'.format(key,val,oneof[0]))
         return val if val else default
-     
-    def _delNull(self, obj):
-        if hasattr(obj, 'items'):
-            new_obj = type(obj)()
-            for k in obj:
-                #if k != 'NULL' and obj[k] != 'NULL' and obj[k] != None:
-                if k and obj[k]:
-                    res = self._delNull(obj[k])
-                    if res: new_obj[k] = res
-        elif hasattr(obj, '__iter__'):
-            new_obj = [] 
-            for it in obj:
-                #if it != 'NULL' and it != None:
-                if it: new_obj.append(self._delNull(it))
-        else: return obj
-        return type(obj)(new_obj)
 
 class GroupChangeFactory(GroupFactory):
     GFFT = FeedType.CHANGEFEED

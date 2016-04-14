@@ -79,6 +79,7 @@ class AddressFactory(FeatureFactory):
         
         if overwrite:
             try:
+                #if SKIP_NULL: data = self._delNull(data) #breaks position on template, coords[0,0]->None
                 adr = self._readAddress(adr, data, prefix)        
             except Exception as e:
                 msg = 'Error creating address object using model {} with message "{}"'.format(data,e)
@@ -110,7 +111,7 @@ class AddressFeedFactory(AddressFactory):
         full = None
         try:
             full = self._convert(adr, copy.deepcopy(self.template[self.reqtype.reverse[at].lower()]))
-            full = self._delNull(full) if SKIP_NULL else full
+            if SKIP_NULL: full = self._delNull(full)
         except Exception as e:
             msg = 'Error converting address object using AT{} with {}'.format(at,e)
             raise AddressConversionException(msg)
@@ -144,26 +145,7 @@ class AddressFeedFactory(AddressFactory):
         if oneof and val and val not in oneof[0]:
             aimslog.error('AddressFieldIncorrect {}={}'.format(key,val))
             raise AddressFieldIncorrectException('Address field {}={} not one of {}'.format(key,val,oneof[0]))
-        return val if val else default
-    
-    def _delNull(self, obj):
-        if hasattr(obj, 'items'):
-            new_obj = type(obj)()
-            for k in obj:
-                #if k != 'NULL' and obj[k] != 'NULL' and obj[k] != None:
-                if k and obj[k]:
-                    res = self._delNull(obj[k])
-                    if res: new_obj[k] = res
-        elif hasattr(obj, '__iter__'):
-            new_obj = [] 
-            for it in obj:
-                #if it != 'NULL' and it != None:
-                if it: new_obj.append(self._delNull(it))
-        else: return obj
-        return type(obj)(new_obj)
-
-            
-        
+        return val if val else default         
         
 class AddressChangeFactory(AddressFeedFactory):
     AFFT = FeedType.CHANGEFEED
@@ -182,11 +164,11 @@ class AddressResolutionFactory(AddressFeedFactory):
     def __init__(self,ref):
         super(AddressResolutionFactory,self).__init__(ref)
         
-    def getAddress(self,ref=None,adr=None,model=None,prefix='',warnings=[]):
-        '''Sets a default address object and adds empty warning attribute'''
-        adrr = super(AddressResolutionFactory,self).getAddress(ref,adr,model,prefix)
-        #adrr.setWarnings(warnings)
-        return adrr
+#     def getAddress(self,ref=None,adr=None,model=None,prefix='',warnings=[]):
+#         '''Sets a default address object and adds empty warning attribute'''
+#         adrr = super(AddressResolutionFactory,self).getAddress(ref,adr,model,prefix)
+#         #adrr.setWarnings(warnings)
+#         return adrr
 
     
 def test():
