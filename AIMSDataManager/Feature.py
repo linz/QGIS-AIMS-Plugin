@@ -79,6 +79,11 @@ class Feature(object):
         #IMPORTANT. Attribute value compare only useful with distinct (deepcopy'd) instances
         return all((getattr(self,a)==getattr(other,a) for a in self.__dict__.keys()))
     
+    def merge(self,other):
+        '''Merges new (other) atributes into existing (self) object'''
+        for key in other.__dict__.keys():
+            setattr(self,key, getattr(other,key))
+    
     
     #---------------------------------
     

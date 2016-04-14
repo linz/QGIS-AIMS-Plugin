@@ -54,7 +54,7 @@ class DataRequestChannel(threading.Thread):
         
     def run(self):
         '''Continual loop looking for input queue requests and running periodic updates'''
-        while True:
+        while not self.stopped():
             #if there are things in the client's input queue, process them, push to CF #TODO. there shouldnt ever be anything in the FF inq
             if not self.client.inq.empty():
                 changelist = self.client.inq.get()    
@@ -120,7 +120,7 @@ class DataSync(Observable):
 
     def run(self):
         '''Continual loop looking for input queue requests and running periodic updates'''
-        while True:
+        while not self.stopped():
             #TODO. there shouldnt ever be anything in the FF inq
             updates = self.fetchFeedUpdates(self.ftracker['threads'])
             if updates != None: 
@@ -137,6 +137,9 @@ class DataSync(Observable):
     def fetchFeedUpdates(self,val): pass   
     
     def stop(self):
+        #brutal stop on du threads
+        for du in self.duinst.values():
+            du.stop()
         self._stop.set()
 
     def stopped(self):
@@ -165,9 +168,9 @@ class DataSync(Observable):
             for r in pool:
                 aimslog.debug('### Page {} pool={}'.format(self.etft, r['page'],[p['page'] for p in pool])) 
                 #terminate the pooled objects on stop signal
-                if self.stopped():
-                    self.stopSubs(pool)
-                    return None,None
+                #if self.stopped():
+                #    self.stopSubs(pool)
+                #    return None,None
                 #    print 'halt' 
                 if self.duinst.has_key(r['ref']) and not self.duinst[r['ref']].isAlive(): 
                     #print '{}{} finished'.format(FeedType.reverse[self.ft][:2].capitalize(),r['page'])
@@ -195,7 +198,7 @@ class DataSync(Observable):
         return newaddr,lastpage
     
     def stopSubs(self,pool):
-        '''Stop all subordinate threads'''
+        '''Graceful stop on all subordinate DU threads'''
         for r in pool:
             aimslog.info('Stopping DataUpdater thread {}'.format(r['ref']))
             try:
@@ -276,10 +279,10 @@ class DataSyncFeeds(DataSync):
     
     def stop(self):
         self.drc.stop()
-        self._stop.set()
+        super(DataSyncFeeds,self).stop()
 
     def stopped(self):
-        return self._stop.isSet() and self.drc.stopped() 
+        return super(DataSyncFeeds,self).stopped() and self.drc.stopped() 
     
     
     def fetchFeedUpdates(self,thr):
