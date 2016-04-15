@@ -63,11 +63,14 @@ class DataManager(object):
         if not etft in self._start: self._start.append(etft)
         self._checkDS(etft)
         
-    def notify(self, observable, *args, **kwargs):
+    def observe(self, observable, *args, **kwargs):
         '''Do some housekeeping and notify listener'''
-        aimslog.info('Notify A[{}], K[{}] - {}'.format(args,kwargs,observable))
+        aimslog.info('DM Listen A[{}], K[{}] - {}'.format(args,kwargs,observable))
         args += (self._monitor(args[0]),)
-        if hasattr(self,'reg') and self.reg: self.reg.notify(observable, *args, **kwargs)
+        #chained notify/listen calls
+        if hasattr(self,'reg') and self.reg: 
+            #self.reg.notify(observable, *args, **kwargs)
+            self.reg.observe(observable, *args, **kwargs)
         self._check()
         
     def register(self,reg):
@@ -282,7 +285,7 @@ class Persistence():
     tracker = {}
     coords = {'sw':SWZERO,'ne':NEZERO}
     ADL = None
-    RP = os.path.join(os.path.dirname(__file__),'..',RES_PATH)
+    RP = os.path.join(os.path.dirname(__file__),'..',RES_PATH,LOCAL_ADL)
     
     def __init__(self,initialise=False):
         '''read or setup the tracked data'''
@@ -290,11 +293,11 @@ class Persistence():
             self.ADL = self._initADL() 
             #default tracker, gets overwrittens
             #page = (lowest page fetched, highest page number fetched)
-            self.tracker[FEEDS['AF']] = {'page':[1,1],    'index':1,'threads':2,'interval':30}    
+            self.tracker[FEEDS['AF']] = {'page':[1,1],    'index':1,'threads':0,'interval':30}    
             self.tracker[FEEDS['AC']] = {'page':[NPV,NPV],'index':1,'threads':1,'interval':125}  
-            self.tracker[FEEDS['AR']] = {'page':[1,1],    'index':1,'threads':1,'interval':25} 
-            self.tracker[FEEDS['GC']] = {'page':[1,1],    'index':1,'threads':1,'interval':130}  
-            self.tracker[FEEDS['GR']] = {'page':[1,1],    'index':1,'threads':1,'interval':55}             
+            self.tracker[FEEDS['AR']] = {'page':[1,1],    'index':1,'threads':0,'interval':25} 
+            self.tracker[FEEDS['GC']] = {'page':[1,1],    'index':1,'threads':0,'interval':130}  
+            self.tracker[FEEDS['GR']] = {'page':[1,1],    'index':1,'threads':0,'interval':55}             
             
             self.write() 
     
@@ -303,7 +306,8 @@ class Persistence():
         return {f:[] for f in FEEDS.values()}
     
     #Disk Access
-    def read(self,localds=RP+LOCAL_ADL):
+    #TODO OS agnostic path sep
+    def read(self,localds=RP):
         '''unpickle local store'''  
         try:
             archive = pickle.load(open(localds,'rb'))
@@ -313,7 +317,7 @@ class Persistence():
             return False
         return True
     
-    def write(self, localds=RP+LOCAL_ADL):
+    def write(self, localds=RP):
         try:
             #archive = [self.tracker,self.coords,self.ADL]
             archive = [self.tracker,self.ADL]
@@ -356,7 +360,7 @@ class LocalTest():
             
             
     def test1(self,dm,af):
-        
+        time.sleep(100000) 
         #dm.persist.ADL = testdata
         #get some data
         listofaddresses = dm.pull()

@@ -27,6 +27,7 @@ import time
 import threading
 import Queue
 
+from Observable import Observable
 from DataUpdater import DataUpdater,DataUpdaterAction,DataUpdaterApproval
 from AimsApi import AimsApi 
 from AimsLogging import Logger
@@ -42,10 +43,7 @@ FPATH = os.path.join('..',os.path.dirname(__file__)) #base of local datastorage
 #PAGES_PERIOCDIC = 3
 #FEED_REFRESH_DELAY = 10
 
-notify_lock = threading.RLock()
-sync_lock = threading.RLock()
-
-class DataRequestChannel(threading.Thread):    
+class DataRequestChannel(Observable):    
     '''Request response channel for user initiated actions eg add decline retire etc. One for each feed class, client, whose pIQ method is accessed'''
     def __init__(self,client):
         threading.Thread.__init__(self)
@@ -70,19 +68,6 @@ class DataRequestChannel(threading.Thread):
     def stopped(self):
         return self._stop.isSet()
     
-class Observable(threading.Thread):    
-    def __init__(self):
-        self._observers = []
-
-    def register(self, observer):
-        self._observers.append(observer)
-    
-    def notify(self, *args, **kwargs):
-        for observer in self._observers:
-            with notify_lock:
-                observer.notify(self, *args, **kwargs)
-
-    
 class DataSync(Observable):
     '''Background thread triggering periodic data updates and synchronising update requests from DM.  
     '''
@@ -97,6 +82,7 @@ class DataSync(Observable):
     #data_hash = {dh:0 for dh in DataManager.FEEDS}
     
     sw,ne = None,None
+    updater_running = False
     
     def __init__(self,params,queues):
         from DataManager import FEEDS
@@ -121,15 +107,18 @@ class DataSync(Observable):
     def run(self):
         '''Continual loop looking for input queue requests and running periodic updates'''
         while not self.stopped():
-            #TODO. there shouldnt ever be anything in the FF inq
-            updates = self.fetchFeedUpdates(self.ftracker['threads'])
-            if updates != None: 
-                self.syncFeeds(updates)
-                aimslog.debug('ETFT {} sleeping {} with size(Qin)={}'.format(self.etft,self.ftracker['interval'],self.inq.qsize())) 
-                time.sleep(self.ftracker['interval'])
-            else:
-                #if updates are none, stop has been called
-                return
+            if not self.updater_running: self.fetchFeedUpdates(self.ftracker['threads'])
+            time.sleep(self.ftracker['interval'])
+            
+#             #TODO. there shouldnt ever be anything in the FF inq
+#             updates = self.fetchFeedUpdates(self.ftracker['threads'])
+#             if updates != None: 
+#                 self.syncFeeds(updates)
+#                 aimslog.debug('ETFT {} sleeping {} with size(Qin)={}'.format(self.etft,self.ftracker['interval'],self.inq.qsize())) 
+#                 time.sleep(self.ftracker['interval'])
+#             else:
+#                 #if updates are none, stop has been called
+#                 return
             
     #start = int(time.time())  
     #now = int(time.time())   
@@ -149,69 +138,75 @@ class DataSync(Observable):
         self.stop()
         #self.inq.task_done()
         #self.outq.task_done()
+        
+    #self.pool
+    #self.newaddr
+    def observe(self,ref):
+        self._managePage(ref)
+        
+    def _managePage(self,ref):
+        #print '{}{} finished'.format(FeedType.reverse[self.ft][:2].capitalize(),r['page'])
+        r = [x for x in self.pool if x['ref']==ref][0] 
+        alist = self.duinst[ref].queue.get()
+        acount = len(alist)
+        self.newaddr += alist
+        nextpage = max([r2['page'] for r2 in self.pool])+1
+        del self.duinst[ref]
+        self.pool.remove(r)
+        #if N>0 features return, spawn another thread
+        if acount<MAX_FEATURE_COUNT:
+            #non-full page returned, must be the last one
+            self.exhausted = r['page']
+        if acount>0:
+            #features returned, not zero and not less than max so get another
+            self.lastpage = max(r['page'],self.lastpage)
+            if nextpage<self.exhausted:
+                ref = self._monitorPage(nextpage)
+                self.pool.append({'page':nextpage,'ref':ref})
+        else:
+            pass
+            #print 'No addresses found in page {}{}'.format(FeedType.reverse[self.ft][:2].capitalize(),r['page'])
+            
+        if len(self.pool)==0:
+            self.syncFeeds(self.newaddr)
+            self.managePage(backpage,lastpage)
+            self.notify()
+            self.updater_running = False
 
     #--------------------------------------------------------------------------            
 
     @LogWrap.timediff
     def _fetchFeedUpdates(self,thr,lastpage=FIRST_PAGE):
         '''get full page loads'''
-        exhausted = PAGE_LIMIT
-        newaddr = []
+        self.exhausted = PAGE_LIMIT
+        self.newaddr = []
         #setup pool
         #print 'LP {} {}->{}'.format(FeedType.reverse[self.ft][:2].capitalize(),lastpage,lastpage+thr)
-        pool = [{'page':p,'ref':None} for p in range(lastpage,lastpage+thr)]
-        for r in pool:
-            r['ref'] = self.fetchPage(r['page'])
+        self.pool = [{'page':p,'ref':None} for p in range(lastpage,lastpage+thr)]
+        for r in self.pool:
+            r['ref'] = self._monitorPage(r['page'])
 
-        while len(pool)>0:#any([p[2] for p in pool if p[2]>1]) 
-            #print '{} {}'.format(FeedType.reverse[self.ft].capitalize(),'STOP' if self.stopped() else 'RUN')
-            for r in pool:
-                aimslog.debug('### Page {} pool={}'.format(self.etft, r['page'],[p['page'] for p in pool])) 
-                #terminate the pooled objects on stop signal
-                #if self.stopped():
-                #    self.stopSubs(pool)
-                #    return None,None
-                #    print 'halt' 
-                if self.duinst.has_key(r['ref']) and not self.duinst[r['ref']].isAlive(): 
-                    #print '{}{} finished'.format(FeedType.reverse[self.ft][:2].capitalize(),r['page'])
-                    alist = self.duinst[r['ref']].queue.get()
-                    acount = len(alist)
-                    newaddr += alist
-                    nextpage = max([r2['page'] for r2 in pool])+1
-                    del self.duinst[r['ref']]
-                    pool.remove(r)
-                    #if N>0 features return, spawn another thread
-                    if acount<MAX_FEATURE_COUNT:
-                        exhausted = r['page']
-                    if acount>0:
-                        lastpage = max(r['page'],lastpage)
-                        if nextpage<exhausted:
-                            ref = self.fetchPage(nextpage)
-                            pool.append({'page':nextpage,'ref':ref})
-                    else:
-                        pass
-                        #print 'No addresses found in page {}{}'.format(FeedType.reverse[self.ft][:2].capitalize(),r['page'])
-                time.sleep(POOL_PAGE_CHECK_DELAY)
-                #print '---------\n'
 
-        #print 'Leaving {} with pool={} and #adr={}'.format(FeedType.reverse[self.ft][:2].capitalize(),[p['page'] for p in pool],len(newaddr))
-        return newaddr,lastpage
+    def _monitorPage(self,p):
+        ref = 'FP.{0}.Page{1}.{2:%y%m%d.%H%M%S}.p{3}'.format(self.etft,p,DT.now(),p)
+        self.duinst[ref] = self._fetchPage(ref,p)
+        self.duinst[ref].register(self)
+        self.duinst[ref].start()
+        return ref    
     
-    def stopSubs(self,pool):
-        '''Graceful stop on all subordinate DU threads'''
-        for r in pool:
-            aimslog.info('Stopping DataUpdater thread {}'.format(r['ref']))
-            try:
-                self.duinst[r['ref']].stop()
-                self.duinst[r['ref']].join(THREAD_JOIN_TIMEOUT)
-                if self.duinst[r['ref']].isAlive():aimslog.warn('Thread timeout {}'.format(r['ref']))
-                del self.duinst[r['ref']]
-            except Exception as e:
-                aimslog.warn('Error stopping {}. {} '.format(r['ref'],e))
-            pool.remove(r)
+    def _fetchPage(self,ref,p):
+        '''Regular page fetch, periodic or demand'''   
+        params = (ref,self.conf,self.afactory)
+        adrq = Queue.Queue()
+        pager = self.updater(params,adrq)
+        if self.etft==FEEDS['AF']: pager.setup(self.etft,self.sw,self.ne,p)
+        else: pager.setup(self.etft,None,None,p)
+        pager.setName(ref)
+        pager.setDaemon(True)
+        return pager
 
             
-    def fetchPage(self,p):
+    def XXX_fetchPage(self,p):
         '''Regular page fetch, periodic or demand'''   
         ref = 'FP.{0}.Page{1}.{2:%y%m%d.%H%M%S}.p{3}'.format(self.etft,p,DT.now(),p)
         params = (ref,self.conf,self.afactory)
@@ -285,7 +280,7 @@ class DataSyncFeeds(DataSync):
         return super(DataSyncFeeds,self).stopped() and self.drc.stopped() 
     
     
-    def fetchFeedUpdates(self,thr):
+    def XXX_fetchFeedUpdates(self,thr):
         '''run forward updates and tack on a single backfill, update page count accordingly'''
         #TODO. If feeds are empty lastpage finder fails and loops, fix this
         pages = self.ftracker['page']
@@ -296,7 +291,22 @@ class DataSyncFeeds(DataSync):
             bdata,bp = self.backfillPage(bp-1)
             res += bdata
         self.managePage((bp,lp))
-        return res
+        return res    
+    
+    def fetchFeedUpdates(self,thr):
+        '''run forward updates and tack on a single backfill, update page count accordingly'''
+        #TODO. If feeds are empty lastpage finder fails and loops, fix this
+        pages = self.ftracker['page']
+        #bp,lp = pages if pages and pages!=[NPV,NPV] else 2*[self._findLastPage(LAST_PAGE_GUESS),]
+        #TEMPORARY HACK while converting feed read to obs pattern
+        bp,lp = pages if pages and pages!=[NPV,NPV] else [1,1]
+        super(DataSyncFeeds,self)._fetchFeedUpdates(thr,lp)
+        #get just one backfill per fFU  #[for i in range(5):#do a bunch of backfills?]
+        #if bp>FIRST_PAGE:
+        #    bdata,bp = self.backfillPage(bp-1)
+        #    res += bdata
+        #self.managePage((bp,lp))
+        #return res
         
     def _findLastPage(self,p_end):
         '''Inefficient way to find the last page in the feed sequence'''

@@ -376,7 +376,8 @@ class AddressResolution(AddressRequestFeed):
 
     def _getFullNumber(self):
         d = {'unitValue':'{}/','addressNumber':'{}','addressNumberHigh':'-{}','addressNumberSuffix':'{}'}
-        reduce(lambda x,y: x+y,d)
+        reduce(lambda x,y: y+getattr(c+x),d.keys())
+
                 
 #------------------------------------------------------------------------------   
   

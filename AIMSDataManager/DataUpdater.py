@@ -32,12 +32,13 @@ from Const import ENABLE_ENTITY_EVALUATION, MERGE_RESPONSE
 from Address import Entity, EntityValidation, EntityAddress
 from AimsLogging import Logger
 from FeatureFactory import FeatureFactory
+from Observable import Observable
 
 aimslog = None
 
 class DataUpdaterSelectionException(AimsException):pass
 
-class DataUpdater(threading.Thread):
+class DataUpdater(Observable):
     '''Mantenence thread comtrolling data updates and api interaction
     Instantiates an amisapi instance with wrappers for initialisation of local data store 
     and change/resolution feed updating
@@ -54,7 +55,7 @@ class DataUpdater(threading.Thread):
     getfeat = None
     
     def __init__(self,params,queue):
-        threading.Thread.__init__(self)
+        super(DataUpdater,self).__init__()
         self.ref,self.conf,self.afactory = params
         self.queue = queue
         self._stop = threading.Event()
@@ -73,6 +74,7 @@ class DataUpdater(threading.Thread):
         for feature in self.api.getOnePage(self.etft,self.sw,self.ne,self.page):
             featlist.append(self.process(feature,self.etft))            
         self.queue.put(featlist)
+        self.notify(self.ref)
         
     def process(self,feature,etft):
         '''process an individual feature, pulling nested entities on 3E'''
@@ -190,7 +192,10 @@ class DataUpdaterDRC(DataUpdater):
         #print 'feature',feature
         if err: feature.setErrors(err)
         if self.requestId: feature.setRequestId(self.requestId)
-        if MERGE_RESPONSE: self.queue.put(self.agobj.merge(feature))
+        if MERGE_RESPONSE:
+            aimslog.info('Merge req/res for {}'.format(self.agobj))
+            self.agobj.merge(feature)
+            self.queue.put(self.agobj)
         else: self.queue.put(feature)
         
         
