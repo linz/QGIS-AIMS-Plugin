@@ -55,7 +55,12 @@ class Feature(object):
     def setChangeType(self, changeType):
         self._changeType = changeType
     def getChangeType(self):
-        return self._changeType   
+        return self._changeType
+    
+    def setQueueStatus(self, queueStatus):
+        self._queueStatus = queueStatus
+    def getQueueStatus(self):
+        return self._queueStatus
     
     #---------------------------------------------------
     

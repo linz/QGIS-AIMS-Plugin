@@ -63,16 +63,20 @@ class DataManager(object):
         if not etft in self._start: self._start.append(etft)
         self._checkDS(etft)
         
-    def notify(self, observable, *args, **kwargs):
+    def observe(self, observable, *args, **kwargs):
         '''Do some housekeeping and notify listener'''
-        aimslog.info('Notify A[{}], K[{}] - {}'.format(args,kwargs,observable))
-        args += (self._monitor(args[0]),)
-        if hasattr(self,'reg') and self.reg: self.reg.notify(observable, *args, **kwargs)
+        aimslog.info('DM Listen A[{}], K[{}] - {}'.format(args,kwargs,observable))
+        #args += (self._monitor(args[0]),)
+        args += (self._monitor(observable),)
+        #chained notify/listen calls
+        if hasattr(self,'reg') and self.reg: 
+            #self.reg.notify(observable, *args, **kwargs)
+            self.registered.observe(observable, *args, **kwargs)
         self._check()
         
     def register(self,reg):
-        '''Register single class as a listener'''
-        self.reg = reg if hasattr(reg, 'notify') else None        
+        '''Register "single" class as a listener'''
+        self.registered = reg if hasattr(reg, 'observe') else None        
         
     def _checkDS(self,etft):
         '''Starts a sync thread unless its features with a zero bbox'''
@@ -282,7 +286,7 @@ class Persistence():
     tracker = {}
     coords = {'sw':SWZERO,'ne':NEZERO}
     ADL = None
-    RP = os.path.join(os.path.dirname(__file__),'..',RES_PATH)
+    RP = os.path.join(os.path.dirname(__file__),'..',RES_PATH,LOCAL_ADL)
     
     def __init__(self,initialise=False):
         '''read or setup the tracked data'''
@@ -303,7 +307,8 @@ class Persistence():
         return {f:[] for f in FEEDS.values()}
     
     #Disk Access
-    def read(self,localds=RP+LOCAL_ADL):
+    #TODO OS agnostic path sep
+    def read(self,localds=RP):
         '''unpickle local store'''  
         try:
             archive = pickle.load(open(localds,'rb'))
@@ -313,7 +318,7 @@ class Persistence():
             return False
         return True
     
-    def write(self, localds=RP+LOCAL_ADL):
+    def write(self, localds=RP):
         try:
             #archive = [self.tracker,self.coords,self.ADL]
             archive = [self.tracker,self.ADL]
@@ -356,7 +361,7 @@ class LocalTest():
             
             
     def test1(self,dm,af):
-        
+        #time.sleep(100000) 
         #dm.persist.ADL = testdata
         #get some data
         listofaddresses = dm.pull()
@@ -368,14 +373,17 @@ class LocalTest():
         #TEST SHIFT
         #self.testfeatureshift(dm)
         
-        # TEST CF
-        self.testchangefeedAUR(dm,af)
+        # TEST ACF
+        #self.testchangefeedAUR(dm,af)
         
-        # TEST RF
-        self.testresolutionfeedAUD(dm,af)
+        # TEST ARF
+        #self.testresolutionfeedAUD(dm,af)        
+        
+        # TEST GRF
+        self.testgrpresfeedAUD(dm,af)
         
         #TEST SHIFT
-        self.testfeatureshift(dm)
+        #self.testfeatureshift(dm)
         
         aimslog.info('*** Resolution ADD '+str(time.clock()))   
         time.sleep(30) 
@@ -397,7 +405,7 @@ class LocalTest():
         while not self.flag: 
             time.sleep(5)   
         else:
-            resp = self.testresp(dm) 
+            r1,r2 = self.testresp(dm) 
             
         dm.setbb(sw=(174.76928,-41.28515), ne=(174.79519,-41.26481))
         time.sleep(10)
@@ -405,7 +413,7 @@ class LocalTest():
         while not self.flag: 
             time.sleep(5)   
         else:
-            resp = self.testresp(dm) 
+            r1,r2 = self.testresp(dm) 
             
         dm.setbb(sw=(174.76928,-41.28515), ne=(174.79529,-41.26471))
         time.sleep(10)
@@ -413,16 +421,7 @@ class LocalTest():
         while not self.flag: 
             time.sleep(5)   
         else:
-            resp = self.testresp(dm) 
-            
-#     def checkrefresh(self,dm):        
-
-#         global refsnap
-#         rs2 = dm.refresh()
-#         if rs2 != refsnap:
-#             refsnap = rs2
-#             return True
-#         return False
+            r1,r2 = self.testresp(dm)
         
     def testrestartCR(self,dm):
         dm.restart(FEEDS['AF'])
@@ -436,7 +435,7 @@ class LocalTest():
         ver = 1000000
         cid = 2000000
         #pull address from features (map)
-        addr_f = self.gettestdata(af[FeedType.FEATURES])
+        addr_f = self.gettestaddress(af[FeedType.FEATURES])
         #cast to addresschange type, to do cf ops
         addr_c = dm.castTo(FeedType.CHANGEFEED,addr_f)
         #addr_c.setVersion(ver)
@@ -446,7 +445,7 @@ class LocalTest():
         resp = None
         tout = 10
         while True: 
-            resp = self.testresp(dm,FeedType.CHANGEFEED)
+            resp,_ = self.testresp(dm,FeedType.CHANGEFEED)
             if resp: 
                 err = resp[0].getErrors()
                 print rqid1,resp[0].meta.requestId
@@ -469,7 +468,7 @@ class LocalTest():
         resp = None
         tout = 10
         while True: 
-            resp = self.testresp(dm,FeedType.CHANGEFEED)
+            resp,_ = self.testresp(dm,FeedType.CHANGEFEED)
             if resp: 
                 err = resp[0].getErrors()
                 print rqid2,resp[0].meta.requestId
@@ -492,7 +491,7 @@ class LocalTest():
         resp = None
         tout = 10
         while True: 
-            resp = self.testresp(dm,FeedType.CHANGEFEED)
+            resp,_ = self.testresp(dm,FeedType.CHANGEFEED)
             if resp: 
                 err = resp[0].getErrors()
                 print rqid3,resp[0].meta.requestId
@@ -504,14 +503,13 @@ class LocalTest():
             tout -= 1
             time.sleep(5)     
         ver += 1
-    
         
     def testresolutionfeedAUD(self,dm,af):
         ver = 6977370
         #cid = 4117724
         cid = 4117720
         #pull address from features (map)
-        addr_f = self.gettestdata(af[FeedType.FEATURES])
+        addr_f = self.gettestaddress(af[FeedType.FEATURES])
         #cast to addresschange type, to do cf ops
         addr_r = dm.castTo(FeedType.RESOLUTIONFEED,addr_f)
         #addr_r = af[FeedType.RESOLUTIONFEED].cast(addr_f)
@@ -523,7 +521,7 @@ class LocalTest():
         dm.acceptAddress(addr_r,rqid1)
         resp = None
         while True: 
-            resp = self.testresp(dm,FeedType.RESOLUTIONFEED)
+            resp,_ = self.testresp(dm,FeedType.RESOLUTIONFEED)
             if resp: 
                 print rqid1,resp[0].meta.requestId
                 break
@@ -538,7 +536,7 @@ class LocalTest():
         dm.repairAddress(addr_r,rqid2)
         resp = None
         while True: 
-            resp = self.testresp(dm,FeedType.RESOLUTIONFEED)
+            resp,_ = self.testresp(dm,FeedType.RESOLUTIONFEED)
             if resp: 
                 print rqid2,resp[0].meta.requestId
                 break
@@ -552,13 +550,31 @@ class LocalTest():
         dm.declineAddress(addr_r,rqid3)
         resp = None
         while not resp: 
-            resp = self.testresp(dm,FeedType.RESOLUTIONFEED)
+            resp,_ = self.testresp(dm,FeedType.RESOLUTIONFEED)
             if resp: 
                 print rqid3,resp[0].meta.requestId
                 break
             time.sleep(5)     
         ver += 1
-    
+            
+    def testgrpresfeedAUD(self,dm,af):
+        ver = 6977370
+        #cid = 4117724
+        cid = 4117720
+        #pull address from features (map)
+        grp_r = self.gettestgroup(FeatureFactory.getInstance(FeedRef((FeatureType.GROUPS,FeedType.RESOLUTIONFEED))))
+        
+        aimslog.info('*** GROUP Resolution ACCEPT '+str(time.clock()))
+        rqid1 = 4321234
+        dm.acceptGroup(grp_r,rqid1)
+        resp = None
+        while True: 
+            _,resp = self.testresp(dm,FeedType.RESOLUTIONFEED)
+            if resp: 
+                print rqid1,resp[0].meta.requestId
+                break
+            time.sleep(5)
+        ver += 1
     
     def testresp(self,dm,ft=FeedType.CHANGEFEED):
         r = None
@@ -569,14 +585,20 @@ class LocalTest():
             aimslog.info('*** Main OUTPUT {} [{}]'.format(o,len(out[o])))
         
         etft = FeedRef((FeatureType.ADDRESS,ft))
-        resp = dm.response(etft)
-        for r in resp:
-            #aimslog.info('*** Main RESP {} - [{}]'.format(r,len(resp))) 
-            aimslog.info('*** Main RESP {} [{}]'.format(r,len(resp)))
+        resp1 = dm.response(etft)
+        for r in resp1:
+            #aimslog.info('*** Main RESP {} - [{}]'.format(r,len(resp1))) 
+            aimslog.info('*** Main RESP {} [{}]'.format(r,len(resp1)))        
             
-        return resp
+        etft = FeedRef((FeatureType.GROUPS,ft))
+        resp2 = dm.response(etft)
+        for r in resp2:
+            #aimslog.info('*** Main RESP {} - [{}]'.format(r,len(res2p))) 
+            aimslog.info('*** Main GROUP RESP {} [{}]'.format(r,len(resp2)))
+            
+        return resp1,resp2
                 
-    def gettestdata(self,ff):
+    def gettestaddress(self,ff):
         a = ff.getAddress('test_featuretype_address')
         p = Position.getInstance(
             {'position':{'type':'Point','coordinates': [168.38392191667,-44.8511013],'crs':{'type':'name','properties':{'name':'urn:ogc:def:crs:EPSG::4167'}}},'positionType':'Centroid','primary':True}
@@ -606,7 +628,12 @@ class LocalTest():
         return a
 
     
-
+    def gettestgroup(self,ff):
+        g = ff.getGroup('test_res_group')
+        g.setChangeGroupId('4118268')#override this
+        g.setVersion('9266184')#override this too
+        return g
+        
             
 if __name__ == '__main__':
     print 'start'

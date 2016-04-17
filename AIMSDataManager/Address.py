@@ -190,10 +190,7 @@ class Address(Feature):
     def getChangeId(self): 
         return self._changeId 
     
-    def setQueueStatus(self, queueStatus):
-        self._queueStatus = queueStatus
-    def getQueueStatus(self):
-        return self._queueStatus
+
     
     def setAddressId (self, addressId): 
         self._components_addressId = addressId
@@ -380,7 +377,8 @@ class AddressResolution(AddressRequestFeed):
 
     def _getFullNumber(self):
         d = {'unitValue':'{}/','addressNumber':'{}','addressNumberHigh':'-{}','addressNumberSuffix':'{}'}
-        reduce(lambda x,y: x+y,d)
+        reduce(lambda x,y: y+getattr(c+x),d.keys())
+
                 
 #------------------------------------------------------------------------------   
   
