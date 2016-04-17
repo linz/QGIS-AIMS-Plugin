@@ -368,10 +368,14 @@ class AddressResolution(AddressRequestFeed):
         
     def getFullNumber(self):
         fullNumber = ''
-        if hasattr(self, '_components_unitValue'): fullNumber+=str(self._components_unitValue)+'/'
-        if hasattr(self, '_components_addressNumber'): fullNumber+=str(self._components_addressNumber) 
-        if hasattr(self, '_components_addressNumberHigh'): fullNumber+= ('-'+str(self._components_addressNumberHigh))
-        if hasattr(self, '_components_addressNumberSuffix'): fullNumber+=str(self._components_addressNumberSuffix)      
+        if hasattr(self, '_components_unitValue'): 
+            if self._components_unitValue: fullNumber+=str(self._components_unitValue)+'/' 
+        if hasattr(self, '_components_addressNumber'): 
+            if self._components_addressNumber: fullNumber+=str(self._components_addressNumber) 
+        if hasattr(self, '_components_addressNumberHigh'): 
+            if self._components_addressNumberHigh: fullNumber+= ('-'+str(self._components_addressNumberHigh))
+        if hasattr(self, '_components_addressNumberSuffix'): 
+            if self._components_addressNumberSuffix: fullNumber+=str(self._components_addressNumberSuffix)      
         return fullNumber
 
     def _getFullNumber(self):

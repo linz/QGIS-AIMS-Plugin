@@ -39,7 +39,7 @@ from AIMSDataManager.AimsLogging import Logger
 uilog = None
 
 class Controller(QObject):
-    '''For future use with multiple objects requesting address/layers etc'''
+    # log
     global uilog
     uilog = Logger.setup(lf='uiLog')
     
@@ -69,7 +69,7 @@ class Controller(QObject):
         actionList = self.iface.mapNavToolToolBar().actions()
         self.actions = self.iface.mapNavToolToolBar().actions()
         # Main address editing window
-        self._loadaction = QAction(QIcon(':/plugins/QGIS-AIMS-Plugin/resources/loadaddress.png'), 
+        self._loadaction = QAction(QIcon(':/plugins/AIMS_Plugin_threaded/resources/loadaddress.png'), 
             'QGIS-AIMS-Plugin', self.iface.mainWindow())
         self._loadaction.setWhatsThis('Open the QGIS-AIMS-Plugin')
         self._loadaction.setStatusTip('Open the QGIS-AIMS-Plugin')
@@ -79,7 +79,7 @@ class Controller(QObject):
         self._loadaction.triggered.connect(self.enableAddressLayer)
         
         # Create new address tool
-        self._createnewaddressaction = QAction(QIcon(':/plugins/QGIS-AIMS-Plugin/resources/newaddresspoint.png'), 
+        self._createnewaddressaction = QAction(QIcon(':/plugins/AIMS_Plugin_threaded/resources/newaddresspoint.png'), 
             'Create AIMS Feature', self.iface.mainWindow())
         self._createnewaddressaction.setWhatsThis('Create AIMS Feature')
         self._createnewaddressaction.setStatusTip('Create AIMS Feature')
@@ -91,7 +91,7 @@ class Controller(QObject):
         self.actions.append(self._createnewaddressaction)
 
         # Delete address point
-        self._deladdressaction = QAction(QIcon(':/plugins/QGIS-AIMS-Plugin/resources/deleteaddress.png'), 
+        self._deladdressaction = QAction(QIcon(':/plugins/AIMS_Plugin_threaded/resources/deleteaddress.png'), 
             'Delete AIMS Feature', self.iface.mainWindow())
         self._deladdressaction.setWhatsThis('Delete AIMS Feature')
         self._deladdressaction.setStatusTip('Delete AIMS Feature')
@@ -103,7 +103,7 @@ class Controller(QObject):
         self.actions.append(self._deladdressaction)
         
         # Move address
-        self._moveaddressaction = QAction(QIcon(':/plugins/QGIS-AIMS-Plugin/resources/moveaddress.png'), 
+        self._moveaddressaction = QAction(QIcon(':/plugins/AIMS_Plugin_threaded/resources/moveaddress.png'), 
             'Move AIMS Feature(s)', self.iface.mainWindow())
         self._moveaddressaction.setWhatsThis('Move AIMS Feature(s)')
         self._moveaddressaction.setStatusTip('Move AIMS Feature(s)')
@@ -115,7 +115,7 @@ class Controller(QObject):
         self.actions.append(self._moveaddressaction)
         
         # Update address
-        self._updateaddressaction = QAction(QIcon(':/plugins/QGIS-AIMS-Plugin/resources/updateaddress.png'), 
+        self._updateaddressaction = QAction(QIcon(':/plugins/AIMS_Plugin_threaded/resources/updateaddress.png'), 
             'Update AIMS Feature', self.iface.mainWindow())
         self._updateaddressaction.setWhatsThis('Update AIMS Feature')
         self._updateaddressaction.setStatusTip('Update AIMS Feature')
@@ -130,7 +130,7 @@ class Controller(QObject):
         self._rcltool = GetRcl(self.iface, self._layerManager, self, parent = None)
        
         # Address lineage
-        self._lineageaction = QAction(QIcon(':/plugins/QGIS-AIMS-Plugin/resources/lineage.png'), 
+        self._lineageaction = QAction(QIcon(':/plugins/AIMS_Plugin_threaded/resources/lineage.png'), 
             'Build Lineage Relationships Between Features', self.iface.mainWindow())
         self._lineageaction.setWhatsThis('Build Lineage Relationships Between Features')
         self._lineageaction.setStatusTip('Build Lineage Relationships Between Features')
@@ -139,14 +139,25 @@ class Controller(QObject):
         self._lineagetool = LineageTool( self.iface, self._layerManager, self)
         self._lineageaction.triggered.connect(self._lineagetool.setEnabled)
         self.actions.append(self._lineageaction)
-        
+
+        # Address highlighter
+        self._highlightaction = QAction(QIcon(":/plugins/AIMS_Plugin_threaded/resources/addresshighlight.png"), 
+            "Electoral address highlighter", self.iface.mainWindow())
+        self._highlightaction.setWhatsThis("Turn the electoral address highlighter on or off")
+        self._highlightaction.setStatusTip("Turn the electoral address highlighter on or off")     
+        self._highlightaction.setText('Highlightaction')
+        self._highlightaction.setEnabled(False)
+        self._highlightaction.setCheckable(True)
+        #self._highlightaction.toggled.connect( self._highlighter.setEnabled )
+
         # Add to own toolbar
         self._toolbar = self.iface.addToolBar('QGIS-AIMS-Plugin')
         self._toolbar.addAction(self._createnewaddressaction)
         self._toolbar.addAction(self._deladdressaction)
         self._toolbar.addAction(self._updateaddressaction)
         self._toolbar.addAction(self._moveaddressaction)
-        #self._toolbar.addAction(self._lineageaction)
+        self._toolbar.addAction(self._lineageaction)
+        self._toolbar.addAction(self._highlightaction)
         
         # Add actions to menu and toolbar icon
         self.iface.addToolBarIcon(self._loadaction)
@@ -155,7 +166,9 @@ class Controller(QObject):
         self.iface.addPluginToMenu('&QGIS-AIMS-Plugin', self._deladdressaction)
         self.iface.addPluginToMenu('&QGIS-AIMS-Plugin', self._updateaddressaction)
         self.iface.addPluginToMenu('&QGIS-AIMS-Plugin', self._moveaddressaction)
+        self.iface.addPluginToMenu('&QGIS-AIMS-Plugin', self._highlightaction)
 
+        
         # capture maptool selection changes
         QObject.connect( self.iface.mapCanvas(), SIGNAL( "mapToolSet(QgsMapTool *)" ), self.mapToolChanged)
 
@@ -176,6 +189,7 @@ class Controller(QObject):
 
         # Add our own actions
         for action in self.actions:
+            if action.text() == 'Highlightaction': continue
             group.addAction( action )
    
     # Plugin Management 
@@ -193,7 +207,7 @@ class Controller(QObject):
         self.iface.removePluginMenu('&QGIS-AIMS-Plugin', self._updateaddressaction)
         self.iface.removePluginMenu('&QGIS-AIMS-Plugin', self._moveaddressaction)
         self.iface.removePluginMenu('&QGIS-AIMS-Plugin', self._lineageaction)
-    
+        self.iface.removePluginMenu("&Electoral address", self._highlightaction)
     #def startDm(self):
     #    self.uidm = UiDataManager(self.iface, self)
     
@@ -277,6 +291,7 @@ class Controller(QObject):
  
     @pyqtSlot()
     def rDataChanged(self):
+        ''' review data changed, update review layer and table '''
         self._queues.uResolutionTab.refreshData()
         self._layerManager.updateReviewLayer()
  

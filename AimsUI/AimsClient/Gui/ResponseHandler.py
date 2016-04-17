@@ -31,12 +31,16 @@ class ResponseHandler(object):
     def __init__(self, iface, uidm):
         self._iface = iface
         self.uidm = uidm
-        self.af = {ft:AddressFactory.getInstance(FEEDS['AR']) for ft in FeedType.reverse}
+        self.afar= {ft:AddressFactory.getInstance(FEEDS['AR']) for ft in FeedType.reverse}
+        self.afaf= {ft:AddressFactory.getInstance(FEEDS['AF']) for ft in FeedType.reverse} # new method to cast
 
-    def updateData(self, respObj , feedType):
+    def updateData(self, respObj , feedType, action):# rather than action could monitor _queueStatus
         if feedType == FEEDS['AC']:
-            respObj = self.af[FeedType.RESOLUTIONFEED].cast(respObj)
+            respObj = self.afar[FeedType.RESOLUTIONFEED].cast(respObj)
         self.uidm.updateRdata(respObj, feedType)
+        if feedType == FEEDS['AR'] and action == 'accept':
+            respObj = self.afaf[FeedType.FEATURES].cast(respObj)
+            self.uidm.updateFdata(respObj)
         return True
      
     def displayWarnings (self, warnings):
@@ -47,7 +51,7 @@ class ResponseHandler(object):
         QMessageBox.warning(self._iface.mainWindow(),"Create Address Point", message)
      
      
-    def matchResp (self, response, respId, feedType, i):
+    def matchResp (self, response, respId, feedType, i, action):
         ''' compile a list of warnings that are at the "Reject" level.
         If warnings for the matching respID, proceed to update data'''
         
@@ -62,25 +66,28 @@ class ResponseHandler(object):
                     if warning['properties']['severity'] in ('Reject', 'critical'):
                         warnings.append(warning['properties']['description'])
                 # failed accepts return the bew formatted warning
-                if hasattr(resp, '_properties_message'): warnings.append(resp._properties_message)
+                if hasattr(resp, '_properties_message') and resp._queueStatus == 'Accepted': 
+                    warnings.append('{0} (Review record: {1})'.format(resp._properties_message,resp._changeId))
+                if hasattr(resp, '_message') and resp._queueStatus == 'Accepted': 
+                    warnings.append('{0} (Review record: {1})'.format(resp._message,resp._changeId))
                 if warnings:
                     # feature not created in aims via API
                     self.displayWarnings(warnings)
                     return True
                 # else captured resp and no critical warnings
-                self.updateData(resp, feedType)
+                self.updateData(resp, feedType, action)
                 return True
                     # return resp
      
      
-    def handleResp(self, respId, feedType):
+    def handleResp(self, respId, feedType, action = None):
         ''' test for a response in the response
             queue with the relevant repId'''
-        for i in range(0,12):
+        for i in range(0,20):
             time.sleep(1)
             resp = self.uidm.response(feedType)
-            if resp: # found and processed response
-                if self.matchResp(resp, respId, feedType, i):
+            if resp and resp != (None,): # found and processed response
+                if self.matchResp(resp, respId, feedType, i, action):
                     return
 
                                                   

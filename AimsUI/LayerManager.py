@@ -17,6 +17,7 @@ from qgis.gui import *
 
 from AimsClient import Database
 from AimsUI.AimsLogging import Logger
+from AIMSDataManager.AimsUtility import FEEDS
 
 from collections import OrderedDict
 
@@ -109,7 +110,7 @@ class LayerManager(QObject):
     
     def initialiseExtentEvent(self):  
         ''' Once plugin loading triggered initialise loading of AIMS Feautres '''
-        self._iface.mapCanvas().extentsChanged.connect(self.getAimsFeatures)
+        self._iface.mapCanvas().extentsChanged.connect(self.setbbox)
                 
     def layerId(self, layer):
         idprop = self._propBaseName + 'Id' 
@@ -185,8 +186,8 @@ class LayerManager(QObject):
         try:
             uri = QgsDataSourceURI()
             uri.setConnection(Database.host(),str(Database.port()),Database.database(),Database.user(),Database.password())
-            uri.setDataSource(schema,table,'shape',where,key)
-            uri.setUseEstimatedMetadata( estimated )
+            uri.setDataSource(schema,table,'shape',where,key)            
+            uri.setUseEstimatedMetadata( estimated )            
             layer = QgsVectorLayer(uri.uri(),displayname,"postgres")
             self.setLayerId( layer, id )
             self.styleLayer(layer, id)            
@@ -198,8 +199,8 @@ class LayerManager(QObject):
     def installRefLayers(self):
         ''' install AIMS postgres ref data '''
         
-        refLayers ={'rcl':( 'rcl', 'roads', 'road_name_mview', 'gid', True, "",'Roads' ),
-                    'par':( 'par', 'lds', 'all_parcels', 'id', True, "status = 'Current'",'Parcels' )
+        refLayers ={'par':( 'par', 'data', 'all_parcel_multipoly', 'gid', True, "",'Parcels' ) ,
+                    'rcl':( 'rcl', 'roads', 'road_name_mview', 'gid', True, "",'Roads' )
                     }
    
         for layerId , layerProps in refLayers.items():
@@ -225,9 +226,9 @@ class LayerManager(QObject):
         elif id == 'rev' and not self.findLayer(id):
             self.addAimsFields(layer, provider, id, [QgsField('AddressNumber', QVariant.String),QgsField('Action', QVariant.String)])
             #provider.addAttributes([QgsField('AddressNumber', QVariant.String)])      
-        #layer.updateFields()
+        layer.updateFields()
         #self.styleLayer(layer, id)     
-        #QgsMapLayerRegistry.instance().addMapLayer(layer)           
+        QgsMapLayerRegistry.instance().addMapLayer(layer)           
 
     def removeFeatures(self, layer):
         ids = [f.id() for f in layer.getFeatures()]
@@ -245,7 +246,9 @@ class LayerManager(QObject):
         layer = self.findLayer(id)
         provider = layer.dataProvider()
         self.removeFeatures(layer)
-        for reviewItem in self._controller.uidm.reviewData().values():
+        rData = self._controller.uidm.reviewData() # moved up of iteration as to server log also 
+        uilog.info(' *** DATA ***    {} review items being loaded '.format(len(rData)))    
+        for reviewItem in rData.values():
             fet = QgsFeature()
             try: # try,becuase currently retire data is not complete
                 point = reviewItem._addressedObject_addressPositions[0]._position_coordinates
@@ -265,28 +268,37 @@ class LayerManager(QObject):
 #         
 #         self.sw_x, self.sw_y, self.ne_x, self.ne_y = (ext.xMaximum(), ext.yMaximum(), ext.xMinimum(), ext.yMinimum())
 #         return isZoomin                                             
-                                                      
-    def getAimsFeatures(self):
+    
+    def setbbox(self):
         ext = self._iface.mapCanvas().extent()
+        uilog.info(' *** EXTENT ***    {} '.format(ext.toString()))    
+        self._controller.uidm.setBbox(sw = (ext.xMaximum(), ext.yMaximum()), ne = (ext.xMinimum(), ext.yMinimum()))
+                            
+    def getAimsFeatures(self):
+        #ext = self._iface.mapCanvas().extent()
         # if the map is at the bounds of nzgd, dont show - must be a better way to do this
         #if (ext.toString() == '174.7729355126953124,-41.2864799999999974 : 174.7757044873046937,-41.2842699999999994'
         #        or ext.toString() == '163.8084601236508604,-47.6596082687378200 : 181.4207421468571795,-33.6027284622192823'):
-        if ext.width() > 10:
-            return 
+        #if ext.width() > 10:
+        #    return 
         
 #         if self.isZoomin(ext):
 #             return
         
-        self._controller.uidm.setBbox(sw = (self.sw_x, self.sw_y), ne = (self.ne_x, self.ne_y))
+        #self._controller.uidm.setBbox(sw = (self.sw_x, self.sw_y), ne = (self.ne_x, self.ne_y))
         featureData = self._controller.uidm.featureData()
         if featureData:
+            uilog.info(' *** DATA ***    {} AIMS features received '.format(len(featureData)))    
             self.updateFeaturesLayer(featureData)
     
-    def notify(self):
-        self.updateReviewLayer()
+    def notify(self, feedType):
+        if feedType == FEEDS['AF']:
+            self.getAimsFeatures()
+        else:    
+            self.updateReviewLayer()
     
     def updateFeaturesLayer(self, featureData):
-        id = 'adr'
+        id = self._addressLayerId
         layer = self.findLayer(id)
         # ensure the user has not removed the layer 
         if not layer:
@@ -301,19 +313,24 @@ class LayerManager(QObject):
             legend.setLayerVisible(layer, True)
         # remove current features
         self.removeFeatures(layer)
-            
-        provider = layer.dataProvider()
+        
         for feature in featureData.itervalues():
             fet = QgsFeature()
             point = feature._addressedObject_addressPositions[0]._position_coordinates
             fet.setGeometry(QgsGeometry.fromPoint(QgsPoint(point[0], point[1])))
             fet.setAttributes([getattr(feature, v[0]) if hasattr (feature, v[0]) else '' for v in Mapping.adrLayerObjMappings.values()])
-            provider.addFeatures([fet])
-
-        # commit to stop editing the layer
-        layer.commitChanges()
+            layer.dataProvider().addFeatures([fet])
+        layer.updateExtents()
+        layer.reload()
+        layer.setCacheImage(None)
+        self.canvas.refresh()
         
         # update layer's extent when new features have been added
         # because change of extent in provider is not propagated to the layer
-        layer.updateExtents()
-        self._iface.mapCanvas()
+        
+        #self._iface.mapCanvas()
+        #iface.mapCanvas().refresh()
+#         if self._iface.mapCanvas().isCachingEnabled():
+#             layer.setCacheImage(None)
+#         else:
+#             self._iface.mapCanvas().refresh()

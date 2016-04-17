@@ -30,7 +30,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         QWidget.__init__( self, parent )
         self.setupUi(self)
         self.setController( controller )
-        self.iface = self._controller.iface
+        self._iface = self._controller.iface
         self.uidm = self._controller.uidm
         self.uidm.register(self)
         self.reviewData = self.uidm.refreshTableData((FEEDS['AR'],))   
@@ -38,6 +38,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.currentAdrCoord = [0,0]
         self.feature = None
         self.currentGroup = () #(id, type)
+        self._marker = None
         
         # Connections
         self.uDisplayButton.clicked.connect(self.display)
@@ -75,9 +76,20 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.comboBoxUser.view().pressed.connect(self.itemPressedUser) # or more probable, list item clicked
         self.popUserCombo()
     
+                    
+    def setController( self, controller ):
+        import Controller
+        if not controller:
+            controller = Controller.instance()
+        self._controller = controller
+    
     def notify(self):
         self.refreshData()
     
+    def setMarker(self, coords):
+        if self._controller._highlightaction.isChecked():
+            self._marker = UiUtility.highlight(self._iface, QgsPoint(coords[0],coords[1]))
+        
     def refreshData(self): # < -- ALSO NEED TO REFRESH THE FILTER
         if self.uGroupFeedCheckBox.isChecked():
             self.reviewData = self.uidm.formatTableData((FEEDS['AR'], FEEDS['GR']))
@@ -90,14 +102,10 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.groupModel.endResetModel()
         self.featureModel.endResetModel()
         self.popUserCombo()
-                
-    def setController( self, controller ):
-        import Controller
-        if not controller:
-            controller = Controller.instance()
-        self._controller = controller
     
     def singleReviewObj(self, feedType, objKey):
+        ''' review object may be either single or 
+                   represent a group '''
         if objKey: 
             return self.uidm.singleReviewObj(feedType, objKey)
     
@@ -105,12 +113,13 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         return self.uidm.currentReviewFeature(self.currentGroup, self.currentFeatureKey)
             
     def featureSelected(self, row):
-        if self.currentGroup:    
+        '''  '''
+        if self.currentGroup:
+            self._iface.mapCanvas().scene().removeItem(self._marker)    
             self.currentFeatureKey = self.featureModel.listClicked(row)   
             self.uQueueEditor.currentFeatureToUi(self.currentReviewFeature())
-        #emit feature chnaged --> editwidget to connect to signal
-        #self.featureSelected.emit( feature )
-        
+            self.setMarker(self.uidm.reviewItemCoords(self.currentGroup, self.currentFeatureKey))
+
     def groupSelected( self, row ): #rename Select Group
         proxy_index = self.groupTableView.selectionModel().currentIndex()
         sourceIndex = self._groupProxyModel.mapToSource(proxy_index)
@@ -164,24 +173,30 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
             UiUtility.formToObj(self)
             respId = int(time.time())
             self.uidm.repairAddress(self.feature, respId)
-            #UiUtility.handleResp(respId, self._controller, FeedType.RESOLUTIONFEED, self.iface)
+            #UiUtility.handleResp(respId, self._controller, FeedType.RESOLUTIONFEED, self._iface)
             self._controller.RespHandler.handleResp(respId, FEEDS['AR'])
             self.feature = None
     
     def reviewResolution(self, action):
         for row in self.groupTableView.selectionModel().selectedRows():
+            sourceIndex = self._groupProxyModel.mapToSource(row)
             objRef = ()
-            objRef = self.groupModel.getObjRef(row)
-            feedType = FEEDS['GR'] if objRef[1] == 'Replace' else FEEDS['AR']
+            objRef = self.groupModel.getObjRef(sourceIndex)
+            feedType = FEEDS['GR'] if objRef[1] == 'Replace' else FEEDS['AR'] # also ref?
+            #if objRef[1] == 'Replace':
+            #    feedType = FEEDS['GR']
+            #else: 
+            #    feedType = FEEDS['AR']
+            
             reviewObj = self.singleReviewObj(feedType, objRef[0])
             if reviewObj: 
                 respId = int(time.time()) 
                 if action == 'accept':
-                    self.uidm.accept(reviewObj, respId)
+                    self.uidm.accept(reviewObj,feedType, respId)
                 elif action == 'decline':
-                    self.uidm.decline(reviewObj, respId)
-                #UiUtility.handleResp(respId, self._controller,feedType, self.iface)
-                self._controller.RespHandler.handleResp(respId, FEEDS['AR'])
+                    self.uidm.decline(reviewObj, feedType, respId)
+                #UiUtility.handleResp(respId, self._controller,feedType, self._iface)
+                self._controller.RespHandler.handleResp(respId, FEEDS['AR'], action)
     
     def decline(self):
         self.reviewResolution('decline')
@@ -198,13 +213,10 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
             buffer = .00100
             extents = QgsRectangle( coords[0]-buffer,coords[1]-buffer,
                                   coords[0]+buffer,coords[1]+buffer)
-            self.iface.mapCanvas().setExtent( extents )
-            self.iface.mapCanvas().refresh()
+            self._iface.mapCanvas().setExtent( extents )
+            self._iface.mapCanvas().refresh()
             #self.setMarker(coords) <-- perhaps the reveiw layer will suffice and no highlighted needed
-    
-    #def setMarker(self, coords):
-    #    self._marker = UiUtility.highlight(self.iface, QgsPoint(coords[0],coords[1]))
-    
+        
     @pyqtSlot()
     def rDataChanged (self):
         self._queues.uResolutionTab.refreshData()
