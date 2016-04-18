@@ -66,16 +66,17 @@ class DataManager(object):
     def observe(self, observable, *args, **kwargs):
         '''Do some housekeeping and notify listener'''
         aimslog.info('DM Listen A[{}], K[{}] - {}'.format(args,kwargs,observable))
-        args += (self._monitor(args[0]),)
+        #args += (self._monitor(args[0]),)
+        args += (self._monitor(observable),)
         #chained notify/listen calls
         if hasattr(self,'reg') and self.reg: 
             #self.reg.notify(observable, *args, **kwargs)
-            self.reg.observe(observable, *args, **kwargs)
+            self.registered.observe(observable, *args, **kwargs)
         self._check()
         
     def register(self,reg):
-        '''Register single class as a listener'''
-        self.reg = reg if hasattr(reg, 'notify') else None        
+        '''Register "single" class as a listener'''
+        self.registered = reg if hasattr(reg, 'observe') else None        
         
     def _checkDS(self,etft):
         '''Starts a sync thread unless its features with a zero bbox'''
@@ -293,11 +294,11 @@ class Persistence():
             self.ADL = self._initADL() 
             #default tracker, gets overwrittens
             #page = (lowest page fetched, highest page number fetched)
-            self.tracker[FEEDS['AF']] = {'page':[1,1],    'index':1,'threads':0,'interval':30}    
+            self.tracker[FEEDS['AF']] = {'page':[1,1],    'index':1,'threads':2,'interval':30}    
             self.tracker[FEEDS['AC']] = {'page':[NPV,NPV],'index':1,'threads':1,'interval':125}  
-            self.tracker[FEEDS['AR']] = {'page':[1,1],    'index':1,'threads':0,'interval':25} 
-            self.tracker[FEEDS['GC']] = {'page':[1,1],    'index':1,'threads':0,'interval':130}  
-            self.tracker[FEEDS['GR']] = {'page':[1,1],    'index':1,'threads':0,'interval':55}             
+            self.tracker[FEEDS['AR']] = {'page':[1,1],    'index':1,'threads':1,'interval':25} 
+            self.tracker[FEEDS['GC']] = {'page':[1,1],    'index':1,'threads':1,'interval':130}  
+            self.tracker[FEEDS['GR']] = {'page':[1,1],    'index':1,'threads':1,'interval':55}             
             
             self.write() 
     
@@ -360,7 +361,7 @@ class LocalTest():
             
             
     def test1(self,dm,af):
-        time.sleep(100000) 
+        #time.sleep(100000) 
         #dm.persist.ADL = testdata
         #get some data
         listofaddresses = dm.pull()
@@ -370,7 +371,7 @@ class LocalTest():
         #self.testrestartCR(dm)
         
         #TEST SHIFT
-        #self.testfeatureshift(dm)
+        self.testfeatureshift(dm)
         
         # TEST CF
         self.testchangefeedAUR(dm,af)
