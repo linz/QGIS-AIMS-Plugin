@@ -129,7 +129,7 @@ GroupActionType.HTTP =            ('POST',   'PUT',   'POST',  'POST', 'POST','P
 
 #group resolutionfeed approval
 GroupApprovalType = Enumeration.enum('ACCEPT',  'DECLINE', 'ADDRESS', 'UPDATE')
-#GroupApprovalType.LABEL =           ('Accepted','Declined','Information','Under Review')
+GroupApprovalType.LABEL =           ('Accepted','Declined','Information','Under Review')
 GroupApprovalType.PATH =            ('accept',  'decline', 'address', '')
 GroupApprovalType.HTTP =            ('POST',    'POST',    'GET',     'PUT')
 

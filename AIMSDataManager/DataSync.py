@@ -28,7 +28,7 @@ import threading
 import Queue
 
 from Observable import Observable
-from DataUpdater import DataUpdater,DataUpdaterAction,DataUpdaterApproval
+from DataUpdater import DataUpdater,DataUpdaterAction,DataUpdaterApproval,DataUpdaterGroupAction,DataUpdaterGroupApproval
 from AimsApi import AimsApi 
 from AimsLogging import Logger
 from AimsUtility import ActionType,ApprovalType,GroupActionType,GroupApprovalType,FeedType,FeatureType,FeedRef,LogWrap,FEEDS
@@ -241,8 +241,8 @@ class DataSyncFeeds(DataSync):
     
     parameters = {FeedRef((FeatureType.ADDRESS,FeedType.CHANGEFEED)):{'atype':ActionType,'action':DataUpdaterAction},
                   FeedRef((FeatureType.ADDRESS,FeedType.RESOLUTIONFEED)):{'atype':ApprovalType,'action':DataUpdaterApproval},
-                  FeedRef((FeatureType.GROUPS,FeedType.CHANGEFEED)):{'atype':GroupActionType,'action':DataUpdaterAction},
-                  FeedRef((FeatureType.GROUPS,FeedType.RESOLUTIONFEED)):{'atype':GroupApprovalType,'action':DataUpdaterApproval}
+                  FeedRef((FeatureType.GROUPS,FeedType.CHANGEFEED)):{'atype':GroupActionType,'action':DataUpdaterGroupAction},
+                  FeedRef((FeatureType.GROUPS,FeedType.RESOLUTIONFEED)):{'atype':GroupApprovalType,'action':DataUpdaterGroupApproval}
                   }
     
     def __init__(self,params,queues):
@@ -330,18 +330,18 @@ class DataSyncFeeds(DataSync):
         #{ADD:addr_1,RETIRE:adr_2...
         for at in changelist:
             #self.outq.put(act[addr](changelist[addr]))
-            for address in changelist[at]:
-                resp = self.processAddress(at,address)
+            for feature in changelist[at]:
+                resp = self.processFeature(at,feature)
                 aimslog.info('{} thread started'.format(str(resp)))
                 
-    def processAddress(self,at,address): 
+    def processFeature(self,at,feature): 
         '''override'''
         at2 = self.parameters[self.etft]['atype'].reverse[at][:3].capitalize()      
         ref = 'PR.{0}.{1:%y%m%d.%H%M%S}'.format(at2,DT.now())
         params = (ref,self.conf,self.afactory)
         #self.ioq = {'in':Queue.Queue(),'out':Queue.Queue()}
         self.duinst[ref] = self.parameters[self.etft]['action'](params,self.respq)
-        self.duinst[ref].setup(self.etft,at,address)
+        self.duinst[ref].setup(self.etft,at,feature)
         self.duinst[ref].setName(ref)
         self.duinst[ref].setDaemon(True)
         self.duinst[ref].start()
