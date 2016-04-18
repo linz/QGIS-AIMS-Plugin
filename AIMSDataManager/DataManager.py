@@ -25,11 +25,12 @@ from datetime import datetime as DT
 from AimsUtility import FeedRef,ActionType,ApprovalType,GroupActionType,GroupApprovalType,FeatureType,FeedType,Configuration,FEEDS,FIRST
 from AimsLogging import Logger
 from Const import THREAD_JOIN_TIMEOUT,RES_PATH,LOCAL_ADL,SWZERO,NEZERO,NULL_PAGE_VALUE as NPV
-
+from Observable import Observable
 
 aimslog = None
     
-class DataManager(object):
+    
+class DataManager(Observable):
     '''Initialises maintenance thread and provides queue accessors'''
     # ADL - Address-Data List
     # {'features':{adr1_id:Address1, adr2_id:Address2...},'changefeed':{},'resolutionfeed':{}} 
@@ -42,6 +43,7 @@ class DataManager(object):
   
     def __init__(self,start=FIRST,initialise=False):
         #self.ioq = {'in':Queue.Queue(),'out':Queue.Queue()}   
+        super(DataManager,self).__init__()
         if start and hasattr(start,'__iter__'): self._start = start.values()
         self.persist = Persistence(initialise)
         self.conf = Configuration().readConf()
@@ -63,20 +65,20 @@ class DataManager(object):
         if not etft in self._start: self._start.append(etft)
         self._checkDS(etft)
         
+    #local override of observe
     def observe(self, observable, *args, **kwargs):
         '''Do some housekeeping and notify listener'''
         aimslog.info('DM Listen A[{}], K[{}] - {}'.format(args,kwargs,observable))
-        #args += (self._monitor(args[0]),)
         args += (self._monitor(observable),)
         #chained notify/listen calls
-        if hasattr(self,'reg') and self.reg: 
-            #self.reg.notify(observable, *args, **kwargs)
+        if hasattr(self,'registered') and self.registered: 
             self.registered.observe(observable, *args, **kwargs)
         self._check()
         
-    def register(self,reg):
+    #Second register/observer method for main calling class
+    def registermain(self,reg):
         '''Register "single" class as a listener'''
-        self.registered = reg if hasattr(reg, 'observe') else None        
+        self.registered = reg if hasattr(reg, 'observe') else None
         
     def _checkDS(self,etft):
         '''Starts a sync thread unless its features with a zero bbox'''
@@ -84,7 +86,7 @@ class DataManager(object):
             self.ds[etft] = None
         else:
             self.ds[etft] = self._spawnDS(etft,self.dsr[etft])
-            self.ds[etft].register(self)            
+            self.ds[etft].register(self)         
             self.ds[etft].start()
             
         
@@ -237,7 +239,7 @@ class DataManager(object):
         if reqid: group.setRequestId(reqid)
         group.setQueueStatus(GroupApprovalType.LABEL[gat].title())
         self.ioq[FeedRef((FeatureType.GROUPS,FeedType.RESOLUTIONFEED))]['in'].put({gat:(group,)}) 
-         
+          
     #----------------------------
     def replaceGroup(self,group,reqid=None):
         self._groupAction(group, GroupActionType.REPLACE, reqid)       
@@ -260,7 +262,7 @@ class DataManager(object):
     def _groupAction(self,group,gat,reqid=None):        
         if reqid: group.setRequestId(reqid)
         self._populateGroup(group).setChangeType(GroupActionType.reverse[gat].title())
-        self.ioq[FeedRef((FeatureType.GROUPS,FeedType.CHANGEFEED))]['in'].put({gat:(group,)})   
+        self.ioq[FeedRef((FeatureType.GROUPS,FeedType.CHANGEFEED))]['in'].put({gat:(group,)})
     
     #----------------------------
     
@@ -341,8 +343,9 @@ class LocalTest():
         print Const.DEF_SEP
         
     
-    def notify(self,observable,args,kwargs):
+    def observe(self,observable,*args,**kwargs):
         self.flag = True
+        print 'LOCALTEST observes:'
         print observable
         print args
         print kwargs
@@ -356,7 +359,7 @@ class LocalTest():
         #with DataManager(start=None) as dm:
         #    dm.start(FeedType.CHANGEFEED)
         with DataManager() as dm:
-            dm.register(self)
+            dm.registermain(self)
             self.test1(dm,af)
             
             
@@ -371,7 +374,7 @@ class LocalTest():
         #self.testrestartCR(dm)
         
         #TEST SHIFT
-        #self.testfeatureshift(dm)
+        self.testfeatureshift(dm)
         
         # TEST ACF
         #self.testchangefeedAUR(dm,af)
@@ -380,7 +383,7 @@ class LocalTest():
         #self.testresolutionfeedAUD(dm,af)        
         
         # TEST GRF
-        self.testgrpresfeedAUD(dm,af)
+        #self.testgrpresfeedAUD(dm,af)
         
         #TEST SHIFT
         #self.testfeatureshift(dm)

@@ -43,7 +43,7 @@ FPATH = os.path.join('..',os.path.dirname(__file__)) #base of local datastorage
 #PAGES_PERIOCDIC = 3
 #FEED_REFRESH_DELAY = 10
 
-pool_lock = threading.RLock()
+pool_lock = threading.Lock()
 
 class DataRequestChannel(Observable):    
     '''Request response channel for user initiated actions eg add decline retire etc. One for each feed class, client, whose pIQ method is accessed'''
@@ -55,13 +55,15 @@ class DataRequestChannel(Observable):
     def run(self):
         '''Continual loop looking for input queue requests and running periodic updates'''
         while not self.stopped():
+            aimslog.debug('listening')
+            time.sleep(10000)
             #if there are things in the client's input queue, process them, push to CF #TODO. there shouldnt ever be anything in the FF inq
             if not self.client.inq.empty():
                 changelist = self.client.inq.get()    
-                
+                 
                 aimslog.info('DRC {} - found {} items in queue'.format(self.client.etft,len(changelist)))
                 self.client.processInputQueue(changelist)
-                
+                 
             time.sleep(QUEUE_CHECK_DELAY)
             
     def stop(self):
@@ -69,6 +71,14 @@ class DataRequestChannel(Observable):
 
     def stopped(self):
         return self._stop.isSet()
+    
+#     def observe(self):
+#         '''if the dm makes a request, do something with it'''
+#         if not self.client.inq.empty():
+#             changelist = self.client.inq.get()    
+#             aimslog.info('DRC {} - found {} items in queue'.format(self.client.etft,len(changelist)))
+#             self.client.processInputQueue(changelist)
+
     
 class DataSync(Observable):
     '''Background thread triggering periodic data updates and synchronising update requests from DM.  
@@ -84,13 +94,13 @@ class DataSync(Observable):
     #data_hash = {dh:0 for dh in DataManager.FEEDS}
     
     sw,ne = None,None
-    updater_running = False
     
     def __init__(self,params,queues):
         from DataManager import FEEDS
         super(DataSync,self).__init__()
         threading.Thread.__init__(self)
         #thread reference, ft to AD/CF/RF, config info
+        self.updater_running = False
         self.ref,self.etft,self.ftracker,self.conf = params
         self.data_hash = {dh:0 for dh in FEEDS.values()}
         self.afactory = FeatureFactory.getInstance(self.etft)
@@ -139,12 +149,17 @@ class DataSync(Observable):
         #print 'extracting queue for DU pool {}'.format(ref)
         r = None
         with pool_lock:
+            aimslog.info('{} complete'.format(ref))
+            print 'POOLSTATE',self.pool  
+            print 'POOLREMOVE',ref
             r = [x for x in self.pool if x['ref']==ref][0] 
             alist = self.duinst[ref].queue.get()
             acount = len(alist)
             self.newaddr += alist
             nextpage = max([r2['page'] for r2 in self.pool])+1
             del self.duinst[ref]
+            aimslog.info('TIME {} {}'.format(ref,time.time()-r['time']))
+            print 'POOLTIME {} {}'.format(ref,time.time()-r['time'])
             self.pool.remove(r)
             #if N>0 features return, spawn another thread
             if acount<MAX_FEATURE_COUNT:
@@ -155,7 +170,8 @@ class DataSync(Observable):
                 self.lastpage = max(r['page'],self.lastpage)
                 if nextpage<self.exhausted:
                     ref = self._monitorPage(nextpage)
-                    self.pool.append({'page':nextpage,'ref':ref})
+                    self.pool.append({'page':nextpage,'ref':ref,'time':time.time()})
+                    print 'POOLADD 2',ref
             else:
                 pass
                 #print 'No addresses found in page {}{}'.format(FeedType.reverse[self.ft][:2].capitalize(),r['page'])
@@ -164,22 +180,26 @@ class DataSync(Observable):
             self.syncFeeds(self.newaddr)#syncfeeds does notify DM
             self.managePage((None,self.lastpage))
             self.updater_running = False
+            print 'POOLCLOSE',ref
 
 
     #--------------------------------------------------------------------------            
 
-    @LogWrap.timediff
+    #@LogWrap.timediff
     def fetchFeedUpdates(self,thr,lastpage=FIRST_PAGE):
         '''get full page loads'''
+        self.updater_running = True
         self.exhausted = PAGE_LIMIT
         self.lastpage = lastpage
         self.newaddr = []
         #setup pool
         #print 'LP {} {}->{}'.format(FeedType.reverse[self.ft][:2].capitalize(),lastpage,lastpage+thr)
         with pool_lock:
-            self.pool = [{'page':p,'ref':None} for p in range(lastpage,lastpage+thr)]
+            self.pool = [{'page':p,'ref':None,'time':None} for p in range(lastpage,lastpage+thr)]
             for r in self.pool:
                 r['ref'] = self._monitorPage(r['page'])
+                r['time'] = time.time()
+                print 'POOLADD 1',r['ref']
 
 
     def _monitorPage(self,p):
@@ -324,7 +344,7 @@ class DataSyncFeeds(DataSync):
         return [a for a in alist if a.getQueueStatus().lower() not in ('expired','deleted')]
     
     #Processes the input queue sending address changes to the API
-    @LogWrap.timediff
+    #@LogWrap.timediff
     def processInputQueue(self,changelist):
         '''Take the input change queue and split out individual address objects for DU processing'''
         #{ADD:addr_1,RETIRE:adr_2...
@@ -342,6 +362,7 @@ class DataSyncFeeds(DataSync):
         #self.ioq = {'in':Queue.Queue(),'out':Queue.Queue()}
         self.duinst[ref] = self.parameters[self.etft]['action'](params,self.respq)
         self.duinst[ref].setup(self.etft,at,feature)
+        print 'PROCESS FEAT',self.etft,ref
         self.duinst[ref].setName(ref)
         self.duinst[ref].setDaemon(True)
         self.duinst[ref].start()
