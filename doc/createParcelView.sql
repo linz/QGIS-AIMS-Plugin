@@ -1,9 +1,9 @@
 
 -- View with standarised geomerty types to allow loading to Qgis
 
-DROP VIEW IF EXISTS data.all_parcel_multipoly; 
+DROP MATERIALIZED VIEW IF EXISTS lds.all_parcel_multipoly; 
 
-CREATE VIEW data.all_parcel_multipoly AS 
+CREATE MATERIALIZED VIEW lds.all_parcel_multipoly AS 
  SELECT row_number() OVER () AS gid,
  	id,
 	appellation,
@@ -19,5 +19,12 @@ CREATE VIEW data.all_parcel_multipoly AS
 	ST_Multi(shape) AS shape-- Cast all to MultiPolygon
   FROM lds.all_parcels;
 
-ALTER TABLE data.all_parcel_multipoly OWNER TO aims_dba;
-GRANT SELECT ON TABLE data.all_parcel_multipoly TO aims_user;
+ALTER TABLE lds.all_parcel_multipoly OWNER TO aims_dba;
+GRANT SELECT ON TABLE lds.all_parcel_multipoly TO aims_user;
+
+
+
+CREATE INDEX aims_all_par_shape
+  ON lds.all_parcel_multipoly
+  USING gist
+  (shape);

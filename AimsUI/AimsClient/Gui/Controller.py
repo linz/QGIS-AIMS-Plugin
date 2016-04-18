@@ -207,7 +207,7 @@ class Controller(QObject):
         self.iface.removePluginMenu('&QGIS-AIMS-Plugin', self._updateaddressaction)
         self.iface.removePluginMenu('&QGIS-AIMS-Plugin', self._moveaddressaction)
         self.iface.removePluginMenu('&QGIS-AIMS-Plugin', self._lineageaction)
-        self.iface.removePluginMenu("&Electoral address", self._highlightaction)
+        self.iface.removePluginMenu("&QGIS-AIMS-Plugin", self._highlightaction)
     #def startDm(self):
     #    self.uidm = UiDataManager(self.iface, self)
     
@@ -233,6 +233,7 @@ class Controller(QObject):
         self._moveaddressaction.setEnabled(True)
         self._updateaddressaction.setEnabled(True)
         #self._lineageaction.setEnabled(True)
+        self._highlightaction.setEnabled(True)
     
     def loadLayers(self):
         ''' install map layers '''

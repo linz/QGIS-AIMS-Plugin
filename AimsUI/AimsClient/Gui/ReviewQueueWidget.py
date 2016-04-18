@@ -73,7 +73,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.comboBoxUser.setView(QListView())
         self.comboBoxUser.setModel(self.comboModelUser)
         self.comboBoxUser.view().clicked.connect(self.applyFilter) # combo box checked
-        self.comboBoxUser.view().pressed.connect(self.itemPressedUser) # or more probable, list item clicked
+        self.comboBoxUser.view().pressed.connect(self.ComboFilterSelection) # or more probable, list item clicked
         self.popUserCombo()
     
                     
@@ -126,7 +126,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.currentGroup = self.groupModel.listClicked(sourceIndex.row())
         self.featuresTableView.selectRow(0)
    
-    def itemPressedUser(self, index):
+    def ComboFilterSelection(self, index):
         item = self.comboBoxUser.model().itemFromIndex(index)
         if item.checkState() == Qt.Checked:
             item.setCheckState(Qt.Unchecked)

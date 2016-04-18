@@ -199,7 +199,7 @@ class LayerManager(QObject):
     def installRefLayers(self):
         ''' install AIMS postgres ref data '''
         
-        refLayers ={'par':( 'par', 'data', 'all_parcel_multipoly', 'gid', True, "",'Parcels' ) ,
+        refLayers ={'par':( 'par', 'lds', 'all_parcel_multipoly', 'gid', True, "",'Parcels' ) ,
                     'rcl':( 'rcl', 'roads', 'road_name_mview', 'gid', True, "",'Roads' )
                     }
    
