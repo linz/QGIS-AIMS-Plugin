@@ -93,13 +93,7 @@ class LayerManager(QObject):
         self._parLayer = None
         self._locLayer = None
         self._revLayer = None
-        
-        self.sw_x = -170.8900
-        self.sw_y = -55.9500
-        self.ne_x =  157.4100
-        self.ne_y = -22.7400
-       
-        
+ 
         QgsMapLayerRegistry.instance().layerWillBeRemoved.connect(self.checkRemovedLayer)
         QgsMapLayerRegistry.instance().layerWasAdded.connect( self.checkNewLayer )
         
@@ -222,12 +216,9 @@ class LayerManager(QObject):
         provider = layer.dataProvider()
         if id == 'adr' and not self.findLayer(id):
             self.addAimsFields(layer, provider, id, [QgsField(layerAttName, QVariant.String) for layerAttName in Mapping.adrLayerObjMappings.keys()] )
-            #provider.addAttributes([QgsField(layerAttName, QVariant.String) for layerAttName in Mapping.adrLayerObjMappings.keys()])
         elif id == 'rev' and not self.findLayer(id):
             self.addAimsFields(layer, provider, id, [QgsField('AddressNumber', QVariant.String),QgsField('Action', QVariant.String)])
-            #provider.addAttributes([QgsField('AddressNumber', QVariant.String)])      
         layer.updateFields()
-        #self.styleLayer(layer, id)     
         QgsMapLayerRegistry.instance().addMapLayer(layer)           
 
     def removeFeatures(self, layer):
@@ -241,12 +232,13 @@ class LayerManager(QObject):
         scale = self._iface.mapCanvas().mapRenderer().scale()
         return scale <= layer.maximumScale() and scale >= layer.minimumScale()
     
-    def updateReviewLayer(self):
+    def updateReviewLayer(self):#, rData):
         id = 'rev'
         layer = self.findLayer(id)
+        if not layer: return
         provider = layer.dataProvider()
         self.removeFeatures(layer)
-        rData = self._controller.uidm.reviewData() # moved up of iteration as to server log also 
+        rData = self._controller.uidm.reviewData() # moved out below of iteration to server log 
         uilog.info(' *** DATA ***    {} review items being loaded '.format(len(rData)))    
         for reviewItem in rData.values():
             fet = QgsFeature()
@@ -271,30 +263,24 @@ class LayerManager(QObject):
     
     def setbbox(self):
         ext = self._iface.mapCanvas().extent()
-        uilog.info(' *** EXTENT ***    {} '.format(ext.toString()))    
+        #if ext.asWktCoordinates() == '-185.77320897004406675 -120.40546550871380305, 187.99023996606607056 38.46554699064738969'
+        if ext.width() > 100: return
+        uilog.info(' *** BBOX ***    {} '.format(ext.toString()))    
         self._controller.uidm.setBbox(sw = (ext.xMaximum(), ext.yMaximum()), ne = (ext.xMinimum(), ext.yMinimum()))
                             
     def getAimsFeatures(self):
-        #ext = self._iface.mapCanvas().extent()
-        # if the map is at the bounds of nzgd, dont show - must be a better way to do this
-        #if (ext.toString() == '174.7729355126953124,-41.2864799999999974 : 174.7757044873046937,-41.2842699999999994'
-        #        or ext.toString() == '163.8084601236508604,-47.6596082687378200 : 181.4207421468571795,-33.6027284622192823'):
-        #if ext.width() > 10:
-        #    return 
-        
-#         if self.isZoomin(ext):
-#             return
-        
-        #self._controller.uidm.setBbox(sw = (self.sw_x, self.sw_y), ne = (self.ne_x, self.ne_y))
+        ''' triggered when notify made aware of new features '''
+    
         featureData = self._controller.uidm.featureData()
         if featureData:
             uilog.info(' *** DATA ***    {} AIMS features received '.format(len(featureData)))    
             self.updateFeaturesLayer(featureData)
     
-    def notify(self, feedType):
+    def notify(self, feedType):#, data):
         if feedType == FEEDS['AF']:
             self.getAimsFeatures()
-        else:    
+        elif feedType == FEEDS['AR']:
+            #self.updateReviewLayer(data)    
             self.updateReviewLayer()
     
     def updateFeaturesLayer(self, featureData):
@@ -312,8 +298,11 @@ class LayerManager(QObject):
         if not legend.isLayerVisible(layer):
             legend.setLayerVisible(layer, True)
         # remove current features
+        uilog.info(' *** CANVAS ***    Removing AIMS Features')    
         self.removeFeatures(layer)
+        uilog.info(' *** CANVAS ***    Features Removed')  
         
+        uilog.info(' *** CANVAS ***    Adding Features') 
         for feature in featureData.itervalues():
             fet = QgsFeature()
             point = feature._addressedObject_addressPositions[0]._position_coordinates
@@ -323,7 +312,8 @@ class LayerManager(QObject):
         layer.updateExtents()
         layer.reload()
         layer.setCacheImage(None)
-        self.canvas.refresh()
+        #self.canvas.refresh()
+        uilog.info(' *** CANVAS ***    Features Added')  
         
         # update layer's extent when new features have been added
         # because change of extent in provider is not propagated to the layer

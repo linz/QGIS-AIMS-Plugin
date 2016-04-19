@@ -88,11 +88,8 @@ class ResponseHandler(object):
             resp = self.uidm.response(feedType)
             if resp and resp != (None,): # found and processed response
                 if self.matchResp(resp, respId, feedType, i, action):
-                    return
-
-                                                  
+                    return                                                 
         #logging 
         uilog.info(' *** DATA ***    Time Out ({0} seconds): No response received from DM for respId: {1} of feedtype: {2}'.format(i, respId, feedType))    
     
            
-        

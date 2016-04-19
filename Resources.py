@@ -2,7 +2,11 @@
 
 # Resource object code
 #
+<<<<<<< HEAD
 # Created: Sun Apr 17 15:19:14 2016
+=======
+# Created: Mon Apr 18 12:54:38 2016
+>>>>>>> refs/remotes/origin/group_test
 #      by: The Resource Compiler for PyQt (Qt v4.8.6)
 #
 # WARNING! All changes made in this file will be lost!

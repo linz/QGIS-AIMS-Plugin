@@ -39,7 +39,7 @@ class LogWrap(object):
     #simple ligfile time stamp decorator 
     @classmethod
     def timediff(cls,func=None, prefix=''):
-        msg = 'TIME {} {}'.format(prefix,func.__name__)        
+        msg = 'func wrap time {} {}'.format(prefix,func.__name__)        
         if func is None:
             return partial(cls.timediff)
 

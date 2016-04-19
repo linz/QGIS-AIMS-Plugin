@@ -1,3 +1,4 @@
+
 ################################################################################
 #
 # Copyright 2015 Crown copyright (c)
@@ -29,11 +30,9 @@ class UiDataManager(QObject):
     def __init__(self, iface, controller):
         QObject.__init__(self)
         self._controller = controller
-        self.dm = DataManager()
-        self.dm.register(self) # reg with dm observer
+        with DataManager() as self.dm:
+            self.dm.registermain(self)
         self.uptdFData = None
-        self.uptdRData = None
-        self.uptdFeedRef = None
         self.refreshSuccess = False
         self._observers = []
         self.data = {   FEEDS['AF']:{},
@@ -49,17 +48,13 @@ class UiDataManager(QObject):
     def register(self, observer):
         self._observers.append(observer)
          
-    def notify(self,observable,args,kwargs):
-        uilog.info('*** NOTIFY ***     Notify A[{}]'.format(args))
-        self.uptdData = kwargs # related to soon to be redundant refresh ...
-        self.uptdFeedRef = args   # related to soon to be redundant refresh ...
-        self.setData(kwargs,args)
-        # if self.reg has a observer pass down the chain
-        # in this case, layeMmanager and eeviewQueueWidget
-        for observer in self._observers:
-            observer.notify(args)
-    
-    ### Data Methods ###
+    def observe(self,observable,*args,**kwargs):
+        uilog.info('*** NOTIFY ***     Notify A[{}]'.format(observable))
+        self.setData(args,observable)
+        if observable in (FEEDS['GR'] ,FEEDS['AR'], FEEDS['AF']):
+            for observer in self._observers:            
+                observer.notify(observable) # can filter further reviewqueue does not need AF
+            
     def exlopdeGroup(self):
         gDict = {}
         for gId, gFeats in self.data[FEEDS['GR']].items():
@@ -81,7 +76,7 @@ class UiDataManager(QObject):
         if listofFeatures: # redundant? 
             li = []
             keyId = self.idProperty(feedtype)
-            li = dict((getattr(feat, keyId), feat) for feat in listofFeatures)
+            li = dict((getattr(feat, keyId), feat) for feat in listofFeatures[0])
             self.data[feedtype] = li
             # [GroupKey:{AdKey:}]            
         if feedtype == FEEDS['GR']:
@@ -105,62 +100,23 @@ class UiDataManager(QObject):
         
     def updateFdata(self, respFeature):
         # this is pretty ineffcient building the entire layer at the same time
-        # ideally i should add and "add" feautre and update "moves" and "updates"
+        # ideally i should add an "add" feature and update "moves" and "updates"
         self.data[FEEDS['AF']][respFeature._components_addressId] = respFeature
         self._controller._layerManager.getAimsFeatures() # temp, will to switch to signal
-    # remove under new threaded observer regime????    
-    def refresh(self, feedType):
-        ''' stop the feed related to supplied feedtype and returns
-        the most current data from the api for said feed type''' 
-        
-        self.refreshSuccess = False
-        uilog.info('*** NOTIFY ***    awaitng "notify" from observer for feedtype: {0}'.format(feedType))
-        self.uptdData = []
-        self.uptdFeedRef = None            
-        for i in range(0,16):            
-            #if self.uptdFeedRef:
-            if feedType == self.uptdFeedRef and self.uptdData:
-                self.setData(self.uptdData, feedType)
-                self.refreshSuccess = True
-                break
-            else: time.sleep(1)
-        
-        #logging
-        if i != 15:
-            uilog.info('*** DATA ***   Retrieved new data (feedType: {0}) via observer after {1} seconds '.format(feedType, i))
-        else: 
-            uilog.info('*** DATA ***   No new data retrieved via observer after {0} seconds '.format(i))
-            
+
     def setBbox(self, sw, ne):
+         #need to ignore -185.7732089700440667,-188.0621082638667190 : 187.9902399660660706,106.1221897458003127
         #logging
         uilog.info('*** BBOX ***   New bbox passed to dm.setbb')
         self.dm.setbb(sw, ne) 
         uilog.info('*** BBOX ***   Bbox set')
     
-#     def combineFeeds(self, data1, data2):
-#         '''Given two dicts, merge them into a new dict as a shallow copy.'''
-#         combinedDict = data1.copy()
-#         combinedDict.update(data2)
-#         return combinedDict
-    
     def reviewData(self):
         ''' return (single and group) review data '''
-#         grData = {}
-#         # un-nest the group data
-#         for features in self.data.get(FEEDS['GR']).values():
-#             for k , v in features.items():
-#                 grData[k] = v        
-#         return self.combineFeeds(grData, self.data.get(FEEDS['AR']))
-        
-        # Above commented out as... do we want to set the 
-        # individual group entities as these are already published
         return self.data.get(FEEDS['AR'])
 
-    
-    
     def featureData(self):
         ''' update data and return AIMS features '''
-        #self.refresh(FEEDS['AF']) 
         return self.data.get(FEEDS['AF'])
         
     def restartDm(self, feedType):
@@ -188,11 +144,12 @@ class UiDataManager(QObject):
             self.dm.declineGroup(feature, respId)
     
     def accept(self, feature, feedType, respId = None):
-        uilog.info('obj with respId: {0} passed to convenience method "{1}" '.format(respId, 'acceptAddress'))
-        if feedType == FEEDS['AR']:
-            self.dm.acceptAddress(feature, respId)
-        else:
-            self.dm.acceptGroup(feature, respId)
+        if respId:
+            uilog.info('obj with respId: {0} passed to convenience method "{1}" '.format(respId, 'acceptAddress'))
+            if feedType == FEEDS['AR']:
+                self.dm.acceptAddress(feature, respId)
+            else:
+                self.dm.acceptGroup(feature, respId)
     
     def repairAddress(self, feature, respId = None):
         uilog.info('obj with respId: {0} passed to convenience method "{1}" '.format(respId, 'repairAddress'))
@@ -220,18 +177,6 @@ class UiDataManager(QObject):
     def response (self, feedtype = None):
         return self.dm.response(feedtype)
 
-#     def fullNumber(self, k, feedtype):  # this has now been added to the review class. TO BE REMOVED
-#         ''' compiles a full number 'label' for the UI '''
-#         fullNumber = ''
-#         if feedtype == FEEDS['AR']:
-#             obj = k            
-#         else: obj = self.data.get(feedtype).get(k) # retrieve object# currently only handling review
-#         if hasattr(obj, '_components_unitValue'): fullNumber+=str(getattr(obj,'_components_unitValue'))+'/'
-#         if hasattr(obj, '_components_addressNumber'): fullNumber+=str(getattr(obj,'_components_addressNumber')) 
-#         if hasattr(obj, '_components_addressNumberHigh'): fullNumber+= ('-'+str(getattr(obj,'_components_addressNumberHigh')))
-#         if hasattr(obj, '_components_addressNumberSuffix'): fullNumber+=str(getattr(obj,'_components_addressNumberSuffix'))        
-#         return fullNumber 
-        
     def fullRoad(self, k, feedtype):
         ''' compiles a full road name 'label' for the UI '''
         fullRoad = ''
@@ -243,9 +188,6 @@ class UiDataManager(QObject):
             if hasattr(obj, prop): 
                 if getattr(obj,prop) != None: fullRoad+=str(getattr(obj,prop))+' '
         return fullRoad 
-       
-    def changeData(self):
-        pass
 
     def formatGroupTableData(self, obj, groupProperties):
         groupValues = []   
@@ -287,13 +229,7 @@ class UiDataManager(QObject):
         if feedtype == FEEDS['AR']:
             return (prop['AR']['kProperties'],prop['AR']['vProperties'])
         return (prop['GR']['kProperties'],prop['AR']['vProperties'])
-    
-    def refreshTableData(self, feedtype):
-        ''' At start up and refresh button emit, return table data ''' 
-        self.restartDm(feedtype)
-        self.refresh(feedtype) 
-        return self.formatTableData(feedtype)
-    
+
     def formatTableData(self, feedtypes):
         ''' return review data formatted for the review data model '''
         fData = {}
@@ -339,4 +275,6 @@ class UiDataManager(QObject):
     def reviewItemCoords(self, currentGroup, currentFeatureKey):
         obj = self.currentReviewFeature(currentGroup, currentFeatureKey)
         #currently only storing one position, Hence the '[0]'
-        return obj._addressedObject_addressPositions[0]._position_coordinates
+        try: # temp try / except untill retire obj is complete
+            return obj._addressedObject_addressPositions[0]._position_coordinates
+        except: return None
