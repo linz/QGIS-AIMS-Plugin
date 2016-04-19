@@ -230,7 +230,7 @@ class DataSync(Observable):
             #with sync_lock:
             self.outq.put(new_addresses)
             self.outq.task_done()
-        self.notify(self.etft)
+            self.notify(self.etft)
 
     #--------------------------------------------------------------------------
     
