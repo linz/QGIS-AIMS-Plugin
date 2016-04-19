@@ -20,7 +20,7 @@ from AIMSDataManager.AimsLogging import Logger
 uilog = None
 
 class UiUtility (object):
-    ''' Where modular methods live and are leveraged '''
+    ''' Where modular UI methods live and are leveraged '''
 
     # logging
     global uilog
@@ -133,10 +133,14 @@ class UiUtility (object):
             if hasattr(self.feature, objProp[0]) or hasattr(self.feature, objProp[2]):                                     
                 if objProp[2]: 
                     # use getter
-                    prop = (getattr(self.feature, objProp[2])())
+                    if getattr(self.feature, objProp[2])() != 'None':
+                        prop = (getattr(self.feature, objProp[2])())
+                    else: prop = ''
                 else:
                     # go straight for the objects property 
-                    prop = str(getattr(self.feature, objProp[0]))
+                    if str(getattr(self.feature, objProp[0])) != 'None':
+                        prop = str(getattr(self.feature, objProp[0])) 
+                    else: prop = ''
                 if isinstance(uiElement, QLineEdit) or isinstance(uiElement, QLabel):
                     if ui == 'uWarning':
                         warnings = ''                        
@@ -234,52 +238,3 @@ class UiUtility (object):
             except:
                 pass #silently  
     
-    @staticmethod
-    def tempARFeature():
-        pass
-    
-    @staticmethod
-    def displayWarnings (warnings, iface):
-        ''' raise warning to the user '''
-        message = ''
-        for warning in warnings:
-            message += u'\u2022 {}\n'.format(warning)
-        QMessageBox.warning(iface.mainWindow(),"Create Address Point", message)
-    
-    @staticmethod
-    def processWarnings (resp, respId, iface, feedType, i):
-        ''' compile al ist of warnings that are at the "Reject" level '''
-        warnings = []
-        for respObj in resp:
-            if respObj.meta._requestId == respId:  
-                #logging
-                uilog.info(' *** DATA ***    response received from DM for respId: {0} of type: {1} after {2} seconds'.format(respId, feedType, i))    
-                if respObj._entities:
-                    for warning in respObj._entities:
-                        if warning['properties']['severity'] in ('Reject', 'critical'):
-                            warnings.append(warning['properties']['description'])
-                    if warnings:
-                        UiUtility.displayWarnings(warnings, iface)
-                    return respObj
-    
-    @staticmethod
-    def handleResp(respId, controller, feedType, iface, updateFlag = False):
-        ''' test for a response in the response
-            queue with the relevant repId'''
-        #return # temp
-        for i in range(0,15):
-            time.sleep(1)
-            resp = controller.uidm.response(feedType)
-            if resp: # found and processed response
-                if UiUtility.processWarnings(resp, respId, iface, feedType, i):
-                    if updateFlag:
-                        UiUtility.tempARFeature()
-                        return
-                else: return
-                
-            #logging 
-        uilog.info(' *** DATA ***    Time Out ({0} seconds): No response received from DM for respId: {1} of feedtype: {2}'.format(i, respId, feedType))    
-   
-           
-        
-            

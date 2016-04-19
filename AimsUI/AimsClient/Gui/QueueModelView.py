@@ -14,7 +14,7 @@ from PyQt4.QtGui import *
 class QueueView(QTableView):
     rowSelected = pyqtSignal( int, name="rowSelected" )
     rowSelectionChanged = pyqtSignal( name="rowSelectionChanged" )
-    
+    modelReset = pyqtSignal( name="modelReset" )
     
     def __init__( self, parent=None ):
         QTableView.__init__( self, parent )
@@ -29,6 +29,42 @@ class QueueView(QTableView):
         self.setEditTriggers(QAbstractItemView.AllEditTriggers)
         #self.setStyleSheet("* { gridline-color: gray }")
         
+        self._model = None
+        self._groupTableModel = None
+        self._selectedId = None
+        self._alternativeId =None
+        
+    def setModel( self, model ):
+        QTableView.setModel( self, model )
+        if self._model:
+            self._model.modelReset.disconnect( self._onModelReset )
+            self._model.layoutAboutToBeChanged.disconnect( self._saveSelectedRow )
+            self._model.layoutChanged.disconnect( self._restoreSelectedRow )
+        if self._groupTableModel:
+            self._groupTableModel.resettingModel.disconnect( self._saveSelectedRow )
+        self._model = model 
+        self._groupTableModel = self._model if isinstance(self._model,GroupTableModel) else None
+        if self._model:
+            self._model.modelReset.connect( self._onModelReset )
+            self._model.layoutAboutToBeChanged.connect( self._saveSelectedRow )
+            self._model.layoutChanged.connect( self._restoreSelectedRow )
+        if self._groupTableModel:
+            self._groupTableModel.resettingModel.connect( self._saveSelectedRow )
+        self._onModelReset()
+    
+    def _onModelReset(self):
+        self.modelReset.emit()
+        if self.rowCount() > 0:
+            self.resizeColumnsToContents()
+            self._restoreSelectedRow()
+        else:
+            self.rowSelected.emit( -1 )
+    
+    def rowCount( self ):
+        model = self.model()
+        if not model:
+            return 0
+        return model.rowCount(QModelIndex())
                 
     def selectionChanged( self, selected, deselected ): #1
         QTableView.selectionChanged( self, selected, deselected )
@@ -42,6 +78,34 @@ class QueueView(QTableView):
         if len(rows) == 1:
             return rows[0].row()
         return None
+    
+    def _saveSelectedRow( self ):
+        if not self._groupTableModel:
+            self._selectedId = None
+            self._alternativeId = None
+            return
+        self._selectedId = self.selectedId()
+        if self._selectedId != None:
+            row = self.selectedRow() + 1
+            self._alternativeId = self.GroupTableModel.getId( row )
+    
+    def _restoreSelectedRow( self ):
+        if not self.selectId(self._selectedId) and not self.selectId( self._alternativeId ):
+            self.selectRow(0)
+
+    def selectId( self, id ):
+        if self._groupTableModel and id != None:
+            row = self._groupTableModel.getIdDisplayRow( id )
+            if row != None:
+                self.selectRow( row )
+                return True
+        return False
+    
+    def selectedId( self ):
+        if not self._groupTableModel:
+            return None
+        row = self.selectedRow()
+        return self._groupTableModel.getId( row )
 
 class FeatureTableModel(QAbstractTableModel):
  
@@ -94,6 +158,7 @@ class GroupTableModel(QAbstractTableModel):
         self._data = sorted(data.keys())
         self.groupModel = featureModel
         self.headerdata = headerdata
+        self._lookup = None
 
     def listClicked(self, row):
         key = self._data[row]
@@ -115,7 +180,8 @@ class GroupTableModel(QAbstractTableModel):
             return str(self._data[row][col])
     
     def refreshData(self, data):
-        self._data = sorted(data.keys())
+        if data:
+            self._data = sorted(data.keys())
     
     def getObjRef(self, rowIndex):
         return (self._data[rowIndex.row()][0], self._data[rowIndex.row()][1]) 
@@ -133,4 +199,23 @@ class GroupTableModel(QAbstractTableModel):
 
     def flags(self, QModelIndex):
         return Qt.ItemIsEnabled | Qt.ItemIsSelectable
+    
+    def getIdDisplayRow( self, id ):
+        return self.getDisplayRow( self.getIdRow( id ))
+    
+    def getDisplayRow( self, row ):
+        if row == None:
+            return None
+        if row < 0 or row >= len(self._data):
+            return None       
+        if self._lookup == None:
+            lookup = [None] * len( self._data)
+            for i in range(len(self._index)):
+                lookup[self._index[i]] = i
+            self._lookup = lookup
+        return self._lookup[row]
+    
+    def getId( self, row ):
+        item = self.getItem( row )
+        return item.get(self._idColumn) if item else None
   
