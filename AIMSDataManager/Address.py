@@ -118,7 +118,7 @@ class Entity(object):
         e = Entity()
         #WORKAROUND
         if d<>EDEF and d['class'][0]=='validation': e.set(d)
-        else: aimslog.warn('Entites non-validation type')
+        else: aimslog.debug('Entites non-validation type {}'.format(d['class'][0]))
         return e
         
     def set(self,d = EDEF):

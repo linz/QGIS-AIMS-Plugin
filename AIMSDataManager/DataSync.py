@@ -56,7 +56,6 @@ class DataRequestChannel(Observable):
         '''Continual loop looking for input queue requests and running periodic updates'''
         while not self.stopped():
             aimslog.debug('listening')
-            time.sleep(10000)
             #if there are things in the client's input queue, process them, push to CF #TODO. there shouldnt ever be anything in the FF inq
             if not self.client.inq.empty():
                 changelist = self.client.inq.get()    
@@ -180,7 +179,7 @@ class DataSync(Observable):
             self.syncFeeds(self.newaddr)#syncfeeds does notify DM
             self.managePage((None,self.lastpage))
             self.updater_running = False
-            print 'POOLCLOSE',ref
+            print 'POOLCLOSE',ref,time.strftime('%Y-%M-%d %H:%m:%S')
 
 
     #--------------------------------------------------------------------------            
