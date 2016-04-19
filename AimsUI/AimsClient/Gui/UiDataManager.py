@@ -51,9 +51,9 @@ class UiDataManager(QObject):
     def observe(self,observable,*args,**kwargs):
         uilog.info('*** NOTIFY ***     Notify A[{}]'.format(observable))
         self.setData(args,observable)
-        for observer in self._observers:
-
-            observer.notify(observable)
+        if observable in (FEEDS['GR'] ,FEEDS['AR'], FEEDS['AF']):
+            for observer in self._observers:            
+                observer.notify(observable) # can filter further reviewqueue does not need AF
             
     def exlopdeGroup(self):
         gDict = {}
@@ -275,4 +275,6 @@ class UiDataManager(QObject):
     def reviewItemCoords(self, currentGroup, currentFeatureKey):
         obj = self.currentReviewFeature(currentGroup, currentFeatureKey)
         #currently only storing one position, Hence the '[0]'
-        return obj._addressedObject_addressPositions[0]._position_coordinates
+        try: # temp try / except untill retire obj is complete
+            return obj._addressedObject_addressPositions[0]._position_coordinates
+        except: return None

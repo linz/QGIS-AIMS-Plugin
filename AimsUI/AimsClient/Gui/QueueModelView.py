@@ -36,21 +36,21 @@ class QueueView(QTableView):
         
     def setModel( self, model ):
         QTableView.setModel( self, model )
-        if self._model:
-            self._model.modelReset.disconnect( self._onModelReset )
-            self._model.layoutAboutToBeChanged.disconnect( self._saveSelectedRow )
-            self._model.layoutChanged.disconnect( self._restoreSelectedRow )
-        if self._groupTableModel:
-            self._groupTableModel.resettingModel.disconnect( self._saveSelectedRow )
-        self._model = model 
-        self._groupTableModel = self._model if isinstance(self._model,GroupTableModel) else None
-        if self._model:
-            self._model.modelReset.connect( self._onModelReset )
-            self._model.layoutAboutToBeChanged.connect( self._saveSelectedRow )
-            self._model.layoutChanged.connect( self._restoreSelectedRow )
-        if self._groupTableModel:
-            self._groupTableModel.resettingModel.connect( self._saveSelectedRow )
-        self._onModelReset()
+#         if self._model:
+#             self._model.modelReset.disconnect( self._onModelReset )
+#             self._model.layoutAboutToBeChanged.disconnect( self._saveSelectedRow )
+#             self._model.layoutChanged.disconnect( self._restoreSelectedRow )
+#         if self._groupTableModel:
+#             self._groupTableModel.resettingModel.disconnect( self._saveSelectedRow )
+#         self._model = model 
+#         self._groupTableModel = self._model if isinstance(self._model,GroupTableModel) else None
+#         if self._model:
+#             self._model.modelReset.connect( self._onModelReset )
+#             self._model.layoutAboutToBeChanged.connect( self._saveSelectedRow )
+#             self._model.layoutChanged.connect( self._restoreSelectedRow )
+#         if self._groupTableModel:
+#             self._groupTableModel.resettingModel.connect( self._saveSelectedRow )
+#         self._onModelReset()
     
     def _onModelReset(self):
         self.modelReset.emit()
