@@ -8,3 +8,4 @@ Resources.py
 *.log
 /.travis.yml.backup
 *ini
+AIMSDataManager/.cache/*
