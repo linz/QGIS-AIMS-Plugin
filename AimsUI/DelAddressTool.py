@@ -1,39 +1,42 @@
-import sys
-
+################################################################################
+#
+# Copyright 2015 Crown copyright (c)
+# Land Information New Zealand and the New Zealand Government.
+# All rights reserved
+#
+# This program is released under the terms of the 3 clause BSD license. See the 
+# LICENSE file for more information.
+#
+################################################################################
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
 from qgis.core import *
 from qgis.gui import *
 
-# from qgis.gui import QgsMapTool
-# from qgis.gui import QgsMapToolIdentify as QMTI
-# 
-# from PyQt4.QtGui import QDialog
-# from PyQt4.QtGui import QMessageBox
+import time
 
-from AimsUI.AimsClient.Gui.Ui_DelAddressDialog import Ui_DelAddressDialog
-
+from AimsUI.AimsClient.Gui.Ui_ComfirmSelection import Ui_ComfirmSelection
+from AIMSDataManager.AimsUtility import FeedType, FeedRef, FeatureType, FEEDS
+from AIMSDataManager.AddressFactory import AddressFactory
+from AimsUI.AimsClient.Gui.UiUtility import UiUtility
 
 class DelAddressTool(QgsMapToolIdentify):
-
-    tolerance=5
 
     def __init__(self, iface, layerManager, controller):
         QgsMapToolIdentify.__init__(self, iface.mapCanvas())
         self._iface = iface
         self._layers = layerManager
         self._controller = controller
+        self.af = {ft:AddressFactory.getInstance(FEEDS['AC']) for ft in FeedType.reverse}
         self.activate()
-
-        self.cursor = QCursor()
-        self.setShape(Qt.CrossCursor)
-        self.parent().setCursor(self.cursor)
     
     def activate(self):
         QgsMapTool.activate(self)
         sb = self._iface.mainWindow().statusBar()
         sb.showMessage("Click map to delete feature")
+        self.cursor = QCursor(Qt.CrossCursor)
+        self.parent().setCursor(self.cursor)
     
     def deactivate(self):
         sb = self._iface.mainWindow().statusBar()
@@ -80,12 +83,14 @@ class DelAddressTool(QgsMapToolIdentify):
             retireFeatures = dlg.selectFeatures(identifiedFeatures)
         
         if retireFeatures: # else the user hit 'ok' and did not select any records            
-            valErrors = self._controller.retireAddress(retireFeatures)
-            if len(valErrors) != 0:
-                QMessageBox.warning(self._iface.mainWindow(),"Retire Address Point", valErrors)
-        return       
- 
-class DelAddressDialog( Ui_DelAddressDialog, QDialog ):
+            for retireFeature in retireFeatures:
+                featureToRetire = self._controller.uidm.singleFeatureObj(retireFeature['components']['addressId'])
+                featureToRetire = self.af[FeedType.CHANGEFEED].cast(featureToRetire)
+                respId = int(time.time()) 
+                self._controller.uidm.retireAddress(featureToRetire, respId)
+                self._controller.RespHandler.handleResp(respId, FEEDS['AC'])
+                
+class DelAddressDialog( Ui_ComfirmSelection, QDialog ):
 
     def __init__( self, parent ):
         QDialog.__init__(self,parent)
@@ -99,6 +104,7 @@ class DelAddressDialog( Ui_DelAddressDialog, QDialog ):
             retireIds = {}        
             retireIds['version'] = i['version']
             retireIds['components'] = {'addressId': i['addressId']}
+            retireIds['address'] = i['fullAddress'] #bit of a hack. this data not required by the API but useful for error reporting
             retireFeatures.append(retireIds)
         return retireFeatures        
 
@@ -106,6 +112,6 @@ class DelAddressDialog( Ui_DelAddressDialog, QDialog ):
         self.uSadListView.setList(identifiedFeatures,
                                  ['fullAddress','version','addressId'])
         if self.exec_() == QDialog.Accepted:
-            return self.selectionToRetirementJson(self.uSadListView.selectedItems())
+            return self.selectionToRetirementJson(self.uSadListView.confirmSelection())
         return None
-
+    

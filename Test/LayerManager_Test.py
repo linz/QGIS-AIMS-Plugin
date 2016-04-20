@@ -37,7 +37,7 @@ from AimsUI.LayerManager import LayerManager, InvalidParameterException
 from AimsUI.AimsClient.Gui.Controller import Controller
 from AimsUI.AimsLogging import Logger
 from Database_Test import DCONF 
-import AimsUI.AimsClient.Database
+from AimsUI.AimsClient import Database
 
 from mock import Mock, patch
 
@@ -56,6 +56,7 @@ LM_QP = 'AimsUI.LayerManager.QgsPoint'
 LM_coords = 'AimsUI.LayerManager.createFeaturesLayers.coords'
 
 LCONF = {'id':'rcl', 'schema':'aims_schema', 'table':'aims_table', 'key':'id', 'estimated':True, 'where':'', 'displayname':'aims_layer'}
+
 def getLConf(replace=None):
     if replace and isinstance(replace,dict):
         for r in replace:
@@ -91,8 +92,6 @@ class Test_1_LayerManagerSetters(unittest.TestCase):
         qi = ASM.getMock(ASM.ASMenum.QI)()
         controller = Controller(qi)
         self._layermanager = LayerManager(qi,controller)
-
-
         
     def tearDown(self):
         testlog.debug('Destroy null layermanager')
@@ -139,11 +138,13 @@ class Test_2_LayerManagerConnection(unittest.TestCase):
         controller = Controller(qi)
         self._layermanager = LayerManager(qi,controller)
         self._layermanager.addressLayerAdded = ASM.getMock(ASM.ASMenum.SIGNAL)()
+        Database.setup(DCONF)
 
         
     def tearDown(self):
         testlog.debug('Destroy null layermanager')
-        self._layermanager = None                   
+        self._layermanager = None
+        Database.setup({name:None for name in DCONF})                 
 
     def test10_layers_m(self):
         '''tests whether a layer generator is returned and it contains valid mock layers'''
@@ -175,7 +176,7 @@ class Test_2_LayerManagerConnection(unittest.TestCase):
                 test_layer = self._layermanager.findLayer(test_layerid)
                 self.assertEqual(isinstance(test_layer, ASM.getMock(ASM.ASMenum.LAYER)(vlrv=True).__class__), True,'Object returned not a layer type with name'.format(test_layerid))
     
-    
+
     def test30_installLayers_find(self):
         '''tests install layer when layer is already installed in Qgis'''
         for test_id in [l[0] for l in self.MLAYERS]:

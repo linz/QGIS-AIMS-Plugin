@@ -76,7 +76,7 @@ resp = {
                         "addressNumber":523,
                         "roadCentrelineId":112967,
                         "roadName":"Waiatai",
-                        "roadTypeName":"Road",
+                        "roadType":"Road",
                         "suburbLocality":"Wairoa",
                         "townCity":"Wairoa",
                         "fullAddressNumber":"523",
@@ -95,7 +95,7 @@ resp = {
                             "crs":{
                                 "type":"name",
                                 "properties":{
-                                    "name":"urn:ogc:def:crs:EPSG::2193"
+                                    "name":"urn:ogc:def:crs:EPSG::4167"
                                 }
                             }
                         }
@@ -119,6 +119,10 @@ def enum(*sequential, **named):
     return type('Enum', (), enums)
 
 
+class _results(object):
+    def mFeature(self):
+        return _attribute()
+
 class _AimsHttp(object):
     def call(self):
         pass
@@ -137,9 +141,9 @@ class _QInterface(object):
     def next(self):
         raise StopIteration
     
-    def layers(self):
+    def layers(self): pass
         # simulate iface.legendInterface().layers()
-        return QgsMapLayerRegistry.instance().mapLayers().values()
+        #return QgsMapLayerRegistry.instance().mapLayers().values()
     
     def mainWindow(self):
         return _MainWindow()
@@ -158,27 +162,27 @@ class _MapCanvas(object):
     def extent(self): return _Extent()
     
 class _MapSettings(object):
-    def setDestinationCrs(_displayCrs):pass
+    def setDestinationCrs(self,_displayCrs):pass
     
 class _Extent(object):
-    def xMaximum():pass
-    def yMaximum():pass
-    def xMinimum():pass
-    def yMinimum():pass
+    def xMaximum(self):pass
+    def yMaximum(self):pass
+    def xMinimum(self):pass
+    def yMinimum(self):pass
         
 class _MainWindow(object):
     def statusBar(self): return None
     
 class _Legend(object):
-    def isLayerVisible(layer): pass
-    def setLayerVisible(layer): pass
+    def isLayerVisible(self, layer): pass
+    def setLayerVisible(self, layer): pass
     
 #------------------------------------------------------------------------------
     
 class _Layer(object):
     Layer = True
     cp = {}
-    def id():pass#id = None
+    def id(self):pass#id = None
     def setCustomProperty(self,prop,id): pass#self.cp[prop] = id 
     def customProperty(self,prop): pass#return self.cp[prop]
     def type(self): pass#return type(self)
@@ -200,6 +204,7 @@ class _Feature(object):
 
 class _Geometry(object):
     def fromPoint(self):return _Geometry()
+    def asPoint(self):return _Geometry()
     
 class _Point(object):
     def __init__(self,x,y):pass
@@ -242,7 +247,7 @@ class ASM(object):
                 cls.ASMenum.QMLR :      ASM.getQMLRMock,
                 cls.ASMenum.QLGD :      ASM.getQLGDMock
                 }[type]
-                
+    @classmethod            
     def getMockSpec(cls,type):
         '''doesn't work, getmock is evaluated before __class__'''
         m =  ASM.getMock(type)
@@ -260,7 +265,7 @@ class ASM(object):
     @staticmethod
     def getLayerMock(idrv=None, cprv=None, vlrv=None,tprv=None):
         if vlrv:
-            m = Mock(spec=_VectorLayer)
+            m = Mock(spec=_VectorLayer) #spec argument configures the mock to take its specification from another object
             m.type.return_value = m.VectorLayer
         else:
             m = Mock(spec=_Layer)
@@ -303,11 +308,11 @@ class ASM(object):
 
 def main():
     
-    m = getLayerMock()
+    m = ASM.getLayerMock()
     print m.customProperty(2222)
     
     
-    m = getAimsHttpMock()
+    m = ASM.getAimsHttpMock()
     print m
     m.call()
         

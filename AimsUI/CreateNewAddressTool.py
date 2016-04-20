@@ -18,23 +18,29 @@ from qgis.core import *
 from qgis.gui import *
 
 from AimsClient.Gui.NewAddressDialog import NewAddressDialog
-from AimsUI.AimsClient.UiUtility import UiUtility
+from AimsUI.AimsClient.Gui.UiUtility import UiUtility
+from AIMSDataManager.AimsUtility import FeedType, FeatureType, FEEDS
+from AIMSDataManager.FeatureFactory import FeatureFactory
 
 class CreateNewAddressTool(QgsMapToolIdentify):
     ''' tool for creating new address information ''' 
-    
+
     def __init__(self, iface, layerManager, controller=None):        
         QgsMapToolIdentify.__init__(self, iface.mapCanvas())
-   
         self._iface = iface
-        self._controller = controller
-        self.activate()
         self._layers = layerManager
-
+        self._controller = controller
+        self._canvas = iface.mapCanvas()
+        self.af = FeatureFactory.getInstance(FEEDS['AC'])
+        self.formActive = False
+        self.activate()
+        
     def activate(self):
         QgsMapTool.activate(self)
         sb = self._iface.mainWindow().statusBar()
         sb.showMessage("Click map to create point")
+        self.cursor = QCursor(Qt.CrossCursor)
+        self.parent().setCursor(self.cursor)
     
     def deactivate(self):
         sb = self._iface.mainWindow().statusBar()
@@ -52,12 +58,7 @@ class CreateNewAddressTool(QgsMapToolIdentify):
         
         if mouseEvent.button() == Qt.LeftButton:
             results = self.identify(mouseEvent.x(), mouseEvent.y(), self.ActiveLayer, self.VectorLayer)
-            # Ensure feature list and highlighting is reset
-            
-            if not self._enabled:
-                # The tool is disabled
-                return
-            
+            # Ensure feature list and highlighting is reset            
             if len(results) == 0: 
                 # no results - therefore we ain't snapping
                 coords = self.toMapCoordinates(QPoint(mouseEvent.x(), mouseEvent.y()))
@@ -65,18 +66,19 @@ class CreateNewAddressTool(QgsMapToolIdentify):
                 # snap by taking the coords from the point within the 
                 # tolerance as defined by QGIS maptool settings under options
                 coords = results[0].mFeature.geometry().asPoint()
-             
-            try:
-                self.setPoint(coords)
-            except:
-                msg = str(sys.exc_info()[1])
-                QMessageBox.warning(self._iface.mainWindow(),"Error creating point",msg)
+            self.setPoint(coords)
     
+    def setMarker(self, coords):
+        self._marker = UiUtility.highlight(self._iface, coords, QgsVertexMarker.ICON_X)
+   
     def setPoint( self, coords ):
-        ''' guarantee srs and pass to the API '''
-        self._enabled = False
-        coords = UiUtility.transform(self._iface, coords)    
-        
-        addInstance = self._controller.initialiseAddressObj()
+        ''' guarantee srs and pass to the API '''      
+        # init new address object and open form
+        if self.formActive: return
+        self.formActive = True
+        self.setMarker(coords)
+        coords = UiUtility.transform(self._iface, coords)     
+        addInstance = self.af.getAddress()
         NewAddressDialog.newAddress(addInstance, self._layers, self._controller, self._iface.mainWindow(), coords)
-        self._enabled = True
+        self._canvas.scene().removeItem(self._marker)
+        self.formActive = False
