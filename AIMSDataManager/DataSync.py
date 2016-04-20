@@ -32,7 +32,7 @@ from DataUpdater import DataUpdater,DataUpdaterAction,DataUpdaterApproval,DataUp
 from AimsApi import AimsApi 
 from AimsLogging import Logger
 from AimsUtility import ActionType,ApprovalType,GroupActionType,GroupApprovalType,FeedType,FeatureType,FeedRef,LogWrap,FEEDS
-from Const import MAX_FEATURE_COUNT,THREAD_JOIN_TIMEOUT,PAGE_LIMIT,POOL_PAGE_CHECK_DELAY,QUEUE_CHECK_DELAY,FIRST_PAGE,LAST_PAGE_GUESS,ENABLE_ENTITY_EVALUATION,NULL_PAGE_VALUE as NPV
+from Const import MAX_FEATURE_COUNT,THREAD_JOIN_TIMEOUT,PAGE_LIMIT,POOL_PAGE_CHECK_DELAY,THREAD_KEEPALIVE,FIRST_PAGE,LAST_PAGE_GUESS,ENABLE_ENTITY_EVALUATION,NULL_PAGE_VALUE as NPV
 from FeatureFactory import FeatureFactory
 aimslog = None
 
@@ -55,15 +55,14 @@ class DataRequestChannel(Observable):
     def run(self):
         '''Continual loop looking for input queue requests and running periodic updates'''
         while not self.stopped():
-            aimslog.debug('listening')
-            #if there are things in the client's input queue, process them, push to CF #TODO. there shouldnt ever be anything in the FF inq
-            if not self.client.inq.empty():
-                changelist = self.client.inq.get()    
-                 
-                aimslog.info('DRC {} - found {} items in queue'.format(self.client.etft,len(changelist)))
-                self.client.processInputQueue(changelist)
-                 
-            time.sleep(QUEUE_CHECK_DELAY)
+            aimslog.debug('DRC {} listening'.format(self.client.etft))
+#             #if there are things in the client's input queue, process them, push to CF #TODO. there shouldnt ever be anything in the FF inq
+#             if not self.client.inq.empty():
+#                 changelist = self.client.inq.get()    
+#                  
+#                 aimslog.info('DRC {} - found {} items in queue'.format(self.client.etft,len(changelist)))
+#                 self.client.processInputQueue(changelist)
+            time.sleep(THREAD_KEEPALIVE)
             
     def stop(self):
         self._stop.set()
@@ -71,12 +70,13 @@ class DataRequestChannel(Observable):
     def stopped(self):
         return self._stop.isSet()
     
-#     def observe(self):
-#         '''if the dm makes a request, do something with it'''
-#         if not self.client.inq.empty():
-#             changelist = self.client.inq.get()    
-#             aimslog.info('DRC {} - found {} items in queue'.format(self.client.etft,len(changelist)))
-#             self.client.processInputQueue(changelist)
+    def observe(self,*args,**kwargs):
+        '''if the dm makes a request, do something with it'''
+        aimslog.info('Processing request {}'.format(args[0]))
+        if self.client.etft==args[0] and not self.client.inq.empty():
+            changelist = self.client.inq.get()    
+            aimslog.info('DRC {} - found {} items in queue'.format(self.client.etft,len(changelist)))
+            self.client.processInputQueue(changelist)
 
     
 class DataSync(Observable):

@@ -1,0 +1,74 @@
+[user]
+#aims user credentials
+org: <organisation>
+name: <aims-username>
+pass: <aims-password>
+
+[url]
+api: http://devassgeo01:8080/aims/api
+
+[db]
+#database connection parameters
+user: <database-username>
+password: <database-password>
+host:
+port: 5432
+name: aims
+
+[const]
+#aims UI parameters
+
+#turn test mode on or off, on appends test path to all request urls
+TEST_MODE = False
+
+#time to wait for threads to join after stop has been called eg On BB move (s)
+THREAD_JOIN_TIMEOUT = 30
+
+#max number of features to request per page 
+MAX_FEATURE_COUNT = 1000
+
+#first page (to not backfill past)
+FIRST_PAGE = 1
+
+#upper limit on page number to request
+PAGE_LIMIT = 1000
+
+#time delay between thread checks to see if pooled page has returned (s) 
+POOL_PAGE_CHECK_DELAY = 0.2
+
+#time delay between thread checks to see if user action has returned a response (s) 
+QUEUE_CHECK_DELAY = 1
+
+#keepalive tick on dormant listener threads
+THREAD_KEEPALIVE = 60
+
+#when backfilling pages guess start point to find last page in change feed
+LAST_PAGE_GUESS = 10
+
+#initial page number indicating page search is required
+NULL_PAGE_VALUE = 0
+
+#automatically inset warnings into resolution feed features. very slow, enable only if RF is small
+ENABLE_ENTITY_EVALUATION = True
+
+#zero southwest coordinate used for instantiation and to prevent unnecessary feature fetching
+SWZERO = (0.0, 0.0)
+
+#zero northeast coordinate used for instantiation and to prevent unnecessary feature fetching
+NEZERO = (0.0, 0.0)
+
+#enable null value removal in json requests
+SKIP_NULL = True
+
+#address attribute to dict separator character
+DEF_SEP = '_'
+
+#path to resources directory
+RES_PATH = 'resources'
+
+#filename for persisted feed data
+LOCAL_ADL = 'aimsdata'
+
+#merge response objects back into their request objects
+MERGE_RESPONSE = True
+

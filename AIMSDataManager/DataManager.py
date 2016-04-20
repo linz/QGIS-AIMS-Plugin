@@ -76,6 +76,10 @@ class DataManager(Observable):
         '''Register "single" class as a listener'''
         self.registered = reg if hasattr(reg, 'observe') else None
         
+    def register(self,reg):
+        print 'register to DM {}'.format(reg)
+        super(DataManager,self).register(reg)
+        
     def _checkDS(self,etft):
         '''Starts a sync thread unless its features with a zero bbox'''
         if (etft == FEEDS['AF'] and self.persist.coords['sw'] == SWZERO and self.persist.coords['ne'] == NEZERO) or int(self.persist.tracker[etft]['threads'])==0:                
@@ -95,6 +99,7 @@ class DataManager(Observable):
         ds.setDaemon(True)
         ds.setName('DS{}'.format(etft))
         #ds.start()
+        self.register(ds.drc)
         return ds    
         
     def close(self):
@@ -204,8 +209,7 @@ class DataManager(Observable):
     def _addressAction(self,address,at,reqid=None):
         if reqid: address.setRequestId(reqid)
         self._populateAddress(address).setChangeType(ActionType.reverse[at].title())
-        self.ioq[FeedRef((FeatureType.ADDRESS,FeedType.CHANGEFEED))]['in'].put({at:(address,)})   
-        
+        self._queueAction(FeedRef((FeatureType.ADDRESS,FeedType.CHANGEFEED)), at, address)
     #----------------------------
     def acceptAddress(self,address,reqid=None):
         self._addressApprove(address,ApprovalType.ACCEPT,reqid)    
@@ -219,7 +223,7 @@ class DataManager(Observable):
     def _addressApprove(self,address,at,reqid=None):
         if reqid: address.setRequestId(reqid)
         address.setQueueStatus(ApprovalType.LABEL[at].title())
-        self.ioq[FeedRef((FeatureType.ADDRESS,FeedType.RESOLUTIONFEED))]['in'].put({at:(address,)})
+        self._queueAction(FeedRef((FeatureType.ADDRESS,FeedType.RESOLUTIONFEED)), at, address)
         
     #============================
     def acceptGroup(self,group,reqid=None):
@@ -234,7 +238,7 @@ class DataManager(Observable):
     def _groupApprove(self,group,gat,reqid=None):
         if reqid: group.setRequestId(reqid)
         group.setQueueStatus(GroupApprovalType.LABEL[gat].title())
-        self.ioq[FeedRef((FeatureType.GROUPS,FeedType.RESOLUTIONFEED))]['in'].put({gat:(group,)}) 
+        self._queueAction(FeedRef((FeatureType.GROUPS,FeedType.RESOLUTIONFEED)),gat,group)
           
     #----------------------------
     def replaceGroup(self,group,reqid=None):
@@ -258,7 +262,14 @@ class DataManager(Observable):
     def _groupAction(self,group,gat,reqid=None):        
         if reqid: group.setRequestId(reqid)
         self._populateGroup(group).setChangeType(GroupActionType.reverse[gat].title())
-        self.ioq[FeedRef((FeatureType.GROUPS,FeedType.CHANGEFEED))]['in'].put({gat:(group,)})
+        self._queueAction(FeedRef((FeatureType.GROUPS,FeedType.CHANGEFEED)),gat,group)
+    
+    #----------------------------
+    
+    def _queueAction(self,feedref,atype,aorg):
+        '''Queue and notify'''
+        self.ioq[feedref]['in'].put({atype:(aorg,)})
+        self.notify(feedref)
     
     #----------------------------
     
