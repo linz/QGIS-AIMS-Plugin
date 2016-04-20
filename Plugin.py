@@ -23,10 +23,10 @@ except:
     pass
 
 class Plugin(object):
-    try:      
-        SettingsBase="QGIS-AIMS-Plugin/"
-    except:
-        SettingsBase=" AIMS_Plugin_threaded/" # TEMP testing
+    #try:      
+    #    SettingsBase="QGIS-AIMS-Plugin/"
+    #except:
+    SettingsBase=" AIMS_Plugin_threaded/" # TEMP testing
         
     def __init__(self, iface):
         self.iface = iface
