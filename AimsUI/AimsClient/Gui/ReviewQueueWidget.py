@@ -45,7 +45,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.uUpdateButton.clicked.connect(self.updateFeature)
         self.uRejectButton.clicked.connect(self.decline)
         self.uAcceptButton.clicked.connect(self.accept)
-        self.uRefreshButton.clicked.connect(self.refreshData)
+        #self.uRefreshButton.clicked.connect(self.refreshData)
           
         # Features View 
         featuresHeader = ['Id','Full Num', 'Full Road', 'Life Cycle', 'Town', 'Suburb Locality']
