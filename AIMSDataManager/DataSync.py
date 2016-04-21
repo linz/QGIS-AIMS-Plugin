@@ -350,8 +350,8 @@ class DataSyncFeeds(DataSync):
         for at in changelist:
             #self.outq.put(act[addr](changelist[addr]))
             for feature in changelist[at]:
-                resp = self.processFeature(at,feature)
-                aimslog.info('{} thread started'.format(str(resp)))
+                duref = self.processFeature(at,feature)
+                aimslog.info('{} thread started'.format(str(duref)))
                 
     def processFeature(self,at,feature): 
         '''override'''

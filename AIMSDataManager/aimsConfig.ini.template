@@ -39,10 +39,10 @@ POOL_PAGE_CHECK_DELAY = 0.2
 #time delay between thread checks to see if user action has returned a response (s) 
 QUEUE_CHECK_DELAY = 1
 
-#keepalive tick on dormant listener threads
+#keepalive tick on dormant listener threads (s)
 THREAD_KEEPALIVE = 60
 
-#when backfilling pages guess start point to find last page in change feed
+#when backfilling pages guess start point to find last page in change feed (s)
 LAST_PAGE_GUESS = 10
 
 #initial page number indicating page search is required

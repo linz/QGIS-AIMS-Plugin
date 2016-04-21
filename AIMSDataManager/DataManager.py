@@ -99,7 +99,7 @@ class DataManager(Observable):
         ds.setDaemon(True)
         ds.setName('DS{}'.format(etft))
         #ds.start()
-        self.register(ds.drc)
+        if etft.ft != FeedType.FEATURES: self.register(ds.drc)
         return ds    
         
     def close(self):

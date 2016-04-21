@@ -197,6 +197,7 @@ class DataUpdaterDRC(DataUpdater):
             self.agobj.merge(feature)
             self.queue.put(self.agobj)
         else: self.queue.put(feature)
+        self.notify(self.ref)
         
         
 class DataUpdaterAction(DataUpdaterDRC):
