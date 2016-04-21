@@ -178,7 +178,7 @@ class LocalTest():
         rqid3 = 3456543
         #addr_c.setChangeId(1837997)#cid)
         #addr_c.setVersion(ver)
-        addr_c.setAddressId(19)#1,10,9,8
+        addr_c.setAddressId(20)#1,10,9,8
         dm.retireAddress(addr_c,rqid3)
         resp = None
         tout = 10

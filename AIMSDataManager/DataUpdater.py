@@ -90,7 +90,6 @@ class DataUpdater(Observable):
             elif feat['class'][0] == 'validation':
                 e = Entity.getInstance('validation')
                 e = self.getEntityInstance()
-            #HACK (until we figure out what eS is delivering in next patch)
             #-------------------------------
             elif feat['class'][0] == 'resolutiongroup':
                 g = self.getfeat(model=feat['properties'])#group
@@ -99,27 +98,33 @@ class DataUpdater(Observable):
                 afactory2 = FeatureFactory.getInstance(etft2)
                 for f in feat2['entities']:
                     a = afactory2.getAddress(model=f['properties'])
-                    flist2 = []
+                    elist2 = []
                     for e in f['entities']:
-                        flist2.append(Entity.getInstance(e))
-                    a._setEntities(flist2)
+                        elist2.append(self._fillEnt(e))
+                    a._setEntities(elist2)
                     featurelist.append(a)
                 g._setEntities(featurelist)
                 return g
-            #--------------------------------    
-            #elif etft.et==FeatureType.GROUPS:#feat['class'] == 'address':
-            #    e = Entity.getInstance('address')
+            #--------------------------------
             else:
                 #process any nested entities
                 a = self.getfeat(model=feat['properties'])
                 for e in feat['entities']:
-                    featurelist.append(Entity.getInstance(e))
+                    featurelist.append(self._fillEnt(e))
             a._setEntities(featurelist)
         else:
             #just return the main feedlevel address objects
             a = self.getfeat(model=feature['properties'])
         return a
         
+    def _fillEnt(self,e):
+        if e['class'][0] == 'address':
+            #res factory might work here instead
+            etft3 = FeedRef((FeatureType.ADDRESS,FeedType.FEATURES))
+            afactory3 = FeatureFactory.getInstance(etft3)
+            return afactory3.getAddress(model=e['properties'])
+        else:
+            return Entity.getInstance(e)
         
     @staticmethod
     def getInstance(etft):
@@ -189,6 +194,7 @@ class DataUpdaterDRC(DataUpdater):
         aimslog.info('DUr.{} {} - Adr-Grp{}'.format(self.ref,ActionType.reverse[self.at],self.agobj))
         err,resp = self.action(self.at,self.payload,self.identifier)
         feature = self.build(model=resp['properties'])
+        #feature = self.process(feature,self.etft)
         #print 'feature',feature
         if err: feature.setErrors(err)
         if self.requestId: feature.setRequestId(self.requestId)
