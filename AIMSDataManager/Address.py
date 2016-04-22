@@ -13,9 +13,10 @@
 ################################################################################
 
 #http://devassgeo01:8080/aims/api/address/features - properties
-from AimsUtility import FeatureType,ActionType,ApprovalType,FeedType,AimsException
+from AimsUtility import FeatureType,ActionType,ApprovalType,FeedType,AimsException,FeedRef
 from AimsLogging import Logger
 from Feature import Feature,FeatureMetaData
+
 
 
 #aimslog = None
@@ -157,10 +158,23 @@ class Entity(object):
             }
   
 class EntityValidation(Entity):
-    pass
+    def __init__(self,ref = 'validation'):
+        super(EntityValidation,self).__init__(ref)
+        
+    @staticmethod
+    def getInstance(d,etft=None):
+        return super(EntityValidation,EntityValidation).getInstance(d)
 
 class EntityAddress(Entity):
-    pass
+    def __init__(self,ref = 'address'):
+        super(EntityAddress,self).__init__(ref)
+        
+    @staticmethod
+    def getInstance(d,etft=FeedRef((FeatureType.ADDRESS,FeedType.FEATURES))):
+        from FeatureFactory import FeatureFactory
+        ff = FeatureFactory.getInstance(etft)
+        return ff.getAddress(model=d)
+        
 
 #------------------------------------------------------------------------------
 # A D D R E S S

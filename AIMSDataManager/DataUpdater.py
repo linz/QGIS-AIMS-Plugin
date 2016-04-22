@@ -71,58 +71,91 @@ class DataUpdater(Observable):
         '''Main updater run method for feed cycling gets single page of addresses from API'''
         aimslog.info('GET.{} {} - Page{}'.format(self.ref,self.etft,self.page))
         featlist = []
-        for feature in self.api.getOnePage(self.etft,self.sw,self.ne,self.page):
-            featlist.append(self.process(feature,self.etft))            
+        for page in self.api.getOnePage(self.etft,self.sw,self.ne,self.page):
+            featlist.append(self.processPage(page,self.etft))            
         self.queue.put(featlist)
         self.notify(self.ref)
         
-    def process(self,feature,etft):
-        '''process an individual feature, pulling nested entities on 3E'''
+    def processPage(self,page,etft):
+        '''process an individual page, pulling nested entities on 3E'''
         if etft.ft == FeedType.RESOLUTIONFEED and ENABLE_ENTITY_EVALUATION:
-            cid = self.cid(feature)
-            featurelist = []
+            cid = self.cid(page)
             feat = self.api.getOneFeature(etft,cid)
             if feat == {u'class': [u'error']}: 
-                #if the feature request returns the not-supposed-to-happen error, it gets special treatment
+                #if the page request returns the not-supposed-to-happen error, it gets special treatment
                 aimslog.error('Invalid API response {}'.format(feat))
-                a = self.getfeat(model=feature['properties'])
-                featurelist.append(Entity.getInstance())
+                a = self.getfeat(model=page['properties'])
+            # Validation
             elif feat['class'][0] == 'validation':
-                e = Entity.getInstance('validation')
-                e = self.getEntityInstance()
+                return self._processValidationEntity(feat)
+                #e = EntityValidation.getInstance(feat)# self.getEntityInstance()
             #-------------------------------
+            # Resolution Group
             elif feat['class'][0] == 'resolutiongroup':
-                g = self.getfeat(model=feat['properties'])#group
-                feat2 = self.api.getOneFeature(etft,'{}/address'.format(cid))#group entity/adr list
-                etft2 = FeedRef((FeatureType.ADDRESS,FeedType.RESOLUTIONFEED))
-                afactory2 = FeatureFactory.getInstance(etft2)
-                for f in feat2['entities']:
-                    a = afactory2.getAddress(model=f['properties'])
-                    elist2 = []
-                    for e in f['entities']:
-                        elist2.append(self._fillEnt(e))
-                    a._setEntities(elist2)
-                    featurelist.append(a)
-                g._setEntities(featurelist)
-                return g
+                return self._processResolutionGroup(feat,cid,etft)
+            # Address List
+            elif feat['class'][0] == 'addressresolution':
+                return self._processAddressResolution(feat)
             #--------------------------------
+            # Entities
             else:
-                #process any nested entities
-                a = self.getfeat(model=feat['properties'])
-                for e in feat['entities']:
-                    featurelist.append(self._fillEnt(e))
-            a._setEntities(featurelist)
+                a = self._processEntity(feat)
         else:
             #just return the main feedlevel address objects
-            a = self.getfeat(model=feature['properties'])
+            a = self.getfeat(model=page['properties'])
+        return a
+    
+    def _processValidationEntity(self,feat):
+        return EntityValidation.getInstance(feat)
+    
+    def _processAddressEntity(self,feat):
+        return EntityAddress.getInstance(feat)
+        
+    def _processEntity(self,feat):                
+        '''this is the default processor, for gereric entities but the same as addr res'''
+        featurelist = []
+        a = self.getfeat(model=feat['properties'])
+        for e in feat['entities']:
+            featurelist.append(self._populateEntity(e))
+        a._setEntities(featurelist)
+        return a    
+    
+    def _processAddressResolution(self,feat):                
+        '''process entries in the addressresolution->entities list'''
+        featurelist = []
+        a = self.getfeat(model=feat['properties'])
+        for e in feat['entities']:
+            featurelist.append(self._populateEntity(e))
+        a._setEntities(featurelist)
         return a
         
-    def _fillEnt(self,e):
-        if e['class'][0] == 'address':
-            #res factory might work here instead
-            etft3 = FeedRef((FeatureType.ADDRESS,FeedType.FEATURES))
-            afactory3 = FeatureFactory.getInstance(etft3)
-            return afactory3.getAddress(model=e['properties'])
+    def _processResolutionGroup(self,feat,cid,etft):
+        '''process the entities in a res-group. these are res-address objects. in turn populate the sub entities as feature-addresses'''
+        featurelist = []
+        g = self.getfeat(model=feat['properties'])#group
+        feat2 = self.api.getOneFeature(etft,'{}/address'.format(cid))#group entity/adr list
+        etft2 = FeedRef((FeatureType.ADDRESS,FeedType.RESOLUTIONFEED))
+        afactory2 = FeatureFactory.getInstance(etft2)
+        for f in feat2['entities']:
+            a = afactory2.getAddress(model=f['properties'])
+            elist2 = []
+            for e in f['entities']:
+                elist2.append(self._populateEntity(e))
+            a._setEntities(elist2)
+            featurelist.append(a)
+        g._setEntities(featurelist)
+        return g
+        
+    def _populateEntity(self,ent):
+        if ent['class'][0] == 'validation':
+            return self._processValidationEntity(ent)
+        elif ent['class'][0] == 'address':
+            ###res factory might work here instead
+            #etft3 = FeedRef((FeatureType.ADDRESS,FeedType.FEATURES))
+            #afactory3 = FeatureFactory.getInstance(etft3)
+            #return afactory3.getAddress(model=e['properties'])
+            return self._processAddressEntity(ent)
+        
         else:
             return Entity.getInstance(e)
         
@@ -156,9 +189,8 @@ class DataUpdaterAddress(DataUpdater):
     def cid(self,f):
         return f['properties']['changeId']
     
-    def getEntityInstance(self):
-        return Entity.getInstance('validation')
-        return EntityValidation()#TODO
+    def getEntityInstance(self,d,etft):
+        return EntityValidation(d,etft)
         
         
 class DataUpdaterGroup(DataUpdater):
@@ -169,9 +201,8 @@ class DataUpdaterGroup(DataUpdater):
     def cid(self,f):
         return f['properties']['changeGroupId']
         
-    def getEntityInstance(self):
-        return Entity.getInstance('validation')
-        return EntityAddress()#TODO
+    def getEntityInstance(self,d,etft):
+        return EntityAddress(d,etft)
     
 
 #TODO Consolidate group/address + action/approve subclasses. might be enough variation to retain seperate classes
@@ -194,7 +225,7 @@ class DataUpdaterDRC(DataUpdater):
         aimslog.info('DUr.{} {} - Adr-Grp{}'.format(self.ref,ActionType.reverse[self.at],self.agobj))
         err,resp = self.action(self.at,self.payload,self.identifier)
         feature = self.build(model=resp['properties'])
-        #feature = self.process(feature,self.etft)
+        #feature = self.processPage(feature,self.etft)
         #print 'feature',feature
         if err: feature.setErrors(err)
         if self.requestId: feature.setRequestId(self.requestId)
