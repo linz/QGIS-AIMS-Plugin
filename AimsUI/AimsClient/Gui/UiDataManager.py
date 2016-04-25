@@ -318,5 +318,5 @@ class UiDataManager(QObject):
         obj = self.currentReviewFeature(currentGroup, currentFeatureKey)
         #currently only storing one position, Hence the '[0]'
         if currentGroup[1] in ('Retire', 'Replace', 'AddLineage', 'ParcelReferenceData' ):
-            return obj.meta.entities[0]._addressedObject_addressPositions[0]._position_coordinates           
+            return obj.meta.entities[0]._addressedObject_addressPositions[0]['position']['coordinates']           
         else:  return obj._addressedObject_addressPositions[0]._position_coordinates
