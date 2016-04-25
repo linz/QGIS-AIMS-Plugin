@@ -15,10 +15,9 @@ import time
 
 from AIMSDataManager.AddressFactory import AddressFactory
 from AIMSDataManager.Address import Entity, FeedType
+from AIMSDataManager.AimsUtility import FEEDS
 
 from AIMSDataManager.AimsLogging import Logger
-
-from AIMSDataManager.AimsUtility import FEEDS
 
 uilog = None
 
@@ -48,7 +47,7 @@ class ResponseHandler(object):
         message = ''
         for warning in warnings:
             message += u'\u2022 {}\n'.format(warning)
-        QMessageBox.warning(self._iface.mainWindow(),"Create Address Point", message)
+        QMessageBox.warning(self._iface.mainWindow(),"AIMS Warnings", message)
      
      
     def matchResp (self, response, respId, feedType, i, action):
@@ -61,25 +60,27 @@ class ResponseHandler(object):
                 #logging
                 uilog.info(' *** DATA ***    response received from DM for respId: {0} of type: {1} after {2} seconds'.format(respId, feedType, i))    
                 
-                resp.meta._entities
-                for warning in resp.meta._entities:
-                    if warning['properties']['severity'] in ('Reject', 'critical'):
-                        warnings.append(warning['properties']['description'])
-                # failed accepts return the bew formatted warning
-                if hasattr(resp, '_properties_message') and resp._queueStatus == 'Accepted': 
-                    warnings.append('{0} (Review record: {1})'.format(resp._properties_message,resp._changeId))
-                if hasattr(resp, '_message') and resp._queueStatus == 'Accepted': 
-                    warnings.append('{0} (Review record: {1})'.format(resp._message,resp._changeId))
-                if warnings:
-                    # feature not created in aims via API
-                    self.displayWarnings(warnings)
+                if resp.meta.errors['critical']:
+                    self.displayWarnings(resp.meta.errors['critical'])
                     return True
+#                 for warning in resp.meta.errors['critical']:
+#                     if warning['properties']['severity'] in ('Reject', 'critical'):
+#                         warnings.append(warning['properties']['description'])
+#                 # failed accepts return the bew formatted warning
+#                 if hasattr(resp, '_properties_message') and resp._queueStatus == 'Accepted': 
+#                     warnings.append('{0} (Review record: {1})'.format(resp._properties_message,resp._changeId))
+#                 if hasattr(resp, '_message') and resp._queueStatus == 'Accepted': 
+#                     warnings.append('{0} (Review record: {1})'.format(resp._message,resp._changeId))
+#                 if warnings:
+                    # feature not created in aims via API
+                else:
+                   
                 # else captured resp and no critical warnings
-                self.updateData(resp, feedType, action)
-                return True
-                    # return resp
-     
-     
+                # precede to update self._data
+                    self.updateData(resp, feedType, action)
+                    return True
+                    # return resp     
+                         
     def handleResp(self, respId, feedType, action = None):
         ''' test for a response in the response
             queue with the relevant repId'''

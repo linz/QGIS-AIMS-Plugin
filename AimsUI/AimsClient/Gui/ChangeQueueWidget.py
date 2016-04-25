@@ -2,102 +2,140 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
-from Ui_ChangeQueueWidget import Ui_ChangeQueueWidget
-from QueueModelView import *
+from qgis.gui import *
 
+from Ui_EditFeatureDialog import Ui_EditFeatureDialog
+from AIMSDataManager.FeatureFactory import FeatureFactory
+from UiUtility import UiUtility 
+from AIMSDataManager.AimsUtility import FEEDS, FeedType
+from AIMSDataManager.Address import Position
+
+import time
 import sys # temp
+       
 
-class ChangeQueueWidget( Ui_ChangeQueueWidget, QWidget ):
-    ''' connects View <--> Proxy <--> Data Model 
-        and passed data to data model'''
-     
-    def __init__( self, parent=None, controller=None ):
-        QWidget.__init__( self, parent )
-        '''
+class ChangeQueueWidget( Ui_EditFeatureDialog, QWidget ):
+
+    def __init__(self, controller = None):
+        QWidget.__init__( self )
         self.setupUi(self)
-        
         self.setController( controller )
+        self._iface = self._controller.iface
+        self._layerManager = self._controller._layerManager
         
-        self.mock_data = self.build_mock_data() # temp
-    
-        # Features View 
-        featuresHeader = ['Full Number', 'Full Road', 'Life Cycle', 'Town', 'Suburb Locality', 'hidden']
-        self.featuresTableView = self.uFeaturesTableView
-        featureModel = FeatureTableModel(self.mock_data, featuresHeader)
-        #VIEW <------> PROXY MODEL <------> DATA MODEL
-        self.featuresTableView.setModel(featureModel)
-        #self.featuresTableView.clicked.connect(self.featureSelected)
-        self.featuresTableView.resizeColumnsToContents()
-        self.featuresTableView.setColumnHidden(5, True)
+        self._marker = None
+        self.coords = None
+        self.feature = None
+ 
+        # Make connections
+        self.uAddressType.currentIndexChanged.connect(self.setEditability)
+        self.uFullNum.textEdited.connect(self.fullNumChanged)
+        self.uPrefix.textEdited.connect(self.partNumChanged)
+        self.uUnit.textEdited.connect(self.partNumChanged)
+        self.uBase.textEdited.connect(self.partNumChanged)
+        self.uHigh.textEdited.connect(self.partNumChanged)
+        self.uAlpha.textEdited.connect(self.partNumChanged)
         
-        # Group View 
-        self._groupProxyModel = QSortFilterProxyModel()
-        self._groupProxyModel.setFilterCaseSensitivity(Qt.CaseInsensitive)
-        groupHeader = ['Id', 'Change', 'Source Org.', 'Submitter Name', 'Date']   
-        self.groupTableView = self.uGroupTableView
-        self.groupModel = GroupTableModel(self.mock_data, featureModel, groupHeader)
-        #VIEW <------> PROXY MODEL <------> DATA MODEL
-        self._groupProxyModel.setSourceModel(self.groupModel)
-        self.groupTableView.setModel(self._groupProxyModel)
-        self.groupTableView.resizeColumnsToContents()
-        self.groupTableView.rowSelected.connect( self.selectAddress )
+        self.uSubmitAddressButton.clicked.connect(self.submitAddress)
+        self.uAbort.clicked.connect(self.closeDlg)
+        #self.rejected.connect(self.closeDlg)
+        self.uGetRclToolButton.clicked.connect(self.getRcl)
+        self.af = {ft:FeatureFactory.getInstance(FEEDS['AC']) for ft in FeedType.reverse} # old method of casting
     
-        # connect combobox_users to view and model
-        self.comboModelUser = QStandardItemModel()
-        self.comboBoxUser.setView(QListView())
-        self.comboBoxUser.setModel(self.comboModelUser)
-        self.comboBoxUser.view().clicked.connect(self.applyFilter) # combo box checked
-        self.comboBoxUser.view().pressed.connect(self.itemPressedUser) # or more probable, list item clicked
-        self.popUserCombo()
-
+        
+        # limit user inputs
+        UiUtility.formMask(self)
+        # set combo box defaults
+        UiUtility.setFormCombos(self)
+        # set addressType to trigger currentIndexChanged
+        self.uAddressType.setCurrentIndex(QComboBox.findText(self.uAddressType,'Road'))
+        self.show()
+        
     def setController( self, controller ):
+        '''  get an instance of plugins high level controller '''
         import Controller
         if not controller:
             controller = Controller.instance()
         self._controller = controller
-        
-    def selectAddress( self, row ): #rename Select Group
-        self.groupModel.listClicked(row)
-        self.featuresTableView.selectRow(0)
-             
-    def itemPressedUser(self, index):
-        item = self.comboBoxUser.model().itemFromIndex(index)
-        if item.checkState() == Qt.Checked:
-            item.setCheckState(Qt.Unchecked)
-        else:
-            item.setCheckState(Qt.Checked)
-        self.applyFilter(self.comboBoxUser)
     
-    def groupsFilter(self, col, data):
-        self._groupProxyModel.setFilterKeyColumn(-1)
-        self._groupProxyModel.setFilterRegExp(data)      
+    def setFeature(self, parent,addInstance, marker = None, coords = None ):
+        self.parent = parent
+        self.feature = addInstance
+        self.coords = coords
+        self.marker = marker
+        if parent == 'update':
+            self.feature = self.af[FeedType.CHANGEFEED].cast(self.feature)
+            UiUtility.featureToUi(self, parent) 
+        elif parent == 'add' and self._controller._queues.uEditFeatureTab.uPersistRcl.isChecked():
+            self._controller._rcltool.fillform()
+    
+    def removeMarker(self):   
+        self._iface.mapCanvas().scene().removeItem(self.marker)
+        self._controller._rcltool.removeMarker()
+     
+    def setEditability(self):
+        UiUtility.setEditability(self)
+            
+    def getRcl(self):
+        self._controller.startRclTool(self)
       
-    def applyFilter(self, parent):        
-        uFilter = ''
-        model = parent.model()
-        for row in range(model.rowCount()): 
-            item = model.item(row)
-            if item.checkState() == Qt.Checked:
-                uFilter+='|'+item.text()
-        self.groupsFilter(row, str(uFilter)[1:])
-                
-    def popUserCombo(self):
-        data = self.groupModel.getUsers()
-        data.sort()
-        self.popCombo(data, self.comboModelUser)
-                 
-    def popCombo(self, cElements, model):     
-        for i in range(len(cElements)):
-            item = QStandardItem(cElements[i])
-            item.setCheckState(Qt.Checked)
-            item.setCheckable(True)
-            model.setItem(i,item)
+    def closeDlg (self):
+        ''' close form '''
+        # revert back to NewAddTool
+        self._controller.setPreviousMapTool()
+        # revert back to review tab 
+        self._controller._queues.tabWidget.setCurrentIndex(1)
+        self.removeMarker()
+        
+    def setPostion(self):
+        coords = [self.coords.x(), self.coords.y()]
+        pos = {"position":{
+                    "type":'Point',
+                    "coordinates":coords,
+                    "crs":{
+                         "type":'name',
+                         "properties":{
+                            "name":'urn:ogc:def:crs:EPSG::4167'
+                         }
+                    }
+                },
+                "positionType":'Unknown', # <-- need to add PT to form
+                "primary":True
+                }
+        
+        position = Position.getInstance(pos)
+        self.feature.setAddressPositions(position)
     
-    def build_mock_data(self):
-        return  {('090001','Update', 'Alk City', 'Milo', '2016-01-11'):     [['12', 'Test Road', 'Current', 'Somewhere Town',  'Somewhere', 'AddressObject1']],
-                 ('4098018','Replace', 'Alk City', 'Nately', '2016-01-11'):  [['14', 'Fake Street', 'Current', 'Somewhere Town', 'Somewhere', 'AddressObject2'],
-                                                                                     ['10', 'Goa Way', 'Current', 'Somewhere Town', 'Somewhere',  'AddressObject3'],
-                                                                                     ['10A', 'Road Way',  'Current','Somewhere Town', 'Somewhere',  'AddressObject4']], 
-                 ('4098018','Retire', 'Rotorua', 'Yossarian', '2016-02-34'): [['100', 'The Terrace', 'Retire','Somewhere Town', 'Somewhere', 'AddressObject5']]
-                 }
-    '''
+    def submitAddress(self):
+        ''' take users input from form and submit to AIMS API '''
+        respId = int(time.time())
+        
+        if self.parent == 'add': 
+            self.setPostion() 
+            UiUtility.formToObj(self)
+            if not self.feature._components_roadCentrelineId:
+                QMessageBox.warning(self._iface.mainWindow(),"AIMS Warnings", 'No Road Centreline Supplied')
+                return
+            self._controller.uidm.addAddress(self.feature, respId)
+        
+        if self.parent == 'update': 
+            UiUtility.formToObj(self)
+            self.feature = self.af[FeedType.CHANGEFEED].cast(self.feature)            
+            self._controller.uidm.updateAddress(self.feature, respId)
+        
+        # check the response 
+        self._controller.RespHandler.handleResp(respId, FEEDS['AC'])
+        # revert back to review tab 
+        self._controller._queues.tabWidget.setCurrentIndex(1)
+        self.removeMarker()
+    def fullNumChanged(self, newnumber):
+        UiUtility.fullNumChanged(self, newnumber)
+        
+    def partNumChanged(self,):
+        if self.uUnit.text(): unit = self.uUnit.text()+'/' 
+        else: unit = ''
+        
+        if self.uHigh.text(): high = '-'+self.uHigh.text()
+        else: high = ''
+        
+        self.uFullNum.setText(self.uPrefix.text().upper()+unit+self.uBase.text()+high+self.uAlpha.text().upper())

@@ -33,7 +33,8 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self._iface = self._controller.iface
         self.uidm = self._controller.uidm
         self.uidm.register(self)
-        self.reviewData = None # self.uidm.refreshTableData((FEEDS['AR'],))   
+        self.reviewData = None # self.uidm.refreshTableData((FEEDS['AR'],))
+        #self.reviewData = self.uidm.formatTableData((FEEDS['AR'],))      
         self.currentFeatureKey = None
         self.currentAdrCoord = [0,0]
         self.feature = None
@@ -95,14 +96,15 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
     def refreshData(self): # < -- ALSO NEED TO REFRESH THE FILTER
         ''' update Review Queue data '''
         # request new data
-        self.reviewData = self.uidm.formatTableData((FEEDS['AR'], FEEDS['GR']))
+        self.reviewData = self.uidm.formatTableData((FEEDS['AR'],FEEDS['GR']))# FEEDS['GR']))
         self.groupModel.beginResetModel()
-        self.featureModel.beginResetModel()
         self.groupModel.refreshData(self.reviewData)        
-        self.featureModel.refreshData(self.reviewData)
         self.groupModel.endResetModel()
+
+        self.featureModel.beginResetModel()
+        self.featureModel.refreshData(self.reviewData)
         self.featureModel.endResetModel()
-        self.popUserCombo()
+        #self.popUserCombo() # causing errors
     
     def singleReviewObj(self, feedType, objKey):
         ''' return either single or group
@@ -167,16 +169,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
             item.setCheckState(Qt.Checked)
             item.setCheckable(True)
             model.setItem(i,item)
-    
-#     def formatUiData(self):
-#         '''  '''
-#         rData = {}
-#         for k, v in self.reviewData.items():
-#             rData[(v._changeId, v._changeType, 'orgPlaceHolder', v._workflow_submitterUserName, v._workflow_submittedDate )] = [
-#                     [self.fullNumber(), self.fullRoad(k), v._lifecycle, v._townCity, v._suburbLocality ]
-#                     ]
-#         return rData
-    
+                
     def updateFeature(self):
         ''' update a review queue item '''
         self.feature = self.singleReviewObj(FEEDS['AR'],self.currentFeatureKey) # needs to modified to also search 'GR' 

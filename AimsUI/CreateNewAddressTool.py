@@ -17,9 +17,9 @@ from PyQt4.QtGui import *
 from qgis.core import *
 from qgis.gui import *
 
-from AimsClient.Gui.NewAddressDialog import NewAddressDialog
 from AimsUI.AimsClient.Gui.UiUtility import UiUtility
-from AIMSDataManager.AimsUtility import FeedType, FeatureType, FEEDS
+from AIMSDataManager.AimsUtility import FEEDS
+from AIMSDataManager.Address import Position
 from AIMSDataManager.FeatureFactory import FeatureFactory
 
 class CreateNewAddressTool(QgsMapToolIdentify):
@@ -32,7 +32,7 @@ class CreateNewAddressTool(QgsMapToolIdentify):
         self._controller = controller
         self._canvas = iface.mapCanvas()
         self.af = FeatureFactory.getInstance(FEEDS['AC'])
-        self.formActive = False
+        self.marker = None
         self.activate()
         
     def activate(self):
@@ -69,16 +69,26 @@ class CreateNewAddressTool(QgsMapToolIdentify):
             self.setPoint(coords)
     
     def setMarker(self, coords):
-        self._marker = UiUtility.highlight(self._iface, coords, QgsVertexMarker.ICON_X)
+        self._canvas.scene().removeItem(self.marker)
+        self.marker = UiUtility.highlight(self._iface, coords, QgsVertexMarker.ICON_X)
    
     def setPoint( self, coords ):
         ''' guarantee srs and pass to the API '''      
         # init new address object and open form
-        if self.formActive: return
-        self.formActive = True
-        self.setMarker(coords)
-        coords = UiUtility.transform(self._iface, coords)     
+        #if self.formActive: return
+        #self.formActive = True
+        UiUtility.clearForm(self._controller._queues.tabWidget)
+        coords = UiUtility.transform(self._iface, coords)
+        self.setMarker(coords)        
         addInstance = self.af.getAddress()
-        NewAddressDialog.newAddress(addInstance, self._layers, self._controller, self._iface.mainWindow(), coords)
-        self._canvas.scene().removeItem(self._marker)
-        self.formActive = False
+        self._controller._queues.uEditFeatureTab.setFeature('add', addInstance, self.marker, coords)
+        self._controller._queues.tabWidget.setCurrentIndex(0)
+
+        #NewAddressDialog.newAddress(addInstance, self._layers, self._controller, self._iface.mainWindow(), coords)
+        
+        
+   
+    
+    
+    
+    

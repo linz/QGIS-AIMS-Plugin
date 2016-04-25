@@ -28,7 +28,17 @@ class GetRcl(QgsMapToolIdentifyFeature):
         self.parent = parent
         self._marker = None
         self._canvas = iface.mapCanvas()
-        #self.activate() # re,ove?
+        self.persistedRcl = None
+        
+        self.rcl = ''
+        self.prefix = ''
+        self.name = ''
+        self.type = ''
+        self.suffix = ''               
+        self.waterName = ''
+        
+        self.rclcoords = None
+        
         
     def activate(self):
         QgsMapTool.activate(self)
@@ -38,7 +48,7 @@ class GetRcl(QgsMapToolIdentifyFeature):
     
     def deactivate(self):
         sb = self._iface.mainWindow().statusBar()
-        self._canvas.scene().removeItem(self._marker) 
+        #self._canvas.scene().removeItem(self._marker) 
         sb.clearMessage()
     
     def removeMarker(self):
@@ -50,32 +60,38 @@ class GetRcl(QgsMapToolIdentifyFeature):
             self.activate()
         else:
             self.deactivate()
-
+    
+    def fillform(self):
+        self.parent.uRclId.setText(self.rcl)
+        if self.addressClass == 'Road':
+            self.parent.uRoadPrefix.setText(self.prefix)
+            self.parent.uRoadName.setText(self.name)#
+            self.parent.uRoadTypeName.setText(self.type)
+            self.parent.uRoadSuffix.setText(self.suffix) 
+        else:
+            self.parent.uWaterRouteName.setText(self.waterName)
+        
+        if self.parent.__class__.__name__ != 'QueueEditorWidget' and self.rclcoords:
+            self._marker = UiUtility.rclHighlight(self._canvas, self.rclcoords, self.rclLayer )
+            
     def canvasReleaseEvent(self, mouseEvent):
         try:
             self.removeMarker()
         finally:
-            rclLayer = self._layers.rclLayer()        
+            self.rclLayer = self._layers.rclLayer()        
             results = self.identify(mouseEvent.x(), mouseEvent.y(), self.ActiveLayer, self.VectorLayer)
             
             if len(results) == 0: 
                 return
             if len(results) == 1:            
-                addressClass = self.parent.uAddressType.currentText()        
-                coords = results[0].mFeature.geometry()
-                
-                if addressClass == 'Road':
-                    self.parent.uRclId.setText(UiUtility.nullEqualsNone(str(results[0].mFeature.attribute('road_section_id'))))
-                    self.parent.uRoadPrefix.setText(UiUtility.nullEqualsNone(str(results[0].mFeature.attribute('road_name_prefix_value'))))
-                    self.parent.uRoadName.setText(UiUtility.nullEqualsNone(str(results[0].mFeature.attribute('road_name_body'))))#
-                    self.parent.uRoadTypeName.setText(UiUtility.nullEqualsNone(str(results[0].mFeature.attribute('road_name_type_value'))))
-                    self.parent.uRoadSuffix.setText(UiUtility.nullEqualsNone(str(results[0].mFeature.attribute('road_name_suffix_value')))) 
-                else:
-                    self.parent.uRclId.setText(UiUtility.nullEqualsNone(str(results[0].mFeature.attribute('road_section_id'))))
-                    self.parent.uWaterRouteName.setText(UiUtility.nullEqualsNone(str(results[0].mFeature.attribute('road_name_body'))))
-                
-                if self.parent.__class__.__name__ != 'QueueEditorWidget':
-                    self._marker = UiUtility.rclHighlight(self._canvas, coords,rclLayer)
-                else:
-                    self._controller.setPreviousMapTool() 
-       
+                self.addressClass = self.parent.uAddressType.currentText()        
+                self.rclcoords = results[0].mFeature.geometry()
+
+                self.rcl = UiUtility.nullEqualsNone(str(results[0].mFeature.attribute('road_section_id')))
+                self.prefix = UiUtility.nullEqualsNone(str(results[0].mFeature.attribute('road_name_prefix_value')))
+                self.name = UiUtility.nullEqualsNone(str(results[0].mFeature.attribute('road_name_body')))
+                self.type = UiUtility.nullEqualsNone(str(results[0].mFeature.attribute('road_name_type_value')))
+                self.suffix = UiUtility.nullEqualsNone(str(results[0].mFeature.attribute('road_name_suffix_value')))                    
+                self.waterName = UiUtility.nullEqualsNone(str(results[0].mFeature.attribute('road_name_body')))
+                self.fillform()
+                self._controller.setPreviousMapTool() 

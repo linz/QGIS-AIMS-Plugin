@@ -10,6 +10,7 @@ from AimsClient.Gui.UpdateAddressDialog import UpdateAddressDialog
 from AimsUI.AimsClient.Gui.Ui_ComfirmSelection import Ui_ComfirmSelection
 from AimsUI.AimsClient.Gui.UiUtility import UiUtility
 from AimsUI.AimsClient.Gui.ResponseHandler import ResponseHandler
+from AIMSDataManager.Address import Position
 
 
 class UpdateAddressTool(QgsMapToolIdentify):
@@ -22,6 +23,7 @@ class UpdateAddressTool(QgsMapToolIdentify):
         self._layers = layerManager
         self._controller = controller
         self._canvas = iface.mapCanvas()
+        self.marker = None
         self.activate()
 
     def activate(self):
@@ -43,7 +45,7 @@ class UpdateAddressTool(QgsMapToolIdentify):
             self.deactivate()
     
     def setMarker(self, coords):
-        self._marker = UiUtility.highlight(self._iface, coords)
+        self.marker = UiUtility.highlight(self._iface, coords)
 
     def canvasReleaseEvent(self, mouseEvent):
         self._feature = None
@@ -76,11 +78,10 @@ class UpdateAddressTool(QgsMapToolIdentify):
                         break
         # Open form
         if self._feature:
-            # highlight feature 
-                        
+            # highlight feature             
             self.setMarker(results[0].mFeature.geometry().asPoint())
-            UpdateAddressDialog.updateAddress(self._feature, self._layers, self._controller, self._iface.mainWindow())
-            self._canvas.scene().removeItem(self._marker)
+            self._controller._queues.uEditFeatureTab.setFeature('update', self._feature , self.marker  )
+            self._controller._queues.tabWidget.setCurrentIndex(0)
 
 class updateAddressDialog(Ui_ComfirmSelection, QDialog ):
 
