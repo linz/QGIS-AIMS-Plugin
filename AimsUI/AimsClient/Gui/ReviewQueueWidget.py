@@ -20,12 +20,19 @@ from QueueModelView import *
 from UiUtility import UiUtility 
 import time
 
+from AIMSDataManager.AimsLogging import Logger
+
 import sys # temp
+
+uilog = None
 
 class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
     ''' connects View <--> Proxy <--> Data Model 
                 and manage review data'''
-     
+    #logging 
+    global uilog
+    uilog = Logger.setup(lf='uiLog')
+    
     def __init__( self, parent=None, controller=None ):
         QWidget.__init__( self, parent )
         self.setupUi(self)
@@ -40,6 +47,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.feature = None
         self.currentGroup = () #(id, type)
         self._marker = None
+        #self.resourceLock = False 
         
         # Connections
         self.uDisplayButton.clicked.connect(self.display)
@@ -85,8 +93,13 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self._controller = controller
     
     def notify(self, feedType):
+        if feedType == FEEDS['AF']: return
+        uilog.info('*** NOTIFY ***     Notify A[{}]'.format(feedType))
+        #if self.resourceLock: return 
+        #self.resourceLock = True
         ''' observer pattern, registered with uidm '''
         self.refreshData()
+        #self.resourceLock = False
     
     def setMarker(self, coords):
         ''' add marker to canvas via common uiUitility highlight methods '''
@@ -104,7 +117,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.featureModel.beginResetModel()
         self.featureModel.refreshData(self.reviewData)
         self.featureModel.endResetModel()
-        #self.popUserCombo() # causing errors
+        self.popUserCombo() # causing errors
     
     def singleReviewObj(self, feedType, objKey):
         ''' return either single or group

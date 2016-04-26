@@ -41,7 +41,7 @@ class UiDataManager(QObject):
                         FEEDS['GR']:{}
                     }
         
-
+        self.resourceLock = False 
         self.groups = ('Replace', 'AddLineage', 'ParcelReferenceData') # more to come...
         
         self.rDataChangedSignal.connect(self._controller.rDataChanged)
@@ -315,8 +315,19 @@ class UiDataManager(QObject):
             return self.data.get(FEEDS['AR']).get(currentFeatureKey)
     
     def reviewItemCoords(self, currentGroup, currentFeatureKey):
+#         obj = self.currentReviewFeature(currentGroup, currentFeatureKey)
+#         #currently only storing one position, Hence the '[0]'
+#         
+#         if currentGroup[1] in ('Retire', 'Replace', 'AddLineage', 'ParcelReferenceData' ):
+#             return obj.meta.entities[0]._addressedObject_addressPositions[0]['position']['coordinates']           
+#         else:  return obj._addressedObject_addressPositions[0]._position_coordinates
+
+
         obj = self.currentReviewFeature(currentGroup, currentFeatureKey)
         #currently only storing one position, Hence the '[0]'
-        if currentGroup[1] in ('Retire', 'Replace', 'AddLineage', 'ParcelReferenceData' ):
-            return obj.meta.entities[0]._addressedObject_addressPositions[0]['position']['coordinates']           
-        else:  return obj._addressedObject_addressPositions[0]._position_coordinates
+        #if currentGroup[1] in ('Retire', 'Replace', 'AddLineage', 'ParcelReferenceData' ):
+        try:
+            point = obj.meta.entities[0]._addressedObject_addressPositions[0]['position']['coordinates']
+        except:# hack to meet first testing release -- REVIEW 
+                point = obj._addressedObject_addressPositions[0]._position_coordinates
+        return point

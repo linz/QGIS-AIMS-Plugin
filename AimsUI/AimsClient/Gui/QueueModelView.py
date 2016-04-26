@@ -187,8 +187,10 @@ class GroupTableModel(QAbstractTableModel):
         return (self._data[rowIndex.row()][0], self._data[rowIndex.row()][1]) 
     
     def getUsers(self):
-        return list(set([i[3] for i in self._data]))
-    
+        try:# hack to ensure working demo - it seems when an conflict is raised the below list cannot be compiled
+            return list(set([i[3] for i in self._data]))
+        except: return [] 
+        
     def getOrgs(self):
         return list(set([i[2] for i in self._data]))
         

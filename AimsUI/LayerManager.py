@@ -93,7 +93,9 @@ class LayerManager(QObject):
         self._parLayer = None
         self._locLayer = None
         self._revLayer = None
- 
+        
+        #self.resourceLock = False 
+        
         QgsMapLayerRegistry.instance().layerWillBeRemoved.connect(self.checkRemovedLayer)
         QgsMapLayerRegistry.instance().layerWasAdded.connect( self.checkNewLayer )
         
@@ -243,18 +245,19 @@ class LayerManager(QObject):
         for reviewItem in rData.values():
             fet = QgsFeature()
             if reviewItem._changeType  in ('Replace', 'AddLineage', 'ParcelReferenceData' ):
-                uilog.info(' *** DEBUG ***   {0}:  GROUP'.format(reviewItem._changeId)) 
-                #uilog.info(' *** DEBUG ***   {0}: '.format(reviewItem._changeId))    
+ 
                 point = reviewItem.meta.entities[0]._addressedObject_addressPositions[0]._position_coordinates
             elif reviewItem._changeType == 'Retire':
-                uilog.info(' *** DEBUG ***   {0}:  RETIRE'.format(reviewItem._changeId)) 
-                #uilog.info(' *** DEBUG ***   {0}: {1} '.format(reviewItem._changeId, reviewItem._addressedObject_addressPositions[0]._position_coordinates))    
                 try:
                     point = reviewItem.meta.entities[0]._addressedObject_addressPositions[0]['position']['coordinates']
                 except: # except when the retired item is derived from an resp obj
                     point = reviewItem._addressedObject_addressPositions[0]._position_coordinates
-            else: point = reviewItem._addressedObject_addressPositions[0]._position_coordinates
-            uilog.info(' *** DEBUG ***   {0}:  OTHER'.format(reviewItem._changeId)) 
+            else:
+                # hack to meet first testing release -- REVIEW
+                try:
+                    point = reviewItem.meta.entities[0]._addressedObject_addressPositions[0]['position']['coordinates']
+                except: # except when the retired item is derived from an resp obj
+                    point = reviewItem._addressedObject_addressPositions[0]._position_coordinates
             fet.setGeometry(QgsGeometry.fromPoint(QgsPoint(point[0], point[1])))
             fet.setAttributes([ reviewItem.getFullNumber(), reviewItem._changeType])
             provider.addFeatures([fet])
@@ -282,13 +285,18 @@ class LayerManager(QObject):
             uilog.info(' *** DATA ***    {} AIMS features received '.format(len(featureData)))    
             self.updateFeaturesLayer(featureData)
     
-    def notify(self, feedType):#, data):
+    def notify(self, feedType):
+        uilog.info('*** NOTIFY ***     Notify A[{}]'.format(feedType))
+        #if self.resourceLock: 
+        #    uilog.info(' *** RESOURCE CONFLICT ***    {} Turned away '.format(feedType))   
+        #    return 
+        #self.resourceLock = True
         if feedType == FEEDS['AF']:
             self.getAimsFeatures()
         elif feedType == FEEDS['AR']:
-            #self.updateReviewLayer(data)    
             self.updateReviewLayer()
-    
+        #self.resourceLock = False
+        
     def updateFeaturesLayer(self, featureData):
         id = self._addressLayerId
         layer = self.findLayer(id)
@@ -319,7 +327,7 @@ class LayerManager(QObject):
         layer.reload()
         layer.setCacheImage(None)
         #self.canvas.refresh()
-        uilog.info(' *** CANVAS ***    Features Added')  
+        uilog.info(' *** CANVAS ***    FEATURES ADDED')  
         
         # update layer's extent when new features have been added
         # because change of extent in provider is not propagated to the layer

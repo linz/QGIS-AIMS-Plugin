@@ -59,9 +59,12 @@ class ResponseHandler(object):
             if resp.meta._requestId == respId:  
                 #logging
                 uilog.info(' *** DATA ***    response received from DM for respId: {0} of type: {1} after {2} seconds'.format(respId, feedType, i))    
-                
-                if resp.meta.errors['critical']:
+                # hack to meet first testing release -- Review
+                if resp.meta._errors['critical']:
                     self.displayWarnings(resp.meta.errors['critical'])
+                    return True
+                if resp.meta._errors['error'] and resp._queueStatus == 'Accepted':
+                    self.displayWarnings(resp.meta.errors['error'])
                     return True
 #                 for warning in resp.meta.errors['critical']:
 #                     if warning['properties']['severity'] in ('Reject', 'critical'):

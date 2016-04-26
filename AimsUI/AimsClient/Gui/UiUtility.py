@@ -78,14 +78,15 @@ class UiUtility (object):
     
     @staticmethod
     def rclHighlight(canvas, geom, rclLayer):
-        ''' highlight selected road centreline '''
-        rclMarker = QgsRubberBand(canvas,False)
-        rclMarker.hide()
-        rclMarker.setWidth(3)
-        rclMarker.setColor(QColor(76,255,0))
-        rclMarker.setToGeometry(geom,rclLayer)
-        rclMarker.show()
-        return rclMarker
+        if not geom.Error:
+            ''' highlight selected road centreline '''
+            rclMarker = QgsRubberBand(canvas,False)
+            rclMarker.hide()
+            rclMarker.setWidth(3)
+            rclMarker.setColor(QColor(76,255,0))
+            rclMarker.setToGeometry(geom,rclLayer)
+            rclMarker.show()
+            return rclMarker
             
     @staticmethod
     def setFormCombos(self):
