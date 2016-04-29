@@ -17,11 +17,11 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
-     <widget class="QWidget" name="uChangeTab">
+     <widget class="ChangeQueueWidget" name="uEditFeatureTab">
       <attribute name="title">
-       <string>Change</string>
+       <string>Edit Feature</string>
       </attribute>
      </widget>
      <widget class="ReviewQueueWidget" name="uResolutionTab">
@@ -49,6 +49,12 @@
    <class>ReviewQueueWidget</class>
    <extends>QWidget</extends>
    <header>ReviewQueueWidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ChangeQueueWidget</class>
+   <extends>QWidget</extends>
+   <header>ChangeQueueWidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'AimsUI/AimsClient/Gui/Ui_ReviewQueueWidget.ui'
 #
-# Created: Mon Apr 18 12:49:34 2016
+# Created: Tue Apr 26 16:06:43 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -45,16 +45,8 @@ class Ui_ReviewQueueWidget(object):
         self.verticalLayout_6.addWidget(self.uGroupTableView)
         self.horizontalLayout_6 = QtGui.QHBoxLayout()
         self.horizontalLayout_6.setObjectName(_fromUtf8("horizontalLayout_6"))
-        self.uGroupFeedCheckBox = QtGui.QCheckBox(self.horizontalLayoutWidget)
-        self.uGroupFeedCheckBox.setCheckable(True)
-        self.uGroupFeedCheckBox.setChecked(False)
-        self.uGroupFeedCheckBox.setObjectName(_fromUtf8("uGroupFeedCheckBox"))
-        self.horizontalLayout_6.addWidget(self.uGroupFeedCheckBox)
-        self.line = QtGui.QFrame(self.horizontalLayoutWidget)
-        self.line.setFrameShape(QtGui.QFrame.VLine)
-        self.line.setFrameShadow(QtGui.QFrame.Sunken)
-        self.line.setObjectName(_fromUtf8("line"))
-        self.horizontalLayout_6.addWidget(self.line)
+        spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.horizontalLayout_6.addItem(spacerItem)
         self.label_2 = QtGui.QLabel(self.horizontalLayoutWidget)
         self.label_2.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_2.setObjectName(_fromUtf8("label_2"))
@@ -80,12 +72,8 @@ class Ui_ReviewQueueWidget(object):
         self.uRejectButton.setMaximumSize(QtCore.QSize(70, 16777215))
         self.uRejectButton.setObjectName(_fromUtf8("uRejectButton"))
         self.verticalLayout.addWidget(self.uRejectButton)
-        self.uRefreshButton = QtGui.QPushButton(self.horizontalLayoutWidget)
-        self.uRefreshButton.setMaximumSize(QtCore.QSize(70, 16777215))
-        self.uRefreshButton.setObjectName(_fromUtf8("uRefreshButton"))
-        self.verticalLayout.addWidget(self.uRefreshButton)
-        spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
-        self.verticalLayout.addItem(spacerItem)
+        spacerItem1 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        self.verticalLayout.addItem(spacerItem1)
         self.horizontalLayout.addLayout(self.verticalLayout)
         self.horizontalLayoutWidget_2 = QtGui.QWidget(self.splitter)
         self.horizontalLayoutWidget_2.setObjectName(_fromUtf8("horizontalLayoutWidget_2"))
@@ -93,6 +81,8 @@ class Ui_ReviewQueueWidget(object):
         self.horizontalLayout_2.setMargin(0)
         self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
         self.uFeaturesTableView = QueueView(self.horizontalLayoutWidget_2)
+        self.uFeaturesTableView.setMinimumSize(QtCore.QSize(0, 0))
+        self.uFeaturesTableView.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.uFeaturesTableView.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
         self.uFeaturesTableView.setObjectName(_fromUtf8("uFeaturesTableView"))
         self.horizontalLayout_2.addWidget(self.uFeaturesTableView)
@@ -102,8 +92,8 @@ class Ui_ReviewQueueWidget(object):
         self.uDisplayButton.setMaximumSize(QtCore.QSize(70, 16777215))
         self.uDisplayButton.setObjectName(_fromUtf8("uDisplayButton"))
         self.verticalLayout_2.addWidget(self.uDisplayButton)
-        spacerItem1 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
-        self.verticalLayout_2.addItem(spacerItem1)
+        spacerItem2 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        self.verticalLayout_2.addItem(spacerItem2)
         self.horizontalLayout_2.addLayout(self.verticalLayout_2)
         self.horizontalLayoutWidget_3 = QtGui.QWidget(self.splitter)
         self.horizontalLayoutWidget_3.setObjectName(_fromUtf8("horizontalLayoutWidget_3"))
@@ -111,12 +101,14 @@ class Ui_ReviewQueueWidget(object):
         self.horizontalLayout_3.setMargin(0)
         self.horizontalLayout_3.setObjectName(_fromUtf8("horizontalLayout_3"))
         self.uQueueEditor = QueueEditorWidget(self.horizontalLayoutWidget_3)
+        self.uQueueEditor.setMinimumSize(QtCore.QSize(0, 0))
+        self.uQueueEditor.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.uQueueEditor.setObjectName(_fromUtf8("uQueueEditor"))
         self.horizontalLayout_3.addWidget(self.uQueueEditor)
         self.verticalLayout_3 = QtGui.QVBoxLayout()
         self.verticalLayout_3.setObjectName(_fromUtf8("verticalLayout_3"))
-        spacerItem2 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
-        self.verticalLayout_3.addItem(spacerItem2)
+        spacerItem3 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        self.verticalLayout_3.addItem(spacerItem3)
         self.uUpdateButton = QtGui.QPushButton(self.horizontalLayoutWidget_3)
         self.uUpdateButton.setMaximumSize(QtCore.QSize(70, 16777215))
         self.uUpdateButton.setObjectName(_fromUtf8("uUpdateButton"))
@@ -129,11 +121,9 @@ class Ui_ReviewQueueWidget(object):
 
     def retranslateUi(self, ReviewQueueWidget):
         ReviewQueueWidget.setWindowTitle(_translate("ReviewQueueWidget", "Form", None))
-        self.uGroupFeedCheckBox.setText(_translate("ReviewQueueWidget", "Fetch Groups", None))
         self.label_2.setText(_translate("ReviewQueueWidget", "Filter User:", None))
         self.uAcceptButton.setText(_translate("ReviewQueueWidget", "Accept", None))
         self.uRejectButton.setText(_translate("ReviewQueueWidget", "Decline", None))
-        self.uRefreshButton.setText(_translate("ReviewQueueWidget", "Refresh", None))
         self.uDisplayButton.setText(_translate("ReviewQueueWidget", "Display", None))
         self.uUpdateButton.setText(_translate("ReviewQueueWidget", "Update", None))
 

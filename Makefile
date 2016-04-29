@@ -6,8 +6,8 @@ RESOURCE_DIR = .
 COMPILED_DIR = ./
   
 #UI files to compile
-UI_FILES = AimsUI/AimsClient/Gui/Ui_NewAddressDialog.ui AimsUI/AimsClient/Gui/Ui_LineageDialog.ui AimsUI/AimsClient/Gui/Ui_ComfirmSelection.ui AimsUI/AimsClient/Gui/Ui_ReviewQueueWidget.ui AimsUI/AimsClient/Gui/Ui_QueueEditorWidget.ui AimsUI/AimsClient/Gui/Ui_AimsQueueWidget.ui
-#Qt resource files to compile
+UI_FILES = AimsUI/AimsClient/Gui/Ui_NewAddressDialog.ui AimsUI/AimsClient/Gui/Ui_LineageDialog.ui AimsUI/AimsClient/Gui/Ui_ComfirmSelection.ui AimsUI/AimsClient/Gui/Ui_ReviewQueueWidget.ui AimsUI/AimsClient/Gui/Ui_QueueEditorWidget.ui AimsUI/AimsClient/Gui/Ui_AimsQueueWidget.ui AimsUI/AimsClient/Gui/Ui_EditFeatureDialog.ui
+#Qt resource files to compile 
 RESOURCES = Resources.qrc
 
 #pyuic4 and pyrcc4 binaries

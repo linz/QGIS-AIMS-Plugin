@@ -65,7 +65,6 @@ class UiUtility (object):
         tgt_crs.createFromOgcWmsCrs('EPSG:{}'.format(tgt))
         transform = QgsCoordinateTransform( src_crs, tgt_crs )
         return transform.transform( coords.x(), coords.y() ) 
-            
     @staticmethod
     def highlight (iface, coords, iconType = QgsVertexMarker.ICON_BOX):
         ''' highlight aims features '''
@@ -79,14 +78,15 @@ class UiUtility (object):
     
     @staticmethod
     def rclHighlight(canvas, geom, rclLayer):
-        ''' highlight selected road centreline '''
-        rclMarker = QgsRubberBand(canvas,False)
-        rclMarker.hide()
-        rclMarker.setWidth(3)
-        rclMarker.setColor(QColor(76,255,0))
-        rclMarker.setToGeometry(geom,rclLayer)
-        rclMarker.show()
-        return rclMarker
+        if not geom.Error:
+            ''' highlight selected road centreline '''
+            rclMarker = QgsRubberBand(canvas,False)
+            rclMarker.hide()
+            rclMarker.setWidth(3)
+            rclMarker.setColor(QColor(76,255,0))
+            rclMarker.setToGeometry(geom,rclLayer)
+            rclMarker.show()
+            return rclMarker
             
     @staticmethod
     def setFormCombos(self):
@@ -116,9 +116,30 @@ class UiUtility (object):
         if uInput == '' or uInput == 'NULL':
             return None
         else: return uInput
+            
+    @staticmethod
+    def extractFlatProperty(feature, property, getter):
+        ''' fetch the require property for an obj '''
+        #if hasattr(feature, property) or hasattr(feature, getter):                                     
+        if getter: 
+            # use getter
+            if getattr(feature, getter)() != 'None':
+                prop = (getattr(feature, getter)())
+            else: prop = ''
+        else:
+            # go straight for the objects property 
+            if str(getattr(feature, property)) != 'None':
+                prop = str(getattr(feature, property)) 
+            else: prop = ''
+        return prop
     
     @staticmethod
-    def featureToUi(self):
+    def extractNestedProperty(feature, property):
+        ''' fetch the require property for an obj '''
+        pass
+    
+    @staticmethod
+    def featureToUi(self, parent = None):
         """ populates update form and review editor queue from aims obj """
         UiUtility.setEditability(self)
         UiUtility.clearForm(self)
@@ -130,32 +151,34 @@ class UiUtility (object):
             else: 
                 continue
             # Test the object has the required property or a getter
-            if hasattr(self.feature, objProp[0]) or hasattr(self.feature, objProp[2]):                                     
-                if objProp[2]: 
-                    # use getter
-                    if getattr(self.feature, objProp[2])() != 'None':
-                        prop = (getattr(self.feature, objProp[2])())
-                    else: prop = ''
-                else:
-                    # go straight for the objects property 
-                    if str(getattr(self.feature, objProp[0])) != 'None':
-                        prop = str(getattr(self.feature, objProp[0])) 
-                    else: prop = ''
-                if isinstance(uiElement, QLineEdit) or isinstance(uiElement, QLabel):
-                    if ui == 'uWarning':
-                        warnings = ''                        
-                        for i in prop:
-                            try: #<-- temp. currently retires are under going reformatting at the api level - then this can be removed 
-                                if i._severity == 'Info' and i._ruleId not in UiUtility.retainInfo: continue
-                                warnings += i._severity.upper()+': '+ i._description+('\n'*2)
-                            except: pass #temp                             
-                        uiElement.setText(warnings)
-                    else: 
-                        uiElement.setText(prop)
-                elif isinstance(uiElement, QComboBox):
-                    uiElement.setCurrentIndex(0)  
-                    uiElement.setCurrentIndex(QComboBox.findText(uiElement, prop))
-    
+            #UiUtility.getProperty(self.feature, objProp[0])
+            if self.feature._changeType in ( 'Retire' ,'Replace', 'AddLineage', 'ParcelReferenceData' ):
+                if hasattr(self.feature, objProp[0]) or hasattr(self.feature, objProp[2]):
+                    prop = UiUtility.extractFlatProperty(self.feature, objProp[0],objProp[2])
+                elif hasattr(getattr(getattr(self.feature, 'meta'), '_entities')[0],objProp[0]):                    
+                    prop = getattr(getattr(getattr(self.feature, 'meta'), '_entities')[0],objProp[0])     
+                else : continue
+            else: 
+                if hasattr(self.feature, objProp[0]) or hasattr(self.feature, objProp[2]):
+                    prop = UiUtility.extractFlatProperty(self.feature, objProp[0],objProp[2])
+                else: continue
+            
+            # populate relvant UI components
+            if isinstance(uiElement, QLineEdit) or isinstance(uiElement, QLabel):
+                if ui == 'uWarning':
+                    warnings = ''                        
+                    for i in prop:
+                        try: #<-- temp. currently retires are under going reformatting at the api level - then this can be removed 
+                            if i._severity == 'Info' and i._ruleId not in UiUtility.retainInfo: continue
+                            warnings += i._severity.upper()+': '+ i._description+('\n'*2)
+                        except: pass #temp                             
+                    uiElement.setText(warnings)
+                else: 
+                    uiElement.setText(str(prop))
+            elif isinstance(uiElement, QComboBox):
+                uiElement.setCurrentIndex(0)  
+                uiElement.setCurrentIndex(QComboBox.findText(uiElement, prop))
+ 
     @staticmethod
     def formToObj(self):  
         ''' maps user input fromt he new and update form

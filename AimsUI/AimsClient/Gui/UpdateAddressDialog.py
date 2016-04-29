@@ -73,10 +73,12 @@ class UpdateAddressDialog(Ui_NewAddressDialog, QDialog):
     # now that 'update' requires the same concept - seems like this needs to be shipped somewhere modular
     def submitAddress(self):
         ''' take users input from form and submit to AIMS API '''
+
+         
+        self.feature = self.af[FeedType.CHANGEFEED].cast(self.feature)
         # Run through the setters
         UiUtility.formToObj(self)
-        # submit address obj to DM     
-        self.feature = self.af[FeedType.CHANGEFEED].cast(self.feature)
+        # submit address obj to DM    
         respId = int(time.time()) 
         self._controller.uidm.updateAddress(self.feature, respId)
         # check the response 

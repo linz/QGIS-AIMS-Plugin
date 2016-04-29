@@ -30,13 +30,19 @@ class QueueEditorWidget( Ui_QueueEditorWidget, QWidget ):
         self.uGetRclToolButton.clicked.connect(self.getRcl)         
         self.setController( controller )
         self.uAddressType.currentIndexChanged.connect(self.setEditability)
-            
+        self.setWarningColour()
+        
     def setController( self, controller ):
         import Controller
         if not controller:
             controller = Controller.instance()
         self._controller = controller
     
+    def setWarningColour( self ):
+        style = ""
+        style = self.warningStyle
+        self.uWarning.setStyleSheet(style)
+         
     def currentFeatureToUi(self, feature ):
         self.feature = feature
         UiUtility.featureToUi(self)

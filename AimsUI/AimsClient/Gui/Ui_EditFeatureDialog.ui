@@ -1,0 +1,685 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>EditFeatureDialog</class>
+ <widget class="QWidget" name="EditFeatureDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>480</width>
+    <height>1069</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QScrollArea" name="scrollArea">
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents_4">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>460</width>
+        <height>1049</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_11">
+         <item>
+          <widget class="QLabel" name="label_44">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Number Splitter:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="uFullNum">
+           <property name="maximumSize">
+            <size>
+             <width>200</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="uAddressType"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QGridLayout" name="gridLayout_4">
+         <item row="0" column="2">
+          <widget class="QLabel" name="label_39">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Unit:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="4">
+          <widget class="QLabel" name="label_40">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Base:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="8">
+          <widget class="QLabel" name="label_41">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Alpha:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_42">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Prefix:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="6">
+          <widget class="QLabel" name="label_43">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>High:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="6">
+          <widget class="QLineEdit" name="uHigh">
+           <property name="maximumSize">
+            <size>
+             <width>65</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="maxLength">
+            <number>6</number>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLineEdit" name="uPrefix">
+           <property name="maximumSize">
+            <size>
+             <width>65</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="maxLength">
+            <number>3</number>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="4">
+          <widget class="QLineEdit" name="uBase">
+           <property name="maximumSize">
+            <size>
+             <width>65</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="inputMethodHints">
+            <set>Qt::ImhNone</set>
+           </property>
+           <property name="maxLength">
+            <number>6</number>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QLineEdit" name="uUnit">
+           <property name="maximumSize">
+            <size>
+             <width>65</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="maxLength">
+            <number>6</number>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="8">
+          <widget class="QLineEdit" name="uAlpha">
+           <property name="maximumSize">
+            <size>
+             <width>65</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="maxLength">
+            <number>4</number>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="Line" name="line">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QFormLayout" name="formLayout_5">
+         <property name="fieldGrowthPolicy">
+          <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+         </property>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_45">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Address Extras:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="externalAddressIdLabel_5">
+           <property name="text">
+            <string>External Address Id:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLineEdit" name="uExternalAddId">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="maxLength">
+            <number>15</number>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="externalAddressIdSchemeLabel_5">
+           <property name="text">
+            <string>Ext Address Id Scheme:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QLineEdit" name="uExternalAddressIdScheme">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="maxLength">
+            <number>100</number>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="lifeCycleLabel_5">
+           <property name="text">
+            <string>Life Cycle:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QComboBox" name="ulifeCycle"/>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="unitTypeLabel_5">
+           <property name="text">
+            <string>Unit Type:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QComboBox" name="uUnitType"/>
+         </item>
+         <item row="5" column="0">
+          <widget class="QLabel" name="levelTypeLabel_5">
+           <property name="text">
+            <string>Level Type:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="1">
+          <widget class="QComboBox" name="uLevelType"/>
+         </item>
+         <item row="6" column="0">
+          <widget class="QLabel" name="levelValueLabel_5">
+           <property name="text">
+            <string>Level Value:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="1">
+          <widget class="QLineEdit" name="uLevelValue">
+           <property name="maxLength">
+            <number>40</number>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="0" colspan="2">
+          <widget class="Line" name="line_14">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="8" column="0">
+          <widget class="QLabel" name="label_46">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Road:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="9" column="0">
+          <widget class="QLabel" name="roadCentrelineIdLabel_5">
+           <property name="font">
+            <font>
+             <weight>50</weight>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Road Centreline Id:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="10" column="0">
+          <widget class="QLabel" name="roadPrefixLabel_5">
+           <property name="text">
+            <string>Road Prefix:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="10" column="1">
+          <widget class="QLineEdit" name="uRoadPrefix">
+           <property name="maxLength">
+            <number>20</number>
+           </property>
+          </widget>
+         </item>
+         <item row="11" column="0">
+          <widget class="QLabel" name="roadNameLabel_5">
+           <property name="font">
+            <font>
+             <weight>50</weight>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Road Name:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="11" column="1">
+          <widget class="QLineEdit" name="uRoadName">
+           <property name="maxLength">
+            <number>150</number>
+           </property>
+          </widget>
+         </item>
+         <item row="12" column="0">
+          <widget class="QLabel" name="roadTypeNameLabel_5">
+           <property name="font">
+            <font>
+             <weight>50</weight>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Road Type:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="12" column="1">
+          <widget class="QLineEdit" name="uRoadTypeName">
+           <property name="maxLength">
+            <number>40</number>
+           </property>
+          </widget>
+         </item>
+         <item row="13" column="0">
+          <widget class="QLabel" name="roadSuffixLabel_5">
+           <property name="font">
+            <font>
+             <weight>50</weight>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Road Suffix:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="13" column="1">
+          <widget class="QLineEdit" name="uRoadSuffix">
+           <property name="maxLength">
+            <number>40</number>
+           </property>
+          </widget>
+         </item>
+         <item row="14" column="0">
+          <widget class="QLabel" name="waterRouteNameLabel_5">
+           <property name="text">
+            <string>Water Route Name:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="14" column="1">
+          <widget class="QLineEdit" name="uWaterRouteName">
+           <property name="maxLength">
+            <number>100</number>
+           </property>
+          </widget>
+         </item>
+         <item row="15" column="0">
+          <widget class="QLabel" name="waterNameLabel_5">
+           <property name="text">
+            <string>Water Name:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="15" column="1">
+          <widget class="QLineEdit" name="uWaterName">
+           <property name="maxLength">
+            <number>100</number>
+           </property>
+          </widget>
+         </item>
+         <item row="16" column="0" colspan="2">
+          <widget class="Line" name="line_15">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="17" column="0">
+          <widget class="QLabel" name="label_47">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+             <underline>false</underline>
+            </font>
+           </property>
+           <property name="text">
+            <string>Addressable Object:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="18" column="0">
+          <widget class="QLabel" name="objectTypeLabel_5">
+           <property name="font">
+            <font>
+             <weight>50</weight>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Object Type:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="18" column="1">
+          <widget class="QComboBox" name="uObjectType"/>
+         </item>
+         <item row="19" column="0">
+          <widget class="QLabel" name="objectNameLabel_5">
+           <property name="text">
+            <string>Object Name:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="19" column="1">
+          <widget class="QLineEdit" name="uObjectName">
+           <property name="maxLength">
+            <number>250</number>
+           </property>
+          </widget>
+         </item>
+         <item row="21" column="0">
+          <widget class="QLabel" name="externalObjectIdLabel_5">
+           <property name="text">
+            <string>External Object Id:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="21" column="1">
+          <widget class="QLineEdit" name="uExternalObjectId">
+           <property name="maxLength">
+            <number>15</number>
+           </property>
+          </widget>
+         </item>
+         <item row="22" column="0">
+          <widget class="QLabel" name="extObjectIdSchemeLabel_5">
+           <property name="text">
+            <string>Ext Object Id Scheme:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="22" column="1">
+          <widget class="QLineEdit" name="uExtObjectIdScheme">
+           <property name="maxLength">
+            <number>100</number>
+           </property>
+          </widget>
+         </item>
+         <item row="23" column="0">
+          <widget class="QLabel" name="valuationReferenceLabel_5">
+           <property name="text">
+            <string>Valuation Reference:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="23" column="1">
+          <widget class="QLineEdit" name="uValuationReference">
+           <property name="baseSize">
+            <size>
+             <width>0</width>
+             <height>50</height>
+            </size>
+           </property>
+           <property name="maxLength">
+            <number>30</number>
+           </property>
+          </widget>
+         </item>
+         <item row="24" column="0">
+          <widget class="QLabel" name="certificateOfTitleLabel_5">
+           <property name="text">
+            <string>Certificate Of Title:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="24" column="1">
+          <widget class="QLineEdit" name="uCertificateOfTitle">
+           <property name="maxLength">
+            <number>20</number>
+           </property>
+          </widget>
+         </item>
+         <item row="25" column="0">
+          <widget class="QLabel" name="appellationLabel_5">
+           <property name="text">
+            <string>Appellation:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="25" column="1">
+          <widget class="QLineEdit" name="uAppellation">
+           <property name="maxLength">
+            <number>500</number>
+           </property>
+          </widget>
+         </item>
+         <item row="27" column="1">
+          <widget class="QPlainTextEdit" name="uNotes">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="baseSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="26" column="0" colspan="2">
+          <widget class="Line" name="line_16">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="27" column="0">
+          <widget class="QLabel" name="label_48">
+           <property name="text">
+            <string>Notes:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="9" column="1">
+          <layout class="QHBoxLayout" name="horizontalLayout_12">
+           <item>
+            <widget class="QLineEdit" name="uRclId">
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="uPersistRcl">
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="uGetRclToolButton">
+             <property name="text">
+              <string>&gt;</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="20" column="1">
+          <widget class="QComboBox" name="uPositionType"/>
+         </item>
+         <item row="20" column="0">
+          <widget class="QLabel" name="label_49">
+           <property name="text">
+            <string>Position Type:</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_13">
+         <item>
+          <spacer name="horizontalSpacer_4">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="uAbort">
+           <property name="text">
+            <string>Abort</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="uSubmitAddressButton">
+           <property name="text">
+            <string>Submit</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

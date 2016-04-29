@@ -36,29 +36,29 @@ class QueueView(QTableView):
         
     def setModel( self, model ):
         QTableView.setModel( self, model )
-        if self._model:
-            self._model.modelReset.disconnect( self._onModelReset )
-            self._model.layoutAboutToBeChanged.disconnect( self._saveSelectedRow )
-            self._model.layoutChanged.disconnect( self._restoreSelectedRow )
-        if self._groupTableModel:
-            self._groupTableModel.resettingModel.disconnect( self._saveSelectedRow )
-        self._model = model 
-        self._groupTableModel = self._model if isinstance(self._model,GroupTableModel) else None
-        if self._model:
-            self._model.modelReset.connect( self._onModelReset )
-            self._model.layoutAboutToBeChanged.connect( self._saveSelectedRow )
-            self._model.layoutChanged.connect( self._restoreSelectedRow )
-        if self._groupTableModel:
-            self._groupTableModel.resettingModel.connect( self._saveSelectedRow )
-        self._onModelReset()
-    
-    def _onModelReset(self):
-        self.modelReset.emit()
-        if self.rowCount() > 0:
-            self.resizeColumnsToContents()
-            self._restoreSelectedRow()
-        else:
-            self.rowSelected.emit( -1 )
+#         if self._model:
+#             self._model.modelReset.disconnect( self._onModelReset )
+#             self._model.layoutAboutToBeChanged.disconnect( self._saveSelectedRow )
+#             self._model.layoutChanged.disconnect( self._restoreSelectedRow )
+#         if self._groupTableModel:
+#             self._groupTableModel.resettingModel.disconnect( self._saveSelectedRow )
+#         self._model = model 
+#         self._groupTableModel = self._model if isinstance(self._model,QSortFilterProxyModel) else None
+#         if self._model:
+#             self._model.modelReset.connect( self._onModelReset )
+#             self._model.layoutAboutToBeChanged.connect( self._saveSelectedRow )
+#             self._model.layoutChanged.connect( self._restoreSelectedRow )
+#         if self._groupTableModel:
+#             self._groupTableModel.resettingModel.connect( self._saveSelectedRow )
+#         self._onModelReset()
+#     
+#     def _onModelReset(self):
+#         self.modelReset.emit()
+#         if self.rowCount() > 0:
+#             self.resizeColumnsToContents()
+#             self._restoreSelectedRow()
+#         else:
+#             self.rowSelected.emit( -1 )
     
     def rowCount( self ):
         model = self.model()
@@ -187,8 +187,10 @@ class GroupTableModel(QAbstractTableModel):
         return (self._data[rowIndex.row()][0], self._data[rowIndex.row()][1]) 
     
     def getUsers(self):
-        return list(set([i[3] for i in self._data]))
-    
+        try:# hack to ensure working demo - it seems when an conflict is raised the below list cannot be compiled
+            return list(set([i[3] for i in self._data]))
+        except: return [] 
+        
     def getOrgs(self):
         return list(set([i[2] for i in self._data]))
         

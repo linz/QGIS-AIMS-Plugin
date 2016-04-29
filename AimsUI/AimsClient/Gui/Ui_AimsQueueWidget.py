@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'AimsUI/AimsClient/Gui/Ui_AimsQueueWidget.ui'
 #
-# Created: Sun Apr 10 15:28:40 2016
+# Created: Sat Apr 23 14:05:55 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -31,9 +31,9 @@ class Ui_AimsQueueWidget(object):
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         self.tabWidget = QtGui.QTabWidget(AimsQueueWidget)
         self.tabWidget.setObjectName(_fromUtf8("tabWidget"))
-        self.uChangeTab = QtGui.QWidget()
-        self.uChangeTab.setObjectName(_fromUtf8("uChangeTab"))
-        self.tabWidget.addTab(self.uChangeTab, _fromUtf8(""))
+        self.uEditFeatureTab = ChangeQueueWidget()
+        self.uEditFeatureTab.setObjectName(_fromUtf8("uEditFeatureTab"))
+        self.tabWidget.addTab(self.uEditFeatureTab, _fromUtf8(""))
         self.uResolutionTab = ReviewQueueWidget()
         self.uResolutionTab.setObjectName(_fromUtf8("uResolutionTab"))
         self.tabWidget.addTab(self.uResolutionTab, _fromUtf8(""))
@@ -48,12 +48,13 @@ class Ui_AimsQueueWidget(object):
         self.verticalLayout.addLayout(self.horizontalLayout_5)
 
         self.retranslateUi(AimsQueueWidget)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(AimsQueueWidget)
 
     def retranslateUi(self, AimsQueueWidget):
         AimsQueueWidget.setWindowTitle(_translate("AimsQueueWidget", "Form", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.uChangeTab), _translate("AimsQueueWidget", "Change", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.uEditFeatureTab), _translate("AimsQueueWidget", "Edit Feature", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.uResolutionTab), _translate("AimsQueueWidget", "Review", None))
 
 from ReviewQueueWidget import ReviewQueueWidget
+from ChangeQueueWidget import ChangeQueueWidget

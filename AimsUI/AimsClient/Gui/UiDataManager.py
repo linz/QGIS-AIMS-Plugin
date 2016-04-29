@@ -33,7 +33,6 @@ class UiDataManager(QObject):
         with DataManager() as self.dm:
             self.dm.registermain(self)
         self.uptdFData = None
-        self.refreshSuccess = False
         self._observers = []
         self.data = {   FEEDS['AF']:{},
                         FEEDS['AC']:{},
@@ -41,6 +40,9 @@ class UiDataManager(QObject):
                         FEEDS['GC']:{},
                         FEEDS['GR']:{}
                     }
+        
+        self.resourceLock = False 
+        self.groups = ('Replace', 'AddLineage', 'ParcelReferenceData') # more to come...
         
         self.rDataChangedSignal.connect(self._controller.rDataChanged)
     
@@ -82,9 +84,6 @@ class UiDataManager(QObject):
         if feedtype == FEEDS['GR']:
             # key group objects
             self.exlopdeGroup()
-    
-    def keyDatum(self, aimsFeature):
-        pass
 
     def setData(self, dataRefresh, FeedType):        
         self.keyData(dataRefresh, FeedType)
@@ -96,6 +95,7 @@ class UiDataManager(QObject):
         else:                                
             # add to data 
             self.data[FEEDS['AR']][respFeature._changeId] = respFeature
+            #uilog.info('new AR record with changeid: {}'.format(respFeature._changeId))
         self.rDataChangedSignal.emit()
         
     def updateFdata(self, respFeature):
@@ -176,45 +176,86 @@ class UiDataManager(QObject):
         
     def response (self, feedtype = None):
         return self.dm.response(feedtype)
+    
+    def isNested(self, feat, prop):
+        ''' test is the class object has said nested entity ''' 
+        try: 
+            return hasattr(getattr(getattr(feat, 'meta'), '_entities')[0],prop)
+        except: 
+            return False
+        
+    def nestedEntities(self, feat, prop):
+        ''' get at and return the nested entity properties '''
+        return getattr(getattr(getattr(feat, 'meta'), '_entities')[0],prop)  
 
-    def fullRoad(self, k, feedtype):
+    def flatEntities(self, feat, prop):
+        ''' get at and return the nested entity properties '''
+        return getattr(feat,prop)  
+    
+    def fullRoad(self, feat, feedtype):
         ''' compiles a full road name 'label' for the UI '''
         fullRoad = ''
-        if feedtype == FEEDS['AR']:
-            obj = k            
-        else: obj = self.data.get(feedtype).get(k) # retrieve object# currently only handling review
         for prop in ['_components_roadPrefix', '_components_roadName', '_components_roadType', '_components_roadSuffix',
                       '_components_waterRoute', '_components_waterName']:
-            if hasattr(obj, prop): 
-                if getattr(obj,prop) != None: fullRoad+=str(getattr(obj,prop))+' '
+            
+            # Groups have nested entities
+            if feat._changeType in self.groups and self.isNested(feat, prop):
+                prop = self.nestedEntities(feat, prop) 
+            # retired have nested entities except when the retired 
+            # feature is derived from an response object    
+            elif feat._changeType == 'Retire':
+                if self.isNested(feat, prop):
+                    prop = self.nestedEntities(feat, prop) 
+                elif hasattr(feat,prop):  
+                    prop = self.flatEntities(feat, prop) 
+            # else we have an Add or update of whoms 
+            # properties are flat
+            elif hasattr(feat,prop): 
+                prop = self.flatEntities(feat, prop) 
+            else: continue                    
+            if prop != None: fullRoad+=prop+' '
         return fullRoad 
 
     def formatGroupTableData(self, obj, groupProperties):
+        ''' return data formatted for the group table model '''
         groupValues = []   
         for prop in groupProperties:            
             if hasattr(obj, prop):
                 if getattr(obj, prop) != None:
                     groupValues.append(getattr(obj, prop))
-                    continue
+                    #continue
             else: groupValues.append('')
         return groupValues
     
     def iterFeatProps(self, feat, featProperties, feedtype):
+        ''' run over AIMS class objects, Return those
+            relevant to the parent model'''
         fValues = []
         fValues.extend([getattr(feat, '_changeId'),feat.getFullNumber(), self.fullRoad(feat ,feedtype)]) # address and road labels 
-        for prop in featProperties:                                        
-            if hasattr(feat, prop):
-                if getattr(feat, prop) != None:
-                    fValues.append(getattr(feat, prop))
-                    continue
+        for prop in featProperties:
+            # Groups have nested entities                                  
+            if feat._changeType in self.groups and self.isNested(feat, prop):
+                    fValues.append(self.nestedEntities(feat, prop))      
+            # retired have nested entities except when the retired 
+            # feature is derived from an response object    
+            elif feat._changeType == 'Retire':
+                if self.isNested(feat, prop):
+                    fValues.append(self.nestedEntities(feat, prop))
+                elif hasattr(feat,prop): 
+                    fValues.append(self.flatEntities(feat, prop)) 
+            # else we have an Add or update of whoms 
+            # properties are flat
+            elif hasattr(feat,prop):
+                fValues.append(self.flatEntities(feat, prop)) #!= None:
             else: fValues.append('')
         return fValues
     
     def formatFeatureTableData(self, feat, featProperties, feedtype):
+        ''' return data formatted for the feature table model '''
         if feedtype == FEEDS['AR']:
             return self.iterFeatProps(feat, featProperties, feedtype)
         else:
-            fValuesList = []
+            fValuesList = [] # AR
             for f in feat.values():                             
                 fValues = self.iterFeatProps(f, featProperties, feedtype)
                 fValuesList.append(fValues)
@@ -242,7 +283,7 @@ class UiDataManager(QObject):
                 if feedtype == FEEDS['AR']:
                     groupValues = self.formatGroupTableData(v,kProperties) 
                     featureValues = [self.formatFeatureTableData(v,vProperties, feedtype)]
-                else:
+                else: #GR
                     featureValues = []                    
                     groupValues = self.formatGroupTableData(k[1],kProperties) 
                     featureValues = self.formatFeatureTableData(v,vProperties, feedtype)
@@ -263,9 +304,10 @@ class UiDataManager(QObject):
                 if objkey == k[0]: return k[1]
                 #need to handle key errors?
                 # raise, 'Where did you get that key from?'
+                
     def currentReviewFeature(self, currentGroup, currentFeatureKey):
         ''' return aims feautre object as per supplied data key(s) '''
-        if currentGroup[1] in ('Replace', 'AddLineage'):
+        if currentGroup[1] in ('Replace', 'AddLineage', 'ParcelReferenceData' ):
             for group in self.data.get(FEEDS['GR']).values():
                 if group.has_key(currentFeatureKey):
                     return group[currentFeatureKey]
@@ -273,8 +315,19 @@ class UiDataManager(QObject):
             return self.data.get(FEEDS['AR']).get(currentFeatureKey)
     
     def reviewItemCoords(self, currentGroup, currentFeatureKey):
+#         obj = self.currentReviewFeature(currentGroup, currentFeatureKey)
+#         #currently only storing one position, Hence the '[0]'
+#         
+#         if currentGroup[1] in ('Retire', 'Replace', 'AddLineage', 'ParcelReferenceData' ):
+#             return obj.meta.entities[0]._addressedObject_addressPositions[0]['position']['coordinates']           
+#         else:  return obj._addressedObject_addressPositions[0]._position_coordinates
+
+
         obj = self.currentReviewFeature(currentGroup, currentFeatureKey)
         #currently only storing one position, Hence the '[0]'
-        try: # temp try / except untill retire obj is complete
-            return obj._addressedObject_addressPositions[0]._position_coordinates
-        except: return None
+        #if currentGroup[1] in ('Retire', 'Replace', 'AddLineage', 'ParcelReferenceData' ):
+        try:
+            point = obj.meta.entities[0]._addressedObject_addressPositions[0]['position']['coordinates']
+        except:# hack to meet first testing release -- REVIEW 
+                point = obj._addressedObject_addressPositions[0]._position_coordinates
+        return point
