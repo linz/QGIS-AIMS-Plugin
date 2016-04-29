@@ -84,41 +84,46 @@ class DataUpdater(Observable):
             if feat == {u'class': [u'error']}: 
                 #if the page request returns the not-supposed-to-happen error, it gets special treatment
                 aimslog.error('Invalid API response {}'.format(feat))
-                a = self.getfeat(model=page['properties'])
-            # Validation
-            elif feat['class'][0] == 'validation':
-                return self._processValidationEntity(feat)
-                #e = EntityValidation.getInstance(feat)# self.getEntityInstance()
-            #-------------------------------
-            # Resolution Group
-            elif feat['class'][0] == 'resolutiongroup':
-                return self._processResolutionGroup(feat,cid,etft)
-            # Address List
-            elif feat['class'][0] == 'addressresolution':
-                return self._processAddressResolution(feat)
-            #--------------------------------
-            # Entities
+                #return self.getfeat(model=page['properties'])
             else:
-                a = self._processEntity(feat)
+                return self._processEntity(feat,cid,etft)
         else:
             #just return the main feedlevel address objects
-            a = self.getfeat(model=page['properties'])
-        return a
+            return self.getfeat(model=page['properties'])
     
+    def _processEntity(self,feat,cid,etft):
+        '''Select processing option'''
+        if feat['class'][0] == 'validation':
+            return self._processValidationEntity(feat)
+            #e = EntityValidation.getInstance(feat)# self.getEntityInstance()
+        #-------------------------------
+        # Resolution Group
+        elif feat['class'][0] == 'resolutiongroup':
+            return self._processResolutionGroup(feat,cid,etft)
+        # Address List
+        elif feat['class'][0] == 'addressresolution':
+            return self._processAddressResolution(feat)
+        #--------------------------------
+        # Simple Entity object
+        else:
+            return self._processSimpleEntity(self.getfeat,feat)
+        
     def _processValidationEntity(self,feat):
         return EntityValidation.getInstance(feat)
     
     def _processAddressEntity(self,feat):
-        return EntityAddress.getInstance(feat)
+        #return EntityAddress.getInstance(feat)
+        return self._processSimpleEntity(FeatureFactory.getInstance(FeedRef((FeatureType.ADDRESS,FeedType.RESOLUTIONFEED))).getAddress,feat)
         
-    def _processEntity(self,feat):                
+    def _processSimpleEntity(self,fact,feat):                
         '''this is the default processor, for gereric entities but the same as addr res'''
         featurelist = []
-        a = self.getfeat(model=feat['properties'])
-        for e in feat['entities']:
-            featurelist.append(self._populateEntity(e))
-        a._setEntities(featurelist)
-        return a    
+        a = fact(model=feat['properties'])
+        if feat.has_key('entities'):
+            for e in feat['entities']:
+                featurelist.append(self._populateEntity(e))
+            a._setEntities(featurelist)
+        return a
     
     def _processAddressResolution(self,feat):                
         '''process entries in the addressresolution->entities list'''
