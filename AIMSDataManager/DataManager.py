@@ -76,9 +76,9 @@ class DataManager(Observable):
         '''Register "single" class as a listener'''
         self.registered = reg if hasattr(reg, 'observe') else None
         
-    def register(self,reg):
-        print 'register to DM {}'.format(reg)
-        super(DataManager,self).register(reg)
+#     def register(self,reg):
+#         '''redundant super call to catch/log registrees'''
+#         super(DataManager,self).register(reg)
         
     def _checkDS(self,etft):
         '''Starts a sync thread unless its features with a zero bbox'''

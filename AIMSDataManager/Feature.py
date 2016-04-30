@@ -102,7 +102,7 @@ class Feature(object):
      
     def setErrors(self,errors):
         self.setMeta()
-        self.meta.errors = errors      
+        self.meta.errors = errors
            
     def getErrors(self):
         return self.meta.errors if hasattr(self,'meta') else None

@@ -56,12 +56,6 @@ class DataRequestChannel(Observable):
         '''Continual loop looking for input queue requests and running periodic updates'''
         while not self.stopped():
             aimslog.debug('DRC {} listening'.format(self.client.etft))
-#             #if there are things in the client's input queue, process them, push to CF #TODO. there shouldnt ever be anything in the FF inq
-#             if not self.client.inq.empty():
-#                 changelist = self.client.inq.get()    
-#                  
-#                 aimslog.info('DRC {} - found {} items in queue'.format(self.client.etft,len(changelist)))
-#                 self.client.processInputQueue(changelist)
             time.sleep(THREAD_KEEPALIVE)
             
     def stop(self):
@@ -136,8 +130,6 @@ class DataSync(Observable):
         #self.inq.task_done()
         #self.outq.task_done()
         
-    #self.pool
-    #self.newaddr
     def observe(self,ref):
         self._managePage(ref)
         
@@ -149,8 +141,8 @@ class DataSync(Observable):
         r = None
         with pool_lock:
             aimslog.info('{} complete'.format(ref))
-            print 'POOLSTATE',self.pool  
-            print 'POOLREMOVE',ref
+            #print 'POOLSTATE',self.pool  
+            #print 'POOLREMOVE',ref
             r = [x for x in self.pool if x['ref']==ref][0] 
             alist = self.duinst[ref].queue.get()
             acount = len(alist)
@@ -158,7 +150,7 @@ class DataSync(Observable):
             nextpage = max([r2['page'] for r2 in self.pool])+1
             del self.duinst[ref]
             aimslog.info('TIME {} {}'.format(ref,time.time()-r['time']))
-            print 'POOLTIME {} {}'.format(ref,time.time()-r['time'])
+            #print 'POOLTIME {} {}'.format(ref,time.time()-r['time'])
             self.pool.remove(r)
             #if N>0 features return, spawn another thread
             if acount<MAX_FEATURE_COUNT:
@@ -170,7 +162,7 @@ class DataSync(Observable):
                 if nextpage<self.exhausted:
                     ref = self._monitorPage(nextpage)
                     self.pool.append({'page':nextpage,'ref':ref,'time':time.time()})
-                    print 'POOLADD 2',ref
+                    #print 'POOLADD 2',ref
             else:
                 pass
                 #print 'No addresses found in page {}{}'.format(FeedType.reverse[self.ft][:2].capitalize(),r['page'])
@@ -179,7 +171,7 @@ class DataSync(Observable):
             self.syncFeeds(self.newaddr)#syncfeeds does notify DM
             self.managePage((None,self.lastpage))
             self.updater_running = False
-            print 'POOLCLOSE',ref,time.strftime('%Y-%M-%d %H:%m:%S')
+            #print 'POOLCLOSE',ref,time.strftime('%Y-%M-%d %H:%m:%S')
 
 
     #--------------------------------------------------------------------------            
@@ -191,16 +183,14 @@ class DataSync(Observable):
         self.exhausted = PAGE_LIMIT
         self.lastpage = lastpage
         self.newaddr = []
-        #setup pool
         #print 'LP {} {}->{}'.format(FeedType.reverse[self.ft][:2].capitalize(),lastpage,lastpage+thr)
-        with pool_lock:
-            self.pool = [{'page':p,'ref':None,'time':None} for p in range(lastpage,lastpage+thr)]
-            for r in self.pool:
-                r['ref'] = self._monitorPage(r['page'])
-                r['time'] = time.time()
-                print 'POOLADD 1',r['ref']
+        with pool_lock: self.pool = self._buildPool(lastpage,thr)
 
-
+    def _buildPool(self,lastpage,thr):
+        '''builds a pool based on page spec provided, accepts negative thresholds for backfill requests'''
+        span = range(min(lastpage,lastpage+thr),max(lastpage,lastpage+thr))
+        return [{'page':p,'ref':self._monitorPage(p),'time':time.time()} for p in span]
+    
     def _monitorPage(self,p):
         ref = 'FP.{0}.Page{1}.{2:%y%m%d.%H%M%S}.p{3}'.format(self.etft,p,DT.now(),p)
         aimslog.info('init DU {}'.format(ref))
@@ -214,6 +204,7 @@ class DataSync(Observable):
         params = (ref,self.conf,self.afactory)
         adrq = Queue.Queue()
         pager = self.updater(params,adrq)
+        #address/feature requests called with bbox parameters
         if self.etft==FEEDS['AF']: pager.setup(self.etft,self.sw,self.ne,p)
         else: pager.setup(self.etft,None,None,p)
         pager.setName(ref)
@@ -244,13 +235,7 @@ class DataSyncFeatures(DataSync):
     
     def __init__(self,params,queues):
         super(DataSyncFeatures,self).__init__(params,queues)
-        #self.ftracker = {'page':[1,1],'index':1,'threads':2,'interval':30}    
-        
-#     def fetchFeedUpdates(self,thr):
-#         super(DataSyncFeatures,self)._fetchFeedUpdates(thr)
-#         #res,_ = super(DataSyncFeatures,self)._fetchFeedUpdates(thr)
-#         #return res
-
+        #self.ftracker = {'page':[1,1],'index':1,'threads':2,'interval':30}
             
     #null method for features since page count not saved
     def managePage(self,p):pass
@@ -337,10 +322,10 @@ class DataSyncFeeds(DataSync):
 #             prevpage = max(1,prevpage-1)
 #             ref = self.fetchPage(prevpage)                
 #         return newaddr,prevpage
-
-    def _statusFilter(self,alist):
-        #something like this
-        return [a for a in alist if a.getQueueStatus().lower() not in ('expired','deleted')]
+# 
+#     def _statusFilter(self,alist):
+#         #something like this
+#         return [a for a in alist if a.getQueueStatus().lower() not in ('expired','deleted')]
     
     #Processes the input queue sending address changes to the API
     #@LogWrap.timediff

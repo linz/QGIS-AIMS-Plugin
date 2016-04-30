@@ -162,18 +162,18 @@ class EntityValidation(Entity):
         super(EntityValidation,self).__init__(ref)
         
     @staticmethod
-    def getInstance(d,etft=None):
-        return super(EntityValidation,EntityValidation).getInstance(d)
+    def getInstance(data,etft=None):
+        return super(EntityValidation,EntityValidation).getInstance(data)
 
 class EntityAddress(Entity):
     def __init__(self,ref = 'address'):
         super(EntityAddress,self).__init__(ref)
         
     @staticmethod
-    def getInstance(d,etft=FeedRef((FeatureType.ADDRESS,FeedType.FEATURES))):
+    def getInstance(data,etft=FeedRef((FeatureType.ADDRESS,FeedType.FEATURES))):
         from FeatureFactory import FeatureFactory
         ff = FeatureFactory.getInstance(etft)
-        return ff.getAddress(model=d)
+        return ff.getAddress(model=data)
         
 
 #------------------------------------------------------------------------------
