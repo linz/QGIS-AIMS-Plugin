@@ -12,7 +12,6 @@ from AimsUI.AimsClient.Gui.UiUtility import UiUtility
 from AimsUI.AimsClient.Gui.ResponseHandler import ResponseHandler
 from AIMSDataManager.Address import Position
 
-
 class UpdateAddressTool(QgsMapToolIdentify):
 
     tolerance=5

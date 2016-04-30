@@ -40,8 +40,8 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self._iface = self._controller.iface
         self.uidm = self._controller.uidm
         self.uidm.register(self)
-        self.reviewData = None # self.uidm.refreshTableData((FEEDS['AR'],))
-        #self.reviewData = self.uidm.formatTableData((FEEDS['AR'],))      
+        #self.reviewData = None # self.uidm.refreshTableData((FEEDS['AR'],))
+        self.reviewData = self.uidm.formatTableData((FEEDS['AR'],))      
         self.currentFeatureKey = None
         self.currentAdrCoord = [0,0]
         self.feature = None

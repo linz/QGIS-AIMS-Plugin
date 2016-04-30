@@ -244,20 +244,7 @@ class LayerManager(QObject):
         uilog.info(' *** DATA ***    {} review items being loaded '.format(len(rData)))
         for reviewItem in rData.values():
             fet = QgsFeature()
-            if reviewItem._changeType  in ('Replace', 'AddLineage', 'ParcelReferenceData' ):
- 
-                point = reviewItem.meta.entities[0]._addressedObject_addressPositions[0]._position_coordinates
-            elif reviewItem._changeType == 'Retire':
-                try:
-                    point = reviewItem.meta.entities[0]._addressedObject_addressPositions[0]['position']['coordinates']
-                except: # except when the retired item is derived from an resp obj
-                    point = reviewItem._addressedObject_addressPositions[0]._position_coordinates
-            else:
-                # hack to meet first testing release -- REVIEW
-                try:
-                    point = reviewItem.meta.entities[0]._addressedObject_addressPositions[0]['position']['coordinates']
-                except: # except when the retired item is derived from an resp obj
-                    point = reviewItem._addressedObject_addressPositions[0]._position_coordinates
+            point = reviewItem.getPosition()
             fet.setGeometry(QgsGeometry.fromPoint(QgsPoint(point[0], point[1])))
             fet.setAttributes([ reviewItem.getFullNumber(), reviewItem._changeType])
             provider.addFeatures([fet])
@@ -319,7 +306,7 @@ class LayerManager(QObject):
         uilog.info(' *** CANVAS ***    Adding Features') 
         for feature in featureData.itervalues():
             fet = QgsFeature()
-            point = feature._addressedObject_addressPositions[0]._position_coordinates
+            point = feature.getPosition()
             fet.setGeometry(QgsGeometry.fromPoint(QgsPoint(point[0], point[1])))
             fet.setAttributes([getattr(feature, v[0]) if hasattr (feature, v[0]) else '' for v in Mapping.adrLayerObjMappings.values()])
             layer.dataProvider().addFeatures([fet])
