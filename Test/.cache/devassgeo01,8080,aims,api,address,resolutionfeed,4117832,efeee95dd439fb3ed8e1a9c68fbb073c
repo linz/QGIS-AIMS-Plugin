@@ -1,0 +1,104 @@
+status: 200
+content-length: 2594
+content-location: http://devassgeo01:8080/aims/api/address/resolutionfeed/4117832
+expires: Thu, 01 Jan 1970 12:00:00 NZST
+vary: Accept-Encoding
+server: Apache-Coyote/1.1
+-content-encoding: gzip
+location: http://devassgeo01:8080/aims/api/address/resolutionfeed/4117832
+cache-control: private
+date: Thu, 31 Mar 2016 00:14:16 GMT
+content-type: application/json
+-varied-accept-encoding: gzip, deflate
+
+
+{
+    "class":[
+        "addressresolution"
+    ],
+    "links":[
+        {
+            "rel":[
+                "self"
+            ],
+            "href":"http://devassgeo01:8080/aims/api/address/resolutionfeed/4117832"
+        }
+    ],
+    "actions":[
+        {
+            "name":"update",
+            "method":"PUT",
+            "href":"http://devassgeo01:8080/aims/api/address/resolutionfeed/4117832"
+        },
+        {
+            "name":"accept",
+            "method":"POST",
+            "href":"http://devassgeo01:8080/aims/api/address/resolutionfeed/4117832/accept"
+        },
+        {
+            "name":"decline",
+            "method":"POST",
+            "href":"http://devassgeo01:8080/aims/api/address/resolutionfeed/4117832/decline"
+        }
+    ],
+    "properties":{
+        "version":7189235,
+        "changeId":4117832,
+        "changeType":"Update",
+        "workflow":{
+            "submitterUserName":"test.administrator",
+            "submittedDate":"2016-03-21",
+            "queueStatus":"Submitted",
+            "sourceOrganisation":"e-Spatial"
+        },
+        "components":{
+            "addressId":854409,
+            "addressType":"Road",
+            "lifecycle":"Current",
+            "addressNumber":26,
+            "roadCentrelineId":143506,
+            "roadName":"Wainui",
+            "roadType":"Road",
+            "suburbLocality":"Ohope",
+            "townCity":"Ohope"
+        },
+        "addressedObject":{
+            "objectType":"Parcel",
+            "addressPositions":[
+                {
+                    "position":{
+                        "type":"Point",
+                        "coordinates":[
+                            177.0702503374184,
+                            -37.977390000609326
+                        ],
+                        "crs":{
+                            "type":"name",
+                            "properties":{
+                                "name":"urn:ogc:def:crs:EPSG::4167"
+                            }
+                        }
+                    },
+                    "positionType":"Unknown",
+                    "primary":true
+                }
+            ],
+            "externalObjectId":"6981457"
+        }
+    },
+    "entities":[
+        {
+            "class":[
+                "validation"
+            ],
+            "rel":[
+                "error"
+            ],
+            "properties":{
+                "ruleId":"AIMS: V0027",
+                "description":"AddressableobjectID was calculated as the externalID was not supplied",
+                "severity":"Info"
+            }
+        }
+    ]
+}

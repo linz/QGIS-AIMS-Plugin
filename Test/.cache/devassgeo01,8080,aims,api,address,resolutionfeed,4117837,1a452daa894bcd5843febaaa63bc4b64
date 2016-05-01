@@ -1,0 +1,155 @@
+status: 200
+content-length: 3899
+content-location: http://devassgeo01:8080/aims/api/address/resolutionfeed/4117837
+expires: Thu, 01 Jan 1970 12:00:00 NZST
+vary: Accept-Encoding
+server: Apache-Coyote/1.1
+-content-encoding: gzip
+location: http://devassgeo01:8080/aims/api/address/resolutionfeed/4117837
+cache-control: private
+date: Thu, 31 Mar 2016 00:14:16 GMT
+content-type: application/json
+-varied-accept-encoding: gzip, deflate
+
+
+{
+    "class":[
+        "addressresolution"
+    ],
+    "links":[
+        {
+            "rel":[
+                "self"
+            ],
+            "href":"http://devassgeo01:8080/aims/api/address/resolutionfeed/4117837"
+        }
+    ],
+    "actions":[
+        {
+            "name":"update",
+            "method":"PUT",
+            "href":"http://devassgeo01:8080/aims/api/address/resolutionfeed/4117837"
+        },
+        {
+            "name":"accept",
+            "method":"POST",
+            "href":"http://devassgeo01:8080/aims/api/address/resolutionfeed/4117837/accept"
+        },
+        {
+            "name":"decline",
+            "method":"POST",
+            "href":"http://devassgeo01:8080/aims/api/address/resolutionfeed/4117837/decline"
+        }
+    ],
+    "properties":{
+        "version":7190773,
+        "changeId":4117837,
+        "changeType":"Add",
+        "workflow":{
+            "submitterUserName":"test.administrator",
+            "submittedDate":"2016-03-22",
+            "queueStatus":"Submitted",
+            "sourceOrganisation":"e-Spatial",
+            "sourceReason":"test"
+        },
+        "components":{
+            "addressType":"Road",
+            "lifecycle":"Current",
+            "addressNumber":325,
+            "roadCentrelineId":6843,
+            "roadName":"Glenorchy-Routeburn",
+            "roadType":"Road",
+            "suburbLocality":"Glenorchy"
+        },
+        "addressedObject":{
+            "objectType":"Parcel",
+            "addressPositions":[
+                {
+                    "position":{
+                        "type":"Point",
+                        "coordinates":[
+                            168.3486501,
+                            -44.7795696167
+                        ],
+                        "crs":{
+                            "type":"name",
+                            "properties":{
+                                "name":"urn:ogc:def:crs:EPSG::4167"
+                            }
+                        }
+                    },
+                    "positionType":"Unknown",
+                    "primary":true
+                }
+            ],
+            "externalObjectId":"3087031"
+        }
+    },
+    "entities":[
+        {
+            "class":[
+                "validation"
+            ],
+            "rel":[
+                "error"
+            ],
+            "properties":{
+                "ruleId":"AIMS: AP003",
+                "description":"Address Position is outside of the addressableobject",
+                "severity":"Info"
+            }
+        },
+        {
+            "class":[
+                "validation"
+            ],
+            "rel":[
+                "error"
+            ],
+            "properties":{
+                "ruleId":"AIMS: V0026",
+                "description":"Address is not Unique within the suburb",
+                "severity":"Warning"
+            }
+        },
+        {
+            "class":[
+                "validation"
+            ],
+            "rel":[
+                "error"
+            ],
+            "properties":{
+                "ruleId":"AIMS: V0007",
+                "description":"Road Name has been changed",
+                "severity":"Info"
+            }
+        },
+        {
+            "class":[
+                "validation"
+            ],
+            "rel":[
+                "error"
+            ],
+            "properties":{
+                "ruleId":"AIMS: V0015",
+                "description":"RoadCentreLineID and Full Road name do not match",
+                "severity":"Warning"
+            }
+        },
+        {
+            "class":[
+                "validation"
+            ],
+            "rel":[
+                "error"
+            ],
+            "properties":{
+                "ruleId":"AIMS: V0027",
+                "description":"The AddressableObjectID and ExternalID was changed",
+                "severity":"Info"
+            }
+        }
+    ]
+}

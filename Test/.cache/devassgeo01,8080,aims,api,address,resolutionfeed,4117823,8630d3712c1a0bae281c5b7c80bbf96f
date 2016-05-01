@@ -1,0 +1,131 @@
+status: 200
+content-length: 3470
+content-location: http://devassgeo01:8080/aims/api/address/resolutionfeed/4117823
+expires: Thu, 01 Jan 1970 12:00:00 NZST
+vary: Accept-Encoding
+server: Apache-Coyote/1.1
+-content-encoding: gzip
+location: http://devassgeo01:8080/aims/api/address/resolutionfeed/4117823
+cache-control: private
+date: Thu, 31 Mar 2016 00:14:15 GMT
+content-type: application/json
+-varied-accept-encoding: gzip, deflate
+
+
+{
+    "class":[
+        "addressresolution"
+    ],
+    "links":[
+        {
+            "rel":[
+                "self"
+            ],
+            "href":"http://devassgeo01:8080/aims/api/address/resolutionfeed/4117823"
+        }
+    ],
+    "actions":[
+        {
+            "name":"update",
+            "method":"PUT",
+            "href":"http://devassgeo01:8080/aims/api/address/resolutionfeed/4117823"
+        },
+        {
+            "name":"accept",
+            "method":"POST",
+            "href":"http://devassgeo01:8080/aims/api/address/resolutionfeed/4117823/accept"
+        },
+        {
+            "name":"decline",
+            "method":"POST",
+            "href":"http://devassgeo01:8080/aims/api/address/resolutionfeed/4117823/decline"
+        }
+    ],
+    "properties":{
+        "version":7189233,
+        "changeId":4117823,
+        "changeType":"Add",
+        "workflow":{
+            "submitterUserName":"test.administrator",
+            "submittedDate":"2016-03-21",
+            "reviewedUserName":"test.administrator",
+            "reviewedDate":"2016-03-21",
+            "queueStatus":"Under Review",
+            "sourceOrganisation":"e-Spatial"
+        },
+        "components":{
+            "addressType":"Road",
+            "externalAddressId":"test",
+            "externalAddressIdScheme":"test",
+            "lifecycle":"Current",
+            "unitType":"Apartment",
+            "unitValue":"1",
+            "levelType":"Floor",
+            "levelValue":"1",
+            "addressNumberPrefix":"1",
+            "addressNumber":111,
+            "addressNumberSuffix":"B",
+            "addressNumberHigh":13,
+            "roadCentrelineId":135032,
+            "roadName":"Ocean",
+            "roadType":"Road",
+            "suburbLocality":"Ohope",
+            "townCity":"Ohope"
+        },
+        "addressedObject":{
+            "objectType":"Parcel",
+            "objectName":"test",
+            "addressPositions":[
+                {
+                    "position":{
+                        "type":"Point",
+                        "coordinates":[
+                            177.0727258963339,
+                            -37.97407998363244
+                        ],
+                        "crs":{
+                            "type":"name",
+                            "properties":{
+                                "name":"urn:ogc:def:crs:EPSG::4167"
+                            }
+                        }
+                    },
+                    "positionType":"Unknown",
+                    "primary":true
+                }
+            ],
+            "externalObjectId":"4479499",
+            "externalObjectIdScheme":"test",
+            "valuationReference":"test",
+            "certificateOfTitle":"test"
+        }
+    },
+    "entities":[
+        {
+            "class":[
+                "validation"
+            ],
+            "rel":[
+                "error"
+            ],
+            "properties":{
+                "ruleId":"AIMS: V0012",
+                "description":"Address Number High is Smaller than Address Number",
+                "severity":"Warning"
+            }
+        },
+        {
+            "class":[
+                "validation"
+            ],
+            "rel":[
+                "error"
+            ],
+            "properties":{
+                "ruleId":"AIMS: V0012",
+                "description":"AddressNumberHigh cant be supplied for an Insert",
+                "severity":"Info"
+            }
+        }
+    ]
+}

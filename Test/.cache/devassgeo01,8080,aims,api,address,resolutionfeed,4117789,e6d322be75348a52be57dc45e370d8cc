@@ -1,0 +1,141 @@
+status: 200
+content-length: 3574
+content-location: http://devassgeo01:8080/aims/api/address/resolutionfeed/4117789
+expires: Thu, 01 Jan 1970 12:00:00 NZST
+vary: Accept-Encoding
+server: Apache-Coyote/1.1
+-content-encoding: gzip
+location: http://devassgeo01:8080/aims/api/address/resolutionfeed/4117789
+cache-control: private
+date: Thu, 31 Mar 2016 00:14:14 GMT
+content-type: application/json
+-varied-accept-encoding: gzip, deflate
+
+
+{
+    "class":[
+        "addressresolution"
+    ],
+    "links":[
+        {
+            "rel":[
+                "self"
+            ],
+            "href":"http://devassgeo01:8080/aims/api/address/resolutionfeed/4117789"
+        }
+    ],
+    "actions":[
+        {
+            "name":"update",
+            "method":"PUT",
+            "href":"http://devassgeo01:8080/aims/api/address/resolutionfeed/4117789"
+        },
+        {
+            "name":"accept",
+            "method":"POST",
+            "href":"http://devassgeo01:8080/aims/api/address/resolutionfeed/4117789/accept"
+        },
+        {
+            "name":"decline",
+            "method":"POST",
+            "href":"http://devassgeo01:8080/aims/api/address/resolutionfeed/4117789/decline"
+        }
+    ],
+    "properties":{
+        "version":7123925,
+        "changeId":4117789,
+        "changeType":"Add",
+        "workflow":{
+            "submitterUserName":"test.administrator",
+            "submittedDate":"2016-03-17",
+            "queueStatus":"Submitted",
+            "sourceOrganisation":"e-Spatial"
+        },
+        "components":{
+            "addressType":"Road",
+            "lifecycle":"Current",
+            "addressNumber":333,
+            "roadCentrelineId":318990,
+            "roadName":"The Terrace",
+            "suburbLocality":"Wellington Central",
+            "townCity":"Wellington"
+        },
+        "addressedObject":{
+            "objectType":"Parcel",
+            "addressPositions":[
+                {
+                    "position":{
+                        "type":"Point",
+                        "coordinates":[
+                            174.77429701531113,
+                            -41.28475012320801
+                        ],
+                        "crs":{
+                            "type":"name",
+                            "properties":{
+                                "name":"urn:ogc:def:crs:EPSG::4167"
+                            }
+                        }
+                    },
+                    "positionType":"Unknown",
+                    "primary":true
+                }
+            ],
+            "externalObjectId":"3820415"
+        }
+    },
+    "entities":[
+        {
+            "class":[
+                "validation"
+            ],
+            "rel":[
+                "error"
+            ],
+            "properties":{
+                "ruleId":"AIMS: V0026",
+                "description":"Address is not Unique on the road object",
+                "severity":"Warning"
+            }
+        },
+        {
+            "class":[
+                "validation"
+            ],
+            "rel":[
+                "error"
+            ],
+            "properties":{
+                "ruleId":"AIMS: V0027",
+                "description":"AddressableobjectID was calculated as the externalID was not supplied",
+                "severity":"Info"
+            }
+        },
+        {
+            "class":[
+                "validation"
+            ],
+            "rel":[
+                "error"
+            ],
+            "properties":{
+                "ruleId":"AIMS: V0008",
+                "description":"Suburb/Locality Name has been changed",
+                "severity":"Info"
+            }
+        },
+        {
+            "class":[
+                "validation"
+            ],
+            "rel":[
+                "error"
+            ],
+            "properties":{
+                "ruleId":"AIMS: V0009",
+                "description":"Town/City Name was not supplied so it has been calculated",
+                "severity":"Info"
+            }
+        }
+    ]
+}

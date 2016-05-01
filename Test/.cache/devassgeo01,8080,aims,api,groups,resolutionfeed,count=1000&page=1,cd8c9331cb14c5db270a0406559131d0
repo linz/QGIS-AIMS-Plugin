@@ -1,0 +1,55 @@
+status: 200
+content-length: 1026
+content-location: http://devassgeo01:8080/aims/api/groups/resolutionfeed?count=1000&page=1
+expires: Thu, 01 Jan 1970 12:00:00 NZST
+vary: Accept-Encoding
+server: Apache-Coyote/1.1
+-content-encoding: gzip
+cache-control: private
+date: Thu, 31 Mar 2016 00:13:34 GMT
+content-type: application/json
+-varied-accept-encoding: gzip, deflate
+
+
+{
+    "class":[
+        "resolutiongroup",
+        "collection"
+    ],
+    "links":[
+        {
+            "rel":[
+                "self"
+            ],
+            "href":"http://devassgeo01:8080/aims/api/groups/resolutionfeed?page=1&count=1000"
+        }
+    ],
+    "entities":[
+        {
+            "class":[
+                "resolutiongroup"
+            ],
+            "rel":[
+                "item"
+            ],
+            "links":[
+                {
+                    "rel":[
+                        "self"
+                    ],
+                    "href":"http://devassgeo01:8080/aims/api/groups/resolutionfeed/4117758"
+                }
+            ],
+            "properties":{
+                "changeGroupId":4117758,
+                "groupType":"Replace",
+                "groupStatus":"Submitted",
+                "description":"",
+                "submitterUserName":"test.administrator",
+                "submittedDate":"2016-03-17"
+            },
+            "entities":[
+            ]
+        }
+    ]
+}

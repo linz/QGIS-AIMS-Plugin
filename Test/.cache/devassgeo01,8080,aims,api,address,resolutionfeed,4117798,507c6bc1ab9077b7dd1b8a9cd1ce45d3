@@ -1,0 +1,116 @@
+status: 200
+content-length: 3226
+content-location: http://devassgeo01:8080/aims/api/address/resolutionfeed/4117798
+expires: Thu, 01 Jan 1970 12:00:00 NZST
+vary: Accept-Encoding
+server: Apache-Coyote/1.1
+-content-encoding: gzip
+location: http://devassgeo01:8080/aims/api/address/resolutionfeed/4117798
+cache-control: private
+date: Thu, 31 Mar 2016 00:14:15 GMT
+content-type: application/json
+-varied-accept-encoding: gzip, deflate
+
+
+{
+    "class":[
+        "addressresolution"
+    ],
+    "links":[
+        {
+            "rel":[
+                "self"
+            ],
+            "href":"http://devassgeo01:8080/aims/api/address/resolutionfeed/4117798"
+        }
+    ],
+    "actions":[
+        {
+            "name":"update",
+            "method":"PUT",
+            "href":"http://devassgeo01:8080/aims/api/address/resolutionfeed/4117798"
+        },
+        {
+            "name":"accept",
+            "method":"POST",
+            "href":"http://devassgeo01:8080/aims/api/address/resolutionfeed/4117798/accept"
+        },
+        {
+            "name":"decline",
+            "method":"POST",
+            "href":"http://devassgeo01:8080/aims/api/address/resolutionfeed/4117798/decline"
+        }
+    ],
+    "properties":{
+        "version":7135570,
+        "changeId":4117798,
+        "changeType":"Retire",
+        "workflow":{
+            "submitterUserName":"test.administrator",
+            "submittedDate":"2016-03-18",
+            "queueStatus":"Submitted",
+            "sourceOrganisation":"e-Spatial"
+        },
+        "components":{
+            "addressId":361205,
+            "lifecycle":"Retired"
+        },
+        "addressedObject":{
+        }
+    },
+    "entities":[
+        {
+            "class":[
+                "address"
+            ],
+            "rel":[
+                "target"
+            ],
+            "properties":{
+                "publishDate":"2015-11-25",
+                "components":{
+                    "addressId":361205,
+                    "addressType":"Road",
+                    "lifecycle":"Current",
+                    "addressNumber":346,
+                    "roadCentrelineId":85882,
+                    "roadName":"The Esplanade",
+                    "suburbLocality":"Island Bay",
+                    "townCity":"Wellington",
+                    "fullAddressNumber":"346",
+                    "fullRoadName":"The Esplanade",
+                    "fullAddress":"346 The Esplanade, Island Bay, Wellington"
+                },
+                "addressedObject":{
+                    "addressableObjectId":533407,
+                    "objectType":"Parcel",
+                    "addressPositions":[
+                        {
+                            "position":{
+                                "type":"Point",
+                                "coordinates":[
+                                    174.7675522667,
+                                    -41.3476863
+                                ],
+                                "crs":{
+                                    "type":"name",
+                                    "properties":{
+                                        "name":"urn:ogc:def:crs:EPSG::4167"
+                                    }
+                                }
+                            },
+                            "positionType":"Unknown",
+                            "primary":true
+                        }
+                    ]
+                },
+                "codes":{
+                    "suburbLocalityId":606,
+                    "townCityId":100132,
+                    "parcelId":4043233,
+                    "meshblock":"2189000"
+                }
+            }
+        }
+    ]
+}
