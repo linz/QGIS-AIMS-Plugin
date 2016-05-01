@@ -316,4 +316,8 @@ class UiDataManager(QObject):
     
     def reviewItemCoords(self, currentGroup, currentFeatureKey):
         obj = self.currentReviewFeature(currentGroup, currentFeatureKey)
-        return obj.getPosition()
+        try:
+            pos = obj.getAddressPositions()[0]._position_coordinates
+        except:
+            pos = obj.meta.entities[0].getAddressPositions()[0]._position_coordinates 
+        return pos

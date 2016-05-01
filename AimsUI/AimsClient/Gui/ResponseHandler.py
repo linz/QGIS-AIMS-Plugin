@@ -66,18 +66,8 @@ class ResponseHandler(object):
                 if resp.meta._errors['error'] and resp._queueStatus == 'Accepted':
                     self.displayWarnings(resp.meta.errors['error'])
                     return True
-#                 for warning in resp.meta.errors['critical']:
-#                     if warning['properties']['severity'] in ('Reject', 'critical'):
-#                         warnings.append(warning['properties']['description'])
-#                 # failed accepts return the bew formatted warning
-#                 if hasattr(resp, '_properties_message') and resp._queueStatus == 'Accepted': 
-#                     warnings.append('{0} (Review record: {1})'.format(resp._properties_message,resp._changeId))
-#                 if hasattr(resp, '_message') and resp._queueStatus == 'Accepted': 
-#                     warnings.append('{0} (Review record: {1})'.format(resp._message,resp._changeId))
-#                 if warnings:
-                    # feature not created in aims via API
-                else:
-                   
+        
+                else:                   
                 # else captured resp and no critical warnings
                 # precede to update self._data
                     self.updateData(resp, feedType, action)

@@ -244,7 +244,11 @@ class LayerManager(QObject):
         uilog.info(' *** DATA ***    {} review items being loaded '.format(len(rData)))
         for reviewItem in rData.values():
             fet = QgsFeature()
-            point = reviewItem.getPosition()
+            #point = reviewItem.getAddressPositions()[0]._position_coordinates
+            try:
+                point = reviewItem.getAddressPositions()[0]._position_coordinates
+            except:
+                point = reviewItem.meta.entities[0].getAddressPositions()[0]._position_coordinates 
             fet.setGeometry(QgsGeometry.fromPoint(QgsPoint(point[0], point[1])))
             fet.setAttributes([ reviewItem.getFullNumber(), reviewItem._changeType])
             provider.addFeatures([fet])
@@ -306,7 +310,11 @@ class LayerManager(QObject):
         uilog.info(' *** CANVAS ***    Adding Features') 
         for feature in featureData.itervalues():
             fet = QgsFeature()
-            point = feature.getPosition()
+            #point = feature.getAddressPositions()[0]._position_coordinates
+            try:
+                point = feature.getAddressPositions()[0]._position_coordinates
+            except:
+                point = feature.meta.entities[0].getAddressPositions()[0]._position_coordinates 
             fet.setGeometry(QgsGeometry.fromPoint(QgsPoint(point[0], point[1])))
             fet.setAttributes([getattr(feature, v[0]) if hasattr (feature, v[0]) else '' for v in Mapping.adrLayerObjMappings.values()])
             layer.dataProvider().addFeatures([fet])

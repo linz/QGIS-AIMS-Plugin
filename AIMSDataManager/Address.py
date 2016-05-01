@@ -378,17 +378,20 @@ class AddressResolution(AddressRequestFeed):
         return 'ADRR.{}.{}/{}'.format(self._ref,self.type,len(self._getEntities()))
         
     def getFullNumber(self):
+        ''' combine components to create a full address label '''
+        # in some instance we could to the API get 'full number' however this 
+        # is not included in responses hence the need for this method
+        d = {'_components_unitValue':'{}/','_components_addressNumber':'{}','_components_addressNumberHigh':'-{}','_components_addressNumberSuffix':'{}'}
         fullNumber = ''
-        if hasattr(self, '_components_unitValue'): 
-            if self._components_unitValue: fullNumber+=str(self._components_unitValue)+'/' 
-        if hasattr(self, '_components_addressNumber'): 
-            if self._components_addressNumber: fullNumber+=str(self._components_addressNumber) 
-        if hasattr(self, '_components_addressNumberHigh'): 
-            if self._components_addressNumberHigh: fullNumber+= ('-'+str(self._components_addressNumberHigh))
-        if hasattr(self, '_components_addressNumberSuffix'): 
-            if self._components_addressNumberSuffix: fullNumber+=str(self._components_addressNumberSuffix)      
+        for k,v in d.items():
+            if self._changeType in ('Update', 'Add'):
+                if hasattr(self, k):
+                    fullNumber += v.format(getattr(self, k))
+            else:
+                if hasattr(getattr(getattr(self,'meta'),'entities')[0],k):                
+                    fullNumber += v.format(getattr(getattr(getattr(self,'meta'),'entities')[0],k))
         return fullNumber
-
+                
     def _getFullNumber(self):
         d = {'unitValue':'{}/','addressNumber':'{}','addressNumberHigh':'-{}','addressNumberSuffix':'{}'}
         reduce(lambda x,y: y+getattr(c+x),d.keys())

@@ -109,6 +109,7 @@ class AimsApi(object):
         ft = FeedType.reverse[FeedType.CHANGEFEED].lower()
         url = '/'.join((self._url,et,ft,ActionType.reverse[at].lower(),TESTPATH)).rstrip('/')
         resp, content = self.h.request(url,"POST", json.dumps(payload), self._headers)
+        aimslog.debug('{0}: {1}'.format(resp['status'],content))
         return self.handleResponse(url,resp["status"], json.loads(content) )  
     
     def addressApprove(self,at,payload,cid):
