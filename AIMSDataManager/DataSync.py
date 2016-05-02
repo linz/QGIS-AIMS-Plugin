@@ -93,6 +93,7 @@ class DataSync(Observable):
         super(DataSync,self).__init__()
         threading.Thread.__init__(self)
         #thread reference, ft to AD/CF/RF, config info
+        self.start_time = time.time()
         self.updater_running = False
         self.ref,self.etft,self.ftracker,self.conf = params
         self.data_hash = {dh:0 for dh in FEEDS.values()}
@@ -134,6 +135,7 @@ class DataSync(Observable):
         self._managePage(ref)
         
     def _managePage(self,ref):
+        '''Called when a periodic thread ends, posting new data and starting a new thread in pool if required'''
         #print '{}{} finished'.format(FeedType.reverse[self.ft][:2].capitalize(),r['page'])
         aimslog.info('extracting queue for DU pool {}'.format(ref))
         #print [r['ref'] for r in self.pool]
@@ -149,7 +151,7 @@ class DataSync(Observable):
             self.newaddr += alist
             nextpage = max([r2['page'] for r2 in self.pool])+1
             del self.duinst[ref]
-            aimslog.info('TIME {} {}'.format(ref,time.time()-r['time']))
+            aimslog.debug('PAGE TIME {} {}s'.format(ref,time.time()-r['time']))
             #print 'POOLTIME {} {}'.format(ref,time.time()-r['time'])
             self.pool.remove(r)
             #if N>0 features return, spawn another thread
@@ -170,6 +172,7 @@ class DataSync(Observable):
         if len(self.pool)==0:
             self.syncFeeds(self.newaddr)#syncfeeds does notify DM
             self.managePage((None,self.lastpage))
+            aimslog.debug('FULL TIME {} {}s'.format(ref,time.time()-self.start_time))
             self.updater_running = False
             #print 'POOLCLOSE',ref,time.strftime('%Y-%M-%d %H:%m:%S')
 
