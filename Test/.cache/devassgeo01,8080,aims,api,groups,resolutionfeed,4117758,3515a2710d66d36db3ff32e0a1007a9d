@@ -1,0 +1,55 @@
+status: 200
+content-length: 1048
+content-location: http://devassgeo01:8080/aims/api/groups/resolutionfeed/4117758
+expires: Thu, 01 Jan 1970 12:00:00 NZST
+vary: Accept-Encoding
+server: Apache-Coyote/1.1
+-content-encoding: gzip
+location: http://devassgeo01:8080/aims/api/groups/resolutionfeed/4117758
+cache-control: private
+date: Thu, 31 Mar 2016 00:13:34 GMT
+content-type: application/json
+-varied-accept-encoding: gzip, deflate
+
+
+{
+    "class":[
+        "resolutiongroup"
+    ],
+    "links":[
+        {
+            "rel":[
+                "self"
+            ],
+            "href":"http://devassgeo01:8080/aims/api/groups/resolutionfeed/4117758"
+        }
+    ],
+    "actions":[
+        {
+            "name":"update",
+            "method":"PUT",
+            "href":"http://devassgeo01:8080/aims/api/groups/resolutionfeed/4117758"
+        },
+        {
+            "name":"accept",
+            "method":"POST",
+            "href":"http://devassgeo01:8080/aims/api/groups/resolutionfeed/4117758/accept"
+        },
+        {
+            "name":"decline",
+            "method":"POST",
+            "href":"http://devassgeo01:8080/aims/api/groups/resolutionfeed/4117758/decline"
+        }
+    ],
+    "properties":{
+        "version":7193153,
+        "changeGroupId":4117758,
+        "groupType":"Replace",
+        "groupStatus":"Submitted",
+        "description":"",
+        "submitterUserName":"test.administrator",
+        "submittedDate":"2016-03-17"
+    },
+    "entities":[
+    ]
+}

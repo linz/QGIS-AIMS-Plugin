@@ -1,0 +1,142 @@
+status: 200
+content-length: 3581
+content-location: http://devassgeo01:8080/aims/api/address/resolutionfeed/4117778
+expires: Thu, 01 Jan 1970 12:00:00 NZST
+vary: Accept-Encoding
+server: Apache-Coyote/1.1
+-content-encoding: gzip
+location: http://devassgeo01:8080/aims/api/address/resolutionfeed/4117778
+cache-control: private
+date: Thu, 31 Mar 2016 00:14:13 GMT
+content-type: application/json
+-varied-accept-encoding: gzip, deflate
+
+
+{
+    "class":[
+        "addressresolution"
+    ],
+    "links":[
+        {
+            "rel":[
+                "self"
+            ],
+            "href":"http://devassgeo01:8080/aims/api/address/resolutionfeed/4117778"
+        }
+    ],
+    "actions":[
+        {
+            "name":"update",
+            "method":"PUT",
+            "href":"http://devassgeo01:8080/aims/api/address/resolutionfeed/4117778"
+        },
+        {
+            "name":"accept",
+            "method":"POST",
+            "href":"http://devassgeo01:8080/aims/api/address/resolutionfeed/4117778/accept"
+        },
+        {
+            "name":"decline",
+            "method":"POST",
+            "href":"http://devassgeo01:8080/aims/api/address/resolutionfeed/4117778/decline"
+        }
+    ],
+    "properties":{
+        "version":7123903,
+        "changeId":4117778,
+        "changeType":"Add",
+        "workflow":{
+            "submitterUserName":"test.administrator",
+            "submittedDate":"2016-03-17",
+            "queueStatus":"Submitted",
+            "sourceOrganisation":"e-Spatial"
+        },
+        "components":{
+            "addressType":"Road",
+            "lifecycle":"Current",
+            "addressNumber":33,
+            "roadCentrelineId":135032,
+            "roadName":"Ocean",
+            "roadType":"Road",
+            "suburbLocality":"Ohope",
+            "townCity":"Ohope"
+        },
+        "addressedObject":{
+            "objectType":"Parcel",
+            "addressPositions":[
+                {
+                    "position":{
+                        "type":"Point",
+                        "coordinates":[
+                            177.07209309897067,
+                            -37.973878322934276
+                        ],
+                        "crs":{
+                            "type":"name",
+                            "properties":{
+                                "name":"urn:ogc:def:crs:EPSG::4167"
+                            }
+                        }
+                    },
+                    "positionType":"Unknown",
+                    "primary":true
+                }
+            ],
+            "externalObjectId":"4359844"
+        }
+    },
+    "entities":[
+        {
+            "class":[
+                "validation"
+            ],
+            "rel":[
+                "error"
+            ],
+            "properties":{
+                "ruleId":"AIMS: V0026",
+                "description":"Address is not Unique on the road object",
+                "severity":"Warning"
+            }
+        },
+        {
+            "class":[
+                "validation"
+            ],
+            "rel":[
+                "error"
+            ],
+            "properties":{
+                "ruleId":"AIMS: V0027",
+                "description":"AddressableobjectID was calculated as the externalID was not supplied",
+                "severity":"Info"
+            }
+        },
+        {
+            "class":[
+                "validation"
+            ],
+            "rel":[
+                "error"
+            ],
+            "properties":{
+                "ruleId":"AIMS: V0008",
+                "description":"Suburb/Locality Name has been changed",
+                "severity":"Info"
+            }
+        },
+        {
+            "class":[
+                "validation"
+            ],
+            "rel":[
+                "error"
+            ],
+            "properties":{
+                "ruleId":"AIMS: V0009",
+                "description":"Town/City Name was not supplied so it has been calculated",
+                "severity":"Info"
+            }
+        }
+    ]
+}

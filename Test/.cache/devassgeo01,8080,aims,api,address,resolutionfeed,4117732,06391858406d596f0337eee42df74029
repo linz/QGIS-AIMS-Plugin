@@ -1,0 +1,120 @@
+status: 200
+content-length: 3075
+content-location: http://devassgeo01:8080/aims/api/address/resolutionfeed/4117732
+expires: Thu, 01 Jan 1970 12:00:00 NZST
+vary: Accept-Encoding
+server: Apache-Coyote/1.1
+-content-encoding: gzip
+location: http://devassgeo01:8080/aims/api/address/resolutionfeed/4117732
+cache-control: private
+date: Thu, 31 Mar 2016 00:14:12 GMT
+content-type: application/json
+-varied-accept-encoding: gzip, deflate
+
+
+{
+    "class":[
+        "addressresolution"
+    ],
+    "links":[
+        {
+            "rel":[
+                "self"
+            ],
+            "href":"http://devassgeo01:8080/aims/api/address/resolutionfeed/4117732"
+        }
+    ],
+    "actions":[
+        {
+            "name":"update",
+            "method":"PUT",
+            "href":"http://devassgeo01:8080/aims/api/address/resolutionfeed/4117732"
+        },
+        {
+            "name":"accept",
+            "method":"POST",
+            "href":"http://devassgeo01:8080/aims/api/address/resolutionfeed/4117732/accept"
+        },
+        {
+            "name":"decline",
+            "method":"POST",
+            "href":"http://devassgeo01:8080/aims/api/address/resolutionfeed/4117732/decline"
+        }
+    ],
+    "properties":{
+        "version":7189207,
+        "changeId":4117732,
+        "changeType":"Add",
+        "workflow":{
+            "submitterUserName":"test.administrator",
+            "submittedDate":"2016-03-11",
+            "reviewedUserName":"test.administrator",
+            "reviewedDate":"2016-03-21",
+            "queueStatus":"Under Review",
+            "sourceOrganisation":"e-Spatial"
+        },
+        "components":{
+            "addressType":"Road",
+            "lifecycle":"Current",
+            "addressNumber":8,
+            "addressNumberSuffix":"A",
+            "addressNumberHigh":6,
+            "roadCentrelineId":88114,
+            "roadName":"Gilmer",
+            "roadType":"Terrace",
+            "suburbLocality":"Wellington Central",
+            "townCity":"Wellington"
+        },
+        "addressedObject":{
+            "objectType":"Parcel",
+            "addressPositions":[
+                {
+                    "position":{
+                        "type":"Point",
+                        "coordinates":[
+                            174.77467703284526,
+                            -41.2854318516329
+                        ],
+                        "crs":{
+                            "type":"name",
+                            "properties":{
+                                "name":"urn:ogc:def:crs:EPSG::4167"
+                            }
+                        }
+                    },
+                    "positionType":"Unknown",
+                    "primary":true
+                }
+            ],
+            "externalObjectId":"6925534"
+        }
+    },
+    "entities":[
+        {
+            "class":[
+                "validation"
+            ],
+            "rel":[
+                "error"
+            ],
+            "properties":{
+                "ruleId":"AIMS: V0012",
+                "description":"Address Number High is Smaller than Address Number",
+                "severity":"Warning"
+            }
+        },
+        {
+            "class":[
+                "validation"
+            ],
+            "rel":[
+                "error"
+            ],
+            "properties":{
+                "ruleId":"AIMS: V0012",
+                "description":"AddressNumberHigh cant be supplied for an Insert",
+                "severity":"Info"
+            }
+        }
+    ]
+}

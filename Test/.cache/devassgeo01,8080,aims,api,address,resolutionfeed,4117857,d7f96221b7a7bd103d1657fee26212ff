@@ -1,0 +1,107 @@
+status: 200
+content-length: 2693
+content-location: http://devassgeo01:8080/aims/api/address/resolutionfeed/4117857
+expires: Thu, 01 Jan 1970 12:00:00 NZST
+vary: Accept-Encoding
+server: Apache-Coyote/1.1
+-content-encoding: gzip
+location: http://devassgeo01:8080/aims/api/address/resolutionfeed/4117857
+cache-control: private
+date: Thu, 31 Mar 2016 00:14:17 GMT
+content-type: application/json
+-varied-accept-encoding: gzip, deflate
+
+
+{
+    "class":[
+        "addressresolution"
+    ],
+    "links":[
+        {
+            "rel":[
+                "self"
+            ],
+            "href":"http://devassgeo01:8080/aims/api/address/resolutionfeed/4117857"
+        }
+    ],
+    "actions":[
+        {
+            "name":"update",
+            "method":"PUT",
+            "href":"http://devassgeo01:8080/aims/api/address/resolutionfeed/4117857"
+        },
+        {
+            "name":"accept",
+            "method":"POST",
+            "href":"http://devassgeo01:8080/aims/api/address/resolutionfeed/4117857/accept"
+        },
+        {
+            "name":"decline",
+            "method":"POST",
+            "href":"http://devassgeo01:8080/aims/api/address/resolutionfeed/4117857/decline"
+        }
+    ],
+    "properties":{
+        "version":7193167,
+        "changeId":4117857,
+        "changeType":"Update",
+        "workflow":{
+            "submitterUserName":"test.administrator",
+            "submittedDate":"2016-03-29",
+            "queueStatus":"Submitted",
+            "sourceOrganisation":"e-Spatial",
+            "sourceReason":"new note"
+        },
+        "components":{
+            "addressId":854705,
+            "addressType":"Road",
+            "lifecycle":"Current",
+            "unitValue":"1",
+            "addressNumber":2,
+            "addressNumberSuffix":"A",
+            "roadCentrelineId":135037,
+            "roadName":"Tuati",
+            "roadType":"Street",
+            "suburbLocality":"Ohope",
+            "townCity":"Ohope"
+        },
+        "addressedObject":{
+            "objectType":"Parcel",
+            "addressPositions":[
+                {
+                    "position":{
+                        "type":"Point",
+                        "coordinates":[
+                            177.0767130333,
+                            -37.9759863667
+                        ],
+                        "crs":{
+                            "type":"name",
+                            "properties":{
+                                "name":"urn:ogc:def:crs:EPSG::4167"
+                            }
+                        }
+                    },
+                    "positionType":"Unknown",
+                    "primary":true
+                }
+            ],
+            "externalObjectId":"4320667"
+        }
+    },
+    "entities":[
+        {
+            "class":[
+                "validation"
+            ],
+            "rel":[
+                "error"
+            ],
+            "properties":{
+                "ruleId":"AIMS: V0027",
+                "description":"AddressableobjectID was calculated as the externalID was not supplied",
+                "severity":"Info"
+            }
+        }
+    ]
+}

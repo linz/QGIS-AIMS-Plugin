@@ -229,7 +229,11 @@ class DataUpdaterDRC(DataUpdater):
         '''group change action on the CF'''
         aimslog.info('DUr.{} {} - Adr-Grp{}'.format(self.ref,ActionType.reverse[self.at],self.agobj))
         err,resp = self.action(self.at,self.payload,self.identifier)
+        featurelist = []
         feature = self.build(model=resp['properties'])
+        for e in resp['entities']:
+            featurelist.append(self._populateEntity(e))
+        feature._setEntities(featurelist)
         #feature = self.processPage(feature,self.etft)
         #print 'feature',feature
         if err: feature.setErrors(err)
