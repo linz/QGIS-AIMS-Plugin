@@ -39,7 +39,7 @@ class LogWrap(object):
     #simple ligfile time stamp decorator 
     @classmethod
     def timediff(cls,func=None, prefix=''):
-        msg = 'func wrap time {} {}'.format(prefix,func.__name__)        
+        msg = 'FUNC TIME {} {} (wrap)'.format(prefix,func)
         if func is None:
             return partial(cls.timediff)
 
@@ -48,7 +48,7 @@ class LogWrap(object):
             t1 = time.time()
             res = func(*args, **kwargs)
             tdif = time.time()-t1
-            aimslog.info(msg+' {}'.format(tdif))
+            aimslog.debug(msg+' {}s'.format(tdif))
             return res
         return wrapper
     

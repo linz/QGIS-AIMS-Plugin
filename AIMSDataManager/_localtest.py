@@ -60,10 +60,10 @@ class LocalTest():
         print 'addr list before feed checkin',[len(l) for l in listofaddresses.values()]
         
         #TEST RESTART
-        #self.testrestartCR(dm)
+        self.testrestartCR(dm)
         
         #TEST SHIFT
-        #self.testfeatureshift(dm)
+        self.testfeatureshift(dm)
         
         # TEST ACF
         self.testchangefeedAUR(dm,af)
@@ -92,7 +92,7 @@ class LocalTest():
     
         aimslog.info('*** Main SHIFT '+str(time.clock()))
         dm.setbb(sw=(174.76918,-41.28515), ne=(174.79509,-41.26491))
-        time.sleep(10)
+        #time.sleep(60)
         resp = None
         while not self.flag: 
             time.sleep(5)   
@@ -100,7 +100,7 @@ class LocalTest():
             r1,r2 = self.testresp(dm) 
             
         dm.setbb(sw=(174.76928,-41.28515), ne=(174.79519,-41.26481))
-        time.sleep(10)
+        time.sleep(60)
         resp = None
         while not self.flag: 
             time.sleep(5)   
@@ -108,7 +108,7 @@ class LocalTest():
             r1,r2 = self.testresp(dm) 
             
         dm.setbb(sw=(174.76928,-41.28515), ne=(174.79529,-41.26471))
-        time.sleep(10)
+        time.sleep(60)
         resp = None
         while not self.flag: 
             time.sleep(5)   
