@@ -14,7 +14,7 @@ import time
 import sys # temp
        
 
-class ChangeQueueWidget( Ui_EditFeatureDialog, QWidget ):
+class EditFeatureWidget( Ui_EditFeatureDialog, QWidget ):
 
     def __init__(self, controller = None):
         QWidget.__init__( self )

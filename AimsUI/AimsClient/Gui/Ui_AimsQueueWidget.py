@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'AimsUI/AimsClient/Gui/Ui_AimsQueueWidget.ui'
 #
-# Created: Sat Apr 23 14:05:55 2016
+# Created: Tue May  3 13:01:59 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -31,7 +31,7 @@ class Ui_AimsQueueWidget(object):
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         self.tabWidget = QtGui.QTabWidget(AimsQueueWidget)
         self.tabWidget.setObjectName(_fromUtf8("tabWidget"))
-        self.uEditFeatureTab = ChangeQueueWidget()
+        self.uEditFeatureTab = EditFeatureWidget()
         self.uEditFeatureTab.setObjectName(_fromUtf8("uEditFeatureTab"))
         self.tabWidget.addTab(self.uEditFeatureTab, _fromUtf8(""))
         self.uResolutionTab = ReviewQueueWidget()
@@ -57,4 +57,4 @@ class Ui_AimsQueueWidget(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.uResolutionTab), _translate("AimsQueueWidget", "Review", None))
 
 from ReviewQueueWidget import ReviewQueueWidget
-from ChangeQueueWidget import ChangeQueueWidget
+from EditFeatureWidget import EditFeatureWidget

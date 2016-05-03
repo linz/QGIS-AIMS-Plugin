@@ -11,6 +11,7 @@
 ################################################################################
 from PyQt4.QtCore import *
 from qgis.core import QgsRectangle
+from qgis.gui import QgsMessageBar
 import time
 
 from AIMSDataManager.DataManager import DataManager
@@ -30,9 +31,7 @@ class UiDataManager(QObject):
     def __init__(self, iface, controller):
         QObject.__init__(self)
         self._controller = controller
-        with DataManager() as self.dm:
-            self.dm.registermain(self)
-        self.uptdFData = None
+        self._iface = iface
         self._observers = []
         self.data = {   FEEDS['AF']:{},
                         FEEDS['AC']:{},
@@ -40,16 +39,22 @@ class UiDataManager(QObject):
                         FEEDS['GC']:{},
                         FEEDS['GR']:{}
                     }
-        
-        self.resourceLock = False 
+
         self.groups = ('Replace', 'AddLineage', 'ParcelReferenceData') # more to come...
         
         self.rDataChangedSignal.connect(self._controller.rDataChanged)
     
+    def start (self):
+        ''' start the Data Manager running only once
+            the user toggle the plugin button'''
+        with DataManager() as self.dm:
+            self.dm.registermain(self)   
+        self._iface.messageBar().pushMessage("Fetching AIMS Review Data...", level=QgsMessageBar.INFO, duration=10)
+        
     ### Observer Methods ###
     def register(self, observer):
         self._observers.append(observer)
-         
+        
     def observe(self,observable,*args,**kwargs):
         uilog.info('*** NOTIFY ***     Notify A[{}]'.format(observable))
         self.setData(args,observable)
@@ -58,6 +63,9 @@ class UiDataManager(QObject):
                 observer.notify(observable) # can filter further reviewqueue does not need AF
             
     def exlopdeGroup(self):
+        ''' key groups and single addresses against each group
+            resultant format == 
+            {(groupId, groupObj): {addId: addObj, addId: addObj}, (gro...}} '''
         gDict = {}
         for gId, gFeats in self.data[FEEDS['GR']].items():
             fDict = {}
@@ -75,6 +83,9 @@ class UiDataManager(QObject):
         if feedtype == FEEDS['GR']: return '_changeGroupId'
         
     def keyData(self, listofFeatures, feedtype):
+        ''' create dict whereby each aims obj is a
+            value and its Id as defined by the IdProperyy
+            method its Key '''
         if listofFeatures: # redundant? 
             li = []
             keyId = self.idProperty(feedtype)
@@ -85,10 +96,17 @@ class UiDataManager(QObject):
             # key group objects
             self.exlopdeGroup()
 
-    def setData(self, dataRefresh, FeedType):        
+    def setData(self, dataRefresh, FeedType):
+        ''' method receives new data from the
+            data manger via its observer pattern
+            and then starts the data update process '''        
         self.keyData(dataRefresh, FeedType)
 
     def updateRdata(self, respFeature, feedType):
+        ''' Between dm threaded interval data deliveries, temp
+            AIMS review objects are created or render irrelevant 
+            by user actions. This method updates the main data (self._data)
+            to reflect these chnages. '''
         # remove from data
         if respFeature._queueStatus in ('Declined', 'Accepted'):
             del self.data[FEEDS['AR']][respFeature._changeId]
@@ -99,12 +117,19 @@ class UiDataManager(QObject):
         self.rDataChangedSignal.emit()
         
     def updateFdata(self, respFeature):
+        ''' Between dm threaded interval data deliveries, temp
+            AIMS feature objects are created or render irrelevant 
+            by user actions. This method updates the main data (self._data)
+            to reflect these chnages. '''
         # this is pretty ineffcient building the entire layer at the same time
         # ideally i should add an "add" feature and update "moves" and "updates"
         self.data[FEEDS['AF']][respFeature._components_addressId] = respFeature
         self._controller._layerManager.getAimsFeatures() # temp, will to switch to signal
 
     def setBbox(self, sw, ne):
+        ''' intermediate method, passes
+            bboxes from layer manager to the DM
+        '''
          #need to ignore -185.7732089700440667,-188.0621082638667190 : 187.9902399660660706,106.1221897458003127
         #logging
         uilog.info('*** BBOX ***   New bbox passed to dm.setbb')
@@ -118,11 +143,6 @@ class UiDataManager(QObject):
     def featureData(self):
         ''' update data and return AIMS features '''
         return self.data.get(FEEDS['AF'])
-        
-    def restartDm(self, feedType):
-        uilog.info('*** RESTART ***    request sent to restart feed: {0}'.format(feedType))
-        self.dm.restart(feedType)
-        uilog.info('*** RESTART ***    {0} restarted'.format(feedType))
     
     def addAddress(self, feature, respId = None):
         uilog.info('obj with respId: {0} passed to convenience method "{1}" '.format(respId, 'addAddress'))
@@ -156,6 +176,7 @@ class UiDataManager(QObject):
         self.dm.repairAddress(feature, respId)
     
     #--- Groups DM Methods ---
+    
     def openGroup(self):
         self.dm.replaceGroup()
         
@@ -302,9 +323,7 @@ class UiDataManager(QObject):
         elif feedtype == FEEDS['GR']:
             for k in self.data.get(feedtype):
                 if objkey == k[0]: return k[1]
-                #need to handle key errors?
-                # raise, 'Where did you get that key from?'
-                
+                 
     def currentReviewFeature(self, currentGroup, currentFeatureKey):
         ''' return aims feautre object as per supplied data key(s) '''
         if currentGroup[1] in ('Replace', 'AddLineage', 'ParcelReferenceData' ):
@@ -315,9 +334,12 @@ class UiDataManager(QObject):
             return self.data.get(FEEDS['AR']).get(currentFeatureKey)
     
     def reviewItemCoords(self, currentGroup, currentFeatureKey):
+        ''' return the coords of a review obj'''
         obj = self.currentReviewFeature(currentGroup, currentFeatureKey)
-        try:
-            pos = obj.getAddressPositions()[0]._position_coordinates
-        except:
+        
+        if obj._changeType not in ('Update', 'Add'):
             pos = obj.meta.entities[0].getAddressPositions()[0]._position_coordinates 
+        else:
+            pos = obj.getAddressPositions()[0]._position_coordinates
+
         return pos

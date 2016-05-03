@@ -14,8 +14,6 @@ from AIMSDataManager.Address import Position
 
 class UpdateAddressTool(QgsMapToolIdentify):
 
-    tolerance=5
-
     def __init__(self, iface, layerManager, controller):
         QgsMapToolIdentify.__init__(self, iface.mapCanvas())
         self._iface = iface

@@ -45,7 +45,8 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.currentFeatureKey = None
         self.currentAdrCoord = [0,0]
         self.feature = None
-        self.currentGroup = () #(id, type)
+        self.currentGroup = (0,0) #(id, type)
+        self.altSelectionId = ()
         self._marker = None
         #self.resourceLock = False 
         
@@ -93,23 +94,21 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self._controller = controller
     
     def notify(self, feedType):
-        if feedType == FEEDS['AF']: return
-        uilog.info('*** NOTIFY ***     Notify A[{}]'.format(feedType))
-        #if self.resourceLock: return 
-        #self.resourceLock = True
         ''' observer pattern, registered with uidm '''
+        if feedType == FEEDS['AF']: return     
+        uilog.info('*** NOTIFY ***     Notify A[{}]'.format(feedType))
         self.refreshData()
-        #self.resourceLock = False
+
     
     def setMarker(self, coords):
         ''' add marker to canvas via common uiUitility highlight methods '''
         if self._controller._highlightaction.isChecked():
             self._marker = UiUtility.highlight(self._iface, QgsPoint(coords[0],coords[1]))
         
-    def refreshData(self): # < -- ALSO NEED TO REFRESH THE FILTER
+    def refreshData(self):
         ''' update Review Queue data '''
         # request new data
-        self.reviewData = self.uidm.formatTableData((FEEDS['AR'],FEEDS['GR']))# FEEDS['GR']))
+        self.reviewData = self.uidm.formatTableData((FEEDS['GR'],FEEDS['AR']))# FEEDS['GR']))
         self.groupModel.beginResetModel()
         self.groupModel.refreshData(self.reviewData)        
         self.groupModel.endResetModel()
@@ -117,8 +116,21 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.featureModel.beginResetModel()
         self.featureModel.refreshData(self.reviewData)
         self.featureModel.endResetModel()
-        self.popUserCombo() # causing errors
-    
+        self.popUserCombo() # causing errors 
+        
+        if self.reviewData:
+            self.reinstateSelection()
+
+    def reinstateSelection(self):
+        ''' select group item based on the last selected
+            or alternative address '''
+        matchedIndex = self.groupModel.findfield('{}'.format(self.currentGroup[0]))
+        if matchedIndex.isValid is False:
+            matchedIndex = self.groupModel.findfield('{}'.format(self.alternativeGroup))            
+        self.groupModel.setKey(matchedIndex.row())
+        self.groupTableView.selectRow(matchedIndex.row())
+        self.featuresTableView.selectRow(0)   
+                                    
     def singleReviewObj(self, feedType, objKey):
         ''' return either single or group
             review object as per supplied key '''
@@ -132,7 +144,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
             
     def featureSelected(self, row):
         ''' triggered when a new feature row is selected '''
-        if self.currentGroup:
+        if self.currentGroup[0]:
             self._iface.mapCanvas().scene().removeItem(self._marker)    
             self.currentFeatureKey = self.featureModel.listClicked(row)   
             self.uQueueEditor.currentFeatureToUi(self.currentReviewFeature())
@@ -143,6 +155,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         proxy_index = self.groupTableView.selectionModel().currentIndex()
         sourceIndex = self._groupProxyModel.mapToSource(proxy_index)
         self.currentGroup = self.groupModel.listClicked(sourceIndex.row())
+        self.altSelectionId = self.groupModel.altSelectionId(sourceIndex.row())
         self.featuresTableView.selectRow(0)
    
     def userFilterChanged(self, index):
@@ -214,10 +227,12 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
     def decline(self):
         ''' Decline review item '''
         self.reviewResolution('decline')
-    
+        self.reinstateSelection()
+        
     def accept(self):
         ''' Accept review item '''
         self.reviewResolution('accept')
+        self.reinstateSelection()
         
     def display(self):
         ''' Zoom to Review Items Coordinates '''
