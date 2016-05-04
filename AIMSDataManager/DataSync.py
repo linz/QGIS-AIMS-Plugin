@@ -45,12 +45,18 @@ FPATH = os.path.join('..',os.path.dirname(__file__)) #base of local datastorage
 
 pool_lock = threading.Lock()
 
+class IncorrectlyConfiguredRequestClientException(Exception):pass
+
+
 class DataRequestChannel(Observable):    
     '''Request response channel for user initiated actions eg add decline retire etc. One for each feed class, client, whose pIQ method is accessed'''
     def __init__(self,client):
         threading.Thread.__init__(self)
-        self.client = client
-        self._stop = threading.Event()
+        if hasattr(client,'etft') and hasattr(client,'inq') and hasattr(client,'processInputQueue'):
+            self.client = client
+            self._stop = threading.Event()
+        else:
+            raise IncorrectlyConfiguredRequestClientException('Require client with [ etft,inq,pIQ() ] attributes')
         
     def run(self):
         '''Continual loop looking for input queue requests and running periodic updates'''
@@ -107,8 +113,6 @@ class DataSync(Observable):
     def setup(self,sw=None,ne=None):
         '''Parameter setup'''
         self.sw,self.ne = sw,ne
-        
-
 
     def run(self):
         '''Continual loop looking for input queue requests and running periodic updates'''
@@ -116,7 +120,6 @@ class DataSync(Observable):
             if not self.updater_running: self.fetchFeedUpdates(self.ftracker['threads'])
             time.sleep(self.ftracker['interval'])
             
-    
     def stop(self):
         #brutal stop on du threads
         for du in self.duinst.values():
@@ -255,9 +258,15 @@ class DataSyncFeeds(DataSync):
     def __init__(self,params,queues):
         '''Create an additional DRC thread to watch the feed input queue'''
         super(DataSyncFeeds,self).__init__(params,queues)
-        self.drc = DataRequestChannel(self)
-        self.drc.setName('DRC.{}'.format(params[0]))
-        self.drc.setDaemon(True)
+        self.drc = DataSyncFeeds.setupDRC(self,params[0])
+        
+    @staticmethod
+    def setupDRC(client,p0):
+        '''Set up the request listener, requires minimal version of datasync client'''
+        drc = DataRequestChannel(client)
+        drc.setName('DRC.{}'.format(p0))
+        drc.setDaemon(True)
+        return drc
         
     def run(self):
         '''Start the DRC thread and then start self (doing periodic updates) using the super run'''
