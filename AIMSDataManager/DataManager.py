@@ -82,12 +82,16 @@ class DataManager(Observable):
         
     def _checkDS(self,etft):
         '''Starts a sync thread unless its features with a zero bbox'''
-        if (etft == FEEDS['AF'] and self.persist.coords['sw'] == SWZERO and self.persist.coords['ne'] == NEZERO) or int(self.persist.tracker[etft]['threads'])==0:                
+        if (etft == FEEDS['AF'] and self.persist.coords['sw'] == SWZERO and self.persist.coords['ne'] == NEZERO):# or int(self.persist.tracker[etft]['threads'])==0:                
             self.ds[etft] = None
         else:
             self.ds[etft] = self._spawnDS(etft,self.dsr[etft])
-            self.ds[etft].register(self)         
-            self.ds[etft].start()
+            self.ds[etft].register(self)
+            #HACK to start DRC even if feed thread count is zero
+            if int(self.persist.tracker[etft]['threads'])>0:
+                self.ds[etft].start()
+            else:
+                self.ds[etft].drc.start()
             
         
     def _spawnDS(self,etft,feedclass): 
@@ -304,9 +308,9 @@ class Persistence():
             #default tracker, gets overwrittens
             #page = (lowest page fetched, highest page number fetched)
             self.tracker[FEEDS['AF']] = {'page':[1,1],    'index':1,'threads':2,'interval':30}    
-            self.tracker[FEEDS['AC']] = {'page':[NPV,NPV],'index':1,'threads':1,'interval':125000}  
+            self.tracker[FEEDS['AC']] = {'page':[NPV,NPV],'index':1,'threads':1,'interval':125}  
             self.tracker[FEEDS['AR']] = {'page':[1,1],    'index':1,'threads':1,'interval':10} 
-            self.tracker[FEEDS['GC']] = {'page':[1,1],    'index':1,'threads':1,'interval':130000}  
+            self.tracker[FEEDS['GC']] = {'page':[1,1],    'index':1,'threads':1,'interval':130}  
             self.tracker[FEEDS['GR']] = {'page':[1,1],    'index':1,'threads':1,'interval':55}             
             
             self.write() 
@@ -338,4 +342,3 @@ class Persistence():
 
 
 refsnap = None
-
