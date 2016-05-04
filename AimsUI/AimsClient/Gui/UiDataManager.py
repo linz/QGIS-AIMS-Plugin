@@ -139,7 +139,29 @@ class UiDataManager(QObject):
     def reviewData(self):
         ''' return (single and group) review data '''
         return self.data.get(FEEDS['AR'])
+    
+    def groupReviewData(self):
+        ''' return (single and group) review data '''
+        return self.data.get(FEEDS['GR'])
+        
+    def combinedReviewData(self):
+        ''' de-nests group review data and combines
+            with address review data '''
+#         combinedData = {}
+#         for k ,v in self.groupReviewData().items():
+#             combinedData.update(v)
+#         return combinedData.update(self.reviewData())
 
+        
+        groupData = self.groupReviewData()
+        addData = self.reviewData()
+        combinedData = {}
+        combinedData.update(addData)
+        if not groupData: return addData 
+        for k ,v in groupData.items():
+            combinedData.update(v)
+        return combinedData
+        
     def featureData(self):
         ''' update data and return AIMS features '''
         return self.data.get(FEEDS['AF'])

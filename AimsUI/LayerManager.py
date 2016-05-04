@@ -251,7 +251,7 @@ class LayerManager(QObject):
             return
         provider = layer.dataProvider()
         self.removeFeatures(layer)
-        rData = self._controller.uidm.reviewData() # moved out below of iteration to server log 
+        rData = self._controller.uidm.combinedReviewData() # moved out below of iteration to server log 
         uilog.info(' *** DATA ***    {} review items being loaded '.format(len(rData)))
         for reviewItem in rData.values():
             fet = QgsFeature()
@@ -290,7 +290,7 @@ class LayerManager(QObject):
         uilog.info('*** NOTIFY ***     Notify A[{}]'.format(feedType))
         if feedType == FEEDS['AF']:
             self.getAimsFeatures()
-        elif feedType == FEEDS['AR']:
+        elif feedType == FEEDS['AR'] or feedType == FEEDS['GR']:
             self.updateReviewLayer()
 
         

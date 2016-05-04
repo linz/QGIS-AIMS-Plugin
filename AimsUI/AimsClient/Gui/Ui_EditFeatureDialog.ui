@@ -335,6 +335,43 @@
            </property>
           </widget>
          </item>
+         <item row="9" column="1">
+          <layout class="QHBoxLayout" name="horizontalLayout_12">
+           <item>
+            <widget class="QLineEdit" name="uRclId">
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="uPersistRcl">
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="uGetRclToolButton">
+             <property name="minimumSize">
+              <size>
+               <width>24</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>24</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>&gt;</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
          <item row="10" column="0">
           <widget class="QLabel" name="roadPrefixLabel_5">
            <property name="text">
@@ -488,6 +525,16 @@
            </property>
           </widget>
          </item>
+         <item row="20" column="0">
+          <widget class="QLabel" name="label_49">
+           <property name="text">
+            <string>Position Type:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="20" column="1">
+          <widget class="QComboBox" name="uPositionType"/>
+         </item>
          <item row="21" column="0">
           <widget class="QLabel" name="externalObjectIdLabel_5">
            <property name="text">
@@ -564,7 +611,31 @@
            </property>
           </widget>
          </item>
-         <item row="27" column="1">
+         <item row="26" column="0">
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>Meshblock Override:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="26" column="1">
+          <widget class="QLineEdit" name="uMblkOverride"/>
+         </item>
+         <item row="27" column="0" colspan="2">
+          <widget class="Line" name="line_16">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="28" column="0">
+          <widget class="QLabel" name="label_48">
+           <property name="text">
+            <string>Notes:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="28" column="1">
           <widget class="QPlainTextEdit" name="uNotes">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -589,55 +660,6 @@
              <width>0</width>
              <height>0</height>
             </size>
-           </property>
-          </widget>
-         </item>
-         <item row="26" column="0" colspan="2">
-          <widget class="Line" name="line_16">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-          </widget>
-         </item>
-         <item row="27" column="0">
-          <widget class="QLabel" name="label_48">
-           <property name="text">
-            <string>Notes:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="9" column="1">
-          <layout class="QHBoxLayout" name="horizontalLayout_12">
-           <item>
-            <widget class="QLineEdit" name="uRclId">
-             <property name="readOnly">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QCheckBox" name="uPersistRcl">
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QToolButton" name="uGetRclToolButton">
-             <property name="text">
-              <string>&gt;</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item row="20" column="1">
-          <widget class="QComboBox" name="uPositionType"/>
-         </item>
-         <item row="20" column="0">
-          <widget class="QLabel" name="label_49">
-           <property name="text">
-            <string>Position Type:</string>
            </property>
           </widget>
          </item>

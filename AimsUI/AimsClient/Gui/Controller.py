@@ -30,6 +30,7 @@ from AimsUI.CreateNewAddressTool import CreateNewAddressTool
 from AimsUI.UpdateAddressTool import UpdateAddressTool
 from AimsUI.LineageTool import LineageTool
 from AimsUI.GetRclTool import GetRcl
+from AimsUI.UpdateReviewPosition import UpdateReviewPosition
 from AimsQueueWidget import AimsQueueWidget
 from AimsUI.AimsClient.Gui.UiDataManager import UiDataManager
 from AimsUI.AimsClient.Gui.ResponseHandler import ResponseHandler
@@ -50,6 +51,8 @@ class Controller(QObject):
         self.iface = iface
         self._queues = None
         self._currentMapTool = None
+        self.rclParent = None # still using this? maybe no longer?"
+        self.currentRevItem = None
         self.actions = []
         if Controller._instance == None:
             Controller._instance = self
@@ -128,8 +131,11 @@ class Controller(QObject):
         self._updateaddtool.setAction( self._updateaddressaction )  
         self.actions.append(self._updateaddressaction)
                     
-        # RCL tools -- Not a QAction as triggered from many palaces but not the toolbar
-        self._rcltool = GetRcl(self.iface, self._layerManager, self, parent = None)
+        # RCL tool -- Not a QAction as triggered from many palaces but not the toolbar
+        self._rcltool = GetRcl(self.iface, self._layerManager, self)
+        
+        # UpdateReview Position tool -- Not a QAction as triggered initiated from review queue form
+        self._updateReviewPos = UpdateReviewPosition(self.iface, self._layerManager, self)
        
         # Address lineage
         self._lineageaction = QAction(QIcon(':/plugins/AIMS_Plugin_threaded/resources/lineage.png'), 
@@ -252,7 +258,8 @@ class Controller(QObject):
     def mapToolChanged(self):
         ''' track the current maptool (but not the rcl tool). this allows 
             for rollback to previous tool when the Rcltool is deactivated '''
-        if isinstance(self.iface.mapCanvas().mapTool(), GetRcl) == False:          
+        if (isinstance(self.iface.mapCanvas().mapTool(), GetRcl) == False and
+                isinstance(self.iface.mapCanvas().mapTool(), UpdateReviewPosition) == False):          
             self._currentMapTool = self.iface.mapCanvas().mapTool()
             # logging 
             uilog.info('*** TOOL CHANGE ***    {0} started'.format(self.iface.mapCanvas().mapTool())) 
@@ -271,8 +278,14 @@ class Controller(QObject):
     
     def startRclTool(self, parent = None):
         ''' activate the "get rcl tool" map tool '''
-        self._rcltool = GetRcl(self.iface, self._layerManager, self, parent)
+        self.rclParent = parent
         self.iface.mapCanvas().setMapTool(self._rcltool)
+        self._rcltool.setEnabled(True)
+    
+    def startUpdateReviewPosTool(self, revItem = None):
+        ''' activate the "get update Review position tool" map tool '''
+        self.currentRevItem = revItem
+        self.iface.mapCanvas().setMapTool(self._updateReviewPos)
         self._rcltool.setEnabled(True)
     
     def startMoveAddressTool(self):

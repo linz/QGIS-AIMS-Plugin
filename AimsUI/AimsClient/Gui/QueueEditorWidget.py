@@ -27,7 +27,8 @@ class QueueEditorWidget( Ui_QueueEditorWidget, QWidget ):
         self.feature = None
         #self.uiToObjMappings = self.formObjMappings() < -- redundant? 4/3/16
         UiUtility.setFormCombos(self)
-        self.uGetRclToolButton.clicked.connect(self.getRcl)         
+        self.uGetRclToolButton.clicked.connect(self.getRcl)      
+        self.uUpdatePosButton.clicked.connect(self.updatePosition)     
         self.setController( controller )
         self.uAddressType.currentIndexChanged.connect(self.setEditability)
         self.setWarningColour()
@@ -52,3 +53,7 @@ class QueueEditorWidget( Ui_QueueEditorWidget, QWidget ):
    
     def getRcl(self):        
         self._controller.startRclTool(self)
+    
+    def updatePosition(self):
+        self._controller.startUpdateReviewPosTool(self.feature)
+        
