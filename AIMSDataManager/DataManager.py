@@ -82,12 +82,13 @@ class DataManager(Observable):
         
     def _checkDS(self,etft):
         '''Starts a sync thread unless its features with a zero bbox'''
-        if (etft == FEEDS['AF'] and self.persist.coords['sw'] == SWZERO and self.persist.coords['ne'] == NEZERO) or int(self.persist.tracker[etft]['threads'])==0:                
+        if (etft == FEEDS['AF'] and self.persist.coords['sw'] == SWZERO and self.persist.coords['ne'] == NEZERO):# or int(self.persist.tracker[etft]['threads'])==0:                
             self.ds[etft] = None
         else:
             self.ds[etft] = self._spawnDS(etft,self.dsr[etft])
-            self.ds[etft].register(self)         
-            self.ds[etft].start()
+            self.ds[etft].register(self)
+            if int(self.persist.tracker[etft]['threads'])>0:
+                self.ds[etft].start()
             
         
     def _spawnDS(self,etft,feedclass): 
