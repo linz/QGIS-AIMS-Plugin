@@ -87,8 +87,11 @@ class DataManager(Observable):
         else:
             self.ds[etft] = self._spawnDS(etft,self.dsr[etft])
             self.ds[etft].register(self)
+            #HACK to start DRC even if feed thread count is zero
             if int(self.persist.tracker[etft]['threads'])>0:
                 self.ds[etft].start()
+            else:
+                self.ds[etft].drc.start()
             
         
     def _spawnDS(self,etft,feedclass): 

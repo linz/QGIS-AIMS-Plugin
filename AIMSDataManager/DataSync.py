@@ -47,6 +47,7 @@ pool_lock = threading.Lock()
 
 class IncorrectlyConfiguredRequestClientException(Exception):pass
 
+
 class DataRequestChannel(Observable):    
     '''Request response channel for user initiated actions eg add decline retire etc. One for each feed class, client, whose pIQ method is accessed'''
     def __init__(self,client):
