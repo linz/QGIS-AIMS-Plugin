@@ -86,6 +86,7 @@ class LayerManager(QObject):
         QObject.__init__(self)
         self._iface = iface
         self._controller = controller
+        self._canvas = self._iface.mapCanvas()
         self._statusBar = iface.mainWindow().statusBar()
         self._controller.uidm.register(self)
         self._adrLayer = None
@@ -101,12 +102,16 @@ class LayerManager(QObject):
         
     def defaultExtent(self):
         ''' the extent the plugin first shows '''
-        self._iface.mapCanvas().setExtent(QgsRectangle(174.77303,-41.28648, 174.77561,-41.28427))
-        self._iface.mapCanvas().refresh()    
+        self._canvas.setExtent(QgsRectangle(174.77303,-41.28648, 174.77561,-41.28427))
+        self._canvas.refresh()    
     
     def initialiseExtentEvent(self):  
         ''' Once plugin loading triggered initialise loading of AIMS Feautres '''
-        self._iface.mapCanvas().extentsChanged.connect(self.setbbox)
+        id = self._addressLayerId
+        layer = self.findLayer(id)
+        if not self.isVisible(layer): 
+            return
+        self._canvas.extentsChanged.connect(self.setbbox)
                 
     def layerId(self, layer):
         idprop = self._propBaseName + 'Id' 
@@ -231,33 +236,29 @@ class LayerManager(QObject):
         layer.commitChanges()
     
     def isVisible(self, layer):
-        scale = self._iface.mapCanvas().mapRenderer().scale()
-        return scale <= layer.maximumScale() and scale >= layer.minimumScale()
+        if layer.hasScaleBasedVisibility():
+            if layer.maximumScale() > self._canvas.scale() and layer.minimumScale() < self._canvas.scale():
+                return True
+            else: 
+                return False
+        else:
+            return True
     
     def updateReviewLayer(self):#, rData):
         id = 'rev'
         layer = self.findLayer(id)
-        if not layer: return
+        if not layer: 
+            return
         provider = layer.dataProvider()
         self.removeFeatures(layer)
         rData = self._controller.uidm.reviewData() # moved out below of iteration to server log 
         uilog.info(' *** DATA ***    {} review items being loaded '.format(len(rData)))
         for reviewItem in rData.values():
             fet = QgsFeature()
-            if reviewItem._changeType  in ('Replace', 'AddLineage', 'ParcelReferenceData' ):
- 
-                point = reviewItem.meta.entities[0]._addressedObject_addressPositions[0]._position_coordinates
-            elif reviewItem._changeType == 'Retire':
-                try:
-                    point = reviewItem.meta.entities[0]._addressedObject_addressPositions[0]['position']['coordinates']
-                except: # except when the retired item is derived from an resp obj
-                    point = reviewItem._addressedObject_addressPositions[0]._position_coordinates
+            if reviewItem._changeType in ('Update', 'Add')  or reviewItem.meta.requestId:
+               point = reviewItem.getAddressPositions()[0]._position_coordinates
             else:
-                # hack to meet first testing release -- REVIEW
-                try:
-                    point = reviewItem.meta.entities[0]._addressedObject_addressPositions[0]['position']['coordinates']
-                except: # except when the retired item is derived from an resp obj
-                    point = reviewItem._addressedObject_addressPositions[0]._position_coordinates
+               point = reviewItem.meta.entities[0].getAddressPositions()[0]._position_coordinates 
             fet.setGeometry(QgsGeometry.fromPoint(QgsPoint(point[0], point[1])))
             fet.setAttributes([ reviewItem.getFullNumber(), reviewItem._changeType])
             provider.addFeatures([fet])
@@ -272,7 +273,7 @@ class LayerManager(QObject):
 #         return isZoomin                                             
     
     def setbbox(self):
-        ext = self._iface.mapCanvas().extent()
+        ext = self._canvas.extent()
         #if ext.asWktCoordinates() == '-185.77320897004406675 -120.40546550871380305, 187.99023996606607056 38.46554699064738969'
         if ext.width() > 100: return
         uilog.info(' *** BBOX ***    {} '.format(ext.toString()))    
@@ -287,15 +288,11 @@ class LayerManager(QObject):
     
     def notify(self, feedType):
         uilog.info('*** NOTIFY ***     Notify A[{}]'.format(feedType))
-        #if self.resourceLock: 
-        #    uilog.info(' *** RESOURCE CONFLICT ***    {} Turned away '.format(feedType))   
-        #    return 
-        #self.resourceLock = True
         if feedType == FEEDS['AF']:
             self.getAimsFeatures()
         elif feedType == FEEDS['AR']:
             self.updateReviewLayer()
-        #self.resourceLock = False
+
         
     def updateFeaturesLayer(self, featureData):
         id = self._addressLayerId
@@ -304,10 +301,8 @@ class LayerManager(QObject):
         if not layer:
             self.installAimsLayer(id, 'AIMS Features')
             layer = self.findLayer(id) 
-        # test the layer is visible
-        #if not self.isVisible(layer):
-        #    return             
-        # ensure legend is visible
+        if not self.isVisible(layer): 
+            return
         legend = self._iface.legendInterface()
         if not legend.isLayerVisible(layer):
             legend.setLayerVisible(layer, True)
@@ -319,7 +314,12 @@ class LayerManager(QObject):
         uilog.info(' *** CANVAS ***    Adding Features') 
         for feature in featureData.itervalues():
             fet = QgsFeature()
-            point = feature._addressedObject_addressPositions[0]._position_coordinates
+            point = feature.getAddressPositions()[0]._position_coordinates
+#             
+#             try:
+#                 point = feature.getAddressPositions()[0]._position_coordinates
+#             except:
+#                 point = feature.meta.entities[0].getAddressPositions()[0]._position_coordinates 
             fet.setGeometry(QgsGeometry.fromPoint(QgsPoint(point[0], point[1])))
             fet.setAttributes([getattr(feature, v[0]) if hasattr (feature, v[0]) else '' for v in Mapping.adrLayerObjMappings.values()])
             layer.dataProvider().addFeatures([fet])
@@ -332,8 +332,8 @@ class LayerManager(QObject):
         # update layer's extent when new features have been added
         # because change of extent in provider is not propagated to the layer
         
-        #self._iface.mapCanvas()
+        #self._canvas
         #iface.mapCanvas().refresh()
-#         if self._iface.mapCanvas().isCachingEnabled():
+#         if self._canvas.isCachingEnabled():
 #             layer.setCacheImage(None)
 #         else:

@@ -19,7 +19,7 @@
      <property name="currentIndex">
       <number>1</number>
      </property>
-     <widget class="ChangeQueueWidget" name="uEditFeatureTab">
+     <widget class="EditFeatureWidget" name="uEditFeatureTab">
       <attribute name="title">
        <string>Edit Feature</string>
       </attribute>
@@ -52,9 +52,9 @@
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>ChangeQueueWidget</class>
+   <class>EditFeatureWidget</class>
    <extends>QWidget</extends>
-   <header>ChangeQueueWidget.h</header>
+   <header>EditFeatureWidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

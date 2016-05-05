@@ -14,7 +14,7 @@ import time
 import sys # temp
        
 
-class ChangeQueueWidget( Ui_EditFeatureDialog, QWidget ):
+class EditFeatureWidget( Ui_EditFeatureDialog, QWidget ):
 
     def __init__(self, controller = None):
         QWidget.__init__( self )
@@ -87,7 +87,7 @@ class ChangeQueueWidget( Ui_EditFeatureDialog, QWidget ):
         self._controller._queues.tabWidget.setCurrentIndex(1)
         self.removeMarker()
         
-    def setPostion(self):
+    def setPosition(self):
         coords = [self.coords.x(), self.coords.y()]
         pos = {"position":{
                     "type":'Point',
@@ -111,7 +111,7 @@ class ChangeQueueWidget( Ui_EditFeatureDialog, QWidget ):
         respId = int(time.time())
         
         if self.parent == 'add': 
-            self.setPostion() 
+            self.setPosition() 
             UiUtility.formToObj(self)
             if not self.feature._components_roadCentrelineId:
                 QMessageBox.warning(self._iface.mainWindow(),"AIMS Warnings", 'No Road Centreline Supplied')

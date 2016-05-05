@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'AimsUI/AimsClient/Gui/Ui_ReviewQueueWidget.ui'
 #
-# Created: Tue Apr 26 16:06:43 2016
+# Created: Mon May  2 21:05:38 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -40,7 +40,8 @@ class Ui_ReviewQueueWidget(object):
         self.verticalLayout_6 = QtGui.QVBoxLayout()
         self.verticalLayout_6.setObjectName(_fromUtf8("verticalLayout_6"))
         self.uGroupTableView = QueueView(self.horizontalLayoutWidget)
-        self.uGroupTableView.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
+        self.uGroupTableView.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
+        self.uGroupTableView.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
         self.uGroupTableView.setObjectName(_fromUtf8("uGroupTableView"))
         self.verticalLayout_6.addWidget(self.uGroupTableView)
         self.horizontalLayout_6 = QtGui.QHBoxLayout()

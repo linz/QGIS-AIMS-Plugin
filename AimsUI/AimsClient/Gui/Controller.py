@@ -58,6 +58,7 @@ class Controller(QObject):
         self.RespHandler = ResponseHandler(self.iface, self.uidm)
         
     def initGui(self):
+        ''' load plugin '''
         # set srs
         self._displayCrs = QgsCoordinateReferenceSystem()
         self._displayCrs.createFromOgcWmsCrs('EPSG:4167') 
@@ -77,6 +78,7 @@ class Controller(QObject):
         self._loadaction.triggered.connect(self.loadQueues)
         self._loadaction.triggered.connect(self.loadLayers)
         self._loadaction.triggered.connect(self.enableAddressLayer)
+        self._loadaction.triggered.connect(self.startDM)
         
         # Create new address tool
         self._createnewaddressaction = QAction(QIcon(':/plugins/AIMS_Plugin_threaded/resources/newaddresspoint.png'), 
@@ -224,6 +226,9 @@ class Controller(QObject):
             DockWindow(self.iface.mainWindow(),queues,"AimsQueues","Aims Queues")
             self._queues = queues
         return self._queues
+    
+    def startDM(self): 
+        self.uidm.start()
     
     def enableAddressLayer(self, layer):
         ''' enable tools that are dependent on the Address Layer
