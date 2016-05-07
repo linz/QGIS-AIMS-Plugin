@@ -89,21 +89,16 @@ class LayerManager(QObject):
         self._canvas = self._iface.mapCanvas()
         self._statusBar = iface.mainWindow().statusBar()
         self._controller.uidm.register(self)
+        self.rData = None
+        self.prevRdata = None
         self._adrLayer = None
         self._rclLayer = None
         self._parLayer = None
         self._locLayer = None
         self._revLayer = None
         
-        #self.resourceLock = False 
-        
         QgsMapLayerRegistry.instance().layerWillBeRemoved.connect(self.checkRemovedLayer)
         QgsMapLayerRegistry.instance().layerWasAdded.connect( self.checkNewLayer )
-        
-    def defaultExtent(self):
-        ''' the extent the plugin first shows '''
-        self._canvas.setExtent(QgsRectangle(174.77303,-41.28648, 174.77561,-41.28427))
-        self._canvas.refresh()    
     
     def initialiseExtentEvent(self):  
         ''' Once plugin loading triggered initialise loading of AIMS Feautres '''
@@ -112,7 +107,7 @@ class LayerManager(QObject):
         if not self.isVisible(layer): 
             return
         self._canvas.extentsChanged.connect(self.setbbox)
-                
+              
     def layerId(self, layer):
         idprop = self._propBaseName + 'Id' 
         res = layer.customProperty(idprop)
@@ -123,8 +118,6 @@ class LayerManager(QObject):
         if id and isinstance(id,str):
             idprop = self._propBaseName + 'Id'
             layer.setCustomProperty(idprop,id)
-            #assert id == self.layerId(layer), 'ID return error'
-        else: raise InvalidParameterException("'{}' is not a valid id".format(id))
 
     def layers(self):
         for layer in QgsMapLayerRegistry.instance().mapLayers().values():
@@ -136,6 +129,9 @@ class LayerManager(QObject):
     def rclLayer( self ):
         return self._rclLayer
     
+    def revLayer( self ):
+        return self._revLayer
+    
     def checkRemovedLayer(self, id):
         if self._adrLayer and self._adrLayer.id() == id:
             self._adrLayer = None
@@ -144,10 +140,11 @@ class LayerManager(QObject):
             self._rclLayer = None
         if self._parLayer and self._parLayer.id() == id:
             self._parLayer = None
-        if self._locLayer and self._locLayer.id() == id:
-            self._locLayer = None
+        if self._revLayer and self._revLayer.id() == id:
+            self._revLayer = None
             
     def checkNewLayer( self, layer ):
+        ''' assign new layer to layer ref '''
         layerId = self.layerId(layer)
         if not layerId:
             return
@@ -160,16 +157,18 @@ class LayerManager(QObject):
             self._rclLayer = layer
         elif layerId == 'par':
             self._parLayer = layer
-        elif layerId == 'loc':
-            self._locLayer = layer
+        elif layerId == 'rev':
+            self._revLayer = layer
     
-    def findLayer(self, name): 
+    def findLayer(self, name):
+        ''' return layer ''' 
         for layer in self.layers():
             if self.layerId(layer) == name:
                 return layer
         return None
 
     def styleLayer(self, layer, id):
+        ''' set layer style as pet the relevant .qml file '''
         try:
             layer.loadNamedStyle(join(self._styledir,id+'_style.qml'))
         except:
@@ -203,78 +202,76 @@ class LayerManager(QObject):
         refLayers ={'par':( 'par', 'lds', 'all_parcel_multipoly', 'gid', True, "",'Parcels' ) ,
                     'rcl':( 'rcl', 'roads', 'road_name_mview', 'gid', True, "",'Roads' )
                     }
-   
+
         for layerId , layerProps in refLayers.items():
             if not self.findLayer(layerId):
                 self.installLayer(* layerProps) 
 
-        #return rcl,par
-    def addAimsFields(self, layer, provider, id, fields):
+    def addLayerFields(self, layer, provider, id, fields):
+        ''' add fields to aims to a layer  '''
         provider.addAttributes(fields)
         layer.updateFields()
         self.styleLayer(layer, id)     
         QgsMapLayerRegistry.instance().addMapLayer(layer)    
     
     def installAimsLayer(self, id, displayname):
-        ''' initialise AIMS feautres and review layers '''
-        
+        ''' initialise AIMS features and review layers at start up'''        
         layer = QgsVectorLayer("Point?crs=EPSG:4167", displayname, "memory") 
         self.setLayerId(layer, id)
         provider = layer.dataProvider()
         if id == 'adr' and not self.findLayer(id):
-            self.addAimsFields(layer, provider, id, [QgsField(layerAttName, QVariant.String) for layerAttName in Mapping.adrLayerObjMappings.keys()] )
+            self.addLayerFields(layer, provider, id, [QgsField(layerAttName, QVariant.String) for layerAttName in Mapping.adrLayerObjMappings.keys()] )
         elif id == 'rev' and not self.findLayer(id):
-            self.addAimsFields(layer, provider, id, [QgsField('AddressNumber', QVariant.String),QgsField('Action', QVariant.String)])
+            self.addLayerFields(layer, provider, id, [QgsField('AimsId', QVariant.String), QgsField('AddressNumber', QVariant.String),QgsField('Action', QVariant.String)])
         layer.updateFields()
         QgsMapLayerRegistry.instance().addMapLayer(layer)           
-
-    def removeFeatures(self, layer):
-        ids = [f.id() for f in layer.getFeatures()]
-        layer.startEditing()
-        for fid in ids:          
-            layer.deleteFeature(fid)
-        layer.commitChanges()
-    
+        
     def isVisible(self, layer):
+        ''' test is an layer is visible '''
         if layer.hasScaleBasedVisibility():
             if layer.maximumScale() > self._canvas.scale() and layer.minimumScale() < self._canvas.scale():
                 return True
             else: 
                 return False
         else:
-            return True
+            return True    
+
+    def removeFeatures(self, layer):
+        ''' remove features from any layer '''
+        ids = [f.id() for f in layer.getFeatures()]
+        layer.startEditing()
+        for fid in ids:          
+            layer.deleteFeature(fid)
+        layer.commitChanges()
     
-    def updateReviewLayer(self):#, rData):
+    def addToLayer(self, rData, layer):
+        ''' add aims review features to reveiw layer '''
+        provider = layer.dataProvider()
+        for k, reviewItem in rData.items():
+            fet = QgsFeature()
+            if reviewItem._changeType in ('Update', 'Add')  or reviewItem.meta.requestId:
+                point = reviewItem.getAddressPositions()[0]._position_coordinates
+            else:
+                point = reviewItem.meta.entities[0].getAddressPositions()[0]._position_coordinates 
+            fet.setGeometry(QgsGeometry.fromPoint(QgsPoint(point[0], point[1])))
+            fet.setAttributes([ k, reviewItem.getFullNumber(), reviewItem._changeType])
+            provider.addFeatures([fet])
+        layer.updateExtents()
+    
+    def updateReviewLayer(self):
+        ''' update review layer with new review data'''
         id = 'rev'
         layer = self.findLayer(id)
         if not layer: 
             return
-        provider = layer.dataProvider()
         self.removeFeatures(layer)
-        rData = self._controller.uidm.combinedReviewData() # moved out below of iteration to server log 
+        rData = self._controller.uidm.combinedReviewData()
         uilog.info(' *** DATA ***    {} review items being loaded '.format(len(rData)))
-        for reviewItem in rData.values():
-            fet = QgsFeature()
-            if reviewItem._changeType in ('Update', 'Add')  or reviewItem.meta.requestId:
-               point = reviewItem.getAddressPositions()[0]._position_coordinates
-            else:
-               point = reviewItem.meta.entities[0].getAddressPositions()[0]._position_coordinates 
-            fet.setGeometry(QgsGeometry.fromPoint(QgsPoint(point[0], point[1])))
-            fet.setAttributes([ reviewItem.getFullNumber(), reviewItem._changeType])
-            provider.addFeatures([fet])
-        layer.commitChanges()
-    
-#     def isZoomin(self, ext):
-#         ''' Test if the extent change was merely a zoom''' 
-#         isZoomin = (ext.xMaximum() >= self.sw_x and ext.yMaximum() >= self.sw_y and 
-#                     ext.xMinimum() >= self.ne_x and ext.yMinimum() >= self.ne_y)
-#         
-#         self.sw_x, self.sw_y, self.ne_x, self.ne_y = (ext.xMaximum(), ext.yMaximum(), ext.xMinimum(), ext.yMinimum())
-#         return isZoomin                                             
-    
+        self.addToLayer(rData, layer)
+                                 
     def setbbox(self):
+        ''' pass new extent to DM'''
         ext = self._canvas.extent()
-        #if ext.asWktCoordinates() == '-185.77320897004406675 -120.40546550871380305, 187.99023996606607056 38.46554699064738969'
         if ext.width() > 100: return
         uilog.info(' *** BBOX ***    {} '.format(ext.toString()))    
         self._controller.uidm.setBbox(sw = (ext.xMaximum(), ext.yMaximum()), ne = (ext.xMinimum(), ext.yMinimum()))
@@ -293,8 +290,8 @@ class LayerManager(QObject):
         elif feedType == FEEDS['AR'] or feedType == FEEDS['GR']:
             self.updateReviewLayer()
 
-        
     def updateFeaturesLayer(self, featureData):
+        ''' add features to Aims published features layer '''
         id = self._addressLayerId
         layer = self.findLayer(id)
         # ensure the user has not removed the layer 
@@ -306,34 +303,16 @@ class LayerManager(QObject):
         legend = self._iface.legendInterface()
         if not legend.isLayerVisible(layer):
             legend.setLayerVisible(layer, True)
-        # remove current features
-        uilog.info(' *** CANVAS ***    Removing AIMS Features')    
+        # remove current features 
         self.removeFeatures(layer)
-        uilog.info(' *** CANVAS ***    Features Removed')  
-        
         uilog.info(' *** CANVAS ***    Adding Features') 
         for feature in featureData.itervalues():
             fet = QgsFeature()
             point = feature.getAddressPositions()[0]._position_coordinates
-#             
-#             try:
-#                 point = feature.getAddressPositions()[0]._position_coordinates
-#             except:
-#                 point = feature.meta.entities[0].getAddressPositions()[0]._position_coordinates 
             fet.setGeometry(QgsGeometry.fromPoint(QgsPoint(point[0], point[1])))
             fet.setAttributes([getattr(feature, v[0]) if hasattr (feature, v[0]) else '' for v in Mapping.adrLayerObjMappings.values()])
             layer.dataProvider().addFeatures([fet])
         layer.updateExtents()
-        layer.reload()
         layer.setCacheImage(None)
-        #self.canvas.refresh()
         uilog.info(' *** CANVAS ***    FEATURES ADDED')  
         
-        # update layer's extent when new features have been added
-        # because change of extent in provider is not propagated to the layer
-        
-        #self._canvas
-        #iface.mapCanvas().refresh()
-#         if self._canvas.isCachingEnabled():
-#             layer.setCacheImage(None)
-#         else:

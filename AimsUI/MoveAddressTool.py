@@ -29,9 +29,9 @@ class MoveAddressTool(QgsMapToolIdentify):
         self._layers = layerManager
         self._controller = controller
         self.RespHandler = ResponseHandler(self._iface, self._controller.uidm)
+        self.highlighter = self._controller.highlighter
         self.af = {ft:AddressFactory.getInstance(FEEDS['AC']) for ft in FeedType.reverse}
         self._features = []
-        self._marker = None
         self._sb = self._iface.mainWindow().statusBar()
         self.activate()
 
@@ -42,7 +42,6 @@ class MoveAddressTool(QgsMapToolIdentify):
         self.parent().setCursor(self.cursor)
     
     def deactivate(self):
-        self._canvas.scene().removeItem(self._marker)
         self._sb.clearMessage()
     
     def setEnabled(self, enabled):
@@ -53,7 +52,10 @@ class MoveAddressTool(QgsMapToolIdentify):
             self.deactivate()
     
     def setMarker(self, coords):
-        self._marker = UiUtility.highlight(self._iface, coords)
+        self.highlighter.setAddress(coords)
+    
+    def hideMarker(self):
+        self.highlighter.hideAddress()
 
     def canvasReleaseEvent(self, mouseEvent):
         self._iface.setActiveLayer(self._layers.addressLayer())
@@ -62,7 +64,7 @@ class MoveAddressTool(QgsMapToolIdentify):
             results = self.identify(mouseEvent.x(), mouseEvent.y(), self.ActiveLayer, self.VectorLayer)
             # Ensure feature list and highlighting is reset
             self._features = []
-            self._canvas.scene().removeItem(self._marker)
+            self.hideMarker()
             
             if len(results) == 0: 
                 return
@@ -100,7 +102,6 @@ class MoveAddressTool(QgsMapToolIdentify):
                     
                 else: 
                     self._features = None
-                    self._canvas.scene().removeItem(self._marker)
         
         # Right click for new position         
         if mouseEvent.button() == Qt.RightButton:
@@ -123,7 +124,7 @@ class MoveAddressTool(QgsMapToolIdentify):
                     self.RespHandler.handleResp(respId, FEEDS['AC'])
                         
                 self._features = []
-                self._canvas.scene().removeItem(self._marker)
+                self.hideMarker()
                 self._sb.clearMessage()
 
 class MoveAddressDialog(Ui_ComfirmSelection, QDialog ):

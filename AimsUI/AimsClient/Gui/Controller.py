@@ -23,7 +23,6 @@ from qgis.gui import *
 
 from DockWindow import DockWindow
 from AimsUI.LayerManager import LayerManager
-from NewAddressDialog import NewAddressDialog
 from AimsUI.DelAddressTool import DelAddressTool
 from AimsUI.MoveAddressTool import MoveAddressTool
 from AimsUI.CreateNewAddressTool import CreateNewAddressTool
@@ -34,6 +33,7 @@ from AimsUI.UpdateReviewPosition import UpdateReviewPosition
 from AimsQueueWidget import AimsQueueWidget
 from AimsUI.AimsClient.Gui.UiDataManager import UiDataManager
 from AimsUI.AimsClient.Gui.ResponseHandler import ResponseHandler
+from AimsUI.AimsClient.Gui.FeatureHighlighter import FeatureHighlighter
 
 from AIMSDataManager.AimsLogging import Logger
 
@@ -60,6 +60,7 @@ class Controller(QObject):
         self.uidm = UiDataManager(self.iface, self)
         self.RespHandler = ResponseHandler(self.iface, self.uidm)
         
+        
     def initGui(self):
         ''' load plugin '''
         # set srs
@@ -68,6 +69,7 @@ class Controller(QObject):
         self.iface.mapCanvas().mapSettings().setDestinationCrs(self._displayCrs)
 
         self._layerManager = LayerManager(self.iface, self)
+        self.highlighter = FeatureHighlighter(self.iface, self._layerManager)
         
         # Build an action list from QGIS navigation toolbar
         actionList = self.iface.mapNavToolToolBar().actions()
@@ -156,7 +158,7 @@ class Controller(QObject):
         self._highlightaction.setText('Highlightaction')
         self._highlightaction.setEnabled(False)
         self._highlightaction.setCheckable(True)
-        #self._highlightaction.toggled.connect( self._highlighter.setEnabled )
+        self._highlightaction.toggled.connect( self.highlighter.setEnabled )
 
         # Add to own toolbar
         self._toolbar = self.iface.addToolBar('QGIS-AIMS-Plugin')
@@ -248,8 +250,6 @@ class Controller(QObject):
         
     def loadLayers(self):
         ''' install map layers '''
-        #zoom to default extent
-        self._layerManager.defaultExtent()
         self._layerManager.installRefLayers()
         self._layerManager.installAimsLayer('adr', 'AIMS Features')
         self._layerManager.installAimsLayer('rev', 'AIMS Review')

@@ -28,6 +28,7 @@ class GetRcl(QgsMapToolIdentifyFeature):
         self._parent = None
         self._marker = None
         self._canvas = iface.mapCanvas()
+        self.highlight = self._controller.highlighter
         self.persistedRcl = None
         
         self.rcl = ''
@@ -73,7 +74,7 @@ class GetRcl(QgsMapToolIdentifyFeature):
             self._parent.uWaterRouteName.setText(self.waterName)
         
         if self._parent.__class__.__name__ != 'QueueEditorWidget' and self.rclcoords:
-            self._marker = UiUtility.rclHighlight(self._canvas, self.rclcoords, self.rclLayer )
+            self.highlight.setRcl(self.rclcoords)
             
     def canvasReleaseEvent(self, mouseEvent):
         try:

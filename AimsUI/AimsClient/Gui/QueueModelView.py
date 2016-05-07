@@ -56,7 +56,7 @@ class FeatureTableModel(QAbstractTableModel):
         self.endResetModel()
 
     def rowCount(self, QModelIndex_parent=None, *args, **kwargs):
-        #if self._data == self.dummyData: return 0
+        if self._data == self.dummyData: return 0
         return len(self._data[self.dict_key])
 
     def columnCount(self, QModelIndex_parent=None, *args, **kwargs):
@@ -72,9 +72,10 @@ class FeatureTableModel(QAbstractTableModel):
             return str(self._data[self.dict_key][row][column])
     
     def refreshData(self, data):
-        self._data = data
-        # reset dict key
-        self.dict_key = self._data.keys()[0]
+        if data:
+            self._data = data
+            # reset dict key
+            self.dict_key = self._data.keys()[0]
         
     
     def headerData(self, col, orientation, role):

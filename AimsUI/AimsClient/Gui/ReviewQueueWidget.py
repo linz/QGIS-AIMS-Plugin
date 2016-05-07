@@ -38,6 +38,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.setupUi(self)
         self.setController( controller )
         self._iface = self._controller.iface
+        self.highlight = self._controller.highlighter
         self.uidm = self._controller.uidm
         self.uidm.register(self)
         self.reviewData = None # self.uidm.refreshTableData((FEEDS['AR'],))
@@ -47,8 +48,6 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.feature = None
         self.currentGroup = (0,0) #(id, type)
         self.altSelectionId = ()
-        self._marker = None
-        #self.resourceLock = False 
         
         # Connections
         self.uDisplayButton.clicked.connect(self.display)
@@ -99,16 +98,15 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         uilog.info('*** NOTIFY ***     Notify A[{}]'.format(feedType))
         self.refreshData()
 
-    
     def setMarker(self, coords):
         ''' add marker to canvas via common uiUitility highlight methods '''
         if self._controller._highlightaction.isChecked():
-            self._marker = UiUtility.highlight(self._iface, QgsPoint(coords[0],coords[1]))
+            self.highlight.setReview(coords)
         
     def refreshData(self):
         ''' update Review Queue data '''
         # request new data
-        self.reviewData = self.uidm.formatTableData((FEEDS['GR'],FEEDS['AR']))# FEEDS['GR']))
+        self.reviewData = self.uidm.formatTableData((FEEDS['GR'],FEEDS['AR']))
         self.groupModel.beginResetModel()
         self.groupModel.refreshData(self.reviewData)        
         self.groupModel.endResetModel()
@@ -116,7 +114,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.featureModel.beginResetModel()
         self.featureModel.refreshData(self.reviewData)
         self.featureModel.endResetModel()
-        self.popUserCombo() # causing errors 
+        self.popUserCombo()
         
         if self.reviewData:
             self.reinstateSelection()
@@ -130,7 +128,9 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.groupModel.setKey(matchedIndex.row())
         self.groupTableView.selectRow(matchedIndex.row())
         self.featuresTableView.selectRow(0)   
-                                    
+        coords = self.uidm.reviewItemCoords(self.currentGroup, self.currentFeatureKey)
+        self.setMarker(coords)                            
+        
     def singleReviewObj(self, feedType, objKey):
         ''' return either single or group
             review object as per supplied key '''
@@ -144,10 +144,10 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
             
     def featureSelected(self, row):
         ''' triggered when a new feature row is selected '''
-        if self.currentGroup[0]:
-            self._iface.mapCanvas().scene().removeItem(self._marker)    
+        if self.currentGroup[0]:  
             self.currentFeatureKey = self.featureModel.listClicked(row)   
             self.uQueueEditor.currentFeatureToUi(self.currentReviewFeature())
+            
             self.setMarker(self.uidm.reviewItemCoords(self.currentGroup, self.currentFeatureKey))
 
     def groupSelected( self, row ): #rename Select Group
@@ -246,7 +246,8 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
                                   coords[0]+buffer,coords[1]+buffer)
             self._iface.mapCanvas().setExtent( extents )
             self._iface.mapCanvas().refresh()
-            #self.setMarker(coords) <-- perhaps the reveiw layer will suffice and no highlighted needed
+            self.setMarker(coords)
+
         
     @pyqtSlot()
     def rDataChanged (self):

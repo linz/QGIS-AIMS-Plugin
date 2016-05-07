@@ -66,7 +66,7 @@ class UpdateReviewPosition(QgsMapToolIdentifyFeature):
                 coords = results[0].mFeature.geometry().asPoint()    
             coords = list(UiUtility.transform(self._iface, coords))
             
-            if self._currentRevItem.changeType in ('Add','Retire','Update'):
+            if self._currentRevItem._changeType in ('Add','Retire','Update'):
                 self._currentRevItem._addressedObject_addressPositions[0].setCoordinates(coords)
             else:
                 self._currentRevItem.meta._addressedObject_addressPositions[0].setCoordinates(coords)
