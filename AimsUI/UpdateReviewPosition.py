@@ -55,6 +55,7 @@ class UpdateReviewPosition(QgsMapToolIdentifyFeature):
         
         results = self.identify(mouseEvent.x(), mouseEvent.y(), self.ActiveLayer, self.VectorLayer)
         if self._currentRevItem:
+            
             if self._currentRevItem._changeType == 'Retire':
                 self._iface.messageBar().pushMessage("Retired review items cannot be relocated", level=QgsMessageBar.WARNING, duration = 5)
                 return
@@ -66,18 +67,20 @@ class UpdateReviewPosition(QgsMapToolIdentifyFeature):
                 coords = results[0].mFeature.geometry().asPoint()    
             coords = list(UiUtility.transform(self._iface, coords))
             
-            if self._currentRevItem._changeType in ('Add','Retire','Update'):
-                self._currentRevItem._addressedObject_addressPositions[0].setCoordinates(coords)
-            else:
-                self._currentRevItem.meta._addressedObject_addressPositions[0].setCoordinates(coords)
-            
             respId = int(time.time())
-            self._controller.uidm.repairAddress(self._currentRevItem, respId)
             
-            if self._currentRevItem.feature == 0:
+            #self._currentRevItem.__str__.im_class.type = 2
+            if self._currentRevItem._changeType in ('Add', 'Update'):
                 feedType = FEEDS['AR']
+                self._currentRevItem._addressedObject_addressPositions[0].setCoordinates(coords)
+                self._controller.uidm.repairAddress(self._currentRevItem, respId)
             else:
-                feedType = FEEDS['GR']
+                feedType = FEEDS['GR'] 
+                changeId = self._currentRevItem._changeId
+                self._currentRevItem = self._currentRevItem.meta.entities[0]
+                self._currentRevItem._addressedObject_addressPositions[0].setCoordinates(coords)
+                self._currentRevItem.setChangeId(changeId)
+                self._controller.uidm.repairAddress(self._currentRevItem, respId)
             
             self.RespHandler.handleResp(respId, feedType)
             self._controller.setPreviousMapTool() 

@@ -194,6 +194,10 @@ class UiDataManager(QObject):
     
     #--- Groups DM Methods ---
     
+    def repairGroup(self, feature, respId = None):
+        uilog.info('obj with respId: {0} passed to convenience method "{1}" '.format(respId, 'repairAddress'))
+        self.dm.repairGroup(feature, respId)
+    
     def openGroup(self):
         self.dm.replaceGroup()
         

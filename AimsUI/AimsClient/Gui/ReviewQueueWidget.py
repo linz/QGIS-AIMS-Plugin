@@ -116,6 +116,8 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.featureModel.endResetModel()
         self.popUserCombo()
         
+        uilog.info('*** NOTIFY ***     Table Data Refreshed')
+        
         if self.reviewData:
             self.reinstateSelection()
 
