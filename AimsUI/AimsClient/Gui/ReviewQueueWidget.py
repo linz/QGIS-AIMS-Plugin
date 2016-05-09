@@ -12,6 +12,7 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 from qgis.core import *
 from qgis.utils import *
+from qgis.gui import *
 
 from Ui_ReviewQueueWidget import Ui_ReviewQueueWidget
 from QueueEditorWidget import QueueEditorWidget
@@ -123,17 +124,18 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
 
     def reinstateSelection(self):
         ''' select group item based on the last selected
-            or alternative address '''
+            or alternative (next) address '''
         matchedIndex = self.groupModel.findfield('{}'.format(self.currentGroup[0]))
         if matchedIndex.isValid is False:
-            matchedIndex = self.groupModel.findfield('{}'.format(self.alternativeGroup))            
-        self.groupModel.setKey(matchedIndex.row())
-        self.groupTableView.selectRow(matchedIndex.row())
+            matchedIndex = self.groupModel.findfield('{}'.format(self.altSelectionId))            
+        row = matchedIndex.row()
+        self.groupModel.setKey(row)
+        self.groupTableView.selectRow(row)
         self.featuresTableView.selectRow(0)   
         coords = self.uidm.reviewItemCoords(self.currentGroup, self.currentFeatureKey)
         self.setMarker(coords)                            
         
-    def singleReviewObj(self, feedType, objKey):
+    def singleReviewObj(self, feedType, objKey): # can the below replace this?
         ''' return either single or group
             review object as per supplied key '''
         if objKey: 
@@ -200,10 +202,17 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
                 
     def updateFeature(self):
         ''' update a review queue item '''
-        self.feature = self.singleReviewObj(FEEDS['AR'],self.currentFeatureKey) # needs to modified to also search 'GR' 
-        if self.feature: 
+        if self.self.feature._changeType in ('AddLineage' ):
+            self._iface.messageBar().pushMessage("{} review items cannot be relocated", 
+                                                 level=QgsMessageBar.WARNING, duration = 5).format(self._currentRevItem._changeType)
+        self.feature = self.currentReviewFeature()
+        if self.feature:             
             UiUtility.formToObj(self)
             respId = int(time.time())
+#            if self.feature._changeType not in ('Add', 'Update', 'AddLineage'):
+#                 changeId = self.feature._changeId
+#                 self.feature = self.feature.meta.entities[0]
+#                 self.feature.setChangeId(changeId)
             self.uidm.repairAddress(self.feature, respId)
             #UiUtility.handleResp(respId, self._controller, FeedType.RESOLUTIONFEED, self._iface)
             self._controller.RespHandler.handleResp(respId, FEEDS['AR'])
@@ -225,7 +234,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
                     self.uidm.decline(reviewObj, feedType, respId)
                 #UiUtility.handleResp(respId, self._controller,feedType, self._iface)
                 self._controller.RespHandler.handleResp(respId, FEEDS['AR'], action)
-    
+                self.reinstateSelection()
     def decline(self):
         ''' Decline review item '''
         self.reviewResolution('decline')
@@ -254,6 +263,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
     @pyqtSlot()
     def rDataChanged (self):
         self._queues.uResolutionTab.refreshData()
+    
     
 if __name__ == '__main__':
     app = QApplication(sys.argv)

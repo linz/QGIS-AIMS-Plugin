@@ -49,15 +49,15 @@ class UpdateReviewPosition(QgsMapToolIdentifyFeature):
         else:
             self.deactivate()
     
-            
     def canvasReleaseEvent(self, mouseEvent):
         self._iface.setActiveLayer(self._layers.addressLayer())
         
         results = self.identify(mouseEvent.x(), mouseEvent.y(), self.ActiveLayer, self.VectorLayer)
         if self._currentRevItem:
             
-            if self._currentRevItem._changeType == 'Retire':
-                self._iface.messageBar().pushMessage("Retired review items cannot be relocated", level=QgsMessageBar.WARNING, duration = 5)
+            if self._currentRevItem._changeType in ('Retire', 'AddLineage' ):
+                self._iface.messageBar().pushMessage("{} review items cannot be relocated", 
+                                                     level=QgsMessageBar.WARNING, duration = 5).format(self._currentRevItem._changeType)
                 return
             
             if len(results) == 0:                     

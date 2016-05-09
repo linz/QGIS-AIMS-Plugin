@@ -60,6 +60,9 @@ class Controller(QObject):
         self.uidm = UiDataManager(self.iface, self)
         self.RespHandler = ResponseHandler(self.iface, self.uidm)
         
+        self.refLayer = None
+        self.adrlayer = None
+        self.revLayer = None
         
     def initGui(self):
         ''' load plugin '''
@@ -74,6 +77,7 @@ class Controller(QObject):
         # Build an action list from QGIS navigation toolbar
         actionList = self.iface.mapNavToolToolBar().actions()
         self.actions = self.iface.mapNavToolToolBar().actions()
+        
         # Main address editing window
         self._loadaction = QAction(QIcon(':/plugins/AIMS_Plugin_threaded/resources/loadaddress.png'), 
             'QGIS-AIMS-Plugin', self.iface.mainWindow())
@@ -250,9 +254,12 @@ class Controller(QObject):
         
     def loadLayers(self):
         ''' install map layers '''
-        self._layerManager.installRefLayers()
-        self._layerManager.installAimsLayer('adr', 'AIMS Features')
-        self._layerManager.installAimsLayer('rev', 'AIMS Review')
+        if not self.refLayer:
+            self.refLayer = self._layerManager.installRefLayers()
+        if not self.adrlayer:
+            self.adrlayer = self._layerManager.installAimsLayer('adr', 'AIMS Features')
+        if not self.revLayer:
+            self.revLayer = self._layerManager.installAimsLayer('rev', 'AIMS Review')
         self._layerManager.initialiseExtentEvent()
     
     def mapToolChanged(self):

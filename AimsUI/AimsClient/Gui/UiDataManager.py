@@ -123,7 +123,16 @@ class UiDataManager(QObject):
 
         self.data[FEEDS['AF']][respFeature._components_addressId] = respFeature
         self._controller._layerManager.getAimsFeatures() # temp, will to switch to signal
-
+    
+    def updateGdata(self, respFeature):
+        groupKey = self.matchGroupKey(respFeature._changeGroupId)
+        self.data[FEEDS['GR']][groupKey][respFeature._changeId] = respFeature
+        
+    def matchGroupKey(self, groupId):
+        for groupKey in self.data.get(FEEDS['GR']).keys():
+            if groupId in groupKey:
+                return groupKey
+    
     def setBbox(self, sw, ne):
         ''' intermediate method, passes
             bboxes from layer manager to the DM

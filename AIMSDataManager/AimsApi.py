@@ -97,7 +97,6 @@ class AimsApi(object):
         et = FeatureType.reverse[etft.et].lower()
         ft = FeedType.reverse[etft.ft].lower()
         url = '/'.join((self._url,et,ft.lower(),str(cid) if cid else '')).rstrip('/')
-        #aimslog.debug('FEAT REQUEST {}'.format(url))
         resp, content = self.h.request(url,'GET', headers = self._headers)
         _,jcontent = self.handleResponse(url,resp["status"], json.loads(content))
         return jcontent        
@@ -111,10 +110,10 @@ class AimsApi(object):
         ft = FeedType.reverse[FeedType.CHANGEFEED].lower()
         url = '/'.join((self._url,et,ft,ActionType.reverse[at].lower(),TESTPATH)).rstrip('/')
         resp, content = self.h.request(url,"POST", json.dumps(payload), self._headers)
-        aimslog.debug('{0}: {1}'.format(resp['status'],content))
         return self.handleResponse(url,resp["status"], json.loads(content) )  
     @LogWrap.timediff(prefix='adrApp')
     def addressApprove(self,at,payload,cid):
+        aimslog.debug('{0}'.format(payload))
         '''Approve/Decline a change by submitting address to resolutionfeed'''
         et = FeatureType.reverse[FeatureType.ADDRESS].lower()
         ft = FeedType.reverse[FeedType.RESOLUTIONFEED].lower()

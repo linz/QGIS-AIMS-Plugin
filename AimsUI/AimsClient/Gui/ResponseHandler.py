@@ -34,12 +34,17 @@ class ResponseHandler(object):
         self.afaf= {ft:AddressFactory.getInstance(FEEDS['AF']) for ft in FeedType.reverse} # new method to cast
 
     def updateData(self, respObj , feedType, action):# rather than action could monitor _queueStatus
-        if feedType == FEEDS['AC']:
+        if hasattr(respObj, '_changeGroupId'):
+            respObj = self.afar[FeedType.RESOLUTIONFEED].cast(respObj)  
+            self.uidm.updateGdata(respObj)
+        elif feedType == FEEDS['AC']:
             respObj = self.afar[FeedType.RESOLUTIONFEED].cast(respObj)
-        self.uidm.updateRdata(respObj, feedType)
-        if feedType == FEEDS['AR'] and action == 'accept':
+            self.uidm.updateRdata(respObj, feedType)
+        if feedType == FEEDS['AR']:# and action == 'accept':
             respObj = self.afaf[FeedType.FEATURES].cast(respObj)
-            self.uidm.updateFdata(respObj)
+            self.uidm.updateRdata(respObj, feedType)
+            if action == 'accept':
+                self.uidm.updateFdata(respObj)
         return True
      
     def displayWarnings (self, warnings):
