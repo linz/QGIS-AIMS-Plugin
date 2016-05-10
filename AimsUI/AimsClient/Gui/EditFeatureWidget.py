@@ -22,8 +22,7 @@ class EditFeatureWidget( Ui_EditFeatureDialog, QWidget ):
         self.setController( controller )
         self._iface = self._controller.iface
         self._layerManager = self._controller._layerManager
-        
-        self._marker = None
+        self.highlight = self._controller.highlighter
         self.coords = None
         self.feature = None
  
@@ -58,20 +57,19 @@ class EditFeatureWidget( Ui_EditFeatureDialog, QWidget ):
             controller = Controller.instance()
         self._controller = controller
     
-    def setFeature(self, parent,addInstance, marker = None, coords = None ):
+    def setFeature(self, parent,addInstance, coords = None ):
         self.parent = parent
         self.feature = addInstance
         self.coords = coords
-        self.marker = marker
         if parent == 'update':
             self.feature = self.af[FeedType.CHANGEFEED].cast(self.feature)
             UiUtility.featureToUi(self, parent) 
         elif parent == 'add' and self._controller._queues.uEditFeatureTab.uPersistRcl.isChecked():
             self._controller._rcltool.fillform()
     
-    def removeMarker(self):   
-        self._iface.mapCanvas().scene().removeItem(self.marker)
-        self._controller._rcltool.removeMarker()
+    def hideMarker(self):
+        self.highlight.hideNewAddress()
+        self.highlight.hideRcl()
      
     def setEditability(self):
         UiUtility.setEditability(self)
@@ -85,7 +83,7 @@ class EditFeatureWidget( Ui_EditFeatureDialog, QWidget ):
         self._controller.setPreviousMapTool()
         # revert back to review tab 
         self._controller._queues.tabWidget.setCurrentIndex(1)
-        self.removeMarker()
+        self.hideMarker()
         
     def setPosition(self):
         coords = [self.coords.x(), self.coords.y()]
@@ -127,7 +125,8 @@ class EditFeatureWidget( Ui_EditFeatureDialog, QWidget ):
         self._controller.RespHandler.handleResp(respId, FEEDS['AC'])
         # revert back to review tab 
         self._controller._queues.tabWidget.setCurrentIndex(1)
-        self.removeMarker()
+        self.hideMarker()
+        
     def fullNumChanged(self, newnumber):
         UiUtility.fullNumChanged(self, newnumber)
         

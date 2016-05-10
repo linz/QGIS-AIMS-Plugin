@@ -20,14 +20,15 @@ from AimsUI.AimsClient.Gui.UiUtility import UiUtility
 
 class GetRcl(QgsMapToolIdentifyFeature):
 
-    def __init__(self, iface, layerManager, controller, parent):
+    def __init__(self, iface, layerManager, controller):
         QgsMapToolIdentify.__init__(self, iface.mapCanvas())
         self._iface = iface
         self._controller = controller
         self._layers = layerManager
-        self.parent = parent
+        self._parent = None
         self._marker = None
         self._canvas = iface.mapCanvas()
+        self.highlight = self._controller.highlighter
         self.persistedRcl = None
         
         self.rcl = ''
@@ -42,6 +43,7 @@ class GetRcl(QgsMapToolIdentifyFeature):
         
     def activate(self):
         QgsMapTool.activate(self)
+        self._parent = self._controller.rclParent
         self._iface.setActiveLayer(self._layers.rclLayer())
         sb = self._iface.mainWindow().statusBar()
         sb.showMessage('Click map to select road centerline')
@@ -62,17 +64,17 @@ class GetRcl(QgsMapToolIdentifyFeature):
             self.deactivate()
     
     def fillform(self):
-        self.parent.uRclId.setText(self.rcl)
+        self._parent.uRclId.setText(self.rcl)
         if self.addressClass == 'Road':
-            self.parent.uRoadPrefix.setText(self.prefix)
-            self.parent.uRoadName.setText(self.name)#
-            self.parent.uRoadTypeName.setText(self.type)
-            self.parent.uRoadSuffix.setText(self.suffix) 
+            self._parent.uRoadPrefix.setText(self.prefix)
+            self._parent.uRoadName.setText(self.name)#
+            self._parent.uRoadTypeName.setText(self.type)
+            self._parent.uRoadSuffix.setText(self.suffix) 
         else:
-            self.parent.uWaterRouteName.setText(self.waterName)
+            self._parent.uWaterRouteName.setText(self.waterName)
         
-        if self.parent.__class__.__name__ != 'QueueEditorWidget' and self.rclcoords:
-            self._marker = UiUtility.rclHighlight(self._canvas, self.rclcoords, self.rclLayer )
+        if self._parent.__class__.__name__ != 'QueueEditorWidget' and self.rclcoords:
+            self.highlight.setRcl(self.rclcoords)
             
     def canvasReleaseEvent(self, mouseEvent):
         try:
@@ -84,7 +86,7 @@ class GetRcl(QgsMapToolIdentifyFeature):
             if len(results) == 0: 
                 return
             if len(results) == 1:            
-                self.addressClass = self.parent.uAddressType.currentText()        
+                self.addressClass = self._parent.uAddressType.currentText()        
                 self.rclcoords = results[0].mFeature.geometry()
 
                 self.rcl = UiUtility.nullEqualsNone(str(results[0].mFeature.attribute('road_section_id')))

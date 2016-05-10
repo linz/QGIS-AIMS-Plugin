@@ -65,28 +65,6 @@ class UiUtility (object):
         tgt_crs.createFromOgcWmsCrs('EPSG:{}'.format(tgt))
         transform = QgsCoordinateTransform( src_crs, tgt_crs )
         return transform.transform( coords.x(), coords.y() ) 
-    @staticmethod
-    def highlight (iface, coords, iconType = QgsVertexMarker.ICON_BOX):
-        ''' highlight aims features '''
-        adrMarker = QgsVertexMarker(iface.mapCanvas())
-        adrMarker.setIconSize(15)
-        adrMarker.setPenWidth(2)
-        adrMarker.setIconType(iconType)
-        adrMarker.setCenter( coords )
-        adrMarker.show()
-        return adrMarker
-    
-    @staticmethod
-    def rclHighlight(canvas, geom, rclLayer):
-        if not geom.Error:
-            ''' highlight selected road centreline '''
-            rclMarker = QgsRubberBand(canvas,False)
-            rclMarker.hide()
-            rclMarker.setWidth(3)
-            rclMarker.setColor(QColor(76,255,0))
-            rclMarker.setToGeometry(geom,rclLayer)
-            rclMarker.show()
-            return rclMarker
             
     @staticmethod
     def setFormCombos(self):

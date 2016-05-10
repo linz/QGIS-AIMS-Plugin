@@ -12,6 +12,7 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 from qgis.core import *
 from qgis.utils import *
+from qgis.gui import *
 
 from Ui_ReviewQueueWidget import Ui_ReviewQueueWidget
 from QueueEditorWidget import QueueEditorWidget
@@ -38,6 +39,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.setupUi(self)
         self.setController( controller )
         self._iface = self._controller.iface
+        self.highlight = self._controller.highlighter
         self.uidm = self._controller.uidm
         self.uidm.register(self)
         self.reviewData = None # self.uidm.refreshTableData((FEEDS['AR'],))
@@ -47,8 +49,6 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.feature = None
         self.currentGroup = (0,0) #(id, type)
         self.altSelectionId = ()
-        self._marker = None
-        #self.resourceLock = False 
         
         # Connections
         self.uDisplayButton.clicked.connect(self.display)
@@ -99,16 +99,15 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         uilog.info('*** NOTIFY ***     Notify A[{}]'.format(feedType))
         self.refreshData()
 
-    
     def setMarker(self, coords):
         ''' add marker to canvas via common uiUitility highlight methods '''
         if self._controller._highlightaction.isChecked():
-            self._marker = UiUtility.highlight(self._iface, QgsPoint(coords[0],coords[1]))
+            self.highlight.setReview(coords)
         
     def refreshData(self):
         ''' update Review Queue data '''
         # request new data
-        self.reviewData = self.uidm.formatTableData((FEEDS['GR'],FEEDS['AR']))# FEEDS['GR']))
+        self.reviewData = self.uidm.formatTableData((FEEDS['GR'],FEEDS['AR']))
         self.groupModel.beginResetModel()
         self.groupModel.refreshData(self.reviewData)        
         self.groupModel.endResetModel()
@@ -116,22 +115,27 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.featureModel.beginResetModel()
         self.featureModel.refreshData(self.reviewData)
         self.featureModel.endResetModel()
-        self.popUserCombo() # causing errors 
+        self.popUserCombo()
+        
+        uilog.info('*** NOTIFY ***     Table Data Refreshed')
         
         if self.reviewData:
             self.reinstateSelection()
 
     def reinstateSelection(self):
         ''' select group item based on the last selected
-            or alternative address '''
+            or alternative (next) address '''
         matchedIndex = self.groupModel.findfield('{}'.format(self.currentGroup[0]))
         if matchedIndex.isValid is False:
-            matchedIndex = self.groupModel.findfield('{}'.format(self.alternativeGroup))            
-        self.groupModel.setKey(matchedIndex.row())
-        self.groupTableView.selectRow(matchedIndex.row())
+            matchedIndex = self.groupModel.findfield('{}'.format(self.altSelectionId))            
+        row = matchedIndex.row()
+        self.groupModel.setKey(row)
+        self.groupTableView.selectRow(row)
         self.featuresTableView.selectRow(0)   
-                                    
-    def singleReviewObj(self, feedType, objKey):
+        coords = self.uidm.reviewItemCoords(self.currentGroup, self.currentFeatureKey)
+        self.setMarker(coords)                            
+        
+    def singleReviewObj(self, feedType, objKey): # can the below replace this?
         ''' return either single or group
             review object as per supplied key '''
         if objKey: 
@@ -144,10 +148,10 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
             
     def featureSelected(self, row):
         ''' triggered when a new feature row is selected '''
-        if self.currentGroup[0]:
-            self._iface.mapCanvas().scene().removeItem(self._marker)    
+        if self.currentGroup[0]:  
             self.currentFeatureKey = self.featureModel.listClicked(row)   
             self.uQueueEditor.currentFeatureToUi(self.currentReviewFeature())
+            
             self.setMarker(self.uidm.reviewItemCoords(self.currentGroup, self.currentFeatureKey))
 
     def groupSelected( self, row ): #rename Select Group
@@ -198,10 +202,17 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
                 
     def updateFeature(self):
         ''' update a review queue item '''
-        self.feature = self.singleReviewObj(FEEDS['AR'],self.currentFeatureKey) # needs to modified to also search 'GR' 
-        if self.feature: 
+        if self.self.feature._changeType in ('AddLineage' ):
+            self._iface.messageBar().pushMessage("{} review items cannot be relocated", 
+                                                 level=QgsMessageBar.WARNING, duration = 5).format(self._currentRevItem._changeType)
+        self.feature = self.currentReviewFeature()
+        if self.feature:             
             UiUtility.formToObj(self)
             respId = int(time.time())
+#            if self.feature._changeType not in ('Add', 'Update', 'AddLineage'):
+#                 changeId = self.feature._changeId
+#                 self.feature = self.feature.meta.entities[0]
+#                 self.feature.setChangeId(changeId)
             self.uidm.repairAddress(self.feature, respId)
             #UiUtility.handleResp(respId, self._controller, FeedType.RESOLUTIONFEED, self._iface)
             self._controller.RespHandler.handleResp(respId, FEEDS['AR'])
@@ -223,7 +234,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
                     self.uidm.decline(reviewObj, feedType, respId)
                 #UiUtility.handleResp(respId, self._controller,feedType, self._iface)
                 self._controller.RespHandler.handleResp(respId, FEEDS['AR'], action)
-    
+                self.reinstateSelection()
     def decline(self):
         ''' Decline review item '''
         self.reviewResolution('decline')
@@ -246,11 +257,13 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
                                   coords[0]+buffer,coords[1]+buffer)
             self._iface.mapCanvas().setExtent( extents )
             self._iface.mapCanvas().refresh()
-            #self.setMarker(coords) <-- perhaps the reveiw layer will suffice and no highlighted needed
+            self.setMarker(coords)
+
         
     @pyqtSlot()
     def rDataChanged (self):
         self._queues.uResolutionTab.refreshData()
+    
     
 if __name__ == '__main__':
     app = QApplication(sys.argv)

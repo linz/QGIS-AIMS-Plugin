@@ -308,9 +308,9 @@ class Persistence():
             #default tracker, gets overwrittens
             #page = (lowest page fetched, highest page number fetched)
             self.tracker[FEEDS['AF']] = {'page':[1,1],    'index':1,'threads':2,'interval':30}    
-            self.tracker[FEEDS['AC']] = {'page':[NPV,NPV],'index':1,'threads':1,'interval':125}  
+            self.tracker[FEEDS['AC']] = {'page':[NPV,NPV],'index':1,'threads':0,'interval':125}  
             self.tracker[FEEDS['AR']] = {'page':[1,1],    'index':1,'threads':1,'interval':10} 
-            self.tracker[FEEDS['GC']] = {'page':[1,1],    'index':1,'threads':1,'interval':130}  
+            self.tracker[FEEDS['GC']] = {'page':[1,1],    'index':1,'threads':0,'interval':130}  
             self.tracker[FEEDS['GR']] = {'page':[1,1],    'index':1,'threads':1,'interval':55}             
             
             self.write() 
@@ -342,4 +342,3 @@ class Persistence():
 
 
 refsnap = None
-

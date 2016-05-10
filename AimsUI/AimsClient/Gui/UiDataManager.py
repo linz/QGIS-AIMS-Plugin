@@ -1,4 +1,3 @@
-
 ################################################################################
 #
 # Copyright 2015 Crown copyright (c)
@@ -86,7 +85,7 @@ class UiDataManager(QObject):
         ''' create dict whereby each aims obj is a
             value and its Id as defined by the IdProperyy
             method its Key '''
-        if listofFeatures: # redundant? 
+        if listofFeatures:
             li = []
             keyId = self.idProperty(feedtype)
             li = dict((getattr(feat, keyId), feat) for feat in listofFeatures[0])
@@ -120,17 +119,24 @@ class UiDataManager(QObject):
         ''' Between dm threaded interval data deliveries, temp
             AIMS feature objects are created or render irrelevant 
             by user actions. This method updates the main data (self._data)
-            to reflect these chnages. '''
-        # this is pretty ineffcient building the entire layer at the same time
-        # ideally i should add an "add" feature and update "moves" and "updates"
+            to reflect these changes. '''
+
         self.data[FEEDS['AF']][respFeature._components_addressId] = respFeature
         self._controller._layerManager.getAimsFeatures() # temp, will to switch to signal
-
+    
+    def updateGdata(self, respFeature):
+        groupKey = self.matchGroupKey(respFeature._changeGroupId)
+        self.data[FEEDS['GR']][groupKey][respFeature._changeId] = respFeature
+        
+    def matchGroupKey(self, groupId):
+        for groupKey in self.data.get(FEEDS['GR']).keys():
+            if groupId in groupKey:
+                return groupKey
+    
     def setBbox(self, sw, ne):
         ''' intermediate method, passes
             bboxes from layer manager to the DM
         '''
-         #need to ignore -185.7732089700440667,-188.0621082638667190 : 187.9902399660660706,106.1221897458003127
         #logging
         uilog.info('*** BBOX ***   New bbox passed to dm.setbb')
         self.dm.setbb(sw, ne) 
@@ -139,10 +145,30 @@ class UiDataManager(QObject):
     def reviewData(self):
         ''' return (single and group) review data '''
         return self.data.get(FEEDS['AR'])
+    
+    def groupReviewData(self):
+        ''' return (single and group) review data '''
+        return self.data.get(FEEDS['GR'])
+        
+    def combinedReviewData(self):
+        ''' de-nests group review data and combines
+            with address review data '''
 
+        groupData = self.groupReviewData()
+        addData = self.reviewData()
+        
+        combinedData = {}
+        combinedData.update(addData)
+        if not groupData: return addData 
+        for k ,v in groupData.items():
+            combinedData.update(v)
+        return combinedData
+        
     def featureData(self):
         ''' update data and return AIMS features '''
         return self.data.get(FEEDS['AF'])
+    
+    # --- DM convenience methods---
     
     def addAddress(self, feature, respId = None):
         uilog.info('obj with respId: {0} passed to convenience method "{1}" '.format(respId, 'addAddress'))
@@ -176,6 +202,10 @@ class UiDataManager(QObject):
         self.dm.repairAddress(feature, respId)
     
     #--- Groups DM Methods ---
+    
+    def repairGroup(self, feature, respId = None):
+        uilog.info('obj with respId: {0} passed to convenience method "{1}" '.format(respId, 'repairAddress'))
+        self.dm.repairGroup(feature, respId)
     
     def openGroup(self):
         self.dm.replaceGroup()
@@ -296,23 +326,25 @@ class UiDataManager(QObject):
         ''' return review data formatted for the review data model '''
         fData = {}
         for feedtype in feedtypes:
-            props = self.addClassProps(feedtype)
-            kProperties = props[0] 
-            vProperties = props[1] 
-            for k, v in self.data.get(feedtype).items():
-                featureValues = [] 
-                if feedtype == FEEDS['AR']:
-                    groupValues = self.formatGroupTableData(v,kProperties) 
-                    featureValues = [self.formatFeatureTableData(v,vProperties, feedtype)]
-                else: #GR
-                    featureValues = []                    
-                    groupValues = self.formatGroupTableData(k[1],kProperties) 
-                    featureValues = self.formatFeatureTableData(v,vProperties, feedtype)
-                fData[tuple(groupValues)] = featureValues
+            if self.data[feedtype]:
+                props = self.addClassProps(feedtype)
+                kProperties = props[0] 
+                vProperties = props[1] 
+                for k, v in self.data.get(feedtype).items():
+                    featureValues = [] 
+                    if feedtype == FEEDS['AR']:
+                        groupValues = self.formatGroupTableData(v,kProperties) 
+                        featureValues = [self.formatFeatureTableData(v,vProperties, feedtype)]
+                    else: #GR
+                        featureValues = []                    
+                        groupValues = self.formatGroupTableData(k[1],kProperties) 
+                        featureValues = self.formatFeatureTableData(v,vProperties, feedtype)
+                    fData[tuple(groupValues)] = featureValues
         if fData:
             return fData # need to test a return == {}    
     
     def singleFeatureObj(self, objkey):
+        ''' returns an AIMS object when its key is supplied '''
         return self.data.get(FEEDS['AF'])[(objkey)]
     
     def singleReviewObj(self, feedtype, objkey):

@@ -1,5 +1,5 @@
 <!DOCTYPE qgis PUBLIC 'http://mrcc.com/qgis.dtd' 'SYSTEM'>
-<qgis version="2.8.1-Wien" minimumScale="0" maximumScale="10000" simplifyDrawingHints="1" minLabelScale="1" maxLabelScale="1e+08" simplifyDrawingTol="1" simplifyMaxScale="1" hasScaleBasedVisibilityFlag="1" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
+<qgis version="2.8.1-Wien" minimumScale="-4.65661e-10" maximumScale="10000" simplifyDrawingHints="0" minLabelScale="1" maxLabelScale="1e+08" simplifyDrawingTol="1" simplifyMaxScale="1" hasScaleBasedVisibilityFlag="1" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
   <edittypes>
     <edittype widgetv2type="TextEdit" name="AddressNumber">
       <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
@@ -13,6 +13,7 @@
       <rule filter=" &quot;Action&quot;   =  'Add'" key="{faa48275-b8c9-482b-96c2-fc075d4e6243}" symbol="0" label="Add"/>
       <rule filter=" &quot;Action&quot;   =  'Update'" key="{fc694bed-ff42-4473-bbdc-90f506e38973}" symbol="1" label="Update"/>
       <rule filter=" &quot;Action&quot;   =  'Retire'" key="{4266f5cf-8ca1-4f6e-9325-8a0d4d9534ad}" symbol="2" label="Retire"/>
+      <rule filter="&quot;Action&quot; not in ('Add', 'Update', 'Retire') " key="{819fc732-ddb4-4b9b-8b2a-12294680f55c}" symbol="3" label="Group"/>
     </rules>
     <symbols>
       <symbol alpha="1" type="marker" name="0">
@@ -69,6 +70,27 @@
           <prop k="outline_color" v="251,98,98,255"/>
           <prop k="outline_style" v="solid"/>
           <prop k="outline_width" v="0.4"/>
+          <prop k="outline_width_map_unit_scale" v="0,0"/>
+          <prop k="outline_width_unit" v="MM"/>
+          <prop k="scale_method" v="area"/>
+          <prop k="size" v="2"/>
+          <prop k="size_map_unit_scale" v="0,0"/>
+          <prop k="size_unit" v="MM"/>
+          <prop k="vertical_anchor_point" v="1"/>
+        </layer>
+      </symbol>
+      <symbol alpha="1" type="marker" name="3">
+        <layer pass="0" class="SimpleMarker" locked="0">
+          <prop k="angle" v="0"/>
+          <prop k="color" v="178,223,138,255"/>
+          <prop k="horizontal_anchor_point" v="1"/>
+          <prop k="name" v="circle"/>
+          <prop k="offset" v="0,0"/>
+          <prop k="offset_map_unit_scale" v="0,0"/>
+          <prop k="offset_unit" v="MM"/>
+          <prop k="outline_color" v="41,167,0,255"/>
+          <prop k="outline_style" v="solid"/>
+          <prop k="outline_width" v="0"/>
           <prop k="outline_width_map_unit_scale" v="0,0"/>
           <prop k="outline_width_unit" v="MM"/>
           <prop k="scale_method" v="area"/>

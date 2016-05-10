@@ -23,16 +23,17 @@ from qgis.gui import *
 
 from DockWindow import DockWindow
 from AimsUI.LayerManager import LayerManager
-from NewAddressDialog import NewAddressDialog
 from AimsUI.DelAddressTool import DelAddressTool
 from AimsUI.MoveAddressTool import MoveAddressTool
 from AimsUI.CreateNewAddressTool import CreateNewAddressTool
 from AimsUI.UpdateAddressTool import UpdateAddressTool
 from AimsUI.LineageTool import LineageTool
 from AimsUI.GetRclTool import GetRcl
+from AimsUI.UpdateReviewPosition import UpdateReviewPosition
 from AimsQueueWidget import AimsQueueWidget
 from AimsUI.AimsClient.Gui.UiDataManager import UiDataManager
 from AimsUI.AimsClient.Gui.ResponseHandler import ResponseHandler
+from AimsUI.AimsClient.Gui.FeatureHighlighter import FeatureHighlighter
 
 from AIMSDataManager.AimsLogging import Logger
 
@@ -50,12 +51,18 @@ class Controller(QObject):
         self.iface = iface
         self._queues = None
         self._currentMapTool = None
+        self.rclParent = None # still using this? maybe no longer?"
+        self.currentRevItem = None
         self.actions = []
         if Controller._instance == None:
             Controller._instance = self
         # move the below to initGui
         self.uidm = UiDataManager(self.iface, self)
         self.RespHandler = ResponseHandler(self.iface, self.uidm)
+        
+        self.refLayer = None
+        self.adrlayer = None
+        self.revLayer = None
         
     def initGui(self):
         ''' load plugin '''
@@ -65,10 +72,12 @@ class Controller(QObject):
         self.iface.mapCanvas().mapSettings().setDestinationCrs(self._displayCrs)
 
         self._layerManager = LayerManager(self.iface, self)
+        self.highlighter = FeatureHighlighter(self.iface, self._layerManager)
         
         # Build an action list from QGIS navigation toolbar
         actionList = self.iface.mapNavToolToolBar().actions()
         self.actions = self.iface.mapNavToolToolBar().actions()
+        
         # Main address editing window
         self._loadaction = QAction(QIcon(':/plugins/AIMS_Plugin_threaded/resources/loadaddress.png'), 
             'QGIS-AIMS-Plugin', self.iface.mainWindow())
@@ -128,8 +137,11 @@ class Controller(QObject):
         self._updateaddtool.setAction( self._updateaddressaction )  
         self.actions.append(self._updateaddressaction)
                     
-        # RCL tools -- Not a QAction as triggered from many palaces but not the toolbar
-        self._rcltool = GetRcl(self.iface, self._layerManager, self, parent = None)
+        # RCL tool -- Not a QAction as triggered from many palaces but not the toolbar
+        self._rcltool = GetRcl(self.iface, self._layerManager, self)
+        
+        # UpdateReview Position tool -- Not a QAction as triggered initiated from review queue form
+        self._updateReviewPos = UpdateReviewPosition(self.iface, self._layerManager, self)
        
         # Address lineage
         self._lineageaction = QAction(QIcon(':/plugins/AIMS_Plugin_threaded/resources/lineage.png'), 
@@ -150,7 +162,7 @@ class Controller(QObject):
         self._highlightaction.setText('Highlightaction')
         self._highlightaction.setEnabled(False)
         self._highlightaction.setCheckable(True)
-        #self._highlightaction.toggled.connect( self._highlighter.setEnabled )
+        self._highlightaction.toggled.connect( self.highlighter.setEnabled )
 
         # Add to own toolbar
         self._toolbar = self.iface.addToolBar('QGIS-AIMS-Plugin')
@@ -242,17 +254,19 @@ class Controller(QObject):
         
     def loadLayers(self):
         ''' install map layers '''
-        #zoom to default extent
-        self._layerManager.defaultExtent()
-        self._layerManager.installRefLayers()
-        self._layerManager.installAimsLayer('adr', 'AIMS Features')
-        self._layerManager.installAimsLayer('rev', 'AIMS Review')
+        if not self.refLayer:
+            self.refLayer = self._layerManager.installRefLayers()
+        if not self.adrlayer:
+            self.adrlayer = self._layerManager.installAimsLayer('adr', 'AIMS Features')
+        if not self.revLayer:
+            self.revLayer = self._layerManager.installAimsLayer('rev', 'AIMS Review')
         self._layerManager.initialiseExtentEvent()
     
     def mapToolChanged(self):
         ''' track the current maptool (but not the rcl tool). this allows 
             for rollback to previous tool when the Rcltool is deactivated '''
-        if isinstance(self.iface.mapCanvas().mapTool(), GetRcl) == False:          
+        if (isinstance(self.iface.mapCanvas().mapTool(), GetRcl) == False and
+                isinstance(self.iface.mapCanvas().mapTool(), UpdateReviewPosition) == False):          
             self._currentMapTool = self.iface.mapCanvas().mapTool()
             # logging 
             uilog.info('*** TOOL CHANGE ***    {0} started'.format(self.iface.mapCanvas().mapTool())) 
@@ -271,8 +285,14 @@ class Controller(QObject):
     
     def startRclTool(self, parent = None):
         ''' activate the "get rcl tool" map tool '''
-        self._rcltool = GetRcl(self.iface, self._layerManager, self, parent)
+        self.rclParent = parent
         self.iface.mapCanvas().setMapTool(self._rcltool)
+        self._rcltool.setEnabled(True)
+    
+    def startUpdateReviewPosTool(self, revItem = None):
+        ''' activate the "get update Review position tool" map tool '''
+        self.currentRevItem = revItem
+        self.iface.mapCanvas().setMapTool(self._updateReviewPos)
         self._rcltool.setEnabled(True)
     
     def startMoveAddressTool(self):
