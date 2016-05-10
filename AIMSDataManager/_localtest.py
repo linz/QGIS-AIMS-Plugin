@@ -42,7 +42,7 @@ class LocalTest():
     def test(self):
         global refsnap
         refsnap = {0:None,1:None,2:None}
-        af = {ft:FeatureFactory.getInstance(FeedRef((FeatureType.ADDRESS,ft))) for ft in FeedType.reverse}
+        af = {ft:FeatureFactory.getInstance(FeedRef((FeatureType.ADDRESS,ft))) for ft in (FeedType.FEATURES,FeedType.CHANGEFEED,FeedType.RESOLUTIONFEED)}
         gf = {ft:FeatureFactory.getInstance(FeedRef((FeatureType.GROUPS,ft))) for ft in (FeedType.CHANGEFEED,FeedType.RESOLUTIONFEED)}
         af[3] = FeatureFactory.getInstance(FeedRef((FeatureType.GROUPS,FeedType.CHANGEFEED)))
         #with DataManager(start=None) as dm:

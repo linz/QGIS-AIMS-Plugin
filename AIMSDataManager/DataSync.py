@@ -28,10 +28,10 @@ import threading
 import Queue
 
 from Observable import Observable
-from DataUpdater import DataUpdater,DataUpdaterAction,DataUpdaterApproval,DataUpdaterGroupAction,DataUpdaterGroupApproval
+from DataUpdater import DataUpdater,DataUpdaterAction,DataUpdaterApproval,DataUpdaterGroupAction,DataUpdaterGroupApproval,DataUpdaterUserAction
 from AimsApi import AimsApi 
 from AimsLogging import Logger
-from AimsUtility import ActionType,ApprovalType,GroupActionType,GroupApprovalType,FeedType,FeatureType,FeedRef,LogWrap,FEEDS
+from AimsUtility import ActionType,ApprovalType,GroupActionType,GroupApprovalType,UserActionType,FeedType,FeatureType,FeedRef,LogWrap,FEEDS
 from Const import MAX_FEATURE_COUNT,THREAD_JOIN_TIMEOUT,PAGE_LIMIT,POOL_PAGE_CHECK_DELAY,THREAD_KEEPALIVE,FIRST_PAGE,LAST_PAGE_GUESS,ENABLE_ENTITY_EVALUATION,NULL_PAGE_VALUE as NPV
 from FeatureFactory import FeatureFactory
 aimslog = None
