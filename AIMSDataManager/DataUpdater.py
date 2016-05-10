@@ -209,12 +209,18 @@ class DataUpdaterGroup(DataUpdater):
     def getEntityInstance(self,d,etft):
         return EntityAddress(d,etft)
     
+class DataUpdaterUser(DataUpdater):    
+    def __init__(self,params,queue):
+        super(DataUpdaterUser,self).__init__(params,queue)
+        self.getfeat = self.afactory.getUser 
+    
+    
 
 #TODO Consolidate group/address + action/approve subclasses. might be enough variation to retain seperate classes
 #NOTES variables incl; oft=FF/RF,id=addressId/changeId/groupChangeId, action=approve/action/groupaction
 class DataUpdaterDRC(DataUpdater):
     #instantiated in subclass
-    oft,etft,identifier,payload,action,agobj,at,build,requestId = 9*(None,)
+    oft,etft,identifier,payload,action,agu,at,build,requestId = 9*(None,)
     
     def version(self):
         jc = self.api.getOneFeature(FeedRef((self.etft.et,self.oft)),self.identifier)
@@ -227,7 +233,7 @@ class DataUpdaterDRC(DataUpdater):
         
     def run(self):
         '''group change action on the CF'''
-        aimslog.info('DUr.{} {} - Adr-Grp{}'.format(self.ref,ActionType.reverse[self.at],self.agobj))
+        aimslog.info('DUr.{} {} - Adr-Grp{}'.format(self.ref,ActionType.reverse[self.at],self.agu))
         err,resp = self.action(self.at,self.payload,self.identifier)
         featurelist = []
         feature = self.build(model=resp['properties'])
@@ -239,9 +245,9 @@ class DataUpdaterDRC(DataUpdater):
         if err: feature.setErrors(err)
         if self.requestId: feature.setRequestId(self.requestId)
         if MERGE_RESPONSE:
-            aimslog.info('Merge req/res for {}'.format(self.agobj))
-            self.agobj.merge(feature)
-            self.queue.put(self.agobj)
+            aimslog.info('Merge req/res for {}'.format(self.agu))
+            self.agu.merge(feature)
+            self.queue.put(self.agu)
         else: self.queue.put(feature)
         self.notify(self.ref)
         
@@ -254,11 +260,11 @@ class DataUpdaterAction(DataUpdaterDRC):
         '''set address parameters'''
         self.etft = etft
         self.at = at
-        self.agobj = address
-        self.identifier = self.agobj.getAddressId()
-        self.requestId = self.agobj.getRequestId()
-        if at!=ActionType.ADD: self.agobj.setVersion(self.version())
-        self.payload = self.afactory.convertAddress(self.agobj,self.at)
+        self.agu = address
+        self.identifier = self.agu.getAddressId()
+        self.requestId = self.agu.getRequestId()
+        if at!=ActionType.ADD: self.agu.setVersion(self.version())
+        self.payload = self.afactory.convertAddress(self.agu,self.at)
         #run actions
         self.action = self.api.addressAction
         self.build = self.afactory.getAddress
@@ -272,11 +278,11 @@ class DataUpdaterApproval(DataUpdaterDRC):
         '''set address parameters'''
         self.etft = etft
         self.at = at
-        self.agobj = address
-        self.identifier = self.agobj.getChangeId()
-        self.requestId = self.agobj.getRequestId()
-        self.agobj.setVersion(self.version())
-        self.payload = self.afactory.convertAddress(self.agobj,self.at)
+        self.agu = address
+        self.identifier = self.agu.getChangeId()
+        self.requestId = self.agu.getRequestId()
+        self.agu.setVersion(self.version())
+        self.payload = self.afactory.convertAddress(self.agu,self.at)
         #run actions
         self.action = self.api.addressApprove
         self.build = self.afactory.getAddress
@@ -289,11 +295,11 @@ class DataUpdaterGroupAction(DataUpdaterDRC):
         '''set group parameters'''
         self.etft = etft
         self.at = at
-        self.agobj = group
-        self.identifier = self.agobj.getChangeGroupId()
-        self.requestId = self.agobj.getRequestId()
-        self.agobj.setVersion(self.version())
-        self.payload = self.afactory.convertGroup(self.agobj,self.at)
+        self.agu = group
+        self.identifier = self.agu.getChangeGroupId()
+        self.requestId = self.agu.getRequestId()
+        self.agu.setVersion(self.version())
+        self.payload = self.afactory.convertGroup(self.agu,self.at)
         #run actions
         self.action = self.api.groupAction
         self.build = self.afactory.getGroup
@@ -306,14 +312,31 @@ class DataUpdaterGroupApproval(DataUpdaterDRC):
         '''set group parameters'''
         self.etft = etft
         self.at = at
-        self.agobj = group
-        self.identifier = self.agobj.getChangeGroupId()
-        self.requestId = self.agobj.getRequestId()
-        self.agobj.setVersion(self.version())
-        self.payload = self.afactory.convertGroup(self.agobj,self.at)
+        self.agu = group
+        self.identifier = self.agu.getChangeGroupId()
+        self.requestId = self.agu.getRequestId()
+        self.agu.setVersion(self.version())
+        self.payload = self.afactory.convertGroup(self.agu,self.at)
         #run actions
         self.action = self.api.groupApprove
         self.build = self.afactory.getGroup
+        
+class DataUpdaterUserAction(DataUpdaterDRC):
+    #et = FeatureType.ADDRESS
+    #ft = FeedType.CHANGEFEED 
+    oft = FeedType.ADMIN
+    def setup(self,etft,at,user):
+        '''set user parameters'''
+        self.etft = etft
+        self.at = at
+        self.agu = user
+        self.identifier = self.agu.getUserId()
+        self.requestId = self.agu.getRequestId()
+        #self.agu.setVersion(self.version())
+        self.payload = self.afactory.convertUser(self.agu,self.at)
+        #run actions
+        self.action = self.api.userAction
+        self.build = self.afactory.getUser
         
         
     

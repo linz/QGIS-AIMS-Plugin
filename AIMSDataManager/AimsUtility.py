@@ -80,9 +80,13 @@ class Enumeration(object):
 
 class FeedRef(object):
     '''Convenience container class holding Entity/Feed type key'''
-    def __init__(self,et_ft):
-        self._et = et_ft[0]
-        self._ft = et_ft[1]
+    def __init__(self,arg1,arg2=None):
+        if arg2:
+            self._et = arg1
+            self._ft = arg2
+        else:
+            self._et = arg1[0]
+            self._ft = arg1[1]
         
     def __str__(self,trunc=3):
         return '{}{}'.format(FeatureType.reverse[self._et].title()[:trunc],FeedType.reverse[self._ft].title()[:trunc]) 
@@ -108,8 +112,8 @@ class FeedRef(object):
     def ft(self,ft): pass#self._ft = ft
 
 
-FeedType = Enumeration.enum('FEATURES','CHANGEFEED','RESOLUTIONFEED')
-FeatureType = Enumeration.enum('ADDRESS','GROUPS')
+FeedType = Enumeration.enum('FEATURES','CHANGEFEED','RESOLUTIONFEED','ADMIN')
+FeatureType = Enumeration.enum('ADDRESS','GROUPS','USERS')
 
 #address changefeed action
 ActionType = Enumeration.enum('ADD', 'RETIRE','UPDATE')
@@ -133,6 +137,10 @@ GroupApprovalType.LABEL =           ('Accepted','Declined','Information','Under 
 GroupApprovalType.PATH =            ('accept',  'decline', 'address', '')
 GroupApprovalType.HTTP =            ('POST',    'POST',    'GET',     'PUT')
 
+#user admin action
+UserActionType = Enumeration.enum('ADD','DELETE','UPDATE')
+UserActionType.PATH =            ('','','')
+UserActionType.HTTP =            ('POST','DELETE','PUT')
 
 FEEDS = {'AF':FeedRef((FeatureType.ADDRESS,FeedType.FEATURES)),'AC':FeedRef((FeatureType.ADDRESS,FeedType.CHANGEFEED)),
          'AR':FeedRef((FeatureType.ADDRESS,FeedType.RESOLUTIONFEED)),'GC':FeedRef((FeatureType.GROUPS,FeedType.CHANGEFEED)),

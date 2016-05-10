@@ -1,0 +1,7 @@
+{
+    "userName":'#required',
+    "email":'#required',
+    "requiresProgress":'#required',
+    "organisation":'#required',
+    "role":'#required'
+}

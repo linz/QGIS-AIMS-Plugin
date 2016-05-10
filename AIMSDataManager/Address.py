@@ -193,7 +193,7 @@ class Address(Feature):
         super(Address,self).__init__(ref)
     
     def __str__(self):
-        return 'ADR.{}.{}'.format(self._ref,self.type)
+        return 'ADR.{}.{}.{}'.format(self._ref,self.feature,self.type)
     
     
     # Set functions used to manipulate object properties   

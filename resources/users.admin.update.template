@@ -1,0 +1,9 @@
+{
+    "version":'#required',
+    "userId":'#required',
+    "userName":'#required',
+    "email":'#required',
+    "requiresProgress":'#required',
+    "organisation":'#required',
+    "role":'#required'
+}

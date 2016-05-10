@@ -113,6 +113,7 @@ class AimsApi(object):
         resp, content = self.h.request(url,"POST", json.dumps(payload), self._headers)
         aimslog.debug('{0}: {1}'.format(resp['status'],content))
         return self.handleResponse(url,resp["status"], json.loads(content) )  
+    
     @LogWrap.timediff(prefix='adrApp')
     def addressApprove(self,at,payload,cid):
         '''Approve/Decline a change by submitting address to resolutionfeed'''
@@ -121,6 +122,7 @@ class AimsApi(object):
         url = '/'.join((self._url,et,ft,str(cid),ApprovalType.PATH[at].lower(),TESTPATH)).rstrip('/')
         resp, content = self.h.request(url,ApprovalType.HTTP[at], json.dumps(payload), self._headers)
         return self.handleResponse(url,resp["status"], json.loads(content) )
+    
     @LogWrap.timediff(prefix='grpAct')
     def groupAction(self,gat,payload,cid):
         '''Perform action on group changefeed'''
@@ -139,4 +141,32 @@ class AimsApi(object):
         resp, content = self.h.request(url,GroupApprovalType.HTTP[gat], json.dumps(payload), self._headers)
         return self.handleResponse(url,resp["status"], json.loads(content) )
     
-    
+    @LogWrap.timediff(prefix='usrAct')
+    def userAction(self,uat,payload,uid): 
+        #http://devassgeo01:8080/aims/api/admin/users {add/update/delete}
+        url = '{}/admin/users/{}/{}'.format(self._url,uid,TESTPATH).rstrip('/')
+        resp, content = self.h.request(url,UserActionType.HTTP[uat], json.dumps(payload), self._headers)
+        return self.handleResponse(url,resp["status"], json.loads(content) )
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        

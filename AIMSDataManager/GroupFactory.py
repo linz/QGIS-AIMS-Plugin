@@ -184,7 +184,8 @@ class GroupResolutionFactory(GroupFactory):
     
 def test():
     from pprint import pprint as pp
-    gf_f = GroupFactory.getInstance(FeedType.CHANGEFEED)
+    from AimsUtility import FeedRef
+    gf_f = GroupFactory.getInstance(FeedRef(FeatureType.GROUPS,FeedType.CHANGEFEED))
     
     axx = gf_f.getGroup()
     axx.setVersion(11112222)

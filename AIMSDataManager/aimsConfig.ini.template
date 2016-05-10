@@ -5,7 +5,7 @@ name: <aims-username>
 pass: <aims-password>
 
 [url]
-api: http://devassgeo01:8080/aims/api
+api: https://devassgeo01:8080/aims/api
 
 [db]
 #database connection parameters

@@ -40,6 +40,8 @@ class Feature(object):
     def _vInt(ival): return isinstance(ival, int) #range filter?
     @staticmethod
     def _vDate(date): return Feature._vString(date) and bool(re.match('^\d{4}-\d{2}-\d{2}$',date)) 
+    @staticmethod
+    def _vEmail(email): return Feature._vString(email) and bool(re.match('^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$',email)) 
     
 
     #COMMON---------------------------------------------    
