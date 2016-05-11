@@ -42,25 +42,26 @@ class UiDataManager(QObject):
         self.groups = ('Replace', 'AddLineage', 'ParcelReferenceData') # more to come...
         
         self.rDataChangedSignal.connect(self._controller.rDataChanged)
-    
-    def start (self):
-        ''' start the Data Manager running only once
-            the user toggle the plugin button'''
-        with DataManager() as self.dm:
-            self.dm.registermain(self)   
-        self._iface.messageBar().pushMessage("Fetching AIMS Review Data...", level=QgsMessageBar.INFO, duration=10)
-        
-    ### Observer Methods ###
-    def register(self, observer):
-        self._observers.append(observer)
-        
-    def observe(self,observable,*args,**kwargs):
-        uilog.info('*** NOTIFY ***     Notify A[{}]'.format(observable))
-        self.setData(args,observable)
-        if observable in (FEEDS['GR'] ,FEEDS['AR'], FEEDS['AF']):
-            for observer in self._observers:            
-                observer.notify(observable) # can filter further reviewqueue does not need AF
-            
+        # create a new worker thread instance
+        worker = Watcher()
+#     def start (self):
+#         ''' start the Data Manager running only once
+#             the user toggle the plugin button'''
+#         with DataManager() as self.dm:
+#             self.dm.registermain(self)   
+#         self._iface.messageBar().pushMessage("Fetching AIMS Review Data...", level=QgsMessageBar.INFO, duration=10)
+#         
+#     ### Observer Methods ###
+#     def register(self, observer):
+#         self._observers.append(observer)
+#         
+#     def observe(self,observable,*args,**kwargs):
+#         uilog.info('*** NOTIFY ***     Notify A[{}]'.format(observable))
+#         self.setData(args,observable)
+#         if observable in (FEEDS['GR'] ,FEEDS['AR'], FEEDS['AF']):
+#             for observer in self._observers:            
+#                 observer.notify(observable) # can filter further reviewqueue does not need AF
+#             
     def exlopdeGroup(self):
         ''' key groups and single addresses against each group
             resultant format == 
@@ -375,3 +376,26 @@ class UiDataManager(QObject):
             pos = obj.getAddressPositions()[0]._position_coordinates
 
         return pos
+    
+class Watcher(QObject):
+    def __init__(self, layer):
+        QObject.__init__(self)
+    
+    def run(self):
+        self.start(
+                   )
+    def start (self):
+        ''' start the Data Manager running only once
+            the user toggle the plugin button'''
+        with DataManager() as self.dm:
+            self.dm.registermain(self)   
+        self._iface.messageBar().pushMessage("Fetching AIMS Review Data...", level=QgsMessageBar.INFO, duration=10)
+        
+       
+    def observe(self,observable,*args,**kwargs):
+        uilog.info('*** NOTIFY ***     Notify A[{}]'.format(observable))
+        self.setData(args,observable)
+#        if observable in (FEEDS['GR'] ,FEEDS['AR'], FEEDS['AF']):
+#            for observer in self._observers:            
+#                observer.notify(observable) # can filter further reviewqueue does not need AF
+            
