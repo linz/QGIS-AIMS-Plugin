@@ -142,9 +142,11 @@ UserActionType = Enumeration.enum('ADD','DELETE','UPDATE')
 UserActionType.PATH =            ('','','')
 UserActionType.HTTP =            ('POST','DELETE','PUT')
 
+FEED0 = {'UA':FeedRef((FeatureType.USERS,FeedType.ADMIN))}
 FEEDS = {'AF':FeedRef((FeatureType.ADDRESS,FeedType.FEATURES)),'AC':FeedRef((FeatureType.ADDRESS,FeedType.CHANGEFEED)),
          'AR':FeedRef((FeatureType.ADDRESS,FeedType.RESOLUTIONFEED)),'GC':FeedRef((FeatureType.GROUPS,FeedType.CHANGEFEED)),
          'GR':FeedRef((FeatureType.GROUPS,FeedType.RESOLUTIONFEED))}
+FEEDS.update(FEED0) 
 FIRST = {'AC':FeedRef((FeatureType.ADDRESS,FeedType.CHANGEFEED)),'AR':FeedRef((FeatureType.ADDRESS,FeedType.RESOLUTIONFEED)),
          'GC':FeedRef((FeatureType.GROUPS,FeedType.CHANGEFEED)), 'GR':FeedRef((FeatureType.GROUPS,FeedType.RESOLUTIONFEED))}
 

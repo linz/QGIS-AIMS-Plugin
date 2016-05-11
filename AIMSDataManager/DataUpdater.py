@@ -27,7 +27,7 @@ import zipfile
 import threading
 import Queue
 from AimsApi import AimsApi 
-from AimsUtility import FeedRef,ActionType,ApprovalType,FeatureType,FeedType,AimsException
+from AimsUtility import FeedRef,ActionType,ApprovalType,GroupActionType,GroupApprovalType,UserActionType,FeatureType,FeedType,AimsException
 from Const import ENABLE_ENTITY_EVALUATION, MERGE_RESPONSE
 from Address import Entity, EntityValidation, EntityAddress
 from AimsLogging import Logger
@@ -168,7 +168,8 @@ class DataUpdater(Observable):
     def getInstance(etft):
         if etft.et == FeatureType.GROUPS: return DataUpdaterGroup
         elif etft.et == FeatureType.ADDRESS: return DataUpdaterAddress
-        else: raise DataUpdaterSelectionException('Select Grp or Adr')
+        elif etft.et == FeatureType.USERS: return DataUpdaterUser
+        else: raise DataUpdaterSelectionException('Select Address,Groups or Users')
         
     def stop(self):
         self._stop.set()
@@ -220,7 +221,7 @@ class DataUpdaterUser(DataUpdater):
 #NOTES variables incl; oft=FF/RF,id=addressId/changeId/groupChangeId, action=approve/action/groupaction
 class DataUpdaterDRC(DataUpdater):
     #instantiated in subclass
-    oft,etft,identifier,payload,action,agu,at,build,requestId = 9*(None,)
+    oft,etft,identifier,payload,actiontype,action,agu,at,build,requestId = 10*(None,)
     
     def version(self):
         jc = self.api.getOneFeature(FeedRef((self.etft.et,self.oft)),self.identifier)
@@ -233,13 +234,14 @@ class DataUpdaterDRC(DataUpdater):
         
     def run(self):
         '''group change action on the CF'''
-        aimslog.info('DUr.{} {} - Adr-Grp{}'.format(self.ref,ActionType.reverse[self.at],self.agu))
+        aimslog.info('DUr.{} {} - AGU{}'.format(self.ref,self.actiontype.reverse[self.at],self.agu))
         err,resp = self.action(self.at,self.payload,self.identifier)
         featurelist = []
         feature = self.build(model=resp['properties'])
-        for e in resp['entities']:
-            featurelist.append(self._populateEntity(e))
-        feature._setEntities(featurelist)
+        if hasattr(resp,'entities'):
+            for e in resp['entities']:
+                featurelist.append(self._populateEntity(e))
+            feature._setEntities(featurelist)
         #feature = self.processPage(feature,self.etft)
         #print 'feature',feature
         if err: feature.setErrors(err)
@@ -256,16 +258,17 @@ class DataUpdaterAction(DataUpdaterDRC):
     #et = FeatureType.ADDRESS
     #ft = FeedType.CHANGEFEED 
     oft = FeedType.FEATURES
-    def setup(self,etft,at,address):
+    def setup(self,etft,aat,address):
         '''set address parameters'''
         self.etft = etft
-        self.at = at
+        self.at = aat
         self.agu = address
         self.identifier = self.agu.getAddressId()
         self.requestId = self.agu.getRequestId()
-        if at!=ActionType.ADD: self.agu.setVersion(self.version())
+        if aat!=ActionType.ADD: self.agu.setVersion(self.version())
         self.payload = self.afactory.convertAddress(self.agu,self.at)
         #run actions
+        self.actiontype = ActionType
         self.action = self.api.addressAction
         self.build = self.afactory.getAddress
 
@@ -274,16 +277,17 @@ class DataUpdaterApproval(DataUpdaterDRC):
     #et = FeatureType.ADDRESS
     #ft = FeedType.RESOLUTIONFEED
     oft = FeedType.RESOLUTIONFEED
-    def setup(self,etft,at,address):
+    def setup(self,etft,aat,address):
         '''set address parameters'''
         self.etft = etft
-        self.at = at
+        self.at = aat
         self.agu = address
         self.identifier = self.agu.getChangeId()
         self.requestId = self.agu.getRequestId()
         self.agu.setVersion(self.version())
         self.payload = self.afactory.convertAddress(self.agu,self.at)
         #run actions
+        self.actiontype = ApprovalType
         self.action = self.api.addressApprove
         self.build = self.afactory.getAddress
 
@@ -291,16 +295,17 @@ class DataUpdaterGroupAction(DataUpdaterDRC):
     #et = FeatureType.ADDRESS
     #ft = FeedType.CHANGEFEED 
     oft = FeedType.FEATURES
-    def setup(self,etft,at,group):
+    def setup(self,etft,gat,group):
         '''set group parameters'''
         self.etft = etft
-        self.at = at
+        self.at = gat
         self.agu = group
         self.identifier = self.agu.getChangeGroupId()
         self.requestId = self.agu.getRequestId()
         self.agu.setVersion(self.version())
         self.payload = self.afactory.convertGroup(self.agu,self.at)
         #run actions
+        self.actiontype = GroupActionType
         self.action = self.api.groupAction
         self.build = self.afactory.getGroup
         
@@ -308,16 +313,17 @@ class DataUpdaterGroupApproval(DataUpdaterDRC):
     #et = FeatureType.ADDRESS
     #ft = FeedType.CHANGEFEED 
     oft = FeedType.RESOLUTIONFEED
-    def setup(self,etft,at,group):
+    def setup(self,etft,gat,group):
         '''set group parameters'''
         self.etft = etft
-        self.at = at
+        self.at = gat
         self.agu = group
         self.identifier = self.agu.getChangeGroupId()
         self.requestId = self.agu.getRequestId()
         self.agu.setVersion(self.version())
         self.payload = self.afactory.convertGroup(self.agu,self.at)
         #run actions
+        self.actiontype = GroupApprovalType
         self.action = self.api.groupApprove
         self.build = self.afactory.getGroup
         
@@ -325,16 +331,17 @@ class DataUpdaterUserAction(DataUpdaterDRC):
     #et = FeatureType.ADDRESS
     #ft = FeedType.CHANGEFEED 
     oft = FeedType.ADMIN
-    def setup(self,etft,at,user):
+    def setup(self,etft,uat,user):
         '''set user parameters'''
         self.etft = etft
-        self.at = at
+        self.at = uat
         self.agu = user
         self.identifier = self.agu.getUserId()
         self.requestId = self.agu.getRequestId()
         #self.agu.setVersion(self.version())
         self.payload = self.afactory.convertUser(self.agu,self.at)
         #run actions
+        self.actiontype = UserActionType
         self.action = self.api.userAction
         self.build = self.afactory.getUser
         

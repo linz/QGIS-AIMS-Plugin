@@ -33,7 +33,7 @@ class User(Feature):
         self._ref = ref
     
     def __str__(self):
-        return 'USR.{}.{}'.format(self._ref,self.userId)
+        return 'USR.{}.{}'.format(self._ref,self._userId)
     
     def setUserId(self, userId):
         self._userId = userId

@@ -22,6 +22,9 @@ class Observable(threading.Thread):
 
     def register(self, observer):
         self._observers.append(observer)
+        
+    def deregister(self,observer):
+        if observer in self._observers: self._observers.remove(observer)
     
     def notify(self, *args, **kwargs):
         '''Notify all registered listeners'''

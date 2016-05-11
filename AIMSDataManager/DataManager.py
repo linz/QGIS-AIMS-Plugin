@@ -20,9 +20,9 @@ import collections
 from Address import Address, AddressChange, AddressResolution,Position
 from FeatureFactory import FeatureFactory
 #from DataUpdater import DataUpdater
-from DataSync import DataSync,DataSyncFeatures,DataSyncFeeds
+from DataSync import DataSync,DataSyncFeatures,DataSyncFeeds,DataSyncAdmin
 from datetime import datetime as DT
-from AimsUtility import FeedRef,ActionType,ApprovalType,GroupActionType,GroupApprovalType,FeatureType,FeedType,Configuration,FEEDS,FIRST
+from AimsUtility import FeedRef,ActionType,ApprovalType,GroupActionType,GroupApprovalType,UserActionType,FeatureType,FeedType,Configuration,FEED0,FEEDS,FIRST
 from AimsLogging import Logger
 from Const import THREAD_JOIN_TIMEOUT,RES_PATH,LOCAL_ADL,SWZERO,NEZERO,NULL_PAGE_VALUE as NPV
 from Observable import Observable
@@ -51,7 +51,7 @@ class DataManager(Observable):
         self.ds = {etft:None for etft in FEEDS.values()}
         self.stamp = {etft:time.time() for etft in FEEDS.values()}
         
-        #init the three different feed threads
+        #init the g2+a2+a1 different feed threads
         self.dsr = {f:DataSyncFeeds for f in FIRST.values()}
         self.dsr[FeedRef((FeatureType.ADDRESS,FeedType.FEATURES))] = DataSyncFeatures
         for etft in self._start: self._checkDS(etft)
@@ -76,16 +76,13 @@ class DataManager(Observable):
         '''Register "single" class as a listener'''
         self.registered = reg if hasattr(reg, 'observe') else None
         
-#     def register(self,reg):
-#         '''redundant super call to catch/log registrees'''
-#         super(DataManager,self).register(reg)
-        
     def _checkDS(self,etft):
-        '''Starts a sync thread unless its features with a zero bbox'''
+        '''Starts a sync thread unless its a address-features feed with a zero bbox'''
         if (etft == FEEDS['AF'] and self.persist.coords['sw'] == SWZERO and self.persist.coords['ne'] == NEZERO):# or int(self.persist.tracker[etft]['threads'])==0:                
             self.ds[etft] = None
         else:
-            self.ds[etft] = self._spawnDS(etft,self.dsr[etft])
+            self.ds[etft],self.ioq[etft] = self._spawnDS(etft,self.dsr[etft])
+            if etft.ft != FeedType.FEATURES: self.register(self.ds[etft].drc)
             self.ds[etft].register(self)
             #HACK to start DRC even if feed thread count is zero
             if int(self.persist.tracker[etft]['threads'])>0:
@@ -95,16 +92,22 @@ class DataManager(Observable):
             
         
     def _spawnDS(self,etft,feedclass): 
+        '''Spawn and return a new DS matching the etft'''
         ts = '{0:%y%m%d.%H%M%S}'.format(DT.now())
         params = ('DSF..{}.{ts}'.format(etft,ts=ts),etft,self.persist.tracker[etft],self.conf)
-        self.ioq[etft] = {n:Queue.Queue() for n in ('in','out','resp')}
-        ds = feedclass(params,self.ioq[etft])
+        #self.ioq[etft] = {n:Queue.Queue() for n in ('in','out','resp')}
+        dq =  {n:Queue.Queue() for n in ('in','out','resp')}
+        ds = feedclass(params,dq)
         ds.setup(self.persist.coords['sw'],self.persist.coords['ne'])
         ds.setDaemon(True)
         ds.setName('DS{}'.format(etft))
-        #ds.start()
-        if etft.ft != FeedType.FEATURES: self.register(ds.drc)
-        return ds    
+        return ds,dq    
+    
+    def _cullDS(self,etft):
+        '''Remove temporary queue and ds instances, this does the anti spawn'''
+        del self.ioq[etft]
+        self.deregister(self.uads.drc)
+        del self.uads
         
     def close(self):
         '''shutdown closing/stopping ds threads and persisting data'''
@@ -181,20 +184,23 @@ class DataManager(Observable):
     def response(self,etft=FeedRef((FeatureType.ADDRESS,FeedType.RESOLUTIONFEED))):
         '''Returns any features lurking in the response queue'''
         resp = ()
+        delflag = False
         #while self.ioq.has_key((et,ft)) and not self.ioq[(et,ft)]['resp'].empty():
         while etft in FEEDS.values() and not self.ioq[etft]['resp'].empty():
             resp += (self.ioq[etft]['resp'].get(),)
-        return resp
-        
+            #don't delete the queue while we're still getting items from it, instead mark it for deletion
+            if etft in FEED0.values(): delflag = True
+        if delflag: self._cullDS(etft)
+        return resp     
       
     def _populateAddress(self,feature):
-        '''Fill in any required+missing fields if a default value is known (in this case the configured user)'''
+        '''Fill in any required+missing fields if a default value is known (in this case the configured user/org)'''
         if not hasattr(feature,'_workflow_sourceUser') or not feature.getSourceUser(): feature.setSourceUser(self.conf['user'])
         if not hasattr(feature,'_workflow_sourceOrganisation') or not feature.getSourceOrganisation(): feature.setSourceOrganisation(self.conf['org'])
         return feature    
     
     def _populateGroup(self,feature):
-        '''Fill in any required+missing fields if a default value is known (in this case the configured user)'''
+        '''Fill in any required+missing fields if a default value is known (in this case the configured user/submitter)'''
         if not hasattr(feature,'_workflow_sourceUser') or not feature.getSourceUser(): feature.setSourceUser(self.conf['user'])
         if not hasattr(feature,'_submitterUserName') or not feature.getSubmitterUserName(): feature.setSubmitterUserName(self.conf['user'])
         return feature
@@ -276,7 +282,28 @@ class DataManager(Observable):
         self.notify(feedref)
     
     #----------------------------
+    '''User actions are on-demand only and because they won't be run very often are set up and torn down on each use'''
     
+    def addUser(self,user,reqid=None):
+        self._userAction(user, UserActionType.ADD, reqid)
+        
+    def removeUser(self,user,reqid=None):
+        self._userAction(user, UserActionType.DELETE, reqid)
+            
+    def updateUser(self,user,reqid=None):
+        self._userAction(user, UserActionType.UPDATE, reqid)       
+    
+    def _userAction(self,user,uat,reqid=None):        
+        if reqid: user.setRequestId(reqid)
+        #self._populateUser(user).setChangeType(UserActionType.reverse[uat].title())
+        #self._queueAction(FeedRef((FeatureType.GROUPS,FeedType.CHANGEFEED)),gat,group)
+        etft = FeedRef((FeatureType.USERS,FeedType.ADMIN))
+        self.ioq[etft]
+        self.uads,self.ioq[etft] = self._spawnDS(etft,DataSyncAdmin)
+        self.register(self.uads.drc)
+        self.ioq[etft]['in'].put({uat:(user,)})
+        self.notify(etft)
+        
     #convenience method for address casting
     def castTo(self,requiredtype,address):
         if not requiredtype in FeedType.reverse.keys(): raise Exception('unknown feed/address type')
@@ -311,7 +338,8 @@ class Persistence():
             self.tracker[FEEDS['AC']] = {'page':[NPV,NPV],'index':1,'threads':0,'interval':125}  
             self.tracker[FEEDS['AR']] = {'page':[1,1],    'index':1,'threads':1,'interval':10} 
             self.tracker[FEEDS['GC']] = {'page':[1,1],    'index':1,'threads':0,'interval':130}  
-            self.tracker[FEEDS['GR']] = {'page':[1,1],    'index':1,'threads':1,'interval':55}             
+            self.tracker[FEEDS['GR']] = {'page':[1,1],    'index':1,'threads':1,'interval':55}          
+            self.tracker[FEEDS['UA']] = {'page':[1,1],    'index':1,'threads':0,'interval':0}              
             
             self.write() 
     

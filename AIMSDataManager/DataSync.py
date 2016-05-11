@@ -245,15 +245,15 @@ class DataSyncFeatures(DataSync):
             
     #null method for features since page count not saved
     def managePage(self,p):pass
-
-
+        
+        
 class DataSyncFeeds(DataSync): 
     
     parameters = {FeedRef((FeatureType.ADDRESS,FeedType.CHANGEFEED)):{'atype':ActionType,'action':DataUpdaterAction},
                   FeedRef((FeatureType.ADDRESS,FeedType.RESOLUTIONFEED)):{'atype':ApprovalType,'action':DataUpdaterApproval},
                   FeedRef((FeatureType.GROUPS,FeedType.CHANGEFEED)):{'atype':GroupActionType,'action':DataUpdaterGroupAction},
-                  FeedRef((FeatureType.GROUPS,FeedType.RESOLUTIONFEED)):{'atype':GroupApprovalType,'action':DataUpdaterGroupApproval},
-                  FeedRef((FeatureType.USERS,FeedType.ADMIN)):{'atype':UserActionType,'action':DataUpdaterUserAction}
+                  FeedRef((FeatureType.GROUPS,FeedType.RESOLUTIONFEED)):{'atype':GroupApprovalType,'action':DataUpdaterGroupApproval}
+                  #FeedRef((FeatureType.USERS,FeedType.ADMIN)):{'atype':UserActionType,'action':DataUpdaterUserAction}
                   }
     
     def __init__(self,params,queues):
@@ -369,6 +369,20 @@ class DataSyncFeeds(DataSync):
     def managePage(self,p):
         if p[0]: self.ftracker['page'][0] = p[0]
         if p[1]: self.ftracker['page'][1] = p[1]
+        
+class DataSyncAdmin(DataSyncFeeds):
+    '''Admin DS class that doesn't update and is only used as a admin client request channel'''
+    
+    parameters = {FeedRef((FeatureType.USERS,FeedType.ADMIN)):{'atype':UserActionType,'action':DataUpdaterUserAction}}
+        
+    def __init__(self,params,queues):
+        '''Create an additional DRC thread to watch the feed input queue'''
+        super(DataSyncAdmin,self).__init__(params,queues)
+        #self.drc = DataSyncAdmin.setupDRC(self,params[0])
+        
+    def run(self):
+        '''Start the DRC thread only'''
+        self.drc.start()
         
   
         
