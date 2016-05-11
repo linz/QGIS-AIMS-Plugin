@@ -63,11 +63,11 @@ class  Group(Feature):
         return self._submitterUserName   
     
     
-    def compare(self,other):
-        '''Equality comparator'''
-        #return False if isinstance(self,other) else hash(self)==hash(other)
-        #IMPORTANT. Attribute value compare only useful with distinct (deepcopy'd) instances
-        return all((getattr(self,a)==getattr(other,a) for a in self.__dict__.keys()))
+#     def compare(self,other):
+#         '''Equality comparator'''
+#         #return False if isinstance(self,other) else hash(self)==hash(other)
+#         #IMPORTANT. Attribute value compare only useful with distinct (deepcopy'd) instances
+#         return all((getattr(self,a)==getattr(other,a) for a in self.__dict__.keys()))
     
     
     @staticmethod

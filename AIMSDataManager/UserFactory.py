@@ -98,9 +98,9 @@ class UserFactory(FeatureFactory):
             else: getattr(usr,setter)(self.filterPI(data[k]) or None) if hasattr(usr,setter) else setattr(usr,new_prefix,self.filterPI(data[k]) or None)
         return usr
     
-    def cast(self,grp):
+    def cast(self,usr):
         '''casts Users from curent to requested User-type'''
-        return User.clone(grp, self.getUser())
+        return User.clone(usr, self.getUser())
     
 #     @staticmethod
 #     def filterPI(ppi):

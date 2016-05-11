@@ -59,6 +59,9 @@ class LocalTest():
         listofaddresses = dm.pull()
         print 'addr list before feed checkin',[len(l) for l in listofaddresses.values()]
         
+        #TESTUSER
+        self.testuseractions(dm)
+        
         #TEST RESTART
         self.testrestartCR(dm)
         
@@ -84,7 +87,7 @@ class LocalTest():
         countdown = 10
         while countdown:
             aimslog.info('*** Main TICK '+str(time.clock()))
-            self.testresp(dm)
+            rr = self.testresp(dm)
             time.sleep(30)
             countdown -= 1
             
@@ -97,7 +100,7 @@ class LocalTest():
         while not self.flag: 
             time.sleep(5)   
         else:
-            r1,r2 = self.testresp(dm) 
+            r1,r2,r3 = self.testresp(dm) 
             
         dm.setbb(sw=(174.76928,-41.28515), ne=(174.79519,-41.26481))
         time.sleep(60)
@@ -105,7 +108,7 @@ class LocalTest():
         while not self.flag: 
             time.sleep(5)   
         else:
-            r1,r2 = self.testresp(dm) 
+            r1,r2,r3 = self.testresp(dm) 
             
         dm.setbb(sw=(174.76928,-41.28515), ne=(174.79529,-41.26471))
         time.sleep(60)
@@ -113,7 +116,7 @@ class LocalTest():
         while not self.flag: 
             time.sleep(5)   
         else:
-            r1,r2 = self.testresp(dm)
+            r1,r2,r3 = self.testresp(dm)
         
     def testrestartCR(self,dm):
         dm.restart(FEEDS['AF'])
@@ -137,7 +140,7 @@ class LocalTest():
 #         resp = None
 #         tout = 10
 #         while True: 
-#             resp,_ = self.testresp(dm,FeedType.CHANGEFEED)
+#             resp,_,_ = self.testresp(dm,FeedType.CHANGEFEED)
 #             if resp: 
 #                 err = resp[0].getErrors()
 #                 print rqid1,resp[0].meta.requestId
@@ -160,7 +163,7 @@ class LocalTest():
 #         resp = None
 #         tout = 10
 #         while True: 
-#             resp,_ = self.testresp(dm,FeedType.CHANGEFEED)
+#             resp,_,_ = self.testresp(dm,FeedType.CHANGEFEED)
 #             if resp: 
 #                 err = resp[0].getErrors()
 #                 print rqid2,resp[0].meta.requestId
@@ -183,7 +186,7 @@ class LocalTest():
         resp = None
         tout = 10
         while True: 
-            resp,_ = self.testresp(dm,FeedType.CHANGEFEED)
+            resp,_,_ = self.testresp(dm,FeedType.CHANGEFEED)
             if resp: 
                 err = resp[0].getErrors()
                 print rqid3,resp[0].meta.requestId
@@ -213,7 +216,7 @@ class LocalTest():
         dm.acceptAddress(addr_r,rqid1)
         resp = None
         while True: 
-            resp,_ = self.testresp(dm,FeedType.RESOLUTIONFEED)
+            resp,_,_ = self.testresp(dm,FeedType.RESOLUTIONFEED)
             if resp: 
                 print rqid1,resp[0].meta.requestId
                 break
@@ -228,7 +231,7 @@ class LocalTest():
         dm.repairAddress(addr_r,rqid2)
         resp = None
         while True: 
-            resp,_ = self.testresp(dm,FeedType.RESOLUTIONFEED)
+            resp,_,_ = self.testresp(dm,FeedType.RESOLUTIONFEED)
             if resp: 
                 print rqid2,resp[0].meta.requestId
                 break
@@ -242,7 +245,7 @@ class LocalTest():
         dm.declineAddress(addr_r,rqid3)
         resp = None
         while not resp: 
-            resp,_ = self.testresp(dm,FeedType.RESOLUTIONFEED)
+            resp,_,_ = self.testresp(dm,FeedType.RESOLUTIONFEED)
             if resp: 
                 print rqid3,resp[0].meta.requestId
                 break
@@ -261,13 +264,61 @@ class LocalTest():
         dm.acceptGroup(grp_r,rqid1)
         resp = None
         while True: 
-            _,resp = self.testresp(dm,FeedType.RESOLUTIONFEED)
+            _,resp,_ = self.testresp(dm,FeedType.RESOLUTIONFEED)
             if resp: 
                 print rqid1,resp[0].meta.requestId
                 break
             time.sleep(5)
         ver += 1
-    
+        
+    def testuseractions(self,dm):
+        '''create and submit user actions, add/update/delete '''
+        ver = 100
+        uid = 100
+        rqid = 100
+        
+        etft = FeedRef((FeatureType.USERS,FeedType.ADMIN))
+        uf = FeatureFactory.getInstance(etft)
+        
+        user = uf.getUser('local_test_user')
+        user.setUserId(uid)
+        user._version = ver
+        user._userName = 'Scott Tiger'
+        user._email = 'scott@oracle.com'
+        user._requiresProgress = 'False'
+        user._organisation = 'LINZ'
+        user._role = 'follower'
+        
+        dm.addUser(user,rqid)
+        while True: 
+            _,_,resp = self.testresp(dm,FeedType.ADMIN)
+            if resp: 
+                print rqid,resp[0].meta.requestId
+                break
+            time.sleep(5)
+            
+        rqid+=1
+        user._userName = 'Scott J Tiger'
+        dm.updateUser(user,rqid)
+        while True: 
+            _,_,resp = self.testresp(dm,FeedType.ADMIN)
+            if resp: 
+                print rqid,resp[0].meta.requestId
+                break
+            time.sleep(5)
+            
+        rqid+=1
+        dm.deleteUser(user,rqid)
+        while True: 
+            _,_,resp = self.testresp(dm,FeedType.ADMIN)
+            if resp: 
+                print rqid,resp[0].meta.requestId
+                break
+            time.sleep(5)
+        
+        
+        
+        
     def testresp(self,dm,ft=FeedType.CHANGEFEED):
         r = None
         #aimslog.info('*** Main COUNT {}'.format(dm.refresh()))  
@@ -288,7 +339,13 @@ class LocalTest():
             #aimslog.info('*** Main RESP {} - [{}]'.format(r,len(res2p))) 
             aimslog.info('*** Main GROUP RESP {} [{}]'.format(r,len(resp2)))
             
-        return resp1,resp2
+        etft = FeedRef((FeatureType.USERS,ft))
+        resp3 = dm.response(etft)
+        for r in resp3:
+            #aimslog.info('*** Main RESP {} - [{}]'.format(r,len(res2p))) 
+            aimslog.info('*** Main USERS RESP {} [{}]'.format(r,len(resp2)))
+            
+        return resp1,resp2,resp3
                 
     def gettestaddress(self,ff):
         a = ff.getAddress('test_featuretype_address')

@@ -83,6 +83,7 @@ class FeatureFactory(object):
         elif etft.et==FeatureType.USERS:
             from UserFactory import UserFactory
             if etft.ft==FeedType.ADMIN: return UserFactory(etft)
+            else: raise InvalidEnumerationType('FeedType {} not available'.format(etft.ft))
         else: raise InvalidEnumerationType('FeatureType {} not available'.format(etft.et))
     
     
