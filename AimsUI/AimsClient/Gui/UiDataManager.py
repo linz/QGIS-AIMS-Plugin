@@ -12,17 +12,29 @@ from PyQt4.QtCore import *
 from qgis.core import QgsRectangle
 from qgis.gui import QgsMessageBar
 import time
+import threading
 
 from AIMSDataManager.DataManager import DataManager
 from AIMSDataManager.AimsLogging import Logger
 from AIMSDataManager.AimsUtility import FeedType, FeedRef, FeatureType, FEEDS
 from AimsUI.AimsClient.Gui.ReviewQueueWidget import ReviewQueueWidget
+# Dev only - debugging
+try:
+    import sys
+    sys.path.append('/opt/eclipse/plugins/org.python.pydev_4.4.0.201510052309/pysrc')
+    from pydevd import settrace, GetGlobalDebugger
+    settrace()
+
+except:
+    pass
+
+
 
 uilog = None
     
 class UiDataManager(QObject):
     rDataChangedSignal = pyqtSignal()
-
+    
     #logging 
     global uilog
     uilog = Logger.setup(lf='uiLog')
@@ -42,18 +54,26 @@ class UiDataManager(QObject):
         self.groups = ('Replace', 'AddLineage', 'ParcelReferenceData') # more to come...
         
         self.rDataChangedSignal.connect(self._controller.rDataChanged)
-        # create a new worker thread instance
-        worker = Watcher()
-#     def start (self):
-#         ''' start the Data Manager running only once
-#             the user toggle the plugin button'''
-#         with DataManager() as self.dm:
-#             self.dm.registermain(self)   
-#         self._iface.messageBar().pushMessage("Fetching AIMS Review Data...", level=QgsMessageBar.INFO, duration=10)
-#         
-#     ### Observer Methods ###
-#     def register(self, observer):
-#         self._observers.append(observer)
+        
+    def startDM(self):
+        ''' start running 2x threads
+            1: a DM observer thread
+            2: a Listener of the DM observer '''
+        # common data obj
+        self.DMData = DMData()
+        with DataManager() as self.dm:
+            dmObserver = DMObserver(self.DMData, self.dm)
+#             self.dm.registermain(self)  
+        
+        listener = Listener(self.DMData)
+        self.connect(listener, SIGNAL('dataChanged'), self.dataUpdated)#, Qt.QueuedConnection)
+        #### Start Threads
+        listener.start()
+        dmObserver.start()
+
+    ### Observer Methods ###
+    def register(self, observer):
+        self._observers.append(observer)
 #         
 #     def observe(self,observable,*args,**kwargs):
 #         uilog.info('*** NOTIFY ***     Notify A[{}]'.format(observable))
@@ -61,7 +81,22 @@ class UiDataManager(QObject):
 #         if observable in (FEEDS['GR'] ,FEEDS['AR'], FEEDS['AF']):
 #             for observer in self._observers:            
 #                 observer.notify(observable) # can filter further reviewqueue does not need AF
+#    
+    @pyqtSlot()
+    def dataUpdated(self, data, feedType = FEEDS['AR']):
+        ''' review data changed, update review layer and table '''
+        uilog.info("Signal Recieved")
+        if data is None: return 
+        self.setData(data,feedType)
+        for observer in self._observers:
+            observer.notify(feedType)
 #             
+#     def notify(self, data, feedType):
+#         uilog.info("NOTIFIED")
+#         self.setData(data,feedType)
+#         #for observer in self._observers:
+#         #    observer.notify(feedType)
+
     def exlopdeGroup(self):
         ''' key groups and single addresses against each group
             resultant format == 
@@ -89,7 +124,7 @@ class UiDataManager(QObject):
         if listofFeatures:
             li = []
             keyId = self.idProperty(feedtype)
-            li = dict((getattr(feat, keyId), feat) for feat in listofFeatures[0])
+            li = dict((getattr(feat, keyId), feat) for feat in listofFeatures)
             self.data[feedtype] = li
             # [GroupKey:{AdKey:}]            
         if feedtype == FEEDS['GR']:
@@ -123,7 +158,6 @@ class UiDataManager(QObject):
             to reflect these changes. '''
 
         self.data[FEEDS['AF']][respFeature._components_addressId] = respFeature
-        self._controller._layerManager.getAimsFeatures() # temp, will to switch to signal
     
     def updateGdata(self, respFeature):
         groupKey = self.matchGroupKey(respFeature._changeGroupId)
@@ -376,26 +410,69 @@ class UiDataManager(QObject):
             pos = obj.getAddressPositions()[0]._position_coordinates
 
         return pos
+
     
-class Watcher(QObject):
-    def __init__(self, layer):
-        QObject.__init__(self)
+class Listener(QThread):
+    #listenerSignal = pyqtSignal()
+    def __init__(self, DMData):
+        super(Listener, self).__init__()
+        self.DMData = DMData
+        self.data = {FEEDS['AF']:[],
+                FEEDS['AC']:[],
+                FEEDS['AR']:[],
+                FEEDS['GC']:[],
+                FEEDS['GR']:[]
+                }
+        self.previousData = {FEEDS['AF']:[],
+                FEEDS['AC']:[],
+                FEEDS['AR']:[],
+                FEEDS['GC']:[],
+                FEEDS['GR']:[]
+                }
+    
+    def compareData(self):
+        for k , v in self.data.items():
+            if v and self.previousData[k] != v:
+                self.emit(SIGNAL('dataChanged'), v, k)
+            self.previousData = self.data
     
     def run(self):
-        self.start(
-                   )
-    def start (self):
-        ''' start the Data Manager running only once
-            the user toggle the plugin button'''
-        with DataManager() as self.dm:
-            self.dm.registermain(self)   
-        self._iface.messageBar().pushMessage("Fetching AIMS Review Data...", level=QgsMessageBar.INFO, duration=10)
+        while True:
+            self.data = self.DMData.getData()     
+            self.compareData()
+            QThread.sleep(5)
+
+class DMData(object):
+    def __init__(self):
+
+        self.adrRes = None
+        self.grpRes = None
+        self.adrFea = None
+        #self.adrCha = None    
+        #self.grpCha = None
+    
+    def getData(self): 
+
+        return { FEEDS['AR']:self.adrRes,
+                FEEDS['GR']:self.grpRes,
+                FEEDS['AF']:self.adrFea
+                }
+    
+class DMObserver(QThread):
+    def __init__(self, DMData, dm):
+        super(DMObserver, self).__init__()
+        self.DMData = DMData
+        self.mutex = QMutex()
+        self.dm = dm
+        self.feedData = {FEEDS['GR']: 'grpRes' ,FEEDS['AR']: 'adrRes', 
+                         FEEDS['AF']: 'adrFea', FEEDS['GR']: 'grpCha', FEEDS['AC']: 'adrCha'}
         
-       
-    def observe(self,observable,*args,**kwargs):
+    def run (self):
+        self.dm.registermain(self) 
+               
+    def observe(self,observable,*args,**kwargs):        
         uilog.info('*** NOTIFY ***     Notify A[{}]'.format(observable))
-        self.setData(args,observable)
-#        if observable in (FEEDS['GR'] ,FEEDS['AR'], FEEDS['AF']):
-#            for observer in self._observers:            
-#                observer.notify(observable) # can filter further reviewqueue does not need AF
-            
+        self.mutex.lock()
+        setattr(self.DMData, self.feedData.get(observable),args[0])
+        self.mutex.unlock()
+     

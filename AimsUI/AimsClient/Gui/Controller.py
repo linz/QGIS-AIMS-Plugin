@@ -83,7 +83,6 @@ class Controller(QObject):
             'QGIS-AIMS-Plugin', self.iface.mainWindow())
         self._loadaction.setWhatsThis('Open the QGIS-AIMS-Plugin')
         self._loadaction.setStatusTip('Open the QGIS-AIMS-Plugin')
-        #self._loadaction.triggered.connect(self.startDm)
         self._loadaction.triggered.connect(self.loadQueues)
         self._loadaction.triggered.connect(self.loadLayers)
         self._loadaction.triggered.connect(self.enableAddressLayer)
@@ -239,8 +238,8 @@ class Controller(QObject):
             self._queues = queues
         return self._queues
     
-    def startDM(self): 
-        self.uidm.start()
+    def startDM(self):         
+        self.uidm.startDM()
     
     def enableAddressLayer(self, layer):
         ''' enable tools that are dependent on the Address Layer
