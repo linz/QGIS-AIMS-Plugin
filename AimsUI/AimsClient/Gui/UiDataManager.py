@@ -28,8 +28,6 @@ try:
 except:
     pass
 
-
-
 uilog = None
     
 class UiDataManager(QObject):
@@ -59,17 +57,17 @@ class UiDataManager(QObject):
         ''' start running 2x threads
             1: a DM observer thread
             2: a Listener of the DM observer '''
-        # common data obj
-        self.DMData = DMData()
-        with DataManager() as self.dm:
-            dmObserver = DMObserver(self.DMData, self.dm)
-#             self.dm.registermain(self)  
         
-        listener = Listener(self.DMData)
-        self.connect(listener, SIGNAL('dataChanged'), self.dataUpdated)#, Qt.QueuedConnection)
-        #### Start Threads
-        listener.start()
-        dmObserver.start()
+        with DataManager() as self.dm:
+            # common data obj
+            self.DMData = DMData()           
+            dmObserver = DMObserver(self.DMData, self.dm)
+                    
+            listener = Listener(self.DMData)
+            self.connect(listener, SIGNAL('dataChanged'), self.dataUpdated)#, Qt.QueuedConnection)
+            #### Start Threads
+            listener.start()
+            dmObserver.start()
 
     ### Observer Methods ###
     def register(self, observer):
@@ -90,12 +88,6 @@ class UiDataManager(QObject):
         self.setData(data,feedType)
         for observer in self._observers:
             observer.notify(feedType)
-#             
-#     def notify(self, data, feedType):
-#         uilog.info("NOTIFIED")
-#         self.setData(data,feedType)
-#         #for observer in self._observers:
-#         #    observer.notify(feedType)
 
     def exlopdeGroup(self):
         ''' key groups and single addresses against each group
@@ -172,6 +164,7 @@ class UiDataManager(QObject):
         ''' intermediate method, passes
             bboxes from layer manager to the DM
         '''
+    
         #logging
         uilog.info('*** BBOX ***   New bbox passed to dm.setbb')
         self.dm.setbb(sw, ne) 
@@ -434,13 +427,13 @@ class Listener(QThread):
         for k , v in self.data.items():
             if v and self.previousData[k] != v:
                 self.emit(SIGNAL('dataChanged'), v, k)
-            self.previousData = self.data
+        self.previousData = self.data
     
     def run(self):
         while True:
             self.data = self.DMData.getData()     
             self.compareData()
-            QThread.sleep(5)
+            QThread.sleep(1)
 
 class DMData(object):
     def __init__(self):
@@ -448,8 +441,8 @@ class DMData(object):
         self.adrRes = None
         self.grpRes = None
         self.adrFea = None
-        #self.adrCha = None    
-        #self.grpCha = None
+        self.adrCha = None    
+        self.grpCha = None
     
     def getData(self): 
 
@@ -462,17 +455,14 @@ class DMObserver(QThread):
     def __init__(self, DMData, dm):
         super(DMObserver, self).__init__()
         self.DMData = DMData
-        self.mutex = QMutex()
         self.dm = dm
         self.feedData = {FEEDS['GR']: 'grpRes' ,FEEDS['AR']: 'adrRes', 
-                         FEEDS['AF']: 'adrFea', FEEDS['GR']: 'grpCha', FEEDS['AC']: 'adrCha'}
+                         FEEDS['AF']: 'adrFea', FEEDS['GC']: 'grpCha', FEEDS['AC']: 'adrCha'}
         
     def run (self):
         self.dm.registermain(self) 
                
     def observe(self,observable,*args,**kwargs):        
         uilog.info('*** NOTIFY ***     Notify A[{}]'.format(observable))
-        self.mutex.lock()
         setattr(self.DMData, self.feedData.get(observable),args[0])
-        self.mutex.unlock()
      

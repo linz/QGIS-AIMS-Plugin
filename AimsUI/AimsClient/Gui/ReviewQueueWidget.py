@@ -35,7 +35,6 @@ try:
 except:
     pass
 
-
 uilog = None
 
 class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
