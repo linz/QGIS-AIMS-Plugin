@@ -26,8 +26,8 @@ class DockWindow( QDockWidget ):
         self.topLevelChanged.connect( self.saveLocation )
 
     def onTopLevelChanged( self, toplevel ):
-        if isFloating():
-            restoreLocation(False)
+        if self.isFloating():
+            self.restoreLocation(False)
         self.saveLocation()
 
     def resizeEvent( self, event ):

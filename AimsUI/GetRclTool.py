@@ -65,7 +65,7 @@ class GetRcl(QgsMapToolIdentifyFeature):
     
     def fillform(self):
         self._parent.uRclId.setText(self.rcl)
-        if self.addressClass == 'Road':
+        if self._parent.uAddressType.currentText() == 'Road':
             self._parent.uRoadPrefix.setText(self.prefix)
             self._parent.uRoadName.setText(self.name)#
             self._parent.uRoadTypeName.setText(self.type)
@@ -86,14 +86,14 @@ class GetRcl(QgsMapToolIdentifyFeature):
             if len(results) == 0: 
                 return
             if len(results) == 1:            
-                self.addressClass = self._parent.uAddressType.currentText()        
                 self.rclcoords = results[0].mFeature.geometry()
 
                 self.rcl = UiUtility.nullEqualsNone(str(results[0].mFeature.attribute('road_section_id')))
                 self.prefix = UiUtility.nullEqualsNone(str(results[0].mFeature.attribute('road_name_prefix_value')))
+                #self.name = UiUtility.nullEqualsNone(unicode(results[0].mFeature.attribute('road_name_body')))
                 self.name = UiUtility.nullEqualsNone(str(results[0].mFeature.attribute('road_name_body')))
                 self.type = UiUtility.nullEqualsNone(str(results[0].mFeature.attribute('road_name_type_value')))
                 self.suffix = UiUtility.nullEqualsNone(str(results[0].mFeature.attribute('road_name_suffix_value')))                    
-                self.waterName = UiUtility.nullEqualsNone(str(results[0].mFeature.attribute('road_name_body')))
+                self.waterName = UiUtility.nullEqualsNone(str(results[0].mFeature.attribute('road_name_body').encode('utf8')))
                 self.fillform()
                 self._controller.setPreviousMapTool() 

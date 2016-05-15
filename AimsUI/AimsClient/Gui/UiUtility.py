@@ -43,7 +43,7 @@ class UiUtility (object):
                     'uExternalIdScheme':['_components_externalAddressIdScheme','setExternalAddressIdScheme', ''],
                     'uExternalAddId':['_components_externalAddressId','setExternalAddressId', ''], 
                     'uRclId':['_components_roadCentrelineId','setRoadCentrelineId', ''],
-                    'uRoadPrefix':['_components_roadSuffix','setRoadSuffix', ''],
+                    'uRoadPrefix':['_components_roadSuffix','setRoadPrefix', ''],
                     'uRoadName':['_components_roadName','setRoadName', ''], 
                     'uRoadTypeName':['_components_roadType','setRoadType', ''],   
                     'uRoadSuffix':['_components_roadSuffix','setRoadSuffix', ''], 
@@ -87,6 +87,14 @@ class UiUtility (object):
         self.uAlpha.setValidator(QRegExpValidator(QRegExp(r'^[A-Za-z]{0,3}'), self))
         self.uUnit.setValidator(QRegExpValidator(QRegExp(r'^\w+'), self))
         self.uPrefix.setValidator(QRegExpValidator(QRegExp(r'^\w+'), self))
+    
+    @staticmethod
+    def toUpper (uInput, UiElement): 
+        ''' converts lower case user inputs 
+            to upper case when submitted to API '''
+        if UiElement.objectName() in ('uAlpha', 'uUnit', 'uLevelValue', 'uPrefix') :
+            return uInput.upper()
+        else: return uInput
     
     @staticmethod
     def nullEqualsNone (uInput): #Now also handling NULL
@@ -175,7 +183,7 @@ class UiUtility (object):
                 uiElement = getattr(form, uiElement)                   
                 setter = getattr(self.feature, objProp[1])
                 if isinstance(uiElement, QLineEdit):# and uiElement.text() != '' and uiElement.text() != 'NULL':
-                    setter(uiElement.text().encode('utf-8'))
+                    setter(UiUtility.toUpper(uiElement.text().encode('utf-8'),uiElement))
                 elif isinstance(uiElement, QComboBox):# and uiElement.currentText() != '' and uiElement.currentText() != 'NULL':
                         setter(uiElement.currentText())
                 elif isinstance(uiElement, QPlainTextEdit):#and uiElement.toPlainText() != '' and uiElement.toPlainText() != 'NULL':

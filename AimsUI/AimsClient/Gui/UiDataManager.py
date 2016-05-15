@@ -276,23 +276,26 @@ class UiDataManager(QObject):
         fullRoad = ''
         for prop in ['_components_roadPrefix', '_components_roadName', '_components_roadType', '_components_roadSuffix',
                       '_components_waterRoute', '_components_waterName']:
-            
+            addProp = None    
             # Groups have nested entities
-            if feat._changeType in self.groups and self.isNested(feat, prop):
-                prop = self.nestedEntities(feat, prop) 
+            if feat._changeType in self.groups:
+                if self.isNested(feat, prop):
+                    addProp = self.nestedEntities(feat, prop) 
             # retired have nested entities except when the retired 
             # feature is derived from an response object    
             elif feat._changeType == 'Retire':
-                if self.isNested(feat, prop):
-                    prop = self.nestedEntities(feat, prop) 
+                #if self.isNested(feat, prop):
+                if not feat.meta.requestId: 
+                    if hasattr(getattr(getattr(feat, 'meta'), '_entities')[0],prop):
+                        addProp = self.nestedEntities(feat, prop) 
                 elif hasattr(feat,prop):  
-                    prop = self.flatEntities(feat, prop) 
+                    addProp = self.flatEntities(feat, prop) 
             # else we have an Add or update of whoms 
             # properties are flat
             elif hasattr(feat,prop): 
-                prop = self.flatEntities(feat, prop) 
+                addProp = self.flatEntities(feat, prop) 
             else: continue                    
-            if prop != None: fullRoad+=prop+' '
+            if addProp != None: fullRoad+=addProp+' '
         return fullRoad 
 
     def formatGroupTableData(self, obj, groupProperties):

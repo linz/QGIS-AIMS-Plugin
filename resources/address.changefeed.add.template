@@ -19,7 +19,7 @@
         "addressNumberSuffix":None,
         "roadCentrelineId":None,
         "roadPrefix":None,
-        "roadName":'#required',
+        "roadName":None,
         "roadType":None,
         "roadSuffix":None,
         "waterRoute":None,
