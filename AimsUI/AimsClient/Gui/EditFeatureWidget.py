@@ -64,7 +64,7 @@ class EditFeatureWidget( Ui_EditFeatureDialog, QWidget ):
         if parent == 'update':
             self.feature = self.af[FeedType.CHANGEFEED].cast(self.feature)
             UiUtility.featureToUi(self, parent) 
-        elif parent == 'add' and self._controller._queues.uEditFeatureTab.uPersistRcl.isChecked():
+        elif parent == 'add':# and self._controller._queues.uEditFeatureTab.uPersistRcl.isChecked():  <-- temp disabled for deploy - causing issues
             self._controller._rcltool.fillform()
     
     def hideMarker(self):

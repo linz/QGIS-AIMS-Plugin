@@ -17,6 +17,7 @@
         "addressNumberPrefix":None,
         "addressNumber":'#required',
         "addressNumberSuffix":None,
+        "addressNumberHigh":None,
         "roadCentrelineId":None,
         "roadPrefix":None,
         "roadName":None,

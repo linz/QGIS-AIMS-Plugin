@@ -89,6 +89,7 @@ class ResponseHandler(object):
                 if self.matchResp(resp, respId, feedType, i, action):
                     return                                                 
         #logging 
+        self._iface.messageBar().pushMessage("Incomplete Response", "Layer data may not be complete", level=QgsMessageBar.WARNING)
         uilog.info(' *** DATA ***    Time Out ({0} seconds): No response received from DM for respId: {1} of feedtype: {2}'.format(i, respId, feedType))    
     
            
