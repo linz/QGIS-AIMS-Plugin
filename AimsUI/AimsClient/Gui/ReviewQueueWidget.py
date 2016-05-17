@@ -134,15 +134,17 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
     def reinstateSelection(self):
         ''' select group item based on the last selected
             or alternative (next) address '''
-        matchedIndex = self.groupModel.findfield('{}'.format(self.currentGroup[0]))
-        if matchedIndex.isValid is False:
-            matchedIndex = self.groupModel.findfield('{}'.format(self.altSelectionId)) or 0            
-        row = matchedIndex.row()
-        self.groupModel.setKey(row)
-        self.groupTableView.selectRow(row)
-        self.featuresTableView.selectRow(0)   
-        coords = self.uidm.reviewItemCoords(self.currentGroup, self.currentFeatureKey)
-        self.setMarker(coords)                            
+        
+        if self.currentFeatureKey:        
+            matchedIndex = self.groupModel.findfield('{}'.format(self.currentGroup[0]))
+            if matchedIndex.isValid is False:
+                matchedIndex = self.groupModel.findfield('{}'.format(self.altSelectionId)) or 0            
+            row = matchedIndex.row()
+            self.groupModel.setKey(row)
+            self.groupTableView.selectRow(row)
+            self.featuresTableView.selectRow(0)   
+            coords = self.uidm.reviewItemCoords(self.currentGroup, self.currentFeatureKey)
+            self.setMarker(coords)                            
         
     def singleReviewObj(self, feedType, objKey): # can the below replace this?
         ''' return either single or group
