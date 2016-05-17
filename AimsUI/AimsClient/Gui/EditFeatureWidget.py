@@ -64,7 +64,7 @@ class EditFeatureWidget( Ui_EditFeatureDialog, QWidget ):
         if parent == 'update':
             self.feature = self.af[FeedType.CHANGEFEED].cast(self.feature)
             UiUtility.featureToUi(self, parent) 
-        elif parent == 'add':# and self._controller._queues.uEditFeatureTab.uPersistRcl.isChecked():  <-- temp disabled for deploy - causing issues
+        elif parent == 'add' and self._controller._queues.uEditFeatureTab.uPersistRcl.isChecked():
             self._controller._rcltool.fillform()
     
     def hideMarker(self):
@@ -118,6 +118,8 @@ class EditFeatureWidget( Ui_EditFeatureDialog, QWidget ):
         elif not self.feature._components_addressNumber:
             self.raiseErrorMesg('Please supply a Complete Address Number')
             return False
+        elif self.parent == 'update' and self.ulifeCycle.currentText() == 'Proposed':
+            self.raiseErrorMesg('A Feature may not be updated to "Proposed"')
         else: return True
                 
     def submitAddress(self):

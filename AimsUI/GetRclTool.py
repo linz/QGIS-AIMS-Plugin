@@ -29,6 +29,7 @@ class GetRcl(QgsMapToolIdentifyFeature):
         self._marker = None
         self._canvas = iface.mapCanvas()
         self.highlight = self._controller.highlighter
+        self.persistedRcl = None
         
         self.rcl = ''
         self.prefix = ''

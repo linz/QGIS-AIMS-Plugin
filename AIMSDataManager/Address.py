@@ -279,7 +279,9 @@ class Address(Feature):
     def setCertificateOfTitle( self, certificateOfTitle ): 
         self._addressedObject_certificateOfTitle = certificateOfTitle  
     def setAppellation( self, appellation ): 
-        self._addressedObject_appellation = appellation          
+        self._addressedObject_appellation = appellation    
+    def setMeshblock(self, meshblock):
+        self._codes_meshblock = meshblock
     # realted to Features feed only
     def setFullAddressNumber (self, fullAddressNumber): 
         self._components_fullAddressNumber = fullAddressNumber

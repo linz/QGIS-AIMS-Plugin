@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'AimsUI/AimsClient/Gui/Ui_EditFeatureDialog.ui'
 #
-# Created: Thu May 12 14:23:58 2016
+# Created: Tue May 17 15:52:45 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -156,9 +156,6 @@ class Ui_EditFeatureDialog(object):
         self.ulifeCycle = QtGui.QComboBox(self.scrollAreaWidgetContents_4)
         self.ulifeCycle.setObjectName(_fromUtf8("ulifeCycle"))
         self.formLayout_5.setWidget(3, QtGui.QFormLayout.FieldRole, self.ulifeCycle)
-        self.unitTypeLabel_5 = QtGui.QLabel(self.scrollAreaWidgetContents_4)
-        self.unitTypeLabel_5.setObjectName(_fromUtf8("unitTypeLabel_5"))
-        self.formLayout_5.setWidget(4, QtGui.QFormLayout.LabelRole, self.unitTypeLabel_5)
         self.uUnitType = QtGui.QComboBox(self.scrollAreaWidgetContents_4)
         self.uUnitType.setObjectName(_fromUtf8("uUnitType"))
         self.formLayout_5.setWidget(4, QtGui.QFormLayout.FieldRole, self.uUnitType)
@@ -361,6 +358,9 @@ class Ui_EditFeatureDialog(object):
         self.uNotes.setBaseSize(QtCore.QSize(0, 0))
         self.uNotes.setObjectName(_fromUtf8("uNotes"))
         self.formLayout_5.setWidget(28, QtGui.QFormLayout.FieldRole, self.uNotes)
+        self.label_2 = QtGui.QLabel(self.scrollAreaWidgetContents_4)
+        self.label_2.setObjectName(_fromUtf8("label_2"))
+        self.formLayout_5.setWidget(4, QtGui.QFormLayout.LabelRole, self.label_2)
         self.verticalLayout_2.addLayout(self.formLayout_5)
         self.horizontalLayout_13 = QtGui.QHBoxLayout()
         self.horizontalLayout_13.setObjectName(_fromUtf8("horizontalLayout_13"))
@@ -391,7 +391,6 @@ class Ui_EditFeatureDialog(object):
         self.externalAddressIdLabel_5.setText(_translate("EditFeatureDialog", "External Address Id:", None))
         self.externalAddressIdSchemeLabel_5.setText(_translate("EditFeatureDialog", "Ext Address Id Scheme:", None))
         self.lifeCycleLabel_5.setText(_translate("EditFeatureDialog", "Life Cycle:", None))
-        self.unitTypeLabel_5.setText(_translate("EditFeatureDialog", "Unit Type:", None))
         self.levelTypeLabel_5.setText(_translate("EditFeatureDialog", "Level Type:", None))
         self.levelValueLabel_5.setText(_translate("EditFeatureDialog", "Level Value:", None))
         self.label_46.setText(_translate("EditFeatureDialog", "Road:", None))
@@ -414,6 +413,7 @@ class Ui_EditFeatureDialog(object):
         self.appellationLabel_5.setText(_translate("EditFeatureDialog", "Appellation:", None))
         self.label.setText(_translate("EditFeatureDialog", "Meshblock Override:", None))
         self.label_48.setText(_translate("EditFeatureDialog", "Notes:", None))
+        self.label_2.setText(_translate("EditFeatureDialog", "Unit Type:", None))
         self.uAbort.setText(_translate("EditFeatureDialog", "Abort", None))
         self.uSubmitAddressButton.setText(_translate("EditFeatureDialog", "Submit", None))
 

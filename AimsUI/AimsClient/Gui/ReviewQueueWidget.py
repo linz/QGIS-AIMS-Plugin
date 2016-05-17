@@ -52,8 +52,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.highlight = self._controller.highlighter
         self.uidm = self._controller.uidm
         self.uidm.register(self)
-        self.reviewData = None # self.uidm.refreshTableData((FEEDS['AR'],))
-        #self.reviewData = self.uidm.formatTableData((FEEDS['AR'],))      
+        self.reviewData = None
         self.currentFeatureKey = None
         self.currentAdrCoord = [0,0]
         self.feature = None
@@ -137,14 +136,13 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
             or alternative (next) address '''
         matchedIndex = self.groupModel.findfield('{}'.format(self.currentGroup[0]))
         if matchedIndex.isValid is False:
-            matchedIndex = self.groupModel.findfield('{}'.format(self.altSelectionId))            
+            matchedIndex = self.groupModel.findfield('{}'.format(self.altSelectionId)) or 0            
         row = matchedIndex.row()
         self.groupModel.setKey(row)
         self.groupTableView.selectRow(row)
         self.featuresTableView.selectRow(0)   
-        ### temp hashed the below out
-        #coords = self.uidm.reviewItemCoords(self.currentGroup, self.currentFeatureKey)
-        #self.setMarker(coords)                            
+        coords = self.uidm.reviewItemCoords(self.currentGroup, self.currentFeatureKey)
+        self.setMarker(coords)                            
         
     def singleReviewObj(self, feedType, objKey): # can the below replace this?
         ''' return either single or group
@@ -213,9 +211,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
                 
     def updateFeature(self):
         ''' update a review queue item '''
-        if self.self.feature._changeType in ('AddLineage' ):
-            self._iface.messageBar().pushMessage("{} review items cannot be relocated", 
-                                                 level=QgsMessageBar.WARNING, duration = 5).format(self._currentRevItem._changeType)
+       
         self.feature = self.currentReviewFeature()
         if self.feature:             
             UiUtility.formToObj(self)

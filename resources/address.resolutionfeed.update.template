@@ -29,6 +29,9 @@
         "suburbLocality":None,
         "townCity":None
     },
+    "codes":{
+        "meshblock":None
+    },
     "addressedObject":{
         "objectType":'#oneof=Parcel|Building',
         "objectName":None,

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'AimsUI/AimsClient/Gui/Ui_QueueEditorWidget.ui'
 #
-# Created: Thu May 12 14:23:58 2016
+# Created: Tue May 17 15:52:45 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -33,7 +33,7 @@ class Ui_QueueEditorWidget(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName(_fromUtf8("scrollArea"))
         self.scrollAreaWidgetContents = QtGui.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 364, 1161))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, -86, 364, 1161))
         self.scrollAreaWidgetContents.setObjectName(_fromUtf8("scrollAreaWidgetContents"))
         self.verticalLayout_2 = QtGui.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))

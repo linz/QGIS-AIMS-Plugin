@@ -61,6 +61,7 @@ class UiUtility (object):
                     'uValuationReference':['_addressedObject_valuationReference','setValuationReference', ''],
                     'uCertificateOfTitle':['_addressedObject_certificateOfTitle','setCertificateOfTitle', ''],
                     'uAppellation':['_addressedObject_appellation','setAppellation', ''],
+                    'uMblkOverride':['_codes_meshblock','setMeshblock', '']
                     }
     
     @staticmethod
