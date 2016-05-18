@@ -60,7 +60,7 @@ class LocalTest():
         print 'addr list before feed checkin',[len(l) for l in listofaddresses.values()]
         
         #TESTUSER
-        self.testuseractions(dm)
+        #self.testuseractions(dm)
         
         #TEST RESTART
         self.testrestartCR(dm)

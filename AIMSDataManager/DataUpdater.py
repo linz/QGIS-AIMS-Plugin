@@ -58,7 +58,7 @@ class DataUpdater(Observable):
         super(DataUpdater,self).__init__()
         self.ref,self.conf,self.afactory = params
         self.queue = queue
-        self._stop = threading.Event()
+        #self._stop = threading.Event()
         self.api = AimsApi(self.conf)    
         
     def setup(self,etft,sw,ne,page):

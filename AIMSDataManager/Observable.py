@@ -16,8 +16,10 @@ sync_lock = threading.RLock()
 
 class Observable(threading.Thread):
 
-    def __init__(self):        
-        threading.Thread.__init__(self)
+    def __init__(self): 
+        super(Observable,self).__init__()       
+        #threading.Thread.__init__(self)
+        self._stop = threading.Event()
         self._observers = []
 
     def register(self, observer):
@@ -34,4 +36,14 @@ class Observable(threading.Thread):
                 
     def observe(self, *args, **kwargs):
         '''listen method called by notification, default calls in turm call notify but override this as needed'''
-        self.notify(*args, **kwargs)
+        if not self.stopped():
+            self.notify(*args, **kwargs)
+    
+    #promoted to prevent notifications on stopped threads    
+    def stop(self):
+        self._stop.set()
+
+    def stopped(self):
+        if not hasattr(self, '_stop'):
+            pass
+        return self._stop.isSet()

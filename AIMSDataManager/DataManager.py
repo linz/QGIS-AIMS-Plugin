@@ -64,6 +64,7 @@ class DataManager(Observable):
     #local override of observe
     def observe(self, observable, *args, **kwargs):
         '''Do some housekeeping and notify listener'''
+        if self.stopped(): return
         aimslog.info('DM Listen A[{}], K[{}] - {}'.format(args,kwargs,observable))
         args += (self._monitor(observable),)
         #chained notify/listen calls
