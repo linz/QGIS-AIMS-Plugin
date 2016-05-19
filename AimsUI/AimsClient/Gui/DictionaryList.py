@@ -131,7 +131,7 @@ class DictionaryListView( QTableView ):
         return self._dictionaryList.getItem( row )# row == index
 
     def selectedRows( self ):
-        return [r.row() for r in self.selectionModel().selectedIndexes()]
+        return set([r.row() for r in self.selectionModel().selectedIndexes()])
 
     def selectedItems( self ):
         if self._dictionaryList:

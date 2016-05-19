@@ -8,14 +8,19 @@
 # LICENSE file for more information.
 #
 ################################################################################
+
+import sip
+sip.setapi('QString', 2)
+
 from qgis.core import *
 from qgis.gui import *
 from PyQt4.QtGui import *
-from PyQt4.QtCore import QRegExp
+from PyQt4.QtCore import QRegExp 
 import re
 import time
 
 from AIMSDataManager.AimsLogging import Logger
+from matplotlib.cbook import Null
 
 uilog = None
 
@@ -43,7 +48,7 @@ class UiUtility (object):
                     'uExternalIdScheme':['_components_externalAddressIdScheme','setExternalAddressIdScheme', ''],
                     'uExternalAddId':['_components_externalAddressId','setExternalAddressId', ''], 
                     'uRclId':['_components_roadCentrelineId','setRoadCentrelineId', ''],
-                    'uRoadPrefix':['_components_roadSuffix','setRoadSuffix', ''],
+                    'uRoadPrefix':['_components_roadSuffix','setRoadPrefix', ''],
                     'uRoadName':['_components_roadName','setRoadName', ''], 
                     'uRoadTypeName':['_components_roadType','setRoadType', ''],   
                     'uRoadSuffix':['_components_roadSuffix','setRoadSuffix', ''], 
@@ -87,6 +92,14 @@ class UiUtility (object):
         self.uAlpha.setValidator(QRegExpValidator(QRegExp(r'^[A-Za-z]{0,3}'), self))
         self.uUnit.setValidator(QRegExpValidator(QRegExp(r'^\w+'), self))
         self.uPrefix.setValidator(QRegExpValidator(QRegExp(r'^\w+'), self))
+    
+    @staticmethod
+    def toUpper (uInput, UiElement): 
+        ''' converts lower case user inputs 
+            to upper case when submitted to API '''
+        if UiElement.objectName() in ('uAlpha', 'uUnit', 'uLevelValue', 'uPrefix') :
+            return uInput.upper()
+        else: return uInput
     
     @staticmethod
     def nullEqualsNone (uInput): #Now also handling NULL
@@ -147,10 +160,9 @@ class UiUtility (object):
                     warnings = ''                        
                     for i in prop:
                         try: #<-- temp. currently retires are under going reformatting at the api level - then this can be removed 
-                            if i._severity == 'Info' and i._ruleId not in UiUtility.retainInfo: continue
-                            warnings += i._severity.upper()+': '+ i._description+('\n'*2)
-                        except: pass #temp                             
-                    uiElement.setText(warnings)
+                            warnings += i._severity.upper()+': '+ i._description+('\n'*2)              
+                            uiElement.setText(warnings)
+                        except: pass #temp 
                 else: 
                     uiElement.setText(str(prop))
             elif isinstance(uiElement, QComboBox):
@@ -175,7 +187,8 @@ class UiUtility (object):
                 uiElement = getattr(form, uiElement)                   
                 setter = getattr(self.feature, objProp[1])
                 if isinstance(uiElement, QLineEdit):# and uiElement.text() != '' and uiElement.text() != 'NULL':
-                    setter(uiElement.text().encode('utf-8'))
+                    setter(UiUtility.toUpper(uiElement.text().encode('utf-8'),uiElement))
+                    #setter(UiUtility.toUpper(uiElement.text(),uiElement))
                 elif isinstance(uiElement, QComboBox):# and uiElement.currentText() != '' and uiElement.currentText() != 'NULL':
                         setter(uiElement.currentText())
                 elif isinstance(uiElement, QPlainTextEdit):#and uiElement.toPlainText() != '' and uiElement.toPlainText() != 'NULL':
@@ -191,6 +204,8 @@ class UiUtility (object):
                 child.clear()
             elif isinstance(child, QComboBox) and child.objectName() != 'uAddressType':
                 child.setCurrentIndex(0)
+            elif isinstance(child, QPlainTextEdit):
+                child.clear()
         
     @staticmethod               
     def setEditability(self):  

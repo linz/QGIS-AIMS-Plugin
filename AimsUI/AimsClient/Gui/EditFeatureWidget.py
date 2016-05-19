@@ -64,7 +64,7 @@ class EditFeatureWidget( Ui_EditFeatureDialog, QWidget ):
         if parent == 'update':
             self.feature = self.af[FeedType.CHANGEFEED].cast(self.feature)
             UiUtility.featureToUi(self, parent) 
-        elif parent == 'add' and self._controller._queues.uEditFeatureTab.uPersistRcl.isChecked():
+        elif parent == 'add':# and self._controller._queues.uEditFeatureTab.uPersistRcl.isChecked():  <-- temp disabled for deploy - causing issues
             self._controller._rcltool.fillform()
     
     def hideMarker(self):
@@ -104,20 +104,38 @@ class EditFeatureWidget( Ui_EditFeatureDialog, QWidget ):
         position = Position.getInstance(pos)
         self.feature.setAddressPositions(position)
     
+    def raiseErrorMesg(self, mesg):
+        QMessageBox.warning(self._iface.mainWindow(),"AIMS Warnings", '{0}'.format(mesg))
+        
+    def objCompleteness(self):
+        ''' test the min required properties have been set '''
+        if self.uAddressType.currentText() == 'Road' and not self.feature._components_roadName: 
+            self.raiseErrorMesg('Please supply a Road Name')
+            return False
+        elif self.uAddressType.currentText() == 'Water' and not self.feature._components_waterRoute: 
+            self.raiseErrorMesg('Please supply a Water Route Name')
+            return False
+        elif not self.feature._components_addressNumber:
+            self.raiseErrorMesg('Please supply a Complete Address Number')
+            return False
+        else: return True
+                
     def submitAddress(self):
         ''' take users input from form and submit to AIMS API '''
         respId = int(time.time())
-        
+
         if self.parent == 'add': 
             self.setPosition() 
             UiUtility.formToObj(self)
-            if not self.feature._components_roadCentrelineId:
-                QMessageBox.warning(self._iface.mainWindow(),"AIMS Warnings", 'No Road Centreline Supplied')
+            if not self.objCompleteness():
                 return
+            self.objCompleteness()
             self._controller.uidm.addAddress(self.feature, respId)
         
-        if self.parent == 'update': 
+        elif self.parent == 'update': 
             UiUtility.formToObj(self)
+            if not self.objCompleteness():
+                return
             self.feature = self.af[FeedType.CHANGEFEED].cast(self.feature)            
             self._controller.uidm.updateAddress(self.feature, respId)
         

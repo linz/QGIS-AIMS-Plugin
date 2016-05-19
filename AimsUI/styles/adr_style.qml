@@ -120,6 +120,7 @@
     <rules key="{a152eebe-1184-476d-a89f-39f4c8cebcec}">
       <rule filter="&quot;lifecycle&quot;  =  'Current'&#xa;" key="{cee852e9-2945-4cab-80c2-270085af96dc}" symbol="0" label="Current"/>
       <rule checkstate="0" filter="&quot;lifecycle&quot;  =  'Retired'&#xa;" key="{58ba39cd-88a7-43e1-b7a4-d4e279c6608c}" symbol="1" label="Retired"/>
+      <rule filter="&quot;lifecycle&quot;  =  'Proposed'&#xa;" key="{1431bcad-6a65-4cf4-af9b-2efc2d6fa4aa}" symbol="2" label="Proposed"/>
     </rules>
     <symbols>
       <symbol alpha="1" type="marker" name="0">
@@ -164,6 +165,27 @@
           <prop k="vertical_anchor_point" v="1"/>
         </layer>
       </symbol>
+      <symbol alpha="1" type="marker" name="2">
+        <layer pass="0" class="SimpleMarker" locked="0">
+          <prop k="angle" v="0"/>
+          <prop k="color" v="253,191,111,255"/>
+          <prop k="horizontal_anchor_point" v="1"/>
+          <prop k="name" v="circle"/>
+          <prop k="offset" v="0,0"/>
+          <prop k="offset_map_unit_scale" v="0,0"/>
+          <prop k="offset_unit" v="MM"/>
+          <prop k="outline_color" v="255,127,0,255"/>
+          <prop k="outline_style" v="solid"/>
+          <prop k="outline_width" v="0"/>
+          <prop k="outline_width_map_unit_scale" v="0,0"/>
+          <prop k="outline_width_unit" v="MM"/>
+          <prop k="scale_method" v="area"/>
+          <prop k="size" v="1.2"/>
+          <prop k="size_map_unit_scale" v="0,0"/>
+          <prop k="size_unit" v="MM"/>
+          <prop k="vertical_anchor_point" v="1"/>
+        </layer>
+      </symbol>
     </symbols>
   </renderer-v2>
   <customproperties>
@@ -187,7 +209,7 @@
     <property key="labeling/bufferTransp" value="0"/>
     <property key="labeling/centroidInside" value="false"/>
     <property key="labeling/centroidWhole" value="false"/>
-    <property key="labeling/dataDefined/Color" value="1~~1~~CASE WHEN &quot;lifecycle&quot; = 'Current' THEN color_rgb( 31, 120, 180) ELSE color_rgb( 251, 76, 76) END~~"/>
+    <property key="labeling/dataDefined/Color" value="1~~1~~CASE WHEN &quot;lifecycle&quot; = 'Current' THEN color_rgb( 31, 120, 180)  WHEN &quot;lifecycle&quot; = 'Proposed' THEN color_rgb( 255,165,0)  ELSE color_rgb( 251, 76, 76) END~~"/>
     <property key="labeling/decimals" value="3"/>
     <property key="labeling/displayAll" value="false"/>
     <property key="labeling/dist" value="0"/>

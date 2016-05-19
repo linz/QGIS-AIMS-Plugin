@@ -56,8 +56,8 @@ class UpdateReviewPosition(QgsMapToolIdentifyFeature):
         if self._currentRevItem:
             
             if self._currentRevItem._changeType in ('Retire', 'AddLineage' ):
-                self._iface.messageBar().pushMessage("{} review items cannot be relocated", 
-                                                     level=QgsMessageBar.WARNING, duration = 5).format(self._currentRevItem._changeType)
+                self._iface.messageBar().pushMessage("{} review items cannot be relocated".format(self._currentRevItem._changeType), 
+                                                     level=QgsMessageBar.WARNING, duration = 5)
                 return
             
             if len(results) == 0:                     

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'AimsUI/AimsClient/Gui/Ui_QueueEditorWidget.ui'
 #
-# Created: Wed May  4 12:29:02 2016
+# Created: Thu May 12 14:23:58 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -33,7 +33,7 @@ class Ui_QueueEditorWidget(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName(_fromUtf8("scrollArea"))
         self.scrollAreaWidgetContents = QtGui.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, -51, 364, 1161))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 364, 1161))
         self.scrollAreaWidgetContents.setObjectName(_fromUtf8("scrollAreaWidgetContents"))
         self.verticalLayout_2 = QtGui.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
@@ -337,8 +337,10 @@ class Ui_QueueEditorWidget(object):
         self.gridLayout_13.addWidget(self.label_6, 0, 0, 1, 1)
         self.horizontalLayout_3 = QtGui.QHBoxLayout()
         self.horizontalLayout_3.setObjectName(_fromUtf8("horizontalLayout_3"))
-        spacerItem1 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.horizontalLayout_3.addItem(spacerItem1)
+        self.uUpdatePostionLabel = QtGui.QLabel(self.scrollAreaWidgetContents)
+        self.uUpdatePostionLabel.setText(_fromUtf8(""))
+        self.uUpdatePostionLabel.setObjectName(_fromUtf8("uUpdatePostionLabel"))
+        self.horizontalLayout_3.addWidget(self.uUpdatePostionLabel)
         self.uUpdatePosButton = QtGui.QPushButton(self.scrollAreaWidgetContents)
         self.uUpdatePosButton.setMinimumSize(QtCore.QSize(24, 0))
         self.uUpdatePosButton.setMaximumSize(QtCore.QSize(24, 16777215))

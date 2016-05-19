@@ -25,6 +25,16 @@ from AIMSDataManager.AimsLogging import Logger
 
 import sys # temp
 
+# Dev only - debugging
+try:
+    import sys
+    sys.path.append('/opt/eclipse/plugins/org.python.pydev_4.4.0.201510052309/pysrc')
+    from pydevd import settrace, GetGlobalDebugger
+    settrace()
+
+except:
+    pass
+
 uilog = None
 
 class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
@@ -132,8 +142,9 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.groupModel.setKey(row)
         self.groupTableView.selectRow(row)
         self.featuresTableView.selectRow(0)   
-        coords = self.uidm.reviewItemCoords(self.currentGroup, self.currentFeatureKey)
-        self.setMarker(coords)                            
+        ### temp hashed the below out
+        #coords = self.uidm.reviewItemCoords(self.currentGroup, self.currentFeatureKey)
+        #self.setMarker(coords)                            
         
     def singleReviewObj(self, feedType, objKey): # can the below replace this?
         ''' return either single or group

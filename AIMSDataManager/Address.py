@@ -307,7 +307,28 @@ class Address(Feature):
         return self._addressedObject_addressPositions
     #---------------------------------------------------
     
-    
+    def getFullNumber(self):
+        ''' combine components to create a full address label '''
+        # in some instance we could to the API get 'full number' however this 
+        # is not included in responses hence the need for this method
+        d = OrderedDict(
+            [('_components_unitValue','{}/'),('_components_addressNumber','{}'),
+            ('_components_addressNumberHigh','-{}'),('_components_addressNumberSuffix','{}')])
+        fullNumber = ''
+        for k,v in d.items():
+            if self._changeType in ('Update', 'Add') or self.meta.requestId: # request objs are flat
+                if hasattr(self, k):
+                    numComponent = getattr(self, k)
+                    if numComponent: fullNumber += v.format(numComponent) # skip Nones in resp objs
+            else:
+                if hasattr(getattr(getattr(self,'meta'),'entities')[0],k):                
+                    numComponent = getattr(getattr(getattr(self,'meta'),'entities')[0],k)
+                    if numComponent: fullNumber += v.format(numComponent) 
+        return fullNumber
+
+    def _getFullNumber(self):
+        d = {'unitValue':'{}/','addressNumber':'{}','addressNumberHigh':'-{}','addressNumberSuffix':'{}'}
+        reduce(lambda x,y: y+getattr(c+x),d.keys())
 #     def compare(self,other):
 #         '''Equality comparator'''
 #         #return False if isinstance(self,other) else hash(self)==hash(other)
@@ -377,28 +398,7 @@ class AddressResolution(AddressRequestFeed):
     def __str__(self):
         return 'ADRR.{}.{}/{}'.format(self._ref,self.type,len(self._getEntities()))
         
-    def getFullNumber(self):
-        ''' combine components to create a full address label '''
-        # in some instance we could to the API get 'full number' however this 
-        # is not included in responses hence the need for this method
-        d = OrderedDict(
-            [('_components_unitValue','{}/'),('_components_addressNumber','{}'),
-            ('_components_addressNumberHigh','-{}'),('_components_addressNumberSuffix','{}')])
-        fullNumber = ''
-        for k,v in d.items():
-            if self._changeType in ('Update', 'Add') or self.meta.requestId: # request objs are flat
-                if hasattr(self, k):
-                    numComponent = getattr(self, k)
-                    if numComponent: fullNumber += v.format(numComponent) # skip Nones in resp objs
-            else:
-                if hasattr(getattr(getattr(self,'meta'),'entities')[0],k):                
-                    numComponent = getattr(getattr(getattr(self,'meta'),'entities')[0],k)
-                    if numComponent: fullNumber += v.format(numComponent) 
-        return fullNumber
 
-    def _getFullNumber(self):
-        d = {'unitValue':'{}/','addressNumber':'{}','addressNumberHigh':'-{}','addressNumberSuffix':'{}'}
-        reduce(lambda x,y: y+getattr(c+x),d.keys())
 
                 
 #------------------------------------------------------------------------------   

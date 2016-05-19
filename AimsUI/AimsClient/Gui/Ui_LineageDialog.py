@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'AimsUI/AimsClient/Gui/Ui_LineageDialog.ui'
 #
-# Created: Tue Jan 12 10:00:58 2016
+# Created: Thu May 12 14:23:57 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!

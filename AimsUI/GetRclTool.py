@@ -29,7 +29,6 @@ class GetRcl(QgsMapToolIdentifyFeature):
         self._marker = None
         self._canvas = iface.mapCanvas()
         self.highlight = self._controller.highlighter
-        self.persistedRcl = None
         
         self.rcl = ''
         self.prefix = ''
@@ -39,7 +38,6 @@ class GetRcl(QgsMapToolIdentifyFeature):
         self.waterName = ''
         
         self.rclcoords = None
-        
         
     def activate(self):
         QgsMapTool.activate(self)
@@ -52,9 +50,6 @@ class GetRcl(QgsMapToolIdentifyFeature):
         sb = self._iface.mainWindow().statusBar()
         #self._canvas.scene().removeItem(self._marker) 
         sb.clearMessage()
-    
-    def removeMarker(self):
-        self._canvas.scene().removeItem(self._marker)
         
     def setEnabled(self, enabled):
         self._enabled = enabled
@@ -65,35 +60,33 @@ class GetRcl(QgsMapToolIdentifyFeature):
     
     def fillform(self):
         self._parent.uRclId.setText(self.rcl)
-        if self.addressClass == 'Road':
-            self._parent.uRoadPrefix.setText(self.prefix)
-            self._parent.uRoadName.setText(self.name)#
-            self._parent.uRoadTypeName.setText(self.type)
-            self._parent.uRoadSuffix.setText(self.suffix) 
+        if self._parent.uAddressType.currentText() == 'Road':
+            self._parent.uRoadPrefix.setText(UiUtility.nullEqualsNone(self.prefix))
+            self._parent.uRoadName.setText(UiUtility.nullEqualsNone(self.name))
+            self._parent.uRoadTypeName.setText(UiUtility.nullEqualsNone(self.type))
+            self._parent.uRoadSuffix.setText(UiUtility.nullEqualsNone(self.suffix)) 
         else:
-            self._parent.uWaterRouteName.setText(self.waterName)
+            self._parent.uWaterRouteName.setText(UiUtility.nullEqualsNone(self.waterName))
         
         if self._parent.__class__.__name__ != 'QueueEditorWidget' and self.rclcoords:
             self.highlight.setRcl(self.rclcoords)
             
     def canvasReleaseEvent(self, mouseEvent):
-        try:
-            self.removeMarker()
-        finally:
-            self.rclLayer = self._layers.rclLayer()        
-            results = self.identify(mouseEvent.x(), mouseEvent.y(), self.ActiveLayer, self.VectorLayer)
-            
-            if len(results) == 0: 
-                return
-            if len(results) == 1:            
-                self.addressClass = self._parent.uAddressType.currentText()        
-                self.rclcoords = results[0].mFeature.geometry()
 
-                self.rcl = UiUtility.nullEqualsNone(str(results[0].mFeature.attribute('road_section_id')))
-                self.prefix = UiUtility.nullEqualsNone(str(results[0].mFeature.attribute('road_name_prefix_value')))
-                self.name = UiUtility.nullEqualsNone(str(results[0].mFeature.attribute('road_name_body')))
-                self.type = UiUtility.nullEqualsNone(str(results[0].mFeature.attribute('road_name_type_value')))
-                self.suffix = UiUtility.nullEqualsNone(str(results[0].mFeature.attribute('road_name_suffix_value')))                    
-                self.waterName = UiUtility.nullEqualsNone(str(results[0].mFeature.attribute('road_name_body')))
-                self.fillform()
-                self._controller.setPreviousMapTool() 
+        self.rclLayer = self._layers.rclLayer()        
+        results = self.identify(mouseEvent.x(), mouseEvent.y(), self.ActiveLayer, self.VectorLayer)
+        
+        if len(results) == 0: 
+            return
+        if len(results) == 1:            
+            self.rclcoords = results[0].mFeature.geometry()
+            
+            mapping = {'rcl' :'road_section_id', 'prefix' :'road_name_prefix_value', 
+             'name' :'road_name_body', 'type' :'road_name_type_value', 'suffix' :'road_name_suffix_value', 
+             'waterName' :'road_name_body',}
+            
+            for k, v in mapping.items():
+                setattr(self, k, unicode(UiUtility.nullEqualsNone(results[0].mFeature.attribute(v))))
+                
+            self.fillform()
+            self._controller.setPreviousMapTool() 
