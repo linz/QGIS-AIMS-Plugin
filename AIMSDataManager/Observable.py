@@ -16,8 +16,10 @@ sync_lock = threading.RLock()
 
 class Observable(threading.Thread):
 
-    def __init__(self):        
-        threading.Thread.__init__(self)
+    def __init__(self): 
+        super(Observable,self).__init__()       
+        #threading.Thread.__init__(self)
+        self._stop = threading.Event()
         self._observers = []
 
     def register(self, observer):
@@ -42,4 +44,6 @@ class Observable(threading.Thread):
         self._stop.set()
 
     def stopped(self):
+        if not hasattr(self, '_stop'):
+            pass
         return self._stop.isSet()
