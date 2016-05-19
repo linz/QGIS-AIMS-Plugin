@@ -63,15 +63,10 @@ class DataRequestChannel(Observable):
         while not self.stopped():
             aimslog.debug('DRC {} listening'.format(self.client.etft))
             time.sleep(THREAD_KEEPALIVE)
-            
-    def stop(self):
-        self._stop.set()
-
-    def stopped(self):
-        return self._stop.isSet()
     
     def observe(self,*args,**kwargs):
         '''if the dm makes a request, do something with it'''
+        if self.stopped(): return
         aimslog.info('Processing request {}'.format(args[0]))
         if self.client.etft==args[0] and not self.client.inq.empty():
             changelist = self.client.inq.get()    
@@ -120,14 +115,12 @@ class DataSync(Observable):
             if not self.updater_running: self.fetchFeedUpdates(self.ftracker['threads'])
             time.sleep(self.ftracker['interval'])
             
+    #@override
     def stop(self):
         #brutal stop on du threads
         for du in self.duinst.values():
             du.stop()
         self._stop.set()
-
-    def stopped(self):
-        return self._stop.isSet()
     
     def close(self):
         self.stop()
@@ -135,7 +128,8 @@ class DataSync(Observable):
         #self.outq.task_done()
         
     def observe(self,ref):
-        self._managePage(ref)
+        if not self.stopped():
+            self._managePage(ref)
         
     def _managePage(self,ref):
         '''Called when a periodic thread ends, posting new data and starting a new thread in pool if required'''

@@ -34,4 +34,12 @@ class Observable(threading.Thread):
                 
     def observe(self, *args, **kwargs):
         '''listen method called by notification, default calls in turm call notify but override this as needed'''
-        self.notify(*args, **kwargs)
+        if not self.stopped():
+            self.notify(*args, **kwargs)
+    
+    #promoted to prevent notifications on stopped threads    
+    def stop(self):
+        self._stop.set()
+
+    def stopped(self):
+        return self._stop.isSet()
