@@ -90,7 +90,7 @@ class FeatureFactory(object):
     @staticmethod
     def filterPI(ppi):
         '''filters out possible Processing Instructions'''
-        sppi = str(ppi)
+        sppi = ppi.encode('utf8') if hasattr(ppi,'find') else str(ppi)
         if sppi.find('#')>-1:
             dflt = re.search('default=(\w+)',sppi)
             oneof = re.search('oneof=(\w+)',sppi)#first as default

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import os
 import sys
 import Queue
@@ -63,13 +65,16 @@ class LocalTest():
         #self.testuseractions(dm)
         
         #TEST RESTART
-        self.testrestartCR(dm)
+        #self.testrestartCR(dm)
+        
+        #TEST ADDRESS ADD REQUEST
+        #self.testaddaddress(dm,af)        
         
         #TEST SHIFT
         self.testfeatureshift(dm)
         
         # TEST ACF
-        self.testchangefeedAUR(dm,af)
+        #self.testchangefeedAUR(dm,af)
         
         # TEST ARF
         #self.testresolutionfeedAUD(dm,af)        
@@ -91,9 +96,27 @@ class LocalTest():
             time.sleep(30)
             countdown -= 1
             
+    def testaddaddress(self,dm,af):
+        a = self.getmacronatedtestaddress(af[FeedType.FEATURES])        
+        dm.addAddress(a,2000)
+        
+        
+        
     def testfeatureshift(self,dm):
     
         aimslog.info('*** Main SHIFT '+str(time.clock()))
+        
+        #returns features with macrons
+        #170.644518397,-45.7574711286, 170.620918622,-45.7764696892
+        dm.setbb(sw=(170.620918622,-45.7764696892), ne=(170.644518397,-45.7574711286))
+        resp = None
+        while not self.flag: 
+            time.sleep(5)   
+        else:
+            r1,r2,r3 = self.testresp(dm) 
+        
+        
+        
         dm.setbb(sw=(174.76918,-41.28515), ne=(174.79509,-41.26491))
         #time.sleep(60)
         resp = None
@@ -374,6 +397,35 @@ class LocalTest():
         a._codes_suburbLocalityId = '2104'
         a._codes_parcelId = '3132748'
         a._codes_meshblock = '3174100'
+        return a    
+    
+    def getmacronatedtestaddress(self,ff):
+        a = ff.getAddress('test_macronated_address')
+        p = Position.getInstance(
+            {'position':{'type':'Point','coordinates': [170.62953346606358,-45.768294405809044],'crs':{'type':'name','properties':{'name':'urn:ogc:def:crs:EPSG::4167'}}},'positionType':'Centroid','primary':True}
+        )
+        a.setAddressType('Road')
+        a.setAddressNumber('11')
+        a.setAddressId('1787900')
+        a.setLifecycle('Current')
+        a.setRoadCentrelineId('9512')
+        a.setRoadName('Pūrākaunui School')
+        a.setRoadType('Road'),
+        a.setSuburbLocality('Purakaunui')
+        a.setFullAddressNumber('11')
+        a.setFullRoadName('Pūrākaunui School Road')
+        a.setFullAddress('11 Pūrākaunui School, Purakaunui')
+        a._addressedObject_addressableObjectId = '1794488'
+        a.setObjectType('Parcel')
+        
+        a.setUnitType('Unit')
+        a.setUnitValue('f')
+    
+        a.setAddressPositions(p)
+    
+        a._codes_suburbLocalityId = '2480'
+        a._codes_parcelId = '3073736'
+        a._codes_meshblock = '2863900'
         return a
 
     
