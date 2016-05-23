@@ -148,7 +148,7 @@ class DataSync(Observable):
             acount = len(alist)
             self.newaddr += alist
             nextpage = max([r2['page'] for r2 in self.pool])+1
-            del self.duinst[ref]
+            #del self.duinst[ref]#ERROR? this cant be good, removing the DU during its own call to notify
             aimslog.debug('PAGE TIME {} {}s'.format(ref,time.time()-r['time']))
             #print 'POOLTIME {} {}'.format(ref,time.time()-r['time'])
             self.pool.remove(r)

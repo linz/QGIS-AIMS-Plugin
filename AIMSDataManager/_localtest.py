@@ -68,7 +68,7 @@ class LocalTest():
         #self.testrestartCR(dm)
         
         #TEST ADDRESS ADD REQUEST
-        #self.testaddaddress(dm,af)        
+        self.testaddaddress(dm,af)        
         
         #TEST SHIFT
         self.testfeatureshift(dm)

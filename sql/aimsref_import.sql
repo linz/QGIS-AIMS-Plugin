@@ -64,16 +64,23 @@ begin
 		execute qstr;-- into result;
 	end loop;
 
+	qstr := 'alter table ' || map_table || ' add primary key (' || selection[1][2] || ')';
+	raise notice '4 %',qstr;	
+	execute qstr;-- into result;
 
 
 	--2. apply differences to perm table
 	--<temp>
 	qstr := 'create table ' || snap_table || ' as select * from ' || perm_table;
-	raise notice '3 %',qstr;	
+	raise notice '5 %',qstr;	
+	execute qstr;-- into result;
+
+	qstr := 'alter table ' || snap_table || ' add primary key (' || selection[1][2] || ')';
+	raise notice '6 %',qstr;	
 	execute qstr;-- into result;
 	--</temp>
 	qstr := 'select table_version.ver_apply_table_differences(' || quote_literal(snap_table) || ',' || quote_literal(map_table) || ',' || quote_literal(selection[1][2]) || ')';
-	raise notice '4 %',qstr;	
+	raise notice '7 %',qstr;	
 	execute qstr;-- into result;
 	
 	-- ALTERNATIVE/ORIGINAL METHOD
