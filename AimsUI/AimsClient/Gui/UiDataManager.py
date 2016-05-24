@@ -41,6 +41,7 @@ class UiDataManager(QObject):
         QObject.__init__(self)
         self._controller = controller
         self._iface = iface
+        self.dm = None
         self._observers = []
         self.data = {   FEEDS['AF']:{},
                         FEEDS['AC']:{},
@@ -53,22 +54,26 @@ class UiDataManager(QObject):
         
         self.rDataChangedSignal.connect(self._controller.rDataChanged)
         
+        
     def startDM(self):
         ''' start running 2x threads
             1: a DM observer thread
             2: a Listener of the DM observer '''
         
-        with DataManager() as self.dm:
-            # common data obj
-            self.DMData = DMData()           
-            dmObserver = DMObserver(self.DMData, self.dm)
-                    
-            listener = Listener(self.DMData)
-            self.connect(listener, SIGNAL('dataChanged'), self.dataUpdated)#, Qt.QueuedConnection)
-            #### Start Threads
-            listener.start()
-            dmObserver.start()
+        self.dm = DataManager()
+        # common data obj
+        self.DMData = DMData()           
+        dmObserver = DMObserver(self.DMData, self.dm)
+                
+        listener = Listener(self.DMData)
+        self.connect(listener, SIGNAL('dataChanged'), self.dataUpdated)#, Qt.QueuedConnection)
+        #### Start Threads
+        listener.start()
+        dmObserver.start()
 
+    def killDm(self):
+        self.dm.close()
+    
     ### Observer Methods ###
     def register(self, observer):
         self._observers.append(observer)
@@ -164,7 +169,6 @@ class UiDataManager(QObject):
         ''' intermediate method, passes
             bboxes from layer manager to the DM
         '''
-    
         #logging
         uilog.info('*** BBOX ***   New bbox passed to dm.setbb')
         self.dm.setbb(sw, ne) 

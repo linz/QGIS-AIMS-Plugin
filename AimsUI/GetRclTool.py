@@ -16,6 +16,10 @@ from PyQt4.QtGui import *
 from qgis.core import *
 from qgis.gui import *
 
+from sip import setapi
+setapi('QString', 2)
+setapi('QVariant', 2)
+
 from AimsUI.AimsClient.Gui.UiUtility import UiUtility
 
 class GetRcl(QgsMapToolIdentifyFeature):
@@ -29,7 +33,7 @@ class GetRcl(QgsMapToolIdentifyFeature):
         self._marker = None
         self._canvas = iface.mapCanvas()
         self.highlight = self._controller.highlighter
-        self.persistedRcl = None
+        #self.persistedRcl = None
         
         self.rcl = ''
         self.prefix = ''
@@ -37,8 +41,8 @@ class GetRcl(QgsMapToolIdentifyFeature):
         self.type = ''
         self.suffix = ''               
         self.waterName = ''
-        
-        self.rclcoords = None
+        self.rclLine = None
+
         
     def activate(self):
         QgsMapTool.activate(self)
@@ -69,8 +73,8 @@ class GetRcl(QgsMapToolIdentifyFeature):
         else:
             self._parent.uWaterRouteName.setText(UiUtility.nullEqualsNone(self.waterName))
         
-        if self._parent.__class__.__name__ != 'QueueEditorWidget' and self.rclcoords:
-            self.highlight.setRcl(self.rclcoords)
+        if self._parent.__class__.__name__ != 'QueueEditorWidget':# and self._controller.rclcoords:
+            self.highlight.setRcl(self.rclLine)
             
     def canvasReleaseEvent(self, mouseEvent):
 
@@ -80,13 +84,15 @@ class GetRcl(QgsMapToolIdentifyFeature):
         if len(results) == 0: 
             return
         if len(results) == 1:            
-            self.rclcoords = results[0].mFeature.geometry()
+            coords = results[0].mFeature.geometry()
+            self.rclLine = coords.asMultiPolyline ()
             
             mapping = {'rcl' :'road_section_id', 'prefix' :'road_name_prefix_value', 
              'name' :'road_name_body', 'type' :'road_name_type_value', 'suffix' :'road_name_suffix_value', 
              'waterName' :'road_name_body',}
             
             for k, v in mapping.items():
+                #setattr(self, k, UiUtility.nullEqualsNone(results[0].mFeature.attribute(v)))
                 setattr(self, k, unicode(UiUtility.nullEqualsNone(results[0].mFeature.attribute(v))))
                 
             self.fillform()

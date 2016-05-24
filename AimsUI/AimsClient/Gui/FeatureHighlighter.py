@@ -15,6 +15,7 @@ class FeatureHighlighter( QObject ):
     def __init__( self, iface, layerManager, controller=None ):
         QObject.__init__(self)
         self._iface = iface
+        self._controller = controller
         self._canvas = iface.mapCanvas()
         self._layers = layerManager
         self._enabled = False
@@ -83,9 +84,12 @@ class FeatureHighlighter( QObject ):
     def hideReview(self):
         self._revMarker.hide()
     
-    def setRcl( self, coords ):
+    def setRcl( self, line):
         rclLayer = self._layers.rclLayer()
-        self._rclMarker.setToGeometry(coords,rclLayer)
+        self._rclMarker.setToGeometry(QgsGeometry.fromPolyline(line[0]),None)#,rclLayer)
+        self._rclMarker.show()
+
+    def showRcl(self):
         self._rclMarker.show()
 
     def hideRcl(self):

@@ -77,7 +77,6 @@ class LayerManager(QObject):
     _propBaseName='AimsClient.'
     _styledir = join(dirname(abspath(__file__)),'styles')
     _addressLayerId='adr'
-    _reviewLayerId='rev'
     
     addressLayerAdded = pyqtSignal( QgsMapLayer, name="addressLayerAdded")
     addressLayerRemoved = pyqtSignal( name="addressLayerRemoved")
@@ -90,6 +89,7 @@ class LayerManager(QObject):
         self._statusBar = iface.mainWindow().statusBar()
         self._controller.uidm.register(self)
         self.rData = None
+        self.prevExt = None
         self.prevRdata = None
         self._adrLayer = None
         self._rclLayer = None
@@ -102,10 +102,6 @@ class LayerManager(QObject):
     
     def initialiseExtentEvent(self):  
         ''' Once plugin loading triggered initialise loading of AIMS Feautres '''
-        id = self._addressLayerId
-        layer = self.findLayer(id)
-        if not self.isVisible(layer): 
-            return
         self._canvas.extentsChanged.connect(self.setbbox)
               
     def layerId(self, layer):
@@ -249,7 +245,7 @@ class LayerManager(QObject):
         provider = layer.dataProvider()
         for k, reviewItem in rData.items():
             fet = QgsFeature()
-            if reviewItem._changeType in ('Update', 'Add')  or reviewItem.meta.requestId:
+            if reviewItem._changeType in ('Update', 'Add') or reviewItem.meta.requestId:
                 point = reviewItem.getAddressPositions()[0]._position_coordinates
             else:
                 point = reviewItem.meta.entities[0].getAddressPositions()[0]._position_coordinates 
@@ -268,13 +264,25 @@ class LayerManager(QObject):
         rData = self._controller.uidm.combinedReviewData()
         uilog.info(' *** DATA ***    {} review items being loaded '.format(len(rData)))
         self.addToLayer(rData, layer)
-                                 
+    
+    def bboxWithPrevious(self, ext):
+        ''' test if the last emitted canvas extent is within
+        the previous extent. If so the user has zoomed in on an
+        existing feature layer and no call to load feature data is required'''
+        if not self.prevExt: return False
+        elif QgsRectangle.contains(self.prevExt, ext):
+            return True
+        else: return False
+                        
     def setbbox(self):
         ''' pass new extent to DM'''
+        id = self._addressLayerId
+        layer = self.findLayer(id)
         ext = self._canvas.extent()
-        if ext.width() > 100: return
+        if self._canvas.scale() > layer.maximumScale() or self.bboxWithPrevious(ext): return 
         uilog.info(' *** BBOX ***    {} '.format(ext.toString()))    
-        self._controller.uidm.setBbox(sw = (ext.xMaximum(), ext.yMaximum()), ne = (ext.xMinimum(), ext.yMinimum()))
+        self._controller.uidm.setBbox(sw = (ext.xMinimum(), ext.yMinimum()), ne = (ext.xMaximum(), ext.yMaximum()))
+        self.prevExt = ext
                             
     def getAimsFeatures(self):
         ''' triggered when notify made aware of new features '''

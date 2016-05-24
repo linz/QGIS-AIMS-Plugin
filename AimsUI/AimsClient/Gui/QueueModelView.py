@@ -69,7 +69,7 @@ class FeatureTableModel(QAbstractTableModel):
         row = QModelIndex.row()
         column = QModelIndex.column()
         if int_role == Qt.DisplayRole:
-            return str(self._data[self.dict_key][row][column])
+            return unicode(self._data[self.dict_key][row][column])
     
     def refreshData(self, data):
         if data:

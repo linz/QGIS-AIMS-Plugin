@@ -51,12 +51,11 @@ class Controller(QObject):
         self.iface = iface
         self._queues = None
         self._currentMapTool = None
-        self.rclParent = None # still using this? maybe no longer?"
+        self.rclParent = None
         self.currentRevItem = None
         self.actions = []
         if Controller._instance == None:
             Controller._instance = self
-        # move the below to initGui
         self.uidm = UiDataManager(self.iface, self)
         self.RespHandler = ResponseHandler(self.iface, self.uidm)
         
@@ -70,9 +69,11 @@ class Controller(QObject):
         self._displayCrs = QgsCoordinateReferenceSystem()
         self._displayCrs.createFromOgcWmsCrs('EPSG:4167') 
         self.iface.mapCanvas().mapSettings().setDestinationCrs(self._displayCrs)
-
+        
+        # init layerManager
         self._layerManager = LayerManager(self.iface, self)
-        self.highlighter = FeatureHighlighter(self.iface, self._layerManager)
+        # init Highlighter
+        self.highlighter = FeatureHighlighter(self.iface, self._layerManager, self)
         
         # Build an action list from QGIS navigation toolbar
         actionList = self.iface.mapNavToolToolBar().actions()
@@ -181,9 +182,8 @@ class Controller(QObject):
         self.iface.addPluginToMenu('&QGIS-AIMS-Plugin', self._moveaddressaction)
         self.iface.addPluginToMenu('&QGIS-AIMS-Plugin', self._highlightaction)
 
-        
         # capture maptool selection changes
-        QObject.connect( self.iface.mapCanvas(), SIGNAL( "mapToolSet(QgsMapTool *)" ), self.mapToolChanged)
+        QObject.connect(self.iface.mapCanvas(), SIGNAL( "mapToolSet(QgsMapTool *)" ), self.mapToolChanged)
 
         # Add actions from QGIS attributes toolbar (handling QWidgetActions)
         tmpActionList = self.iface.attributesToolBar().actions()
@@ -221,8 +221,6 @@ class Controller(QObject):
         self.iface.removePluginMenu('&QGIS-AIMS-Plugin', self._moveaddressaction)
         self.iface.removePluginMenu('&QGIS-AIMS-Plugin', self._lineageaction)
         self.iface.removePluginMenu("&QGIS-AIMS-Plugin'", self._highlightaction)
-    #def startDm(self):
-    #    self.uidm = UiDataManager(self.iface, self)
     
     def loadQueues( self ):
         ''' load the queue widgets '''
@@ -231,14 +229,15 @@ class Controller(QObject):
             queues.parent().show()
                
     def Queues(self):
-        ''' load the queue widgets '''
+        ''' load the queues '''
         if not self._queues:
             queues = AimsQueueWidget( self.iface.mainWindow(), self )
             DockWindow(self.iface.mainWindow(),queues,"AimsQueues","Aims Queues")
             self._queues = queues
         return self._queues
     
-    def startDM(self):         
+    def startDM(self):
+        ''' start the Data Manager when user loads the plugin '''         
         self.uidm.startDM()
     
     def enableAddressLayer(self, layer):
@@ -262,7 +261,7 @@ class Controller(QObject):
         self._layerManager.initialiseExtentEvent()
     
     def mapToolChanged(self):
-        ''' track the current maptool (but not the rcl tool). this allows 
+        ''' track the current maptool (but not the rcl tool). This allows 
             for rollback to previous tool when the Rcltool is deactivated '''
         if (isinstance(self.iface.mapCanvas().mapTool(), GetRcl) == False and
                 isinstance(self.iface.mapCanvas().mapTool(), UpdateReviewPosition) == False):          
@@ -270,10 +269,9 @@ class Controller(QObject):
             # logging 
             uilog.info('*** TOOL CHANGE ***    {0} started'.format(self.iface.mapCanvas().mapTool())) 
         
-    
     def setPreviousMapTool(self):
-        ''' this allows for roll back to the maptool that called get rcl
-        for an efficient ux''' 
+        ''' this allows for roll back to the maptool that called the rcl
+        the for an efficient ux''' 
         if self.iface.mapCanvas().mapTool() != self._currentMapTool:
             self.iface.mapCanvas().setMapTool(self._currentMapTool)
     
@@ -322,7 +320,7 @@ class Controller(QObject):
  
 # Singleton instance    
 def instance():
-    ''' return the controller singledton '''
+    ''' return the controller singleton '''
     if Controller._instance == None:
         Controller._instance = Controller()
     return Controller._instance
