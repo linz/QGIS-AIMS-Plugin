@@ -403,7 +403,7 @@ class UiDataManager(QObject):
     def reviewItemCoords(self, currentGroup, currentFeatureKey):
         ''' return the coords of a review obj'''
         obj = self.currentReviewFeature(currentGroup, currentFeatureKey)
-        
+        if not obj: return#temp
         if obj._changeType not in ('Update', 'Add'):
             pos = obj.meta.entities[0].getAddressPositions()[0]._position_coordinates 
         else:
@@ -433,8 +433,8 @@ class Listener(QThread):
     def compareData(self):
         for k , v in self.data.items():
             if v and self.previousData[k] != v:
-                self.emit(SIGNAL('dataChanged'), v, k)
-        self.previousData = self.data
+                self.emit(SIGNAL('dataChanged'), v, k) # failing as a new object is created for same obj in dm. Need new compare method
+        self.previousData = self.data                   # probably comparing (add_id & version)
     
     def run(self):
         while True:

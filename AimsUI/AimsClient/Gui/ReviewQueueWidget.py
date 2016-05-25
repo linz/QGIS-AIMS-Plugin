@@ -137,7 +137,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         
         if self.currentFeatureKey:        
             matchedIndex = self.groupModel.findfield('{}'.format(self.currentGroup[0]))
-            if matchedIndex.isValid is False:
+            if matchedIndex.isValid() == False:
                 matchedIndex = self.groupModel.findfield('{}'.format(self.altSelectionId)) or 0            
             row = matchedIndex.row()
             self.groupModel.setKey(row)
