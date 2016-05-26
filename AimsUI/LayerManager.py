@@ -103,7 +103,12 @@ class LayerManager(QObject):
     def initialiseExtentEvent(self):  
         ''' Once plugin loading triggered initialise loading of AIMS Feautres '''
         self._canvas.extentsChanged.connect(self.setbbox)
-              
+    
+    def disconnectExtentEvent(self):  
+        ''' At plugin unload, disconnect the 
+            extent changed / bbox event'''
+        self._canvas.extentsChanged.disconnect(self.setbbox)
+      
     def layerId(self, layer):
         idprop = self._propBaseName + 'Id' 
         res = layer.customProperty(idprop)

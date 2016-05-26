@@ -66,11 +66,12 @@ class UiDataManager(QObject):
         dmObserver = DMObserver(self.DMData, self.dm)
                 
         listener = Listener(self.DMData)
-        self.connect(listener, SIGNAL('dataChanged'), self.dataUpdated)#, Qt.QueuedConnection)
+        self.connect(listener, SIGNAL('dataChanged'), self.dataUpdated)
         #### Start Threads
         listener.start()
         dmObserver.start()
-
+        uilog.info('dm started')
+        
     def killDm(self):
         self.dm.close()
     

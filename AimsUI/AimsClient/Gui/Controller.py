@@ -209,6 +209,7 @@ class Controller(QObject):
 
     def unload(self):
         ''' unload the plugin '''
+        self._layerManager.disconnectExtentEvent()
         if self._queues:
             self._queues.close()
             self._queues = None 
