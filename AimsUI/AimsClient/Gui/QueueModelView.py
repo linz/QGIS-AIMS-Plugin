@@ -14,6 +14,7 @@ from PyQt4.QtGui import *
 class QueueView(QTableView):
     rowSelected = pyqtSignal( int, name="rowSelected" )
     rowSelectionChanged = pyqtSignal( name="rowSelectionChanged" )
+    #rowActivated = pyqtSignal( int, name="rowActivated" )
     
     def __init__( self, parent=None ):
         QTableView.__init__( self, parent )
@@ -28,11 +29,11 @@ class QueueView(QTableView):
         self.setEditTriggers(QAbstractItemView.AllEditTriggers)
        
     def selectionChanged( self, selected, deselected ): #1
-        QTableView.selectionChanged( self, selected, deselected )
-        self.rowSelectionChanged.emit()
+        QTableView.selectionChanged(self, selected, deselected)
+        #self.rowSelectionChanged.emit()
         row = self.selectedRow()
         if row != None:
-            self.rowSelected.emit( row )
+            self.rowSelected.emit(row)
      
     def selectedRow( self ):
         rows = self.selectionModel().selectedRows()
@@ -40,6 +41,11 @@ class QueueView(QTableView):
             return rows[0].row()
         return None
 
+#     def activated(self, row, column):
+#         QTableView.activated(self)
+#         a = '1'
+#         self.rowActivated.emit(a)
+                
 class FeatureTableModel(QAbstractTableModel):
  
     def __init__(self, data = None, headerdata = None,parent=None):
@@ -116,9 +122,6 @@ class GroupTableModel(QAbstractTableModel):
     def columnCount(self, QModelIndex_parent=None, *args, **kwargs):
         if self._data == self.dummyData: return 0
         return len(self._data[0])
-#         try:
-#             return len(self._data[0])
-#         except: 0
 
     def data(self, index, int_role=None):
         row =index.row()
@@ -151,7 +154,10 @@ class GroupTableModel(QAbstractTableModel):
     
     def altSelectionId(self, row):
         ''' return the "next" row '''
-        if row+1 == self.rowCount(): return row
+        if row+1 == self.rowCount():
+            #last row, there is no 'next row'
+            # rather than row below return row above as alt
+            return self._data[row-1][0]
         return self._data[row+1][0]
      
     def findfield(self, recId):

@@ -107,8 +107,11 @@ class LayerManager(QObject):
     def disconnectExtentEvent(self):  
         ''' At plugin unload, disconnect the 
             extent changed / bbox event'''
-        self._canvas.extentsChanged.disconnect(self.setbbox)
-      
+        try: # try, as the signal is not connected if plugin not load  
+            self._canvas.extentsChanged.disconnect(self.setbbox)
+        except:
+            pass
+        
     def layerId(self, layer):
         idprop = self._propBaseName + 'Id' 
         res = layer.customProperty(idprop)

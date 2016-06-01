@@ -78,14 +78,7 @@ class UiDataManager(QObject):
     ### Observer Methods ###
     def register(self, observer):
         self._observers.append(observer)
-#         
-#     def observe(self,observable,*args,**kwargs):
-#         uilog.info('*** NOTIFY ***     Notify A[{}]'.format(observable))
-#         self.setData(args,observable)
-#         if observable in (FEEDS['GR'] ,FEEDS['AR'], FEEDS['AF']):
-#             for observer in self._observers:            
-#                 observer.notify(observable) # can filter further reviewqueue does not need AF
-#    
+
     @pyqtSlot()
     def dataUpdated(self, data, feedType = FEEDS['AR']):
         ''' review data changed, update review layer and table '''
@@ -404,12 +397,11 @@ class UiDataManager(QObject):
     def reviewItemCoords(self, currentGroup, currentFeatureKey):
         ''' return the coords of a review obj'''
         obj = self.currentReviewFeature(currentGroup, currentFeatureKey)
-        if not obj: return#temp
-        if obj._changeType not in ('Update', 'Add'):
+        #if not obj: return#temp
+        if obj._changeType not in ('Update', 'Add') and not obj.meta.requestId:
             pos = obj.meta.entities[0].getAddressPositions()[0]._position_coordinates 
         else:
             pos = obj.getAddressPositions()[0]._position_coordinates
-
         return pos
 
     
