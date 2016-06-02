@@ -52,10 +52,8 @@ class DataRequestChannel(Observable):
     '''Request response channel for user initiated actions eg add decline retire etc. One for each feed class, client, whose pIQ method is accessed'''
     def __init__(self,client):
         super(DataRequestChannel,self).__init__()
-        #threading.Thread.__init__(self)
         if hasattr(client,'etft') and hasattr(client,'inq') and hasattr(client,'processInputQueue'):
             self.client = client
-            #self._stop = threading.Event()
         else:
             raise IncorrectlyConfiguredRequestClientException('Require client with [ etft,inq,pIQ() ] attributes')
         
@@ -67,7 +65,9 @@ class DataRequestChannel(Observable):
     
     def observe(self,*args,**kwargs):
         '''if the dm makes a request, do something with it'''
-        if self.stopped(): return
+        if self.stopped(): 
+            aimslog.warn('DM attempt to call stopped DRC listener {}'.format(self.getName()))
+            return
         aimslog.info('Processing request {}'.format(args[0]))
         if self.client.etft==args[0] and not self.client.inq.empty():
             changelist = self.client.inq.get()    
@@ -93,7 +93,6 @@ class DataSync(Observable):
     def __init__(self,params,queues):
         from DataManager import FEEDS
         super(DataSync,self).__init__()
-        #threading.Thread.__init__(self)
         #thread reference, ft to AD/CF/RF, config info
         self.start_time = time.time()
         self.updater_running = False
@@ -215,8 +214,10 @@ class DataSync(Observable):
     #NOTE. To override the behaviour, return feed once full, override this method RLock
     def syncFeeds(self,new_addresses):
         '''check if the addresses are diferent from existing set and return in the out queue'''
-        new_hash = hash(frozenset(new_addresses))
+        #new_hash = hash(frozenset(new_addresses))
+        new_hash = hash(frozenset([na._hash().hexdigest() for na in new_addresses]))
         if self.data_hash[self.etft] != new_hash:
+            #print '>>> Changes in {} hash\n{}\n{}'.format(self.etft,self.data_hash[self.etft],new_hash)
             self.data_hash[self.etft] = new_hash
             #with sync_lock:
             self.outq.put(new_addresses)

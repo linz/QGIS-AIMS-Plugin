@@ -42,8 +42,10 @@ class Observable(threading.Thread):
     #promoted to prevent notifications on stopped threads    
     def stop(self):
         self._stop.set()
+        
+    def go(self):
+        self._stop.clear()
 
     def stopped(self):
-        if not hasattr(self, '_stop'):
-            pass
         return self._stop.isSet()
+    

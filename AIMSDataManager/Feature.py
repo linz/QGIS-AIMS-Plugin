@@ -12,7 +12,7 @@
 ################################################################################
 
 #http://devassgeo01:8080/aims/api/address/features - properties
-
+import hashlib
 import re
 from AimsUtility import FeatureType,ActionType,ApprovalType,FeedType
 from AimsLogging import Logger
@@ -20,6 +20,7 @@ from AimsLogging import Logger
 
 aimslog = None
 
+HASH_EXCLUDES = ('_ref', '_address_positions')
 
 class Feature(object):
     
@@ -31,6 +32,7 @@ class Feature(object):
     def __init__(self, ref=None): 
         #aimslog.info('AdrRef.{}'.format(ref))
         self._ref = ref
+        #self._hash = self._hash()#no point, empty
 
     
     #generic validators
@@ -108,6 +110,16 @@ class Feature(object):
            
     def getErrors(self):
         return self.meta.errors if hasattr(self,'meta') else None
+
+    #object hash of attributes for page comparison
+    def _hash(self):
+        #discard all list/nested attributes? This should be okay since it captures the version addess|changeId
+        s0 = [getattr(self,z) for z in self.__dict__.keys() if z not in HASH_EXCLUDES]
+        s1 = [str(z) for z in s0 if isinstance(z,(int,float,long,complex))]
+        s2 = [z.encode('utf8') for z in s0 if isinstance(z,(basestring)) and z not in s1]
+        #return reduce(lambda x,y: x.update(y), standard,hashlib.md5())
+        self._hash = hashlib.md5(reduce(lambda x,y: x+y, s1+s2))
+        return self._hash
     
 class FeatureMetaData(object):
     '''Embedded container for address meta information eg warnings, errors and tracking'''
