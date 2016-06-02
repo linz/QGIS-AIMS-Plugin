@@ -331,6 +331,7 @@ class Address(Feature):
     def _getFullNumber(self):
         d = {'unitValue':'{}/','addressNumber':'{}','addressNumberHigh':'-{}','addressNumberSuffix':'{}'}
         reduce(lambda x,y: y+getattr(c+x),d.keys())
+        
 #     def compare(self,other):
 #         '''Equality comparator'''
 #         #return False if isinstance(self,other) else hash(self)==hash(other)
@@ -346,8 +347,6 @@ class Address(Feature):
         if not b: b = FeatureFactory.getInstance(self.feature,et,a.type).getAddress()
         for attr in a.__dict__.keys(): setattr(b,attr,getattr(a,attr))
         return b
-    
-
 
 #------------------------------------------------------------------------------
     
@@ -399,15 +398,9 @@ class AddressResolution(AddressRequestFeed):
         
     def __str__(self):
         return 'ADRR.{}.{}/{}'.format(self._ref,self.type,len(self._getEntities()))
-        
-
-
-                
+               
 #------------------------------------------------------------------------------   
-  
-   
-   
-   
+
    
 def test():
     import pprint
