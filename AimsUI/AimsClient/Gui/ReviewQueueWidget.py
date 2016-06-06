@@ -87,7 +87,9 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self._groupProxyModel.setSourceModel(self.groupModel)
         self.groupTableView.setModel(self._groupProxyModel)
         self.groupTableView.resizeColumnsToContents()
-        self.groupTableView.selectionModel().currentRowChanged.connect(self.groupSelected)
+        #self.groupTableView.selectionModel().currentRowChanged.connect(self.groupSelected)
+        #self.groupTableView.clicked.connect(self.groupSelected)
+        self.groupTableView.rowSelectionChanged.connect(self.groupSelected)
                 
         # connect combobox_users to view and model
         self.comboModelUser = QStandardItemModel()
@@ -119,6 +121,8 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         ''' update Review Queue data '''
         # request new data
         self.reviewData = self.uidm.formatTableData((FEEDS['GR'],FEEDS['AR']))
+        QgsMessageLog.logMessage("Length Data: {0} ".format(len(self.reviewData)), 'AIMS', QgsMessageLog.INFO)     
+
         self.groupModel.beginResetModel()
         self.groupModel.refreshData(self.reviewData)        
         self.groupModel.endResetModel()
@@ -144,8 +148,9 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
                 matchedIndex = self.groupModel.findfield('{}'.format(self.altSelectionId)) or 0            
             row = matchedIndex.row()
             self.groupModel.setKey(row)
-            self.groupTableView.selectRow(row)
-            self.featuresTableView.selectRow(0)   #<-- maptoprocy?
+            #self.groupTableView.selectRow(row)
+            self.groupTableView.selectRow(self._groupProxyModel.mapFromSource(matchedIndex).row())
+            self.featuresTableView.selectRow(0)
             coords = self.uidm.reviewItemCoords(self.currentGroup, self.currentFeatureKey)
             self.setMarker(coords)                            
         
@@ -174,14 +179,15 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         sourceIndex = self._groupProxyModel.mapToSource(proxyIndex)
         sourceRow = sourceIndex.row()
         altProxyIndex = self.groupTableView.model().index(sourceRow,0)
-        altSourceIndex = self._groupProxyModel.mapToSource(altProxyIndex)
+        #altSourceIndex = self._groupProxyModel.mapToSource(altProxyIndex)
         # set current and next row
         self.currentGroup = self.groupModel.listClicked(sourceIndex.row()) # was source
-        self.altSelectionId = self.groupModel.altSelectionId(altSourceIndex.row())
+        self.altSelectionId = self.groupModel.altSelectionId(altProxyIndex.row())
         
         #QgsMessageLog.logMessage("Primary: {0}, Alternative: {1}".format(self.currentGroup[0], self.altSelectionId), 'AIMS', QgsMessageLog.INFO)     
-        #QgsMessageLog.logMessage("Primary: {0} proxy: {1} source: {2}".format(self.currentGroup[0], proxyIndex.row(), sourceIndex.row()), 'AIMS', QgsMessageLog.INFO)     
+        QgsMessageLog.logMessage("Primary: {0} proxy: {1} source: {2}".format(self.currentGroup[0], proxyIndex.row(), sourceIndex.row()), 'AIMS', QgsMessageLog.INFO)     
         #QgsMessageLog.logMessage("Alternative: {0} proxy: {1} source: {2}".format(self.altSelectionId, altProxyIndex.row(), altSourceIndex.row()), 'AIMS', QgsMessageLog.INFO)     
+        
         self.featuresTableView.selectRow(0)
    
     def userFilterChanged(self, index):
@@ -224,17 +230,11 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
                 
     def updateFeature(self):
         ''' update a review queue item '''
-       
         self.feature = self.currentReviewFeature()
         if self.feature:             
             UiUtility.formToObj(self)
             respId = int(time.time())
-#            if self.feature._changeType not in ('Add', 'Update', 'AddLineage'):
-#                 changeId = self.feature._changeId
-#                 self.feature = self.feature.meta.entities[0]
-#                 self.feature.setChangeId(changeId)
             self.uidm.repairAddress(self.feature, respId)
-            #UiUtility.handleResp(respId, self._controller, FeedType.RESOLUTIONFEED, self._iface)
             self._controller.RespHandler.handleResp(respId, FEEDS['AR'])
             self.feature = None
     

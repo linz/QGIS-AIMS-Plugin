@@ -30,7 +30,7 @@ class QueueView(QTableView):
        
     def selectionChanged( self, selected, deselected ): #1
         QTableView.selectionChanged(self, selected, deselected)
-        #self.rowSelectionChanged.emit()
+        self.rowSelectionChanged.emit()
         row = self.selectedRow()
         if row != None:
             self.rowSelected.emit(row)

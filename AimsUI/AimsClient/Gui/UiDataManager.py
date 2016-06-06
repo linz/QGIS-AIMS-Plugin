@@ -32,6 +32,7 @@ uilog = None
     
 class UiDataManager(QObject):
     rDataChangedSignal = pyqtSignal()
+    fDataChangedSignal = pyqtSignal()
     
     #logging 
     global uilog
@@ -53,7 +54,7 @@ class UiDataManager(QObject):
         self.groups = ('Replace', 'AddLineage', 'ParcelReferenceData') # more to come...
         
         self.rDataChangedSignal.connect(self._controller.rDataChanged)
-        
+        self.fDataChangedSignal.connect(self._controller.fDataChanged)
         
     def startDM(self):
         ''' start running 2x threads
@@ -149,6 +150,7 @@ class UiDataManager(QObject):
             to reflect these changes. '''
 
         self.data[FEEDS['AF']][respFeature._components_addressId] = respFeature
+        self.fDataChangedSignal.emit()
     
     def updateGdata(self, respFeature):
         groupKey = self.matchGroupKey(respFeature._changeGroupId)

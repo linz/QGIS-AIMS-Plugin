@@ -57,7 +57,7 @@ class Mapping():
         ('addressableObjectId',['_addressedObject_externalObjectId',None]),
         ('objectType',['_addressedObject_objectType',None]),
         ('objectName',['_addressedObject_objectName',None]),
-        ('addressPositionsType',["_addressedObject_addressPositions[0]._positionType",None]),
+        ('addressPositionType',['',None]),
         ('suburbLocalityId',['_codes_suburbLocalityId',None]),
         ('parcelId',['_codes_parcelId',None]),
         ('externalObjectId',['_addressedObject_externalObjectId',None]),
@@ -325,9 +325,13 @@ class LayerManager(QObject):
         for feature in featureData.itervalues():
             fet = QgsFeature()
             point = feature.getAddressPositions()[0]._position_coordinates
-            fet.setGeometry(QgsGeometry.fromPoint(QgsPoint(point[0], point[1])))
+            fet.setGeometry(QgsGeometry.fromPoint(QgsPoint(point[0], point[1])))           
             fet.setAttributes([getattr(feature, v[0]) if hasattr (feature, v[0]) else '' for v in Mapping.adrLayerObjMappings.values()])
+            if hasattr(getattr(feature,'_addressedObject_addressPositions')[0],'_positionType'):
+                # If positionType update field index 29
+                fet.setAttribute(29, feature._addressedObject_addressPositions[0]._positionType)
             layer.dataProvider().addFeatures([fet])
+
         layer.updateExtents()
         layer.setCacheImage(None)
         uilog.info(' *** CANVAS ***    FEATURES ADDED')  

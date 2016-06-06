@@ -56,6 +56,7 @@ class UiUtility (object):
                     'uWaterRouteName':['_components_waterRoute','setWaterRoute', ''],
                     'uObjectType':['_addressedObject_objectType','setObjectType', ''],
                     'uObjectName':['_addressedObject_objectName','setObjectName', ''],
+                    #'uPositionType':['_addressedObject_addressPositions[0]','_addressedObject_addressPositions[0].setPositionType',''],
                     'uExtObjectIdScheme':['_addressedObject_externalObjectIdScheme','setExternalObjectIdScheme', ''],
                     'uExternalObjectId':['_addressedObject_externalObjectId','setExternalObjectId', ''],
                     'uValuationReference':['_addressedObject_valuationReference','setValuationReference', ''],
@@ -169,6 +170,8 @@ class UiUtility (object):
             elif isinstance(uiElement, QComboBox):
                 uiElement.setCurrentIndex(0)  
                 uiElement.setCurrentIndex(QComboBox.findText(uiElement, prop))
+        self.uPositionType.setCurrentIndex(QComboBox.findText(self.uPositionType,
+            self.feature._addressedObject_addressPositions[0]._positionType))
  
     @staticmethod
     def formToObj(self):  
@@ -188,13 +191,12 @@ class UiUtility (object):
                 uiElement = getattr(form, uiElement)                   
                 setter = getattr(self.feature, objProp[1])
                 if isinstance(uiElement, QLineEdit):# and uiElement.text() != '' and uiElement.text() != 'NULL':
-                    #setter(UiUtility.toUpper(uiElement.text().encode('utf-8'),uiElement))
                     setter(UiUtility.toUpper(uiElement.text(),uiElement))
                 elif isinstance(uiElement, QComboBox):# and uiElement.currentText() != '' and uiElement.currentText() != 'NULL':
-                        setter(uiElement.currentText())
+                    setter(uiElement.currentText())
                 elif isinstance(uiElement, QPlainTextEdit):#and uiElement.toPlainText() != '' and uiElement.toPlainText() != 'NULL':
-                        setter(uiElement.toPlainText())
-                        #setter(uiElement.toPlainText().encode('utf-8'))
+                    setter(uiElement.toPlainText())
+        self.feature._addressedObject_addressPositions[0].setPositionType(getattr(form, 'uPositionType').currentText())
                         
     @staticmethod 
     def clearForm(self):

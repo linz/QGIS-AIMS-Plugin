@@ -318,6 +318,11 @@ class Controller(QObject):
         ''' review data changed, update review layer and table '''
         self._queues.uResolutionTab.refreshData()
         self._layerManager.updateReviewLayer()
+    
+    @pyqtSlot()
+    def fDataChanged(self):
+        ''' review data changed, update review layer and table '''
+        self._layerManager.getAimsFeatures()
  
 # Singleton instance    
 def instance():

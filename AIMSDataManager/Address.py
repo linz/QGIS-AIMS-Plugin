@@ -307,6 +307,7 @@ class Address(Feature):
     def getAddressPositions(self):
         '''return a list of position objects'''
         return self._addressedObject_addressPositions
+
     #---------------------------------------------------
     
     def getFullNumber(self):
