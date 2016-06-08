@@ -10,7 +10,6 @@ SELECT 	rp.roadprefixname,
 	rcl.roadcentrelinealtid,
 	rn.roadnametype,
 	rcl.noncadastralroad,
-	
 	rn.roadnamestatus,
 	rn.unoffocial,
 	rn.sufi,
@@ -24,8 +23,8 @@ LEFT JOIN reference.roadsuffix rs ON rn.roadsuffixid = rs.roadsuffixid
 LEFT JOIN reference.roadprefix rp ON rn.roadprefixid = rp.roadprefixid
 WHERE rcl.roadcentrelinestatus = 'CURR' AND rna.rnapriority = 1 AND rn.roadnamestatus = 'CURR';
 
-ALTER TABLE reference.aimsroads
+ALTER TABLE reference.roadsuffix
 OWNER TO aims_sa;
 
-GRANT ALL ON TABLE reference.aimsroads TO aims_sa;
-GRANT SELECT ON TABLE reference.aimsroads TO aims_user;
+GRANT ALL ON TABLE reference.roadname TO aims_sa;
+GRANT SELECT ON TABLE reference.roadname TO aims_user;

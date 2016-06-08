@@ -8,32 +8,30 @@
 # LICENSE file for more information.
 #
 ################################################################################
+
+from qgis.utils import iface
+
+
 from AimsUI.AimsClient.Gui.Controller import Controller
 from AimsUI import AimsLogging
-import threading # temp - debugging only
-from qgis.core import QgsRectangle
+
 # Dev only - debugging
 try:
     import sys
     sys.path.append('/opt/eclipse/plugins/org.python.pydev_4.4.0.201510052309/pysrc')
-    from pydevd import settrace, GetGlobalDebugger
+    from pydevd import settrace
     settrace()
-
 except:
     pass
 
 class Plugin(object):
-    #try:      
-    #    SettingsBase="QGIS-AIMS-Plugin/"
-    #except:
-    SettingsBase=" AIMS_Plugin_threaded/" # TEMP testing
-        
+    
     def __init__(self, iface):
         self.iface = iface
         self.controller = Controller(iface)
         
     def initGui(self):
         self.controller.initGui()
-        
+
     def unload(self): 
         self.controller.unload()

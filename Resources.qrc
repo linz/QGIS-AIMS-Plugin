@@ -1,11 +1,9 @@
 <RCC>
-  <qresource prefix="plugins/AIMS_Plugin_threaded">
+  <qresource prefix="plugins/QGIS-AIMS-Plugin">
     <file>resources/loadaddress.png</file>
     <file>resources/newaddresspoint.png</file>    
     <file>resources/moveaddress.png</file>
     <file>resources/deleteaddress.png</file>
     <file>resources/updateaddress.png</file>
-    <file>resources/lineage.png</file>
-    <file>resources/addresshighlight.png</file>
     </qresource>
 </RCC>

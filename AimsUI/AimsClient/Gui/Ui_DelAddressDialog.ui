@@ -1,68 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>LineageDialog</class>
- <widget class="QDialog" name="LineageDialog">
+ <class>DelAddressDialog</class>
+ <widget class="QDialog" name="DelAddressDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>621</width>
-    <height>368</height>
+    <height>270</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Refine group selection</string>
+   <string>Select features to retire</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
     <widget class="QLabel" name="label_2">
      <property name="text">
-      <string>Select freatures to add to Lineage Group</string>
+      <string>Select features for retirement</string>
      </property>
     </widget>
    </item>
    <item>
     <widget class="DictionaryListView" name="uSadListView"/>
-   </item>
-   <item>
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>Provide A Group Description To Add Features To A New Group:</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QTextEdit" name="uGroupDescription">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-       <horstretch>0</horstretch>
-       <verstretch>20</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>60</height>
-      </size>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>Or, Supply A Current Group Id To Add Feautres To An Existing Group:</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="uGroupId"/>
-     </item>
-    </layout>
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">
@@ -88,7 +48,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>LineageDialog</receiver>
+   <receiver>DelAddressDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -104,7 +64,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>LineageDialog</receiver>
+   <receiver>DelAddressDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

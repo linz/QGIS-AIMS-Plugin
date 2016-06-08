@@ -6,21 +6,13 @@ from PyQt4.QtGui import *
 from qgis.core import *
 from qgis.gui import *
 
-import time
-
-from AimsUI.AimsClient.Gui.Ui_ComfirmSelection import Ui_ComfirmSelection
-from AimsUI.AimsClient.Gui.UiUtility import UiUtility # remove?
-from AimsUI.AimsClient.Gui.ResponseHandler import ResponseHandler
-from AIMSDataManager.AimsUtility import FeedType, FEEDS
-from AIMSDataManager.AddressFactory import AddressFactory
-from AIMSDataManager.AimsLogging import Logger
-
-uilog = None
+from AimsUI.AimsClient.Gui.Ui_MoveAddressDialog import Ui_MoveAddressDialog
+from AimsUI.AimsClient.Address import Address
+from AimsUI.AimsClient.UiUtility import UiUtility
 
 class MoveAddressTool(QgsMapToolIdentify):
-    # logging
-    global uilog
-    uilog = Logger.setup(lf='uiLog')
+
+    tolerance=5
 
     def __init__(self, iface, layerManager, controller):
         QgsMapToolIdentify.__init__(self, iface.mapCanvas())
@@ -28,8 +20,6 @@ class MoveAddressTool(QgsMapToolIdentify):
         self._canvas = iface.mapCanvas()
         self._layers = layerManager
         self._controller = controller
-        self.RespHandler = ResponseHandler(self._iface, self._controller.uidm)
-        self.af = {ft:AddressFactory.getInstance(FEEDS['AC']) for ft in FeedType.reverse}
         self._features = []
         self._marker = None
         self._sb = self._iface.mainWindow().statusBar()
@@ -38,8 +28,6 @@ class MoveAddressTool(QgsMapToolIdentify):
     def activate(self):
         QgsMapTool.activate(self)
         self._sb.showMessage("Select feature to move")
-        self.cursor = QCursor(Qt.CrossCursor)
-        self.parent().setCursor(self.cursor)
     
     def deactivate(self):
         self._canvas.scene().removeItem(self._marker)
@@ -71,11 +59,10 @@ class MoveAddressTool(QgsMapToolIdentify):
                 coords = results[0].mFeature.geometry().asPoint()
                 self.setMarker(coords)
                 # create address object for feature. It is this obj properties that will be passed to API
-                self._features.append(self._controller.uidm.singleFeatureObj(results[0].mFeature.attribute('addressId')))
+                self._features.append(UiUtility.mapResultsToAddObj(results[0], self._controller))
                 self._sb.showMessage("Right click for features new location")
                 
             else: # Stacked points
-                
                 identifiedFeatures=[] 
                 coords = results[0].mFeature.geometry().asPoint()
                 self.setMarker(coords)
@@ -94,7 +81,7 @@ class MoveAddressTool(QgsMapToolIdentify):
                     
                     for result in results:
                         if result.mFeature.attribute('addressId') in moveFeaturesIds:
-                            self._features.append(self._controller.uidm.singleFeatureObj(results[0].mFeature.attribute('addressId')))
+                            self._features.append(UiUtility.mapResultsToAddObj(result, self._controller))
                                            
                     self._sb.showMessage("Right click for features new location")
                     
@@ -108,25 +95,32 @@ class MoveAddressTool(QgsMapToolIdentify):
             if self._features:
                 if len(results) == 0:                     
                     coords = self.toMapCoordinates(QPoint(mouseEvent.x(), mouseEvent.y()))
+
                 else:
                     # Snapping. i.e Move to stack
                     coords = results[0].mFeature.geometry().asPoint()    
                 
                 # set new coords for all selected features
-                coords = list(UiUtility.transform(self._iface, coords))
-
-                for feature in self._features:
-                    feature._addressedObject_addressPositions[0].setCoordinates(coords)
-                    feature = self.af[FeedType.CHANGEFEED].cast(feature)
-                    respId = int(time.time()) 
-                    self._controller.uidm.updateAddress(feature, respId)
-                    self.RespHandler.handleResp(respId, FEEDS['AC'])
-                        
+                coords = UiUtility.transform(self._iface, coords)
+                for feature in self._features:          
+                        feature.set_x(coords[0])
+                        feature.set_y(coords[1])  
+                    
+                payload = feature.aimsObject()
+                valErrors = self._controller.updateFeature(payload)
+            
+                if len(valErrors) == 0:
+                    pass #no errors
+                else:
+                    QMessageBox.warning(self._iface.mainWindow(),"Move Feature", valErrors +'\n'*2 + feature._fullAddress )
+                
                 self._features = []
                 self._canvas.scene().removeItem(self._marker)
                 self._sb.clearMessage()
+                
+            else: QMessageBox.warning(self._iface.mainWindow(),"Move Feature", "You must first select a feature to move")
 
-class MoveAddressDialog(Ui_ComfirmSelection, QDialog ):
+class MoveAddressDialog(Ui_MoveAddressDialog, QDialog ):
 
     def __init__( self, parent ):
         QDialog.__init__(self,parent)
@@ -136,5 +130,5 @@ class MoveAddressDialog(Ui_ComfirmSelection, QDialog ):
         self.uSadListView.setList(identifiedFeatures,
                                  ['fullAddress','addressId'])
         if self.exec_() == QDialog.Accepted:
-            return self.uSadListView.confirmSelection()
+            return self.uSadListView.selectedItems()
         return None

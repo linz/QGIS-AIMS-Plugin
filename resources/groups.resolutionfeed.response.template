@@ -1,8 +1,0 @@
-{
-    "changeGroupId":None,
-    "groupType":'#oneof=Replace',
-    "groupStatus":'#oneof=Open|Submitted|Closed',
-    "description":None,
-    "submitterUserName":None,
-    "submittedDate":None
-}

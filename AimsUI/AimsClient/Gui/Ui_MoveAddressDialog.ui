@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ComfirmSelection</class>
- <widget class="QDialog" name="ComfirmSelection">
+ <class>MoveAddressDialog</class>
+ <widget class="QDialog" name="MoveAddressDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,22 +11,18 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Select feature to update</string>
+   <string>Select features to move</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
     <widget class="QLabel" name="label_2">
      <property name="text">
-      <string>Please Confirm Your Selection:</string>
+      <string>Select features to move</string>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="DictionaryListView" name="uSadListView">
-     <property name="selectionMode">
-      <enum>QAbstractItemView::MultiSelection</enum>
-     </property>
-    </widget>
+    <widget class="DictionaryListView" name="uSadListView"/>
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">
@@ -52,7 +48,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>ComfirmSelection</receiver>
+   <receiver>MoveAddressDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -68,7 +64,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>ComfirmSelection</receiver>
+   <receiver>MoveAddressDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

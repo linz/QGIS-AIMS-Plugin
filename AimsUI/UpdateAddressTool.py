@@ -7,9 +7,8 @@ from qgis.core import *
 from qgis.gui import *
 
 from AimsClient.Gui.UpdateAddressDialog import UpdateAddressDialog
-from AimsUI.AimsClient.Gui.Ui_ComfirmSelection import Ui_ComfirmSelection
-from AimsUI.AimsClient.Gui.UiUtility import UiUtility
-from AimsUI.AimsClient.Gui.ResponseHandler import ResponseHandler
+from AimsUI.AimsClient.Gui.Ui_UpdAddressDialog import Ui_UpdAddressDialog
+from AimsUI.AimsClient.UiUtility import UiUtility
 
 
 class UpdateAddressTool(QgsMapToolIdentify):
@@ -21,15 +20,12 @@ class UpdateAddressTool(QgsMapToolIdentify):
         self._iface = iface
         self._layers = layerManager
         self._controller = controller
-        self._canvas = iface.mapCanvas()
         self.activate()
 
     def activate(self):
         QgsMapTool.activate(self)
         sb = self._iface.mainWindow().statusBar()
         sb.showMessage("Click map to update feature")
-        self.cursor = QCursor(Qt.CrossCursor)
-        self.parent().setCursor(self.cursor)
     
     def deactivate(self):
         sb = self._iface.mainWindow().statusBar()
@@ -41,9 +37,6 @@ class UpdateAddressTool(QgsMapToolIdentify):
             self.activate()
         else:
             self.deactivate()
-    
-    def setMarker(self, coords):
-        self._marker = UiUtility.highlight(self._iface, coords)
 
     def canvasReleaseEvent(self, mouseEvent):
         self._feature = None
@@ -54,9 +47,8 @@ class UpdateAddressTool(QgsMapToolIdentify):
             return
         elif len(results) == 1:
             # initialise an address object and populate from selected feature
-            #self._feature = UiUtility.mapResultsToAddObj(results[0], self._controller) <-- old method i.e direct to api
-            self._feature = self._controller.uidm.singleFeatureObj(results[0].mFeature.attribute('addressId'))
-            
+            self._feature = UiUtility.mapResultsToAddObj(results[0], self._controller)
+
         else: # Stacked points
             identifiedFeatures=[] 
             for i in range (0,len(results)):
@@ -72,17 +64,13 @@ class UpdateAddressTool(QgsMapToolIdentify):
 
                 for result in results:
                     if result.mFeature.attribute('addressId') in updFeatureIds:
-                        self._feature = self._controller.uidm.singleFeatureObj(result.mFeature.attribute('addressId'))
+                        self._feature = UiUtility.mapResultsToAddObj(result, self._controller)
                         break
         # Open form
         if self._feature:
-            # highlight feature 
-                        
-            self.setMarker(results[0].mFeature.geometry().asPoint())
             UpdateAddressDialog.updateAddress(self._feature, self._layers, self._controller, self._iface.mainWindow())
-            self._canvas.scene().removeItem(self._marker)
 
-class updateAddressDialog(Ui_ComfirmSelection, QDialog ):
+class updateAddressDialog(Ui_UpdAddressDialog, QDialog ):
 
     def __init__( self, parent ):
         QDialog.__init__(self,parent)
@@ -92,5 +80,5 @@ class updateAddressDialog(Ui_ComfirmSelection, QDialog ):
         self.uSadListView.setList(identifiedFeatures,
                                  ['fullAddress','addressId'])
         if self.exec_() == QDialog.Accepted:
-            return self.uSadListView.confirmSelection()
+            return self.uSadListView.selectedItems()
         return None

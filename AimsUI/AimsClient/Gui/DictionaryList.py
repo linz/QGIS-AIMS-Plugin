@@ -1,13 +1,4 @@
-################################################################################
-#
-# Copyright 2015 Crown copyright (c)
-# Land Information New Zealand and the New Zealand Government.
-# All rights reserved
-#
-# This program is released under the terms of the 3 clause BSD license. See the 
-# LICENSE file for more information.
-#
-################################################################################
+
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from qgis.core import * # temp for testing
@@ -25,10 +16,7 @@ class DictionaryListView( QTableView ):
     def __init__( self, parent=None ):
         QTableView.__init__( self, parent )
         # Change default settings
-        if parent.__class__.__name__ in  ('DelAddressDialog', 'MoveAddressDialog'):            
-            self.setSelectionMode(QAbstractItemView.MultiSelection)
-        else: 
-            self.setSelectionMode(QAbstractItemView.SingleSelection)
+        # self.setSelectionMode(QAbstractItemView.ExtendedSelection) <-- relying on the setting of this via the UI_ modules
         self.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.horizontalHeader().setStretchLastSection(True)
         self.horizontalHeader().setHighlightSections(False)
@@ -47,7 +35,7 @@ class DictionaryListView( QTableView ):
         self.doubleClicked.connect( self.onDoubleClicked )
 
     # Reimplemented QTableView functions
-    
+
     def selectionChanged( self, selected, deselected ):
         QTableView.selectionChanged( self, selected, deselected )
         self.rowSelectionChanged.emit()
@@ -114,32 +102,26 @@ class DictionaryListView( QTableView ):
         return False
 
     def selectedRow( self ):
-        rows = self.selectionModel().selectedIndexes()
+        rows = self.selectionModel().selectedRows()
         if len(rows) == 1:
             return rows[0].row()
         
     def selectedId( self ):
         if not self._dictionaryList:
             return None
-        row = self.selectedIndexes()
+        row = self.selectedRow()
         return self._dictionaryList.getId( row )
 
     def selectedItem( self ):
         if not self._dictionaryList:
             return None
-        row = self.selectedIndexes()
+        row = self.selectedRow()
         return self._dictionaryList.getItem( row )# row == index
 
     def selectedRows( self ):
-        return [r.row() for r in self.selectionModel().selectedIndexes()]
+        return [r.row() for r in self.selectionModel().selectedRows()]
 
     def selectedItems( self ):
-        if self._dictionaryList:
-            list = self._dictionaryList
-            return [list.getItem(r) for r in self.selectedIndexes()]
-        return []
-
-    def confirmSelection(self):
         if self._dictionaryList:
             list = self._dictionaryList
             return [list.getItem(r) for r in self.selectedRows()]
