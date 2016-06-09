@@ -26,7 +26,9 @@ aimslog = Logger.setup()
 uilog = None
 
 class Mapping():
-    #format = feildname: [objProp, getter]
+    """ 
+    The mappings between UI components and AIMS object properties
+    """
     adrLayerObjMappings = OrderedDict([
         ('addressType',['_components_addressType', None]),
         ('fullAddress',['_components_fullAddress', None]),
@@ -69,6 +71,10 @@ class Mapping():
         ])
 
 class LayerManager(QObject):
+    """
+    Managers the loading and updating of AIMS data as served 
+    by the API and LINZ reference data.
+    """
     
     # logging
     global uilog
@@ -82,6 +88,11 @@ class LayerManager(QObject):
     addressLayerRemoved = pyqtSignal( name="addressLayerRemoved")
 
     def __init__(self, iface, controller):
+        """ 
+        Register the Layer manager with the Data Manager observer pattern
+        therefore to be notified of new Data Manager data. 
+        """
+        
         QObject.__init__(self)
         self._iface = iface
         self._controller = controller
@@ -101,42 +112,100 @@ class LayerManager(QObject):
         QgsMapLayerRegistry.instance().layerWasAdded.connect( self.checkNewLayer )
     
     def initialiseExtentEvent(self):  
-        ''' Once plugin loading triggered initialise loading of AIMS Feautres '''
+        """ 
+        When the plugin is enabled (Via the .Controller()) 
+        QGIS extentChanged signal connected to setbbox method  
+        """
+        
         self._canvas.extentsChanged.connect(self.setbbox)
     
     def disconnectExtentEvent(self):  
-        ''' At plugin unload, disconnect the 
-            extent changed / bbox event'''
-        try: # try, as the signal is not connected if plugin not load  
+        """
+        At plugin unload, disconnect the 
+            extent changed / bbox event
+        """
+        try: # Temp - Review. Issue raised as unloaded called at plugin init 
             self._canvas.extentsChanged.disconnect(self.setbbox)
         except:
             pass
         
     def layerId(self, layer):
+        """ 
+        Takes a layer as Vector Layer as a parameter and reutrns
+        the layers Id as used by the plugin to reffer to the layers
+
+        @param layer: AIMS qgis layer
+        @type  layer: qgis._core.QgsVectorLayer 
+        @return: AIMS layer Id as used to refered to AIMS layers
+        @rtype: string
+        """
+        
         idprop = self._propBaseName + 'Id' 
         res = layer.customProperty(idprop)
         if isinstance(res,QVariant): res = res.toPyObject()
         return str(res)
 
     def setLayerId(self, layer, id):
-        if id and isinstance(id,str):
+        """
+        Set id property for layer 
+
+        @param layer: AIMS qgis layer
+        @type  layer: qgis._core.QgsVectorLayer 
+        @param id: AIMS Layer id
+        @type  id: string
+        """
+        
+        if id and isinstance(id, str):
             idprop = self._propBaseName + 'Id'
             layer.setCustomProperty(idprop,id)
 
     def layers(self):
+        """
+        Iterates over and yeilds all QGIS Map Layers
+
+        @yield: qgis._core.QgsVectorLayer 
+        """
+
         for layer in QgsMapLayerRegistry.instance().mapLayers().values():
                 yield layer
-    
-    def addressLayer( self ):
+
+    def addressLayer(self):
+        """
+        Return the AIMS Address Layer
+
+        @return: AIMS Address Layer
+        @rtype: qgis._core.QgsVectorLayer 
+        """
+        
         return self._adrLayer
     
-    def rclLayer( self ):
+    def rclLayer(self):
+        """
+        Return the Road Centre Line Layer
+
+        @return: Road Centre Line Layer
+        @rtype: qgis._core.QgsVectorLayer 
+        """
+        
         return self._rclLayer
     
-    def revLayer( self ):
+    def revLayer(self):
+        """
+        Return the Review Layer
+
+        @return: AIMS Review Layer
+        @rtype: qgis._core.QgsVectorLayer 
+        """
+        
         return self._revLayer
     
     def checkRemovedLayer(self, id):
+        """
+        If layer removed set layer references to None
+
+        @param id: The id of the layer removed
+        @type  id: string
+        """
         if self._adrLayer and self._adrLayer.id() == id:
             self._adrLayer = None
             self.addressLayerRemoved.emit()
@@ -148,7 +217,13 @@ class LayerManager(QObject):
             self._revLayer = None
             
     def checkNewLayer( self, layer ):
-        ''' assign new layer to layer ref '''
+        """
+        Assign an AIMS QgsVectorLayer to a LayerManager layer property
+
+        @param layer: New AIMS vector layer  
+        @type  layer: qgis._core.QgsVectorLayer 
+        """
+        
         layerId = self.layerId(layer)
         if not layerId:
             return
@@ -165,21 +240,60 @@ class LayerManager(QObject):
             self._revLayer = layer
     
     def findLayer(self, name):
-        ''' return layer ''' 
+        """
+        Assign an AIMS QgsVectorLayer to a LayerManager layer property
+
+        @param name: layer name
+        @type  name: string
+
+        @return: Layer that matches id
+        @rtype: qgis._core.QgsVectorLayer 
+        """
+        
         for layer in self.layers():
             if self.layerId(layer) == name:
                 return layer
         return None
 
     def styleLayer(self, layer, id):
-        ''' set layer style as pet the relevant .qml file '''
+        """ 
+        Set layer style as per the relevant .qml file
+
+        @param layer: AIMS Layer
+        @type  layer: qgis._core.QgsVectorLayer 
+        @param id: Layer Id
+        @type  id: string 
+        """
+        
         try:
             layer.loadNamedStyle(join(self._styledir,id+'_style.qml'))
         except:
             pass
     
     def installLayer(self, id, schema, table, key, estimated, where, displayname):
-        ''' install AIMS postgres layers '''
+        """
+        Install AIMS postgres reference layers
+
+        @param id: Layer id
+        @type  id: string
+        @param schema: Database Schema Name
+        @type  schema: string
+        @param table: Database Table Name
+        @type  table: string
+        @param key: Primary Key
+        @type  key: string
+        @param estimated: Estimate Meta Data
+        @type  estimated: boolean
+        @param where: SQL where cluase
+        @type  where: string
+        @param displayname: Layer Label
+        @type  displayname: string
+
+
+        @return: AIMS Layer
+        @rtype: qgis._core.QgsVectorLayer 
+        """
+        
         layer = self.findLayer(id)
         if layer:
             legend = self._iface.legendInterface()
@@ -201,7 +315,9 @@ class LayerManager(QObject):
         return layer
 
     def installRefLayers(self):
-        ''' install AIMS postgres ref data '''
+        """
+        Install AIMS postgres reference layers
+        """
         
         refLayers ={'par':( 'par', 'lds', 'all_parcel_multipoly', 'gid', True, "",'Parcels' ) ,
                     'rcl':( 'rcl', 'roads', 'road_name_mview', 'gid', True, "",'Roads' )
@@ -212,14 +328,35 @@ class LayerManager(QObject):
                 self.installLayer(* layerProps) 
 
     def addLayerFields(self, layer, provider, id, fields):
-        ''' add fields to aims to a layer  '''
+        """
+        Add fields to a layer  
+        
+        @param layer: AIMS vector layer  
+        @type  layer: qgis._core.QgsVectorLayer 
+        
+        @param provider: Data Provider
+        @type  provider: qgis._core.QgsVectorDataProvider
+        @param id: Layer id
+        @type  id: string
+        @param fields: list of field names
+        @type  fields: list
+        """
+
         provider.addAttributes(fields)
         layer.updateFields()
         self.styleLayer(layer, id)     
         QgsMapLayerRegistry.instance().addMapLayer(layer)    
     
     def installAimsLayer(self, id, displayname):
-        ''' initialise AIMS features and review layers at start up'''        
+        """
+        Install AIMS feature and review layers
+
+        @param id: Layer id
+        @type  id: string
+        @param displayname: displayname
+        @type  displayname: string
+        """
+  
         layer = QgsVectorLayer("Point?crs=EPSG:4167", displayname, "memory") 
         self.setLayerId(layer, id)
         provider = layer.dataProvider()
@@ -231,7 +368,16 @@ class LayerManager(QObject):
         QgsMapLayerRegistry.instance().addMapLayer(layer)           
         
     def isVisible(self, layer):
-        ''' test is an layer is visible '''
+        """
+        Test if a layer is visible 
+
+        @param layer: AIMS vector layer  
+        @type  layer: qgis._core.QgsVectorLayer 
+
+        @return: True if Layer is visible
+        @rtype: boolean
+        """
+        
         if layer.hasScaleBasedVisibility():
             if layer.maximumScale() > self._canvas.scale() and layer.minimumScale() < self._canvas.scale():
                 return True
@@ -241,7 +387,13 @@ class LayerManager(QObject):
             return True    
 
     def removeFeatures(self, layer):
-        ''' remove features from any layer '''
+        """
+        Remove all features from a layer
+
+        @param layer: AIMS vector layer  
+        @type  layer: qgis._core.QgsVectorLayer 
+        """
+
         ids = [f.id() for f in layer.getFeatures()]
         layer.startEditing()
         for fid in ids:          
@@ -249,7 +401,15 @@ class LayerManager(QObject):
         layer.commitChanges()
     
     def addToLayer(self, rData, layer):
-        ''' add aims review features to reveiw layer '''
+        """
+        Add aims review features to reveiw layer 
+        
+        @param rData: Review Data
+        @type  rData: dictionary
+        @param layer: AIMS vector layer  
+        @type  layer: qgis._core.QgsVectorLayer 
+        """
+
         provider = layer.dataProvider()
         for k, reviewItem in rData.items():
             fet = QgsFeature()
@@ -263,7 +423,10 @@ class LayerManager(QObject):
         layer.updateExtents()
     
     def updateReviewLayer(self):
-        ''' update review layer with new review data'''
+        """
+        Update review layer
+        """
+        
         id = 'rev'
         layer = self.findLayer(id)
         if not layer: 
@@ -274,16 +437,25 @@ class LayerManager(QObject):
         self.addToLayer(rData, layer)
     
     def bboxWithPrevious(self, ext):
-        ''' test if the last emitted canvas extent is within
-        the previous extent. If so the user has zoomed in on an
-        existing feature layer and no call to load feature data is required'''
+        """ 
+        Test if the emitted canvas extent is within the previous extent
+        
+        @param ext: canvas extent
+        @type  ext: gis._core.QgsRectangle 
+
+        @rtype: boolean
+        """
+
         if not self.prevExt: return False
         elif QgsRectangle.contains(self.prevExt, ext):
             return True
         else: return False
                         
     def setbbox(self):
-        ''' pass new extent to DM'''
+        """ 
+        Triggered by extent change - Set BBox in UIDataManager
+        """
+        
         id = self._addressLayerId
         layer = self.findLayer(id)
         ext = self._canvas.extent()
@@ -293,13 +465,22 @@ class LayerManager(QObject):
         self.prevExt = ext
                             
     def getAimsFeatures(self):
-        ''' triggered when notify made aware of new features '''
+        """ 
+        Retrieve most AIMS Features as held in UiDataManager
+        """
+
         featureData = self._controller.uidm.featureData()
         if featureData:
             uilog.info(' *** DATA ***    {} AIMS features received '.format(len(featureData)))    
             self.updateFeaturesLayer(featureData)
     
     def notify(self, feedType):
+        """ Notify registered to UiDataManager 
+        
+        @param feedType: Type of AIMS API
+        @type  feedType: AIMSDataManager.FeatureFactory.FeedRef
+        """
+        
         uilog.info('*** NOTIFY ***     Notify A[{}]'.format(feedType))
         if feedType == FEEDS['AF']:
             self.getAimsFeatures()
@@ -307,7 +488,13 @@ class LayerManager(QObject):
             self.updateReviewLayer()
 
     def updateFeaturesLayer(self, featureData):
-        ''' add features to Aims published features layer '''
+        """
+        Add features to AIMS Address feature layer 
+
+        @param featureData: feature feed data
+        @type  featureData: dictionary
+        """
+
         id = self._addressLayerId
         layer = self.findLayer(id)
         # ensure the user has not removed the layer 

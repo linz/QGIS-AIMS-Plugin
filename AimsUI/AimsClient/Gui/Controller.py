@@ -39,7 +39,12 @@ from AIMSDataManager.AimsLogging import Logger
 
 uilog = None
 
-class Controller(QObject):
+class Controller( QObject ):
+    ''' 
+    Managers all UI Components and Plugins Tools as well as 
+    initialisation and dessimnation of Singleton Instances  
+        
+     '''
     # log
     global uilog
     uilog = Logger.setup(lf='uiLog')
@@ -47,6 +52,13 @@ class Controller(QObject):
     _instance = None
     
     def __init__(self, iface):
+        """ 
+        Initialise UI Data Manager and Response Handler 
+        
+        @param iface: QgisInterface Abstract base class defining interfaces exposed by QgisApp  
+        @type iface: Qgisinterface Object
+        """
+        
         QObject.__init__(self)
         self.iface = iface
         self._queues = None
@@ -64,7 +76,10 @@ class Controller(QObject):
         self.revLayer = None
         
     def initGui(self):
-        ''' load plugin '''
+        """ 
+        Set up UI within QGIS 
+        """
+        
         # set srs
         self._displayCrs = QgsCoordinateReferenceSystem()
         self._displayCrs.createFromOgcWmsCrs('EPSG:4167') 
@@ -112,7 +127,7 @@ class Controller(QObject):
         self._deladdtool = DelAddressTool( self.iface, self._layerManager, self)
         self._deladdtool.setAction( self._deladdressaction )        
         self.actions.append(self._deladdressaction)
-        
+
         # Move address
         self._moveaddressaction = QAction(QIcon(':/plugins/AIMS_Plugin_threaded/resources/moveaddress.png'), 
             'Move AIMS Feature(s)', self.iface.mainWindow())
@@ -206,9 +221,144 @@ class Controller(QObject):
             group.addAction( action )
    
     # Plugin Management 
-
+    def loadQueues( self ):
+        """ 
+        Initialise Loading of the queue widgets into QGIS 
+        """
+        queues = self.Queues()
+        if not queues.isVisible():
+            queues.parent().show()
+               
+    def Queues(self):
+        """ 
+        Load of the queue widgets into QGIS
+        @rtype: QtGui.QTabWidget  
+        @return: Docked QTabWidget with UI compinets for displaying and
+                 editing AIMS features
+        """
+        if not self._queues:
+            queues = AimsQueueWidget( self.iface.mainWindow(), self )
+            DockWindow(self.iface.mainWindow(),queues,"AimsQueues","Aims Queues")
+            self._queues = queues
+        return self._queues
+    
+    def startDM(self):
+        """
+        Start the Data Manager only once the user enables the Plugin
+        """         
+        self.uidm.startDM()
+    
+    def enableAddressLayer(self):
+        """ 
+        enable tools that are dependent on the Address Layer
+        only when the address layer exists 
+        """
+        
+        self._deladdressaction.setEnabled(True)
+        self._createnewaddressaction.setEnabled(True)
+        self._moveaddressaction.setEnabled(True)
+        self._updateaddressaction.setEnabled(True)
+        self._highlightaction.setEnabled(True)
+        #self._lineageaction.setEnabled(True) # to be enale once lineage tool is in scope
+        
+    def loadLayers(self):
+        """ 
+        Install map layers
+        """
+        
+        if not self.refLayer:
+            self.refLayer = self._layerManager.installRefLayers()
+        if not self.adrlayer:
+            self.adrlayer = self._layerManager.installAimsLayer('adr', 'AIMS Features')
+        if not self.revLayer:
+            self.revLayer = self._layerManager.installAimsLayer('rev', 'AIMS Review')
+        self._layerManager.initialiseExtentEvent()
+    
+    def mapToolChanged(self):
+        """ 
+        Track the current maptool (excluding rcl tool) to allow 
+        for rollback to previous tool when the Rcltool is deactivated 
+        """
+            
+        if (isinstance(self.iface.mapCanvas().mapTool(), GetRcl) == False and
+                isinstance(self.iface.mapCanvas().mapTool(), UpdateReviewPosition) == False):          
+            self._currentMapTool = self.iface.mapCanvas().mapTool()
+            # logging 
+            uilog.info('*** TOOL CHANGE ***    {0} started'.format(self.iface.mapCanvas().mapTool())) 
+        
+    def setPreviousMapTool(self):
+        """ 
+        Roll back to the previous maptool
+        """
+        if self.iface.mapCanvas().mapTool() != self._currentMapTool:
+            self.iface.mapCanvas().setMapTool(self._currentMapTool)
+    
+    def startNewAddressTool(self):
+        """
+        Enable the 'create new address' map tool 
+        """
+        self.iface.mapCanvas().setMapTool(self._createnewaddresstool)
+        self._createnewaddresstool.setEnabled(True)
+    
+    def startRclTool(self, parent = None):
+        """
+        Enable the 'get rcl tool' map tool 
+        
+        @param parent: Map that enabled the RCL tool. Based on the RCL tools
+                        parent, different highlighting of features is performed
+        @type  parent: string     
+        """
+        
+        self.rclParent = parent
+        self.iface.mapCanvas().setMapTool(self._rcltool)
+        self._rcltool.setEnabled(True)
+    
+    def startUpdateReviewPosTool(self, revItem = None):
+        """ 
+        Enable the 'get update Review position tool' map tool
+        @param revItem: The current Review Item that is assigned to self.currentRevItem 
+        @type  revItem: AIMSDataManager.Address.AddressResolution() Object 
+        """
+        
+        self.currentRevItem = revItem
+        self.iface.mapCanvas().setMapTool(self._updateReviewPos)
+        self._rcltool.setEnabled(True)
+    
+    def startMoveAddressTool(self):
+        """ 
+        Enable the 'move address' map tool 
+        """
+        
+        self.iface.mapCanvas().setMapTool(self._moveaddtool)
+        self._moveaddtool.setEnabled(True)
+    
+    def startUpdateAddressTool(self):
+        """ 
+        Enable the "update address" map tool 
+        """
+        
+        self.iface.mapCanvas().setMapTool(self._updateaddtool)
+        self._updateaddtool.setEnabled(True)
+        
+    def startDelAddressTool(self):
+        """
+        Enable the "delete address" map tool 
+        """
+        
+        self.iface.mapCanvas().setMapTool(self._deladdtool)
+        self._deladdtool.setEnabled(True)
+    
+    def startLineageTool(self):
+        """ 
+        Enable the "lineage" map tool 
+        """
+        self.iface.mapCanvas().setMapTool(self._lineagetool)
+        self._deladdtool.setEnabled(True) 
+ 
     def unload(self):
-        ''' unload the plugin '''
+        """
+        Remove Plugins UI Elements From QGIS
+        """
         self._layerManager.disconnectExtentEvent()
         if self._queues:
             self._queues.close()
@@ -223,110 +373,30 @@ class Controller(QObject):
         self.iface.removePluginMenu('&QGIS-AIMS-Plugin', self._lineageaction)
         self.iface.removePluginMenu("&QGIS-AIMS-Plugin'", self._highlightaction)
     
-    def loadQueues( self ):
-        ''' load the queue widgets '''
-        queues = self.Queues()
-        if not queues.isVisible():
-            queues.parent().show()
-               
-    def Queues(self):
-        ''' load the queues '''
-        if not self._queues:
-            queues = AimsQueueWidget( self.iface.mainWindow(), self )
-            DockWindow(self.iface.mainWindow(),queues,"AimsQueues","Aims Queues")
-            self._queues = queues
-        return self._queues
-    
-    def startDM(self):
-        ''' start the Data Manager when user loads the plugin '''         
-        self.uidm.startDM()
-    
-    def enableAddressLayer(self, layer):
-        ''' enable tools that are dependent on the Address Layer
-            only when the address layer exists '''
-        self._deladdressaction.setEnabled(True)
-        self._createnewaddressaction.setEnabled(True)
-        self._moveaddressaction.setEnabled(True)
-        self._updateaddressaction.setEnabled(True)
-        #self._lineageaction.setEnabled(True)
-        self._highlightaction.setEnabled(True)
-        
-    def loadLayers(self):
-        ''' install map layers '''
-        if not self.refLayer:
-            self.refLayer = self._layerManager.installRefLayers()
-        if not self.adrlayer:
-            self.adrlayer = self._layerManager.installAimsLayer('adr', 'AIMS Features')
-        if not self.revLayer:
-            self.revLayer = self._layerManager.installAimsLayer('rev', 'AIMS Review')
-        self._layerManager.initialiseExtentEvent()
-    
-    def mapToolChanged(self):
-        ''' track the current maptool (but not the rcl tool). This allows 
-            for rollback to previous tool when the Rcltool is deactivated '''
-        if (isinstance(self.iface.mapCanvas().mapTool(), GetRcl) == False and
-                isinstance(self.iface.mapCanvas().mapTool(), UpdateReviewPosition) == False):          
-            self._currentMapTool = self.iface.mapCanvas().mapTool()
-            # logging 
-            uilog.info('*** TOOL CHANGE ***    {0} started'.format(self.iface.mapCanvas().mapTool())) 
-        
-    def setPreviousMapTool(self):
-        ''' this allows for roll back to the maptool that called the rcl
-        the for an efficient ux''' 
-        if self.iface.mapCanvas().mapTool() != self._currentMapTool:
-            self.iface.mapCanvas().setMapTool(self._currentMapTool)
-    
-    def startNewAddressTool(self):
-        ''' activate the "create new address" map tool '''
-        self.iface.mapCanvas().setMapTool(self._createnewaddresstool)
-        self._createnewaddresstool.setEnabled(True)
-    
-    def startRclTool(self, parent = None):
-        ''' activate the "get rcl tool" map tool '''
-        self.rclParent = parent
-        self.iface.mapCanvas().setMapTool(self._rcltool)
-        self._rcltool.setEnabled(True)
-    
-    def startUpdateReviewPosTool(self, revItem = None):
-        ''' activate the "get update Review position tool" map tool '''
-        self.currentRevItem = revItem
-        self.iface.mapCanvas().setMapTool(self._updateReviewPos)
-        self._rcltool.setEnabled(True)
-    
-    def startMoveAddressTool(self):
-        ''' activate the "move address" map tool '''
-        self.iface.mapCanvas().setMapTool(self._moveaddtool)
-        self._moveaddtool.setEnabled(True)
-    
-    def startUpdateAddressTool(self):
-        ''' activate the "update address" map tool '''
-        self.iface.mapCanvas().setMapTool(self._updateaddtool)
-        self._updateaddtool.setEnabled(True)
-        
-    def startDelAddressTool(self):
-        ''' activate the "delete address" map tool '''
-        self.iface.mapCanvas().setMapTool(self._deladdtool)
-        self._deladdtool.setEnabled(True)
-    
-    def startLineageTool(self):
-        ''' activate the "lineage" map tool '''
-        self.iface.mapCanvas().setMapTool(self._lineagetool)
-        self._deladdtool.setEnabled(True) 
- 
     @pyqtSlot()
     def rDataChanged(self):
-        ''' review data changed, update review layer and table '''
+        """ 
+        Review data changed, update review layer and table 
+        """
+        
         self._queues.uResolutionTab.refreshData()
         self._layerManager.updateReviewLayer()
     
     @pyqtSlot()
     def fDataChanged(self):
-        ''' review data changed, update review layer and table '''
+        """
+        Feature data changed, update review layer and table 
+        """
+        
         self._layerManager.getAimsFeatures()
  
 # Singleton instance    
 def instance():
-    ''' return the controller singleton '''
+    """
+    Return instance of the Controller
+    @return: The single Controller Instance      
+    @rtype: AimsUI.AimsClient.Gui.Controller() Instance
+    """
     if Controller._instance == None:
         Controller._instance = Controller()
     return Controller._instance
