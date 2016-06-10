@@ -1,5 +1,5 @@
 <!DOCTYPE qgis PUBLIC 'http://mrcc.com/qgis.dtd' 'SYSTEM'>
-<qgis version="2.8.1-Wien" minimumScale="-4.65661e-10" maximumScale="1e+08" simplifyDrawingHints="0" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" simplifyMaxScale="1" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
+<qgis version="2.8.1-Wien" minimumScale="-4.65661e-10" maximumScale="20000" simplifyDrawingHints="0" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" simplifyMaxScale="1" hasScaleBasedVisibilityFlag="1" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
   <edittypes>
     <edittype widgetv2type="TextEdit" name="addressType">
       <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
@@ -88,7 +88,7 @@
     <edittype widgetv2type="TextEdit" name="objectName">
       <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
     </edittype>
-    <edittype widgetv2type="TextEdit" name="addressPositionsType">
+    <edittype widgetv2type="TextEdit" name="addressPositionType">
       <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
     </edittype>
     <edittype widgetv2type="TextEdit" name="suburbLocalityId">
@@ -217,7 +217,7 @@
     <property key="labeling/distMapUnitMaxScale" value="0"/>
     <property key="labeling/distMapUnitMinScale" value="0"/>
     <property key="labeling/enabled" value="true"/>
-    <property key="labeling/fieldName" value="fullAddressNumber"/>
+    <property key="labeling/fieldName" value="  CASE&#xa;&#x9;WHEN  &quot;fullAddressNumber&quot; &lt;> 'NULL' THEN  &quot;fullAddressNumber&quot;  &#xa;&#x9;WHEN  &quot;unitValue&quot;  =  '' THEN   &quot;addressNumber&quot;  ||   &quot;addressNumberSuffix&quot; &#xa;&#x9;ELSE  &quot;addressNumberPrefix&quot;  ||  &quot;unitValue&quot;  ||  '/' ||&quot;addressNumber&quot;  ||   &quot;addressNumberSuffix&quot;  &#xa;  END&#xa;   &#xa;   &#xa;   &#xa;"/>
     <property key="labeling/fontBold" value="true"/>
     <property key="labeling/fontCapitals" value="0"/>
     <property key="labeling/fontFamily" value="Ubuntu"/>
@@ -235,7 +235,7 @@
     <property key="labeling/fontWeight" value="63"/>
     <property key="labeling/fontWordSpacing" value="0"/>
     <property key="labeling/formatNumbers" value="false"/>
-    <property key="labeling/isExpression" value="false"/>
+    <property key="labeling/isExpression" value="true"/>
     <property key="labeling/labelOffsetInMapUnits" value="true"/>
     <property key="labeling/labelOffsetMapUnitMaxScale" value="0"/>
     <property key="labeling/labelOffsetMapUnitMinScale" value="0"/>

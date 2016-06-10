@@ -32,6 +32,7 @@ uilog = None
     
 class UiDataManager(QObject):
     rDataChangedSignal = pyqtSignal()
+    fDataChangedSignal = pyqtSignal()
     
     #logging 
     global uilog
@@ -41,6 +42,7 @@ class UiDataManager(QObject):
         QObject.__init__(self)
         self._controller = controller
         self._iface = iface
+        self.dm = None
         self._observers = []
         self.data = {   FEEDS['AF']:{},
                         FEEDS['AC']:{},
@@ -52,34 +54,32 @@ class UiDataManager(QObject):
         self.groups = ('Replace', 'AddLineage', 'ParcelReferenceData') # more to come...
         
         self.rDataChangedSignal.connect(self._controller.rDataChanged)
+        self.fDataChangedSignal.connect(self._controller.fDataChanged)
         
     def startDM(self):
         ''' start running 2x threads
             1: a DM observer thread
             2: a Listener of the DM observer '''
         
-        with DataManager() as self.dm:
-            # common data obj
-            self.DMData = DMData()           
-            dmObserver = DMObserver(self.DMData, self.dm)
-                    
-            listener = Listener(self.DMData)
-            self.connect(listener, SIGNAL('dataChanged'), self.dataUpdated)#, Qt.QueuedConnection)
-            #### Start Threads
-            listener.start()
-            dmObserver.start()
-
+        self.dm = DataManager()
+        # common data obj
+        self.DMData = DMData()           
+        dmObserver = DMObserver(self.DMData, self.dm)
+                
+        listener = Listener(self.DMData)
+        self.connect(listener, SIGNAL('dataChanged'), self.dataUpdated)
+        #### Start Threads
+        listener.start()
+        dmObserver.start()
+        uilog.info('dm started')
+        
+    def killDm(self):
+        self.dm.close()
+    
     ### Observer Methods ###
     def register(self, observer):
         self._observers.append(observer)
-#         
-#     def observe(self,observable,*args,**kwargs):
-#         uilog.info('*** NOTIFY ***     Notify A[{}]'.format(observable))
-#         self.setData(args,observable)
-#         if observable in (FEEDS['GR'] ,FEEDS['AR'], FEEDS['AF']):
-#             for observer in self._observers:            
-#                 observer.notify(observable) # can filter further reviewqueue does not need AF
-#    
+
     @pyqtSlot()
     def dataUpdated(self, data, feedType = FEEDS['AR']):
         ''' review data changed, update review layer and table '''
@@ -150,6 +150,7 @@ class UiDataManager(QObject):
             to reflect these changes. '''
 
         self.data[FEEDS['AF']][respFeature._components_addressId] = respFeature
+        self.fDataChangedSignal.emit()
     
     def updateGdata(self, respFeature):
         groupKey = self.matchGroupKey(respFeature._changeGroupId)
@@ -164,7 +165,6 @@ class UiDataManager(QObject):
         ''' intermediate method, passes
             bboxes from layer manager to the DM
         '''
-    
         #logging
         uilog.info('*** BBOX ***   New bbox passed to dm.setbb')
         self.dm.setbb(sw, ne) 
@@ -399,12 +399,11 @@ class UiDataManager(QObject):
     def reviewItemCoords(self, currentGroup, currentFeatureKey):
         ''' return the coords of a review obj'''
         obj = self.currentReviewFeature(currentGroup, currentFeatureKey)
-        
-        if obj._changeType not in ('Update', 'Add'):
+        #if not obj: return#temp
+        if obj._changeType not in ('Update', 'Add') and not obj.meta.requestId:
             pos = obj.meta.entities[0].getAddressPositions()[0]._position_coordinates 
         else:
             pos = obj.getAddressPositions()[0]._position_coordinates
-
         return pos
 
     
@@ -429,8 +428,8 @@ class Listener(QThread):
     def compareData(self):
         for k , v in self.data.items():
             if v and self.previousData[k] != v:
-                self.emit(SIGNAL('dataChanged'), v, k)
-        self.previousData = self.data
+                self.emit(SIGNAL('dataChanged'), v, k) # failing as a new object is created for same obj in dm. Need new compare method
+        self.previousData = self.data                   # probably comparing (add_id & version)
     
     def run(self):
         while True:

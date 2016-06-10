@@ -23,6 +23,7 @@ except:
     pass
 
 class Plugin(object):
+    ''' this is a pull request test '''
     #try:      
     #    SettingsBase="QGIS-AIMS-Plugin/"
     #except:

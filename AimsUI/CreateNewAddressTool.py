@@ -86,11 +86,4 @@ class CreateNewAddressTool(QgsMapToolIdentify):
         addInstance = self.af.getAddress()
         self._controller._queues.uEditFeatureTab.setFeature('add', addInstance, coords)
         self._controller._queues.tabWidget.setCurrentIndex(0)
-
-        
-        
-   
-    
-    
-    
-    
+        UiUtility.setEditability(self._controller._queues.uEditFeatureTab)

@@ -395,6 +395,7 @@ class Address(Feature):
         @return: List<Position>
         '''
         return self._addressedObject_addressPositions
+
     #---------------------------------------------------
     
     def getFullNumber(self):

@@ -48,7 +48,7 @@ class UiUtility (object):
                     'uExternalIdScheme':['_components_externalAddressIdScheme','setExternalAddressIdScheme', ''],
                     'uExternalAddId':['_components_externalAddressId','setExternalAddressId', ''], 
                     'uRclId':['_components_roadCentrelineId','setRoadCentrelineId', ''],
-                    'uRoadPrefix':['_components_roadSuffix','setRoadPrefix', ''],
+                    'uRoadPrefix':['_components_addressNumberPrefix','setRoadPrefix', ''],
                     'uRoadName':['_components_roadName','setRoadName', ''], 
                     'uRoadTypeName':['_components_roadType','setRoadType', ''],   
                     'uRoadSuffix':['_components_roadSuffix','setRoadSuffix', ''], 
@@ -56,6 +56,7 @@ class UiUtility (object):
                     'uWaterRouteName':['_components_waterRoute','setWaterRoute', ''],
                     'uObjectType':['_addressedObject_objectType','setObjectType', ''],
                     'uObjectName':['_addressedObject_objectName','setObjectName', ''],
+                    #'uPositionType':['_addressedObject_addressPositions[0]','_addressedObject_addressPositions[0].setPositionType',''],
                     'uExtObjectIdScheme':['_addressedObject_externalObjectIdScheme','setExternalObjectIdScheme', ''],
                     'uExternalObjectId':['_addressedObject_externalObjectId','setExternalObjectId', ''],
                     'uValuationReference':['_addressedObject_valuationReference','setValuationReference', ''],
@@ -120,8 +121,8 @@ class UiUtility (object):
             else: prop = ''
         else:
             # go straight for the objects property 
-            if str(getattr(feature, property)) != 'None':
-                prop = str(getattr(feature, property)) 
+            if unicode(getattr(feature, property)) != 'None':
+                prop = unicode(getattr(feature, property)) 
             else: prop = ''
         return prop
     
@@ -165,10 +166,12 @@ class UiUtility (object):
                             uiElement.setText(warnings)
                         except: pass #temp 
                 else: 
-                    uiElement.setText(str(prop))
+                    uiElement.setText(unicode(prop))
             elif isinstance(uiElement, QComboBox):
                 uiElement.setCurrentIndex(0)  
                 uiElement.setCurrentIndex(QComboBox.findText(uiElement, prop))
+        self.uPositionType.setCurrentIndex(QComboBox.findText(self.uPositionType,
+            self.feature._addressedObject_addressPositions[0]._positionType))
  
     @staticmethod
     def formToObj(self):  
@@ -188,12 +191,12 @@ class UiUtility (object):
                 uiElement = getattr(form, uiElement)                   
                 setter = getattr(self.feature, objProp[1])
                 if isinstance(uiElement, QLineEdit):# and uiElement.text() != '' and uiElement.text() != 'NULL':
-                    setter(UiUtility.toUpper(uiElement.text().encode('utf-8'),uiElement))
-                    #setter(UiUtility.toUpper(uiElement.text(),uiElement))
+                    setter(UiUtility.toUpper(uiElement.text(),uiElement))
                 elif isinstance(uiElement, QComboBox):# and uiElement.currentText() != '' and uiElement.currentText() != 'NULL':
-                        setter(uiElement.currentText())
+                    setter(uiElement.currentText())
                 elif isinstance(uiElement, QPlainTextEdit):#and uiElement.toPlainText() != '' and uiElement.toPlainText() != 'NULL':
-                        setter(uiElement.toPlainText().encode('utf-8'))
+                    setter(uiElement.toPlainText())
+        self.feature._addressedObject_addressPositions[0].setPositionType(getattr(form, 'uPositionType').currentText())
                         
     @staticmethod 
     def clearForm(self):
