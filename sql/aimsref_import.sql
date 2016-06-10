@@ -8,12 +8,12 @@
 -- # LICENSE file for more information.
 -- #
 -- ################################################################################
--- drop function import_admin_boundary(character varying)
+-- drop function admin_bdys_import.import_admin_boundary(character varying);
 
 --select admin_bdys_import.import_admin_boundary('meshblock_concordance')
 --select admin_bdys_import.import_admin_boundary('statsnz_meshblock')
 --select admin_bdys_import.import_admin_boundary('statsnz_ta')
---select admin_bdys_import.import_admin_boundary('nz_localities')
+--select admin_bdys_import.import_admin_boundary('nz_locality')
 create or replace function admin_bdys_import.import_admin_boundary(name varchar) 
 returns record as $$
 declare
@@ -42,10 +42,11 @@ declare
 	selection text[][];
 	rep text[];
 	drop_cols text[];
+	cast_cols text[][];
 	dc text;
+	cc text;
 	final_table text;
 	result record;
-	--result text;
 	
 	-- array_position function doesn't exist in this version of postgresql
 	-- map_index int := array_position(map_name,name::text);
@@ -63,9 +64,11 @@ begin
 		when 'meshblock_concordance' then
 			selection := mbc;
 			final_table := primary_schema || '.meshblock_concordance';
-		when 'nz_localities' then
+		when 'nz_locality' then
 			selection := nzl;
-			final_table := primary_schema || '.nz_localitiy';
+			drop_cols := array['ogc_fid'];
+			cast_cols := array[['id','integer']];
+			final_table := primary_schema || '.nz_locality';
 		when 'statsnz_ta' then
 			selection := ta;
 			drop_cols := array['ta_code'];
@@ -107,35 +110,47 @@ begin
 		execute qstr;-- into result;
 	end if;
 
+	-- 3. reformat maptable
+	
 	if array_length(drop_cols,1) > 0 then
 		foreach dc in array drop_cols
 		loop
 			qstr := 'alter table ' || map_table ||' drop column '|| dc;
-			raise notice '2.6 %',qstr;	
+			raise notice '3.1 %',qstr;	
 			execute qstr;-- into result;
 		end loop;
 	end if;
 
-	-- 3. designate primary key
+	if array_length(cast_cols,1) > 0 then
+		foreach cc in array cast_cols
+		loop
+			qstr := 'alter table '|| map_table ||' alter column '|| cc ||' set data type '|| cc;
+			raise notice '3.2 %',qstr;	
+			execute qstr;-- into result;
+		end loop;
+	end if;
 
+	-- 4. designate primary key
 	
-	qstr := 'alter table ' || map_table || ' add primary key (' || selection[1][2] || ')';
-	raise notice '3.1 %',qstr;	
-	execute qstr;-- into result;
 
-	-- 4. apply differences to perm table
-	--<temp>
-	qstr := 'create table ' || snap_table || ' as select * from ' || final_table;
+	qstr := 'alter table ' || map_table || ' add primary key (' || selection[1][2] || ')';
 	raise notice '4.1 %',qstr;	
 	execute qstr;-- into result;
 
+	-- 5. apply differences to perm table
+	--<temp>
+	qstr := 'create table ' || snap_table || ' as select * from ' || final_table;
+	raise notice '5.1 %',qstr;	
+	execute qstr;-- into result;
+
 	qstr := 'alter table ' || snap_table || ' add primary key (' || selection[1][2] || ')';
-	raise notice '4.2 %',qstr;	
+	raise notice '5.2 %',qstr;	
 	execute qstr;-- into result;
 	--</temp>
-	qstr := 'select table_version.ver_apply_table_differences(' || quote_literal(snap_table) || ',' || quote_literal(map_table) || ',' || quote_literal(selection[1][2]) || ')';
-	--qstr := 'create table '|| import_schema ||'.x_' || name || ' as select table_version.ver_apply_table_differences(' || quote_literal(snap_table) || ',' || quote_literal(map_table) || ',' || quote_literal(selection[1][2]) || ')';
-	raise notice '4.3 %',qstr;	
+	--qstr := 'select 1';
+	qstr := 'select table_version.ver_apply_table_differences(' || quote_literal(snap_table) || ',' || quote_literal(map_table) || ',' || quote_literal(selection[1][2] ) || ')';
+	raise notice '5.3 %',qstr;	
+
 	execute qstr into result;
 	
 	return result;
