@@ -89,7 +89,11 @@ class FeatureFactory(object):
     
     @staticmethod
     def filterPI(ppi):
-        '''filters out possible Processing Instructions'''
+        '''Filters out Processing Instructions from template declaration
+        @param ppi: Processing instruction text
+        @type ppi: String
+        @return: List if possible attributes or a default attribute
+        '''
         sppi = ppi.encode('utf8') if hasattr(ppi,'find') else str(ppi)
         if sppi.find('#')>-1:
             dflt = re.search('default=(\w+)',sppi)
