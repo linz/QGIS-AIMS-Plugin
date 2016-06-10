@@ -65,7 +65,16 @@ class AddressFactory(FeatureFactory):
         return 'AFC.{}'.format(FeedType.reverse(self.AFFT)[:3])    
 
     def getAddress(self,ref=None,adr=None,model=None,prefix=''):
-        '''Creates an address object from a model (using the response template if model is not provided)'''
+        '''Creates an address object from a model (using the response template if model is not provided)
+        @param ref: Application generated unique reference string
+        @type ref: String
+        @param adr: Address object being populated
+        @type adr: Address
+        @param model: Dictionary object (matching or derived from a template) containing address attribute information
+        @param prefix: String value used to flatten/identify nested dictionary elements
+        @type prefix: String   
+        @return: (Minimally) Populated address object
+        '''
         #overwrite = model OR NOT(address). If an address is provided only fill it with model provided, presume dont want template fill
         overwrite = False
         if not adr: 
@@ -87,7 +96,14 @@ class AddressFactory(FeatureFactory):
         return adr
         
     def _readAddress(self,adr,data,prefix):
-        '''Recursive address dict reader'''
+        '''Recursive address setting attribute dict reader.
+        @param adr: Active address object
+        @type adr: Address
+        @param data: Active (subset) dict
+        @param prefix: String value used to flatten/identify nested dictionary elements
+        @type prefix: String   
+        @return: Address. Active (partially filled) address
+        '''
         for k in data:
             setter = 'set'+k[0].upper()+k[1:]
             new_prefix = prefix+DEF_SEP+k
@@ -100,14 +116,22 @@ class AddressFactory(FeatureFactory):
         return adr
     
     def cast(self,adr):
-        '''casts address from curent to requested address-type'''
+        '''Casts address from current type to requested address-type, eg AddressFeature -> AddressChange
+        @param adr: Address being converted 
+        @type adr: Address/AddressChange/AddressResolution
+        @return: Address cast to the self type
+        '''
         return Address.clone(adr, self.getAddress())
         
 
 class AddressFeedFactory(AddressFactory):
-    
+    '''Factory class to generate Address change/resolution (feed) objects'''
     def convertAddress(self,adr,at):
-        '''Converts an address into its json payload equivalent '''
+        '''Converts an address into its json payload equivalent
+        @param adr: Address objects being converted to JSON string
+        @type adr: Address
+        @return: Representative JSON string (minimally compliant with type template)
+        '''
         full = None
         try:
             full = self._convert(adr, copy.deepcopy(self.template[self.reqtype.reverse[at].lower()]))
@@ -117,7 +141,15 @@ class AddressFeedFactory(AddressFactory):
             raise AddressConversionException(msg)
         return full
     
-    def _convert(self,adr,dat,key=''):
+    def _convert(self,adr,dat,key=''):        
+        '''Recursive part of convertAddress
+        @param adr: Active address object
+        @type adr: Address
+        @param dat: Active (subset) dict
+        @param key: String value used to flatten/identify nested dictionary elements
+        @type key: String   
+        @return: Processed (nested) dict
+        '''
         for attr in dat:
             new_key = key+DEF_SEP+attr
             if new_key == self.PBRANCH:
@@ -129,7 +161,16 @@ class AddressFeedFactory(AddressFactory):
         return dat
     
     def _assign(self,dat,adr,key):
-        '''validates address data value against template requirements'''
+        '''Validates address data value against template requirements reading tags to identify default and required data fields
+        - `oneof` indicates field is required and is one of the values in the subsequent pipe separated list
+        - `required` indicates the field is required. An error will be thrown if a suitable values is unavailable
+        @param dat: Active (subset) dict
+        @param adr: Active address object
+        @type adr: Address
+        @param key: String value used to flatten/identify nested dictionary elements
+        @type key: String   
+        @return: Active (partially filled) address
+        '''
         #TODO add default or remove from filterpi
         required,oneof,default,datatype = 4*(None,)
         val = adr.__dict__[key] if hasattr(adr,key) else None
@@ -148,6 +189,7 @@ class AddressFeedFactory(AddressFactory):
         return val if val else default         
         
 class AddressChangeFactory(AddressFeedFactory):
+    '''Const setting AddressFactory subclass specifically for changefeed addreses'''
     AFFT = FeedType.CHANGEFEED
     DEF_REF = FeedType.reverse[AFFT]
     addrtype = AddressChange
@@ -157,6 +199,7 @@ class AddressChangeFactory(AddressFeedFactory):
 
 
 class AddressResolutionFactory(AddressFeedFactory):
+    '''Const setting AddressFactory subclass specifically for resolutionfeed addreses'''
     AFFT = FeedType.RESOLUTIONFEED
     DEF_REF = FeedType.reverse[AFFT]
     addrtype = AddressResolution

@@ -22,10 +22,14 @@ class AimsException(Exception):
 class InvalidEnumerationType(AimsException): pass
 
 class Configuration(object):
+    '''Configuration data object'''
     def __init__(self): 
         self.config = ConfigReader()
         
     def readConf(self):
+        '''Configuration reader, reads selected attributed from ConfigReader object
+        @return: Dictionary containing comfiguration parameters
+        '''
         conf = {}
         conf['url'] = self.config.configSectionMap('url')['api']
         conf['org'] = self.config.configSectionMap('user')['org']
@@ -36,15 +40,22 @@ class Configuration(object):
 
     
 class LogWrap(object):
+    '''Simple wrapper function tagging function calls in a timestamped logfile'''
     #simple ligfile time stamp decorator 
     @classmethod
     def timediff(cls,func=None, prefix=''):
+        '''Setup for time difference wrapper
+        @param func: Function being run unde wrapper
+        @param prefix: User supplied string added to logging Output
+        @type prefix: String
+        '''
         msg = 'FUNC TIME {} {} (wrap)'.format(prefix,func)
         if func is None:
             return partial(cls.timediff)
 
         @wraps(func)
         def wrapper(*args, **kwargs):
+            '''Wrapper function calling passed in function object recording timestamps either side and logging the diff'''
             t1 = time.time()
             res = func(*args, **kwargs)
             tdif = time.time()-t1
@@ -53,6 +64,7 @@ class LogWrap(object):
         return wrapper
     
 class IterEnum(object):
+    '''Iterator class for custom enums'''
     index = 0
     reverse = {}
     def __iter__(self): return self
@@ -66,9 +78,12 @@ class IterEnum(object):
 
     
 class Enumeration(object):
+    '''Custom Enumeration class'''
     @staticmethod
     def enum(*seq, **named):
-        #http://stackoverflow.com/questions/36932/how-can-i-represent-an-enum-in-python
+        '''
+        u {http://stackoverflow.com/questions/36932/how-can-i-represent-an-enum-in-python}
+        '''
         enums = dict( zip([s for s in seq],range(len(seq))) ,**named)
         reverse = dict((value, key) for key, value in enums.iteritems())
         

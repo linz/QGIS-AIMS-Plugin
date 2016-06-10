@@ -215,7 +215,7 @@ class DataSync(Observable):
     def syncFeeds(self,new_addresses):
         '''check if the addresses are diferent from existing set and return in the out queue'''
         #new_hash = hash(frozenset(new_addresses))
-        new_hash = hash(frozenset([na._hash().hexdigest() for na in new_addresses]))
+        new_hash = hash(frozenset([na.getHash() for na in new_addresses]))
         if self.data_hash[self.etft] != new_hash:
             #print '>>> Changes in {} hash\n{}\n{}'.format(self.etft,self.data_hash[self.etft],new_hash)
             self.data_hash[self.etft] = new_hash
@@ -277,64 +277,6 @@ class DataSyncFeeds(DataSync):
     def stopped(self):
         return super(DataSyncFeeds,self).stopped() and self.drc.stopped() 
     
-#     def fetchFeedUpdates(self,thr):
-#         super(DataSyncFeeds,self)._fetchFeedUpdates(thr)
-#         #res,_ = super(DataSyncFeeds,self)._fetchFeedUpdates(thr)
-#         #return res
-    
-#     def fetchFeedUpdates(self,thr):
-#         '''run forward updates and tack on a single backfill, update page count accordingly'''
-#         #TODO. If feeds are empty lastpage finder fails and loops, fix this
-#         pages = self.ftracker['page']
-#         #bp,lp = pages if pages and pages!=[NPV,NPV] else 2*[self._findLastPage(LAST_PAGE_GUESS),]
-#         #TEMPORARY HACK while converting feed read to obs pattern
-#         self.backpage,self.lastpage = pages if pages and pages!=[NPV,NPV] else [1,1]
-#         super(DataSyncFeeds,self)._fetchFeedUpdates(thr,self.lastpage)
-#         #get just one backfill per fFU  #[for i in range(5):#do a bunch of backfills?]
-#         if self.backpage>FIRST_PAGE:
-#             bdata,self.backpage = self.backfillPage(self.backpage-1)
-#             #res += bdata
-#         #self.managePage((self.backpage,self.lastpage))
-#         #return res
-#         
-#     def _findLastPage(self,p_end):
-#         '''Inefficient way to find the last page in the feed sequence'''
-#         p_start = 0
-#         p_end = p_end*2
-#         while True:
-#             p = int((p_start+p_end)/2)
-#             ref = self.fetchPage(p)
-#             du = self.duinst[ref]
-#             while self.duinst[ref].isAlive():
-#                 time.sleep(POOL_PAGE_CHECK_DELAY)
-#             else:
-#                 acount = len(du.queue.get())
-#                 aimslog.debug('Page Find p{} has {} features'.format(p,acount))
-#                 if acount==MAX_FEATURE_COUNT:
-#                     if p == p_start: p_end = p_end*2 
-#                     p_start = p
-#                 elif acount>0: return p
-#                 else: p_end = p         
-#     
-#     def backfillPage(self,prevpage):
-#         '''backfills pages from requested page. non-pooled/non-tracked since no longer critical'''
-#         newaddr = []
-#                 
-#         ref = self.fetchPage(prevpage)
-#         du = self.duinst[ref]
-#         while du.isAlive(): time.sleep(POOL_PAGE_CHECK_DELAY)
-#         alist = du.queue.get()
-#         acount = len(alist)
-#         newaddr += self._statusFilter(alist)
-#         del self.duinst[ref]
-#         if acount>0:
-#             prevpage = max(1,prevpage-1)
-#             ref = self.fetchPage(prevpage)                
-#         return newaddr,prevpage
-# 
-#     def _statusFilter(self,alist):
-#         #something like this
-#         return [a for a in alist if a.getQueueStatus().lower() not in ('expired','deleted')]
     
     #Processes the input queue sending address changes to the API
     #@LogWrap.timediff

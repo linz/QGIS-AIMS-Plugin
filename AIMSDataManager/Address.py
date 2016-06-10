@@ -11,6 +11,7 @@
 # LICENSE file for more information.
 #
 ################################################################################
+'''Address module containing data classes representing basic address object as returned from the AIMS API feature.change and resolution feeds'''
 
 #http://devassgeo01:8080/aims/api/address/features - properties
 from AimsUtility import FeatureType,ActionType,ApprovalType,FeedType,AimsException,FeedRef
@@ -32,11 +33,15 @@ PDEF = {'position':{'type':'Point','coordinates':[0.0,0.0],'crs':{'type':'name',
     
 class Position(object):
     '''Position type for embedded address positions.
-    Uses hardcoded attrs since it has a constant structure'''
+    - I{Uses hardcoded attrs since it has a constant structure}.
+    '''
     #branch in address structure where we should find position object
     BRANCH = ('addressedObject','addressPositions')
   
-    def __init__(self, ref=None): 
+    def __init__(self, ref=None):
+        '''Initialise Position object
+        @param ref: Unique reference string
+        '''
         self._position_type = 'Point'
         self._position_coordinates = [0.0,0.0]
         self._position_crs_type = 'name'
@@ -49,12 +54,23 @@ class Position(object):
 
     @staticmethod
     def getInstance(d = PDEF,af=None):
+        '''Gets instance of Position object taking optional position dict and args
+        @param d: Dict containing Position object attributes
+        @param af: AddressFactory instance used to filter processing instructions if included in position dict
+        @type af: AddressFactory
+        @return: Populated Position object 
+        '''
         p = Position()
         p.set(d,af)
         return p
         
     def set(self,d = PDEF,af=None):
-
+        '''Set for Position object taking optional position dict and  args
+        @param d: Dict containing Position object attributes
+        @param af: AddressFactory instance used to filter processing instructions if included in position dict
+        @type af: AddressFactory
+        @return: Populated Position object 
+        '''
         self._set(
             d['position']['type'],
             d['position']['coordinates'],
@@ -65,7 +81,20 @@ class Position(object):
         )
         
     def _set(self,ptype,coordinates,ctype,cprops=None,positionType=None,primary=None):
-        '''sets object parameters'''
+        '''Position setter for full object parameters spread
+        @param ptype: Position type, eg Point
+        @type ptype: String
+        @param coordinates: Coordinate pair, list of doubles
+        @type coordinates: List<Double>
+        @param ctype: CRS type
+        @type ctype: String
+        @param cprops: CRS properties name, something like urn:ogc:def:crs:EPSG::4167
+        @type cprops: String
+        @param positionType: Another position type, eg Centroid
+        @type positionType: String
+        @param primary: Flag indicating primary position
+        @type primary: Boolean
+        '''
         self.setType(ptype)
         self.setCoordinates(coordinates)
         self.setCrsType(ctype)
@@ -81,6 +110,9 @@ class Position(object):
     def setPrimary(self, _primary): self._primary = _primary    
         
     def get(self):
+        '''Returns dict of self, Position object
+        @return: Dictionary
+        '''
         return {"position":{
                     "type":self._position_type,
                     "coordinates":self._position_coordinates,
@@ -100,9 +132,12 @@ class Position(object):
 
 EDEF = {'class':[], 'rel':[],'properties':{'ruleId':None, 'description':None,'severity':None}}
 class Entity(object):
-    '''Entity Object'''
+    '''Entity data class representing address embedded entity objects and subclassed for specific entity types'''
     #TODO Fix naming confusion between address held entities and Address/Group super feature
-    def __init__(self, ref=None): 
+    def __init__(self, ref=None):
+        '''Initialise Entity object
+        @param ref: Unique reference string
+        '''
         #aimslog.info('AdrRef.{}'.format(ref))
         self._ref = ref        
         self._class = []
@@ -116,6 +151,10 @@ class Entity(object):
     
     @staticmethod
     def getInstance(d = EDEF):
+        '''Gets instance of Entity object taking optional entity dict
+        @param d: Dict containing Entity object attributes
+        @return: Populated Entity object 
+        '''
         e = Entity()
         #WORKAROUND
         if d<>EDEF and d['class'][0]=='validation': e.set(d)
@@ -123,6 +162,10 @@ class Entity(object):
         return e
         
     def set(self,d = EDEF):
+        '''Set for Entity object taking optional entity dict
+        @param d: Dict containing Entity object attributes
+        @return: Populated Entity object 
+        '''
         #try: print d['properties']['ruleId']
         #except: pass
         self._set(
@@ -134,7 +177,17 @@ class Entity(object):
         )
         
     def _set(self,_class,rel,ruleId,description,severity):
-        '''sets object parameters'''
+        '''Entity setter for full object parameters spread
+        @param _class: Entity class, eg Upper, Middle, Working, Lower, Bacteria, Dirt, NationalPartyVoter
+        @param rel: The rel
+        @type rel: String
+        @param ruleId: The ruleId
+        @type ruleId: String
+        @param description: Description of the entity
+        @type description: String
+        @param severity: How severe it is, eg WetBusTicketSlap, DoingTheDishesForAWeek, Fine, Prison, FiringSquad
+        @type severity: String
+        '''
         self.setClass(_class)
         self.setRel(rel)
         self.setRuleId(ruleId)
@@ -148,6 +201,9 @@ class Entity(object):
     def setSeverity(self,severity): self._severity = severity
     
     def get(self):
+        '''Returns dict of self, Entity object
+        @return: Dictionary
+        '''
         return {'class':self._class,
                 'rel':self._rel,
                 'properties':{
@@ -158,19 +214,41 @@ class Entity(object):
             }
   
 class EntityValidation(Entity):
-    def __init__(self,ref = 'validation'):
+    '''Validation Entity representing object returned from AIMS with error/warning indicators'''
+    
+    def __init__(self,ref = 'validation'):        
+        '''Initialise Validation Entity object
+        @param ref: Unique reference string
+        '''
         super(EntityValidation,self).__init__(ref)
         
     @staticmethod
-    def getInstance(data,etft=None):
+    def getInstance(data,etft=None): 
+        '''Gets instance of Entity object taking optional entity dict
+        @param data: Dict containing Validation Entity object attributes
+        @param etft: Validation Entity feedref 
+        @type etft: FeedRef
+        @return: Populated Entity object 
+        '''
         return super(EntityValidation,EntityValidation).getInstance(data)
 
 class EntityAddress(Entity):
+    '''Address Entity representing object returned embedded in AIMS groups'''
+    
     def __init__(self,ref = 'address'):
+        '''Initialise Address Entity object
+        @param ref: Unique reference string
+        '''
         super(EntityAddress,self).__init__(ref)
         
     @staticmethod
-    def getInstance(data,etft=FeedRef((FeatureType.ADDRESS,FeedType.FEATURES))):
+    def getInstance(data,etft=FeedRef((FeatureType.ADDRESS,FeedType.FEATURES))): 
+        '''Gets instance of Entity object defaulting to Addressfeed/Feature
+        @param data: Dict containing AF Entity object attributes
+        @param etft: Address Entity feedref 
+        @type etft: FeedRef
+        @return: Populated Entity object 
+        '''
         from FeatureFactory import FeatureFactory
         ff = FeatureFactory.getInstance(etft)
         return ff.getAddress(model=data)
@@ -180,7 +258,7 @@ class EntityAddress(Entity):
 # A D D R E S S
 
 class Address(Feature):
-    ''' UI address class ''' 
+    '''Base Address class''' 
     
     feature = FeatureType.ADDRESS
     type = FeedType.FEATURES
@@ -189,6 +267,9 @@ class Address(Feature):
     #aimslog = Logger.setup()
     
     def __init__(self, ref=None): 
+        '''Initialise Address object
+        @param ref: Unique reference string
+        '''
         #aimslog.info('AdrRef.{}'.format(ref))
         super(Address,self).__init__(ref)
     
@@ -206,7 +287,7 @@ class Address(Feature):
     
 
     
-    def setAddressId (self, addressId): 
+    def setAddressId (self, addressId):
         self._components_addressId = addressId
     def getAddressId(self): 
         return self._components_addressId        
@@ -294,6 +375,9 @@ class Address(Feature):
     
     #---------------------------------------------------         
     def setAddressPositions(self,pl):
+        '''Setter for Address positions accepting single or list/multiple position objects
+        @param pl: Position (List)
+        '''
         '''adds (nb 'add' not 'set', bcse setter recogniser needs set) another position object'''
         if isinstance(pl,list): self._addressedObject_addressPositions = pl  
         elif isinstance(pl,Position): self._addressedObject_addressPositions = [pl,]  
@@ -301,16 +385,21 @@ class Address(Feature):
             
         
     def getConvertedAddressPositions(self):
-        '''return a list of dict'd position objects'''
+        '''Returns a list of position objects converted from stored dictionary
+        @return: List<Position>
+        '''
         return [p.get() for p in self._addressedObject_addressPositions]    
     
     def getAddressPositions(self):
-        '''return a list of position objects'''
+        '''Returns a list of position objects
+        @return: List<Position>
+        '''
         return self._addressedObject_addressPositions
     #---------------------------------------------------
     
     def getFullNumber(self):
-        ''' combine components to create a full address label '''
+        '''Combines Address components to create a full address label
+        @return: String'''
         # in some instance we could to the API get 'full number' however this 
         # is not included in responses hence the need for this method
         d = OrderedDict(
@@ -329,6 +418,8 @@ class Address(Feature):
         return fullNumber
 
     def _getFullNumber(self):
+        '''I{*Incomplete* Address combining function}
+        @return: String'''
         d = {'unitValue':'{}/','addressNumber':'{}','addressNumberHigh':'-{}','addressNumberSuffix':'{}'}
         reduce(lambda x,y: y+getattr(c+x),d.keys())
         
@@ -350,7 +441,9 @@ class Address(Feature):
 
 #------------------------------------------------------------------------------
     
-class AddressRequestFeed(Address):          
+class AddressRequestFeed(Address):
+    '''Subclass of address representing address types available from AIMS feed mechanism'''
+              
     def setVersion (self, version): self._version = version if Feature._vInt(version) else None
     
 #     def setRequestId(self,requestId):
@@ -372,7 +465,8 @@ class AddressRequestFeed(Address):
 #------------------------------------------------------------------------------
 
 class AddressChange(AddressRequestFeed):
-    ''' UI address change class ''' 
+    '''Subclass of address representing address sourced from the AIMS changefeed'''
+    
     type = FeedType.CHANGEFEED
     #DA = DEF_ADDR[type]
     
@@ -388,7 +482,8 @@ class AddressChange(AddressRequestFeed):
 #------------------------------------------------------------------------------
         
 class AddressResolution(AddressRequestFeed):
-    ''' UI address res class ''' 
+    '''Subclass of address representing address sourced from the AIMS resolutionfeed'''
+    
     type = FeedType.RESOLUTIONFEED
     #DA = DEF_ADDR[type]
 

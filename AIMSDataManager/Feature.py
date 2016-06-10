@@ -20,9 +20,11 @@ from AimsLogging import Logger
 
 aimslog = None
 
-HASH_EXCLUDES = ('_ref', '_address_positions')
+# ref is time variable, adrpo is nested and covered by changeid, meta contains non object attrs
+HASH_EXCLUDES = ('_ref', '_address_positions','meta')
 
 class Feature(object):
+    '''Data object representing AIMS primary objects Addresses, Groups and Users'''
     
     type = FeedType.FEATURES
     
@@ -98,6 +100,9 @@ class Feature(object):
     #---------------------------------
     
     def setRequestId(self,requestId):
+        '''Set requestid variable on Feature object
+        :param:  Integer. User generated variable attatched to and identifying AIMS individual requests
+        '''
         self.setMeta()
         self.meta.requestId = requestId      
            
@@ -112,18 +117,22 @@ class Feature(object):
         return self.meta.errors if hasattr(self,'meta') else None
 
     #object hash of attributes for page comparison
-    def _hash(self):
+    def getHash(self):
+        '''Generates unique hash values for Feature objects.
+        :return:  Integer. 32 digit hexdigest representing hash code
+        '''
         #discard all list/nested attributes? This should be okay since it captures the version addess|changeId
         s0 = [getattr(self,z) for z in self.__dict__.keys() if z not in HASH_EXCLUDES]
         s1 = [str(z) for z in s0 if isinstance(z,(int,float,long,complex))]
         s2 = [z.encode('utf8') for z in s0 if isinstance(z,(basestring)) and z not in s1]
-        #return reduce(lambda x,y: x.update(y), standard,hashlib.md5())
-        self._hash = hashlib.md5(reduce(lambda x,y: x+y, s1+s2))
-        return self._hash
+        #return reduce(lambda x,y: x.update(y), s1+s2,hashlib.md5()) #reduce wont recognise haslib objs
+        self.setMeta()
+        self.meta.hash = hashlib.md5(reduce(lambda x,y: x+y, s1+s2)).hexdigest()
+        return self.meta.hash
     
 class FeatureMetaData(object):
-    '''Embedded container for address meta information eg warnings, errors and tracking'''
-    def __init__(self):self._requestId,self._statusMessage,self._errors,self._entities = 0,'',[],[]
+    '''Embedded container for address meta information and derived attributes eg warnings, errors and tracking'''
+    def __init__(self):self._requestId,self._statusMessage,self._errors,self._entities, self._hash = 0,'',[],[],None
     
     @property
     def requestId(self): return self._requestId
@@ -139,4 +148,9 @@ class FeatureMetaData(object):
     def errors(self): return self._errors  
     @errors.setter
     def errors(self,errors): self._errors = errors
+    
+    @property
+    def hash(self): return self._hash  
+    @hash.setter
+    def hash(self,hash): self._hash = hash
     
