@@ -5,14 +5,28 @@ from PyQt4.QtGui import *
 from qgis.core import *
 from qgis.gui import *
 
-class FeatureHighlighter( QObject ):
-
+class FeatureHighlighter(QObject):
+    """
+    Manager the highlighting of selected AIMS features
+    """
+    
     _adrMarkerColor = QColor(255,0,0)
     _revMarkerColor = QColor(255,0,0)
     _newAdrMarkerColor = QColor(255,0,0)
     _rclMarkerColor = QColor(76,255,0)
 
     def __init__( self, iface, layerManager, controller=None ):
+        """
+        Set individual marker default values
+        
+        @param iface:  Base class defining interfaces exposed by QgisApp 
+        @type  iface: QgisInterface()
+        @param layerManager: Plugins layer manager
+        @type  layerManager: AimsUI.LayerManager()
+        @param controller: Instance of the plugins controller
+        @type  controller: AimsUI.AimsClient.Gui.Controller()
+        """
+    
         QObject.__init__(self)
         self._iface = iface
         self._controller = controller
@@ -49,51 +63,100 @@ class FeatureHighlighter( QObject ):
         self._crs = QgsCoordinateReferenceSystem()
         self._crs.createFromOgcWmsCrs('EPSG:4167')
         self._controller = controller
-        #if self._controller:
-        #    self._controller.addressUpdated.connect( self.resetAddress )
 
     def setEnabled( self, enabled ):
+        """
+        Toggle highlighting on/off
+
+        @type  enabled: boolean
+        """
+        
         self._enabled = enabled
         if self._enabled:
             self._revMarker.show()
-        else: self._revMarker.hide()
+        else: 
+            self._revMarker.hide() 
+            self._adrMarker.hide()
+            self._newAdrMarker.hide()  
+            self._rclMarker.hide()     
         
     def setAddress( self, coords ):
+        """
+        Highlight AIMS Feature that has been selected by the user for
+        either purposes of relocating, updating or retiring.
+        
+        @param coords: canvas extent
+        @type  coords: QgsPoint()
+        """
+        
         if self.isVisible( self._layers.addressLayer() ):
             self.hideNewAddress()
             self._adrMarker.setCenter( QgsPoint(coords[0], coords[1]) )
             self._adrMarker.show()
 
     def hideAddress(self):
+        """
+        Hide AIMS feature marker
+        """
+    
         self._adrMarker.hide()
     
     def setNewAddress( self, coords ):
+        """
+        Add marker to the canvas indicating the position of feature being created        
+        
+        @param coords: canvas extent
+        @type  coords: QgsPoint()
+        """
+        
         if self.isVisible( self._layers.addressLayer() ):
             self.hideAddress()
             self._newAdrMarker.setCenter( QgsPoint(coords[0], coords[1]) )
             self._newAdrMarker.show()
         
     def hideNewAddress(self):
+        """
+        Hide the Marker indicating the position of a pending new feautre
+        """
+        
         self._newAdrMarker.hide()
         
     def setReview( self, coords ):
+        """
+        Highlight the feature under review
+        """
+        
         if self.isVisible( self._layers.revLayer() ):
             self._revMarker.setCenter( QgsPoint(coords[0], coords[1]) )
             self._revMarker.show()
     
     def hideReview(self):
+        """
+        Hide the highlighting of the last selected Review Feature
+        """
+        
         self._revMarker.hide()
     
     def setRcl( self, line):
+        """
+        Highlight the Road Centre Line the user has selected to associated 
+        with an AIMS feature
+        """
+        
         rclLayer = self._layers.rclLayer()
         self._rclMarker.setToGeometry(QgsGeometry.fromPolyline(line[0]),None)#,rclLayer)
         self._rclMarker.show()
 
-    def showRcl(self):
-        self._rclMarker.show()
-
     def hideRcl(self):
+        """
+        Hide the highlighting of the last selected Road Centre Line
+        """
+        
         self._rclMarker.hide()
 
     def isVisible(self, layer):
+        """
+        Test is the layer is visible to the user
+        """
+        
         return self._layers.isVisible(layer)

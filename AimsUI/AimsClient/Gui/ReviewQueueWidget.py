@@ -100,29 +100,48 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.popUserCombo()
     
     def setController( self, controller ):
-        '''  get an instance of plugins high level controller '''
+        """  
+        Access and assign the single instance of the Controller 
+        
+        @param controller: instance of the plugins controller
+        @type  controller: AimsUI.AimsClient.Gui.Controller
+        """
+        
         import Controller
         if not controller:
             controller = Controller.instance()
         self._controller = controller
     
     def notify(self, feedType):
-        ''' observer pattern, registered with uidm '''
+        """
+        Observer pattern, registered with uidm 
+        
+        @param feedType: feed type indicator
+        """
+        
         if feedType == FEEDS['AF']: return     
         uilog.info('*** NOTIFY ***     Notify A[{}]'.format(feedType))
         self.refreshData()
 
     def setMarker(self, coords):
-        ''' add marker to canvas via common uiUitility highlight methods '''
+        """
+        Add a review marker to canvas if the highlight action action is checked 
+
+        @param coords: list [x , y]
+        @type coords: list
+        """
+        
         if self._controller._highlightaction.isChecked():
             self.highlight.setReview(coords)
         
     def refreshData(self):
-        ''' update Review Queue data '''
+        """
+        Update Review Queue data 
+        """
+        
         # request new data
         self.reviewData = self.uidm.formatTableData((FEEDS['GR'],FEEDS['AR']))
-        QgsMessageLog.logMessage("Length Data: {0} ".format(len(self.reviewData)), 'AIMS', QgsMessageLog.INFO)     
-
+ 
         self.groupModel.beginResetModel()
         self.groupModel.refreshData(self.reviewData)        
         self.groupModel.endResetModel()
@@ -138,8 +157,10 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
             self.reinstateSelection()
 
     def reinstateSelection(self):
-        ''' select group item based on the last selected
-            or alternative (next) address '''
+        """
+        Select group item based on the last selected
+        or alternative (next) feature in queue 
+        """
         
         if self.currentFeatureKey:   
             #QgsMessageLog.logMessage("Primary: {0}, Alternative: {1}".format(self.currentGroup[0], self.altSelectionId), 'AIMS', QgsMessageLog.INFO)     
@@ -155,43 +176,72 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
             self.setMarker(coords)                            
         
     def singleReviewObj(self, feedType, objKey): # can the below replace this?
-        ''' return either single or group
-            review object as per supplied key '''
+        """
+        Return either single or group
+        review object as per supplied key 
+        
+        @param feedType: feed type indicator
+        @type feedType: AIMSDataManager.AimsUtility.FeedRef
+        @param objKey: object reference id
+        @type objKey: integer
+        
+        @return: AIMS Address Feature
+        @rtype: AIMSDataManager.Address
+        """
+        
         if objKey: 
             return self.uidm.singleReviewObj(feedType, objKey)
     
     def currentReviewFeature(self):
-        ''' return current review obj as registered by last 
-                review item selection '''
+        """
+        Returns the current review feature as registered by last 
+        review item selection 
+        
+        @return: AIMS Address Feature
+        @rtype: AIMSDataManager.Address
+        """
+        
         return self.uidm.currentReviewFeature(self.currentGroup, self.currentFeatureKey)
             
     def featureSelected(self, row):
-        ''' triggered when a new feature row is selected '''
+        """ 
+        Sets the current feature reference when the user selects a feature
+
+        @param row: The row the user has selected
+        @type row: integer
+        """
+
         if self.currentGroup[0]:  
-            self.currentFeatureKey = self.featureModel.listClicked(row)   
+            self.currentFeatureKey = self.featureModel.tableSelectionMade(row)   
             self.uQueueEditor.currentFeatureToUi(self.currentReviewFeature())
             
             self.setMarker(self.uidm.reviewItemCoords(self.currentGroup, self.currentFeatureKey))
 
-    def groupSelected( self, row = None, a = None, b = None): #rename Select Group
-        ''' set reference to current group record and alternative '''
+    def groupSelected(self, row = None):
+        """
+        Set reference to current and alternative group records 
+
+        @param row: The row the user has selected
+        @type row: integer
+        """
+
         proxyIndex = self.groupTableView.selectionModel().currentIndex()
         sourceIndex = self._groupProxyModel.mapToSource(proxyIndex)
         sourceRow = sourceIndex.row()
         altProxyIndex = self.groupTableView.model().index(sourceRow,0)
-        #altSourceIndex = self._groupProxyModel.mapToSource(altProxyIndex)
         # set current and next row
-        self.currentGroup = self.groupModel.listClicked(sourceIndex.row()) # was source
+        self.currentGroup = self.groupModel.tableSelectionMade(sourceIndex.row()) # was source
         self.altSelectionId = self.groupModel.altSelectionId(altProxyIndex.row())
-        
-        #QgsMessageLog.logMessage("Primary: {0}, Alternative: {1}".format(self.currentGroup[0], self.altSelectionId), 'AIMS', QgsMessageLog.INFO)     
-        QgsMessageLog.logMessage("Primary: {0} proxy: {1} source: {2}".format(self.currentGroup[0], proxyIndex.row(), sourceIndex.row()), 'AIMS', QgsMessageLog.INFO)     
-        #QgsMessageLog.logMessage("Alternative: {0} proxy: {1} source: {2}".format(self.altSelectionId, altProxyIndex.row(), altSourceIndex.row()), 'AIMS', QgsMessageLog.INFO)     
-        
         self.featuresTableView.selectRow(0)
    
     def userFilterChanged(self, index):
-        ''' triggered when the group user filter selection is changed '''
+        """ 
+        Capture the user selection from filtering comboBox
+        
+        @param index: Combobox Index
+        @type index: QModelIndex    
+        """
+        
         item = self.comboBoxUser.model().itemFromIndex(index)
         if item.checkState() == Qt.Checked:
             item.setCheckState(Qt.Unchecked)
@@ -199,13 +249,22 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
             item.setCheckState(Qt.Checked)
         self.applyFilter(self.comboBoxUser)
 
-    def groupsFilter(self, col, data):
+    def groupsFilter(self, row, data):
+        """
+        Apply filter to group data
+        
+        @param data: String of active group filter item separated by vBars
+        @type data: string     
+        """
+        
         self._groupProxyModel.setFilterKeyColumn(-1)
         self._groupProxyModel.setFilterRegExp(data)      
       
     def applyFilter(self, parent):
-        ''' filter proxy model for Group Table when the 
-            as per comboBoxUser parameters '''        
+        """ 
+        Filter Group Table when the comboBoxUser parameters are modified
+        """
+           
         uFilter = ''
         model = parent.model()
         for row in range(model.rowCount()): 
@@ -215,13 +274,24 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.groupsFilter(row, str(uFilter)[1:])
                 
     def popUserCombo(self):
-        ''' Obtain all unique and active AIMS publisher values '''
+        """
+        Obtain all unique and active AIMS publisher values 
+        """
+        
         data = self.groupModel.getUsers()
         data.sort()
         self.popCombo(data, self.comboModelUser)
                  
     def popCombo(self, cElements, model):
-        ''' populate the comboBoxUser with unique system users '''
+        """
+        Populate the comboBoxUser with unique system users
+        
+        @param cElements: List of Elements to populate combo box
+        @type cElements: list
+        @param model: The ComboBox ItemModel
+        @type model: QtGui.QStandardItemModel
+        """
+        
         for i in range(len(cElements)):
             item = QStandardItem(cElements[i])
             item.setCheckState(Qt.Checked)
@@ -229,7 +299,10 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
             model.setItem(i,item)
                 
     def updateFeature(self):
-        ''' update a review queue item '''
+        """
+        Update the properties of a review queue item 
+        """
+        
         self.feature = self.currentReviewFeature()
         if self.feature:             
             UiUtility.formToObj(self)
@@ -239,7 +312,13 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
             self.feature = None
     
     def reviewResolution(self, action):
-        ''' Decline or Accept review item as per the action parameter  '''
+        """
+        Decline or Accept review item as per the action parameter  
+
+        @param feedType: feed type indicator
+        @type feedType: AIMSDataManager.AimsUtility.FeedRef
+        """
+        
         for row in self.groupTableView.selectionModel().selectedRows():
             sourceIndex = self._groupProxyModel.mapToSource(row)
             objRef = ()
@@ -257,17 +336,26 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
                 self.reinstateSelection()
                 
     def decline(self):
-        ''' Decline review item '''
+        """
+        Decline review item 
+        """
+        
         self.reviewResolution('decline')
         
     def accept(self):
-        ''' Accept review item '''
+        """
+        Accept review item 
+        """
+        
         self.reviewResolution('accept')
         
     def display(self):
-        ''' Zoom to Review Items Coordinates '''
+        """
+        Zoom to Review Items Coordinates 
+        """
+        
         if self.currentFeatureKey:
-            coords = self.uidm.reviewItemCoords(self.currentGroup, self.currentFeatureKey) # should directly access coords
+            coords = self.uidm.reviewItemCoords(self.currentGroup, self.currentFeatureKey)
             if self.currentAdrCoord == coords: 
                 return
             self.currentAdrCoord = coords
@@ -281,13 +369,19 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         
     @pyqtSlot()
     def rDataChanged (self):
+        """
+        Slot communicated to when the UIDataManager Modifies 
+        the Review Data
+        """
+        
         self._queues.uResolutionTab.refreshData()
-    
-    
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    
-    
-    wnd = ReviewQueueWidget()
-    wnd.show()
-    sys.exit(app.exec_())
+
+#   commented ou 14/6/2016  
+#     
+# if __name__ == '__main__':
+#     app = QApplication(sys.argv)
+#     
+#     
+#     wnd = ReviewQueueWidget()
+#     wnd.show()
+#     sys.exit(app.exec_())

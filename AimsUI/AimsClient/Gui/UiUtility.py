@@ -25,7 +25,9 @@ from matplotlib.cbook import Null
 uilog = None
 
 class UiUtility (object):
-    ''' Where modular UI methods live and are leveraged '''
+    """
+    Where modular UI methods live and are leveraged 
+    """
 
     # logging
     global uilog
@@ -66,7 +68,19 @@ class UiUtility (object):
                     }
     
     @staticmethod
-    def transform (iface, coords, tgt=4167):       
+    def transform (iface, coords, tgt=4167):
+        """
+        Ensure point coordinates are in terms of AIMS system
+        spatial reference system (4167)
+
+        @param iface: QgisInterface Abstract base class defining interfaces exposed by QgisApp  
+        @type iface: Qgisinterface Object
+        @param coords: Point
+        @type  coords: QgsPoint
+        @param tgt: Srs to transform to
+        @type  tgt: integer
+        """
+  
         src_crs = iface.mapCanvas().mapSettings().destinationCrs()
         tgt_crs = QgsCoordinateReferenceSystem()
         tgt_crs.createFromOgcWmsCrs('EPSG:{}'.format(tgt))
@@ -75,7 +89,10 @@ class UiUtility (object):
             
     @staticmethod
     def setFormCombos(self):
-        ''' set combo boxes to defualt values '''
+        """
+        Set combo boxes to defualt values 
+        """
+        
         # set from the parent
         self.uAddressType.addItems(['Road', 'Water'])
         self.ulifeCycle.addItems(['Current', 'Proposed', 'Retired'])
@@ -86,7 +103,10 @@ class UiUtility (object):
 
     @staticmethod
     def formMask(self): 
-        ''' mask form input values '''       
+        """
+        Mask form input values
+        """   
+            
         intValidator = QIntValidator()    
         self.uExternalAddId.setValidator(intValidator)
         self.uBase.setValidator(intValidator)
@@ -97,22 +117,48 @@ class UiUtility (object):
     
     @staticmethod
     def toUpper (uInput, UiElement): 
-        ''' converts lower case user inputs 
-            to upper case when submitted to API '''
+        """
+        Converts lower case to upper case user input information
+        for UI elements that are required to be upper case when submitted to API 
+        
+        @param uInput: User input to a UI component
+        @type  uInput: string
+        @param UiElement: UI Component
+        @type  UiElement: QtGui.QLineEdit | QtGui.QCombo 
+
+        @return: User input cast tp upper case where required
+        @rtype: string 
+        """
+
         if UiElement.objectName() in ('uAlpha', 'uUnit', 'uLevelValue', 'uPrefix') :
             return uInput.upper()
         else: return uInput
     
     @staticmethod
     def nullEqualsNone (uInput): #Now also handling NULL
-        ''' convert whitespace to None '''
+        """
+        Cast whitespace or 'NULL' to None
+
+        @rtype: string 
+        """
+        
         if uInput == '' or uInput == 'NULL':
             return None
         else: return uInput
             
     @staticmethod
     def extractFlatProperty(feature, property, getter):
-        ''' fetch the require property for an obj '''
+        """
+        Return the require property for an object
+
+        @param feature: Aims Address object
+        @type  feature: AIMSDataManager.Address
+        @param property: Required features property 
+        @type  property: string
+        @param getter: Properties Getter
+        @type  getter: string
+        """
+
         #if hasattr(feature, property) or hasattr(feature, getter):                                     
         if getter: 
             # use getter
@@ -125,15 +171,20 @@ class UiUtility (object):
                 prop = unicode(getattr(feature, property)) 
             else: prop = ''
         return prop
-    
-    @staticmethod
-    def extractNestedProperty(feature, property):
-        ''' fetch the require property for an obj '''
-        pass
+
+# commented out 14/06/2016    
+#     @staticmethod
+#     def extractNestedProperty(feature, property):
+#         ''' fetch the require property for an obj '''
+#         pass
     
     @staticmethod
     def featureToUi(self, parent = None):
-        """ populates update form and review editor queue from aims obj """
+    #def featureToUi(self, parent = None):
+        """ 
+        Populates update form and review editor queue from aims obj 
+        """
+        
         UiUtility.setEditability(self)
         UiUtility.clearForm(self)
         
@@ -170,13 +221,19 @@ class UiUtility (object):
             elif isinstance(uiElement, QComboBox):
                 uiElement.setCurrentIndex(0)  
                 uiElement.setCurrentIndex(QComboBox.findText(uiElement, prop))
-        self.uPositionType.setCurrentIndex(QComboBox.findText(self.uPositionType,
-            self.feature._addressedObject_addressPositions[0]._positionType))
+        if self.feature._changeType not in ( 'Retire' ): #Therefore flat
+            posType = self.feature._addressedObject_addressPositions[0]._positionType
+        else:
+            posType = self.feature.meta.entities[0]._addressedObject_addressPositions[0]._positionType
+        self.uPositionType.setCurrentIndex(QComboBox.findText(self.uPositionType, posType))
  
     @staticmethod
     def formToObj(self):  
-        ''' maps user input fromt he new and update form
-            as well as queue editor widget to AIM objects '''
+        """
+        Maps user input from the new and update form
+        as well as queue editor widget to an AIMS object
+        """
+
         try: 
             form = self.uQueueEditor 
         except: 
@@ -200,7 +257,10 @@ class UiUtility (object):
                         
     @staticmethod 
     def clearForm(self):
-        ''' clear UI forms and widgets '''              
+        """
+        Resets and clears data from UI forms
+        """
+           
         widgetChildern = self.findChildren(QWidget, QRegExp(r'^u.*'))
         for child in widgetChildern:
             child.setEnabled(True)
@@ -213,8 +273,11 @@ class UiUtility (object):
         
     @staticmethod               
     def setEditability(self):  
-        ''' toggle editable relevant fields depending 
-            on the objects Address Type (road or water) '''
+        """
+        Toggle editable fields depending 
+        on the objects Address Type (road or water) 
+        """
+
         for child in self.findChildren(QWidget):
             child.setEnabled(True)
                              
@@ -232,7 +295,15 @@ class UiUtility (object):
 
     @staticmethod
     def fullNumChanged(obj, newnumber):
-        ''' splits a full (user inputted) address string into address components '''
+        """
+        Splits a full (user inputted) address string into address components
+
+        @param obj: The UI class that the user is editing
+        @type  obj: e.g. AimsUI.AimsClient.Gui.EditFeatureWidget
+        @param newnumber: User input to uFullNum field
+        @type  newnumber: string
+        """
+        
         # Set address components to None
         [i.setText(None) for i in ([obj.uPrefix, obj.uUnit, obj.uBase, obj.uAlpha, obj.uHigh])]
         # Split full address into components

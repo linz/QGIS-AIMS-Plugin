@@ -11,12 +11,20 @@ from AIMSDataManager.AimsUtility import FEEDS, FeedType
 from AIMSDataManager.Address import Position
 
 import time
-import sys # temp
-       
 
 class EditFeatureWidget( Ui_EditFeatureDialog, QWidget ):
+    """
+    UI Form for the user to edit AIMS Feature information 
+    """
 
     def __init__(self, controller = None):
+        """
+        Make form button and input field connections
+        
+        @param controller: instance of the plugins controller
+        @type  controller: AimsUI.AimsClient.Gui.Controller
+        """
+        
         QWidget.__init__( self )
         self.setupUi(self)
         self.setController( controller )
@@ -50,14 +58,31 @@ class EditFeatureWidget( Ui_EditFeatureDialog, QWidget ):
         self.uAddressType.setCurrentIndex(QComboBox.findText(self.uAddressType,'Road'))
         self.show()
         
-    def setController( self, controller ):
-        '''  get an instance of plugins high level controller '''
+    def setController(self, controller):
+        """  
+        Access and assign the single instance of the Controller 
+        
+        @param controller: instance of the plugins controller
+        @type  controller: AimsUI.AimsClient.Gui.Controller
+        """
+        
         import Controller
         if not controller:
             controller = Controller.instance()
         self._controller = controller
     
-    def setFeature(self, parent,addInstance, coords = None ):
+    def setFeature(self, parent, addInstance, coords = None):
+        """
+        Load the AIMS Feature to UI form
+        
+        @param parent: The tool that enable the form 
+        @type  parent: string
+        @param addInstance: The AIMS Address instance
+        @type  addInstance: AIMSDataManager.Address
+        @param coords: AIMS Feature's associated point
+        @type  coords: QgsPoint
+        """
+        
         self.parent = parent
         self.feature = addInstance
         self.coords = coords
@@ -68,17 +93,34 @@ class EditFeatureWidget( Ui_EditFeatureDialog, QWidget ):
             self._controller._rcltool.fillform()
     
     def hideMarker(self):
+        """
+        Remove highligthing of the AIMS feature
+        """
+        
         self.highlight.hideNewAddress()
         self.highlight.hideRcl()
      
     def setEditability(self):
+        """
+        Set the editability of each user input field embedded with the feature 
+        form based on the user supplied address class
+        """
+        
         UiUtility.setEditability(self)
             
     def getRcl(self):
+        """
+        enable the RCL Tool to allow the user to click and populate 
+        the road information in the form
+        """
+        
         self._controller.startRclTool(self)
       
     def closeDlg (self):
-        ''' close form '''
+        """ 
+        Close form 
+        """
+         
         # revert back to NewAddTool
         self._controller.setPreviousMapTool()
         # revert back to review tab 
@@ -86,6 +128,10 @@ class EditFeatureWidget( Ui_EditFeatureDialog, QWidget ):
         self.hideMarker()
         
     def setPosition(self):
+        """
+        Set the feature position information
+        """
+        
         coords = [self.coords.x(), self.coords.y()]
         pos = {"position":{
                     "type":'Point',
@@ -108,7 +154,12 @@ class EditFeatureWidget( Ui_EditFeatureDialog, QWidget ):
         QMessageBox.warning(self._iface.mainWindow(),"AIMS Warnings", '{0}'.format(mesg))
         
     def objCompleteness(self):
-        ''' test the min required properties have been set '''
+        """
+        Test the minimum required properties have been set
+        
+        @rtype: boolean
+        """
+        
         if self.uAddressType.currentText() == 'Road' and not self.feature._components_roadName: 
             self.raiseErrorMesg('Please supply a Road Name')
             return False
@@ -123,7 +174,9 @@ class EditFeatureWidget( Ui_EditFeatureDialog, QWidget ):
         else: return True
                 
     def submitAddress(self):
-        ''' take users input from form and submit to AIMS API '''
+        """ 
+        Submit the user inputed information to DataManager
+        """
         respId = int(time.time())
 
         if self.parent == 'add': 
@@ -148,9 +201,22 @@ class EditFeatureWidget( Ui_EditFeatureDialog, QWidget ):
         self.hideMarker()
         
     def fullNumChanged(self, newnumber):
+        """
+        When the full number input is modified, split it into and
+        update its individual components 
+        
+        @param newnumber: user input to uFullNum
+        @type  newnumber: string
+        """
+        
         UiUtility.fullNumChanged(self, newnumber)
         
-    def partNumChanged(self,):
+    def partNumChanged(self):
+        """ 
+        When an individual component is modified, concatenate all components and 
+        update the 'full number'
+        """
+        
         if self.uUnit.text(): unit = self.uUnit.text()+'/' 
         else: unit = ''
         

@@ -30,7 +30,7 @@ class Plugin(object):
     SettingsBase=" AIMS_Plugin_threaded/" # TEMP testing
         
     def __init__(self, iface):
-        ''' Initialise the Controller  '''
+        """ Initialise the Controller  """
         self.iface = iface
         self.controller = Controller(iface)
         

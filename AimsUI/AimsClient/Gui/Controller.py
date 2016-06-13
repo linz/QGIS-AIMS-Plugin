@@ -237,7 +237,7 @@ class Controller( QObject ):
                  editing AIMS features
         """
         if not self._queues:
-            queues = AimsQueueWidget( self.iface.mainWindow(), self )
+            queues = AimsQueueWidget(self.iface.mainWindow())
             DockWindow(self.iface.mainWindow(),queues,"AimsQueues","Aims Queues")
             self._queues = queues
         return self._queues

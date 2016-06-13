@@ -34,6 +34,17 @@ class ResponseHandler(object):
         self.afaf= {ft:AddressFactory.getInstance(FEEDS['AF']) for ft in FeedType.reverse} # new method to cast
 
     def updateData(self, respObj , feedType, action):# rather than action could monitor _queueStatus
+        """
+        Update the UiDataManager's data to reflect the received response from the API
+
+        @param respObj: AIMS Feature
+        @type  respObj: AIMSDataManager.Address.AddressResolution
+        @param feedType: feed type indicator
+        @type feedType: AIMSDataManager.AimsUtility.FeedRef
+        @param action: Either Accept or Decline indicating review actions
+        @type action: QtGui.QWidget()
+        """
+        
         if hasattr(respObj, '_changeGroupId'):
             respObj = self.afar[FeedType.RESOLUTIONFEED].cast(respObj)  
             self.uidm.updateGdata(respObj)
@@ -48,16 +59,34 @@ class ResponseHandler(object):
         return True
      
     def displayWarnings (self, warnings):
-        ''' raise warning to the user '''
+        """
+        Raise warnings to the user
+        
+        @param warnings: Tuple of the warnings that are require to shown to the user
+        @type  warnings: tuple
+        """
+        
         message = ''
         for warning in warnings:
             message += u'\u2022 {}\n'.format(warning)
         QMessageBox.warning(self._iface.mainWindow(),"AIMS Warnings", message)
      
-     
     def matchResp (self, response, respId, feedType, i, action):
-        ''' compile a list of warnings that are at the "Reject" level.
-        If warnings for the matching respID, proceed to update data'''
+        """
+        Compile a list of warnings that are at the "Reject" level.
+        If there are no warnings for the matching respID, proceed to update data
+
+        @param response: AIMS Feature
+        @type  response: AIMSDataManager.Address.AddressResolution
+        @param respId: Int that relates the request and response
+        @type  respId: integer
+        @param feedType: feed type indicator
+        @type feedType: AIMSDataManager.AimsUtility.FeedRef
+        @param i: Number iterations taken the responseHandler to receive a response. Logging only
+        @type i: integer
+        @param action: Either Accept or Decline indicating review actions
+        @type action: QtGui.QWidget()
+        """
         
         warnings = []
         for resp in response:
@@ -80,8 +109,17 @@ class ResponseHandler(object):
                     # return resp     
                          
     def handleResp(self, respId, feedType, action = None):
-        ''' test for a response in the response
-            queue with the relevant repId'''
+        """
+        Test for a response in the response queue with the relevant repId'''
+        
+        @param respId: Int that relates the request and response
+        @type  respId: integer
+        @param feedType: feed type indicator
+        @type feedType: AIMSDataManager.AimsUtility.FeedRef
+        @param action: Either Accept or Decline indicating review actions
+        @type action: QtGui.QWidget()
+        """
+        
         for i in range(0,20):
             time.sleep(1)
             resp = self.uidm.response(feedType)
