@@ -84,7 +84,7 @@ class CreateNewAddressTool(QgsMapToolIdentify):
  
     def canvasReleaseEvent(self,mouseEvent):
         """
-        Capture user clicked coordinates for new feautre
+        Capture user clicked coordinates for new feature
 
         @param mouseEvent: QtGui.QMouseEvent
         @type mouseEvent: QtGui.QMouseEvent

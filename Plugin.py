@@ -24,11 +24,9 @@ except:
 
 class Plugin(object):
     ''' Initiate the AIMS plugin'''
-    #try:      
-    #    SettingsBase="QGIS-AIMS-Plugin/"
-    #except:
-    SettingsBase=" AIMS_Plugin_threaded/" # TEMP testing
         
+    SettingsBase="QGIS-AIMS-Plugin/"
+
     def __init__(self, iface):
         """ Initialise the Controller  """
         self.iface = iface

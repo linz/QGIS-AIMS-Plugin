@@ -129,8 +129,8 @@ class DelAddressTool(QgsMapToolIdentify):
                 
 class DelAddressDialog( Ui_ComfirmSelection, QDialog ):
     """
-    Dialog that is shown to the user if more than one address seleted to
-    allow the user to refine and confirm there selection
+    Dialog that is shown to the user if more than one feature selected to
+    allow the user to refine and confirm their selection
 
     @param Ui_ComfirmSelection: Ui Dialog to allow user to refine selection
     @type  Ui_ComfirmSelection: AimsUI.AimsClient.Gui.Ui_ComfirmSelection
@@ -138,6 +138,8 @@ class DelAddressDialog( Ui_ComfirmSelection, QDialog ):
 
     def __init__( self, parent ):
         """
+        Intialise dialog
+        
         @param parent: Main Window
         @type  parent: QtGui.QMainWindow
         """
@@ -150,7 +152,7 @@ class DelAddressDialog( Ui_ComfirmSelection, QDialog ):
         Reformats the list of dict that represents the users selection 
         from the dialog into a list of AIMS json objects
 
-        @param selected: List of dictionaries repersenting refined selection
+        @param selected: List of dictionaries representing refined selection
         @type  selected: list
         
         @return:  List of features formatted of retirement via the API
@@ -168,13 +170,13 @@ class DelAddressDialog( Ui_ComfirmSelection, QDialog ):
 
     def selectFeatures( self, identifiedFeatures ):
         """
-        show selected features to user and return the users
+        Show selected features to user and return the users
         refined selection
 
-        @param identifiedFeatures: List of dictionaries repersenting each selected feature
+        @param identifiedFeatures: List of dictionaries representing each selected feature
         @type  identifiedFeatures: list
         
-        @return: List of dictionaries repersenting refined selection
+        @return: List of dictionaries representing the refined selection
         @rtype: list
         """
 

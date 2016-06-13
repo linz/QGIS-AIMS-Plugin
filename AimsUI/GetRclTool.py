@@ -23,8 +23,22 @@ setapi('QVariant', 2)
 from AimsUI.AimsClient.Gui.UiUtility import UiUtility
 
 class GetRcl(QgsMapToolIdentifyFeature):
-
+    """
+    Tool for getting Road Centreline information
+    """ 
+    
     def __init__(self, iface, layerManager, controller):
+        """
+        Intialise New Address Tool
+        
+        @param iface: QgisInterface Abstract base class defining interfaces exposed by QgisApp  
+        @type iface: Qgisinterface Object
+        @param layerManager: Plugins layer manager
+        @type  layerManager: AimsUI.LayerManager()
+        @param controller: Instance of the plugins controller
+        @type  controller: AimsUI.AimsClient.Gui.Controller()
+        """
+        
         QgsMapToolIdentify.__init__(self, iface.mapCanvas())
         self._iface = iface
         self._controller = controller
@@ -45,6 +59,10 @@ class GetRcl(QgsMapToolIdentifyFeature):
 
         
     def activate(self):
+        """
+        Activate RCL Tool
+        """
+        
         QgsMapTool.activate(self)
         self._parent = self._controller.rclParent
         self._iface.setActiveLayer(self._layers.rclLayer())
@@ -52,11 +70,23 @@ class GetRcl(QgsMapToolIdentifyFeature):
         sb.showMessage('Click map to select road centerline')
     
     def deactivate(self):
+        """
+        Deactivate RCL Tool
+        """
+        
         sb = self._iface.mainWindow().statusBar()
         #self._canvas.scene().removeItem(self._marker) 
         sb.clearMessage()
         
     def setEnabled(self, enabled):
+        """ 
+        When Tool related QAction is checked/unchecked
+        Activate / Disable respectively
+
+        @param enabled: Tool enabled. Boolean value
+        @type enabled: boolean
+        """
+        
         self._enabled = enabled
         if enabled:
             self.activate()
@@ -64,6 +94,10 @@ class GetRcl(QgsMapToolIdentifyFeature):
             self.deactivate()
     
     def fillform(self):
+        """
+        Populate the Feature Editing form with Road Centreline information
+        """
+        
         self._parent.uRclId.setText(self.rcl)
         if self._parent.uAddressType.currentText() == 'Road':
             self._parent.uRoadPrefix.setText(UiUtility.nullEqualsNone(self.prefix))
@@ -77,6 +111,12 @@ class GetRcl(QgsMapToolIdentifyFeature):
             self.highlight.setRcl(self.rclLine)
             
     def canvasReleaseEvent(self, mouseEvent):
+        """
+        Identify the Road Centreline the user clicked on
+
+        @param mouseEvent: QtGui.QMouseEvent
+        @type mouseEvent: QtGui.QMouseEvent
+        """
 
         self.rclLayer = self._layers.rclLayer()        
         results = self.identify(mouseEvent.x(), mouseEvent.y(), self.ActiveLayer, self.VectorLayer)
