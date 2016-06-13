@@ -22,8 +22,22 @@ from AIMSDataManager.AddressFactory import AddressFactory
 from AimsUI.AimsClient.Gui.UiUtility import UiUtility
 
 class DelAddressTool(QgsMapToolIdentify):
-
+    """
+    Tool for creating new AIMS Features
+    """ 
+   
     def __init__(self, iface, layerManager, controller):
+        """
+        Intialise New Address Tool
+        
+        @param iface: QgisInterface Abstract base class defining interfaces exposed by QgisApp  
+        @type iface: Qgisinterface Object
+        @param layerManager: Plugins layer manager
+        @type  layerManager: AimsUI.LayerManager()
+        @param controller: Instance of the plugins controller
+        @type  controller: AimsUI.AimsClient.Gui.Controller()
+        """
+        
         QgsMapToolIdentify.__init__(self, iface.mapCanvas())
         self._iface = iface
         self._layers = layerManager
@@ -32,6 +46,10 @@ class DelAddressTool(QgsMapToolIdentify):
         self.activate()
     
     def activate(self):
+        """
+        Activate Del Address Tool
+        """
+        
         QgsMapTool.activate(self)
         sb = self._iface.mainWindow().statusBar()
         sb.showMessage("Click map to delete feature")
@@ -39,10 +57,22 @@ class DelAddressTool(QgsMapToolIdentify):
         self.parent().setCursor(self.cursor)
     
     def deactivate(self):
+        """
+        Deactivate New Address Tool
+        """
+        
         sb = self._iface.mainWindow().statusBar()
         sb.clearMessage()
     
     def setEnabled(self, enabled):
+        """ 
+        When Tool related QAction is checked/unchecked
+        Activate / Disable the tool respectively
+
+        @param enabled: Tool enabled. Boolean value
+        @type enabled: boolean
+        """
+            
         self._enabled = enabled
         if enabled:
             self.activate()
@@ -50,6 +80,13 @@ class DelAddressTool(QgsMapToolIdentify):
             self.deactivate()
 
     def canvasReleaseEvent(self, mouseEvent):
+        """
+        Identify the features the user has selected for retirement
+
+        @param mouseEvent: QtGui.QMouseEvent
+        @type mouseEvent: QtGui.QMouseEvent
+        """
+
         self._iface.setActiveLayer(self._layers.addressLayer())
         retireFeatures = []
         
@@ -91,14 +128,35 @@ class DelAddressTool(QgsMapToolIdentify):
                 self._controller.RespHandler.handleResp(respId, FEEDS['AC'])
                 
 class DelAddressDialog( Ui_ComfirmSelection, QDialog ):
+    """
+    Dialog that is shown to the user if more than one address seleted to
+    allow the user to refine and confirm there selection
+
+    @param Ui_ComfirmSelection: Ui Dialog to allow user to refine selection
+    @type  Ui_ComfirmSelection: AimsUI.AimsClient.Gui.Ui_ComfirmSelection
+    """
 
     def __init__( self, parent ):
+        """
+        @param parent: Main Window
+        @type  parent: QtGui.QMainWindow
+        """
+        
         QDialog.__init__(self,parent)
         self.setupUi(self)
     
     def selectionToRetirementJson(self, selected):
-        ''' Reformats the list of dict that represents the users selection 
-        from the dialog into a list of AIMS json objects ''' 
+        """
+        Reformats the list of dict that represents the users selection 
+        from the dialog into a list of AIMS json objects
+
+        @param selected: List of dictionaries repersenting refined selection
+        @type  selected: list
+        
+        @return:  List of features formatted of retirement via the API
+        @rtype: list
+        """
+        
         retireFeatures = []
         for i in selected:  
             retireIds = {}        
@@ -109,6 +167,17 @@ class DelAddressDialog( Ui_ComfirmSelection, QDialog ):
         return retireFeatures        
 
     def selectFeatures( self, identifiedFeatures ):
+        """
+        show selected features to user and return the users
+        refined selection
+
+        @param identifiedFeatures: List of dictionaries repersenting each selected feature
+        @type  identifiedFeatures: list
+        
+        @return: List of dictionaries repersenting refined selection
+        @rtype: list
+        """
+
         self.uSadListView.setList(identifiedFeatures,
                                  ['fullAddress','version','addressId'])
         if self.exec_() == QDialog.Accepted:
