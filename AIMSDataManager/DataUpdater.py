@@ -27,7 +27,8 @@ import zipfile
 import threading
 import Queue
 from AimsApi import AimsApi 
-from AimsUtility import FeedRef,ActionType,ApprovalType,GroupActionType,GroupApprovalType,UserActionType,FeatureType,FeedType,AimsException
+from AimsUtility import FeedRef,ActionType,ApprovalType,GroupActionType,GroupApprovalType,UserActionType,FeatureType,FeedType
+from AimsUtility import AimsException
 from Const import ENABLE_ENTITY_EVALUATION, MERGE_RESPONSE
 from Address import Entity, EntityValidation, EntityAddress
 from AimsLogging import Logger

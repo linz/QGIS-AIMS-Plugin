@@ -17,17 +17,25 @@ from AimsLogging import Logger
 aimslog = Logger.setup()
 
 class AimsException(Exception):
-    def __init__(self,em,al=aimslog.error): al('ERR {} - {}'.format(type(self).__name__,em))
+    '''Base AIMS exception class'''
+    def __init__(self,em,al=aimslog.error): 
+        '''Initalise AIMS error.
+        @param em: Error message, user text to include
+        @type em: String
+        @param al: AIMS logging reference
+        @type al: AimsLogging.Logger logging function
+        '''
+        al('ERR {} - {}'.format(type(self).__name__,em))
     
 class InvalidEnumerationType(AimsException): pass
 
 class Configuration(object):
-    '''Configuration data object'''
+    '''Configuration accessor object wrapping ConfigReader'''
     def __init__(self): 
         self.config = ConfigReader()
         
     def readConf(self):
-        '''Configuration reader, reads selected attributed from ConfigReader object
+        '''Read function for ConfigReader returning selected attributes
         @return: Dictionary containing comfiguration parameters
         '''
         conf = {}
@@ -48,6 +56,7 @@ class LogWrap(object):
         @param func: Function being run unde wrapper
         @param prefix: User supplied string added to logging Output
         @type prefix: String
+        @return: Wrapped function
         '''
         msg = 'FUNC TIME {} {} (wrap)'.format(prefix,func)
         if func is None:
@@ -55,12 +64,17 @@ class LogWrap(object):
 
         @wraps(func)
         def wrapper(*args, **kwargs):
-            '''Wrapper function calling passed in function object recording timestamps either side and logging the diff'''
+            '''Wrapper function calling passed in function object recording timestamps either side and logging the diff.
+            @param *args: Function args to pass
+            @param *kwargs: Function kwargs to pass
+            @return: Returns result of wrapped function call
+            '''
             t1 = time.time()
             res = func(*args, **kwargs)
             tdif = time.time()-t1
             aimslog.debug(msg+' {}s'.format(tdif))
             return res
+        
         return wrapper
     
 class IterEnum(object):
@@ -81,8 +95,11 @@ class Enumeration(object):
     '''Custom Enumeration class'''
     @staticmethod
     def enum(*seq, **named):
-        '''
+        '''Enumeration construction function
         u {http://stackoverflow.com/questions/36932/how-can-i-represent-an-enum-in-python}
+        @param *seq: Sequence of enumerated values
+        @param **named: List of names being enumerated
+        @return: Returns type representing enumerated list
         '''
         enums = dict( zip([s for s in seq],range(len(seq))) ,**named)
         reverse = dict((value, key) for key, value in enums.iteritems())
@@ -94,8 +111,12 @@ class Enumeration(object):
         return type('Enum', (IterEnum,), enums)
 
 class FeedRef(object):
-    '''Convenience container class holding Entity/Feed type key'''
+    '''Convenience container class holding Feature/Feed type key'''
     def __init__(self,arg1,arg2=None):
+        '''Initialiser for Feature value and Feed value combinations
+        @param arg1: Value for Feature type or Feature/Feed tuple
+        @param arg2: Value for Feed type (or none if arg1 defined as tuple
+        '''
         if arg2:
             self._et = arg1
             self._ft = arg2
@@ -110,9 +131,11 @@ class FeedRef(object):
         return hash((self._et, self._ft))
 
     def __eq__(self, other):
+        '''Equivalence function/operator'''
         return isinstance(other,FeedRef) and self._et==other._et and self._ft==other._ft    
 
     def __ne__(self, other):
+        '''Non-Equivalence function/operator'''
         return not(self == other)
     
     @property

@@ -15,7 +15,8 @@ import httplib2
 
 from Address import Address,AddressChange,AddressResolution#,AimsWarning
 from Config import ConfigReader
-from AimsUtility import FeatureType,ActionType,ApprovalType,GroupActionType,GroupApprovalType,UserActionType,FeedType,AimsException,LogWrap
+from AimsUtility import FeatureType,ActionType,ApprovalType,GroupActionType,GroupApprovalType,UserActionType,FeedType,LogWrap
+from AimsUtility import AimsException
 from Const import MAX_FEATURE_COUNT,TEST_MODE
 from AimsLogging import Logger
 
@@ -38,6 +39,9 @@ class AimsApi(object):
     #aimslog = Logger.setup()
     
     def __init__(self,config):
+        '''Initialises API connector object with provided configuration.
+        @param config: Dictionary of configuration values from CP
+        '''
         self._url = config['url']
         self._password = config['password']
         self.user = config['user']
@@ -47,7 +51,15 @@ class AimsApi(object):
         self.h.add_credentials(self.user, self._password)
     
     def handleErrors(self, url, resp, jcontent):
-        ''' Return the reason for any critical errors '''        
+        '''Process error messages flagging 400 class errors.
+        @param url: URL of request
+        @type url: String
+        @param resp: Response code
+        @type resp: int
+        @param jcontent: Response message text
+        @type jcontent: Dict
+        @return: Dict of categorised error messages
+        '''        
         ce = {'critical':(),'error':(),'warn':()}
         if str(resp) in ('400', '404') and jcontent.has_key('entities'):
             for entity in jcontent['entities']:
@@ -63,9 +75,16 @@ class AimsApi(object):
              
         return ce
     
-    def handleResponse(self, url, resp, jcontent):
-        ''' test http response
-        [] == no errors, else list of critical errors'''
+    def handleResponse(self, url, resp, jcontent):        
+        '''Process HTTP response object intercepting errors/non-200 codes.
+        @param url: URL of request
+        @type url: String
+        @param resp: Response code
+        @type resp: int
+        @param jcontent: Response message text
+        @type jcontent: Dict
+        @return: Dict of categorised error messages
+        '''
         ce = {'critical':(),'error':(),'warn':()}
         if str(resp) not in ('201', '200'):
             # list of validation errors
@@ -77,7 +96,19 @@ class AimsApi(object):
     #-----------------------------------------------------------------------------------------------------------------------
     @LogWrap.timediff(prefix='onePage')
     def getOnePage(self,etft,sw,ne,page,count=MAX_FEATURE_COUNT):
-        '''Get a numbered page'''
+        '''Retrieve a numbered page from a specific feed with optional bbox parameters
+        @param etft: Feed/Feature identifier
+        @type etft: FeedRef
+        @param sw: South-West corner, coordinate value pair (optional)
+        @type sw: List<Double>{2}
+        @param ne: North-East corner, coordinate value pair (optional)
+        @type ne: List<Double>{2}
+        @param page: Feed page number
+        @type page: Integer 
+        @param count: Feature count (defaults to MAX_FEATURE_COUNT = 1000)
+        @type count: Integer
+        @return: Dictionary<Entity>
+        '''
         et = FeatureType.reverse[etft.et].lower()
         ft = FeedType.reverse[etft.ft].lower()
         addrlist = []
@@ -93,7 +124,13 @@ class AimsApi(object):
     
     @LogWrap.timediff(prefix='oneFeat')
     def getOneFeature(self,etft,cid):
-        '''Get a CID numbered address including feature entities'''
+        '''Get a CID numbered address including feature entities
+        @param etft: Feed/Feature identifier
+        @type etft: FeedRef
+        @param cid: ChangeId
+        @type cid: Integer
+        @return: Dict of JSON response
+        '''
         et = FeatureType.reverse[etft.et].lower()
         ft = FeedType.reverse[etft.ft].lower()
         url = '/'.join((self._url,et,ft.lower(),str(cid) if cid else '')).rstrip('/')
@@ -105,7 +142,15 @@ class AimsApi(object):
     
     @LogWrap.timediff(prefix='adrAct')  
     def addressAction(self,at,payload,cid):
-        '''Make a change to the feature list by posting a change on the changefeed'''
+        '''Make an address change by posting a data to the AIMS changefeed
+        @param at: Action type (add/del/upd) to AIMS address
+        @type at: ActionType
+        @param payload: JSON fomatted HTTP data request
+        @type payload: String
+        @param cid: ChangeId
+        @type cid: Integer
+        @return: Response from HTTP request
+        '''
         et = FeatureType.reverse[FeatureType.ADDRESS].lower()
         ft = FeedType.reverse[FeedType.CHANGEFEED].lower()
         url = '/'.join((self._url,et,ft,ActionType.reverse[at].lower(),TESTPATH)).rstrip('/')
@@ -114,6 +159,15 @@ class AimsApi(object):
     
     @LogWrap.timediff(prefix='adrApp')
     def addressApprove(self,at,payload,cid):
+        '''Perform an address approval action by posting a change on the AIMS resolutionfeed
+        @param at: Approval type (acc/rej/upd) to AIMS address
+        @type at: ApprovalType
+        @param payload: JSON fomatted HTTP data request
+        @type payload: String
+        @param cid: ChangeId
+        @type cid: Integer
+        @return: Response from HTTP request
+        '''
         aimslog.debug('{0}'.format(payload))
         '''Approve/Decline a change by submitting address to resolutionfeed'''
         et = FeatureType.reverse[FeatureType.ADDRESS].lower()
@@ -124,7 +178,15 @@ class AimsApi(object):
     
     @LogWrap.timediff(prefix='grpAct')
     def groupAction(self,gat,payload,cid):
-        '''Perform action on group changefeed'''
+        '''Make a group change by posting a data to the AIMS changefeed
+        @param gat: Action type (add/del/upd) to AIMS group
+        @type gat: GroupActionType
+        @param payload: JSON fomatted HTTP data request
+        @type payload: String
+        @param cid: ChangeId
+        @type cid: Integer
+        @return: Response from HTTP request
+        '''
         et = FeatureType.reverse[FeatureType.GROUPS].lower()
         ft = FeedType.reverse[FeedType.CHANGEFEED].lower()
         url = '/'.join((self._url,et,ft,str(cid),GroupActionType.PATH[gat].lower(),TESTPATH)).rstrip('/')
@@ -133,7 +195,15 @@ class AimsApi(object):
     
     @LogWrap.timediff(prefix='grpApp')
     def groupApprove(self,gat,payload,cid):
-        '''Approve/Decline a change by submitting group to resolutionfeed'''
+        '''Perform a group approval action by posting a change on the AIMS resolutionfeed
+        @param gat: Approval type (acc/rej/upd) to AIMS group
+        @type gat: GroupApprovalType
+        @param payload: JSON fomatted HTTP data request
+        @type payload: String
+        @param cid: ChangeId
+        @type cid: Integer
+        @return: Response from HTTP request
+        '''
         et = FeatureType.reverse[FeatureType.GROUPS].lower()
         ft = FeedType.reverse[FeedType.RESOLUTIONFEED].lower()
         url = '/'.join((self._url,et,ft,str(cid),GroupApprovalType.PATH[gat].lower(),TESTPATH)).rstrip('/')
@@ -141,7 +211,16 @@ class AimsApi(object):
         return self.handleResponse(url,resp["status"], json.loads(content) )
     
     @LogWrap.timediff(prefix='usrAct')
-    def userAction(self,uat,payload,uid): 
+    def userAction(self,uat,payload,uid):         
+        '''Perform a user action by posting a change on the AIMS admin feed
+        @param uat: User action type (add/del/upd) to AIMS user
+        @type uat: UserActionType
+        @param payload: JSON fomatted HTTP data request
+        @type payload: String
+        @param uid: UserId
+        @type uid: Integer
+        @return: Response from HTTP request
+        '''
         #http://devassgeo01:8080/aims/api/admin/users {add/update/delete}
         url = '{}/admin/users/{}/{}'.format(self._url,uid,TESTPATH).rstrip('/')
         resp, content = self.h.request(url,UserActionType.HTTP[uat], json.dumps(payload), self._headers)

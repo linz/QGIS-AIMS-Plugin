@@ -14,7 +14,8 @@
 '''Address module containing data classes representing basic address object as returned from the AIMS API feature.change and resolution feeds'''
 
 #http://devassgeo01:8080/aims/api/address/features - properties
-from AimsUtility import FeatureType,ActionType,ApprovalType,FeedType,AimsException,FeedRef
+from AimsUtility import FeatureType,ActionType,ApprovalType,FeedType,FeedRef
+from AimsUtility import AimsException
 from AimsLogging import Logger
 from Feature import Feature,FeatureMetaData
 from collections import OrderedDict
@@ -24,11 +25,13 @@ from collections import OrderedDict
 #global aimslog
 aimslog = Logger.setup()
 
-        
+
+class AddressException(AimsException): pass
+      
 #------------------------------------------------------------------------------
 # P O S I T I O N
 
-class InvalidPositionException(AimsException):pass
+class InvalidPositionException(AddressException):pass
 PDEF = {'position':{'type':'Point','coordinates':[0.0,0.0],'crs':{'type':'name','properties':{'name':'urn:ogc:def:crs:EPSG::4167'}}},'positionType':'Unknown','primary':True}
     
 class Position(object):
@@ -376,7 +379,8 @@ class Address(Feature):
     #---------------------------------------------------         
     def setAddressPositions(self,pl):
         '''Setter for Address positions accepting single or list/multiple position objects
-        @param pl: Position (List)
+        @param pl: Position
+        @type
         '''
         '''adds (nb 'add' not 'set', bcse setter recogniser needs set) another position object'''
         if isinstance(pl,list): self._addressedObject_addressPositions = pl  

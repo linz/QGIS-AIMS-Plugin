@@ -16,7 +16,8 @@ import re
 import os
 import sys
 import copy
-from AimsUtility import FeatureType,ActionType,ApprovalType,FeedType,InvalidEnumerationType,AimsException
+from AimsUtility import FeatureType,ActionType,ApprovalType,FeedType
+from AimsUtility import AimsException,InvalidEnumerationType
 from Const import SKIP_NULL, DEF_SEP,RES_PATH
 from Address import Address,AddressChange,AddressResolution,Position
 from AimsLogging import Logger
@@ -37,14 +38,15 @@ P = os.path.join(os.path.dirname(__file__),'../resources/')
 
 aimslog = None
  
-class AddressException(AimsException): pass    
-class AddressFieldRequiredException(AddressException): pass
-class AddressFieldIncorrectException(AddressException): pass
-class AddressConversionException(AddressException): pass
-class AddressCreationException(AddressException): pass
+class FeatureException(AimsException): pass    
+class FeatureFieldRequiredException(FeatureException): pass
+class FeatureFieldIncorrectException(FeatureException): pass
+class FeatureConversionException(FeatureException): pass
+class FeatureCreationException(FeatureException): pass
 
 class FeatureFactory(object):
-    ''' AddressFactory class used to build address objects without the overhead of re-reading templates each time an address is needed''' 
+    '''Factory class for Feature objects but used as super class with construction management duties. Saves overhead on template reading each time a feature is needed''' 
+    
     PBRANCH = '{d}{}{d}{}'.format(d=DEF_SEP,*Position.BRANCH)
     AFFT = FeedType.FEATURES
     DEF_REF = FeedType.reverse[AFFT]
@@ -67,7 +69,11 @@ class FeatureFactory(object):
     
     @staticmethod
     def getInstance(etft):
-        '''Gets an instance of a factory to generate a particular (ft) type of address object'''
+        '''Gets an instance of a factory to generate a particular FeedRef type of object
+        @param etft: FeeedRefobject describing required featuretype, feedtype object required
+        @type etft: FeedRef
+        @return: Feature
+        '''
         #NOTE. Double duty for ft, consider (et,ft) - since enums are just ints et.g=ft.f
         if etft.et==FeatureType.GROUPS:
             from GroupFactory import GroupChangeFactory,GroupResolutionFactory
@@ -103,6 +109,11 @@ class FeatureFactory(object):
     
     @staticmethod
     def readTemplate(tp):
+        '''Reads and parses template file returning attribute dict
+        @param tp: Dict of all feed type + feature type combinations used to construct template filenames
+        @type tp: Dict of attributes for all Feature/Feed type combinations
+        @return: Dict representing templates for JSON AIMS request/response 
+        '''
         for t1 in tp:
             for t2 in tp[t1]:
                 with open(os.path.join(FeatureFactory.RP,'{}.{}.template'.format(t1,t2)),'r') as handle:
@@ -116,6 +127,10 @@ class FeatureFactory(object):
         return tp
     
     def _delNull(self, obj):
+        '''Removes Null/empty attributes from dict of attributes
+        @param obj: Object to strip of null values
+        @return: Stripped down object
+        '''
         if hasattr(obj, 'items'):
             new_obj = type(obj)()
             for k in obj:

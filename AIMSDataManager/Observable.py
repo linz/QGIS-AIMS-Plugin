@@ -39,7 +39,7 @@ class Observable(threading.Thread):
         if not self.stopped():
             self.notify(*args, **kwargs)
     
-    #promoted to prevent notifications on stopped threads    
+    #Explicit stop in observable to prevent notifications on stopped threads    
     def stop(self):
         self._stop.set()
         

@@ -17,7 +17,8 @@ import os
 import sys
 import copy
 from FeatureFactory import FeatureFactory
-from AimsUtility import FeedType,FeatureType,UserActionType,AimsException
+from AimsUtility import FeedType,FeatureType,UserActionType
+from AimsUtility import AimsException
 from Const import SKIP_NULL, DEF_SEP
 from User import User
 from AimsLogging import Logger

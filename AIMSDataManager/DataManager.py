@@ -31,13 +31,18 @@ aimslog = None
     
     
 class DataManager(Observable):
-    '''Initialises maintenance thread and provides queue accessors'''
+    '''Initialises maintenance thread and provides queue accessors and request channels'''
 
     global aimslog
     aimslog = Logger.setup()
     
   
     def __init__(self,start=FIRST,initialise=False):
+        '''Initialises DataManager initialising DataSync objects, setting up persistence and reading configuration.
+        @param start: List of sync objects to be started (excluded FeatureFeed by default until BBOX defined
+        @param initialise: Flag to signal initialisation of persisted objects
+        @type initialise: Boolean
+        '''
         #self.ioq = {'in':Queue.Queue(),'out':Queue.Queue()}   
         super(DataManager,self).__init__()
         if start and hasattr(start,'__iter__'): self._start = start.values()
@@ -46,14 +51,14 @@ class DataManager(Observable):
         self._initDS()
         
     def _initDS(self):
-        '''initialise the data sync queues/threads'''
-        self.ioq = {etft:None for etft in FEEDS.values()}
-        self.ds = {etft:None for etft in FEEDS.values()}
+        '''Initialise DataSync queues/threads'''# and a per feedref timestamp tracking dict'''
+        self.ioq,self.ds = 2*({etft:None for etft in FEEDS.values()},)
         self.stamp = {etft:time.time() for etft in FEEDS.values()}
         
         #init the g2+a2+a1 different feed threads
         self.dsr = {f:DataSyncFeeds for f in FIRST.values()}
         self.dsr[FeedRef((FeatureType.ADDRESS,FeedType.FEATURES))] = DataSyncFeatures
+        #Users feed not included in DSR for Release1.0
         for etft in self._start: self._checkDS(etft)
             
     def start(self,etft):

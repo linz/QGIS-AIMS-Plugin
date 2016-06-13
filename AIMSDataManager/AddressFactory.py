@@ -20,6 +20,7 @@ from FeatureFactory import FeatureFactory
 from AimsUtility import FeatureType,ActionType,ApprovalType,FeedType,InvalidEnumerationType,AimsException
 from Const import SKIP_NULL, DEF_SEP
 from Address import Address,AddressChange,AddressResolution,Position
+from Address import AddressException
 from AimsLogging import Logger
 #from FeatureFactory import TemplateReader
 
@@ -39,8 +40,7 @@ TP = {'{}.{}'.format(FeatureType.reverse[ET].lower(),a):b for a,b in zip(
 #AT = {FeedType.FEATURES:Address,FeedType.CHANGEFEED:AddressChange,FeedType.RESOLUTIONFEED:AddressResolution}
 
 aimslog = None
- 
-class AddressException(AimsException): pass    
+   
 class AddressFieldRequiredException(AddressException): pass
 class AddressFieldIncorrectException(AddressException): pass
 class AddressConversionException(AddressException): pass
@@ -58,6 +58,9 @@ class AddressFactory(FeatureFactory):
     aimslog = Logger.setup()
     
     def __init__(self, ref):
+        '''Initialises an address factory with static templates.
+        @param ref: Unique reference string
+        '''
         self.ref = ref
         self.template = self.readTemplate(TP)[ref.k]
     
