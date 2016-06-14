@@ -1,0 +1,672 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>qgis._gui.QgsNewMemoryLayerDialog</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="QGIS-AIMS-Plugin-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        qgis ::
+        _gui ::
+        QgsNewMemoryLayerDialog ::
+        Class&nbsp;QgsNewMemoryLayerDialog
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="qgis._gui.QgsNewMemoryLayerDialog-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class QgsNewMemoryLayerDialog</h1><p class="nomargin-top"></p>
+<pre class="base-tree">
+       object --+                    
+                |                    
+sip.simplewrapper --+                
+                    |                
+          sip.wrapper --+            
+                        |            
+     <a href="PyQt4.QtCore.QObject-class.html">PyQt4.QtCore.QObject</a> --+        
+                            |        
+           object --+       |        
+                    |       |        
+    sip.simplewrapper --+   |        
+                        |   |        
+ <a href="PyQt4.QtGui.QPaintDevice-class.html">PyQt4.QtGui.QPaintDevice</a> --+        
+                            |        
+          <a href="PyQt4.QtGui.QWidget-class.html">PyQt4.QtGui.QWidget</a> --+    
+                                |    
+              <a href="PyQt4.QtGui.QDialog-class.html">PyQt4.QtGui.QDialog</a> --+
+                                    |
+                                   <strong class="uidshort">QgsNewMemoryLayerDialog</strong>
+</pre>
+
+<hr />
+<p>QgsNewMemoryLayerDialog(QWidget parent=None, Qt.WindowFlags 
+  fl=QgisGui.ModalDialogFlags)</p>
+
+<!-- ==================== NESTED CLASSES ==================== -->
+<a name="section-NestedClasses"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Nested Classes</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-NestedClasses"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="PyQt4.QtGui.QDialog-class.html">PyQt4.QtGui.QDialog</a></code></b>:
+      <code><a href="PyQt4.QtGui.QDialog.DialogCode-class.html">DialogCode</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="PyQt4.QtGui.QWidget-class.html">PyQt4.QtGui.QWidget</a></code></b>:
+      <code><a href="PyQt4.QtGui.QWidget.RenderFlag-class.html">RenderFlag</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget.RenderFlags-class.html">RenderFlags</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="PyQt4.QtGui.QPaintDevice-class.html">PyQt4.QtGui.QPaintDevice</a></code></b>:
+      <code><a href="PyQt4.QtGui.QPaintDevice.PaintDeviceMetric-class.html">PaintDeviceMetric</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="crs"></a><span class="summary-sig-name">crs</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="layerName"></a><span class="summary-sig-name">layerName</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="runAndCreateLayer"></a><span class="summary-sig-name">runAndCreateLayer</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="selectedType"></a><span class="summary-sig-name">selectedType</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="PyQt4.QtGui.QDialog-class.html">PyQt4.QtGui.QDialog</a></code></b>:
+      <code><a href="PyQt4.QtGui.QDialog-class.html#accept">accept</a></code>,
+      <code><a href="PyQt4.QtGui.QDialog-class.html#accepted">accepted</a></code>,
+      <code><a href="PyQt4.QtGui.QDialog-class.html#closeEvent">closeEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QDialog-class.html#contextMenuEvent">contextMenuEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QDialog-class.html#done">done</a></code>,
+      <code><a href="PyQt4.QtGui.QDialog-class.html#eventFilter">eventFilter</a></code>,
+      <code><a href="PyQt4.QtGui.QDialog-class.html#exec_">exec_</a></code>,
+      <code><a href="PyQt4.QtGui.QDialog-class.html#extension">extension</a></code>,
+      <code><a href="PyQt4.QtGui.QDialog-class.html#finished">finished</a></code>,
+      <code><a href="PyQt4.QtGui.QDialog-class.html#isSizeGripEnabled">isSizeGripEnabled</a></code>,
+      <code><a href="PyQt4.QtGui.QDialog-class.html#keyPressEvent">keyPressEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QDialog-class.html#minimumSizeHint">minimumSizeHint</a></code>,
+      <code><a href="PyQt4.QtGui.QDialog-class.html#open">open</a></code>,
+      <code><a href="PyQt4.QtGui.QDialog-class.html#orientation">orientation</a></code>,
+      <code><a href="PyQt4.QtGui.QDialog-class.html#reject">reject</a></code>,
+      <code><a href="PyQt4.QtGui.QDialog-class.html#rejected">rejected</a></code>,
+      <code><a href="PyQt4.QtGui.QDialog-class.html#resizeEvent">resizeEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QDialog-class.html#result">result</a></code>,
+      <code><a href="PyQt4.QtGui.QDialog-class.html#setExtension">setExtension</a></code>,
+      <code><a href="PyQt4.QtGui.QDialog-class.html#setModal">setModal</a></code>,
+      <code><a href="PyQt4.QtGui.QDialog-class.html#setOrientation">setOrientation</a></code>,
+      <code><a href="PyQt4.QtGui.QDialog-class.html#setResult">setResult</a></code>,
+      <code><a href="PyQt4.QtGui.QDialog-class.html#setSizeGripEnabled">setSizeGripEnabled</a></code>,
+      <code><a href="PyQt4.QtGui.QDialog-class.html#setVisible">setVisible</a></code>,
+      <code><a href="PyQt4.QtGui.QDialog-class.html#showEvent">showEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QDialog-class.html#showExtension">showExtension</a></code>,
+      <code><a href="PyQt4.QtGui.QDialog-class.html#sizeHint">sizeHint</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="PyQt4.QtGui.QWidget-class.html">PyQt4.QtGui.QWidget</a></code></b>:
+      <code><a href="PyQt4.QtGui.QWidget-class.html#acceptDrops">acceptDrops</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#accessibleDescription">accessibleDescription</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#accessibleName">accessibleName</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#actionEvent">actionEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#actions">actions</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#activateWindow">activateWindow</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#addAction">addAction</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#addActions">addActions</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#adjustSize">adjustSize</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#autoFillBackground">autoFillBackground</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#backgroundRole">backgroundRole</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#baseSize">baseSize</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#changeEvent">changeEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#childAt">childAt</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#childrenRect">childrenRect</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#childrenRegion">childrenRegion</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#clearFocus">clearFocus</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#clearMask">clearMask</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#close">close</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#contentsMargins">contentsMargins</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#contentsRect">contentsRect</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#contextMenuPolicy">contextMenuPolicy</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#create">create</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#cursor">cursor</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#customContextMenuRequested">customContextMenuRequested</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#destroy">destroy</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#devType">devType</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#dragEnterEvent">dragEnterEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#dragLeaveEvent">dragLeaveEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#dragMoveEvent">dragMoveEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#dropEvent">dropEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#effectiveWinId">effectiveWinId</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#enabledChange">enabledChange</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#ensurePolished">ensurePolished</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#enterEvent">enterEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#event">event</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#find">find</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#focusInEvent">focusInEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#focusNextChild">focusNextChild</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#focusNextPrevChild">focusNextPrevChild</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#focusOutEvent">focusOutEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#focusPolicy">focusPolicy</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#focusPreviousChild">focusPreviousChild</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#focusProxy">focusProxy</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#focusWidget">focusWidget</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#font">font</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#fontChange">fontChange</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#fontInfo">fontInfo</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#fontMetrics">fontMetrics</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#foregroundRole">foregroundRole</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#frameGeometry">frameGeometry</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#frameSize">frameSize</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#geometry">geometry</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#getContentsMargins">getContentsMargins</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#grabGesture">grabGesture</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#grabKeyboard">grabKeyboard</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#grabMouse">grabMouse</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#grabShortcut">grabShortcut</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#graphicsEffect">graphicsEffect</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#graphicsProxyWidget">graphicsProxyWidget</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#handle">handle</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#hasFocus">hasFocus</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#hasMouseTracking">hasMouseTracking</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#height">height</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#heightForWidth">heightForWidth</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#hide">hide</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#hideEvent">hideEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#inputContext">inputContext</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#inputMethodEvent">inputMethodEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#inputMethodHints">inputMethodHints</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#inputMethodQuery">inputMethodQuery</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#insertAction">insertAction</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#insertActions">insertActions</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isActiveWindow">isActiveWindow</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isAncestorOf">isAncestorOf</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isEnabled">isEnabled</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isEnabledTo">isEnabledTo</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isEnabledToTLW">isEnabledToTLW</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isFullScreen">isFullScreen</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isHidden">isHidden</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isLeftToRight">isLeftToRight</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isMaximized">isMaximized</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isMinimized">isMinimized</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isModal">isModal</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isRightToLeft">isRightToLeft</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isTopLevel">isTopLevel</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isVisible">isVisible</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isVisibleTo">isVisibleTo</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isWindow">isWindow</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isWindowModified">isWindowModified</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#keyReleaseEvent">keyReleaseEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#keyboardGrabber">keyboardGrabber</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#languageChange">languageChange</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#layout">layout</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#layoutDirection">layoutDirection</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#leaveEvent">leaveEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#locale">locale</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#lower">lower</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#mapFrom">mapFrom</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#mapFromGlobal">mapFromGlobal</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#mapFromParent">mapFromParent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#mapTo">mapTo</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#mapToGlobal">mapToGlobal</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#mapToParent">mapToParent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#mask">mask</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#maximumHeight">maximumHeight</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#maximumSize">maximumSize</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#maximumWidth">maximumWidth</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#metric">metric</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#minimumHeight">minimumHeight</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#minimumSize">minimumSize</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#minimumWidth">minimumWidth</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#mouseDoubleClickEvent">mouseDoubleClickEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#mouseGrabber">mouseGrabber</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#mouseMoveEvent">mouseMoveEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#mousePressEvent">mousePressEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#mouseReleaseEvent">mouseReleaseEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#move">move</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#moveEvent">moveEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#nativeParentWidget">nativeParentWidget</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#nextInFocusChain">nextInFocusChain</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#normalGeometry">normalGeometry</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#overrideWindowFlags">overrideWindowFlags</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#overrideWindowState">overrideWindowState</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#paintEngine">paintEngine</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#paintEvent">paintEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#palette">palette</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#paletteChange">paletteChange</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#parentWidget">parentWidget</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#pos">pos</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#previousInFocusChain">previousInFocusChain</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#raise_">raise_</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#rect">rect</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#releaseKeyboard">releaseKeyboard</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#releaseMouse">releaseMouse</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#releaseShortcut">releaseShortcut</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#removeAction">removeAction</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#render">render</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#repaint">repaint</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#resetInputContext">resetInputContext</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#resize">resize</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#restoreGeometry">restoreGeometry</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#saveGeometry">saveGeometry</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#scroll">scroll</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setAcceptDrops">setAcceptDrops</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setAccessibleDescription">setAccessibleDescription</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setAccessibleName">setAccessibleName</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setAttribute">setAttribute</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setAutoFillBackground">setAutoFillBackground</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setBackgroundRole">setBackgroundRole</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setBaseSize">setBaseSize</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setContentsMargins">setContentsMargins</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setContextMenuPolicy">setContextMenuPolicy</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setCursor">setCursor</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setDisabled">setDisabled</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setEnabled">setEnabled</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setFixedHeight">setFixedHeight</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setFixedSize">setFixedSize</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setFixedWidth">setFixedWidth</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setFocus">setFocus</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setFocusPolicy">setFocusPolicy</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setFocusProxy">setFocusProxy</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setFont">setFont</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setForegroundRole">setForegroundRole</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setGeometry">setGeometry</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setGraphicsEffect">setGraphicsEffect</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setHidden">setHidden</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setInputContext">setInputContext</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setInputMethodHints">setInputMethodHints</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setLayout">setLayout</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setLayoutDirection">setLayoutDirection</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setLocale">setLocale</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setMask">setMask</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setMaximumHeight">setMaximumHeight</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setMaximumSize">setMaximumSize</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setMaximumWidth">setMaximumWidth</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setMinimumHeight">setMinimumHeight</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setMinimumSize">setMinimumSize</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setMinimumWidth">setMinimumWidth</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setMouseTracking">setMouseTracking</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setPalette">setPalette</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setParent">setParent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setShortcutAutoRepeat">setShortcutAutoRepeat</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setShortcutEnabled">setShortcutEnabled</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setShown">setShown</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setSizeIncrement">setSizeIncrement</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setSizePolicy">setSizePolicy</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setStatusTip">setStatusTip</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setStyle">setStyle</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setStyleSheet">setStyleSheet</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setTabOrder">setTabOrder</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setToolTip">setToolTip</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setUpdatesEnabled">setUpdatesEnabled</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setWhatsThis">setWhatsThis</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setWindowFilePath">setWindowFilePath</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setWindowFlags">setWindowFlags</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setWindowIcon">setWindowIcon</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setWindowIconText">setWindowIconText</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setWindowModality">setWindowModality</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setWindowModified">setWindowModified</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setWindowOpacity">setWindowOpacity</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setWindowRole">setWindowRole</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setWindowState">setWindowState</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setWindowTitle">setWindowTitle</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#show">show</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#showFullScreen">showFullScreen</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#showMaximized">showMaximized</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#showMinimized">showMinimized</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#showNormal">showNormal</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#size">size</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#sizeIncrement">sizeIncrement</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#sizePolicy">sizePolicy</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#stackUnder">stackUnder</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#statusTip">statusTip</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#style">style</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#styleSheet">styleSheet</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#tabletEvent">tabletEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#testAttribute">testAttribute</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#toolTip">toolTip</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#topLevelWidget">topLevelWidget</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#underMouse">underMouse</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#ungrabGesture">ungrabGesture</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#unsetCursor">unsetCursor</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#unsetLayoutDirection">unsetLayoutDirection</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#unsetLocale">unsetLocale</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#update">update</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#updateGeometry">updateGeometry</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#updateMicroFocus">updateMicroFocus</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#updatesEnabled">updatesEnabled</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#visibleRegion">visibleRegion</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#whatsThis">whatsThis</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#wheelEvent">wheelEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#width">width</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#winId">winId</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#window">window</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#windowActivationChange">windowActivationChange</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#windowFilePath">windowFilePath</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#windowFlags">windowFlags</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#windowIcon">windowIcon</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#windowIconText">windowIconText</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#windowModality">windowModality</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#windowOpacity">windowOpacity</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#windowRole">windowRole</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#windowState">windowState</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#windowTitle">windowTitle</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#windowType">windowType</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#x">x</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#x11Info">x11Info</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#x11PictureHandle">x11PictureHandle</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#y">y</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="PyQt4.QtCore.QObject-class.html">PyQt4.QtCore.QObject</a></code></b>:
+      <code><a href="PyQt4.QtCore.QObject-class.html#__getattr__">__getattr__</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#blockSignals">blockSignals</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#childEvent">childEvent</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#children">children</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#connect">connect</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#connectNotify">connectNotify</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#customEvent">customEvent</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#deleteLater">deleteLater</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#destroyed">destroyed</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#disconnect">disconnect</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#disconnectNotify">disconnectNotify</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#dumpObjectInfo">dumpObjectInfo</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#dumpObjectTree">dumpObjectTree</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#dynamicPropertyNames">dynamicPropertyNames</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#emit">emit</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#findChild">findChild</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#findChildren">findChildren</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#inherits">inherits</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#installEventFilter">installEventFilter</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#isWidgetType">isWidgetType</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#killTimer">killTimer</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#metaObject">metaObject</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#moveToThread">moveToThread</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#objectName">objectName</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#parent">parent</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#property">property</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#pyqtConfigure">pyqtConfigure</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#receivers">receivers</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#removeEventFilter">removeEventFilter</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#sender">sender</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#senderSignalIndex">senderSignalIndex</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#setObjectName">setObjectName</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#setProperty">setProperty</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#signalsBlocked">signalsBlocked</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#startTimer">startTimer</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#thread">thread</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#timerEvent">timerEvent</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#tr">tr</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#trUtf8">trUtf8</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="PyQt4.QtGui.QPaintDevice-class.html">PyQt4.QtGui.QPaintDevice</a></code></b>:
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#colorCount">colorCount</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#depth">depth</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#heightMM">heightMM</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#logicalDpiX">logicalDpiX</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#logicalDpiY">logicalDpiY</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#numColors">numColors</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#paintingActive">paintingActive</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#physicalDpiX">physicalDpiX</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#physicalDpiY">physicalDpiY</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#widthMM">widthMM</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>sip.simplewrapper</code></b>:
+      <code>__init__</code>,
+      <code>__new__</code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__repr__</code>,
+      <code>__setattr__</code>,
+      <code>__sizeof__</code>,
+      <code>__str__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS VARIABLES ==================== -->
+<a name="section-ClassVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="PyQt4.QtGui.QDialog-class.html">PyQt4.QtGui.QDialog</a></code></b>:
+      <code><a href="PyQt4.QtGui.QDialog-class.html#Accepted">Accepted</a></code>,
+      <code><a href="PyQt4.QtGui.QDialog-class.html#Rejected">Rejected</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="PyQt4.QtGui.QWidget-class.html">PyQt4.QtGui.QWidget</a></code></b>:
+      <code><a href="PyQt4.QtGui.QWidget-class.html#DrawChildren">DrawChildren</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#DrawWindowBackground">DrawWindowBackground</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#IgnoreMask">IgnoreMask</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="PyQt4.QtCore.QObject-class.html">PyQt4.QtCore.QObject</a></code></b>:
+      <code><a href="PyQt4.QtCore.QObject-class.html#staticMetaObject">staticMetaObject</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="PyQt4.QtGui.QPaintDevice-class.html">PyQt4.QtGui.QPaintDevice</a></code></b>:
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#PdmDepth">PdmDepth</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#PdmDpiX">PdmDpiX</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#PdmDpiY">PdmDpiY</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#PdmHeight">PdmHeight</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#PdmHeightMM">PdmHeightMM</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#PdmNumColors">PdmNumColors</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#PdmPhysicalDpiX">PdmPhysicalDpiX</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#PdmPhysicalDpiY">PdmPhysicalDpiY</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#PdmWidth">PdmWidth</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#PdmWidthMM">PdmWidthMM</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="QGIS-AIMS-Plugin-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Jun 14 13:07:05 2016
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QGIS-AIMS-Plugin.AIMSDataManager.Const</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="QGIS-AIMS-Plugin-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="QGIS-AIMS-Plugin-module.html">Package&nbsp;QGIS-AIMS-Plugin</a> ::
+        Package&nbsp;AIMSDataManager ::
+        Module&nbsp;Const
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="QGIS-AIMS-Plugin.AIMSDataManager.Const-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="QGIS-AIMS-Plugin.AIMSDataManager.Const-module.html">Module QGIS-AIMS-Plugin.AIMSDataManager.Const</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-comment">################################################################################</tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"><tt class="py-comment"># Copyright 2015 Crown copyright (c)</tt> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"><tt class="py-comment"># Land Information New Zealand and the New Zealand Government.</tt> </tt>
+<a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line"><tt class="py-comment"># All rights reserved</tt> </tt>
+<a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line"><tt class="py-comment"># This program is released under the terms of the 3 clause BSD license. See the </tt> </tt>
+<a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line"><tt class="py-comment"># LICENSE file for more information.</tt> </tt>
+<a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line"><tt class="py-comment">################################################################################</tt> </tt>
+<a name="L11"></a><tt class="py-lineno">11</tt>  <tt class="py-line"> </tt>
+<a name="L12"></a><tt class="py-lineno">12</tt>  <tt class="py-line"><tt class="py-comment"># NOTE</tt> </tt>
+<a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line"><tt class="py-comment"># This is potentiall quite a dangerous way to set constants since it overwrites sys.modules and deletes the builtins.</tt> </tt>
+<a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line"><tt class="py-comment"># To prevent this we have to hold a _ref to sys to keep it from being deleted</tt> </tt>
+<a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line"> </tt>
+<a name="L16"></a><tt class="py-lineno">16</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-0" class="py-name" targets="Module sys=sys-module.html"><a title="sys" class="py-name" href="#" onclick="return doclink('link-0', 'sys', 'link-0');">sys</a></tt> </tt>
+<a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-1" class="py-name" targets="Module QGIS-AIMS-Plugin.AIMSDataManager.Config=QGIS-AIMS-Plugin.AIMSDataManager.Config-module.html"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Config" class="py-name" href="#" onclick="return doclink('link-1', 'Config', 'link-1');">Config</a></tt> <tt class="py-keyword">import</tt> <tt id="link-2" class="py-name" targets="Class QGIS-AIMS-Plugin.AIMSDataManager.Config.ConfigReader=QGIS-AIMS-Plugin.AIMSDataManager.Config.ConfigReader-class.html"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Config.ConfigReader" class="py-name" href="#" onclick="return doclink('link-2', 'ConfigReader', 'link-2');">ConfigReader</a></tt> </tt>
+<a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line"> </tt>
+<a name="const"></a><div id="const-def"><a name="L19"></a><tt class="py-lineno">19</tt> <a class="py-toggle" href="#" id="const-toggle" onclick="return toggle('const');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AIMSDataManager.Const.const-class.html">const</a><tt class="py-op">:</tt> </tt>
+</div><div id="const-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="const-expanded"><a name="const.ConstError"></a><div id="const.ConstError-def"><a name="L20"></a><tt class="py-lineno">20</tt> <a class="py-toggle" href="#" id="const.ConstError-toggle" onclick="return toggle('const.ConstError');">-</a><tt class="py-line">    <tt class="py-keyword">class</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AIMSDataManager.Const.const.ConstError-class.html">ConstError</a><tt class="py-op">(</tt><tt class="py-base-class">TypeError</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-keyword">pass</tt>     </tt>
+</div><a name="const.__init__"></a><div id="const.__init__-def"><a name="L21"></a><tt class="py-lineno">21</tt> <a class="py-toggle" href="#" id="const.__init__-toggle" onclick="return toggle('const.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AIMSDataManager.Const.const-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="const.__init__-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="const.__init__-expanded"><a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line">        <tt class="py-name">CR</tt> <tt class="py-op">=</tt> <tt id="link-3" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Config.ConfigReader" class="py-name" href="#" onclick="return doclink('link-3', 'ConfigReader', 'link-2');">ConfigReader</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">key</tt> <tt class="py-keyword">in</tt> <tt class="py-name">CR</tt><tt class="py-op">.</tt><tt id="link-4" class="py-name" targets="Method QGIS-AIMS-Plugin.AIMSDataManager.Config.ConfigReader.configSectionMap()=QGIS-AIMS-Plugin.AIMSDataManager.Config.ConfigReader-class.html#configSectionMap"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Config.ConfigReader.configSectionMap" class="py-name" href="#" onclick="return doclink('link-4', 'configSectionMap', 'link-4');">configSectionMap</a></tt><tt class="py-op">(</tt><tt class="py-string">'const'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line">            <tt class="py-name">val</tt> <tt class="py-op">=</tt> <tt class="py-name">CR</tt><tt class="py-op">.</tt><tt id="link-5" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Config.ConfigReader.configSectionMap" class="py-name" href="#" onclick="return doclink('link-5', 'configSectionMap', 'link-4');">configSectionMap</a></tt><tt class="py-op">(</tt><tt class="py-string">'const'</tt><tt class="py-op">)</tt><tt class="py-op">[</tt><tt class="py-name">key</tt><tt class="py-op">]</tt> </tt>
+<a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line">            <tt class="py-name">setattr</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">key</tt><tt class="py-op">.</tt><tt class="py-name">upper</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-name">val</tt><tt class="py-op">)</tt>  </tt>
+</div><a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line">              </tt>
+<a name="const.__setattr__"></a><div id="const.__setattr__-def"><a name="L27"></a><tt class="py-lineno">27</tt> <a class="py-toggle" href="#" id="const.__setattr__-toggle" onclick="return toggle('const.__setattr__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AIMSDataManager.Const.const-class.html#__setattr__">__setattr__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">name</tt><tt class="py-op">,</tt><tt class="py-param">value</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="const.__setattr__-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="const.__setattr__-expanded"><a name="L28"></a><tt class="py-lineno">28</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__dict__</tt><tt class="py-op">.</tt><tt class="py-name">has_key</tt><tt class="py-op">(</tt><tt id="link-6" class="py-name" targets="Variable qgis._core.QgsMimeDataUtils.Uri.name=qgis._core.QgsMimeDataUtils.Uri-class.html#name"><a title="qgis._core.QgsMimeDataUtils.Uri.name" class="py-name" href="#" onclick="return doclink('link-6', 'name', 'link-6');">name</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L29"></a><tt class="py-lineno">29</tt>  <tt class="py-line">            <tt class="py-keyword">raise</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-7" class="py-name" targets="Class QGIS-AIMS-Plugin.AIMSDataManager.Const.const.ConstError=QGIS-AIMS-Plugin.AIMSDataManager.Const.const.ConstError-class.html"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Const.const.ConstError" class="py-name" href="#" onclick="return doclink('link-7', 'ConstError', 'link-7');">ConstError</a></tt><tt class="py-op">(</tt><tt class="py-string">'Can\'t rebind const {}'</tt><tt class="py-op">.</tt><tt id="link-8" class="py-name" targets="Variable PyQt4.QtGui.QAbstractTextDocumentLayout.Selection.format=PyQt4.QtGui.QAbstractTextDocumentLayout.Selection-class.html#format,Variable PyQt4.QtGui.QTextEdit.ExtraSelection.format=PyQt4.QtGui.QTextEdit.ExtraSelection-class.html#format,Variable PyQt4.QtGui.QTextLayout.FormatRange.format=PyQt4.QtGui.QTextLayout.FormatRange-class.html#format,Variable qgis._gui.QgsOWSSourceSelect.SupportedFormat.format=qgis._gui.QgsOWSSourceSelect.SupportedFormat-class.html#format"><a title="PyQt4.QtGui.QAbstractTextDocumentLayout.Selection.format
+PyQt4.QtGui.QTextEdit.ExtraSelection.format
+PyQt4.QtGui.QTextLayout.FormatRange.format
+qgis._gui.QgsOWSSourceSelect.SupportedFormat.format" class="py-name" href="#" onclick="return doclink('link-8', 'format', 'link-8');">format</a></tt><tt class="py-op">(</tt><tt id="link-9" class="py-name"><a title="qgis._core.QgsMimeDataUtils.Uri.name" class="py-name" href="#" onclick="return doclink('link-9', 'name', 'link-6');">name</a></tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L30"></a><tt class="py-lineno">30</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__dict__</tt><tt class="py-op">[</tt><tt id="link-10" class="py-name"><a title="qgis._core.QgsMimeDataUtils.Uri.name" class="py-name" href="#" onclick="return doclink('link-10', 'name', 'link-6');">name</a></tt><tt class="py-op">]</tt><tt class="py-op">=</tt><tt id="link-11" class="py-name" targets="Variable PyQt4.QtGui.QInputMethodEvent.Attribute.value=PyQt4.QtGui.QInputMethodEvent.Attribute-class.html#value,Variable qgis._core.QgsColorRampShader.ColorRampItem.value=qgis._core.QgsColorRampShader.ColorRampItem-class.html#value"><a title="PyQt4.QtGui.QInputMethodEvent.Attribute.value
+qgis._core.QgsColorRampShader.ColorRampItem.value" class="py-name" href="#" onclick="return doclink('link-11', 'value', 'link-11');">value</a></tt> </tt>
+</div></div><a name="L31"></a><tt class="py-lineno">31</tt>  <tt class="py-line">         </tt>
+<a name="L32"></a><tt class="py-lineno">32</tt>  <tt class="py-line"><tt class="py-name">_ref</tt><tt class="py-op">,</tt> <tt id="link-12" class="py-name"><a title="sys" class="py-name" href="#" onclick="return doclink('link-12', 'sys', 'link-0');">sys</a></tt><tt class="py-op">.</tt><tt id="link-13" class="py-name" targets="Variable sys.modules=sys-module.html#modules"><a title="sys.modules" class="py-name" href="#" onclick="return doclink('link-13', 'modules', 'link-13');">modules</a></tt><tt class="py-op">[</tt><tt class="py-name">__name__</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt id="link-14" class="py-name"><a title="sys" class="py-name" href="#" onclick="return doclink('link-14', 'sys', 'link-0');">sys</a></tt><tt class="py-op">.</tt><tt id="link-15" class="py-name"><a title="sys.modules" class="py-name" href="#" onclick="return doclink('link-15', 'modules', 'link-13');">modules</a></tt><tt class="py-op">[</tt><tt class="py-name">__name__</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt id="link-16" class="py-name" targets="Class QGIS-AIMS-Plugin.AIMSDataManager.Const.const=QGIS-AIMS-Plugin.AIMSDataManager.Const.const-class.html"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Const.const" class="py-name" href="#" onclick="return doclink('link-16', 'const', 'link-16');">const</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L33"></a><tt class="py-lineno">33</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="QGIS-AIMS-Plugin-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Jun 14 13:07:07 2016
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

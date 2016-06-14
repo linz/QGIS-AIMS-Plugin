@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QGIS-AIMS-Plugin.AIMSDataManager.Feature</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="QGIS-AIMS-Plugin-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="QGIS-AIMS-Plugin-module.html">Package&nbsp;QGIS-AIMS-Plugin</a> ::
+        Package&nbsp;AIMSDataManager ::
+        Module&nbsp;Feature
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="QGIS-AIMS-Plugin.AIMSDataManager.Feature-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="QGIS-AIMS-Plugin.AIMSDataManager.Feature-module.html">Module QGIS-AIMS-Plugin.AIMSDataManager.Feature</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-comment">#!/usr/bin/python</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-comment"># -*- coding: utf-8 -*-</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-comment">################################################################################</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-comment"># Copyright 2015 Crown copyright (c)</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-comment"># Land Information New Zealand and the New Zealand Government.</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-comment"># All rights reserved</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-comment"># This program is released under the terms of the 3 clause BSD license. See the </tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-comment"># LICENSE file for more information.</tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-comment">################################################################################</tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt class="py-comment">#http://devassgeo01:8080/aims/api/address/features - properties</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">hashlib</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">re</tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Module QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility=QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility-module.html"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility" class="py-name" href="#" onclick="return doclink('link-0', 'AimsUtility', 'link-0');">AimsUtility</a></tt> <tt class="py-keyword">import</tt> <tt id="link-1" class="py-name" targets="Variable QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeatureType=QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility-module.html#FeatureType"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeatureType" class="py-name" href="#" onclick="return doclink('link-1', 'FeatureType', 'link-1');">FeatureType</a></tt><tt class="py-op">,</tt><tt id="link-2" class="py-name" targets="Variable QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.ActionType=QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility-module.html#ActionType,Class qgis._core.QgsAction.ActionType=qgis._core.QgsAction.ActionType-class.html"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.ActionType
+qgis._core.QgsAction.ActionType" class="py-name" href="#" onclick="return doclink('link-2', 'ActionType', 'link-2');">ActionType</a></tt><tt class="py-op">,</tt><tt id="link-3" class="py-name" targets="Variable QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.ApprovalType=QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility-module.html#ApprovalType"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.ApprovalType" class="py-name" href="#" onclick="return doclink('link-3', 'ApprovalType', 'link-3');">ApprovalType</a></tt><tt class="py-op">,</tt><tt id="link-4" class="py-name" targets="Variable QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeedType=QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility-module.html#FeedType"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeedType" class="py-name" href="#" onclick="return doclink('link-4', 'FeedType', 'link-4');">FeedType</a></tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-5" class="py-name" targets="Module QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging=QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging-module.html,Module QGIS-AIMS-Plugin.AimsUI.AimsLogging=QGIS-AIMS-Plugin.AimsUI.AimsLogging-module.html"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging
+QGIS-AIMS-Plugin.AimsUI.AimsLogging" class="py-name" href="#" onclick="return doclink('link-5', 'AimsLogging', 'link-5');">AimsLogging</a></tt> <tt class="py-keyword">import</tt> <tt id="link-6" class="py-name" targets="Class QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging.Logger=QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging.Logger-class.html,Class QGIS-AIMS-Plugin.AimsUI.AimsLogging.Logger=QGIS-AIMS-Plugin.AimsUI.AimsLogging.Logger-class.html"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging.Logger
+QGIS-AIMS-Plugin.AimsUI.AimsLogging.Logger" class="py-name" href="#" onclick="return doclink('link-6', 'Logger', 'link-6');">Logger</a></tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"><tt id="link-7" class="py-name" targets="Variable QGIS-AIMS-Plugin.AIMSDataManager.Address.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.Address-module.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFactory.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFactory-class.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory-module.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.AimsApi.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.AimsApi-module.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging-module.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility-module.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.DataManager.DataManager.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.DataManager.DataManager-class.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.DataManager.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.DataManager-module.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSync.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSync-class.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.DataSync.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.DataSync-module.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdater.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdater-class.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater-module.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature-class.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.Feature.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.Feature-module.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory-class.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory-module.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupFactory.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupFactory-class.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory-module.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.User.User.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.User.User-class.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.UserFactory.UserFactory.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.UserFactory.UserFactory-class.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.UserFactory.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.UserFactory-module.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager._localtest.LocalTest.aimslog=QGIS-AIMS-Plugin.AIMSDataManager._localtest.LocalTest-class.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager._localtest.aimslog=QGIS-AIMS-Plugin.AIMSDataManager._localtest-module.html#aimslog,Variable QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.aimslog=QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#aimslog,Variable QGIS-AIMS-Plugin.AimsUI.AimsLogging.aimslog=QGIS-AIMS-Plugin.AimsUI.AimsLogging-module.html#aimslog,Variable QGIS-AIMS-Plugin.AimsUI.LayerManager.aimslog=QGIS-AIMS-Plugin.AimsUI.LayerManager-module.html#aimslog"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Address.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.AimsApi.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.DataManager.DataManager.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.DataManager.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSync.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.DataSync.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdater.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.Feature.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.User.User.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.UserFactory.UserFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.UserFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager._localtest.LocalTest.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager._localtest.aimslog
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.aimslog
+QGIS-AIMS-Plugin.AimsUI.AimsLogging.aimslog
+QGIS-AIMS-Plugin.AimsUI.LayerManager.aimslog" class="py-name" href="#" onclick="return doclink('link-7', 'aimslog', 'link-7');">aimslog</a></tt> <tt class="py-op">=</tt> <tt id="link-8" class="py-name" targets="Variable PyQt4.QtCore.QEvent.None=PyQt4.QtCore.QEvent-class.html#None,Variable PyQt4.QtCore.QUrl.None=PyQt4.QtCore.QUrl-class.html#None,Variable PyQt4.QtGui.QAbstractPrintDialog.None=PyQt4.QtGui.QAbstractPrintDialog-class.html#None,Variable PyQt4.QtGui.QStyleOptionButton.None=PyQt4.QtGui.QStyleOptionButton-class.html#None,Variable PyQt4.QtGui.QStyleOptionFrameV2.None=PyQt4.QtGui.QStyleOptionFrameV2-class.html#None,Variable PyQt4.QtGui.QStyleOptionHeader.None=PyQt4.QtGui.QStyleOptionHeader-class.html#None,Variable PyQt4.QtGui.QStyleOptionToolBar.None=PyQt4.QtGui.QStyleOptionToolBar-class.html#None,Variable PyQt4.QtGui.QStyleOptionToolButton.None=PyQt4.QtGui.QStyleOptionToolButton-class.html#None,Variable PyQt4.QtGui.QStyleOptionViewItemV2.None=PyQt4.QtGui.QStyleOptionViewItemV2-class.html#None,Variable qgis._core.QgsRasterBandStats.None=qgis._core.QgsRasterBandStats-class.html#None"><a title="PyQt4.QtCore.QEvent.None
+PyQt4.QtCore.QUrl.None
+PyQt4.QtGui.QAbstractPrintDialog.None
+PyQt4.QtGui.QStyleOptionButton.None
+PyQt4.QtGui.QStyleOptionFrameV2.None
+PyQt4.QtGui.QStyleOptionHeader.None
+PyQt4.QtGui.QStyleOptionToolBar.None
+PyQt4.QtGui.QStyleOptionToolButton.None
+PyQt4.QtGui.QStyleOptionViewItemV2.None
+qgis._core.QgsRasterBandStats.None" class="py-name" href="#" onclick="return doclink('link-8', 'None', 'link-8');">None</a></tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"><tt id="link-9" class="py-name" targets="Variable QGIS-AIMS-Plugin.AIMSDataManager.Feature.HASH_EXCLUDES=QGIS-AIMS-Plugin.AIMSDataManager.Feature-module.html#HASH_EXCLUDES"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Feature.HASH_EXCLUDES" class="py-name" href="#" onclick="return doclink('link-9', 'HASH_EXCLUDES', 'link-9');">HASH_EXCLUDES</a></tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt><tt class="py-string">'_ref'</tt><tt class="py-op">,</tt> <tt class="py-string">'_address_positions'</tt><tt class="py-op">)</tt> </tt>
+<a name="Feature"></a><div id="Feature-def"><a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt> <a class="py-toggle" href="#" id="Feature-toggle" onclick="return toggle('Feature');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature-class.html">Feature</a><tt class="py-op">(</tt><tt class="py-base-class">object</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Feature-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Feature-expanded"><a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line">     </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line">    <tt id="link-10" class="py-name" targets="Variable PyQt4.QtGui.QInputMethodEvent.Attribute.type=PyQt4.QtGui.QInputMethodEvent.Attribute-class.html#type,Variable PyQt4.QtGui.QPainterPath.Element.type=PyQt4.QtGui.QPainterPath.Element-class.html#type,Variable PyQt4.QtGui.QStyleHintReturn.type=PyQt4.QtGui.QStyleHintReturn-class.html#type,Variable PyQt4.QtGui.QStyleOption.type=PyQt4.QtGui.QStyleOption-class.html#type,Variable PyQt4.QtGui.QTextOption.Tab.type=PyQt4.QtGui.QTextOption.Tab-class.html#type,Variable QGIS-AIMS-Plugin.AIMSDataManager.Address.Address.type=QGIS-AIMS-Plugin.AIMSDataManager.Address.Address-class.html#type,Variable QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressChange.type=QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressChange-class.html#type,Variable QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressResolution.type=QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressResolution-class.html#type,Variable QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature.type=QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature-class.html#type,Variable QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupChange.type=QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupChange-class.html#type,Variable QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupResolution.type=QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupResolution-class.html#type,Method QGIS-AIMS-Plugin.Test.AimsService_Mock._Layer.type()=QGIS-AIMS-Plugin.Test.AimsService_Mock._Layer-class.html#type,Variable qgis._core.QgsSnappingUtils.LayerConfig.type=qgis._core.QgsSnappingUtils.LayerConfig-class.html#type,Variable qgis._core.QgsVectorFileWriter.Option.type=qgis._core.QgsVectorFileWriter.Option-class.html#type"><a title="PyQt4.QtGui.QInputMethodEvent.Attribute.type
+PyQt4.QtGui.QPainterPath.Element.type
+PyQt4.QtGui.QStyleHintReturn.type
+PyQt4.QtGui.QStyleOption.type
+PyQt4.QtGui.QTextOption.Tab.type
+QGIS-AIMS-Plugin.AIMSDataManager.Address.Address.type
+QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressChange.type
+QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressResolution.type
+QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature.type
+QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupChange.type
+QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupResolution.type
+QGIS-AIMS-Plugin.Test.AimsService_Mock._Layer.type
+qgis._core.QgsSnappingUtils.LayerConfig.type
+qgis._core.QgsVectorFileWriter.Option.type" class="py-name" href="#" onclick="return doclink('link-10', 'type', 'link-10');">type</a></tt> <tt class="py-op">=</tt> <tt id="link-11" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeedType" class="py-name" href="#" onclick="return doclink('link-11', 'FeedType', 'link-4');">FeedType</a></tt><tt class="py-op">.</tt><tt class="py-name">FEATURES</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line">     </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line">    <tt class="py-keyword">global</tt> <tt id="link-12" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Address.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.AimsApi.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.DataManager.DataManager.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.DataManager.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSync.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.DataSync.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdater.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.Feature.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.User.User.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.UserFactory.UserFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.UserFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager._localtest.LocalTest.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager._localtest.aimslog
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.aimslog
+QGIS-AIMS-Plugin.AimsUI.AimsLogging.aimslog
+QGIS-AIMS-Plugin.AimsUI.LayerManager.aimslog" class="py-name" href="#" onclick="return doclink('link-12', 'aimslog', 'link-7');">aimslog</a></tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line">    <tt id="link-13" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Address.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.AimsApi.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.DataManager.DataManager.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.DataManager.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSync.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.DataSync.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdater.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.Feature.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.User.User.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.UserFactory.UserFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.UserFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager._localtest.LocalTest.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager._localtest.aimslog
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.aimslog
+QGIS-AIMS-Plugin.AimsUI.AimsLogging.aimslog
+QGIS-AIMS-Plugin.AimsUI.LayerManager.aimslog" class="py-name" href="#" onclick="return doclink('link-13', 'aimslog', 'link-7');">aimslog</a></tt> <tt class="py-op">=</tt> <tt id="link-14" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging.Logger
+QGIS-AIMS-Plugin.AimsUI.AimsLogging.Logger" class="py-name" href="#" onclick="return doclink('link-14', 'Logger', 'link-6');">Logger</a></tt><tt class="py-op">.</tt><tt id="link-15" class="py-name" targets="Static Method QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging.Logger.setup()=QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging.Logger-class.html#setup,Method QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSync.setup()=QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSync-class.html#setup,Method QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdater.setup()=QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdater-class.html#setup,Method QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterAction.setup()=QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterAction-class.html#setup,Method QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterApproval.setup()=QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterApproval-class.html#setup,Method QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterGroupAction.setup()=QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterGroupAction-class.html#setup,Method QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterGroupApproval.setup()=QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterGroupApproval-class.html#setup,Method QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterUserAction.setup()=QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterUserAction-class.html#setup,Function QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.setup()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#setup,Static Method QGIS-AIMS-Plugin.AimsUI.AimsLogging.Logger.setup()=QGIS-AIMS-Plugin.AimsUI.AimsLogging.Logger-class.html#setup"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging.Logger.setup
+QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSync.setup
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdater.setup
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterAction.setup
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterApproval.setup
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterGroupAction.setup
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterGroupApproval.setup
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterUserAction.setup
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.setup
+QGIS-AIMS-Plugin.AimsUI.AimsLogging.Logger.setup" class="py-name" href="#" onclick="return doclink('link-15', 'setup', 'link-15');">setup</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line">     </tt>
+<a name="Feature.__init__"></a><div id="Feature.__init__-def"><a name="L32"></a><tt class="py-lineno"> 32</tt> <a class="py-toggle" href="#" id="Feature.__init__-toggle" onclick="return toggle('Feature.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">ref</tt><tt class="py-op">=</tt><tt id="link-16" class="py-name"><a title="PyQt4.QtCore.QEvent.None
+PyQt4.QtCore.QUrl.None
+PyQt4.QtGui.QAbstractPrintDialog.None
+PyQt4.QtGui.QStyleOptionButton.None
+PyQt4.QtGui.QStyleOptionFrameV2.None
+PyQt4.QtGui.QStyleOptionHeader.None
+PyQt4.QtGui.QStyleOptionToolBar.None
+PyQt4.QtGui.QStyleOptionToolButton.None
+PyQt4.QtGui.QStyleOptionViewItemV2.None
+qgis._core.QgsRasterBandStats.None" class="py-name" href="#" onclick="return doclink('link-16', 'None', 'link-8');">None</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt>  </tt>
+</div><a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line">        <tt class="py-comment">#aimslog.info('AdrRef.{}'.format(ref))</tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_ref</tt> <tt class="py-op">=</tt> <tt class="py-name">ref</tt> </tt>
+</div><a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line">        <tt class="py-comment">#self._hash = self._hash()#no point, empty</tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line"> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line">     </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line">    <tt class="py-comment">#generic validators</tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">staticmethod</tt> </tt>
+<a name="Feature._vString"></a><div id="Feature._vString-def"><a name="L40"></a><tt class="py-lineno"> 40</tt> <a class="py-toggle" href="#" id="Feature._vString-toggle" onclick="return toggle('Feature._vString');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature-class.html#_vString">_vString</a><tt class="py-op">(</tt><tt class="py-param">sval</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-keyword">return</tt> <tt class="py-name">isinstance</tt><tt class="py-op">(</tt><tt class="py-name">sval</tt><tt class="py-op">,</tt><tt class="py-name">str</tt><tt class="py-op">)</tt> <tt class="py-comment">#alpha only filter?</tt> </tt>
+</div><a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">staticmethod</tt> </tt>
+<a name="Feature._vInt"></a><div id="Feature._vInt-def"><a name="L42"></a><tt class="py-lineno"> 42</tt> <a class="py-toggle" href="#" id="Feature._vInt-toggle" onclick="return toggle('Feature._vInt');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature-class.html#_vInt">_vInt</a><tt class="py-op">(</tt><tt class="py-param">ival</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-keyword">return</tt> <tt class="py-name">isinstance</tt><tt class="py-op">(</tt><tt class="py-name">ival</tt><tt class="py-op">,</tt> <tt class="py-name">int</tt><tt class="py-op">)</tt> <tt class="py-comment">#range filter?</tt> </tt>
+</div><a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">staticmethod</tt> </tt>
+<a name="Feature._vDate"></a><div id="Feature._vDate-def"><a name="L44"></a><tt class="py-lineno"> 44</tt> <a class="py-toggle" href="#" id="Feature._vDate-toggle" onclick="return toggle('Feature._vDate');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature-class.html#_vDate">_vDate</a><tt class="py-op">(</tt><tt class="py-param">date</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-keyword">return</tt> <tt id="link-17" class="py-name" targets="Module QGIS-AIMS-Plugin.AIMSDataManager.Feature=QGIS-AIMS-Plugin.AIMSDataManager.Feature-module.html,Class QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature=QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature-class.html,Variable qgis._core.QgsGradientFillSymbolLayerV2.Feature=qgis._core.QgsGradientFillSymbolLayerV2-class.html#Feature,Variable qgis._core.QgsRasterFillSymbolLayer.Feature=qgis._core.QgsRasterFillSymbolLayer-class.html#Feature"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Feature
+QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature
+qgis._core.QgsGradientFillSymbolLayerV2.Feature
+qgis._core.QgsRasterFillSymbolLayer.Feature" class="py-name" href="#" onclick="return doclink('link-17', 'Feature', 'link-17');">Feature</a></tt><tt class="py-op">.</tt><tt id="link-18" class="py-name" targets="Static Method QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature._vString()=QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature-class.html#_vString"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature._vString" class="py-name" href="#" onclick="return doclink('link-18', '_vString', 'link-18');">_vString</a></tt><tt class="py-op">(</tt><tt class="py-name">date</tt><tt class="py-op">)</tt> <tt class="py-keyword">and</tt> <tt class="py-name">bool</tt><tt class="py-op">(</tt><tt class="py-name">re</tt><tt class="py-op">.</tt><tt class="py-name">match</tt><tt class="py-op">(</tt><tt class="py-string">'^\d{4}-\d{2}-\d{2}$'</tt><tt class="py-op">,</tt><tt class="py-name">date</tt><tt class="py-op">)</tt><tt class="py-op">)</tt>  </tt>
+</div><a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">staticmethod</tt> </tt>
+<a name="Feature._vEmail"></a><div id="Feature._vEmail-def"><a name="L46"></a><tt class="py-lineno"> 46</tt> <a class="py-toggle" href="#" id="Feature._vEmail-toggle" onclick="return toggle('Feature._vEmail');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature-class.html#_vEmail">_vEmail</a><tt class="py-op">(</tt><tt class="py-param">email</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-keyword">return</tt> <tt id="link-19" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Feature
+QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature
+qgis._core.QgsGradientFillSymbolLayerV2.Feature
+qgis._core.QgsRasterFillSymbolLayer.Feature" class="py-name" href="#" onclick="return doclink('link-19', 'Feature', 'link-17');">Feature</a></tt><tt class="py-op">.</tt><tt id="link-20" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature._vString" class="py-name" href="#" onclick="return doclink('link-20', '_vString', 'link-18');">_vString</a></tt><tt class="py-op">(</tt><tt class="py-name">email</tt><tt class="py-op">)</tt> <tt class="py-keyword">and</tt> <tt class="py-name">bool</tt><tt class="py-op">(</tt><tt class="py-name">re</tt><tt class="py-op">.</tt><tt class="py-name">match</tt><tt class="py-op">(</tt><tt class="py-string">'^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$'</tt><tt class="py-op">,</tt><tt class="py-name">email</tt><tt class="py-op">)</tt><tt class="py-op">)</tt>  </tt>
+</div><a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line">     </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line"> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line">    <tt class="py-comment">#COMMON---------------------------------------------    </tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line">     </tt>
+<a name="Feature.setSourceUser"></a><div id="Feature.setSourceUser-def"><a name="L51"></a><tt class="py-lineno"> 51</tt> <a class="py-toggle" href="#" id="Feature.setSourceUser-toggle" onclick="return toggle('Feature.setSourceUser');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature-class.html#setSourceUser">setSourceUser</a> <tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">sourceUser</tt><tt class="py-op">)</tt><tt class="py-op">:</tt>  </tt>
+</div><a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_workflow_sourceUser</tt> <tt class="py-op">=</tt> <tt class="py-name">sourceUser</tt>     </tt>
+</div><a name="Feature.getSourceUser"></a><div id="Feature.getSourceUser-def"><a name="L53"></a><tt class="py-lineno"> 53</tt> <a class="py-toggle" href="#" id="Feature.getSourceUser-toggle" onclick="return toggle('Feature.getSourceUser');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature-class.html#getSourceUser">getSourceUser</a> <tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt>  </tt>
+</div><a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_workflow_sourceUser</tt>     </tt>
+</div><a name="Feature.setSourceOrganisation"></a><div id="Feature.setSourceOrganisation-def"><a name="L55"></a><tt class="py-lineno"> 55</tt> <a class="py-toggle" href="#" id="Feature.setSourceOrganisation-toggle" onclick="return toggle('Feature.setSourceOrganisation');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature-class.html#setSourceOrganisation">setSourceOrganisation</a> <tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">sourceOrganisation</tt><tt class="py-op">)</tt><tt class="py-op">:</tt>  </tt>
+</div><a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_workflow_sourceOrganisation</tt> <tt class="py-op">=</tt> <tt class="py-name">sourceOrganisation</tt>     </tt>
+</div><a name="Feature.getSourceOrganisation"></a><div id="Feature.getSourceOrganisation-def"><a name="L57"></a><tt class="py-lineno"> 57</tt> <a class="py-toggle" href="#" id="Feature.getSourceOrganisation-toggle" onclick="return toggle('Feature.getSourceOrganisation');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature-class.html#getSourceOrganisation">getSourceOrganisation</a> <tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt>  </tt>
+</div><a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_workflow_sourceOrganisation</tt> </tt>
+</div><a name="Feature.setChangeType"></a><div id="Feature.setChangeType-def"><a name="L59"></a><tt class="py-lineno"> 59</tt> <a class="py-toggle" href="#" id="Feature.setChangeType-toggle" onclick="return toggle('Feature.setChangeType');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature-class.html#setChangeType">setChangeType</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">changeType</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Feature.setChangeType-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Feature.setChangeType-expanded"><a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_changeType</tt> <tt class="py-op">=</tt> <tt class="py-name">changeType</tt> </tt>
+</div><a name="Feature.getChangeType"></a><div id="Feature.getChangeType-def"><a name="L61"></a><tt class="py-lineno"> 61</tt> <a class="py-toggle" href="#" id="Feature.getChangeType-toggle" onclick="return toggle('Feature.getChangeType');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature-class.html#getChangeType">getChangeType</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Feature.getChangeType-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Feature.getChangeType-expanded"><a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_changeType</tt> </tt>
+</div><a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line">     </tt>
+<a name="Feature.setQueueStatus"></a><div id="Feature.setQueueStatus-def"><a name="L64"></a><tt class="py-lineno"> 64</tt> <a class="py-toggle" href="#" id="Feature.setQueueStatus-toggle" onclick="return toggle('Feature.setQueueStatus');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature-class.html#setQueueStatus">setQueueStatus</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">queueStatus</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Feature.setQueueStatus-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Feature.setQueueStatus-expanded"><a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_queueStatus</tt> <tt class="py-op">=</tt> <tt class="py-name">queueStatus</tt> </tt>
+</div><a name="Feature.getQueueStatus"></a><div id="Feature.getQueueStatus-def"><a name="L66"></a><tt class="py-lineno"> 66</tt> <a class="py-toggle" href="#" id="Feature.getQueueStatus-toggle" onclick="return toggle('Feature.getQueueStatus');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature-class.html#getQueueStatus">getQueueStatus</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Feature.getQueueStatus-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Feature.getQueueStatus-expanded"><a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_queueStatus</tt> </tt>
+</div><a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">     </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line">    <tt class="py-comment">#---------------------------------------------------</tt> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">     </tt>
+<a name="Feature._setEntities"></a><div id="Feature._setEntities-def"><a name="L71"></a><tt class="py-lineno"> 71</tt> <a class="py-toggle" href="#" id="Feature._setEntities-toggle" onclick="return toggle('Feature._setEntities');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature-class.html#_setEntities">_setEntities</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">entities</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Feature._setEntities-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Feature._setEntities-expanded"><a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-21" class="py-name" targets="Method QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature.setMeta()=QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature-class.html#setMeta"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature.setMeta" class="py-name" href="#" onclick="return doclink('link-21', 'setMeta', 'link-21');">setMeta</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">meta</tt><tt class="py-op">.</tt><tt id="link-22" class="py-name" targets="Method QGIS-AIMS-Plugin.AIMSDataManager.Feature.FeatureMetaData.entities()=QGIS-AIMS-Plugin.AIMSDataManager.Feature.FeatureMetaData-class.html#entities"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Feature.FeatureMetaData.entities" class="py-name" href="#" onclick="return doclink('link-22', 'entities', 'link-22');">entities</a></tt> <tt class="py-op">=</tt> <tt id="link-23" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Feature.FeatureMetaData.entities" class="py-name" href="#" onclick="return doclink('link-23', 'entities', 'link-22');">entities</a></tt> </tt>
+</div><a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">  </tt>
+<a name="Feature._getEntities"></a><div id="Feature._getEntities-def"><a name="L75"></a><tt class="py-lineno"> 75</tt> <a class="py-toggle" href="#" id="Feature._getEntities-toggle" onclick="return toggle('Feature._getEntities');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature-class.html#_getEntities">_getEntities</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Feature._getEntities-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Feature._getEntities-expanded"><a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">meta</tt><tt class="py-op">.</tt><tt id="link-24" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Feature.FeatureMetaData.entities" class="py-name" href="#" onclick="return doclink('link-24', 'entities', 'link-22');">entities</a></tt> </tt>
+</div><a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line">     </tt>
+<a name="Feature.setMeta"></a><div id="Feature.setMeta-def"><a name="L78"></a><tt class="py-lineno"> 78</tt> <a class="py-toggle" href="#" id="Feature.setMeta-toggle" onclick="return toggle('Feature.setMeta');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature-class.html#setMeta">setMeta</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">meta</tt> <tt class="py-op">=</tt> <tt id="link-25" class="py-name"><a title="PyQt4.QtCore.QEvent.None
+PyQt4.QtCore.QUrl.None
+PyQt4.QtGui.QAbstractPrintDialog.None
+PyQt4.QtGui.QStyleOptionButton.None
+PyQt4.QtGui.QStyleOptionFrameV2.None
+PyQt4.QtGui.QStyleOptionHeader.None
+PyQt4.QtGui.QStyleOptionToolBar.None
+PyQt4.QtGui.QStyleOptionToolButton.None
+PyQt4.QtGui.QStyleOptionViewItemV2.None
+qgis._core.QgsRasterBandStats.None" class="py-name" href="#" onclick="return doclink('link-25', 'None', 'link-8');">None</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Feature.setMeta-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Feature.setMeta-expanded"><a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">hasattr</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt><tt class="py-string">'meta'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">meta</tt> <tt class="py-op">=</tt> <tt class="py-name">meta</tt> <tt class="py-keyword">if</tt> <tt class="py-name">meta</tt> <tt class="py-keyword">else</tt> <tt id="link-26" class="py-name" targets="Class QGIS-AIMS-Plugin.AIMSDataManager.Feature.FeatureMetaData=QGIS-AIMS-Plugin.AIMSDataManager.Feature.FeatureMetaData-class.html"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Feature.FeatureMetaData" class="py-name" href="#" onclick="return doclink('link-26', 'FeatureMetaData', 'link-26');">FeatureMetaData</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">         </tt>
+<a name="Feature.getMeta"></a><div id="Feature.getMeta-def"><a name="L81"></a><tt class="py-lineno"> 81</tt> <a class="py-toggle" href="#" id="Feature.getMeta-toggle" onclick="return toggle('Feature.getMeta');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature-class.html#getMeta">getMeta</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt>  </tt>
+</div><a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">meta</tt> <tt class="py-keyword">if</tt> <tt class="py-name">hasattr</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-string">'meta'</tt><tt class="py-op">)</tt> <tt class="py-keyword">else</tt> <tt id="link-27" class="py-name"><a title="PyQt4.QtCore.QEvent.None
+PyQt4.QtCore.QUrl.None
+PyQt4.QtGui.QAbstractPrintDialog.None
+PyQt4.QtGui.QStyleOptionButton.None
+PyQt4.QtGui.QStyleOptionFrameV2.None
+PyQt4.QtGui.QStyleOptionHeader.None
+PyQt4.QtGui.QStyleOptionToolBar.None
+PyQt4.QtGui.QStyleOptionToolButton.None
+PyQt4.QtGui.QStyleOptionViewItemV2.None
+qgis._core.QgsRasterBandStats.None" class="py-name" href="#" onclick="return doclink('link-27', 'None', 'link-8');">None</a></tt>     </tt>
+</div><a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line">     </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line">     </tt>
+<a name="Feature.compare"></a><div id="Feature.compare-def"><a name="L85"></a><tt class="py-lineno"> 85</tt> <a class="py-toggle" href="#" id="Feature.compare-toggle" onclick="return toggle('Feature.compare');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature-class.html#compare">compare</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">other</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Feature.compare-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Feature.compare-expanded"><a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">        <tt class="py-docstring">'''Equality comparator'''</tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">        <tt class="py-comment">#return False if isinstance(self,other) else hash(self)==hash(other)</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">        <tt class="py-comment">#IMPORTANT. Attribute value compare only useful with distinct (deepcopy'd) instances</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">all</tt><tt class="py-op">(</tt><tt class="py-op">(</tt><tt class="py-name">getattr</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt><tt class="py-name">a</tt><tt class="py-op">)</tt><tt class="py-op">==</tt><tt class="py-name">getattr</tt><tt class="py-op">(</tt><tt class="py-name">other</tt><tt class="py-op">,</tt><tt class="py-name">a</tt><tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt class="py-name">a</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__dict__</tt><tt class="py-op">.</tt><tt class="py-name">keys</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line">     </tt>
+<a name="Feature.merge"></a><div id="Feature.merge-def"><a name="L91"></a><tt class="py-lineno"> 91</tt> <a class="py-toggle" href="#" id="Feature.merge-toggle" onclick="return toggle('Feature.merge');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature-class.html#merge">merge</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">other</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Feature.merge-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Feature.merge-expanded"><a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">        <tt class="py-docstring">'''Merges new (other) atributes into existing (self) object'''</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">key</tt> <tt class="py-keyword">in</tt> <tt class="py-name">other</tt><tt class="py-op">.</tt><tt class="py-name">__dict__</tt><tt class="py-op">.</tt><tt class="py-name">keys</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line">            <tt class="py-name">setattr</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt><tt class="py-name">key</tt><tt class="py-op">,</tt> <tt class="py-name">getattr</tt><tt class="py-op">(</tt><tt class="py-name">other</tt><tt class="py-op">,</tt><tt class="py-name">key</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt> </tt>
+</div><a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">     </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">     </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line">    <tt class="py-comment">#---------------------------------</tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line">     </tt>
+<a name="Feature.setRequestId"></a><div id="Feature.setRequestId-def"><a name="L100"></a><tt class="py-lineno">100</tt> <a class="py-toggle" href="#" id="Feature.setRequestId-toggle" onclick="return toggle('Feature.setRequestId');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature-class.html#setRequestId">setRequestId</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">requestId</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Feature.setRequestId-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Feature.setRequestId-expanded"><a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-28" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature.setMeta" class="py-name" href="#" onclick="return doclink('link-28', 'setMeta', 'link-21');">setMeta</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">meta</tt><tt class="py-op">.</tt><tt id="link-29" class="py-name" targets="Method QGIS-AIMS-Plugin.AIMSDataManager.Feature.FeatureMetaData.requestId()=QGIS-AIMS-Plugin.AIMSDataManager.Feature.FeatureMetaData-class.html#requestId"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Feature.FeatureMetaData.requestId" class="py-name" href="#" onclick="return doclink('link-29', 'requestId', 'link-29');">requestId</a></tt> <tt class="py-op">=</tt> <tt id="link-30" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Feature.FeatureMetaData.requestId" class="py-name" href="#" onclick="return doclink('link-30', 'requestId', 'link-29');">requestId</a></tt>       </tt>
+</div><a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line">            </tt>
+<a name="Feature.getRequestId"></a><div id="Feature.getRequestId-def"><a name="L104"></a><tt class="py-lineno">104</tt> <a class="py-toggle" href="#" id="Feature.getRequestId-toggle" onclick="return toggle('Feature.getRequestId');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature-class.html#getRequestId">getRequestId</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Feature.getRequestId-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Feature.getRequestId-expanded"><a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">meta</tt><tt class="py-op">.</tt><tt id="link-31" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Feature.FeatureMetaData.requestId" class="py-name" href="#" onclick="return doclink('link-31', 'requestId', 'link-29');">requestId</a></tt> <tt class="py-keyword">if</tt> <tt class="py-name">hasattr</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt><tt class="py-string">'meta'</tt><tt class="py-op">)</tt> <tt class="py-keyword">else</tt> <tt id="link-32" class="py-name"><a title="PyQt4.QtCore.QEvent.None
+PyQt4.QtCore.QUrl.None
+PyQt4.QtGui.QAbstractPrintDialog.None
+PyQt4.QtGui.QStyleOptionButton.None
+PyQt4.QtGui.QStyleOptionFrameV2.None
+PyQt4.QtGui.QStyleOptionHeader.None
+PyQt4.QtGui.QStyleOptionToolBar.None
+PyQt4.QtGui.QStyleOptionToolButton.None
+PyQt4.QtGui.QStyleOptionViewItemV2.None
+qgis._core.QgsRasterBandStats.None" class="py-name" href="#" onclick="return doclink('link-32', 'None', 'link-8');">None</a></tt> </tt>
+</div><a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line">      </tt>
+<a name="Feature.setErrors"></a><div id="Feature.setErrors-def"><a name="L107"></a><tt class="py-lineno">107</tt> <a class="py-toggle" href="#" id="Feature.setErrors-toggle" onclick="return toggle('Feature.setErrors');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature-class.html#setErrors">setErrors</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">errors</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Feature.setErrors-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Feature.setErrors-expanded"><a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-33" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature.setMeta" class="py-name" href="#" onclick="return doclink('link-33', 'setMeta', 'link-21');">setMeta</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">meta</tt><tt class="py-op">.</tt><tt id="link-34" class="py-name" targets="Method QGIS-AIMS-Plugin.AIMSDataManager.Feature.FeatureMetaData.errors()=QGIS-AIMS-Plugin.AIMSDataManager.Feature.FeatureMetaData-class.html#errors"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Feature.FeatureMetaData.errors" class="py-name" href="#" onclick="return doclink('link-34', 'errors', 'link-34');">errors</a></tt> <tt class="py-op">=</tt> <tt id="link-35" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Feature.FeatureMetaData.errors" class="py-name" href="#" onclick="return doclink('link-35', 'errors', 'link-34');">errors</a></tt> </tt>
+</div><a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line">            </tt>
+<a name="Feature.getErrors"></a><div id="Feature.getErrors-def"><a name="L111"></a><tt class="py-lineno">111</tt> <a class="py-toggle" href="#" id="Feature.getErrors-toggle" onclick="return toggle('Feature.getErrors');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature-class.html#getErrors">getErrors</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Feature.getErrors-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Feature.getErrors-expanded"><a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">meta</tt><tt class="py-op">.</tt><tt id="link-36" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Feature.FeatureMetaData.errors" class="py-name" href="#" onclick="return doclink('link-36', 'errors', 'link-34');">errors</a></tt> <tt class="py-keyword">if</tt> <tt class="py-name">hasattr</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt><tt class="py-string">'meta'</tt><tt class="py-op">)</tt> <tt class="py-keyword">else</tt> <tt id="link-37" class="py-name"><a title="PyQt4.QtCore.QEvent.None
+PyQt4.QtCore.QUrl.None
+PyQt4.QtGui.QAbstractPrintDialog.None
+PyQt4.QtGui.QStyleOptionButton.None
+PyQt4.QtGui.QStyleOptionFrameV2.None
+PyQt4.QtGui.QStyleOptionHeader.None
+PyQt4.QtGui.QStyleOptionToolBar.None
+PyQt4.QtGui.QStyleOptionToolButton.None
+PyQt4.QtGui.QStyleOptionViewItemV2.None
+qgis._core.QgsRasterBandStats.None" class="py-name" href="#" onclick="return doclink('link-37', 'None', 'link-8');">None</a></tt> </tt>
+</div><a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line"> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line">    <tt class="py-comment">#object hash of attributes for page comparison</tt> </tt>
+<a name="Feature._hash"></a><div id="Feature._hash-def"><a name="L115"></a><tt class="py-lineno">115</tt> <a class="py-toggle" href="#" id="Feature._hash-toggle" onclick="return toggle('Feature._hash');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature-class.html#_hash">_hash</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Feature._hash-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Feature._hash-expanded"><a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line">        <tt class="py-comment">#discard all list/nested attributes? This should be okay since it captures the version addess|changeId</tt> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line">        <tt class="py-name">s0</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-name">getattr</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt><tt class="py-name">z</tt><tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt class="py-name">z</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__dict__</tt><tt class="py-op">.</tt><tt class="py-name">keys</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-keyword">if</tt> <tt class="py-name">z</tt> <tt class="py-keyword">not</tt> <tt class="py-keyword">in</tt> <tt id="link-38" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Feature.HASH_EXCLUDES" class="py-name" href="#" onclick="return doclink('link-38', 'HASH_EXCLUDES', 'link-9');">HASH_EXCLUDES</a></tt><tt class="py-op">]</tt> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line">        <tt class="py-name">s1</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">z</tt><tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt class="py-name">z</tt> <tt class="py-keyword">in</tt> <tt class="py-name">s0</tt> <tt class="py-keyword">if</tt> <tt class="py-name">isinstance</tt><tt class="py-op">(</tt><tt class="py-name">z</tt><tt class="py-op">,</tt><tt class="py-op">(</tt><tt class="py-name">int</tt><tt class="py-op">,</tt><tt class="py-name">float</tt><tt class="py-op">,</tt><tt class="py-name">long</tt><tt class="py-op">,</tt><tt class="py-name">complex</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">]</tt> </tt>
+<a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line">        <tt class="py-name">s2</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-name">z</tt><tt class="py-op">.</tt><tt class="py-name">encode</tt><tt class="py-op">(</tt><tt class="py-string">'utf8'</tt><tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt class="py-name">z</tt> <tt class="py-keyword">in</tt> <tt class="py-name">s0</tt> <tt class="py-keyword">if</tt> <tt class="py-name">isinstance</tt><tt class="py-op">(</tt><tt class="py-name">z</tt><tt class="py-op">,</tt><tt class="py-op">(</tt><tt class="py-name">basestring</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> <tt class="py-keyword">and</tt> <tt class="py-name">z</tt> <tt class="py-keyword">not</tt> <tt class="py-keyword">in</tt> <tt class="py-name">s1</tt><tt class="py-op">]</tt> </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line">        <tt class="py-comment">#return reduce(lambda x,y: x.update(y), standard,hashlib.md5())</tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-39" class="py-name" targets="Method QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature._hash()=QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature-class.html#_hash"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature._hash" class="py-name" href="#" onclick="return doclink('link-39', '_hash', 'link-39');">_hash</a></tt> <tt class="py-op">=</tt> <tt class="py-name">hashlib</tt><tt class="py-op">.</tt><tt class="py-name">md5</tt><tt class="py-op">(</tt><tt class="py-name">reduce</tt><tt class="py-op">(</tt><tt class="py-keyword">lambda</tt> <tt id="link-40" class="py-name" targets="Variable PyQt4.QtGui.QPainter.PixmapFragment.x=PyQt4.QtGui.QPainter.PixmapFragment-class.html#x,Variable PyQt4.QtGui.QPainterPath.Element.x=PyQt4.QtGui.QPainterPath.Element-class.html#x"><a title="PyQt4.QtGui.QPainter.PixmapFragment.x
+PyQt4.QtGui.QPainterPath.Element.x" class="py-name" href="#" onclick="return doclink('link-40', 'x', 'link-40');">x</a></tt><tt class="py-op">,</tt><tt id="link-41" class="py-name" targets="Variable PyQt4.QtGui.QPainter.PixmapFragment.y=PyQt4.QtGui.QPainter.PixmapFragment-class.html#y,Variable PyQt4.QtGui.QPainterPath.Element.y=PyQt4.QtGui.QPainterPath.Element-class.html#y"><a title="PyQt4.QtGui.QPainter.PixmapFragment.y
+PyQt4.QtGui.QPainterPath.Element.y" class="py-name" href="#" onclick="return doclink('link-41', 'y', 'link-41');">y</a></tt><tt class="py-op">:</tt> <tt id="link-42" class="py-name"><a title="PyQt4.QtGui.QPainter.PixmapFragment.x
+PyQt4.QtGui.QPainterPath.Element.x" class="py-name" href="#" onclick="return doclink('link-42', 'x', 'link-40');">x</a></tt><tt class="py-op">+</tt><tt id="link-43" class="py-name"><a title="PyQt4.QtGui.QPainter.PixmapFragment.y
+PyQt4.QtGui.QPainterPath.Element.y" class="py-name" href="#" onclick="return doclink('link-43', 'y', 'link-41');">y</a></tt><tt class="py-op">,</tt> <tt class="py-name">s1</tt><tt class="py-op">+</tt><tt class="py-name">s2</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-44" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature._hash" class="py-name" href="#" onclick="return doclink('link-44', '_hash', 'link-39');">_hash</a></tt> </tt>
+</div></div><a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line">     </tt>
+<a name="FeatureMetaData"></a><div id="FeatureMetaData-def"><a name="L124"></a><tt class="py-lineno">124</tt> <a class="py-toggle" href="#" id="FeatureMetaData-toggle" onclick="return toggle('FeatureMetaData');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AIMSDataManager.Feature.FeatureMetaData-class.html">FeatureMetaData</a><tt class="py-op">(</tt><tt class="py-base-class">object</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="FeatureMetaData-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="FeatureMetaData-expanded"><a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line">    <tt class="py-docstring">'''Embedded container for address meta information eg warnings, errors and tracking'''</tt> </tt>
+<a name="FeatureMetaData.__init__"></a><div id="FeatureMetaData.__init__-def"><a name="L126"></a><tt class="py-lineno">126</tt> <a class="py-toggle" href="#" id="FeatureMetaData.__init__-toggle" onclick="return toggle('FeatureMetaData.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AIMSDataManager.Feature.FeatureMetaData-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_requestId</tt><tt class="py-op">,</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_statusMessage</tt><tt class="py-op">,</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_errors</tt><tt class="py-op">,</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_entities</tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt><tt class="py-op">,</tt><tt class="py-string">''</tt><tt class="py-op">,</tt><tt class="py-op">[</tt><tt class="py-op">]</tt><tt class="py-op">,</tt><tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+</div><a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line">     </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">property</tt> </tt>
+<a name="FeatureMetaData.requestId"></a><div id="FeatureMetaData.requestId-def"><a name="L129"></a><tt class="py-lineno">129</tt> <a class="py-toggle" href="#" id="FeatureMetaData.requestId-toggle" onclick="return toggle('FeatureMetaData.requestId');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AIMSDataManager.Feature.FeatureMetaData-class.html#requestId">requestId</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_requestId</tt> </tt>
+</div><a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">requestId</tt><tt class="py-op">.</tt><tt class="py-name">setter</tt> </tt>
+<a name="FeatureMetaData.requestId"></a><div id="FeatureMetaData.requestId-def"><a name="L131"></a><tt class="py-lineno">131</tt> <a class="py-toggle" href="#" id="FeatureMetaData.requestId-toggle" onclick="return toggle('FeatureMetaData.requestId');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AIMSDataManager.Feature.FeatureMetaData-class.html#requestId">requestId</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">requestId</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_requestId</tt> <tt class="py-op">=</tt> <tt id="link-45" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Feature.FeatureMetaData.requestId" class="py-name" href="#" onclick="return doclink('link-45', 'requestId', 'link-29');">requestId</a></tt> <tt class="py-keyword">if</tt> <tt id="link-46" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Feature
+QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature
+qgis._core.QgsGradientFillSymbolLayerV2.Feature
+qgis._core.QgsRasterFillSymbolLayer.Feature" class="py-name" href="#" onclick="return doclink('link-46', 'Feature', 'link-17');">Feature</a></tt><tt class="py-op">.</tt><tt id="link-47" class="py-name" targets="Static Method QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature._vInt()=QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature-class.html#_vInt"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature._vInt" class="py-name" href="#" onclick="return doclink('link-47', '_vInt', 'link-47');">_vInt</a></tt><tt class="py-op">(</tt><tt id="link-48" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Feature.FeatureMetaData.requestId" class="py-name" href="#" onclick="return doclink('link-48', 'requestId', 'link-29');">requestId</a></tt><tt class="py-op">)</tt> <tt class="py-keyword">else</tt> <tt id="link-49" class="py-name"><a title="PyQt4.QtCore.QEvent.None
+PyQt4.QtCore.QUrl.None
+PyQt4.QtGui.QAbstractPrintDialog.None
+PyQt4.QtGui.QStyleOptionButton.None
+PyQt4.QtGui.QStyleOptionFrameV2.None
+PyQt4.QtGui.QStyleOptionHeader.None
+PyQt4.QtGui.QStyleOptionToolBar.None
+PyQt4.QtGui.QStyleOptionToolButton.None
+PyQt4.QtGui.QStyleOptionViewItemV2.None
+qgis._core.QgsRasterBandStats.None" class="py-name" href="#" onclick="return doclink('link-49', 'None', 'link-8');">None</a></tt> </tt>
+</div><a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line">     </tt>
+<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">property</tt> </tt>
+<a name="FeatureMetaData.entities"></a><div id="FeatureMetaData.entities-def"><a name="L134"></a><tt class="py-lineno">134</tt> <a class="py-toggle" href="#" id="FeatureMetaData.entities-toggle" onclick="return toggle('FeatureMetaData.entities');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AIMSDataManager.Feature.FeatureMetaData-class.html#entities">entities</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_entities</tt>   </tt>
+</div><a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">entities</tt><tt class="py-op">.</tt><tt class="py-name">setter</tt> </tt>
+<a name="FeatureMetaData.entities"></a><div id="FeatureMetaData.entities-def"><a name="L136"></a><tt class="py-lineno">136</tt> <a class="py-toggle" href="#" id="FeatureMetaData.entities-toggle" onclick="return toggle('FeatureMetaData.entities');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AIMSDataManager.Feature.FeatureMetaData-class.html#entities">entities</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">entities</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_entities</tt> <tt class="py-op">=</tt> <tt id="link-50" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Feature.FeatureMetaData.entities" class="py-name" href="#" onclick="return doclink('link-50', 'entities', 'link-22');">entities</a></tt>  </tt>
+</div><a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line">      </tt>
+<a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">property</tt> </tt>
+<a name="FeatureMetaData.errors"></a><div id="FeatureMetaData.errors-def"><a name="L139"></a><tt class="py-lineno">139</tt> <a class="py-toggle" href="#" id="FeatureMetaData.errors-toggle" onclick="return toggle('FeatureMetaData.errors');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AIMSDataManager.Feature.FeatureMetaData-class.html#errors">errors</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_errors</tt>   </tt>
+</div><a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">errors</tt><tt class="py-op">.</tt><tt class="py-name">setter</tt> </tt>
+<a name="FeatureMetaData.errors"></a><div id="FeatureMetaData.errors-def"><a name="L141"></a><tt class="py-lineno">141</tt> <a class="py-toggle" href="#" id="FeatureMetaData.errors-toggle" onclick="return toggle('FeatureMetaData.errors');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AIMSDataManager.Feature.FeatureMetaData-class.html#errors">errors</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">errors</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_errors</tt> <tt class="py-op">=</tt> <tt id="link-51" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Feature.FeatureMetaData.errors" class="py-name" href="#" onclick="return doclink('link-51', 'errors', 'link-34');">errors</a></tt> </tt>
+</div></div><a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="QGIS-AIMS-Plugin-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Jun 14 13:07:06 2016
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

@@ -1,0 +1,1818 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.UiDataManager</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="QGIS-AIMS-Plugin-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="QGIS-AIMS-Plugin-module.html">Package&nbsp;QGIS-AIMS-Plugin</a> ::
+        <a href="QGIS-AIMS-Plugin.AimsUI%27-module.html">Package&nbsp;AimsUI'</a> ::
+        <a href="QGIS-AIMS-Plugin.AimsUI.AimsClient-module.html">Package&nbsp;AimsClient</a> ::
+        <a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui-module.html">Package&nbsp;Gui</a> ::
+        <a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-module.html">Module&nbsp;UiDataManager</a> ::
+        Class&nbsp;UiDataManager
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.UiDataManager-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class UiDataManager</h1><p class="nomargin-top"><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager">source&nbsp;code</a></span></p>
+<pre class="base-tree">
+??-167 --+
+         |
+        <strong class="uidshort">UiDataManager</strong>
+</pre>
+
+<hr />
+<p>Handle all interaction between the UI and Data Manager. Also stores 
+  data as formatted for the UI</p>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.UiDataManager-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">iface</span>,
+        <span class="summary-sig-arg">controller</span>)</span><br />
+      Initialise the UI Data Manager</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="startDM"></a><span class="summary-sig-name">startDM</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Start running the DM observer thread and Listener (of the DM 
+      observer) thread when the plugin is enabled</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.startDM">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="killDm"></a><span class="summary-sig-name">killDm</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Close DataManager at plugin unload</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.killDm">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.UiDataManager-class.html#register" class="summary-sig-name">register</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">observer</span>)</span><br />
+      Listeners of the UIDataManager to regiester themselves to this method</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.register">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.UiDataManager-class.html#dataUpdated" class="summary-sig-name">dataUpdated</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">data</span>,
+        <span class="summary-sig-arg">feedType</span>=<span class="summary-sig-default">FEEDS ['AR']</span>)</span><br />
+      Slot communicated to when Review data changed.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.dataUpdated">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.UiDataManager-class.html#exlopdeGroup" class="summary-sig-name">exlopdeGroup</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      key groups agianst the group id and groups of single features against each group...</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.exlopdeGroup">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">string</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.UiDataManager-class.html#idProperty" class="summary-sig-name">idProperty</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">feedtype</span>)</span><br />
+      Returns the property that the each object should derive its reference
+      id from</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.idProperty">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.UiDataManager-class.html#keyData" class="summary-sig-name">keyData</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">listofFeatures</span>,
+        <span class="summary-sig-arg">feedtype</span>)</span><br />
+      Key Data from Data Manager</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.keyData">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.UiDataManager-class.html#setData" class="summary-sig-name">setData</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">dataRefresh</span>,
+        <span class="summary-sig-arg">FeedType</span>)</span><br />
+      Method receives new data from the data manager via the UIDM observer 
+      pattern and then starts the data update process</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.setData">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.UiDataManager-class.html#updateRdata" class="summary-sig-name">updateRdata</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">respFeature</span>,
+        <span class="summary-sig-arg">feedType</span>)</span><br />
+      Between dm threaded interval data deliveries, temp AIMS review 
+      objects are created or render irrelevant by user actions.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.updateRdata">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.UiDataManager-class.html#updateFdata" class="summary-sig-name">updateFdata</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">respFeature</span>)</span><br />
+      Between dm threaded interval data deliveries, temp AIMS feature 
+      objects are created or render irrelevant by user actions.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.updateFdata">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="updateGdata"></a><span class="summary-sig-name">updateGdata</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">respFeature</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.updateGdata">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="matchGroupKey"></a><span class="summary-sig-name">matchGroupKey</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">groupId</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.matchGroupKey">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.UiDataManager-class.html#setBbox" class="summary-sig-name">setBbox</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">sw</span>,
+        <span class="summary-sig-arg">ne</span>)</span><br />
+      Intermediate method, passes bboxes from layer manager to the DM</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.setBbox">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">dictionary</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.UiDataManager-class.html#reviewData" class="summary-sig-name">reviewData</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns current group review data</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.reviewData">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="groupReviewData"></a><span class="summary-sig-name">groupReviewData</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      return (single and group) review data</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.groupReviewData">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">dictionary</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.UiDataManager-class.html#combinedReviewData" class="summary-sig-name">combinedReviewData</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      De-nests group review data and combines with standard review data, 
+      Returning a complete &quot;Review Data&quot; set</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.combinedReviewData">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.UiDataManager-class.html#featureData" class="summary-sig-name">featureData</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns feature data</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.featureData">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.UiDataManager-class.html#addAddress" class="summary-sig-name">addAddress</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">feature</span>,
+        <span class="summary-sig-arg">respId</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Passes an new AIMS Feature to DataManager to add the feature to the 
+      AIM system</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.addAddress">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.UiDataManager-class.html#retireAddress" class="summary-sig-name">retireAddress</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">feature</span>,
+        <span class="summary-sig-arg">respId</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Passes an AIMS Feature to DataManager for retirement</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.retireAddress">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.UiDataManager-class.html#updateAddress" class="summary-sig-name">updateAddress</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">feature</span>,
+        <span class="summary-sig-arg">respId</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Passes an AIMS Feature to the DataManager to update a published 
+      feature</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.updateAddress">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.UiDataManager-class.html#decline" class="summary-sig-name">decline</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">feature</span>,
+        <span class="summary-sig-arg">feedType</span>,
+        <span class="summary-sig-arg">respId</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Passes an AIMS Feature to the DataManager to decline a review item</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.decline">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.UiDataManager-class.html#accept" class="summary-sig-name">accept</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">feature</span>,
+        <span class="summary-sig-arg">feedType</span>,
+        <span class="summary-sig-arg">respId</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Passes an AIMS Feature to the DataManager to accept a review item</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.accept">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.UiDataManager-class.html#repairAddress" class="summary-sig-name">repairAddress</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">feature</span>,
+        <span class="summary-sig-arg">respId</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Passes an updated AIMS Review Feature to the DataManager to be 
+      updated on the review feed</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.repairAddress">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.UiDataManager-class.html#repairGroup" class="summary-sig-name">repairGroup</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">feature</span>,
+        <span class="summary-sig-arg">respId</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Passes an updated AIMS Review Feature to the DataManager to be 
+      updated on the review feed</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.repairGroup">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">tuple</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.UiDataManager-class.html#response" class="summary-sig-name">response</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">feedtype</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Returns DataMAnager response for a specific feedtype</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.response">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.UiDataManager-class.html#isNested" class="summary-sig-name">isNested</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">feat</span>,
+        <span class="summary-sig-arg">prop</span>)</span><br />
+      Test if the class object has said nested entity</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.isNested">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">AIMSDataManager.Address property</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.UiDataManager-class.html#nestedEntities" class="summary-sig-name">nestedEntities</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">feat</span>,
+        <span class="summary-sig-arg">prop</span>)</span><br />
+      Returns property from nested object</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.nestedEntities">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">AIMSDataManager.Address property</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.UiDataManager-class.html#flatEntities" class="summary-sig-name">flatEntities</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">feat</span>,
+        <span class="summary-sig-arg">prop</span>)</span><br />
+      Returns property from flat object</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.flatEntities">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">string</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.UiDataManager-class.html#fullRoad" class="summary-sig-name">fullRoad</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">feat</span>,
+        <span class="summary-sig-arg">feedtype</span>)</span><br />
+      Compiles a full road name 'label' for the UI</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.fullRoad">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.UiDataManager-class.html#formatGroupTableData" class="summary-sig-name">formatGroupTableData</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">obj</span>,
+        <span class="summary-sig-arg">groupProperties</span>)</span><br />
+      Returns data formatted for the group table model</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.formatGroupTableData">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">list</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.UiDataManager-class.html#iterFeatProps" class="summary-sig-name">iterFeatProps</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">feat</span>,
+        <span class="summary-sig-arg">featProperties</span>,
+        <span class="summary-sig-arg">feedtype</span>)</span><br />
+      Iterate over AIMS class objects, Return those relevant to the parent 
+      model (that related to the feedtype)</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.iterFeatProps">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">list</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.UiDataManager-class.html#formatFeatureTableData" class="summary-sig-name">formatFeatureTableData</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">feat</span>,
+        <span class="summary-sig-arg">featProperties</span>,
+        <span class="summary-sig-arg">feedtype</span>)</span><br />
+      Returns data formatted for the feature table model</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.formatFeatureTableData">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">tuple</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.UiDataManager-class.html#addClassProps" class="summary-sig-name">addClassProps</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">feedtype</span>)</span><br />
+      Properties required to format Group and Feature data for the 
+      respective table models</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.addClassProps">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">dictionary</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.UiDataManager-class.html#formatTableData" class="summary-sig-name">formatTableData</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">feedtypes</span>)</span><br />
+      Returns review data as formatted for the review data model</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.formatTableData">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.UiDataManager-class.html#singleFeatureObj" class="summary-sig-name">singleFeatureObj</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">objkey</span>)</span><br />
+      Returns a AIMS Address object that matches the object key</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.singleFeatureObj">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="singleReviewObj"></a><span class="summary-sig-name">singleReviewObj</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">feedtype</span>,
+        <span class="summary-sig-arg">objkey</span>)</span><br />
+      return the value of which is an aims review obj (group and single) 
+      for the keyed data</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.singleReviewObj">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">AIMSDataManager.Address</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.UiDataManager-class.html#currentReviewFeature" class="summary-sig-name">currentReviewFeature</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">currentGroup</span>,
+        <span class="summary-sig-arg">currentFeatureKey</span>)</span><br />
+      Returns aims feautre object as per supplied data key(s)</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.currentReviewFeature">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">list</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.UiDataManager-class.html#reviewItemCoords" class="summary-sig-name">reviewItemCoords</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">currentGroup</span>,
+        <span class="summary-sig-arg">currentFeatureKey</span>)</span><br />
+      Returns the coords of a review obj</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.reviewItemCoords">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS VARIABLES ==================== -->
+<a name="section-ClassVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="rDataChangedSignal"></a><span class="summary-name">rDataChangedSignal</span> = <code title="pyqtSignal()">pyqtSignal()</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="fDataChangedSignal"></a><span class="summary-name">fDataChangedSignal</span> = <code title="pyqtSignal()">pyqtSignal()</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="uilog"></a><span class="summary-name">uilog</span> = <code title="Logger.setup(lf= 'uiLog')">Logger.setup(lf= 'uiLog')</code>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">iface</span>,
+        <span class="sig-arg">controller</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Initialise the UI Data Manager</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>iface</code></strong> (Qgisinterface Object) - QgisInterface Abstract base class defining interfaces exposed by 
+          QgisApp</li>
+        <li><strong class="pname"><code>controller</code></strong> (AimsUI.AimsClient.Gui.Controller) - instance of the plugins controller</li>
+        <li><strong class="pname"><code>QObject</code></strong> (QObject) - inherits from QObject Class</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="register"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">register</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">observer</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.register">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Listeners of the UIDataManager to regiester themselves to this 
+  method</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>observer</code></strong> (AIMS class objects wishing to listen) - listerning class</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="dataUpdated"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">dataUpdated</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">data</span>,
+        <span class="sig-arg">feedType</span>=<span class="sig-default">FEEDS ['AR']</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.dataUpdated">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Slot communicated to when Review data changed. Updates review layer 
+  and table data</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>data</code></strong> (list) - list of AIMS objects related for feed (as communicated in param 
+          feedtype)</li>
+        <li><strong class="pname"><code>feedType</code></strong> (AIMSDataManager.FeatureFactory.FeedRef) - Type of AIMS API feed</li>
+    </ul></dd>
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@pyqtSlot()</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="exlopdeGroup"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">exlopdeGroup</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.exlopdeGroup">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+key groups agianst the group id and groups of single features against each group
+resultant format == 
+    {(groupId, groupObj): {addId: addObj, addId: addObj}, (gro...}} 
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="idProperty"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">idProperty</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">feedtype</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.idProperty">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Returns the property that the each object should derive its reference 
+  id from</p>
+  <dl class="fields">
+    <dt>Returns: string</dt>
+        <dd>Reference to which id should be used to reference each feedtype</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="keyData"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">keyData</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">listofFeatures</span>,
+        <span class="sig-arg">feedtype</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.keyData">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Key Data from Data Manager</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>dataRefresh</code></strong> (list) - list of AIMS objects related for feed (as communicated in param 
+          feedtype)</li>
+        <li><strong class="pname"><code>feedType</code></strong> (AIMSDataManager.FeatureFactory.FeedRef) - Type of AIMS API feed</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="setData"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">setData</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">dataRefresh</span>,
+        <span class="sig-arg">FeedType</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.setData">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Method receives new data from the data manager via the UIDM observer 
+  pattern and then starts the data update process</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>dataRefresh</code></strong> (list) - list of AIMS objects related for feed (as communicated in param 
+          feedtype)</li>
+        <li><strong class="pname"><code>feedType</code></strong> (AIMSDataManager.FeatureFactory.FeedRef) - Type of AIMS API feed</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="updateRdata"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">updateRdata</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">respFeature</span>,
+        <span class="sig-arg">feedType</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.updateRdata">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Between dm threaded interval data deliveries, temp AIMS review objects
+  are created or render irrelevant by user actions. This method updates the
+  main data (self._data) to reflect these changes.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>respFeature</code></strong> (AIMSDataManager.Address) - Aims Address object</li>
+        <li><strong class="pname"><code>feedType</code></strong> (AIMSDataManager.FeatureFactory.FeedRef) - Type of AIMS API feed</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="updateFdata"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">updateFdata</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">respFeature</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.updateFdata">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Between dm threaded interval data deliveries, temp AIMS feature 
+  objects are created or render irrelevant by user actions. This method 
+  updates the main data (self._data) to reflect these changes.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>respFeature</code></strong> (AIMSDataManager.Address) - Aims Address object</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="setBbox"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">setBbox</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">sw</span>,
+        <span class="sig-arg">ne</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.setBbox">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Intermediate method, passes bboxes from layer manager to the DM</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>sw</code></strong> (tuple) - (x ,y)</li>
+        <li><strong class="pname"><code>ne</code></strong> (tuple) - (x ,y)</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="reviewData"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">reviewData</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.reviewData">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Returns current group review data</p>
+  <dl class="fields">
+    <dt>Returns: dictionary</dt>
+        <dd>Dictionary of group formatted review data</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="combinedReviewData"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">combinedReviewData</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.combinedReviewData">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>De-nests group review data and combines with standard review data, 
+  Returning a complete &quot;Review Data&quot; set</p>
+  <dl class="fields">
+    <dt>Returns: dictionary</dt>
+        <dd>Flat dictionary of review items</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="featureData"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">featureData</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.featureData">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Returns feature data</p>
+  <p>return: Dict of aims features {featureID: address obj,...} rtype: 
+  dictionary</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="addAddress"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">addAddress</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">feature</span>,
+        <span class="sig-arg">respId</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.addAddress">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Passes an new AIMS Feature to DataManager to add the feature to the 
+  AIM system</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>feature</code></strong> (AIMSDataManager.Address) - Aims Address object</li>
+        <li><strong class="pname"><code>respId</code></strong> (integer) - id used to match response</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="retireAddress"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">retireAddress</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">feature</span>,
+        <span class="sig-arg">respId</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.retireAddress">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Passes an AIMS Feature to DataManager for retirement</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>feature</code></strong> (AIMSDataManager.Address) - Aims Address object</li>
+        <li><strong class="pname"><code>respId</code></strong> (integer) - id used to match response</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="updateAddress"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">updateAddress</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">feature</span>,
+        <span class="sig-arg">respId</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.updateAddress">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Passes an AIMS Feature to the DataManager to update a published 
+  feature</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>feature</code></strong> (AIMSDataManager.Address) - Aims Address object</li>
+        <li><strong class="pname"><code>respId</code></strong> (integer) - id used to match response</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="decline"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">decline</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">feature</span>,
+        <span class="sig-arg">feedType</span>,
+        <span class="sig-arg">respId</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.decline">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Passes an AIMS Feature to the DataManager to decline a review item</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>feature</code></strong> (AIMSDataManager.Address) - Aims Address object</li>
+        <li><strong class="pname"><code>feedType</code></strong> (AIMSDataManager.FeatureFactory.FeedRef) - Type of AIMS API feed</li>
+        <li><strong class="pname"><code>respId</code></strong> (integer) - id used to match response</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="accept"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">accept</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">feature</span>,
+        <span class="sig-arg">feedType</span>,
+        <span class="sig-arg">respId</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.accept">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Passes an AIMS Feature to the DataManager to accept a review item</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>feature</code></strong> (AIMSDataManager.Address) - Aims Address object</li>
+        <li><strong class="pname"><code>feedType</code></strong> (AIMSDataManager.FeatureFactory.FeedRef) - Type of AIMS API feed</li>
+        <li><strong class="pname"><code>respId</code></strong> (integer) - id used to match response</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="repairAddress"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">repairAddress</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">feature</span>,
+        <span class="sig-arg">respId</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.repairAddress">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Passes an updated AIMS Review Feature to the DataManager to be updated
+  on the review feed</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>feature</code></strong> (AIMSDataManager.Address) - Aims Address object</li>
+        <li><strong class="pname"><code>feedType</code></strong> (AIMSDataManager.FeatureFactory.FeedRef) - Type of AIMS API feed</li>
+        <li><strong class="pname"><code>respId</code></strong> (integer) - id used to match response</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="repairGroup"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">repairGroup</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">feature</span>,
+        <span class="sig-arg">respId</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.repairGroup">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Passes an updated AIMS Review Feature to the DataManager to be updated
+  on the review feed</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>feature</code></strong> (AIMSDataManager.Address) - Aims Address object</li>
+        <li><strong class="pname"><code>respId</code></strong> (integer) - id used to match response</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="response"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">response</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">feedtype</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.response">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Returns DataMAnager response for a specific feedtype</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>feedType</code></strong> (AIMSDataManager.FeatureFactory.FeedRef) - Type of AIMS feed</li>
+    </ul></dd>
+    <dt>Returns: tuple</dt>
+        <dd>tuple of AIMSDataManager.Address</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="isNested"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">isNested</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">feat</span>,
+        <span class="sig-arg">prop</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.isNested">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Test if the class object has said nested entity</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>feat</code></strong> (AIMSDataManager.Address) - Group object</li>
+        <li><strong class="pname"><code>prop</code></strong> (string) - address property</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="nestedEntities"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">nestedEntities</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">feat</span>,
+        <span class="sig-arg">prop</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.nestedEntities">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Returns property from nested object</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>feat</code></strong> (AIMSDataManager.Address) - Group object</li>
+        <li><strong class="pname"><code>prop</code></strong> (string) - address property</li>
+    </ul></dd>
+    <dt>Returns: AIMSDataManager.Address property</dt>
+        <dd>AIMSDataManager.Address property</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="flatEntities"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">flatEntities</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">feat</span>,
+        <span class="sig-arg">prop</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.flatEntities">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Returns property from flat object</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>feat</code></strong> (AIMSDataManager.Address) - Group object</li>
+        <li><strong class="pname"><code>prop</code></strong> (string) - address property</li>
+    </ul></dd>
+    <dt>Returns: AIMSDataManager.Address property</dt>
+        <dd>AIMSDataManager.Address property</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="fullRoad"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">fullRoad</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">feat</span>,
+        <span class="sig-arg">feedtype</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.fullRoad">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Compiles a full road name 'label' for the UI</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>feat</code></strong> (AIMSDataManager.Address) - Group object</li>
+        <li><strong class="pname"><code>feedType</code></strong> (AIMSDataManager.FeatureFactory.FeedRef) - Type of AIMS API feed</li>
+    </ul></dd>
+    <dt>Returns: string</dt>
+        <dd>Individual road components concatenated</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="formatGroupTableData"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">formatGroupTableData</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">obj</span>,
+        <span class="sig-arg">groupProperties</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.formatGroupTableData">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+Returns data formatted for the group table model 
+
+@param obj: Group object
+@type  obj: AIMSDataManager.Group.GroupResolution
+@param groupProperties: list of properties required to format table data
+@type  groupProperties: list
+
+@return: return list reperesting a group entity. 
+        Formatted:  ['changeGroupId', 'groupType', 'workflow_sourceOrganisation', 
+                    'submitterUserName', 'submittedDate']
+@rtype: list
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="iterFeatProps"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">iterFeatProps</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">feat</span>,
+        <span class="sig-arg">featProperties</span>,
+        <span class="sig-arg">feedtype</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.iterFeatProps">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Iterate over AIMS class objects, Return those relevant to the parent 
+  model (that related to the feedtype)</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>feat</code></strong> (AIMSDataManager.Address) - Address object</li>
+        <li><strong class="pname"><code>featProperties</code></strong> (list) - List of properties required to format table data</li>
+        <li><strong class="pname"><code>feedType</code></strong> (AIMSDataManager.FeatureFactory.FeedRef) - Type of AIMS API feed</li>
+    </ul></dd>
+    <dt>Returns: list</dt>
+        <dd>List of properties as formatted for relevant data model</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="formatFeatureTableData"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">formatFeatureTableData</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">feat</span>,
+        <span class="sig-arg">featProperties</span>,
+        <span class="sig-arg">feedtype</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.formatFeatureTableData">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Returns data formatted for the feature table model</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>feature</code></strong> (dictionary) - Aims Address object</li>
+        <li><strong class="pname"><code>featProperties</code></strong> (list) - List of Address Properties required format Feature Table Data</li>
+        <li><strong class="pname"><code>feedType</code></strong> (AIMSDataManager.FeatureFactory.FeedRef) - Type of AIMS API feed</li>
+    </ul></dd>
+    <dt>Returns: list</dt>
+        <dd>List representing on row of feature table data</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="addClassProps"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">addClassProps</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">feedtype</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.addClassProps">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Properties required to format Group and Feature data for the 
+  respective table models</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>feedType</code></strong> (AIMSDataManager.FeatureFactory.FeedRef) - Type of AIMS API feed</li>
+    </ul></dd>
+    <dt>Returns: tuple</dt>
+        <dd>Tuple of properties required to format the data related to the 
+          feedtype</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="formatTableData"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">formatTableData</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">feedtypes</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.formatTableData">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Returns review data as formatted for the review data model</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>feedType</code></strong> (AIMSDataManager.FeatureFactory.FeedRef) - Type of AIMS API feed</li>
+    </ul></dd>
+    <dt>Returns: dictionary</dt>
+        <dd>data formated for feature table model</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="singleFeatureObj"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">singleFeatureObj</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">objkey</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.singleFeatureObj">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Returns a AIMS Address object that matches the object key</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>feedType</code></strong> (AIMSDataManager.FeatureFactory.FeedRef) - Type of AIMS API feed</li>
+        <li><strong class="pname"><code>objkey</code></strong> (integer) - Feautre id</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="currentReviewFeature"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">currentReviewFeature</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">currentGroup</span>,
+        <span class="sig-arg">currentFeatureKey</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.currentReviewFeature">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Returns aims feautre object as per supplied data key(s)</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>currentGroup</code></strong> (tuple) - Current group key (groupId, changeType)</li>
+        <li><strong class="pname"><code>currentFeatureKey</code></strong> (integer) - Current Feautre id</li>
+    </ul></dd>
+    <dt>Returns: AIMSDataManager.Address</dt>
+        <dd>Address object</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="reviewItemCoords"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">reviewItemCoords</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">currentGroup</span>,
+        <span class="sig-arg">currentFeatureKey</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager-pysrc.html#UiDataManager.reviewItemCoords">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Returns the coords of a review obj</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>currentGroup</code></strong> (tuple) - Current group key (groupId, changeType)</li>
+        <li><strong class="pname"><code>currentFeatureKey</code></strong> (integer) - Current Feautre id</li>
+    </ul></dd>
+    <dt>Returns: list</dt>
+        <dd>list [x,y]</dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="QGIS-AIMS-Plugin-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Jun 14 13:07:00 2016
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

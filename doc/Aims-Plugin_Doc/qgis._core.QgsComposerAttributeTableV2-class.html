@@ -1,0 +1,1730 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>qgis._core.QgsComposerAttributeTableV2</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="QGIS-AIMS-Plugin-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        qgis ::
+        _core ::
+        QgsComposerAttributeTableV2 ::
+        Class&nbsp;QgsComposerAttributeTableV2
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="qgis._core.QgsComposerAttributeTableV2-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class QgsComposerAttributeTableV2</h1><p class="nomargin-top"></p>
+<pre class="base-tree">
+       object --+                        
+                |                        
+sip.simplewrapper --+                    
+                    |                    
+          sip.wrapper --+                
+                        |                
+     <a href="PyQt4.QtCore.QObject-class.html">PyQt4.QtCore.QObject</a> --+            
+                            |            
+            <a href="qgis._core.QgsComposerObject-class.html">QgsComposerObject</a> --+        
+                                |        
+            <a href="qgis._core.QgsComposerMultiFrame-class.html">QgsComposerMultiFrame</a> --+    
+                                    |    
+                   <a href="qgis._core.QgsComposerTableV2-class.html">QgsComposerTableV2</a> --+
+                                        |
+                                       <strong class="uidshort">QgsComposerAttributeTableV2</strong>
+</pre>
+
+<hr />
+<p>QgsComposerAttributeTableV2(QgsComposition, bool)</p>
+
+<!-- ==================== NESTED CLASSES ==================== -->
+<a name="section-NestedClasses"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Nested Classes</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-NestedClasses"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="qgis._core.QgsComposerAttributeTableV2.ContentSource-class.html" class="summary-name">ContentSource</a>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="qgis._core.QgsComposerTableV2-class.html">QgsComposerTableV2</a></code></b>:
+      <code><a href="qgis._core.QgsComposerTableV2.EmptyTableMode-class.html">EmptyTableMode</a></code>,
+      <code><a href="qgis._core.QgsComposerTableV2.HeaderHAlignment-class.html">HeaderHAlignment</a></code>,
+      <code><a href="qgis._core.QgsComposerTableV2.HeaderMode-class.html">HeaderMode</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="qgis._core.QgsComposerMultiFrame-class.html">QgsComposerMultiFrame</a></code></b>:
+      <code><a href="qgis._core.QgsComposerMultiFrame.ResizeMode-class.html">ResizeMode</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="qgis._core.QgsComposerObject-class.html">QgsComposerObject</a></code></b>:
+      <code><a href="qgis._core.QgsComposerObject.DataDefinedProperty-class.html">DataDefinedProperty</a></code>,
+      <code><a href="qgis._core.QgsComposerObject.PropertyValueType-class.html">PropertyValueType</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="qgis._core.QgsComposerAttributeTableV2-class.html#addFrame" class="summary-sig-name">addFrame</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="qgis._core.QgsComposerAttributeTableV2-class.html#calculateMaxColumnWidths" class="summary-sig-name">calculateMaxColumnWidths</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="qgis._core.QgsComposerAttributeTableV2-class.html#childEvent" class="summary-sig-name">childEvent</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="composerMap"></a><span class="summary-sig-name">composerMap</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="qgis._core.QgsComposerAttributeTableV2-class.html#connectNotify" class="summary-sig-name">connectNotify</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="qgis._core.QgsComposerAttributeTableV2-class.html#contentsContainsRow" class="summary-sig-name">contentsContainsRow</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="qgis._core.QgsComposerAttributeTableV2-class.html#customEvent" class="summary-sig-name">customEvent</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="qgis._core.QgsComposerAttributeTableV2-class.html#dataDefinedEvaluate" class="summary-sig-name">dataDefinedEvaluate</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="qgis._core.QgsComposerAttributeTableV2-class.html#disconnectNotify" class="summary-sig-name">disconnectNotify</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="qgis._core.QgsComposerAttributeTableV2-class.html#displayName" class="summary-sig-name">displayName</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="displayOnlyVisibleFeatures"></a><span class="summary-sig-name">displayOnlyVisibleFeatures</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="qgis._core.QgsComposerAttributeTableV2-class.html#drawHorizontalGridLines" class="summary-sig-name">drawHorizontalGridLines</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="featureFilter"></a><span class="summary-sig-name">featureFilter</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="filterFeatures"></a><span class="summary-sig-name">filterFeatures</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="filterToAtlasFeature"></a><span class="summary-sig-name">filterToAtlasFeature</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="qgis._core.QgsComposerAttributeTableV2-class.html#getTableContents" class="summary-sig-name">getTableContents</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="qgis._core.QgsComposerAttributeTableV2-class.html#handleFrameRemoval" class="summary-sig-name">handleFrameRemoval</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="qgis._core.QgsComposerAttributeTableV2-class.html#handlePageChange" class="summary-sig-name">handlePageChange</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="maximumNumberOfFeatures"></a><span class="summary-sig-name">maximumNumberOfFeatures</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="qgis._core.QgsComposerAttributeTableV2-class.html#readXML" class="summary-sig-name">readXML</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="qgis._core.QgsComposerAttributeTableV2-class.html#recalculateTableSize" class="summary-sig-name">recalculateTableSize</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="qgis._core.QgsComposerAttributeTableV2-class.html#receivers" class="summary-sig-name">receivers</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="relationId"></a><span class="summary-sig-name">relationId</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="resetColumns"></a><span class="summary-sig-name">resetColumns</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="qgis._core.QgsComposerAttributeTableV2-class.html#rowRange" class="summary-sig-name">rowRange</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="qgis._core.QgsComposerAttributeTableV2-class.html#rowsVisible" class="summary-sig-name">rowsVisible</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="qgis._core.QgsComposerAttributeTableV2-class.html#sender" class="summary-sig-name">sender</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="qgis._core.QgsComposerAttributeTableV2-class.html#senderSignalIndex" class="summary-sig-name">senderSignalIndex</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setComposerMap"></a><span class="summary-sig-name">setComposerMap</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setDisplayAttributes"></a><span class="summary-sig-name">setDisplayAttributes</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setDisplayOnlyVisibleFeatures"></a><span class="summary-sig-name">setDisplayOnlyVisibleFeatures</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setFeatureFilter"></a><span class="summary-sig-name">setFeatureFilter</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setFilterFeatures"></a><span class="summary-sig-name">setFilterFeatures</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setFilterToAtlasFeature"></a><span class="summary-sig-name">setFilterToAtlasFeature</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setMaximumNumberOfFeatures"></a><span class="summary-sig-name">setMaximumNumberOfFeatures</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setRelationId"></a><span class="summary-sig-name">setRelationId</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setSource"></a><span class="summary-sig-name">setSource</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setUniqueRowsOnly"></a><span class="summary-sig-name">setUniqueRowsOnly</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setVectorLayer"></a><span class="summary-sig-name">setVectorLayer</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="source"></a><span class="summary-sig-name">source</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="sourceLayer"></a><span class="summary-sig-name">sourceLayer</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="qgis._core.QgsComposerAttributeTableV2-class.html#timerEvent" class="summary-sig-name">timerEvent</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="qgis._core.QgsComposerAttributeTableV2-class.html#totalHeight" class="summary-sig-name">totalHeight</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="qgis._core.QgsComposerAttributeTableV2-class.html#totalWidth" class="summary-sig-name">totalWidth</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="uniqueRowsOnly"></a><span class="summary-sig-name">uniqueRowsOnly</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="vectorLayer"></a><span class="summary-sig-name">vectorLayer</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="qgis._core.QgsComposerAttributeTableV2-class.html#writeXML" class="summary-sig-name">writeXML</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="qgis._core.QgsComposerTableV2-class.html">QgsComposerTableV2</a></code></b>:
+      <code><a href="qgis._core.QgsComposerTableV2-class.html#backgroundColor">backgroundColor</a></code>,
+      <code><a href="qgis._core.QgsComposerTableV2-class.html#cellMargin">cellMargin</a></code>,
+      <code><a href="qgis._core.QgsComposerTableV2-class.html#columns">columns</a></code>,
+      <code><a href="qgis._core.QgsComposerTableV2-class.html#contentFont">contentFont</a></code>,
+      <code><a href="qgis._core.QgsComposerTableV2-class.html#contentFontColor">contentFontColor</a></code>,
+      <code><a href="qgis._core.QgsComposerTableV2-class.html#contents">contents</a></code>,
+      <code><a href="qgis._core.QgsComposerTableV2-class.html#emptyTableBehaviour">emptyTableBehaviour</a></code>,
+      <code><a href="qgis._core.QgsComposerTableV2-class.html#emptyTableMessage">emptyTableMessage</a></code>,
+      <code><a href="qgis._core.QgsComposerTableV2-class.html#fixedFrameSize">fixedFrameSize</a></code>,
+      <code><a href="qgis._core.QgsComposerTableV2-class.html#gridColor">gridColor</a></code>,
+      <code><a href="qgis._core.QgsComposerTableV2-class.html#gridStrokeWidth">gridStrokeWidth</a></code>,
+      <code><a href="qgis._core.QgsComposerTableV2-class.html#headerFont">headerFont</a></code>,
+      <code><a href="qgis._core.QgsComposerTableV2-class.html#headerFontColor">headerFontColor</a></code>,
+      <code><a href="qgis._core.QgsComposerTableV2-class.html#headerHAlignment">headerHAlignment</a></code>,
+      <code><a href="qgis._core.QgsComposerTableV2-class.html#headerLabels">headerLabels</a></code>,
+      <code><a href="qgis._core.QgsComposerTableV2-class.html#headerMode">headerMode</a></code>,
+      <code><a href="qgis._core.QgsComposerTableV2-class.html#minFrameSize">minFrameSize</a></code>,
+      <code><a href="qgis._core.QgsComposerTableV2-class.html#recalculateFrameSizes">recalculateFrameSizes</a></code>,
+      <code><a href="qgis._core.QgsComposerTableV2-class.html#refreshAttributes">refreshAttributes</a></code>,
+      <code><a href="qgis._core.QgsComposerTableV2-class.html#render">render</a></code>,
+      <code><a href="qgis._core.QgsComposerTableV2-class.html#setBackgroundColor">setBackgroundColor</a></code>,
+      <code><a href="qgis._core.QgsComposerTableV2-class.html#setCellMargin">setCellMargin</a></code>,
+      <code><a href="qgis._core.QgsComposerTableV2-class.html#setColumns">setColumns</a></code>,
+      <code><a href="qgis._core.QgsComposerTableV2-class.html#setContentFont">setContentFont</a></code>,
+      <code><a href="qgis._core.QgsComposerTableV2-class.html#setContentFontColor">setContentFontColor</a></code>,
+      <code><a href="qgis._core.QgsComposerTableV2-class.html#setEmptyTableBehaviour">setEmptyTableBehaviour</a></code>,
+      <code><a href="qgis._core.QgsComposerTableV2-class.html#setEmptyTableMessage">setEmptyTableMessage</a></code>,
+      <code><a href="qgis._core.QgsComposerTableV2-class.html#setGridColor">setGridColor</a></code>,
+      <code><a href="qgis._core.QgsComposerTableV2-class.html#setGridStrokeWidth">setGridStrokeWidth</a></code>,
+      <code><a href="qgis._core.QgsComposerTableV2-class.html#setHeaderFont">setHeaderFont</a></code>,
+      <code><a href="qgis._core.QgsComposerTableV2-class.html#setHeaderFontColor">setHeaderFontColor</a></code>,
+      <code><a href="qgis._core.QgsComposerTableV2-class.html#setHeaderHAlignment">setHeaderHAlignment</a></code>,
+      <code><a href="qgis._core.QgsComposerTableV2-class.html#setHeaderMode">setHeaderMode</a></code>,
+      <code><a href="qgis._core.QgsComposerTableV2-class.html#setShowEmptyRows">setShowEmptyRows</a></code>,
+      <code><a href="qgis._core.QgsComposerTableV2-class.html#setShowGrid">setShowGrid</a></code>,
+      <code><a href="qgis._core.QgsComposerTableV2-class.html#showEmptyRows">showEmptyRows</a></code>,
+      <code><a href="qgis._core.QgsComposerTableV2-class.html#showGrid">showGrid</a></code>,
+      <code><a href="qgis._core.QgsComposerTableV2-class.html#totalSize">totalSize</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="qgis._core.QgsComposerMultiFrame-class.html">QgsComposerMultiFrame</a></code></b>:
+      <code><a href="qgis._core.QgsComposerMultiFrame-class.html#changed">changed</a></code>,
+      <code><a href="qgis._core.QgsComposerMultiFrame-class.html#composition">composition</a></code>,
+      <code><a href="qgis._core.QgsComposerMultiFrame-class.html#contentsChanged">contentsChanged</a></code>,
+      <code><a href="qgis._core.QgsComposerMultiFrame-class.html#createNewFrame">createNewFrame</a></code>,
+      <code><a href="qgis._core.QgsComposerMultiFrame-class.html#createUndoCommands">createUndoCommands</a></code>,
+      <code><a href="qgis._core.QgsComposerMultiFrame-class.html#deleteFrames">deleteFrames</a></code>,
+      <code><a href="qgis._core.QgsComposerMultiFrame-class.html#findNearbyPageBreak">findNearbyPageBreak</a></code>,
+      <code><a href="qgis._core.QgsComposerMultiFrame-class.html#frame">frame</a></code>,
+      <code><a href="qgis._core.QgsComposerMultiFrame-class.html#frameCount">frameCount</a></code>,
+      <code><a href="qgis._core.QgsComposerMultiFrame-class.html#frameIndex">frameIndex</a></code>,
+      <code><a href="qgis._core.QgsComposerMultiFrame-class.html#recalculateFrameRects">recalculateFrameRects</a></code>,
+      <code><a href="qgis._core.QgsComposerMultiFrame-class.html#removeFrame">removeFrame</a></code>,
+      <code><a href="qgis._core.QgsComposerMultiFrame-class.html#resizeMode">resizeMode</a></code>,
+      <code><a href="qgis._core.QgsComposerMultiFrame-class.html#setCreateUndoCommands">setCreateUndoCommands</a></code>,
+      <code><a href="qgis._core.QgsComposerMultiFrame-class.html#setResizeMode">setResizeMode</a></code>,
+      <code><a href="qgis._core.QgsComposerMultiFrame-class.html#update">update</a></code>
+      </p>
+    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="qgis._core.QgsComposerMultiFrame-class.html">QgsComposerMultiFrame</a></code></b> (private):
+      <code><a href="qgis._core.QgsComposerMultiFrame-class.html#_readXML" onclick="show_private();">_readXML</a></code>,
+      <code><a href="qgis._core.QgsComposerMultiFrame-class.html#_writeXML" onclick="show_private();">_writeXML</a></code>
+      </p></div>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="qgis._core.QgsComposerObject-class.html">QgsComposerObject</a></code></b>:
+      <code><a href="qgis._core.QgsComposerObject-class.html#dataDefinedProperty">dataDefinedProperty</a></code>,
+      <code><a href="qgis._core.QgsComposerObject-class.html#itemChanged">itemChanged</a></code>,
+      <code><a href="qgis._core.QgsComposerObject-class.html#refreshDataDefinedProperty">refreshDataDefinedProperty</a></code>,
+      <code><a href="qgis._core.QgsComposerObject-class.html#repaint">repaint</a></code>,
+      <code><a href="qgis._core.QgsComposerObject-class.html#setDataDefinedProperty">setDataDefinedProperty</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="PyQt4.QtCore.QObject-class.html">PyQt4.QtCore.QObject</a></code></b>:
+      <code><a href="PyQt4.QtCore.QObject-class.html#__getattr__">__getattr__</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#blockSignals">blockSignals</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#children">children</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#connect">connect</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#deleteLater">deleteLater</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#destroyed">destroyed</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#disconnect">disconnect</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#dumpObjectInfo">dumpObjectInfo</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#dumpObjectTree">dumpObjectTree</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#dynamicPropertyNames">dynamicPropertyNames</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#emit">emit</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#event">event</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#eventFilter">eventFilter</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#findChild">findChild</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#findChildren">findChildren</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#inherits">inherits</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#installEventFilter">installEventFilter</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#isWidgetType">isWidgetType</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#killTimer">killTimer</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#metaObject">metaObject</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#moveToThread">moveToThread</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#objectName">objectName</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#parent">parent</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#property">property</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#pyqtConfigure">pyqtConfigure</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#removeEventFilter">removeEventFilter</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#setObjectName">setObjectName</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#setParent">setParent</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#setProperty">setProperty</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#signalsBlocked">signalsBlocked</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#startTimer">startTimer</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#thread">thread</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#tr">tr</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#trUtf8">trUtf8</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>sip.simplewrapper</code></b>:
+      <code>__init__</code>,
+      <code>__new__</code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__repr__</code>,
+      <code>__setattr__</code>,
+      <code>__sizeof__</code>,
+      <code>__str__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS VARIABLES ==================== -->
+<a name="section-ClassVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="AtlasFeature"></a><span class="summary-name">AtlasFeature</span> = <code title="1">1</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="LayerAttributes"></a><span class="summary-name">LayerAttributes</span> = <code title="0">0</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="RelationChildren"></a><span class="summary-name">RelationChildren</span> = <code title="2">2</code>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="qgis._core.QgsComposerTableV2-class.html">QgsComposerTableV2</a></code></b>:
+      <code><a href="qgis._core.QgsComposerTableV2-class.html#AllFrames">AllFrames</a></code>,
+      <code><a href="qgis._core.QgsComposerTableV2-class.html#FirstFrame">FirstFrame</a></code>,
+      <code><a href="qgis._core.QgsComposerTableV2-class.html#FollowColumn">FollowColumn</a></code>,
+      <code><a href="qgis._core.QgsComposerTableV2-class.html#HeaderCenter">HeaderCenter</a></code>,
+      <code><a href="qgis._core.QgsComposerTableV2-class.html#HeaderLeft">HeaderLeft</a></code>,
+      <code><a href="qgis._core.QgsComposerTableV2-class.html#HeaderRight">HeaderRight</a></code>,
+      <code><a href="qgis._core.QgsComposerTableV2-class.html#HeadersOnly">HeadersOnly</a></code>,
+      <code><a href="qgis._core.QgsComposerTableV2-class.html#HideTable">HideTable</a></code>,
+      <code><a href="qgis._core.QgsComposerTableV2-class.html#NoHeaders">NoHeaders</a></code>,
+      <code><a href="qgis._core.QgsComposerTableV2-class.html#ShowMessage">ShowMessage</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="qgis._core.QgsComposerMultiFrame-class.html">QgsComposerMultiFrame</a></code></b>:
+      <code><a href="qgis._core.QgsComposerMultiFrame-class.html#ExtendToNextPage">ExtendToNextPage</a></code>,
+      <code><a href="qgis._core.QgsComposerMultiFrame-class.html#RepeatOnEveryPage">RepeatOnEveryPage</a></code>,
+      <code><a href="qgis._core.QgsComposerMultiFrame-class.html#RepeatUntilFinished">RepeatUntilFinished</a></code>,
+      <code><a href="qgis._core.QgsComposerMultiFrame-class.html#UseExistingFrames">UseExistingFrames</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="qgis._core.QgsComposerObject-class.html">QgsComposerObject</a></code></b>:
+      <code><a href="qgis._core.QgsComposerObject-class.html#AllProperties">AllProperties</a></code>,
+      <code><a href="qgis._core.QgsComposerObject-class.html#BlendMode">BlendMode</a></code>,
+      <code><a href="qgis._core.QgsComposerObject-class.html#EvaluatedValue">EvaluatedValue</a></code>,
+      <code><a href="qgis._core.QgsComposerObject-class.html#ExcludeFromExports">ExcludeFromExports</a></code>,
+      <code><a href="qgis._core.QgsComposerObject-class.html#ItemHeight">ItemHeight</a></code>,
+      <code><a href="qgis._core.QgsComposerObject-class.html#ItemRotation">ItemRotation</a></code>,
+      <code><a href="qgis._core.QgsComposerObject-class.html#ItemWidth">ItemWidth</a></code>,
+      <code><a href="qgis._core.QgsComposerObject-class.html#MapAtlasMargin">MapAtlasMargin</a></code>,
+      <code><a href="qgis._core.QgsComposerObject-class.html#MapRotation">MapRotation</a></code>,
+      <code><a href="qgis._core.QgsComposerObject-class.html#MapScale">MapScale</a></code>,
+      <code><a href="qgis._core.QgsComposerObject-class.html#MapXMax">MapXMax</a></code>,
+      <code><a href="qgis._core.QgsComposerObject-class.html#MapXMin">MapXMin</a></code>,
+      <code><a href="qgis._core.QgsComposerObject-class.html#MapYMax">MapYMax</a></code>,
+      <code><a href="qgis._core.QgsComposerObject-class.html#MapYMin">MapYMin</a></code>,
+      <code><a href="qgis._core.QgsComposerObject-class.html#NoProperty">NoProperty</a></code>,
+      <code><a href="qgis._core.QgsComposerObject-class.html#NumPages">NumPages</a></code>,
+      <code><a href="qgis._core.QgsComposerObject-class.html#OriginalValue">OriginalValue</a></code>,
+      <code><a href="qgis._core.QgsComposerObject-class.html#PageNumber">PageNumber</a></code>,
+      <code><a href="qgis._core.QgsComposerObject-class.html#PaperHeight">PaperHeight</a></code>,
+      <code><a href="qgis._core.QgsComposerObject-class.html#PaperOrientation">PaperOrientation</a></code>,
+      <code><a href="qgis._core.QgsComposerObject-class.html#PaperWidth">PaperWidth</a></code>,
+      <code><a href="qgis._core.QgsComposerObject-class.html#PictureSource">PictureSource</a></code>,
+      <code><a href="qgis._core.QgsComposerObject-class.html#PositionX">PositionX</a></code>,
+      <code><a href="qgis._core.QgsComposerObject-class.html#PositionY">PositionY</a></code>,
+      <code><a href="qgis._core.QgsComposerObject-class.html#PresetPaperSize">PresetPaperSize</a></code>,
+      <code><a href="qgis._core.QgsComposerObject-class.html#SourceUrl">SourceUrl</a></code>,
+      <code><a href="qgis._core.QgsComposerObject-class.html#TestProperty">TestProperty</a></code>,
+      <code><a href="qgis._core.QgsComposerObject-class.html#Transparency">Transparency</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="PyQt4.QtCore.QObject-class.html">PyQt4.QtCore.QObject</a></code></b>:
+      <code><a href="PyQt4.QtCore.QObject-class.html#staticMetaObject">staticMetaObject</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="addFrame"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">addFrame</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QgsComposerMultiFrame.addFrame
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="calculateMaxColumnWidths"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">calculateMaxColumnWidths</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QgsComposerTableV2.calculateMaxColumnWidths
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="childEvent"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">childEvent</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        PyQt4.QtCore.QObject.childEvent
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="connectNotify"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">connectNotify</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        PyQt4.QtCore.QObject.connectNotify
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="contentsContainsRow"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">contentsContainsRow</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QgsComposerTableV2.contentsContainsRow
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="customEvent"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">customEvent</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        PyQt4.QtCore.QObject.customEvent
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="dataDefinedEvaluate"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">dataDefinedEvaluate</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QgsComposerObject.dataDefinedEvaluate
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="disconnectNotify"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">disconnectNotify</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        PyQt4.QtCore.QObject.disconnectNotify
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="displayName"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">displayName</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QgsComposerMultiFrame.displayName
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="drawHorizontalGridLines"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">drawHorizontalGridLines</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QgsComposerTableV2.drawHorizontalGridLines
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="getTableContents"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">getTableContents</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QgsComposerTableV2.getTableContents
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="handleFrameRemoval"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">handleFrameRemoval</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QgsComposerMultiFrame.handleFrameRemoval
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="handlePageChange"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">handlePageChange</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QgsComposerMultiFrame.handlePageChange
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="readXML"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">readXML</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QgsComposerObject.readXML
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="recalculateTableSize"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">recalculateTableSize</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QgsComposerTableV2.recalculateTableSize
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="receivers"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">receivers</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        PyQt4.QtCore.QObject.receivers
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="rowRange"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">rowRange</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QgsComposerTableV2.rowRange
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="rowsVisible"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">rowsVisible</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QgsComposerTableV2.rowsVisible
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="sender"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">sender</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        PyQt4.QtCore.QObject.sender
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="senderSignalIndex"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">senderSignalIndex</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        PyQt4.QtCore.QObject.senderSignalIndex
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="timerEvent"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">timerEvent</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        PyQt4.QtCore.QObject.timerEvent
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="totalHeight"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">totalHeight</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QgsComposerTableV2.totalHeight
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="totalWidth"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">totalWidth</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QgsComposerTableV2.totalWidth
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="writeXML"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">writeXML</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QgsComposerObject.writeXML
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="QGIS-AIMS-Plugin-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Jun 14 13:07:01 2016
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

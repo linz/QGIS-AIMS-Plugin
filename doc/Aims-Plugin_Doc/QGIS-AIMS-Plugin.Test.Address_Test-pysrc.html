@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QGIS-AIMS-Plugin.Test.Address_Test</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="QGIS-AIMS-Plugin-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="QGIS-AIMS-Plugin-module.html">Package&nbsp;QGIS-AIMS-Plugin</a> ::
+        Package&nbsp;Test ::
+        Module&nbsp;Address_Test
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="QGIS-AIMS-Plugin.Test.Address_Test-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="QGIS-AIMS-Plugin.Test.Address_Test-module.html">Module QGIS-AIMS-Plugin.Test.Address_Test</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-docstring">'''</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-docstring">v.0.0.1</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-docstring">QGIS-AIMS-Plugin - Address_Test</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-docstring">Copyright 2011 Crown copyright (c)</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-docstring">Land Information New Zealand and the New Zealand Government.</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-docstring">All rights reserved</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-docstring">This program is released under the terms of the new BSD license. See the </tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-docstring">LICENSE file for more information.</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-docstring">Tests on Address class</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-docstring">Created on 29/10/2015</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-docstring">@author: jramsay</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"><tt class="py-docstring">'''</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">unittest</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-0" class="py-name" targets="Module inspect=inspect-module.html"><a title="inspect" class="py-name" href="#" onclick="return doclink('link-0', 'inspect', 'link-0');">inspect</a></tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-1" class="py-name" targets="Module sys=sys-module.html"><a title="sys" class="py-name" href="#" onclick="return doclink('link-1', 'sys', 'link-1');">sys</a></tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">re</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-2" class="py-name"><a title="sys" class="py-name" href="#" onclick="return doclink('link-2', 'sys', 'link-1');">sys</a></tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">os</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"><tt id="link-3" class="py-name"><a title="sys" class="py-name" href="#" onclick="return doclink('link-3', 'sys', 'link-1');">sys</a></tt><tt class="py-op">.</tt><tt id="link-4" class="py-name" targets="Variable sys.path=sys-module.html#path"><a title="sys.path" class="py-name" href="#" onclick="return doclink('link-4', 'path', 'link-4');">path</a></tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt class="py-string">'../AIMSDataManager/'</tt><tt class="py-op">)</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-5" class="py-name" targets="Module QGIS-AIMS-Plugin.AIMSDataManager.Address=QGIS-AIMS-Plugin.AIMSDataManager.Address-module.html,Class QGIS-AIMS-Plugin.AIMSDataManager.Address.Address=QGIS-AIMS-Plugin.AIMSDataManager.Address.Address-class.html"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Address
+QGIS-AIMS-Plugin.AIMSDataManager.Address.Address" class="py-name" href="#" onclick="return doclink('link-5', 'Address', 'link-5');">Address</a></tt> <tt class="py-keyword">import</tt> <tt id="link-6" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Address
+QGIS-AIMS-Plugin.AIMSDataManager.Address.Address" class="py-name" href="#" onclick="return doclink('link-6', 'Address', 'link-5');">Address</a></tt><tt class="py-op">,</tt><tt id="link-7" class="py-name" targets="Class QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressChange=QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressChange-class.html"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressChange" class="py-name" href="#" onclick="return doclink('link-7', 'AddressChange', 'link-7');">AddressChange</a></tt><tt class="py-op">,</tt><tt id="link-8" class="py-name" targets="Class QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressResolution=QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressResolution-class.html"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressResolution" class="py-name" href="#" onclick="return doclink('link-8', 'AddressResolution', 'link-8');">AddressResolution</a></tt><tt class="py-op">,</tt><tt id="link-9" class="py-name" targets="Class PyQt4.QtGui.QStyleOptionViewItem.Position=PyQt4.QtGui.QStyleOptionViewItem.Position-class.html,Class PyQt4.QtGui.QTextFrameFormat.Position=PyQt4.QtGui.QTextFrameFormat.Position-class.html,Class QGIS-AIMS-Plugin.AIMSDataManager.Address.Position=QGIS-AIMS-Plugin.AIMSDataManager.Address.Position-class.html"><a title="PyQt4.QtGui.QStyleOptionViewItem.Position
+PyQt4.QtGui.QTextFrameFormat.Position
+QGIS-AIMS-Plugin.AIMSDataManager.Address.Position" class="py-name" href="#" onclick="return doclink('link-9', 'Position', 'link-9');">Position</a></tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-10" class="py-name" targets="Module QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory=QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory-module.html,Class QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFactory=QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFactory-class.html"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory
+QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFactory" class="py-name" href="#" onclick="return doclink('link-10', 'AddressFactory', 'link-10');">AddressFactory</a></tt> <tt class="py-keyword">import</tt> <tt id="link-11" class="py-name" targets="Class QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressChangeFactory=QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressChangeFactory-class.html"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressChangeFactory" class="py-name" href="#" onclick="return doclink('link-11', 'AddressChangeFactory', 'link-11');">AddressChangeFactory</a></tt><tt class="py-op">,</tt><tt id="link-12" class="py-name" targets="Class QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressResolutionFactory=QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressResolutionFactory-class.html"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressResolutionFactory" class="py-name" href="#" onclick="return doclink('link-12', 'AddressResolutionFactory', 'link-12');">AddressResolutionFactory</a></tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-13" class="py-name" targets="Module QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility=QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility-module.html"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility" class="py-name" href="#" onclick="return doclink('link-13', 'AimsUtility', 'link-13');">AimsUtility</a></tt> <tt class="py-keyword">import</tt> <tt id="link-14" class="py-name" targets="Variable QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.ActionType=QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility-module.html#ActionType,Class qgis._core.QgsAction.ActionType=qgis._core.QgsAction.ActionType-class.html"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.ActionType
+qgis._core.QgsAction.ActionType" class="py-name" href="#" onclick="return doclink('link-14', 'ActionType', 'link-14');">ActionType</a></tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-15" class="py-name" targets="Module QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging=QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging-module.html,Module QGIS-AIMS-Plugin.AimsUI.AimsLogging=QGIS-AIMS-Plugin.AimsUI.AimsLogging-module.html"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging
+QGIS-AIMS-Plugin.AimsUI.AimsLogging" class="py-name" href="#" onclick="return doclink('link-15', 'AimsLogging', 'link-15');">AimsLogging</a></tt> <tt class="py-keyword">import</tt>  <tt id="link-16" class="py-name" targets="Class QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging.Logger=QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging.Logger-class.html,Class QGIS-AIMS-Plugin.AimsUI.AimsLogging.Logger=QGIS-AIMS-Plugin.AimsUI.AimsLogging.Logger-class.html"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging.Logger
+QGIS-AIMS-Plugin.AimsUI.AimsLogging.Logger" class="py-name" href="#" onclick="return doclink('link-16', 'Logger', 'link-16');">Logger</a></tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line"> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line"><tt id="link-17" class="py-name" targets="Variable QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging.testlog=QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging-module.html#testlog,Variable QGIS-AIMS-Plugin.AimsUI.AimsLogging.testlog=QGIS-AIMS-Plugin.AimsUI.AimsLogging-module.html#testlog,Variable QGIS-AIMS-Plugin.RunAllTests.testlog=QGIS-AIMS-Plugin.RunAllTests-module.html#testlog,Variable QGIS-AIMS-Plugin.Test.AddressFactory_Test.testlog=QGIS-AIMS-Plugin.Test.AddressFactory_Test-module.html#testlog,Variable QGIS-AIMS-Plugin.Test.Address_Test.testlog=QGIS-AIMS-Plugin.Test.Address_Test-module.html#testlog,Variable QGIS-AIMS-Plugin.Test.Controller_Test.testlog=QGIS-AIMS-Plugin.Test.Controller_Test-module.html#testlog,Variable QGIS-AIMS-Plugin.Test.CreateNewTool_Test.testlog=QGIS-AIMS-Plugin.Test.CreateNewTool_Test-module.html#testlog,Variable QGIS-AIMS-Plugin.Test.DataManager_Test.testlog=QGIS-AIMS-Plugin.Test.DataManager_Test-module.html#testlog,Variable QGIS-AIMS-Plugin.Test.Database_Test.testlog=QGIS-AIMS-Plugin.Test.Database_Test-module.html#testlog,Variable QGIS-AIMS-Plugin.Test.LayerManager_Test.testlog=QGIS-AIMS-Plugin.Test.LayerManager_Test-module.html#testlog"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging.testlog
+QGIS-AIMS-Plugin.AimsUI.AimsLogging.testlog
+QGIS-AIMS-Plugin.RunAllTests.testlog
+QGIS-AIMS-Plugin.Test.AddressFactory_Test.testlog
+QGIS-AIMS-Plugin.Test.Address_Test.testlog
+QGIS-AIMS-Plugin.Test.Controller_Test.testlog
+QGIS-AIMS-Plugin.Test.CreateNewTool_Test.testlog
+QGIS-AIMS-Plugin.Test.DataManager_Test.testlog
+QGIS-AIMS-Plugin.Test.Database_Test.testlog
+QGIS-AIMS-Plugin.Test.LayerManager_Test.testlog" class="py-name" href="#" onclick="return doclink('link-17', 'testlog', 'link-17');">testlog</a></tt> <tt class="py-op">=</tt> <tt id="link-18" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging.Logger
+QGIS-AIMS-Plugin.AimsUI.AimsLogging.Logger" class="py-name" href="#" onclick="return doclink('link-18', 'Logger', 'link-16');">Logger</a></tt><tt class="py-op">.</tt><tt id="link-19" class="py-name" targets="Static Method QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging.Logger.setup()=QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging.Logger-class.html#setup,Method QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSync.setup()=QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSync-class.html#setup,Method QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdater.setup()=QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdater-class.html#setup,Method QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterAction.setup()=QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterAction-class.html#setup,Method QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterApproval.setup()=QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterApproval-class.html#setup,Method QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterGroupAction.setup()=QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterGroupAction-class.html#setup,Method QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterGroupApproval.setup()=QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterGroupApproval-class.html#setup,Method QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterUserAction.setup()=QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterUserAction-class.html#setup,Function QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.setup()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#setup,Static Method QGIS-AIMS-Plugin.AimsUI.AimsLogging.Logger.setup()=QGIS-AIMS-Plugin.AimsUI.AimsLogging.Logger-class.html#setup"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging.Logger.setup
+QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSync.setup
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdater.setup
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterAction.setup
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterApproval.setup
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterGroupAction.setup
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterGroupApproval.setup
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterUserAction.setup
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.setup
+QGIS-AIMS-Plugin.AimsUI.AimsLogging.Logger.setup" class="py-name" href="#" onclick="return doclink('link-19', 'setup', 'link-19');">setup</a></tt><tt class="py-op">(</tt><tt class="py-string">'test'</tt><tt class="py-op">)</tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line"> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line"><tt class="py-comment">#user to init an address, simple text string read from a stored config file</tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line"><tt id="link-20" class="py-name" targets="Variable QGIS-AIMS-Plugin.Test.AddressFactory_Test.user_text=QGIS-AIMS-Plugin.Test.AddressFactory_Test-module.html#user_text,Variable QGIS-AIMS-Plugin.Test.Address_Test.user_text=QGIS-AIMS-Plugin.Test.Address_Test-module.html#user_text"><a title="QGIS-AIMS-Plugin.Test.AddressFactory_Test.user_text
+QGIS-AIMS-Plugin.Test.Address_Test.user_text" class="py-name" href="#" onclick="return doclink('link-20', 'user_text', 'link-20');">user_text</a></tt> <tt class="py-op">=</tt> <tt class="py-string">'aims_user'</tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line"> </tt>
+<a name="Test_0_AddressSelfTest"></a><div id="Test_0_AddressSelfTest-def"><a name="L38"></a><tt class="py-lineno"> 38</tt> <a class="py-toggle" href="#" id="Test_0_AddressSelfTest-toggle" onclick="return toggle('Test_0_AddressSelfTest');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.Address_Test.Test_0_AddressSelfTest-class.html">Test_0_AddressSelfTest</a><tt class="py-op">(</tt><tt class="py-base-class">unittest</tt><tt class="py-op">.</tt><tt class="py-base-class">TestCase</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Test_0_AddressSelfTest-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Test_0_AddressSelfTest-expanded"><a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line">     </tt>
+<a name="Test_0_AddressSelfTest.setUp"></a><div id="Test_0_AddressSelfTest.setUp-def"><a name="L40"></a><tt class="py-lineno"> 40</tt> <a class="py-toggle" href="#" id="Test_0_AddressSelfTest.setUp-toggle" onclick="return toggle('Test_0_AddressSelfTest.setUp');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.Address_Test.Test_0_AddressSelfTest-class.html#setUp">setUp</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Test_0_AddressSelfTest.setUp-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Test_0_AddressSelfTest.setUp-expanded"><a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line">        <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line">         </tt>
+<a name="Test_0_AddressSelfTest.tearDown"></a><div id="Test_0_AddressSelfTest.tearDown-def"><a name="L43"></a><tt class="py-lineno"> 43</tt> <a class="py-toggle" href="#" id="Test_0_AddressSelfTest.tearDown-toggle" onclick="return toggle('Test_0_AddressSelfTest.tearDown');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.Address_Test.Test_0_AddressSelfTest-class.html#tearDown">tearDown</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Test_0_AddressSelfTest.tearDown-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Test_0_AddressSelfTest.tearDown-expanded"><a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line">        <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line">     </tt>
+<a name="Test_0_AddressSelfTest.test10_selfTest"></a><div id="Test_0_AddressSelfTest.test10_selfTest-def"><a name="L46"></a><tt class="py-lineno"> 46</tt> <a class="py-toggle" href="#" id="Test_0_AddressSelfTest.test10_selfTest-toggle" onclick="return toggle('Test_0_AddressSelfTest.test10_selfTest');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.Address_Test.Test_0_AddressSelfTest-class.html#test10_selfTest">test10_selfTest</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Test_0_AddressSelfTest.test10_selfTest-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Test_0_AddressSelfTest.test10_selfTest-expanded"><a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line">        <tt class="py-comment">#assertIsNotNone added in 3.1</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">assertNotEqual</tt><tt class="py-op">(</tt><tt id="link-21" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging.testlog
+QGIS-AIMS-Plugin.AimsUI.AimsLogging.testlog
+QGIS-AIMS-Plugin.RunAllTests.testlog
+QGIS-AIMS-Plugin.Test.AddressFactory_Test.testlog
+QGIS-AIMS-Plugin.Test.Address_Test.testlog
+QGIS-AIMS-Plugin.Test.Controller_Test.testlog
+QGIS-AIMS-Plugin.Test.CreateNewTool_Test.testlog
+QGIS-AIMS-Plugin.Test.DataManager_Test.testlog
+QGIS-AIMS-Plugin.Test.Database_Test.testlog
+QGIS-AIMS-Plugin.Test.LayerManager_Test.testlog" class="py-name" href="#" onclick="return doclink('link-21', 'testlog', 'link-17');">testlog</a></tt><tt class="py-op">,</tt><tt id="link-22" class="py-name" targets="Variable PyQt4.QtCore.QEvent.None=PyQt4.QtCore.QEvent-class.html#None,Variable PyQt4.QtCore.QUrl.None=PyQt4.QtCore.QUrl-class.html#None,Variable PyQt4.QtGui.QAbstractPrintDialog.None=PyQt4.QtGui.QAbstractPrintDialog-class.html#None,Variable PyQt4.QtGui.QStyleOptionButton.None=PyQt4.QtGui.QStyleOptionButton-class.html#None,Variable PyQt4.QtGui.QStyleOptionFrameV2.None=PyQt4.QtGui.QStyleOptionFrameV2-class.html#None,Variable PyQt4.QtGui.QStyleOptionHeader.None=PyQt4.QtGui.QStyleOptionHeader-class.html#None,Variable PyQt4.QtGui.QStyleOptionToolBar.None=PyQt4.QtGui.QStyleOptionToolBar-class.html#None,Variable PyQt4.QtGui.QStyleOptionToolButton.None=PyQt4.QtGui.QStyleOptionToolButton-class.html#None,Variable PyQt4.QtGui.QStyleOptionViewItemV2.None=PyQt4.QtGui.QStyleOptionViewItemV2-class.html#None,Variable qgis._core.QgsRasterBandStats.None=qgis._core.QgsRasterBandStats-class.html#None"><a title="PyQt4.QtCore.QEvent.None
+PyQt4.QtCore.QUrl.None
+PyQt4.QtGui.QAbstractPrintDialog.None
+PyQt4.QtGui.QStyleOptionButton.None
+PyQt4.QtGui.QStyleOptionFrameV2.None
+PyQt4.QtGui.QStyleOptionHeader.None
+PyQt4.QtGui.QStyleOptionToolBar.None
+PyQt4.QtGui.QStyleOptionToolButton.None
+PyQt4.QtGui.QStyleOptionViewItemV2.None
+qgis._core.QgsRasterBandStats.None" class="py-name" href="#" onclick="return doclink('link-22', 'None', 'link-22');">None</a></tt><tt class="py-op">,</tt><tt class="py-string">'Testlog not instantiated'</tt><tt class="py-op">)</tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line">        <tt id="link-23" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging.testlog
+QGIS-AIMS-Plugin.AimsUI.AimsLogging.testlog
+QGIS-AIMS-Plugin.RunAllTests.testlog
+QGIS-AIMS-Plugin.Test.AddressFactory_Test.testlog
+QGIS-AIMS-Plugin.Test.Address_Test.testlog
+QGIS-AIMS-Plugin.Test.Controller_Test.testlog
+QGIS-AIMS-Plugin.Test.CreateNewTool_Test.testlog
+QGIS-AIMS-Plugin.Test.DataManager_Test.testlog
+QGIS-AIMS-Plugin.Test.Database_Test.testlog
+QGIS-AIMS-Plugin.Test.LayerManager_Test.testlog" class="py-name" href="#" onclick="return doclink('link-23', 'testlog', 'link-17');">testlog</a></tt><tt class="py-op">.</tt><tt class="py-name">debug</tt><tt class="py-op">(</tt><tt class="py-string">'Address_Test Log'</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line">         </tt>
+<a name="Test_0_AddressSelfTest.test20_addressTest"></a><div id="Test_0_AddressSelfTest.test20_addressTest-def"><a name="L51"></a><tt class="py-lineno"> 51</tt> <a class="py-toggle" href="#" id="Test_0_AddressSelfTest.test20_addressTest-toggle" onclick="return toggle('Test_0_AddressSelfTest.test20_addressTest');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.Address_Test.Test_0_AddressSelfTest-class.html#test20_addressTest">test20_addressTest</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Test_0_AddressSelfTest.test20_addressTest-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Test_0_AddressSelfTest.test20_addressTest-expanded"><a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line">        <tt class="py-comment">#assertIsNotNone added in 3.1        </tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line">        <tt id="link-24" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging.testlog
+QGIS-AIMS-Plugin.AimsUI.AimsLogging.testlog
+QGIS-AIMS-Plugin.RunAllTests.testlog
+QGIS-AIMS-Plugin.Test.AddressFactory_Test.testlog
+QGIS-AIMS-Plugin.Test.Address_Test.testlog
+QGIS-AIMS-Plugin.Test.Controller_Test.testlog
+QGIS-AIMS-Plugin.Test.CreateNewTool_Test.testlog
+QGIS-AIMS-Plugin.Test.DataManager_Test.testlog
+QGIS-AIMS-Plugin.Test.Database_Test.testlog
+QGIS-AIMS-Plugin.Test.LayerManager_Test.testlog" class="py-name" href="#" onclick="return doclink('link-24', 'testlog', 'link-17');">testlog</a></tt><tt class="py-op">.</tt><tt class="py-name">debug</tt><tt class="py-op">(</tt><tt class="py-string">'Test_0.20 Address instantiation test'</tt><tt class="py-op">)</tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line">        <tt id="link-25" class="py-name" targets="Variable QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdater.address=QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdater-class.html#address"><a title="QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdater.address" class="py-name" href="#" onclick="return doclink('link-25', 'address', 'link-25');">address</a></tt> <tt class="py-op">=</tt> <tt id="link-26" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Address
+QGIS-AIMS-Plugin.AIMSDataManager.Address.Address" class="py-name" href="#" onclick="return doclink('link-26', 'Address', 'link-5');">Address</a></tt><tt class="py-op">(</tt><tt id="link-27" class="py-name"><a title="QGIS-AIMS-Plugin.Test.AddressFactory_Test.user_text
+QGIS-AIMS-Plugin.Test.Address_Test.user_text" class="py-name" href="#" onclick="return doclink('link-27', 'user_text', 'link-20');">user_text</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">assertNotEqual</tt><tt class="py-op">(</tt><tt id="link-28" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdater.address" class="py-name" href="#" onclick="return doclink('link-28', 'address', 'link-25');">address</a></tt><tt class="py-op">,</tt><tt id="link-29" class="py-name"><a title="PyQt4.QtCore.QEvent.None
+PyQt4.QtCore.QUrl.None
+PyQt4.QtGui.QAbstractPrintDialog.None
+PyQt4.QtGui.QStyleOptionButton.None
+PyQt4.QtGui.QStyleOptionFrameV2.None
+PyQt4.QtGui.QStyleOptionHeader.None
+PyQt4.QtGui.QStyleOptionToolBar.None
+PyQt4.QtGui.QStyleOptionToolButton.None
+PyQt4.QtGui.QStyleOptionViewItemV2.None
+qgis._core.QgsRasterBandStats.None" class="py-name" href="#" onclick="return doclink('link-29', 'None', 'link-22');">None</a></tt><tt class="py-op">,</tt><tt class="py-string">'Address not instantiated'</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line">         </tt>
+<a name="Test_1_AddressTestSetters"></a><div id="Test_1_AddressTestSetters-def"><a name="L57"></a><tt class="py-lineno"> 57</tt> <a class="py-toggle" href="#" id="Test_1_AddressTestSetters-toggle" onclick="return toggle('Test_1_AddressTestSetters');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.Address_Test.Test_1_AddressTestSetters-class.html">Test_1_AddressTestSetters</a><tt class="py-op">(</tt><tt class="py-base-class">unittest</tt><tt class="py-op">.</tt><tt class="py-base-class">TestCase</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Test_1_AddressTestSetters-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Test_1_AddressTestSetters-expanded"><a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line">     </tt>
+<a name="Test_1_AddressTestSetters.setUp"></a><div id="Test_1_AddressTestSetters.setUp-def"><a name="L59"></a><tt class="py-lineno"> 59</tt> <a class="py-toggle" href="#" id="Test_1_AddressTestSetters.setUp-toggle" onclick="return toggle('Test_1_AddressTestSetters.setUp');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.Address_Test.Test_1_AddressTestSetters-class.html#setUp">setUp</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt>  </tt>
+</div><a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line">        <tt id="link-30" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging.testlog
+QGIS-AIMS-Plugin.AimsUI.AimsLogging.testlog
+QGIS-AIMS-Plugin.RunAllTests.testlog
+QGIS-AIMS-Plugin.Test.AddressFactory_Test.testlog
+QGIS-AIMS-Plugin.Test.Address_Test.testlog
+QGIS-AIMS-Plugin.Test.Controller_Test.testlog
+QGIS-AIMS-Plugin.Test.CreateNewTool_Test.testlog
+QGIS-AIMS-Plugin.Test.DataManager_Test.testlog
+QGIS-AIMS-Plugin.Test.Database_Test.testlog
+QGIS-AIMS-Plugin.Test.LayerManager_Test.testlog" class="py-name" href="#" onclick="return doclink('link-30', 'testlog', 'link-17');">testlog</a></tt><tt class="py-op">.</tt><tt class="py-name">debug</tt><tt class="py-op">(</tt><tt class="py-string">'Instantiate null address, address.setter list'</tt><tt class="py-op">)</tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_address</tt> <tt class="py-op">=</tt> <tt id="link-31" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Address
+QGIS-AIMS-Plugin.AIMSDataManager.Address.Address" class="py-name" href="#" onclick="return doclink('link-31', 'Address', 'link-5');">Address</a></tt><tt class="py-op">(</tt><tt id="link-32" class="py-name"><a title="QGIS-AIMS-Plugin.Test.AddressFactory_Test.user_text
+QGIS-AIMS-Plugin.Test.Address_Test.user_text" class="py-name" href="#" onclick="return doclink('link-32', 'user_text', 'link-20');">user_text</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_address_setters</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-name">i</tt> <tt class="py-keyword">for</tt> <tt class="py-name">i</tt> <tt class="py-keyword">in</tt> <tt class="py-name">dict</tt><tt class="py-op">(</tt><tt id="link-33" class="py-name"><a title="inspect" class="py-name" href="#" onclick="return doclink('link-33', 'inspect', 'link-0');">inspect</a></tt><tt class="py-op">.</tt><tt class="py-name">getmembers</tt><tt class="py-op">(</tt><tt id="link-34" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Address
+QGIS-AIMS-Plugin.AIMSDataManager.Address.Address" class="py-name" href="#" onclick="return doclink('link-34', 'Address', 'link-5');">Address</a></tt><tt class="py-op">,</tt> <tt class="py-name">predicate</tt><tt class="py-op">=</tt><tt id="link-35" class="py-name"><a title="inspect" class="py-name" href="#" onclick="return doclink('link-35', 'inspect', 'link-0');">inspect</a></tt><tt class="py-op">.</tt><tt class="py-name">ismethod</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> <tt class="py-keyword">if</tt> <tt class="py-name">i</tt><tt class="py-op">[</tt><tt class="py-op">:</tt><tt class="py-number">3</tt><tt class="py-op">]</tt><tt class="py-op">==</tt><tt class="py-string">'set'</tt><tt class="py-op">]</tt> </tt>
+</div><a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line">        <tt class="py-comment">#self._address_setters.remove('setAddressPositions')</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line"> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line">         </tt>
+<a name="Test_1_AddressTestSetters.tearDown"></a><div id="Test_1_AddressTestSetters.tearDown-def"><a name="L66"></a><tt class="py-lineno"> 66</tt> <a class="py-toggle" href="#" id="Test_1_AddressTestSetters.tearDown-toggle" onclick="return toggle('Test_1_AddressTestSetters.tearDown');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.Address_Test.Test_1_AddressTestSetters-class.html#tearDown">tearDown</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Test_1_AddressTestSetters.tearDown-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Test_1_AddressTestSetters.tearDown-expanded"><a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">        <tt id="link-36" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging.testlog
+QGIS-AIMS-Plugin.AimsUI.AimsLogging.testlog
+QGIS-AIMS-Plugin.RunAllTests.testlog
+QGIS-AIMS-Plugin.Test.AddressFactory_Test.testlog
+QGIS-AIMS-Plugin.Test.Address_Test.testlog
+QGIS-AIMS-Plugin.Test.Controller_Test.testlog
+QGIS-AIMS-Plugin.Test.CreateNewTool_Test.testlog
+QGIS-AIMS-Plugin.Test.DataManager_Test.testlog
+QGIS-AIMS-Plugin.Test.Database_Test.testlog
+QGIS-AIMS-Plugin.Test.LayerManager_Test.testlog" class="py-name" href="#" onclick="return doclink('link-36', 'testlog', 'link-17');">testlog</a></tt><tt class="py-op">.</tt><tt class="py-name">debug</tt><tt class="py-op">(</tt><tt class="py-string">'Destroy null address'</tt><tt class="py-op">)</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_address</tt> <tt class="py-op">=</tt> <tt id="link-37" class="py-name"><a title="PyQt4.QtCore.QEvent.None
+PyQt4.QtCore.QUrl.None
+PyQt4.QtGui.QAbstractPrintDialog.None
+PyQt4.QtGui.QStyleOptionButton.None
+PyQt4.QtGui.QStyleOptionFrameV2.None
+PyQt4.QtGui.QStyleOptionHeader.None
+PyQt4.QtGui.QStyleOptionToolBar.None
+PyQt4.QtGui.QStyleOptionToolButton.None
+PyQt4.QtGui.QStyleOptionViewItemV2.None
+qgis._core.QgsRasterBandStats.None" class="py-name" href="#" onclick="return doclink('link-37', 'None', 'link-22');">None</a></tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_address_setters</tt> <tt class="py-op">=</tt> <tt id="link-38" class="py-name"><a title="PyQt4.QtCore.QEvent.None
+PyQt4.QtCore.QUrl.None
+PyQt4.QtGui.QAbstractPrintDialog.None
+PyQt4.QtGui.QStyleOptionButton.None
+PyQt4.QtGui.QStyleOptionFrameV2.None
+PyQt4.QtGui.QStyleOptionHeader.None
+PyQt4.QtGui.QStyleOptionToolBar.None
+PyQt4.QtGui.QStyleOptionToolButton.None
+PyQt4.QtGui.QStyleOptionViewItemV2.None
+qgis._core.QgsRasterBandStats.None" class="py-name" href="#" onclick="return doclink('link-38', 'None', 'link-22');">None</a></tt> </tt>
+</div><a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">         </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">         </tt>
+<a name="Test_1_AddressTestSetters.test10_instSetters"></a><div id="Test_1_AddressTestSetters.test10_instSetters-def"><a name="L72"></a><tt class="py-lineno"> 72</tt> <a class="py-toggle" href="#" id="Test_1_AddressTestSetters.test10_instSetters-toggle" onclick="return toggle('Test_1_AddressTestSetters.test10_instSetters');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.Address_Test.Test_1_AddressTestSetters-class.html#test10_instSetters">test10_instSetters</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Test_1_AddressTestSetters.test10_instSetters-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Test_1_AddressTestSetters.test10_instSetters-expanded"><a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line">        <tt class="py-docstring">'''Tests that all the setters set a matching attribute i.e. setAttribute("X") -&gt; self._Attribute = "X"'''</tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">        <tt class="py-comment">#this no longer works since changing to full path attribute names eg _components_roadName</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">        <tt id="link-39" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging.testlog
+QGIS-AIMS-Plugin.AimsUI.AimsLogging.testlog
+QGIS-AIMS-Plugin.RunAllTests.testlog
+QGIS-AIMS-Plugin.Test.AddressFactory_Test.testlog
+QGIS-AIMS-Plugin.Test.Address_Test.testlog
+QGIS-AIMS-Plugin.Test.Controller_Test.testlog
+QGIS-AIMS-Plugin.Test.CreateNewTool_Test.testlog
+QGIS-AIMS-Plugin.Test.DataManager_Test.testlog
+QGIS-AIMS-Plugin.Test.Database_Test.testlog
+QGIS-AIMS-Plugin.Test.LayerManager_Test.testlog" class="py-name" href="#" onclick="return doclink('link-39', 'testlog', 'link-17');">testlog</a></tt><tt class="py-op">.</tt><tt class="py-name">debug</tt><tt class="py-op">(</tt><tt class="py-string">'Test_1.10 Instantiate all setters'</tt><tt class="py-op">)</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">asttr</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_address_setters</tt><tt class="py-op">:</tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line">            <tt class="py-name">aval</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-40" class="py-name" targets="Method QGIS-AIMS-Plugin.Test.Address_Test.Test_1_AddressTestSetters._generateAttrVal()=QGIS-AIMS-Plugin.Test.Address_Test.Test_1_AddressTestSetters-class.html#_generateAttrVal"><a title="QGIS-AIMS-Plugin.Test.Address_Test.Test_1_AddressTestSetters._generateAttrVal" class="py-name" href="#" onclick="return doclink('link-40', '_generateAttrVal', 'link-40');">_generateAttrVal</a></tt><tt class="py-op">(</tt><tt class="py-name">asttr</tt><tt class="py-op">)</tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line">            <tt class="py-name">aname</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-41" class="py-name" targets="Method QGIS-AIMS-Plugin.Test.Address_Test.Test_1_AddressTestSetters._generateAttrName()=QGIS-AIMS-Plugin.Test.Address_Test.Test_1_AddressTestSetters-class.html#_generateAttrName"><a title="QGIS-AIMS-Plugin.Test.Address_Test.Test_1_AddressTestSetters._generateAttrName" class="py-name" href="#" onclick="return doclink('link-41', '_generateAttrName', 'link-41');">_generateAttrName</a></tt><tt class="py-op">(</tt><tt class="py-name">asttr</tt><tt class="py-op">)</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">            <tt class="py-name">getattr</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_address</tt><tt class="py-op">,</tt> <tt class="py-name">asttr</tt><tt class="py-op">)</tt><tt class="py-op">(</tt><tt class="py-name">aval</tt><tt class="py-op">)</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">assertEqual</tt><tt class="py-op">(</tt><tt class="py-name">getattr</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_address</tt><tt class="py-op">,</tt> <tt class="py-name">aname</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-name">aval</tt><tt class="py-op">,</tt> <tt class="py-string">'set* : Setter {} not setting correct attribute value {}'</tt><tt class="py-op">.</tt><tt id="link-42" class="py-name" targets="Variable PyQt4.QtGui.QAbstractTextDocumentLayout.Selection.format=PyQt4.QtGui.QAbstractTextDocumentLayout.Selection-class.html#format,Variable PyQt4.QtGui.QTextEdit.ExtraSelection.format=PyQt4.QtGui.QTextEdit.ExtraSelection-class.html#format,Variable PyQt4.QtGui.QTextLayout.FormatRange.format=PyQt4.QtGui.QTextLayout.FormatRange-class.html#format,Variable qgis._gui.QgsOWSSourceSelect.SupportedFormat.format=qgis._gui.QgsOWSSourceSelect.SupportedFormat-class.html#format"><a title="PyQt4.QtGui.QAbstractTextDocumentLayout.Selection.format
+PyQt4.QtGui.QTextEdit.ExtraSelection.format
+PyQt4.QtGui.QTextLayout.FormatRange.format
+qgis._gui.QgsOWSSourceSelect.SupportedFormat.format" class="py-name" href="#" onclick="return doclink('link-42', 'format', 'link-42');">format</a></tt><tt class="py-op">(</tt><tt class="py-name">asttr</tt><tt class="py-op">,</tt><tt class="py-name">aval</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line">             </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line"> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line">    <tt class="py-comment">#@unittest.skip("Test skipped awaiting finalisation of Address Class structure")</tt> </tt>
+<a name="Test_1_AddressTestSetters.test30_checkPopulatedAddressChangeDict"></a><div id="Test_1_AddressTestSetters.test30_checkPopulatedAddressChangeDict-def"><a name="L85"></a><tt class="py-lineno"> 85</tt> <a class="py-toggle" href="#" id="Test_1_AddressTestSetters.test30_checkPopulatedAddressChangeDict-toggle" onclick="return toggle('Test_1_AddressTestSetters.test30_checkPopulatedAddressChangeDict');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.Address_Test.Test_1_AddressTestSetters-class.html#test30_checkPopulatedAddressChangeDict">test30_checkPopulatedAddressChangeDict</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Test_1_AddressTestSetters.test30_checkPopulatedAddressChangeDict-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Test_1_AddressTestSetters.test30_checkPopulatedAddressChangeDict-expanded"><a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">        <tt class="py-docstring">'''Tests whether JSON object gets created correctly'''</tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">        <tt class="py-comment">#this function has moved to addressfactory</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">        <tt id="link-43" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging.testlog
+QGIS-AIMS-Plugin.AimsUI.AimsLogging.testlog
+QGIS-AIMS-Plugin.RunAllTests.testlog
+QGIS-AIMS-Plugin.Test.AddressFactory_Test.testlog
+QGIS-AIMS-Plugin.Test.Address_Test.testlog
+QGIS-AIMS-Plugin.Test.Controller_Test.testlog
+QGIS-AIMS-Plugin.Test.CreateNewTool_Test.testlog
+QGIS-AIMS-Plugin.Test.DataManager_Test.testlog
+QGIS-AIMS-Plugin.Test.Database_Test.testlog
+QGIS-AIMS-Plugin.Test.LayerManager_Test.testlog" class="py-name" href="#" onclick="return doclink('link-43', 'testlog', 'link-17');">testlog</a></tt><tt class="py-op">.</tt><tt class="py-name">debug</tt><tt class="py-op">(</tt><tt class="py-string">'Test_1.30 Attributes set to match JSON sample and compare'</tt><tt class="py-op">)</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">        <tt class="py-comment">#return True</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line"> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">asm</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_address_setters</tt><tt class="py-op">:</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">asm</tt> <tt class="py-op">==</tt> <tt class="py-string">'setAddressPositions'</tt><tt class="py-op">:</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">                <tt class="py-name">getattr</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_address</tt><tt class="py-op">,</tt> <tt class="py-name">asm</tt><tt class="py-op">)</tt><tt class="py-op">(</tt><tt class="py-op">[</tt><tt id="link-44" class="py-name"><a title="PyQt4.QtGui.QStyleOptionViewItem.Position
+PyQt4.QtGui.QTextFrameFormat.Position
+QGIS-AIMS-Plugin.AIMSDataManager.Address.Position" class="py-name" href="#" onclick="return doclink('link-44', 'Position', 'link-9');">Position</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line">                <tt class="py-keyword">continue</tt> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">            <tt class="py-name">aval</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-45" class="py-name"><a title="QGIS-AIMS-Plugin.Test.Address_Test.Test_1_AddressTestSetters._generateAttrVal" class="py-name" href="#" onclick="return doclink('link-45', '_generateAttrVal', 'link-40');">_generateAttrVal</a></tt><tt class="py-op">(</tt><tt class="py-name">asm</tt><tt class="py-op">)</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">            <tt class="py-name">getattr</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_address</tt><tt class="py-op">,</tt> <tt class="py-name">asm</tt><tt class="py-op">)</tt><tt class="py-op">(</tt><tt class="py-name">aval</tt><tt class="py-op">)</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_address</tt><tt class="py-op">.</tt><tt id="link-46" class="py-name" targets="Method QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressRequestFeed.setVersion()=QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressRequestFeed-class.html#setVersion,Method QGIS-AIMS-Plugin.AIMSDataManager.Group.Group.setVersion()=QGIS-AIMS-Plugin.AIMSDataManager.Group.Group-class.html#setVersion,Method QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupRequestFeed.setVersion()=QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupRequestFeed-class.html#setVersion"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressRequestFeed.setVersion
+QGIS-AIMS-Plugin.AIMSDataManager.Group.Group.setVersion
+QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupRequestFeed.setVersion" class="py-name" href="#" onclick="return doclink('link-46', 'setVersion', 'link-46');">setVersion</a></tt><tt class="py-op">(</tt><tt class="py-number">100</tt><tt class="py-op">)</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">at</tt> <tt class="py-keyword">in</tt> <tt class="py-op">(</tt><tt id="link-47" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.ActionType
+qgis._core.QgsAction.ActionType" class="py-name" href="#" onclick="return doclink('link-47', 'ActionType', 'link-14');">ActionType</a></tt><tt class="py-op">.</tt><tt class="py-name">ADD</tt><tt class="py-op">,</tt><tt id="link-48" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.ActionType
+qgis._core.QgsAction.ActionType" class="py-name" href="#" onclick="return doclink('link-48', 'ActionType', 'link-14');">ActionType</a></tt><tt class="py-op">.</tt><tt class="py-name">RETIRE</tt><tt class="py-op">,</tt><tt id="link-49" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.ActionType
+qgis._core.QgsAction.ActionType" class="py-name" href="#" onclick="return doclink('link-49', 'ActionType', 'link-14');">ActionType</a></tt><tt class="py-op">.</tt><tt class="py-name">UPDATE</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line">            <tt class="py-name">jresult</tt> <tt class="py-op">=</tt> <tt id="link-50" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressChangeFactory" class="py-name" href="#" onclick="return doclink('link-50', 'AddressChangeFactory', 'link-11');">AddressChangeFactory</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-51" class="py-name" targets="Method QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFeedFactory.convertAddress()=QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFeedFactory-class.html#convertAddress"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFeedFactory.convertAddress" class="py-name" href="#" onclick="return doclink('link-51', 'convertAddress', 'link-51');">convertAddress</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_address</tt><tt class="py-op">,</tt><tt class="py-name">at</tt><tt class="py-op">)</tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">assertEqual</tt><tt class="py-op">(</tt><tt class="py-name">jresult</tt><tt class="py-op">,</tt> <tt id="link-52" class="py-name" targets="Function QGIS-AIMS-Plugin.Test.Address_Test.getTestData()=QGIS-AIMS-Plugin.Test.Address_Test-module.html#getTestData"><a title="QGIS-AIMS-Plugin.Test.Address_Test.getTestData" class="py-name" href="#" onclick="return doclink('link-52', 'getTestData', 'link-52');">getTestData</a></tt><tt class="py-op">(</tt><tt class="py-name">at</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-string">'JSON Address constructed incorrectly {}'</tt><tt class="py-op">.</tt><tt id="link-53" class="py-name"><a title="PyQt4.QtGui.QAbstractTextDocumentLayout.Selection.format
+PyQt4.QtGui.QTextEdit.ExtraSelection.format
+PyQt4.QtGui.QTextLayout.FormatRange.format
+qgis._gui.QgsOWSSourceSelect.SupportedFormat.format" class="py-name" href="#" onclick="return doclink('link-53', 'format', 'link-42');">format</a></tt><tt class="py-op">(</tt><tt class="py-name">jresult</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line">         </tt>
+<a name="Test_1_AddressTestSetters.test31_checkAddressDictNullRemoval"></a><div id="Test_1_AddressTestSetters.test31_checkAddressDictNullRemoval-def"><a name="L102"></a><tt class="py-lineno">102</tt> <a class="py-toggle" href="#" id="Test_1_AddressTestSetters.test31_checkAddressDictNullRemoval-toggle" onclick="return toggle('Test_1_AddressTestSetters.test31_checkAddressDictNullRemoval');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.Address_Test.Test_1_AddressTestSetters-class.html#test31_checkAddressDictNullRemoval">test31_checkAddressDictNullRemoval</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Test_1_AddressTestSetters.test31_checkAddressDictNullRemoval-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Test_1_AddressTestSetters.test31_checkAddressDictNullRemoval-expanded"><a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line">        <tt class="py-docstring">'''check whether JSON output is truncated correctly on null inputs'''</tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line">        <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line">     </tt>
+<a name="Test_1_AddressTestSetters.test32_checkAddressDictErrorRaisedOnNull"></a><div id="Test_1_AddressTestSetters.test32_checkAddressDictErrorRaisedOnNull-def"><a name="L106"></a><tt class="py-lineno">106</tt> <a class="py-toggle" href="#" id="Test_1_AddressTestSetters.test32_checkAddressDictErrorRaisedOnNull-toggle" onclick="return toggle('Test_1_AddressTestSetters.test32_checkAddressDictErrorRaisedOnNull');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.Address_Test.Test_1_AddressTestSetters-class.html#test32_checkAddressDictErrorRaisedOnNull">test32_checkAddressDictErrorRaisedOnNull</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Test_1_AddressTestSetters.test32_checkAddressDictErrorRaisedOnNull-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Test_1_AddressTestSetters.test32_checkAddressDictErrorRaisedOnNull-expanded"><a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line">        <tt class="py-docstring">'''Check error raised if attempt to create JSON output on null address array'''</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line">        <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line">         </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line"><tt class="py-comment">#------------------------------------------------------------------------------    </tt> </tt>
+<a name="Test_1_AddressTestSetters._generateAttrVal"></a><div id="Test_1_AddressTestSetters._generateAttrVal-def"><a name="L111"></a><tt class="py-lineno">111</tt> <a class="py-toggle" href="#" id="Test_1_AddressTestSetters._generateAttrVal-toggle" onclick="return toggle('Test_1_AddressTestSetters._generateAttrVal');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.Address_Test.Test_1_AddressTestSetters-class.html#_generateAttrVal">_generateAttrVal</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">setmthd</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Test_1_AddressTestSetters._generateAttrVal-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Test_1_AddressTestSetters._generateAttrVal-expanded"><a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line">        <tt class="py-name">s</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-54" class="py-name" targets="Method QGIS-AIMS-Plugin.Test.Address_Test.Test_1_AddressTestSetters._special()=QGIS-AIMS-Plugin.Test.Address_Test.Test_1_AddressTestSetters-class.html#_special"><a title="QGIS-AIMS-Plugin.Test.Address_Test.Test_1_AddressTestSetters._special" class="py-name" href="#" onclick="return doclink('link-54', '_special', 'link-54');">_special</a></tt><tt class="py-op">(</tt><tt class="py-name">setmthd</tt><tt class="py-op">)</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">s</tt><tt class="py-op">:</tt> <tt class="py-keyword">return</tt> <tt class="py-name">s</tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line">        <tt class="py-name">setmthd</tt> <tt class="py-op">=</tt> <tt class="py-name">re</tt><tt class="py-op">.</tt><tt class="py-name">match</tt><tt class="py-op">(</tt><tt class="py-string">'set_*(.*)'</tt><tt class="py-op">,</tt><tt class="py-name">setmthd</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">group</tt><tt class="py-op">(</tt><tt class="py-number">1</tt><tt class="py-op">)</tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">setmthd</tt><tt class="py-op">[</tt><tt class="py-op">:</tt><tt class="py-number">1</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt class="py-name">upper</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">+</tt><tt class="py-string">''</tt><tt class="py-op">.</tt><tt class="py-name">join</tt><tt class="py-op">(</tt><tt class="py-op">[</tt><tt class="py-name">s</tt> <tt class="py-keyword">for</tt> <tt class="py-name">s</tt> <tt class="py-keyword">in</tt> <tt class="py-name">setmthd</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">:</tt><tt class="py-op">]</tt> <tt class="py-keyword">if</tt> <tt class="py-name">ord</tt><tt class="py-op">(</tt><tt class="py-name">s</tt><tt class="py-op">)</tt><tt class="py-op">&gt;</tt><tt class="py-number">64</tt> <tt class="py-keyword">and</tt> <tt class="py-name">ord</tt><tt class="py-op">(</tt><tt class="py-name">s</tt><tt class="py-op">)</tt><tt class="py-op">&lt;</tt><tt class="py-number">91</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line">     </tt>
+<a name="Test_1_AddressTestSetters._generateAttrName"></a><div id="Test_1_AddressTestSetters._generateAttrName-def"><a name="L117"></a><tt class="py-lineno">117</tt> <a class="py-toggle" href="#" id="Test_1_AddressTestSetters._generateAttrName-toggle" onclick="return toggle('Test_1_AddressTestSetters._generateAttrName');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.Address_Test.Test_1_AddressTestSetters-class.html#_generateAttrName">_generateAttrName</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">setmthd</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Test_1_AddressTestSetters._generateAttrName-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Test_1_AddressTestSetters._generateAttrName-expanded"><a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line">        <tt class="py-name">setmthd</tt> <tt class="py-op">=</tt> <tt class="py-name">re</tt><tt class="py-op">.</tt><tt class="py-name">match</tt><tt class="py-op">(</tt><tt class="py-string">'set_*(.*)'</tt><tt class="py-op">,</tt><tt class="py-name">setmthd</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">group</tt><tt class="py-op">(</tt><tt class="py-number">1</tt><tt class="py-op">)</tt> </tt>
+<a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-string">'_'</tt><tt class="py-op">+</tt><tt class="py-name">setmthd</tt><tt class="py-op">[</tt><tt class="py-op">:</tt><tt class="py-number">1</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt class="py-name">lower</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">+</tt><tt class="py-name">setmthd</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">:</tt><tt class="py-op">]</tt> </tt>
+</div><a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line">     </tt>
+<a name="Test_1_AddressTestSetters._special"></a><div id="Test_1_AddressTestSetters._special-def"><a name="L121"></a><tt class="py-lineno">121</tt> <a class="py-toggle" href="#" id="Test_1_AddressTestSetters._special-toggle" onclick="return toggle('Test_1_AddressTestSetters._special');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.Address_Test.Test_1_AddressTestSetters-class.html#_special">_special</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">meth</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Test_1_AddressTestSetters._special-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Test_1_AddressTestSetters._special-expanded"><a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">meth</tt> <tt class="py-op">==</tt> <tt class="py-string">'setObjectType'</tt><tt class="py-op">:</tt><tt class="py-keyword">return</tt> <tt class="py-string">'Parcel'</tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">meth</tt> <tt class="py-op">==</tt> <tt class="py-string">'setAddressType'</tt><tt class="py-op">:</tt><tt class="py-keyword">return</tt> <tt class="py-string">'Road'</tt>  </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">meth</tt> <tt class="py-op">==</tt> <tt class="py-string">'setLifecycle'</tt><tt class="py-op">:</tt><tt class="py-keyword">return</tt> <tt class="py-string">'Current'</tt> </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> </tt>
+</div></div><a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line">         </tt>
+<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line">     </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line"> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line">     </tt>
+<a name="getTestData"></a><div id="getTestData-def"><a name="L130"></a><tt class="py-lineno">130</tt> <a class="py-toggle" href="#" id="getTestData-toggle" onclick="return toggle('getTestData');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.Address_Test-module.html#getTestData">getTestData</a><tt class="py-op">(</tt><tt class="py-param">at</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="getTestData-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="getTestData-expanded"><a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line"><tt class="py-comment">#     return {</tt> </tt>
+<a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line"><tt class="py-comment">#             'workflow':{</tt> </tt>
+<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line"><tt class="py-comment">#                 'sourceUser':'SU','sourceReason':'SR'},</tt> </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line"><tt class="py-comment">#             'components':{</tt> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line"><tt class="py-comment">#                 'addressType':'AT','externalAddressId':'EAI','externalAddressIdScheme':'EAIS',</tt> </tt>
+<a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line"><tt class="py-comment">#                 'lifecycle':'L','unitType':'UT','unitValue':'UV','levelType':'LT','levelValue':'LV',</tt> </tt>
+<a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line"><tt class="py-comment">#                 'addressNumberPrefix':'ANP','addressNumber':'AN',</tt> </tt>
+<a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line"><tt class="py-comment">#                 'addressNumberSuffix':'ANS','addressNumberHigh':'ANH',</tt> </tt>
+<a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line"><tt class="py-comment">#                 'roadCentrelineId':'RCLI','roadPrefix':'RP','roadName':'RN','roadType':'RTN','roadSuffix':'RS',</tt> </tt>
+<a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line"><tt class="py-comment">#                 'waterRoute':'WRN','waterName':'WN',</tt> </tt>
+<a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line"><tt class="py-comment">#                 'suburbLocality':'SL','townCity':'TC'},</tt> </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line"><tt class="py-comment">#             'addressedObject':{</tt> </tt>
+<a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line"><tt class="py-comment">#                 'objectType':'OT','objectName':'ON',</tt> </tt>
+<a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line"><tt class="py-comment">#                 'addressPosition':{</tt> </tt>
+<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line"><tt class="py-comment">#                     'type':'APT','coordinates':[1,1],</tt> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line"><tt class="py-comment">#                     'crs':{'type':'CT','properties':{'name':'CP'}}},</tt> </tt>
+<a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line"><tt class="py-comment">#             'externalObjectId':'EOI','externalObjectIdScheme':'EOIS',</tt> </tt>
+<a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line"><tt class="py-comment">#             'valuationReference':'VR','certificateOfTitle':'COT','appellation':'A'</tt> </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line"><tt class="py-comment">#         }}</tt> </tt>
+<a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-op">{</tt><tt class="py-string">'addressedObject'</tt><tt class="py-op">:</tt> <tt class="py-op">{</tt><tt class="py-string">'addressPositions'</tt><tt class="py-op">:</tt> <tt class="py-op">[</tt><tt class="py-op">{</tt><tt class="py-string">'position'</tt><tt class="py-op">:</tt> <tt class="py-op">{</tt><tt class="py-string">'crs'</tt><tt class="py-op">:</tt> <tt class="py-op">{</tt><tt class="py-string">'type'</tt><tt class="py-op">:</tt> <tt class="py-string">'name'</tt><tt class="py-op">,</tt> <tt class="py-string">'properties'</tt><tt class="py-op">:</tt> <tt class="py-op">{</tt><tt class="py-string">'name'</tt><tt class="py-op">:</tt> <tt class="py-string">'urn:ogc:def:crs:EPSG::4167'</tt><tt class="py-op">}</tt><tt class="py-op">}</tt><tt class="py-op">,</tt> <tt class="py-string">'type'</tt><tt class="py-op">:</tt> <tt class="py-string">'Point'</tt><tt class="py-op">}</tt><tt class="py-op">,</tt> <tt class="py-string">'positionType'</tt><tt class="py-op">:</tt> <tt class="py-string">'Unknown'</tt><tt class="py-op">,</tt> <tt class="py-string">'primary'</tt><tt class="py-op">:</tt> <tt class="py-name">True</tt><tt class="py-op">}</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-string">'valuationReference'</tt><tt class="py-op">:</tt> <tt class="py-string">'VR'</tt><tt class="py-op">,</tt> <tt class="py-string">'externalObjectId'</tt><tt class="py-op">:</tt> <tt class="py-string">'EOI'</tt><tt class="py-op">,</tt> <tt class="py-string">'objectName'</tt><tt class="py-op">:</tt> <tt class="py-string">'ON'</tt><tt class="py-op">,</tt> <tt class="py-string">'certificateOfTitle'</tt><tt class="py-op">:</tt> <tt class="py-string">'COT'</tt><tt class="py-op">,</tt> <tt class="py-string">'externalObjectIdScheme'</tt><tt class="py-op">:</tt> <tt class="py-string">'EOIS'</tt><tt class="py-op">,</tt> <tt class="py-string">'objectType'</tt><tt class="py-op">:</tt> <tt class="py-string">'Parcel'</tt><tt class="py-op">}</tt><tt class="py-op">,</tt> <tt class="py-string">'components'</tt><tt class="py-op">:</tt> <tt class="py-op">{</tt><tt class="py-string">'roadSuffix'</tt><tt class="py-op">:</tt> <tt class="py-string">'RS'</tt><tt class="py-op">,</tt> <tt class="py-string">'unitType'</tt><tt class="py-op">:</tt> <tt class="py-string">'UT'</tt><tt class="py-op">,</tt> <tt class="py-string">'addressType'</tt><tt class="py-op">:</tt> <tt class="py-string">'Road'</tt><tt class="py-op">,</tt> <tt class="py-string">'waterRoute'</tt><tt class="py-op">:</tt> <tt class="py-string">'WR'</tt><tt class="py-op">,</tt> <tt class="py-string">'levelType'</tt><tt class="py-op">:</tt> <tt class="py-string">'LT'</tt><tt class="py-op">,</tt> <tt class="py-string">'lifecycle'</tt><tt class="py-op">:</tt> <tt class="py-string">'Current'</tt><tt class="py-op">,</tt> <tt class="py-string">'addressNumberSuffix'</tt><tt class="py-op">:</tt> <tt class="py-string">'ANS'</tt><tt class="py-op">,</tt> <tt class="py-string">'addressNumberPrefix'</tt><tt class="py-op">:</tt> <tt class="py-string">'ANP'</tt><tt class="py-op">,</tt> <tt class="py-string">'roadName'</tt><tt class="py-op">:</tt> <tt class="py-string">'RN'</tt><tt class="py-op">,</tt> <tt class="py-string">'roadPrefix'</tt><tt class="py-op">:</tt> <tt class="py-string">'RP'</tt><tt class="py-op">,</tt> <tt class="py-string">'externalAddressIdScheme'</tt><tt class="py-op">:</tt> <tt class="py-string">'EAIS'</tt><tt class="py-op">,</tt> <tt class="py-string">'suburbLocality'</tt><tt class="py-op">:</tt> <tt class="py-string">'SL'</tt><tt class="py-op">,</tt> <tt class="py-string">'roadCentrelineId'</tt><tt class="py-op">:</tt> <tt class="py-string">'RCI'</tt><tt class="py-op">,</tt> <tt class="py-string">'waterName'</tt><tt class="py-op">:</tt> <tt class="py-string">'WN'</tt><tt class="py-op">,</tt> <tt class="py-string">'externalAddressId'</tt><tt class="py-op">:</tt> <tt class="py-string">'EAI'</tt><tt class="py-op">,</tt> <tt class="py-string">'roadType'</tt><tt class="py-op">:</tt> <tt class="py-string">'RT'</tt><tt class="py-op">,</tt> <tt class="py-string">'addressNumber'</tt><tt class="py-op">:</tt> <tt class="py-string">'AN'</tt><tt class="py-op">,</tt> <tt class="py-string">'levelValue'</tt><tt class="py-op">:</tt> <tt class="py-string">'LV'</tt><tt class="py-op">,</tt> <tt class="py-string">'townCity'</tt><tt class="py-op">:</tt> <tt class="py-string">'TC'</tt><tt class="py-op">,</tt> <tt class="py-string">'unitValue'</tt><tt class="py-op">:</tt> <tt class="py-string">'UV'</tt><tt class="py-op">}</tt><tt class="py-op">,</tt> <tt class="py-string">'workflow'</tt><tt class="py-op">:</tt> <tt class="py-op">{</tt><tt class="py-string">'sourceUser'</tt><tt class="py-op">:</tt> <tt class="py-string">'SU'</tt><tt class="py-op">,</tt> <tt class="py-string">'sourceReason'</tt><tt class="py-op">:</tt> <tt class="py-string">'SR'</tt><tt class="py-op">}</tt><tt class="py-op">}</tt> </tt>
+</div><a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line"> </tt>
+<a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line"> </tt>
+<a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line"><tt class="py-keyword">if</tt> <tt class="py-name">__name__</tt> <tt class="py-op">==</tt> <tt class="py-string">"__main__"</tt><tt class="py-op">:</tt> </tt>
+<a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line">    <tt class="py-name">unittest</tt><tt class="py-op">.</tt><tt id="link-55" class="py-name" targets="Function QGIS-AIMS-Plugin.RunAllTests.main()=QGIS-AIMS-Plugin.RunAllTests-module.html#main,Function QGIS-AIMS-Plugin.Test.AimsService_Mock.main()=QGIS-AIMS-Plugin.Test.AimsService_Mock-module.html#main"><a title="QGIS-AIMS-Plugin.RunAllTests.main
+QGIS-AIMS-Plugin.Test.AimsService_Mock.main" class="py-name" href="#" onclick="return doclink('link-55', 'main', 'link-55');">main</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L155"></a><tt class="py-lineno">155</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="QGIS-AIMS-Plugin-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Jun 14 13:07:07 2016
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

@@ -1,0 +1,1208 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QGIS-AIMS-Plugin.AimsUI.LayerManager.LayerManager</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="QGIS-AIMS-Plugin-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="QGIS-AIMS-Plugin-module.html">Package&nbsp;QGIS-AIMS-Plugin</a> ::
+        Package&nbsp;AimsUI ::
+        <a href="QGIS-AIMS-Plugin.AimsUI.LayerManager-module.html">Module&nbsp;LayerManager</a> ::
+        Class&nbsp;LayerManager
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="QGIS-AIMS-Plugin.AimsUI.LayerManager.LayerManager-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class LayerManager</h1><p class="nomargin-top"><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager-pysrc.html#LayerManager">source&nbsp;code</a></span></p>
+<pre class="base-tree">
+??-334 --+
+         |
+        <strong class="uidshort">LayerManager</strong>
+</pre>
+
+<hr />
+<p>Managers the loading and updating of AIMS data as served by the API 
+  and LINZ reference data.</p>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__init__"></a><span class="summary-sig-name">__init__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">iface</span>,
+        <span class="summary-sig-arg">controller</span>)</span><br />
+      Register the Layer manager with the Data Manager observer pattern 
+      therefore to be notified of new Data Manager data.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager-pysrc.html#LayerManager.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="initialiseExtentEvent"></a><span class="summary-sig-name">initialiseExtentEvent</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      When the plugin is enabled (Via the .Controller()) QGIS extentChanged
+      signal connected to setbbox method</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager-pysrc.html#LayerManager.initialiseExtentEvent">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager.LayerManager-class.html#disconnectExtentEvent" class="summary-sig-name">disconnectExtentEvent</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      At plugin unload, disconnect the ...</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager-pysrc.html#LayerManager.disconnectExtentEvent">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">string</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager.LayerManager-class.html#layerId" class="summary-sig-name">layerId</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">layer</span>)</span><br />
+      Takes a layer as Vector Layer as a parameter and reutrns the layers 
+      Id as used by the plugin to reffer to the layers</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager-pysrc.html#LayerManager.layerId">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager.LayerManager-class.html#setLayerId" class="summary-sig-name">setLayerId</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">layer</span>,
+        <span class="summary-sig-arg">id</span>)</span><br />
+      Set id property for layer</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager-pysrc.html#LayerManager.setLayerId">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="layers"></a><span class="summary-sig-name">layers</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Iterates over and yeilds all QGIS Map Layers</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager-pysrc.html#LayerManager.layers">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">qgis._core.QgsVectorLayer</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager.LayerManager-class.html#addressLayer" class="summary-sig-name">addressLayer</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Return the AIMS Address Layer</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager-pysrc.html#LayerManager.addressLayer">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">qgis._core.QgsVectorLayer</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager.LayerManager-class.html#rclLayer" class="summary-sig-name">rclLayer</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Return the Road Centre Line Layer</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager-pysrc.html#LayerManager.rclLayer">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">qgis._core.QgsVectorLayer</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager.LayerManager-class.html#revLayer" class="summary-sig-name">revLayer</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Return the Review Layer</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager-pysrc.html#LayerManager.revLayer">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager.LayerManager-class.html#checkRemovedLayer" class="summary-sig-name">checkRemovedLayer</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">id</span>)</span><br />
+      If layer removed set layer references to None</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager-pysrc.html#LayerManager.checkRemovedLayer">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager.LayerManager-class.html#checkNewLayer" class="summary-sig-name">checkNewLayer</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">layer</span>)</span><br />
+      Assign an AIMS QgsVectorLayer to a LayerManager layer property</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager-pysrc.html#LayerManager.checkNewLayer">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">qgis._core.QgsVectorLayer</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager.LayerManager-class.html#findLayer" class="summary-sig-name">findLayer</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name</span>)</span><br />
+      Assign an AIMS QgsVectorLayer to a LayerManager layer property</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager-pysrc.html#LayerManager.findLayer">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager.LayerManager-class.html#styleLayer" class="summary-sig-name">styleLayer</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">layer</span>,
+        <span class="summary-sig-arg">id</span>)</span><br />
+      Set layer style as per the relevant .qml file</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager-pysrc.html#LayerManager.styleLayer">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">qgis._core.QgsVectorLayer</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager.LayerManager-class.html#installLayer" class="summary-sig-name">installLayer</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">id</span>,
+        <span class="summary-sig-arg">schema</span>,
+        <span class="summary-sig-arg">table</span>,
+        <span class="summary-sig-arg">key</span>,
+        <span class="summary-sig-arg">estimated</span>,
+        <span class="summary-sig-arg">where</span>,
+        <span class="summary-sig-arg">displayname</span>)</span><br />
+      Install AIMS postgres reference layers</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager-pysrc.html#LayerManager.installLayer">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="installRefLayers"></a><span class="summary-sig-name">installRefLayers</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Install AIMS postgres reference layers</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager-pysrc.html#LayerManager.installRefLayers">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager.LayerManager-class.html#addLayerFields" class="summary-sig-name">addLayerFields</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">layer</span>,
+        <span class="summary-sig-arg">provider</span>,
+        <span class="summary-sig-arg">id</span>,
+        <span class="summary-sig-arg">fields</span>)</span><br />
+      Add fields to a layer</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager-pysrc.html#LayerManager.addLayerFields">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager.LayerManager-class.html#installAimsLayer" class="summary-sig-name">installAimsLayer</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">id</span>,
+        <span class="summary-sig-arg">displayname</span>)</span><br />
+      Install AIMS feature and review layers</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager-pysrc.html#LayerManager.installAimsLayer">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">boolean</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager.LayerManager-class.html#isVisible" class="summary-sig-name">isVisible</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">layer</span>)</span><br />
+      Test if a layer is visible</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager-pysrc.html#LayerManager.isVisible">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager.LayerManager-class.html#removeFeatures" class="summary-sig-name">removeFeatures</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">layer</span>)</span><br />
+      Remove all features from a layer</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager-pysrc.html#LayerManager.removeFeatures">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager.LayerManager-class.html#addToLayer" class="summary-sig-name">addToLayer</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">rData</span>,
+        <span class="summary-sig-arg">layer</span>)</span><br />
+      Add aims review features to reveiw layer</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager-pysrc.html#LayerManager.addToLayer">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="updateReviewLayer"></a><span class="summary-sig-name">updateReviewLayer</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Update review layer</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager-pysrc.html#LayerManager.updateReviewLayer">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">boolean</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager.LayerManager-class.html#bboxWithPrevious" class="summary-sig-name">bboxWithPrevious</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">ext</span>)</span><br />
+      Test if the emitted canvas extent is within the previous extent</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager-pysrc.html#LayerManager.bboxWithPrevious">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setbbox"></a><span class="summary-sig-name">setbbox</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Triggered by extent change - Set BBox in UIDataManager</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager-pysrc.html#LayerManager.setbbox">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getAimsFeatures"></a><span class="summary-sig-name">getAimsFeatures</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Retrieve most AIMS Features as held in UiDataManager</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager-pysrc.html#LayerManager.getAimsFeatures">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager.LayerManager-class.html#notify" class="summary-sig-name">notify</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">feedType</span>)</span><br />
+      Notify registered to UiDataManager</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager-pysrc.html#LayerManager.notify">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager.LayerManager-class.html#updateFeaturesLayer" class="summary-sig-name">updateFeaturesLayer</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">featureData</span>)</span><br />
+      Add features to AIMS Address feature layer</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager-pysrc.html#LayerManager.updateFeaturesLayer">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS VARIABLES ==================== -->
+<a name="section-ClassVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="uilog"></a><span class="summary-name">uilog</span> = <code title="Logger.setup(lf= 'uiLog')">Logger.setup(lf= 'uiLog')</code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="_propBaseName"></a><span class="summary-name">_propBaseName</span> = <code title="'AimsClient.'">'AimsClient.'</code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="_styledir"></a><span class="summary-name">_styledir</span> = <code title="join(dirname(abspath(__file__)), 'styles')">join(dirname(abspath(__file__)), 'styles')</code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="_addressLayerId"></a><span class="summary-name">_addressLayerId</span> = <code title="'adr'">'adr'</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="QGIS-AIMS-Plugin.AimsUI.LayerManager.LayerManager-class.html#addressLayerAdded" class="summary-name">addressLayerAdded</a> = <code title="pyqtSignal(QgsMapLayer, name= &quot;addressLayerAdded&quot;)">pyqtSignal(QgsMapLayer, name= &quot;addressLaye<code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="addressLayerRemoved"></a><span class="summary-name">addressLayerRemoved</span> = <code title="pyqtSignal(name= &quot;addressLayerRemoved&quot;)">pyqtSignal(name= &quot;addressLayerRemoved&quot;)</code>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="disconnectExtentEvent"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">disconnectExtentEvent</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager-pysrc.html#LayerManager.disconnectExtentEvent">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+At plugin unload, disconnect the 
+    extent changed / bbox event
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="layerId"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">layerId</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">layer</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager-pysrc.html#LayerManager.layerId">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Takes a layer as Vector Layer as a parameter and reutrns the layers Id
+  as used by the plugin to reffer to the layers</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>layer</code></strong> (qgis._core.QgsVectorLayer) - AIMS qgis layer</li>
+    </ul></dd>
+    <dt>Returns: string</dt>
+        <dd>AIMS layer Id as used to refered to AIMS layers</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="setLayerId"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">setLayerId</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">layer</span>,
+        <span class="sig-arg">id</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager-pysrc.html#LayerManager.setLayerId">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Set id property for layer</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>layer</code></strong> (qgis._core.QgsVectorLayer) - AIMS qgis layer</li>
+        <li><strong class="pname"><code>id</code></strong> (string) - AIMS Layer id</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="addressLayer"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">addressLayer</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager-pysrc.html#LayerManager.addressLayer">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Return the AIMS Address Layer</p>
+  <dl class="fields">
+    <dt>Returns: qgis._core.QgsVectorLayer</dt>
+        <dd>AIMS Address Layer</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="rclLayer"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">rclLayer</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager-pysrc.html#LayerManager.rclLayer">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Return the Road Centre Line Layer</p>
+  <dl class="fields">
+    <dt>Returns: qgis._core.QgsVectorLayer</dt>
+        <dd>Road Centre Line Layer</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="revLayer"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">revLayer</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager-pysrc.html#LayerManager.revLayer">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Return the Review Layer</p>
+  <dl class="fields">
+    <dt>Returns: qgis._core.QgsVectorLayer</dt>
+        <dd>AIMS Review Layer</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="checkRemovedLayer"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">checkRemovedLayer</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">id</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager-pysrc.html#LayerManager.checkRemovedLayer">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>If layer removed set layer references to None</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>id</code></strong> (string) - The id of the layer removed</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="checkNewLayer"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">checkNewLayer</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">layer</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager-pysrc.html#LayerManager.checkNewLayer">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Assign an AIMS QgsVectorLayer to a LayerManager layer property</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>layer</code></strong> (qgis._core.QgsVectorLayer) - New AIMS vector layer</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="findLayer"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">findLayer</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">name</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager-pysrc.html#LayerManager.findLayer">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Assign an AIMS QgsVectorLayer to a LayerManager layer property</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>name</code></strong> (string) - layer name</li>
+    </ul></dd>
+    <dt>Returns: qgis._core.QgsVectorLayer</dt>
+        <dd>Layer that matches id</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="styleLayer"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">styleLayer</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">layer</span>,
+        <span class="sig-arg">id</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager-pysrc.html#LayerManager.styleLayer">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Set layer style as per the relevant .qml file</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>layer</code></strong> (qgis._core.QgsVectorLayer) - AIMS Layer</li>
+        <li><strong class="pname"><code>id</code></strong> (string) - Layer Id</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="installLayer"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">installLayer</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">id</span>,
+        <span class="sig-arg">schema</span>,
+        <span class="sig-arg">table</span>,
+        <span class="sig-arg">key</span>,
+        <span class="sig-arg">estimated</span>,
+        <span class="sig-arg">where</span>,
+        <span class="sig-arg">displayname</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager-pysrc.html#LayerManager.installLayer">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Install AIMS postgres reference layers</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>id</code></strong> (string) - Layer id</li>
+        <li><strong class="pname"><code>schema</code></strong> (string) - Database Schema Name</li>
+        <li><strong class="pname"><code>table</code></strong> (string) - Database Table Name</li>
+        <li><strong class="pname"><code>key</code></strong> (string) - Primary Key</li>
+        <li><strong class="pname"><code>estimated</code></strong> (boolean) - Estimate Meta Data</li>
+        <li><strong class="pname"><code>where</code></strong> (string) - SQL where cluase</li>
+        <li><strong class="pname"><code>displayname</code></strong> (string) - Layer Label</li>
+    </ul></dd>
+    <dt>Returns: qgis._core.QgsVectorLayer</dt>
+        <dd>AIMS Layer</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="addLayerFields"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">addLayerFields</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">layer</span>,
+        <span class="sig-arg">provider</span>,
+        <span class="sig-arg">id</span>,
+        <span class="sig-arg">fields</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager-pysrc.html#LayerManager.addLayerFields">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Add fields to a layer</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>layer</code></strong> (qgis._core.QgsVectorLayer) - AIMS vector layer</li>
+        <li><strong class="pname"><code>provider</code></strong> (qgis._core.QgsVectorDataProvider) - Data Provider</li>
+        <li><strong class="pname"><code>id</code></strong> (string) - Layer id</li>
+        <li><strong class="pname"><code>fields</code></strong> (list) - list of field names</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="installAimsLayer"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">installAimsLayer</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">id</span>,
+        <span class="sig-arg">displayname</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager-pysrc.html#LayerManager.installAimsLayer">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Install AIMS feature and review layers</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>id</code></strong> (string) - Layer id</li>
+        <li><strong class="pname"><code>displayname</code></strong> (string) - displayname</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="isVisible"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">isVisible</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">layer</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager-pysrc.html#LayerManager.isVisible">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Test if a layer is visible</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>layer</code></strong> (qgis._core.QgsVectorLayer) - AIMS vector layer</li>
+    </ul></dd>
+    <dt>Returns: boolean</dt>
+        <dd>True if Layer is visible</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="removeFeatures"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">removeFeatures</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">layer</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager-pysrc.html#LayerManager.removeFeatures">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Remove all features from a layer</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>layer</code></strong> (qgis._core.QgsVectorLayer) - AIMS vector layer</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="addToLayer"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">addToLayer</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">rData</span>,
+        <span class="sig-arg">layer</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager-pysrc.html#LayerManager.addToLayer">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Add aims review features to reveiw layer</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>rData</code></strong> (dictionary) - Review Data</li>
+        <li><strong class="pname"><code>layer</code></strong> (qgis._core.QgsVectorLayer) - AIMS vector layer</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="bboxWithPrevious"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">bboxWithPrevious</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">ext</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager-pysrc.html#LayerManager.bboxWithPrevious">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Test if the emitted canvas extent is within the previous extent</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>ext</code></strong> (gis._core.QgsRectangle) - canvas extent</li>
+    </ul></dd>
+    <dt>Returns: boolean</dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="notify"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">notify</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">feedType</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager-pysrc.html#LayerManager.notify">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Notify registered to UiDataManager</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>feedType</code></strong> (AIMSDataManager.FeatureFactory.FeedRef) - Type of AIMS API</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="updateFeaturesLayer"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">updateFeaturesLayer</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">featureData</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="QGIS-AIMS-Plugin.AimsUI.LayerManager-pysrc.html#LayerManager.updateFeaturesLayer">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Add features to AIMS Address feature layer</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>featureData</code></strong> (dictionary) - feature feed data</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== CLASS VARIABLE DETAILS ==================== -->
+<a name="section-ClassVariableDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Variable Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassVariableDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="addressLayerAdded"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">addressLayerAdded</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+pyqtSignal(QgsMapLayer, name= &quot;addressLayerAdded&quot;)
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="QGIS-AIMS-Plugin-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Jun 14 13:07:00 2016
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

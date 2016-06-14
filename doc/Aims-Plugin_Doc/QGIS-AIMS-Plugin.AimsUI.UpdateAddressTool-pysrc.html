@@ -1,0 +1,491 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QGIS-AIMS-Plugin.AimsUI.UpdateAddressTool</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="QGIS-AIMS-Plugin-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="QGIS-AIMS-Plugin-module.html">Package&nbsp;QGIS-AIMS-Plugin</a> ::
+        Package&nbsp;AimsUI ::
+        Module&nbsp;UpdateAddressTool
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="QGIS-AIMS-Plugin.AimsUI.UpdateAddressTool-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="QGIS-AIMS-Plugin.AimsUI.UpdateAddressTool-module.html">Module QGIS-AIMS-Plugin.AimsUI.UpdateAddressTool</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-0" class="py-name" targets="Module sys=sys-module.html"><a title="sys" class="py-name" href="#" onclick="return doclink('link-0', 'sys', 'link-0');">sys</a></tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">PyQt4</tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Module PyQt4.QtCore=PyQt4.QtCore-module.html"><a title="PyQt4.QtCore" class="py-name" href="#" onclick="return doclink('link-1', 'QtCore', 'link-1');">QtCore</a></tt> <tt class="py-keyword">import</tt> <tt class="py-op">*</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">PyQt4</tt><tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Module PyQt4.QtGui=PyQt4.QtGui-module.html"><a title="PyQt4.QtGui" class="py-name" href="#" onclick="return doclink('link-2', 'QtGui', 'link-2');">QtGui</a></tt> <tt class="py-keyword">import</tt> <tt class="py-op">*</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">qgis</tt><tt class="py-op">.</tt><tt class="py-name">core</tt> <tt class="py-keyword">import</tt> <tt class="py-op">*</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">qgis</tt><tt class="py-op">.</tt><tt class="py-name">gui</tt> <tt class="py-keyword">import</tt> <tt class="py-op">*</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">AimsUI</tt><tt class="py-op">.</tt><tt id="link-3" class="py-name" targets="Package QGIS-AIMS-Plugin.AimsUI.AimsClient=QGIS-AIMS-Plugin.AimsUI.AimsClient-module.html,Package QGIS-AIMS-Plugin.AimsUI.AimsClient=QGIS-AIMS-Plugin.AimsUI.AimsClient-module.html"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient
+QGIS-AIMS-Plugin.AimsUI.AimsClient" class="py-name" href="#" onclick="return doclink('link-3', 'AimsClient', 'link-3');">AimsClient</a></tt><tt class="py-op">.</tt><tt id="link-4" class="py-name" targets="Package QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui=QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui-module.html"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui" class="py-name" href="#" onclick="return doclink('link-4', 'Gui', 'link-4');">Gui</a></tt><tt class="py-op">.</tt><tt id="link-5" class="py-name" targets="Module QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.Ui_ComfirmSelection=QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.Ui_ComfirmSelection-module.html,Class QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.Ui_ComfirmSelection.Ui_ComfirmSelection=QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.Ui_ComfirmSelection.Ui_ComfirmSelection-class.html"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.Ui_ComfirmSelection
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.Ui_ComfirmSelection.Ui_ComfirmSelection" class="py-name" href="#" onclick="return doclink('link-5', 'Ui_ComfirmSelection', 'link-5');">Ui_ComfirmSelection</a></tt> <tt class="py-keyword">import</tt> <tt id="link-6" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.Ui_ComfirmSelection
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.Ui_ComfirmSelection.Ui_ComfirmSelection" class="py-name" href="#" onclick="return doclink('link-6', 'Ui_ComfirmSelection', 'link-5');">Ui_ComfirmSelection</a></tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">AimsUI</tt><tt class="py-op">.</tt><tt id="link-7" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient
+QGIS-AIMS-Plugin.AimsUI.AimsClient" class="py-name" href="#" onclick="return doclink('link-7', 'AimsClient', 'link-3');">AimsClient</a></tt><tt class="py-op">.</tt><tt id="link-8" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui" class="py-name" href="#" onclick="return doclink('link-8', 'Gui', 'link-4');">Gui</a></tt><tt class="py-op">.</tt><tt id="link-9" class="py-name" targets="Module QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiUtility=QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiUtility-module.html,Class QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiUtility.UiUtility=QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiUtility.UiUtility-class.html"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiUtility
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiUtility.UiUtility" class="py-name" href="#" onclick="return doclink('link-9', 'UiUtility', 'link-9');">UiUtility</a></tt> <tt class="py-keyword">import</tt> <tt id="link-10" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiUtility
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiUtility.UiUtility" class="py-name" href="#" onclick="return doclink('link-10', 'UiUtility', 'link-9');">UiUtility</a></tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">AimsUI</tt><tt class="py-op">.</tt><tt id="link-11" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient
+QGIS-AIMS-Plugin.AimsUI.AimsClient" class="py-name" href="#" onclick="return doclink('link-11', 'AimsClient', 'link-3');">AimsClient</a></tt><tt class="py-op">.</tt><tt id="link-12" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui" class="py-name" href="#" onclick="return doclink('link-12', 'Gui', 'link-4');">Gui</a></tt><tt class="py-op">.</tt><tt id="link-13" class="py-name" targets="Module QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.ResponseHandler=QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.ResponseHandler-module.html,Class QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.ResponseHandler.ResponseHandler=QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.ResponseHandler.ResponseHandler-class.html"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.ResponseHandler
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.ResponseHandler.ResponseHandler" class="py-name" href="#" onclick="return doclink('link-13', 'ResponseHandler', 'link-13');">ResponseHandler</a></tt> <tt class="py-keyword">import</tt> <tt id="link-14" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.ResponseHandler
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.ResponseHandler.ResponseHandler" class="py-name" href="#" onclick="return doclink('link-14', 'ResponseHandler', 'link-13');">ResponseHandler</a></tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">AIMSDataManager</tt><tt class="py-op">.</tt><tt id="link-15" class="py-name" targets="Module QGIS-AIMS-Plugin.AIMSDataManager.Address=QGIS-AIMS-Plugin.AIMSDataManager.Address-module.html,Class QGIS-AIMS-Plugin.AIMSDataManager.Address.Address=QGIS-AIMS-Plugin.AIMSDataManager.Address.Address-class.html"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Address
+QGIS-AIMS-Plugin.AIMSDataManager.Address.Address" class="py-name" href="#" onclick="return doclink('link-15', 'Address', 'link-15');">Address</a></tt> <tt class="py-keyword">import</tt> <tt id="link-16" class="py-name" targets="Class PyQt4.QtGui.QStyleOptionViewItem.Position=PyQt4.QtGui.QStyleOptionViewItem.Position-class.html,Class PyQt4.QtGui.QTextFrameFormat.Position=PyQt4.QtGui.QTextFrameFormat.Position-class.html,Class QGIS-AIMS-Plugin.AIMSDataManager.Address.Position=QGIS-AIMS-Plugin.AIMSDataManager.Address.Position-class.html"><a title="PyQt4.QtGui.QStyleOptionViewItem.Position
+PyQt4.QtGui.QTextFrameFormat.Position
+QGIS-AIMS-Plugin.AIMSDataManager.Address.Position" class="py-name" href="#" onclick="return doclink('link-16', 'Position', 'link-16');">Position</a></tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"> </tt>
+<a name="UpdateAddressTool"></a><div id="UpdateAddressTool-def"><a name="L13"></a><tt class="py-lineno"> 13</tt> <a class="py-toggle" href="#" id="UpdateAddressTool-toggle" onclick="return toggle('UpdateAddressTool');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AimsUI.UpdateAddressTool.UpdateAddressTool-class.html">UpdateAddressTool</a><tt class="py-op">(</tt><tt class="py-base-class">QgsMapToolIdentify</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="UpdateAddressTool-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="UpdateAddressTool-expanded"><a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-docstring">    Tool for updating published AIMS Features</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt>  </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line">     </tt>
+<a name="UpdateAddressTool.__init__"></a><div id="UpdateAddressTool.__init__-def"><a name="L18"></a><tt class="py-lineno"> 18</tt> <a class="py-toggle" href="#" id="UpdateAddressTool.__init__-toggle" onclick="return toggle('UpdateAddressTool.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AimsUI.UpdateAddressTool.UpdateAddressTool-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">iface</tt><tt class="py-op">,</tt> <tt class="py-param">layerManager</tt><tt class="py-op">,</tt> <tt class="py-param">controller</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="UpdateAddressTool.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="UpdateAddressTool.__init__-expanded"><a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"><tt class="py-docstring">        Intialise Update Address Tool</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"><tt class="py-docstring">        </tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"><tt class="py-docstring">        @param iface: QgisInterface Abstract base class defining interfaces exposed by QgisApp  </tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"><tt class="py-docstring">        @type iface: Qgisinterface Object</tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"><tt class="py-docstring">        @param layerManager: Plugins layer manager</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"><tt class="py-docstring">        @type  layerManager: AimsUI.LayerManager()</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"><tt class="py-docstring">        @param controller: Instance of the plugins controller</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"><tt class="py-docstring">        @type  controller: AimsUI.AimsClient.Gui.Controller()</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line">        </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line">        <tt id="link-17" class="py-name" targets="Class qgis._gui.QgsMapToolIdentify=qgis._gui.QgsMapToolIdentify-class.html"><a title="qgis._gui.QgsMapToolIdentify" class="py-name" href="#" onclick="return doclink('link-17', 'QgsMapToolIdentify', 'link-17');">QgsMapToolIdentify</a></tt><tt class="py-op">.</tt><tt id="link-18" class="py-name" targets="Method QGIS-AIMS-Plugin.AIMSDataManager.Address.Address.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.Address.Address-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressChange.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressChange-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressResolution.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressResolution-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.Address.Entity.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.Address.Entity-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.Address.EntityAddress.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.Address.EntityAddress-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.Address.EntityValidation.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.Address.EntityValidation-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.Address.Position.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.Address.Position-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressChangeFactory.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressChangeFactory-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFactory.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFactory-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressResolutionFactory.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressResolutionFactory-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.AimsApi.AimsApi.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.AimsApi.AimsApi-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.AimsApi.AimsHttpException.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.AimsApi.AimsHttpException-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.AimsException.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.AimsException-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.Configuration.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.Configuration-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeedRef.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeedRef-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.Config.ConfigReader.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.Config.ConfigReader-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.Const.const.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.Const.const-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.DataManager.DataManager.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.DataManager.DataManager-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.DataManager.Persistence.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.DataManager.Persistence-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataRequestChannel.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataRequestChannel-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSync.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSync-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSyncAdmin.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSyncAdmin-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSyncFeatures.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSyncFeatures-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSyncFeeds.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSyncFeeds-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdater.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdater-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterAddress.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterAddress-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterGroup.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterGroup-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterUser.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterUser-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.Feature.FeatureMetaData.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.Feature.FeatureMetaData-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.Group.Group.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.Group.Group-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupChange.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupChange-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupResolution.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupResolution-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupChangeFactory.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupChangeFactory-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupFactory.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupFactory-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupResolutionFactory.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupResolutionFactory-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.Observable.Observable.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.Observable.Observable-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.User.User.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.User.User-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.UserFactory.UserFactory.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.UserFactory.UserFactory-class.html#__init__,Method QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.AimsQueueWidget.AimsQueueWidget.__init__()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.AimsQueueWidget.AimsQueueWidget-class.html#__init__,Method QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.Controller.Controller.__init__()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.Controller.Controller-class.html#__init__,Method QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.EditFeatureWidget.EditFeatureWidget.__init__()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.EditFeatureWidget.EditFeatureWidget-class.html#__init__,Method QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.QueueEditorWidget.QueueEditorWidget.__init__()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.QueueEditorWidget.QueueEditorWidget-class.html#__init__,Method QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.ResponseHandler.ResponseHandler.__init__()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.ResponseHandler.ResponseHandler-class.html#__init__,Method QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.ReviewQueueWidget.ReviewQueueWidget.__init__()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.ReviewQueueWidget.ReviewQueueWidget-class.html#__init__,Method QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.DMData.__init__()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.DMData-class.html#__init__,Method QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.DMObserver.__init__()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.DMObserver-class.html#__init__,Method QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.Listener.__init__()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.Listener-class.html#__init__,Method QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.UiDataManager.__init__()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.UiDataManager-class.html#__init__,Method QGIS-AIMS-Plugin.AimsUI.CreateNewAddressTool.CreateNewAddressTool.__init__()=QGIS-AIMS-Plugin.AimsUI.CreateNewAddressTool.CreateNewAddressTool-class.html#__init__,Method QGIS-AIMS-Plugin.AimsUI.DelAddressTool.DelAddressDialog.__init__()=QGIS-AIMS-Plugin.AimsUI.DelAddressTool.DelAddressDialog-class.html#__init__,Method QGIS-AIMS-Plugin.AimsUI.DelAddressTool.DelAddressTool.__init__()=QGIS-AIMS-Plugin.AimsUI.DelAddressTool.DelAddressTool-class.html#__init__,Method QGIS-AIMS-Plugin.AimsUI.GetRclTool.GetRcl.__init__()=QGIS-AIMS-Plugin.AimsUI.GetRclTool.GetRcl-class.html#__init__,Method QGIS-AIMS-Plugin.AimsUI.LayerManager.LayerManager.__init__()=QGIS-AIMS-Plugin.AimsUI.LayerManager.LayerManager-class.html#__init__,Method QGIS-AIMS-Plugin.AimsUI.LineageTool.LineageDialog.__init__()=QGIS-AIMS-Plugin.AimsUI.LineageTool.LineageDialog-class.html#__init__,Method QGIS-AIMS-Plugin.AimsUI.LineageTool.LineageTool.__init__()=QGIS-AIMS-Plugin.AimsUI.LineageTool.LineageTool-class.html#__init__,Method QGIS-AIMS-Plugin.AimsUI.MoveAddressTool.MoveAddressDialog.__init__()=QGIS-AIMS-Plugin.AimsUI.MoveAddressTool.MoveAddressDialog-class.html#__init__,Method QGIS-AIMS-Plugin.AimsUI.MoveAddressTool.MoveAddressTool.__init__()=QGIS-AIMS-Plugin.AimsUI.MoveAddressTool.MoveAddressTool-class.html#__init__,Method QGIS-AIMS-Plugin.AimsUI.UpdateAddressTool.UpdateAddressTool.__init__()=QGIS-AIMS-Plugin.AimsUI.UpdateAddressTool.UpdateAddressTool-class.html#__init__,Method QGIS-AIMS-Plugin.AimsUI.UpdateAddressTool.updateAddressDialog.__init__()=QGIS-AIMS-Plugin.AimsUI.UpdateAddressTool.updateAddressDialog-class.html#__init__,Method QGIS-AIMS-Plugin.AimsUI.UpdateReviewPosition.UpdateReviewPosition.__init__()=QGIS-AIMS-Plugin.AimsUI.UpdateReviewPosition.UpdateReviewPosition-class.html#__init__,Method QGIS-AIMS-Plugin.Plugin.Plugin.__init__()=QGIS-AIMS-Plugin.Plugin.Plugin-class.html#__init__,Method QGIS-AIMS-Plugin.RunAllTests.FullSuite.__init__()=QGIS-AIMS-Plugin.RunAllTests.FullSuite-class.html#__init__,Method QGIS-AIMS-Plugin.Test.AimsService_Mock._Point.__init__()=QGIS-AIMS-Plugin.Test.AimsService_Mock._Point-class.html#__init__,Method QGIS-AIMS-Plugin.Test._QGisInterface.QgisInterface.__init__()=QGIS-AIMS-Plugin.Test._QGisInterface.QgisInterface-class.html#__init__"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Address.Address.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressChange.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressResolution.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.Address.Entity.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.Address.EntityAddress.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.Address.EntityValidation.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.Address.Position.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressChangeFactory.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFactory.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressResolutionFactory.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.AimsApi.AimsApi.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.AimsApi.AimsHttpException.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.AimsException.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.Configuration.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeedRef.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.Config.ConfigReader.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.Const.const.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.DataManager.DataManager.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.DataManager.Persistence.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataRequestChannel.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSync.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSyncAdmin.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSyncFeatures.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSyncFeeds.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdater.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterAddress.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterGroup.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterUser.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.Feature.FeatureMetaData.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.Group.Group.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupChange.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupResolution.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupChangeFactory.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupFactory.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupResolutionFactory.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.Observable.Observable.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.User.User.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.UserFactory.UserFactory.__init__
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.AimsQueueWidget.AimsQueueWidget.__init__
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.Controller.Controller.__init__
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.EditFeatureWidget.EditFeatureWidget.__init__
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.QueueEditorWidget.QueueEditorWidget.__init__
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.ResponseHandler.ResponseHandler.__init__
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.ReviewQueueWidget.ReviewQueueWidget.__init__
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.DMData.__init__
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.DMObserver.__init__
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.Listener.__init__
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.UiDataManager.__init__
+QGIS-AIMS-Plugin.AimsUI.CreateNewAddressTool.CreateNewAddressTool.__init__
+QGIS-AIMS-Plugin.AimsUI.DelAddressTool.DelAddressDialog.__init__
+QGIS-AIMS-Plugin.AimsUI.DelAddressTool.DelAddressTool.__init__
+QGIS-AIMS-Plugin.AimsUI.GetRclTool.GetRcl.__init__
+QGIS-AIMS-Plugin.AimsUI.LayerManager.LayerManager.__init__
+QGIS-AIMS-Plugin.AimsUI.LineageTool.LineageDialog.__init__
+QGIS-AIMS-Plugin.AimsUI.LineageTool.LineageTool.__init__
+QGIS-AIMS-Plugin.AimsUI.MoveAddressTool.MoveAddressDialog.__init__
+QGIS-AIMS-Plugin.AimsUI.MoveAddressTool.MoveAddressTool.__init__
+QGIS-AIMS-Plugin.AimsUI.UpdateAddressTool.UpdateAddressTool.__init__
+QGIS-AIMS-Plugin.AimsUI.UpdateAddressTool.updateAddressDialog.__init__
+QGIS-AIMS-Plugin.AimsUI.UpdateReviewPosition.UpdateReviewPosition.__init__
+QGIS-AIMS-Plugin.Plugin.Plugin.__init__
+QGIS-AIMS-Plugin.RunAllTests.FullSuite.__init__
+QGIS-AIMS-Plugin.Test.AimsService_Mock._Point.__init__
+QGIS-AIMS-Plugin.Test._QGisInterface.QgisInterface.__init__" class="py-name" href="#" onclick="return doclink('link-18', '__init__', 'link-18');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">iface</tt><tt class="py-op">.</tt><tt id="link-19" class="py-name" targets="Method QGIS-AIMS-Plugin.Test.AimsService_Mock._QInterface.mapCanvas()=QGIS-AIMS-Plugin.Test.AimsService_Mock._QInterface-class.html#mapCanvas,Method QGIS-AIMS-Plugin.Test._QGisInterface.QgisInterface.mapCanvas()=QGIS-AIMS-Plugin.Test._QGisInterface.QgisInterface-class.html#mapCanvas"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock._QInterface.mapCanvas
+QGIS-AIMS-Plugin.Test._QGisInterface.QgisInterface.mapCanvas" class="py-name" href="#" onclick="return doclink('link-19', 'mapCanvas', 'link-19');">mapCanvas</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_iface</tt> <tt class="py-op">=</tt> <tt class="py-name">iface</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_layers</tt> <tt class="py-op">=</tt> <tt class="py-name">layerManager</tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_controller</tt> <tt class="py-op">=</tt> <tt class="py-name">controller</tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">highlight</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_controller</tt><tt class="py-op">.</tt><tt class="py-name">highlighter</tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_canvas</tt> <tt class="py-op">=</tt> <tt class="py-name">iface</tt><tt class="py-op">.</tt><tt id="link-20" class="py-name"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock._QInterface.mapCanvas
+QGIS-AIMS-Plugin.Test._QGisInterface.QgisInterface.mapCanvas" class="py-name" href="#" onclick="return doclink('link-20', 'mapCanvas', 'link-19');">mapCanvas</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-21" class="py-name" targets="Method QGIS-AIMS-Plugin.AimsUI.CreateNewAddressTool.CreateNewAddressTool.activate()=QGIS-AIMS-Plugin.AimsUI.CreateNewAddressTool.CreateNewAddressTool-class.html#activate,Method QGIS-AIMS-Plugin.AimsUI.DelAddressTool.DelAddressTool.activate()=QGIS-AIMS-Plugin.AimsUI.DelAddressTool.DelAddressTool-class.html#activate,Method QGIS-AIMS-Plugin.AimsUI.GetRclTool.GetRcl.activate()=QGIS-AIMS-Plugin.AimsUI.GetRclTool.GetRcl-class.html#activate,Method QGIS-AIMS-Plugin.AimsUI.MoveAddressTool.MoveAddressTool.activate()=QGIS-AIMS-Plugin.AimsUI.MoveAddressTool.MoveAddressTool-class.html#activate,Method QGIS-AIMS-Plugin.AimsUI.UpdateAddressTool.UpdateAddressTool.activate()=QGIS-AIMS-Plugin.AimsUI.UpdateAddressTool.UpdateAddressTool-class.html#activate,Method QGIS-AIMS-Plugin.AimsUI.UpdateReviewPosition.UpdateReviewPosition.activate()=QGIS-AIMS-Plugin.AimsUI.UpdateReviewPosition.UpdateReviewPosition-class.html#activate"><a title="QGIS-AIMS-Plugin.AimsUI.CreateNewAddressTool.CreateNewAddressTool.activate
+QGIS-AIMS-Plugin.AimsUI.DelAddressTool.DelAddressTool.activate
+QGIS-AIMS-Plugin.AimsUI.GetRclTool.GetRcl.activate
+QGIS-AIMS-Plugin.AimsUI.MoveAddressTool.MoveAddressTool.activate
+QGIS-AIMS-Plugin.AimsUI.UpdateAddressTool.UpdateAddressTool.activate
+QGIS-AIMS-Plugin.AimsUI.UpdateReviewPosition.UpdateReviewPosition.activate" class="py-name" href="#" onclick="return doclink('link-21', 'activate', 'link-21');">activate</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line"> </tt>
+<a name="UpdateAddressTool.activate"></a><div id="UpdateAddressTool.activate-def"><a name="L38"></a><tt class="py-lineno"> 38</tt> <a class="py-toggle" href="#" id="UpdateAddressTool.activate-toggle" onclick="return toggle('UpdateAddressTool.activate');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AimsUI.UpdateAddressTool.UpdateAddressTool-class.html#activate">activate</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="UpdateAddressTool.activate-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="UpdateAddressTool.activate-expanded"><a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line"><tt class="py-docstring">        Activate Update Address Tool</tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line">         </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line">        <tt id="link-22" class="py-name" targets="Class qgis._gui.QgsMapTool=qgis._gui.QgsMapTool-class.html"><a title="qgis._gui.QgsMapTool" class="py-name" href="#" onclick="return doclink('link-22', 'QgsMapTool', 'link-22');">QgsMapTool</a></tt><tt class="py-op">.</tt><tt id="link-23" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.CreateNewAddressTool.CreateNewAddressTool.activate
+QGIS-AIMS-Plugin.AimsUI.DelAddressTool.DelAddressTool.activate
+QGIS-AIMS-Plugin.AimsUI.GetRclTool.GetRcl.activate
+QGIS-AIMS-Plugin.AimsUI.MoveAddressTool.MoveAddressTool.activate
+QGIS-AIMS-Plugin.AimsUI.UpdateAddressTool.UpdateAddressTool.activate
+QGIS-AIMS-Plugin.AimsUI.UpdateReviewPosition.UpdateReviewPosition.activate" class="py-name" href="#" onclick="return doclink('link-23', 'activate', 'link-21');">activate</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">)</tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line">        <tt class="py-name">sb</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_iface</tt><tt class="py-op">.</tt><tt id="link-24" class="py-name" targets="Method QGIS-AIMS-Plugin.Test.AimsService_Mock._QInterface.mainWindow()=QGIS-AIMS-Plugin.Test.AimsService_Mock._QInterface-class.html#mainWindow,Method QGIS-AIMS-Plugin.Test.CreateNewTool_Test._Dummy_IFace.mainWindow()=QGIS-AIMS-Plugin.Test.CreateNewTool_Test._Dummy_IFace-class.html#mainWindow,Method QGIS-AIMS-Plugin.Test._QGisInterface.QgisInterface.mainWindow()=QGIS-AIMS-Plugin.Test._QGisInterface.QgisInterface-class.html#mainWindow"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock._QInterface.mainWindow
+QGIS-AIMS-Plugin.Test.CreateNewTool_Test._Dummy_IFace.mainWindow
+QGIS-AIMS-Plugin.Test._QGisInterface.QgisInterface.mainWindow" class="py-name" href="#" onclick="return doclink('link-24', 'mainWindow', 'link-24');">mainWindow</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-25" class="py-name" targets="Method QGIS-AIMS-Plugin.Test.AimsService_Mock._MainWindow.statusBar()=QGIS-AIMS-Plugin.Test.AimsService_Mock._MainWindow-class.html#statusBar,Method QGIS-AIMS-Plugin.Test.CreateNewTool_Test._Dummy_MainWindow.statusBar()=QGIS-AIMS-Plugin.Test.CreateNewTool_Test._Dummy_MainWindow-class.html#statusBar"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock._MainWindow.statusBar
+QGIS-AIMS-Plugin.Test.CreateNewTool_Test._Dummy_MainWindow.statusBar" class="py-name" href="#" onclick="return doclink('link-25', 'statusBar', 'link-25');">statusBar</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line">        <tt class="py-name">sb</tt><tt class="py-op">.</tt><tt class="py-name">showMessage</tt><tt class="py-op">(</tt><tt class="py-string">"Click map to update feature"</tt><tt class="py-op">)</tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-26" class="py-name" targets="Variable PyQt4.QtGui.QAbstractTextDocumentLayout.Selection.cursor=PyQt4.QtGui.QAbstractTextDocumentLayout.Selection-class.html#cursor,Variable PyQt4.QtGui.QTextEdit.ExtraSelection.cursor=PyQt4.QtGui.QTextEdit.ExtraSelection-class.html#cursor"><a title="PyQt4.QtGui.QAbstractTextDocumentLayout.Selection.cursor
+PyQt4.QtGui.QTextEdit.ExtraSelection.cursor" class="py-name" href="#" onclick="return doclink('link-26', 'cursor', 'link-26');">cursor</a></tt> <tt class="py-op">=</tt> <tt id="link-27" class="py-name" targets="Variable PyQt4.QtCore.QMetaType.QCursor=PyQt4.QtCore.QMetaType-class.html#QCursor,Class PyQt4.QtGui.QCursor=PyQt4.QtGui.QCursor-class.html"><a title="PyQt4.QtCore.QMetaType.QCursor
+PyQt4.QtGui.QCursor" class="py-name" href="#" onclick="return doclink('link-27', 'QCursor', 'link-27');">QCursor</a></tt><tt class="py-op">(</tt><tt id="link-28" class="py-name" targets="Class PyQt4.QtCore.Qt=PyQt4.QtCore.Qt-class.html"><a title="PyQt4.QtCore.Qt" class="py-name" href="#" onclick="return doclink('link-28', 'Qt', 'link-28');">Qt</a></tt><tt class="py-op">.</tt><tt id="link-29" class="py-name" targets="Variable PyQt4.QtCore.Qt.CrossCursor=PyQt4.QtCore.Qt-class.html#CrossCursor"><a title="PyQt4.QtCore.Qt.CrossCursor" class="py-name" href="#" onclick="return doclink('link-29', 'CrossCursor', 'link-29');">CrossCursor</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">parent</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">setCursor</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-30" class="py-name"><a title="PyQt4.QtGui.QAbstractTextDocumentLayout.Selection.cursor
+PyQt4.QtGui.QTextEdit.ExtraSelection.cursor" class="py-name" href="#" onclick="return doclink('link-30', 'cursor', 'link-26');">cursor</a></tt><tt class="py-op">)</tt> </tt>
+</div><a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line">     </tt>
+<a name="UpdateAddressTool.deactivate"></a><div id="UpdateAddressTool.deactivate-def"><a name="L49"></a><tt class="py-lineno"> 49</tt> <a class="py-toggle" href="#" id="UpdateAddressTool.deactivate-toggle" onclick="return toggle('UpdateAddressTool.deactivate');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AimsUI.UpdateAddressTool.UpdateAddressTool-class.html#deactivate">deactivate</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="UpdateAddressTool.deactivate-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="UpdateAddressTool.deactivate-expanded"><a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line"><tt class="py-docstring">        Deactivate Update Address Tool</tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line">         </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line">        <tt class="py-name">sb</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_iface</tt><tt class="py-op">.</tt><tt id="link-31" class="py-name"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock._QInterface.mainWindow
+QGIS-AIMS-Plugin.Test.CreateNewTool_Test._Dummy_IFace.mainWindow
+QGIS-AIMS-Plugin.Test._QGisInterface.QgisInterface.mainWindow" class="py-name" href="#" onclick="return doclink('link-31', 'mainWindow', 'link-24');">mainWindow</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-32" class="py-name"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock._MainWindow.statusBar
+QGIS-AIMS-Plugin.Test.CreateNewTool_Test._Dummy_MainWindow.statusBar" class="py-name" href="#" onclick="return doclink('link-32', 'statusBar', 'link-25');">statusBar</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line">        <tt class="py-name">sb</tt><tt class="py-op">.</tt><tt class="py-name">clearMessage</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line">     </tt>
+<a name="UpdateAddressTool.setEnabled"></a><div id="UpdateAddressTool.setEnabled-def"><a name="L57"></a><tt class="py-lineno"> 57</tt> <a class="py-toggle" href="#" id="UpdateAddressTool.setEnabled-toggle" onclick="return toggle('UpdateAddressTool.setEnabled');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AimsUI.UpdateAddressTool.UpdateAddressTool-class.html#setEnabled">setEnabled</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">enabled</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="UpdateAddressTool.setEnabled-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="UpdateAddressTool.setEnabled-expanded"><a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line">        <tt class="py-docstring">""" </tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line"><tt class="py-docstring">        When Tool related QAction is checked/unchecked</tt> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line"><tt class="py-docstring">        Activate / Disable the tool respectively</tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line"><tt class="py-docstring">        @param enabled: Tool enabled. Boolean value</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line"><tt class="py-docstring">        @type enabled: boolean</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line">            </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_enabled</tt> <tt class="py-op">=</tt> <tt id="link-33" class="py-name" targets="Variable qgis._core.QgsPalLayerSettings.enabled=qgis._core.QgsPalLayerSettings-class.html#enabled"><a title="qgis._core.QgsPalLayerSettings.enabled" class="py-name" href="#" onclick="return doclink('link-33', 'enabled', 'link-33');">enabled</a></tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-34" class="py-name"><a title="qgis._core.QgsPalLayerSettings.enabled" class="py-name" href="#" onclick="return doclink('link-34', 'enabled', 'link-33');">enabled</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-35" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.CreateNewAddressTool.CreateNewAddressTool.activate
+QGIS-AIMS-Plugin.AimsUI.DelAddressTool.DelAddressTool.activate
+QGIS-AIMS-Plugin.AimsUI.GetRclTool.GetRcl.activate
+QGIS-AIMS-Plugin.AimsUI.MoveAddressTool.MoveAddressTool.activate
+QGIS-AIMS-Plugin.AimsUI.UpdateAddressTool.UpdateAddressTool.activate
+QGIS-AIMS-Plugin.AimsUI.UpdateReviewPosition.UpdateReviewPosition.activate" class="py-name" href="#" onclick="return doclink('link-35', 'activate', 'link-21');">activate</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-36" class="py-name" targets="Method QGIS-AIMS-Plugin.AimsUI.CreateNewAddressTool.CreateNewAddressTool.deactivate()=QGIS-AIMS-Plugin.AimsUI.CreateNewAddressTool.CreateNewAddressTool-class.html#deactivate,Method QGIS-AIMS-Plugin.AimsUI.DelAddressTool.DelAddressTool.deactivate()=QGIS-AIMS-Plugin.AimsUI.DelAddressTool.DelAddressTool-class.html#deactivate,Method QGIS-AIMS-Plugin.AimsUI.GetRclTool.GetRcl.deactivate()=QGIS-AIMS-Plugin.AimsUI.GetRclTool.GetRcl-class.html#deactivate,Method QGIS-AIMS-Plugin.AimsUI.MoveAddressTool.MoveAddressTool.deactivate()=QGIS-AIMS-Plugin.AimsUI.MoveAddressTool.MoveAddressTool-class.html#deactivate,Method QGIS-AIMS-Plugin.AimsUI.UpdateAddressTool.UpdateAddressTool.deactivate()=QGIS-AIMS-Plugin.AimsUI.UpdateAddressTool.UpdateAddressTool-class.html#deactivate,Method QGIS-AIMS-Plugin.AimsUI.UpdateReviewPosition.UpdateReviewPosition.deactivate()=QGIS-AIMS-Plugin.AimsUI.UpdateReviewPosition.UpdateReviewPosition-class.html#deactivate"><a title="QGIS-AIMS-Plugin.AimsUI.CreateNewAddressTool.CreateNewAddressTool.deactivate
+QGIS-AIMS-Plugin.AimsUI.DelAddressTool.DelAddressTool.deactivate
+QGIS-AIMS-Plugin.AimsUI.GetRclTool.GetRcl.deactivate
+QGIS-AIMS-Plugin.AimsUI.MoveAddressTool.MoveAddressTool.deactivate
+QGIS-AIMS-Plugin.AimsUI.UpdateAddressTool.UpdateAddressTool.deactivate
+QGIS-AIMS-Plugin.AimsUI.UpdateReviewPosition.UpdateReviewPosition.deactivate" class="py-name" href="#" onclick="return doclink('link-36', 'deactivate', 'link-36');">deactivate</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">     </tt>
+<a name="UpdateAddressTool.setMarker"></a><div id="UpdateAddressTool.setMarker-def"><a name="L72"></a><tt class="py-lineno"> 72</tt> <a class="py-toggle" href="#" id="UpdateAddressTool.setMarker-toggle" onclick="return toggle('UpdateAddressTool.setMarker');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AimsUI.UpdateAddressTool.UpdateAddressTool-class.html#setMarker">setMarker</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">coords</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="UpdateAddressTool.setMarker-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="UpdateAddressTool.setMarker-expanded"><a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line"><tt class="py-docstring">        Place marker on canvas to indicate the feature to be updated</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line"><tt class="py-docstring">        @param coords: QgsPoint</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line"><tt class="py-docstring">        @type coords: QgsPoint</tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line"> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">highlight</tt><tt class="py-op">.</tt><tt class="py-name">setAddress</tt><tt class="py-op">(</tt><tt id="link-37" class="py-name" targets="Variable QGIS-AIMS-Plugin.AIMSDataManager.DataManager.Persistence.coords=QGIS-AIMS-Plugin.AIMSDataManager.DataManager.Persistence-class.html#coords"><a title="QGIS-AIMS-Plugin.AIMSDataManager.DataManager.Persistence.coords" class="py-name" href="#" onclick="return doclink('link-37', 'coords', 'link-37');">coords</a></tt><tt class="py-op">)</tt> </tt>
+</div><a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line"> </tt>
+<a name="UpdateAddressTool.canvasReleaseEvent"></a><div id="UpdateAddressTool.canvasReleaseEvent-def"><a name="L82"></a><tt class="py-lineno"> 82</tt> <a class="py-toggle" href="#" id="UpdateAddressTool.canvasReleaseEvent-toggle" onclick="return toggle('UpdateAddressTool.canvasReleaseEvent');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AimsUI.UpdateAddressTool.UpdateAddressTool-class.html#canvasReleaseEvent">canvasReleaseEvent</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">mouseEvent</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="UpdateAddressTool.canvasReleaseEvent-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="UpdateAddressTool.canvasReleaseEvent-expanded"><a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line"><tt class="py-docstring">        Identify the AIMS Feature(s) the user clicked</tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line"><tt class="py-docstring">        @param mouseEvent: QtGui.QMouseEvent</tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line"><tt class="py-docstring">        @type mouseEvent: QtGui.QMouseEvent</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line"> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_feature</tt> <tt class="py-op">=</tt> <tt id="link-38" class="py-name" targets="Variable PyQt4.QtCore.QEvent.None=PyQt4.QtCore.QEvent-class.html#None,Variable PyQt4.QtCore.QUrl.None=PyQt4.QtCore.QUrl-class.html#None,Variable PyQt4.QtGui.QAbstractPrintDialog.None=PyQt4.QtGui.QAbstractPrintDialog-class.html#None,Variable PyQt4.QtGui.QStyleOptionButton.None=PyQt4.QtGui.QStyleOptionButton-class.html#None,Variable PyQt4.QtGui.QStyleOptionFrameV2.None=PyQt4.QtGui.QStyleOptionFrameV2-class.html#None,Variable PyQt4.QtGui.QStyleOptionHeader.None=PyQt4.QtGui.QStyleOptionHeader-class.html#None,Variable PyQt4.QtGui.QStyleOptionToolBar.None=PyQt4.QtGui.QStyleOptionToolBar-class.html#None,Variable PyQt4.QtGui.QStyleOptionToolButton.None=PyQt4.QtGui.QStyleOptionToolButton-class.html#None,Variable PyQt4.QtGui.QStyleOptionViewItemV2.None=PyQt4.QtGui.QStyleOptionViewItemV2-class.html#None,Variable qgis._core.QgsRasterBandStats.None=qgis._core.QgsRasterBandStats-class.html#None"><a title="PyQt4.QtCore.QEvent.None
+PyQt4.QtCore.QUrl.None
+PyQt4.QtGui.QAbstractPrintDialog.None
+PyQt4.QtGui.QStyleOptionButton.None
+PyQt4.QtGui.QStyleOptionFrameV2.None
+PyQt4.QtGui.QStyleOptionHeader.None
+PyQt4.QtGui.QStyleOptionToolBar.None
+PyQt4.QtGui.QStyleOptionToolButton.None
+PyQt4.QtGui.QStyleOptionViewItemV2.None
+qgis._core.QgsRasterBandStats.None" class="py-name" href="#" onclick="return doclink('link-38', 'None', 'link-38');">None</a></tt> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_iface</tt><tt class="py-op">.</tt><tt class="py-name">setActiveLayer</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_layers</tt><tt class="py-op">.</tt><tt id="link-39" class="py-name" targets="Method QGIS-AIMS-Plugin.AimsUI.LayerManager.LayerManager.addressLayer()=QGIS-AIMS-Plugin.AimsUI.LayerManager.LayerManager-class.html#addressLayer"><a title="QGIS-AIMS-Plugin.AimsUI.LayerManager.LayerManager.addressLayer" class="py-name" href="#" onclick="return doclink('link-39', 'addressLayer', 'link-39');">addressLayer</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">        <tt class="py-name">results</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">identify</tt><tt class="py-op">(</tt><tt class="py-name">mouseEvent</tt><tt class="py-op">.</tt><tt id="link-40" class="py-name" targets="Variable PyQt4.QtGui.QPainter.PixmapFragment.x=PyQt4.QtGui.QPainter.PixmapFragment-class.html#x,Variable PyQt4.QtGui.QPainterPath.Element.x=PyQt4.QtGui.QPainterPath.Element-class.html#x"><a title="PyQt4.QtGui.QPainter.PixmapFragment.x
+PyQt4.QtGui.QPainterPath.Element.x" class="py-name" href="#" onclick="return doclink('link-40', 'x', 'link-40');">x</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-name">mouseEvent</tt><tt class="py-op">.</tt><tt id="link-41" class="py-name" targets="Variable PyQt4.QtGui.QPainter.PixmapFragment.y=PyQt4.QtGui.QPainter.PixmapFragment-class.html#y,Variable PyQt4.QtGui.QPainterPath.Element.y=PyQt4.QtGui.QPainterPath.Element-class.html#y"><a title="PyQt4.QtGui.QPainter.PixmapFragment.y
+PyQt4.QtGui.QPainterPath.Element.y" class="py-name" href="#" onclick="return doclink('link-41', 'y', 'link-41');">y</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-42" class="py-name" targets="Variable qgis._gui.QgsMapToolIdentify.ActiveLayer=qgis._gui.QgsMapToolIdentify-class.html#ActiveLayer"><a title="qgis._gui.QgsMapToolIdentify.ActiveLayer" class="py-name" href="#" onclick="return doclink('link-42', 'ActiveLayer', 'link-42');">ActiveLayer</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-43" class="py-name" targets="Variable QGIS-AIMS-Plugin.Test.AimsService_Mock._VectorLayer.VectorLayer=QGIS-AIMS-Plugin.Test.AimsService_Mock._VectorLayer-class.html#VectorLayer,Variable qgis._core.QgsMapLayer.VectorLayer=qgis._core.QgsMapLayer-class.html#VectorLayer,Variable qgis._gui.QgsMapLayerProxyModel.VectorLayer=qgis._gui.QgsMapLayerProxyModel-class.html#VectorLayer,Variable qgis._gui.QgsMapToolIdentify.VectorLayer=qgis._gui.QgsMapToolIdentify-class.html#VectorLayer"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock._VectorLayer.VectorLayer
+qgis._core.QgsMapLayer.VectorLayer
+qgis._gui.QgsMapLayerProxyModel.VectorLayer
+qgis._gui.QgsMapToolIdentify.VectorLayer" class="py-name" href="#" onclick="return doclink('link-43', 'VectorLayer', 'link-43');">VectorLayer</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">         </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">results</tt><tt class="py-op">)</tt> <tt class="py-op">==</tt> <tt class="py-number">0</tt><tt class="py-op">:</tt>  </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">        <tt class="py-keyword">elif</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">results</tt><tt class="py-op">)</tt> <tt class="py-op">==</tt> <tt class="py-number">1</tt><tt class="py-op">:</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">            <tt class="py-comment"># initialise an address object and populate from selected feature</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line">            <tt class="py-comment">#self._feature = UiUtility.mapResultsToAddObj(results[0], self._controller) &lt;-- old method i.e direct to api</tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_feature</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_controller</tt><tt class="py-op">.</tt><tt class="py-name">uidm</tt><tt class="py-op">.</tt><tt id="link-44" class="py-name" targets="Method QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.UiDataManager.singleFeatureObj()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.UiDataManager-class.html#singleFeatureObj"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.UiDataManager.singleFeatureObj" class="py-name" href="#" onclick="return doclink('link-44', 'singleFeatureObj', 'link-44');">singleFeatureObj</a></tt><tt class="py-op">(</tt><tt class="py-name">results</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt id="link-45" class="py-name" targets="Method QGIS-AIMS-Plugin.Test.AimsService_Mock._results.mFeature()=QGIS-AIMS-Plugin.Test.AimsService_Mock._results-class.html#mFeature,Variable qgis._gui.QgsMapToolIdentify.IdentifyResult.mFeature=qgis._gui.QgsMapToolIdentify.IdentifyResult-class.html#mFeature"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock._results.mFeature
+qgis._gui.QgsMapToolIdentify.IdentifyResult.mFeature" class="py-name" href="#" onclick="return doclink('link-45', 'mFeature', 'link-45');">mFeature</a></tt><tt class="py-op">.</tt><tt class="py-name">attribute</tt><tt class="py-op">(</tt><tt class="py-string">'addressId'</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line">             </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> <tt class="py-comment"># Stacked points</tt> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line">            <tt class="py-name">identifiedFeatures</tt><tt class="py-op">=</tt><tt class="py-op">[</tt><tt class="py-op">]</tt>  </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt class="py-name">i</tt> <tt class="py-keyword">in</tt> <tt id="link-46" class="py-name" targets="Variable qgis._core.QgsRasterBandStats.range=qgis._core.QgsRasterBandStats-class.html#range"><a title="qgis._core.QgsRasterBandStats.range" class="py-name" href="#" onclick="return doclink('link-46', 'range', 'link-46');">range</a></tt> <tt class="py-op">(</tt><tt class="py-number">0</tt><tt class="py-op">,</tt><tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">results</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line">                <tt class="py-name">identifiedFeatures</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt class="py-name">dict</tt><tt class="py-op">(</tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line">                <tt class="py-name">fullAddress</tt><tt class="py-op">=</tt><tt class="py-name">results</tt><tt class="py-op">[</tt><tt class="py-name">i</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt id="link-47" class="py-name"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock._results.mFeature
+qgis._gui.QgsMapToolIdentify.IdentifyResult.mFeature" class="py-name" href="#" onclick="return doclink('link-47', 'mFeature', 'link-45');">mFeature</a></tt><tt class="py-op">.</tt><tt class="py-name">attribute</tt><tt class="py-op">(</tt><tt class="py-string">'fullAddress'</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line">                <tt class="py-name">addressId</tt><tt class="py-op">=</tt> <tt class="py-name">results</tt><tt class="py-op">[</tt><tt class="py-name">i</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt id="link-48" class="py-name"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock._results.mFeature
+qgis._gui.QgsMapToolIdentify.IdentifyResult.mFeature" class="py-name" href="#" onclick="return doclink('link-48', 'mFeature', 'link-45');">mFeature</a></tt><tt class="py-op">.</tt><tt class="py-name">attribute</tt><tt class="py-op">(</tt><tt class="py-string">'addressId'</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line">                 </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line">            <tt class="py-name">dlg</tt> <tt class="py-op">=</tt> <tt id="link-49" class="py-name" targets="Class QGIS-AIMS-Plugin.AimsUI.UpdateAddressTool.updateAddressDialog=QGIS-AIMS-Plugin.AimsUI.UpdateAddressTool.updateAddressDialog-class.html"><a title="QGIS-AIMS-Plugin.AimsUI.UpdateAddressTool.updateAddressDialog" class="py-name" href="#" onclick="return doclink('link-49', 'updateAddressDialog', 'link-49');">updateAddressDialog</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_iface</tt><tt class="py-op">.</tt><tt id="link-50" class="py-name"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock._QInterface.mainWindow
+QGIS-AIMS-Plugin.Test.CreateNewTool_Test._Dummy_IFace.mainWindow
+QGIS-AIMS-Plugin.Test._QGisInterface.QgisInterface.mainWindow" class="py-name" href="#" onclick="return doclink('link-50', 'mainWindow', 'link-24');">mainWindow</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line">            <tt class="py-name">updFeatures</tt> <tt class="py-op">=</tt> <tt class="py-name">dlg</tt><tt class="py-op">.</tt><tt id="link-51" class="py-name" targets="Method QGIS-AIMS-Plugin.AimsUI.DelAddressTool.DelAddressDialog.selectFeatures()=QGIS-AIMS-Plugin.AimsUI.DelAddressTool.DelAddressDialog-class.html#selectFeatures,Method QGIS-AIMS-Plugin.AimsUI.LineageTool.LineageDialog.selectFeatures()=QGIS-AIMS-Plugin.AimsUI.LineageTool.LineageDialog-class.html#selectFeatures,Method QGIS-AIMS-Plugin.AimsUI.MoveAddressTool.MoveAddressDialog.selectFeatures()=QGIS-AIMS-Plugin.AimsUI.MoveAddressTool.MoveAddressDialog-class.html#selectFeatures,Method QGIS-AIMS-Plugin.AimsUI.UpdateAddressTool.updateAddressDialog.selectFeatures()=QGIS-AIMS-Plugin.AimsUI.UpdateAddressTool.updateAddressDialog-class.html#selectFeatures"><a title="QGIS-AIMS-Plugin.AimsUI.DelAddressTool.DelAddressDialog.selectFeatures
+QGIS-AIMS-Plugin.AimsUI.LineageTool.LineageDialog.selectFeatures
+QGIS-AIMS-Plugin.AimsUI.MoveAddressTool.MoveAddressDialog.selectFeatures
+QGIS-AIMS-Plugin.AimsUI.UpdateAddressTool.updateAddressDialog.selectFeatures" class="py-name" href="#" onclick="return doclink('link-51', 'selectFeatures', 'link-51');">selectFeatures</a></tt><tt class="py-op">(</tt><tt class="py-name">identifiedFeatures</tt><tt class="py-op">)</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line"> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">updFeatures</tt><tt class="py-op">:</tt>  </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line">                <tt class="py-name">updFeatureIds</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-name">d</tt><tt class="py-op">[</tt><tt class="py-string">'addressId'</tt><tt class="py-op">]</tt> <tt class="py-keyword">for</tt> <tt class="py-name">d</tt> <tt class="py-keyword">in</tt> <tt class="py-name">updFeatures</tt><tt class="py-op">]</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line"> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line">                <tt class="py-keyword">for</tt> <tt class="py-name">result</tt> <tt class="py-keyword">in</tt> <tt class="py-name">results</tt><tt class="py-op">:</tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line">                    <tt class="py-keyword">if</tt> <tt class="py-name">result</tt><tt class="py-op">.</tt><tt id="link-52" class="py-name"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock._results.mFeature
+qgis._gui.QgsMapToolIdentify.IdentifyResult.mFeature" class="py-name" href="#" onclick="return doclink('link-52', 'mFeature', 'link-45');">mFeature</a></tt><tt class="py-op">.</tt><tt class="py-name">attribute</tt><tt class="py-op">(</tt><tt class="py-string">'addressId'</tt><tt class="py-op">)</tt> <tt class="py-keyword">in</tt> <tt class="py-name">updFeatureIds</tt><tt class="py-op">:</tt> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line">                        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_feature</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_controller</tt><tt class="py-op">.</tt><tt class="py-name">uidm</tt><tt class="py-op">.</tt><tt id="link-53" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.UiDataManager.singleFeatureObj" class="py-name" href="#" onclick="return doclink('link-53', 'singleFeatureObj', 'link-44');">singleFeatureObj</a></tt><tt class="py-op">(</tt><tt class="py-name">result</tt><tt class="py-op">.</tt><tt id="link-54" class="py-name"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock._results.mFeature
+qgis._gui.QgsMapToolIdentify.IdentifyResult.mFeature" class="py-name" href="#" onclick="return doclink('link-54', 'mFeature', 'link-45');">mFeature</a></tt><tt class="py-op">.</tt><tt class="py-name">attribute</tt><tt class="py-op">(</tt><tt class="py-string">'addressId'</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line">                        <tt class="py-keyword">break</tt> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line">        <tt class="py-comment"># Open form</tt> </tt>
+<a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_feature</tt><tt class="py-op">:</tt> </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line">            <tt class="py-comment"># highlight feature             </tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-55" class="py-name" targets="Method QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.ReviewQueueWidget.ReviewQueueWidget.setMarker()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.ReviewQueueWidget.ReviewQueueWidget-class.html#setMarker,Method QGIS-AIMS-Plugin.AimsUI.CreateNewAddressTool.CreateNewAddressTool.setMarker()=QGIS-AIMS-Plugin.AimsUI.CreateNewAddressTool.CreateNewAddressTool-class.html#setMarker,Method QGIS-AIMS-Plugin.AimsUI.MoveAddressTool.MoveAddressTool.setMarker()=QGIS-AIMS-Plugin.AimsUI.MoveAddressTool.MoveAddressTool-class.html#setMarker,Method QGIS-AIMS-Plugin.AimsUI.UpdateAddressTool.UpdateAddressTool.setMarker()=QGIS-AIMS-Plugin.AimsUI.UpdateAddressTool.UpdateAddressTool-class.html#setMarker"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.ReviewQueueWidget.ReviewQueueWidget.setMarker
+QGIS-AIMS-Plugin.AimsUI.CreateNewAddressTool.CreateNewAddressTool.setMarker
+QGIS-AIMS-Plugin.AimsUI.MoveAddressTool.MoveAddressTool.setMarker
+QGIS-AIMS-Plugin.AimsUI.UpdateAddressTool.UpdateAddressTool.setMarker" class="py-name" href="#" onclick="return doclink('link-55', 'setMarker', 'link-55');">setMarker</a></tt><tt class="py-op">(</tt><tt class="py-name">results</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt id="link-56" class="py-name"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock._results.mFeature
+qgis._gui.QgsMapToolIdentify.IdentifyResult.mFeature" class="py-name" href="#" onclick="return doclink('link-56', 'mFeature', 'link-45');">mFeature</a></tt><tt class="py-op">.</tt><tt class="py-name">geometry</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-57" class="py-name" targets="Method QGIS-AIMS-Plugin.Test.AimsService_Mock._Geometry.asPoint()=QGIS-AIMS-Plugin.Test.AimsService_Mock._Geometry-class.html#asPoint"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock._Geometry.asPoint" class="py-name" href="#" onclick="return doclink('link-57', 'asPoint', 'link-57');">asPoint</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_controller</tt><tt class="py-op">.</tt><tt class="py-name">_queues</tt><tt class="py-op">.</tt><tt class="py-name">uEditFeatureTab</tt><tt class="py-op">.</tt><tt id="link-58" class="py-name" targets="Method QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.EditFeatureWidget.EditFeatureWidget.setFeature()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.EditFeatureWidget.EditFeatureWidget-class.html#setFeature"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.EditFeatureWidget.EditFeatureWidget.setFeature" class="py-name" href="#" onclick="return doclink('link-58', 'setFeature', 'link-58');">setFeature</a></tt><tt class="py-op">(</tt><tt class="py-string">'update'</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_feature</tt> <tt class="py-op">)</tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_controller</tt><tt class="py-op">.</tt><tt class="py-name">_queues</tt><tt class="py-op">.</tt><tt class="py-name">tabWidget</tt><tt class="py-op">.</tt><tt class="py-name">setCurrentIndex</tt><tt class="py-op">(</tt><tt class="py-number">0</tt><tt class="py-op">)</tt> </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line">            <tt id="link-59" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiUtility
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiUtility.UiUtility" class="py-name" href="#" onclick="return doclink('link-59', 'UiUtility', 'link-9');">UiUtility</a></tt><tt class="py-op">.</tt><tt id="link-60" class="py-name" targets="Method QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.EditFeatureWidget.EditFeatureWidget.setEditability()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.EditFeatureWidget.EditFeatureWidget-class.html#setEditability,Method QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.QueueEditorWidget.QueueEditorWidget.setEditability()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.QueueEditorWidget.QueueEditorWidget-class.html#setEditability,Static Method QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiUtility.UiUtility.setEditability()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiUtility.UiUtility-class.html#setEditability"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.EditFeatureWidget.EditFeatureWidget.setEditability
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.QueueEditorWidget.QueueEditorWidget.setEditability
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiUtility.UiUtility.setEditability" class="py-name" href="#" onclick="return doclink('link-60', 'setEditability', 'link-60');">setEditability</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_controller</tt><tt class="py-op">.</tt><tt class="py-name">_queues</tt><tt class="py-op">.</tt><tt class="py-name">uEditFeatureTab</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line"> </tt>
+<a name="updateAddressDialog"></a><div id="updateAddressDialog-def"><a name="L126"></a><tt class="py-lineno">126</tt> <a class="py-toggle" href="#" id="updateAddressDialog-toggle" onclick="return toggle('updateAddressDialog');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AimsUI.UpdateAddressTool.updateAddressDialog-class.html">updateAddressDialog</a><tt class="py-op">(</tt><tt class="py-base-class">Ui_ComfirmSelection</tt><tt class="py-op">,</tt> <tt class="py-base-class">QDialog</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="updateAddressDialog-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="updateAddressDialog-expanded"><a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line"><tt class="py-docstring">    Dialog that is shown to the user if more than one feature is selected to</tt> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line"><tt class="py-docstring">    allow the user to refine and confirm their selection</tt> </tt>
+<a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line"><tt class="py-docstring">    @param Ui_ComfirmSelection: Ui Dialog to allow user to refine selection</tt> </tt>
+<a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line"><tt class="py-docstring">    @type  Ui_ComfirmSelection: AimsUI.AimsClient.Gui.Ui_ComfirmSelection</tt> </tt>
+<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line">        </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line"> </tt>
+<a name="updateAddressDialog.__init__"></a><div id="updateAddressDialog.__init__-def"><a name="L136"></a><tt class="py-lineno">136</tt> <a class="py-toggle" href="#" id="updateAddressDialog.__init__-toggle" onclick="return toggle('updateAddressDialog.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AimsUI.UpdateAddressTool.updateAddressDialog-class.html#__init__">__init__</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">parent</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="updateAddressDialog.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="updateAddressDialog.__init__-expanded"><a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line"><tt class="py-docstring">        Intialise dialog</tt> </tt>
+<a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line"><tt class="py-docstring">        </tt> </tt>
+<a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line"><tt class="py-docstring">        @param parent: Main Window</tt> </tt>
+<a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line"><tt class="py-docstring">        @type  parent: QtGui.QMainWindow</tt> </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line">         </tt>
+<a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line">        <tt id="link-61" class="py-name" targets="Class PyQt4.QtGui.QDialog=PyQt4.QtGui.QDialog-class.html"><a title="PyQt4.QtGui.QDialog" class="py-name" href="#" onclick="return doclink('link-61', 'QDialog', 'link-61');">QDialog</a></tt><tt class="py-op">.</tt><tt id="link-62" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Address.Address.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressChange.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressResolution.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.Address.Entity.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.Address.EntityAddress.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.Address.EntityValidation.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.Address.Position.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressChangeFactory.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFactory.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressResolutionFactory.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.AimsApi.AimsApi.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.AimsApi.AimsHttpException.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.AimsException.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.Configuration.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeedRef.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.Config.ConfigReader.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.Const.const.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.DataManager.DataManager.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.DataManager.Persistence.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataRequestChannel.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSync.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSyncAdmin.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSyncFeatures.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSyncFeeds.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdater.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterAddress.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterGroup.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterUser.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.Feature.FeatureMetaData.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.Group.Group.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupChange.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupResolution.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupChangeFactory.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupFactory.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupResolutionFactory.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.Observable.Observable.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.User.User.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.UserFactory.UserFactory.__init__
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.AimsQueueWidget.AimsQueueWidget.__init__
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.Controller.Controller.__init__
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.EditFeatureWidget.EditFeatureWidget.__init__
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.QueueEditorWidget.QueueEditorWidget.__init__
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.ResponseHandler.ResponseHandler.__init__
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.ReviewQueueWidget.ReviewQueueWidget.__init__
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.DMData.__init__
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.DMObserver.__init__
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.Listener.__init__
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.UiDataManager.__init__
+QGIS-AIMS-Plugin.AimsUI.CreateNewAddressTool.CreateNewAddressTool.__init__
+QGIS-AIMS-Plugin.AimsUI.DelAddressTool.DelAddressDialog.__init__
+QGIS-AIMS-Plugin.AimsUI.DelAddressTool.DelAddressTool.__init__
+QGIS-AIMS-Plugin.AimsUI.GetRclTool.GetRcl.__init__
+QGIS-AIMS-Plugin.AimsUI.LayerManager.LayerManager.__init__
+QGIS-AIMS-Plugin.AimsUI.LineageTool.LineageDialog.__init__
+QGIS-AIMS-Plugin.AimsUI.LineageTool.LineageTool.__init__
+QGIS-AIMS-Plugin.AimsUI.MoveAddressTool.MoveAddressDialog.__init__
+QGIS-AIMS-Plugin.AimsUI.MoveAddressTool.MoveAddressTool.__init__
+QGIS-AIMS-Plugin.AimsUI.UpdateAddressTool.UpdateAddressTool.__init__
+QGIS-AIMS-Plugin.AimsUI.UpdateAddressTool.updateAddressDialog.__init__
+QGIS-AIMS-Plugin.AimsUI.UpdateReviewPosition.UpdateReviewPosition.__init__
+QGIS-AIMS-Plugin.Plugin.Plugin.__init__
+QGIS-AIMS-Plugin.RunAllTests.FullSuite.__init__
+QGIS-AIMS-Plugin.Test.AimsService_Mock._Point.__init__
+QGIS-AIMS-Plugin.Test._QGisInterface.QgisInterface.__init__" class="py-name" href="#" onclick="return doclink('link-62', '__init__', 'link-18');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt><tt class="py-name">parent</tt><tt class="py-op">)</tt> </tt>
+<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-63" class="py-name" targets="Method QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.Ui_AimsQueueWidget.Ui_AimsQueueWidget.setupUi()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.Ui_AimsQueueWidget.Ui_AimsQueueWidget-class.html#setupUi,Method QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.Ui_ComfirmSelection.Ui_ComfirmSelection.setupUi()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.Ui_ComfirmSelection.Ui_ComfirmSelection-class.html#setupUi,Method QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.Ui_LineageDialog.Ui_LineageDialog.setupUi()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.Ui_LineageDialog.Ui_LineageDialog-class.html#setupUi,Method QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.Ui_ReviewQueueWidget.Ui_ReviewQueueWidget.setupUi()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.Ui_ReviewQueueWidget.Ui_ReviewQueueWidget-class.html#setupUi"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.Ui_AimsQueueWidget.Ui_AimsQueueWidget.setupUi
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.Ui_ComfirmSelection.Ui_ComfirmSelection.setupUi
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.Ui_LineageDialog.Ui_LineageDialog.setupUi
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.Ui_ReviewQueueWidget.Ui_ReviewQueueWidget.setupUi" class="py-name" href="#" onclick="return doclink('link-63', 'setupUi', 'link-63');">setupUi</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line">     </tt>
+<a name="updateAddressDialog.selectFeatures"></a><div id="updateAddressDialog.selectFeatures-def"><a name="L147"></a><tt class="py-lineno">147</tt> <a class="py-toggle" href="#" id="updateAddressDialog.selectFeatures-toggle" onclick="return toggle('updateAddressDialog.selectFeatures');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AimsUI.UpdateAddressTool.updateAddressDialog-class.html#selectFeatures">selectFeatures</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">identifiedFeatures</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="updateAddressDialog.selectFeatures-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="updateAddressDialog.selectFeatures-expanded"><a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line"><tt class="py-docstring">        Show selected features to user and return the users</tt> </tt>
+<a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line"><tt class="py-docstring">        refined selection</tt> </tt>
+<a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line"><tt class="py-docstring">        @param identifiedFeatures: List of dictionaries representing each selected feature</tt> </tt>
+<a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line"><tt class="py-docstring">        @type  identifiedFeatures: list</tt> </tt>
+<a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line"><tt class="py-docstring">        </tt> </tt>
+<a name="L155"></a><tt class="py-lineno">155</tt>  <tt class="py-line"><tt class="py-docstring">        @return: List of dictionaries representing the refined selection</tt> </tt>
+<a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line"><tt class="py-docstring">        @rtype: list</tt> </tt>
+<a name="L157"></a><tt class="py-lineno">157</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L158"></a><tt class="py-lineno">158</tt>  <tt class="py-line">         </tt>
+<a name="L159"></a><tt class="py-lineno">159</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">uSadListView</tt><tt class="py-op">.</tt><tt class="py-name">setList</tt><tt class="py-op">(</tt><tt class="py-name">identifiedFeatures</tt><tt class="py-op">,</tt> </tt>
+<a name="L160"></a><tt class="py-lineno">160</tt>  <tt class="py-line">                                 <tt class="py-op">[</tt><tt class="py-string">'fullAddress'</tt><tt class="py-op">,</tt><tt class="py-string">'addressId'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L161"></a><tt class="py-lineno">161</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">exec_</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-op">==</tt> <tt id="link-64" class="py-name"><a title="PyQt4.QtGui.QDialog" class="py-name" href="#" onclick="return doclink('link-64', 'QDialog', 'link-61');">QDialog</a></tt><tt class="py-op">.</tt><tt id="link-65" class="py-name" targets="Variable PyQt4.QtGui.QDialog.Accepted=PyQt4.QtGui.QDialog-class.html#Accepted"><a title="PyQt4.QtGui.QDialog.Accepted" class="py-name" href="#" onclick="return doclink('link-65', 'Accepted', 'link-65');">Accepted</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L162"></a><tt class="py-lineno">162</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">uSadListView</tt><tt class="py-op">.</tt><tt class="py-name">confirmSelection</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L163"></a><tt class="py-lineno">163</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-66" class="py-name"><a title="PyQt4.QtCore.QEvent.None
+PyQt4.QtCore.QUrl.None
+PyQt4.QtGui.QAbstractPrintDialog.None
+PyQt4.QtGui.QStyleOptionButton.None
+PyQt4.QtGui.QStyleOptionFrameV2.None
+PyQt4.QtGui.QStyleOptionHeader.None
+PyQt4.QtGui.QStyleOptionToolBar.None
+PyQt4.QtGui.QStyleOptionToolButton.None
+PyQt4.QtGui.QStyleOptionViewItemV2.None
+qgis._core.QgsRasterBandStats.None" class="py-name" href="#" onclick="return doclink('link-66', 'None', 'link-38');">None</a></tt> </tt>
+</div></div><a name="L164"></a><tt class="py-lineno">164</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="QGIS-AIMS-Plugin-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Jun 14 13:07:06 2016
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

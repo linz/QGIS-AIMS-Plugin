@@ -1,0 +1,924 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>PyQt4.QtCore.QObject</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="QGIS-AIMS-Plugin-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        PyQt4 ::
+        QtCore ::
+        QObject ::
+        Class&nbsp;QObject
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="PyQt4.QtCore.QObject-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class QObject</h1><p class="nomargin-top"></p>
+<pre class="base-tree">
+       object --+        
+                |        
+sip.simplewrapper --+    
+                    |    
+          sip.wrapper --+
+                        |
+                       <strong class="uidshort">QObject</strong>
+</pre>
+
+<dl><dt>Known Subclasses:</dt>
+<dd>
+      <ul class="subclass-list">
+<li><a href="PyQt4.QtCore.QAbstractAnimation-class.html">QAbstractAnimation</a></li><li>, <a href="PyQt4.QtCore.QAbstractEventDispatcher-class.html">QAbstractEventDispatcher</a></li><li>, <a href="PyQt4.QtCore.QAbstractItemModel-class.html">QAbstractItemModel</a></li><li>, <a href="PyQt4.QtCore.QAbstractState-class.html">QAbstractState</a></li><li>, <a href="PyQt4.QtCore.QAbstractTransition-class.html">QAbstractTransition</a></li><li>, <a href="PyQt4.QtCore.QIODevice-class.html">QIODevice</a></li><li>, <a href="PyQt4.QtCore.QCoreApplication-class.html">QCoreApplication</a></li><li>, <a href="PyQt4.QtCore.QEventLoop-class.html">QEventLoop</a></li><li>, <a href="PyQt4.QtCore.QFileSystemWatcher-class.html">QFileSystemWatcher</a></li><li>, <a href="PyQt4.QtCore.QLibrary-class.html">QLibrary</a></li><li>, <a href="PyQt4.QtCore.QMimeData-class.html">QMimeData</a></li><li>, <a href="PyQt4.QtCore.QObjectCleanupHandler-class.html">QObjectCleanupHandler</a></li><li>, <a href="PyQt4.QtCore.QPluginLoader-class.html">QPluginLoader</a></li><li>, <a href="PyQt4.QtCore.QSettings-class.html">QSettings</a></li><li>, <a href="PyQt4.QtCore.QSharedMemory-class.html">QSharedMemory</a></li><li>, <a href="PyQt4.QtCore.QSignalMapper-class.html">QSignalMapper</a></li><li>, <a href="PyQt4.QtCore.QSocketNotifier-class.html">QSocketNotifier</a></li><li>, <a href="PyQt4.QtCore.QThread-class.html">QThread</a></li><li>, <a href="PyQt4.QtCore.QThreadPool-class.html">QThreadPool</a></li><li>, <a href="PyQt4.QtCore.QTimeLine-class.html">QTimeLine</a></li><li>, <a href="PyQt4.QtCore.QTimer-class.html">QTimer</a></li><li>, <a href="PyQt4.QtCore.QTranslator-class.html">QTranslator</a></li><li>, <a href="PyQt4.QtGui.QWidget-class.html">QtGui.QWidget</a></li><li>, <a href="PyQt4.QtGui.QAbstractItemDelegate-class.html">QtGui.QAbstractItemDelegate</a></li><li>, <a href="PyQt4.QtGui.QAbstractTextDocumentLayout-class.html">QtGui.QAbstractTextDocumentLayout</a></li><li>, <a href="PyQt4.QtGui.QAction-class.html">QtGui.QAction</a></li><li>, <a href="PyQt4.QtGui.QActionGroup-class.html">QtGui.QActionGroup</a></li><li>, <a href="PyQt4.QtGui.QLayout-class.html">QtGui.QLayout</a></li><li>, <a href="PyQt4.QtGui.QButtonGroup-class.html">QtGui.QButtonGroup</a></li><li>, <a href="PyQt4.QtGui.QClipboard-class.html">QtGui.QClipboard</a></li><li>, <a href="PyQt4.QtGui.QStyle-class.html">QtGui.QStyle</a></li><li>, <a href="PyQt4.QtGui.QCompleter-class.html">QtGui.QCompleter</a></li><li>, <a href="PyQt4.QtGui.QDataWidgetMapper-class.html">QtGui.QDataWidgetMapper</a></li><li>, <a href="PyQt4.QtGui.QValidator-class.html">QtGui.QValidator</a></li><li>, <a href="PyQt4.QtGui.QDrag-class.html">QtGui.QDrag</a></li><li>, <a href="PyQt4.QtGui.QGesture-class.html">QtGui.QGesture</a></li><li>, <a href="PyQt4.QtGui.QGraphicsAnchor-class.html">QtGui.QGraphicsAnchor</a></li><li>, <a href="PyQt4.QtGui.QGraphicsEffect-class.html">QtGui.QGraphicsEffect</a></li><li>, <a href="PyQt4.QtGui.QGraphicsItemAnimation-class.html">QtGui.QGraphicsItemAnimation</a></li><li>, <a href="PyQt4.QtGui.QGraphicsObject-class.html">QtGui.QGraphicsObject</a></li><li>, <a href="PyQt4.QtGui.QGraphicsTransform-class.html">QtGui.QGraphicsTransform</a></li><li>, <a href="PyQt4.QtGui.QGraphicsScene-class.html">QtGui.QGraphicsScene</a></li><li>, <a href="PyQt4.QtGui.QInputContext-class.html">QtGui.QInputContext</a></li><li>, <a href="PyQt4.QtGui.QItemSelectionModel-class.html">QtGui.QItemSelectionModel</a></li><li>, <a href="PyQt4.QtGui.QMovie-class.html">QtGui.QMovie</a></li><li>, <a href="PyQt4.QtGui.QPyTextObject-class.html">QtGui.QPyTextObject</a></li><li>, <a href="PyQt4.QtGui.QSessionManager-class.html">QtGui.QSessionManager</a></li><li>, <a href="PyQt4.QtGui.QShortcut-class.html">QtGui.QShortcut</a></li><li>, <a href="PyQt4.QtGui.QSound-class.html">QtGui.QSound</a></li><li>, <a href="PyQt4.QtGui.QSyntaxHighlighter-class.html">QtGui.QSyntaxHighlighter</a></li><li>, <a href="PyQt4.QtGui.QSystemTrayIcon-class.html">QtGui.QSystemTrayIcon</a></li><li>, <a href="PyQt4.QtGui.QTextObject-class.html">QtGui.QTextObject</a></li><li>, <a href="PyQt4.QtGui.QTextDocument-class.html">QtGui.QTextDocument</a></li><li>, <a href="PyQt4.QtGui.QUndoGroup-class.html">QtGui.QUndoGroup</a></li><li>, <a href="PyQt4.QtGui.QUndoStack-class.html">QtGui.QUndoStack</a></li><li>, <a href="qgis._core.QgsAddRemoveItemCommand-class.html">qgis._core.QgsAddRemoveItemCommand</a></li><li>, <a href="qgis._core.QgsAtlasComposition-class.html">qgis._core.QgsAtlasComposition</a></li><li>, <a href="qgis._core.QgsAttributeEditorElement-class.html">qgis._core.QgsAttributeEditorElement</a></li><li>, <a href="qgis._core.QgsComposerObject-class.html">qgis._core.QgsComposerObject</a></li><li>, <a href="qgis._core.QgsComposerTableColumn-class.html">qgis._core.QgsComposerTableColumn</a></li><li>, <a href="qgis._core.QgsContextHelp-class.html">qgis._core.QgsContextHelp</a></li><li>, <a href="qgis._core.QgsCoordinateTransform-class.html">qgis._core.QgsCoordinateTransform</a></li><li>, <a href="qgis._core.QgsCptCityDataItem-class.html">qgis._core.QgsCptCityDataItem</a></li><li>, <a href="qgis._core.QgsCredentialsConsole-class.html">qgis._core.QgsCredentialsConsole</a></li><li>, <a href="qgis._core.QgsDataItem-class.html">qgis._core.QgsDataItem</a></li><li>, <a href="qgis._core.QgsDataProvider-class.html">qgis._core.QgsDataProvider</a></li><li>, <a href="qgis._core.QgsMapLayerLegend-class.html">qgis._core.QgsMapLayerLegend</a></li><li>, <a href="qgis._core.QgsGPSConnection-class.html">qgis._core.QgsGPSConnection</a></li><li>, <a href="qgis._core.QgsGPSDetector-class.html">qgis._core.QgsGPSDetector</a></li><li>, <a href="qgis._core.QgsGml-class.html">qgis._core.QgsGml</a></li><li>, <a href="qgis._core.QgsGmlSchema-class.html">qgis._core.QgsGmlSchema</a></li><li>, <a href="qgis._core.QgsHttpTransaction-class.html">qgis._core.QgsHttpTransaction</a></li><li>, <a href="qgis._core.QgsImageFetcher-class.html">qgis._core.QgsImageFetcher</a></li><li>, <a href="qgis._core.QgsLayerTreeModelLegendNode-class.html">qgis._core.QgsLayerTreeModelLegendNode</a></li><li>, <a href="qgis._core.QgsLayerTreeNode-class.html">qgis._core.QgsLayerTreeNode</a></li><li>, <a href="qgis._core.QgsLayerTreeRegistryBridge-class.html">qgis._core.QgsLayerTreeRegistryBridge</a></li><li>, <a href="qgis._core.QgsMapLayer-class.html">qgis._core.QgsMapLayer</a></li><li>, <a href="qgis._core.QgsMapLayerRegistry-class.html">qgis._core.QgsMapLayerRegistry</a></li><li>, <a href="qgis._core.QgsMapLayerStyleManager-class.html">qgis._core.QgsMapLayerStyleManager</a></li><li>, <a href="qgis._core.QgsMapRenderer-class.html">qgis._core.QgsMapRenderer</a></li><li>, <a href="qgis._core.QgsMapRendererCache-class.html">qgis._core.QgsMapRendererCache</a></li><li>, <a href="qgis._core.QgsMapRendererJob-class.html">qgis._core.QgsMapRendererJob</a></li><li>, <a href="qgis._core.QgsMessageLog-class.html">qgis._core.QgsMessageLog</a></li><li>, <a href="qgis._core.QgsMessageLogConsole-class.html">qgis._core.QgsMessageLogConsole</a></li><li>, <a href="qgis._core.QgsMessageOutputConsole-class.html">qgis._core.QgsMessageOutputConsole</a></li><li>, QtNetwork.QNetworkAccessManager</li><li>, <a href="qgis._core.QgsNetworkContentFetcher-class.html">qgis._core.QgsNetworkContentFetcher</a></li><li>, <a href="qgis._core.QgsOWSConnection-class.html">qgis._core.QgsOWSConnection</a></li><li>, <a href="qgis._core.QgsOfflineEditing-class.html">qgis._core.QgsOfflineEditing</a></li><li>, <a href="qgis._core.QgsPointLocator-class.html">qgis._core.QgsPointLocator</a></li><li>, <a href="qgis._core.QgsProject-class.html">qgis._core.QgsProject</a></li><li>, <a href="qgis._core.QgsRelationManager-class.html">qgis._core.QgsRelationManager</a></li><li>, <a href="qgis._core.QgsRunProcess-class.html">qgis._core.QgsRunProcess</a></li><li>, <a href="qgis._core.QgsSnappingUtils-class.html">qgis._core.QgsSnappingUtils</a></li><li>, <a href="qgis._core.QgsStyleV2-class.html">qgis._core.QgsStyleV2</a></li><li>, <a href="qgis._core.QgsSvgCache-class.html">qgis._core.QgsSvgCache</a></li><li>, <a href="qgis._core.QgsVectorLayerCache-class.html">qgis._core.QgsVectorLayerCache</a></li><li>, <a href="qgis._core.QgsVectorLayerEditBuffer-class.html">qgis._core.QgsVectorLayerEditBuffer</a></li><li>, <a href="qgis._core.QgsVectorLayerJoinBuffer-class.html">qgis._core.QgsVectorLayerJoinBuffer</a></li><li>, <a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.FeatureHighlighter.FeatureHighlighter-class.html">QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.FeatureHighlighter.FeatureHighlighter</a></li><li>, <a href="qgis._gui.QgisInterface-class.html">qgis._gui.QgisInterface</a></li><li>, <a href="qgis._gui.QgsAttributeEditor-class.html">qgis._gui.QgsAttributeEditor</a></li><li>, <a href="qgis._gui.QgsColorDialog-class.html">qgis._gui.QgsColorDialog</a></li><li>, <a href="qgis._gui.QgsEditorWidgetRegistry-class.html">qgis._gui.QgsEditorWidgetRegistry</a></li><li>, <a href="qgis._gui.QgsEditorWidgetWrapper-class.html">qgis._gui.QgsEditorWidgetWrapper</a></li><li>, <a href="qgis._gui.QgsFormAnnotationItem-class.html">qgis._gui.QgsFormAnnotationItem</a></li><li>, <a href="qgis._gui.QgsHtmlAnnotationItem-class.html">qgis._gui.QgsHtmlAnnotationItem</a></li><li>, <a href="qgis._gui.QgsIFeatureSelectionManager-class.html">qgis._gui.QgsIFeatureSelectionManager</a></li><li>, <a href="qgis._gui.QgsLayerTreeMapCanvasBridge-class.html">qgis._gui.QgsLayerTreeMapCanvasBridge</a></li><li>, <a href="qgis._gui.QgsLayerTreeViewDefaultActions-class.html">qgis._gui.QgsLayerTreeViewDefaultActions</a></li><li>, <a href="qgis._gui.QgsLegendInterface-class.html">qgis._gui.QgsLegendInterface</a></li><li>, <a href="qgis._gui.QgsMapLayerActionRegistry-class.html">qgis._gui.QgsMapLayerActionRegistry</a></li><li>, <a href="qgis._gui.QgsMapTool-class.html">qgis._gui.QgsMapTool</a></li><li>, <a href="qgis._gui.QgsPluginManagerInterface-class.html">qgis._gui.QgsPluginManagerInterface</a></li><li>, <a href="qgis._gui.QgsProjectBadLayerGuiHandler-class.html">qgis._gui.QgsProjectBadLayerGuiHandler</a></li><li>, <a href="qgis._gui.QgsScaleVisibilityDialog-class.html">qgis._gui.QgsScaleVisibilityDialog</a></li>  </ul>
+</dd></dl>
+
+<hr />
+<p>QObject(QObject parent=None)</p>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__getattr__"></a><span class="summary-sig-name">__getattr__</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="blockSignals"></a><span class="summary-sig-name">blockSignals</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="childEvent"></a><span class="summary-sig-name">childEvent</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="children"></a><span class="summary-sig-name">children</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="connect"></a><span class="summary-sig-name">connect</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="connectNotify"></a><span class="summary-sig-name">connectNotify</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="customEvent"></a><span class="summary-sig-name">customEvent</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="deleteLater"></a><span class="summary-sig-name">deleteLater</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="destroyed"></a><span class="summary-sig-name">destroyed</span>(<span class="summary-sig-arg">...</span>)</span><br />
+      QObject.destroyed[QObject] [signal] QObject.destroyed [signal]</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="disconnect"></a><span class="summary-sig-name">disconnect</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="disconnectNotify"></a><span class="summary-sig-name">disconnectNotify</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="dumpObjectInfo"></a><span class="summary-sig-name">dumpObjectInfo</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="dumpObjectTree"></a><span class="summary-sig-name">dumpObjectTree</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="dynamicPropertyNames"></a><span class="summary-sig-name">dynamicPropertyNames</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="emit"></a><span class="summary-sig-name">emit</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="event"></a><span class="summary-sig-name">event</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="eventFilter"></a><span class="summary-sig-name">eventFilter</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="findChild"></a><span class="summary-sig-name">findChild</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="findChildren"></a><span class="summary-sig-name">findChildren</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="inherits"></a><span class="summary-sig-name">inherits</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="installEventFilter"></a><span class="summary-sig-name">installEventFilter</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="isWidgetType"></a><span class="summary-sig-name">isWidgetType</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="killTimer"></a><span class="summary-sig-name">killTimer</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="metaObject"></a><span class="summary-sig-name">metaObject</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="moveToThread"></a><span class="summary-sig-name">moveToThread</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="objectName"></a><span class="summary-sig-name">objectName</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="parent"></a><span class="summary-sig-name">parent</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="property"></a><span class="summary-sig-name">property</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="pyqtConfigure"></a><span class="summary-sig-name">pyqtConfigure</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="receivers"></a><span class="summary-sig-name">receivers</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="removeEventFilter"></a><span class="summary-sig-name">removeEventFilter</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="sender"></a><span class="summary-sig-name">sender</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="senderSignalIndex"></a><span class="summary-sig-name">senderSignalIndex</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setObjectName"></a><span class="summary-sig-name">setObjectName</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setParent"></a><span class="summary-sig-name">setParent</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setProperty"></a><span class="summary-sig-name">setProperty</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="signalsBlocked"></a><span class="summary-sig-name">signalsBlocked</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="startTimer"></a><span class="summary-sig-name">startTimer</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="thread"></a><span class="summary-sig-name">thread</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="timerEvent"></a><span class="summary-sig-name">timerEvent</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="tr"></a><span class="summary-sig-name">tr</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="trUtf8"></a><span class="summary-sig-name">trUtf8</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>sip.simplewrapper</code></b>:
+      <code>__init__</code>,
+      <code>__new__</code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__repr__</code>,
+      <code>__setattr__</code>,
+      <code>__sizeof__</code>,
+      <code>__str__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS VARIABLES ==================== -->
+<a name="section-ClassVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="PyQt4.QtCore.QObject-class.html#staticMetaObject" class="summary-name">staticMetaObject</a> = <code title="&lt;sip.variabledescriptor object at 0x7fb9637ad140&gt;">&lt;sip.variabledescriptor object at 0x7fb9637<code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS VARIABLE DETAILS ==================== -->
+<a name="section-ClassVariableDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Variable Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassVariableDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="staticMetaObject"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">staticMetaObject</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+&lt;sip.variabledescriptor object at 0x7fb9637ad140&gt;
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="QGIS-AIMS-Plugin-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Jun 14 13:06:55 2016
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>
