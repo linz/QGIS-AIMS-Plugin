@@ -1,0 +1,614 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>qgis._gui.QgsMapLayerProxyModel</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="QGIS-AIMS-Plugin-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        qgis ::
+        _gui ::
+        QgsMapLayerProxyModel ::
+        Class&nbsp;QgsMapLayerProxyModel
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="qgis._gui.QgsMapLayerProxyModel-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class QgsMapLayerProxyModel</h1><p class="nomargin-top"></p>
+<pre class="base-tree">
+         object --+                        
+                  |                        
+  sip.simplewrapper --+                    
+                      |                    
+            sip.wrapper --+                
+                          |                
+       <a href="PyQt4.QtCore.QObject-class.html">PyQt4.QtCore.QObject</a> --+            
+                              |            
+<a href="PyQt4.QtCore.QAbstractItemModel-class.html">PyQt4.QtCore.QAbstractItemModel</a> --+        
+                                  |        
+    <a href="PyQt4.QtGui.QAbstractProxyModel-class.html">PyQt4.QtGui.QAbstractProxyModel</a> --+    
+                                      |    
+      <a href="PyQt4.QtGui.QSortFilterProxyModel-class.html">PyQt4.QtGui.QSortFilterProxyModel</a> --+
+                                          |
+                                         <strong class="uidshort">QgsMapLayerProxyModel</strong>
+</pre>
+
+<hr />
+<p>QgsMapLayerProxyModel(QObject parent=None)</p>
+
+<!-- ==================== NESTED CLASSES ==================== -->
+<a name="section-NestedClasses"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Nested Classes</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-NestedClasses"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="qgis._gui.QgsMapLayerProxyModel.Filter-class.html" class="summary-name">Filter</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="qgis._gui.QgsMapLayerProxyModel.Filters-class.html" class="summary-name">Filters</a><br />
+      QgsMapLayerProxyModel.Filters(QgsMapLayerProxyModel.Filters) 
+        QgsMapLayerProxyModel.Filters(int) QgsMapLayerProxyModel.Filters()
+    </td>
+  </tr>
+</table>
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="qgis._gui.QgsMapLayerProxyModel-class.html#filterAcceptsRow" class="summary-sig-name">filterAcceptsRow</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="filters"></a><span class="summary-sig-name">filters</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="qgis._gui.QgsMapLayerProxyModel-class.html#lessThan" class="summary-sig-name">lessThan</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setFilters"></a><span class="summary-sig-name">setFilters</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="sourceLayerModel"></a><span class="summary-sig-name">sourceLayerModel</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html">PyQt4.QtGui.QSortFilterProxyModel</a></code></b>:
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#buddy">buddy</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#canFetchMore">canFetchMore</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#clear">clear</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#columnCount">columnCount</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#data">data</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#dropMimeData">dropMimeData</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#dynamicSortFilter">dynamicSortFilter</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#fetchMore">fetchMore</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#filterAcceptsColumn">filterAcceptsColumn</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#filterCaseSensitivity">filterCaseSensitivity</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#filterChanged">filterChanged</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#filterKeyColumn">filterKeyColumn</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#filterRegExp">filterRegExp</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#filterRole">filterRole</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#flags">flags</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#hasChildren">hasChildren</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#headerData">headerData</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#index">index</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#insertColumns">insertColumns</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#insertRows">insertRows</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#invalidate">invalidate</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#invalidateFilter">invalidateFilter</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#isSortLocaleAware">isSortLocaleAware</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#mapFromSource">mapFromSource</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#mapSelectionFromSource">mapSelectionFromSource</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#mapSelectionToSource">mapSelectionToSource</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#mapToSource">mapToSource</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#match">match</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#mimeData">mimeData</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#mimeTypes">mimeTypes</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#parent">parent</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#removeColumns">removeColumns</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#removeRows">removeRows</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#rowCount">rowCount</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#setData">setData</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#setDynamicSortFilter">setDynamicSortFilter</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#setFilterCaseSensitivity">setFilterCaseSensitivity</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#setFilterFixedString">setFilterFixedString</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#setFilterKeyColumn">setFilterKeyColumn</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#setFilterRegExp">setFilterRegExp</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#setFilterRole">setFilterRole</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#setFilterWildcard">setFilterWildcard</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#setHeaderData">setHeaderData</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#setSortCaseSensitivity">setSortCaseSensitivity</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#setSortLocaleAware">setSortLocaleAware</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#setSortRole">setSortRole</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#setSourceModel">setSourceModel</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#sort">sort</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#sortCaseSensitivity">sortCaseSensitivity</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#sortColumn">sortColumn</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#sortOrder">sortOrder</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#sortRole">sortRole</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#span">span</a></code>,
+      <code><a href="PyQt4.QtGui.QSortFilterProxyModel-class.html#supportedDropActions">supportedDropActions</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="PyQt4.QtGui.QAbstractProxyModel-class.html">PyQt4.QtGui.QAbstractProxyModel</a></code></b>:
+      <code><a href="PyQt4.QtGui.QAbstractProxyModel-class.html#itemData">itemData</a></code>,
+      <code><a href="PyQt4.QtGui.QAbstractProxyModel-class.html#revert">revert</a></code>,
+      <code><a href="PyQt4.QtGui.QAbstractProxyModel-class.html#setItemData">setItemData</a></code>,
+      <code><a href="PyQt4.QtGui.QAbstractProxyModel-class.html#sourceModel">sourceModel</a></code>,
+      <code><a href="PyQt4.QtGui.QAbstractProxyModel-class.html#submit">submit</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html">PyQt4.QtCore.QAbstractItemModel</a></code></b>:
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#beginInsertColumns">beginInsertColumns</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#beginInsertRows">beginInsertRows</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#beginMoveColumns">beginMoveColumns</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#beginMoveRows">beginMoveRows</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#beginRemoveColumns">beginRemoveColumns</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#beginRemoveRows">beginRemoveRows</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#beginResetModel">beginResetModel</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#changePersistentIndex">changePersistentIndex</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#changePersistentIndexList">changePersistentIndexList</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#columnsAboutToBeInserted">columnsAboutToBeInserted</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#columnsAboutToBeMoved">columnsAboutToBeMoved</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#columnsAboutToBeRemoved">columnsAboutToBeRemoved</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#columnsInserted">columnsInserted</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#columnsMoved">columnsMoved</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#columnsRemoved">columnsRemoved</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#createIndex">createIndex</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#dataChanged">dataChanged</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#decodeData">decodeData</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#encodeData">encodeData</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#endInsertColumns">endInsertColumns</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#endInsertRows">endInsertRows</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#endMoveColumns">endMoveColumns</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#endMoveRows">endMoveRows</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#endRemoveColumns">endRemoveColumns</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#endRemoveRows">endRemoveRows</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#endResetModel">endResetModel</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#hasIndex">hasIndex</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#headerDataChanged">headerDataChanged</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#insertColumn">insertColumn</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#insertRow">insertRow</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#layoutAboutToBeChanged">layoutAboutToBeChanged</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#layoutChanged">layoutChanged</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#modelAboutToBeReset">modelAboutToBeReset</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#modelReset">modelReset</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#persistentIndexList">persistentIndexList</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#removeColumn">removeColumn</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#removeRow">removeRow</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#reset">reset</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#resetInternalData">resetInternalData</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#roleNames">roleNames</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#rowsAboutToBeInserted">rowsAboutToBeInserted</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#rowsAboutToBeMoved">rowsAboutToBeMoved</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#rowsAboutToBeRemoved">rowsAboutToBeRemoved</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#rowsInserted">rowsInserted</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#rowsMoved">rowsMoved</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#rowsRemoved">rowsRemoved</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#setRoleNames">setRoleNames</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#setSupportedDragActions">setSupportedDragActions</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#sibling">sibling</a></code>,
+      <code><a href="PyQt4.QtCore.QAbstractItemModel-class.html#supportedDragActions">supportedDragActions</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="PyQt4.QtCore.QObject-class.html">PyQt4.QtCore.QObject</a></code></b>:
+      <code><a href="PyQt4.QtCore.QObject-class.html#__getattr__">__getattr__</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#blockSignals">blockSignals</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#childEvent">childEvent</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#children">children</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#connect">connect</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#connectNotify">connectNotify</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#customEvent">customEvent</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#deleteLater">deleteLater</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#destroyed">destroyed</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#disconnect">disconnect</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#disconnectNotify">disconnectNotify</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#dumpObjectInfo">dumpObjectInfo</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#dumpObjectTree">dumpObjectTree</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#dynamicPropertyNames">dynamicPropertyNames</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#emit">emit</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#event">event</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#eventFilter">eventFilter</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#findChild">findChild</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#findChildren">findChildren</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#inherits">inherits</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#installEventFilter">installEventFilter</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#isWidgetType">isWidgetType</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#killTimer">killTimer</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#metaObject">metaObject</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#moveToThread">moveToThread</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#objectName">objectName</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#property">property</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#pyqtConfigure">pyqtConfigure</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#receivers">receivers</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#removeEventFilter">removeEventFilter</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#sender">sender</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#senderSignalIndex">senderSignalIndex</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#setObjectName">setObjectName</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#setParent">setParent</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#setProperty">setProperty</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#signalsBlocked">signalsBlocked</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#startTimer">startTimer</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#thread">thread</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#timerEvent">timerEvent</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#tr">tr</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#trUtf8">trUtf8</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>sip.simplewrapper</code></b>:
+      <code>__init__</code>,
+      <code>__new__</code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__repr__</code>,
+      <code>__setattr__</code>,
+      <code>__sizeof__</code>,
+      <code>__str__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS VARIABLES ==================== -->
+<a name="section-ClassVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="All"></a><span class="summary-name">All</span> = <code title="49">49</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="HasGeometry"></a><span class="summary-name">HasGeometry</span> = <code title="28">28</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="LineLayer"></a><span class="summary-name">LineLayer</span> = <code title="8">8</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NoGeometry"></a><span class="summary-name">NoGeometry</span> = <code title="2">2</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="PluginLayer"></a><span class="summary-name">PluginLayer</span> = <code title="32">32</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="PointLayer"></a><span class="summary-name">PointLayer</span> = <code title="4">4</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="PolygonLayer"></a><span class="summary-name">PolygonLayer</span> = <code title="16">16</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="RasterLayer"></a><span class="summary-name">RasterLayer</span> = <code title="1">1</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="VectorLayer"></a><span class="summary-name">VectorLayer</span> = <code title="30">30</code>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="PyQt4.QtCore.QObject-class.html">PyQt4.QtCore.QObject</a></code></b>:
+      <code><a href="PyQt4.QtCore.QObject-class.html#staticMetaObject">staticMetaObject</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="filterAcceptsRow"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">filterAcceptsRow</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        PyQt4.QtGui.QSortFilterProxyModel.filterAcceptsRow
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="lessThan"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">lessThan</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        PyQt4.QtGui.QSortFilterProxyModel.lessThan
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="QGIS-AIMS-Plugin-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Jun 14 13:29:22 2016
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

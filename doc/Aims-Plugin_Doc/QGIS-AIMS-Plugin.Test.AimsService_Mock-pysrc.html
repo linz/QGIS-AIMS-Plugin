@@ -1,0 +1,635 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QGIS-AIMS-Plugin.Test.AimsService_Mock</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="QGIS-AIMS-Plugin-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="QGIS-AIMS-Plugin-module.html">Package&nbsp;QGIS-AIMS-Plugin</a> ::
+        Package&nbsp;Test ::
+        Module&nbsp;AimsService_Mock
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="QGIS-AIMS-Plugin.Test.AimsService_Mock-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="QGIS-AIMS-Plugin.Test.AimsService_Mock-module.html">Module QGIS-AIMS-Plugin.Test.AimsService_Mock</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-docstring">'''</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-docstring">v.0.0.1</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-docstring">QGIS-AIMS-Plugin - AimsService_Mock</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-docstring">Copyright 2011 Crown copyright (c)</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-docstring">Land Information New Zealand and the New Zealand Government.</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-docstring">All rights reserved</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-docstring">This program is released under the terms of the new BSD license. See the </tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-docstring">LICENSE file for more information.</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-docstring">Tests on Controller class</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-docstring">Created on 24/11/2015</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-docstring">@author: jramsay</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"><tt class="py-docstring">'''</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">unittest</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-0" class="py-name" targets="Module inspect=inspect-module.html"><a title="inspect" class="py-name" href="#" onclick="return doclink('link-0', 'inspect', 'link-0');">inspect</a></tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-1" class="py-name" targets="Module sys=sys-module.html"><a title="sys" class="py-name" href="#" onclick="return doclink('link-1', 'sys', 'link-1');">sys</a></tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">re</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">mock</tt> <tt class="py-keyword">import</tt> <tt class="py-name">Mock</tt><tt class="py-op">,</tt> <tt class="py-name">patch</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"><tt id="link-2" class="py-name" targets="Variable QGIS-AIMS-Plugin.Test.AimsService_Mock.resp=QGIS-AIMS-Plugin.Test.AimsService_Mock-module.html#resp"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock.resp" class="py-name" href="#" onclick="return doclink('link-2', 'resp', 'link-2');">resp</a></tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line">        <tt class="py-string">"class"</tt><tt class="py-op">:</tt><tt class="py-op">[</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line">            <tt class="py-string">"address"</tt><tt class="py-op">,</tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line">            <tt class="py-string">"collection"</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line">        <tt class="py-op">]</tt><tt class="py-op">,</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line">        <tt class="py-string">"links"</tt><tt class="py-op">:</tt><tt class="py-op">[</tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line">            <tt class="py-op">{</tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line">                <tt class="py-string">"rel"</tt><tt class="py-op">:</tt><tt class="py-op">[</tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line">                    <tt class="py-string">"self"</tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line">                <tt class="py-op">]</tt><tt class="py-op">,</tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line">                <tt class="py-string">"href"</tt><tt class="py-op">:</tt><tt class="py-string">"http://144.66.241.207:8080/aims/api/address/features?page=1"</tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line">            <tt class="py-op">}</tt><tt class="py-op">,</tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line">            <tt class="py-op">{</tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line">                <tt class="py-string">"rel"</tt><tt class="py-op">:</tt><tt class="py-op">[</tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line">                    <tt class="py-string">"next"</tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line">                <tt class="py-op">]</tt><tt class="py-op">,</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line">                <tt class="py-string">"href"</tt><tt class="py-op">:</tt><tt class="py-string">"http://144.66.241.207:8080/aims/api/address/features?page=2"</tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line">            <tt class="py-op">}</tt> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line">        <tt class="py-op">]</tt><tt class="py-op">,</tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line">        <tt class="py-string">"actions"</tt><tt class="py-op">:</tt><tt class="py-op">[</tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line">            <tt class="py-op">{</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line">                <tt class="py-string">"name"</tt><tt class="py-op">:</tt><tt class="py-string">"add"</tt><tt class="py-op">,</tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line">                <tt class="py-string">"method"</tt><tt class="py-op">:</tt><tt class="py-string">"POST"</tt><tt class="py-op">,</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line">                <tt class="py-string">"href"</tt><tt class="py-op">:</tt><tt class="py-string">"http://144.66.241.207:8080/aims/api/address/changefeed/add"</tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line">            <tt class="py-op">}</tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line">        <tt class="py-op">]</tt><tt class="py-op">,</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line">        <tt class="py-string">"entities"</tt><tt class="py-op">:</tt><tt class="py-op">[</tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line">            <tt class="py-op">{</tt> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line">                <tt class="py-string">"class"</tt><tt class="py-op">:</tt><tt class="py-op">[</tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line">                    <tt class="py-string">"address"</tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line">                <tt class="py-op">]</tt><tt class="py-op">,</tt> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line">                <tt class="py-string">"rel"</tt><tt class="py-op">:</tt><tt class="py-op">[</tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line">                    <tt class="py-string">"item"</tt> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line">                <tt class="py-op">]</tt><tt class="py-op">,</tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line">                <tt class="py-string">"links"</tt><tt class="py-op">:</tt><tt class="py-op">[</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line">                    <tt class="py-op">{</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line">                        <tt class="py-string">"rel"</tt><tt class="py-op">:</tt><tt class="py-op">[</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line">                            <tt class="py-string">"self"</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line">                        <tt class="py-op">]</tt><tt class="py-op">,</tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line">                        <tt class="py-string">"href"</tt><tt class="py-op">:</tt><tt class="py-string">"http://144.66.241.207:8080/aims/api/address/features/1"</tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">                    <tt class="py-op">}</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">                <tt class="py-op">]</tt><tt class="py-op">,</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line">                <tt class="py-string">"properties"</tt><tt class="py-op">:</tt><tt class="py-op">{</tt> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">                    <tt class="py-string">"publishDate"</tt><tt class="py-op">:</tt><tt class="py-string">"2015-02-19"</tt><tt class="py-op">,</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">                    <tt class="py-string">"version"</tt><tt class="py-op">:</tt><tt class="py-number">1622074</tt><tt class="py-op">,</tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">                    <tt class="py-string">"components"</tt><tt class="py-op">:</tt><tt class="py-op">{</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line">                        <tt class="py-string">"addressId"</tt><tt class="py-op">:</tt><tt class="py-number">1</tt><tt class="py-op">,</tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">                        <tt class="py-string">"addressType"</tt><tt class="py-op">:</tt><tt class="py-string">"Road"</tt><tt class="py-op">,</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line">                        <tt class="py-string">"lifecycle"</tt><tt class="py-op">:</tt><tt class="py-string">"Current"</tt><tt class="py-op">,</tt> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">                        <tt class="py-string">"addressNumber"</tt><tt class="py-op">:</tt><tt class="py-number">523</tt><tt class="py-op">,</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line">                        <tt class="py-string">"roadCentrelineId"</tt><tt class="py-op">:</tt><tt class="py-number">112967</tt><tt class="py-op">,</tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line">                        <tt class="py-string">"roadName"</tt><tt class="py-op">:</tt><tt class="py-string">"Waiatai"</tt><tt class="py-op">,</tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line">                        <tt class="py-string">"roadType"</tt><tt class="py-op">:</tt><tt class="py-string">"Road"</tt><tt class="py-op">,</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">                        <tt class="py-string">"suburbLocality"</tt><tt class="py-op">:</tt><tt class="py-string">"Wairoa"</tt><tt class="py-op">,</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line">                        <tt class="py-string">"townCity"</tt><tt class="py-op">:</tt><tt class="py-string">"Wairoa"</tt><tt class="py-op">,</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line">                        <tt class="py-string">"fullAddressNumber"</tt><tt class="py-op">:</tt><tt class="py-string">"523"</tt><tt class="py-op">,</tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line">                        <tt class="py-string">"fullRoadName"</tt><tt class="py-op">:</tt><tt class="py-string">"Waiatai Road"</tt><tt class="py-op">,</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line">                        <tt class="py-string">"fullAddress"</tt><tt class="py-op">:</tt><tt class="py-string">"523 Waiatai Road, Wairoa"</tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line">                    <tt class="py-op">}</tt><tt class="py-op">,</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">                    <tt class="py-string">"addressedObject"</tt><tt class="py-op">:</tt><tt class="py-op">{</tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">                        <tt class="py-string">"addressableObjectId"</tt><tt class="py-op">:</tt><tt class="py-number">1706002</tt><tt class="py-op">,</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">                        <tt class="py-string">"objectType"</tt><tt class="py-op">:</tt><tt class="py-string">"Parcel"</tt><tt class="py-op">,</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">                        <tt class="py-string">"addressPosition"</tt><tt class="py-op">:</tt><tt class="py-op">{</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line">                            <tt class="py-string">"type"</tt><tt class="py-op">:</tt><tt class="py-string">"Point"</tt><tt class="py-op">,</tt> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">                            <tt class="py-string">"coordinates"</tt><tt class="py-op">:</tt><tt class="py-op">[</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">                                <tt class="py-number">1990322.0310298172</tt><tt class="py-op">,</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">                                <tt class="py-number">5673091.026376988</tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line">                            <tt class="py-op">]</tt><tt class="py-op">,</tt> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">                            <tt class="py-string">"crs"</tt><tt class="py-op">:</tt><tt class="py-op">{</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">                                <tt class="py-string">"type"</tt><tt class="py-op">:</tt><tt class="py-string">"name"</tt><tt class="py-op">,</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">                                <tt class="py-string">"properties"</tt><tt class="py-op">:</tt><tt class="py-op">{</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line">                                    <tt class="py-string">"name"</tt><tt class="py-op">:</tt><tt class="py-string">"urn:ogc:def:crs:EPSG::4167"</tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line">                                <tt class="py-op">}</tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line">                            <tt class="py-op">}</tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line">                        <tt class="py-op">}</tt> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line">                    <tt class="py-op">}</tt><tt class="py-op">,</tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line">                    <tt class="py-string">"codes"</tt><tt class="py-op">:</tt><tt class="py-op">{</tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line">                        <tt class="py-string">"suburbLocalityId"</tt><tt class="py-op">:</tt><tt class="py-number">2622</tt><tt class="py-op">,</tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line">                        <tt class="py-string">"townCityId"</tt><tt class="py-op">:</tt><tt class="py-number">100124</tt><tt class="py-op">,</tt> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line">                        <tt class="py-string">"parcelId"</tt><tt class="py-op">:</tt><tt class="py-number">4220123</tt><tt class="py-op">,</tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line">                        <tt class="py-string">"meshblock"</tt><tt class="py-op">:</tt><tt class="py-string">"1398600"</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line">                    <tt class="py-op">}</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line">                <tt class="py-op">}</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line">            <tt class="py-op">}</tt> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line">        <tt class="py-op">]</tt> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line">    <tt class="py-op">}</tt> </tt>
+<a name="enum"></a><div id="enum-def"><a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line"> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt> <a class="py-toggle" href="#" id="enum-toggle" onclick="return toggle('enum');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock-module.html#enum">enum</a><tt class="py-op">(</tt><tt class="py-op">*</tt><tt class="py-param">sequential</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">named</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="enum-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="enum-expanded"><a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line">    <tt class="py-comment">#http://stackoverflow.com/questions/36932/how-can-i-represent-an-enum-in-python</tt> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line">    <tt class="py-name">enums</tt> <tt class="py-op">=</tt> <tt class="py-name">dict</tt><tt class="py-op">(</tt><tt class="py-name">zip</tt><tt class="py-op">(</tt><tt class="py-name">sequential</tt><tt class="py-op">,</tt> <tt id="link-3" class="py-name" targets="Variable qgis._core.QgsRasterBandStats.range=qgis._core.QgsRasterBandStats-class.html#range"><a title="qgis._core.QgsRasterBandStats.range" class="py-name" href="#" onclick="return doclink('link-3', 'range', 'link-3');">range</a></tt><tt class="py-op">(</tt><tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">sequential</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-name">named</tt><tt class="py-op">)</tt> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line">    <tt id="link-4" class="py-name" targets="Variable QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.IterEnum.reverse=QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.IterEnum-class.html#reverse"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.IterEnum.reverse" class="py-name" href="#" onclick="return doclink('link-4', 'reverse', 'link-4');">reverse</a></tt> <tt class="py-op">=</tt> <tt class="py-name">dict</tt><tt class="py-op">(</tt><tt class="py-op">(</tt><tt id="link-5" class="py-name" targets="Variable PyQt4.QtGui.QInputMethodEvent.Attribute.value=PyQt4.QtGui.QInputMethodEvent.Attribute-class.html#value,Variable qgis._core.QgsColorRampShader.ColorRampItem.value=qgis._core.QgsColorRampShader.ColorRampItem-class.html#value"><a title="PyQt4.QtGui.QInputMethodEvent.Attribute.value
+qgis._core.QgsColorRampShader.ColorRampItem.value" class="py-name" href="#" onclick="return doclink('link-5', 'value', 'link-5');">value</a></tt><tt class="py-op">,</tt> <tt class="py-name">key</tt><tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt class="py-name">key</tt><tt class="py-op">,</tt> <tt id="link-6" class="py-name"><a title="PyQt4.QtGui.QInputMethodEvent.Attribute.value
+qgis._core.QgsColorRampShader.ColorRampItem.value" class="py-name" href="#" onclick="return doclink('link-6', 'value', 'link-5');">value</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">enums</tt><tt class="py-op">.</tt><tt class="py-name">iteritems</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line">    <tt class="py-name">enums</tt><tt class="py-op">[</tt><tt class="py-string">'reverse'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt id="link-7" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.IterEnum.reverse" class="py-name" href="#" onclick="return doclink('link-7', 'reverse', 'link-4');">reverse</a></tt> </tt>
+<a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt id="link-8" class="py-name" targets="Variable PyQt4.QtGui.QInputMethodEvent.Attribute.type=PyQt4.QtGui.QInputMethodEvent.Attribute-class.html#type,Variable PyQt4.QtGui.QPainterPath.Element.type=PyQt4.QtGui.QPainterPath.Element-class.html#type,Variable PyQt4.QtGui.QStyleHintReturn.type=PyQt4.QtGui.QStyleHintReturn-class.html#type,Variable PyQt4.QtGui.QStyleOption.type=PyQt4.QtGui.QStyleOption-class.html#type,Variable PyQt4.QtGui.QTextOption.Tab.type=PyQt4.QtGui.QTextOption.Tab-class.html#type,Variable QGIS-AIMS-Plugin.AIMSDataManager.Address.Address.type=QGIS-AIMS-Plugin.AIMSDataManager.Address.Address-class.html#type,Variable QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressChange.type=QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressChange-class.html#type,Variable QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressResolution.type=QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressResolution-class.html#type,Variable QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature.type=QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature-class.html#type,Variable QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupChange.type=QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupChange-class.html#type,Variable QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupResolution.type=QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupResolution-class.html#type,Method QGIS-AIMS-Plugin.Test.AimsService_Mock._Layer.type()=QGIS-AIMS-Plugin.Test.AimsService_Mock._Layer-class.html#type,Variable qgis._core.QgsSnappingUtils.LayerConfig.type=qgis._core.QgsSnappingUtils.LayerConfig-class.html#type,Variable qgis._core.QgsVectorFileWriter.Option.type=qgis._core.QgsVectorFileWriter.Option-class.html#type"><a title="PyQt4.QtGui.QInputMethodEvent.Attribute.type
+PyQt4.QtGui.QPainterPath.Element.type
+PyQt4.QtGui.QStyleHintReturn.type
+PyQt4.QtGui.QStyleOption.type
+PyQt4.QtGui.QTextOption.Tab.type
+QGIS-AIMS-Plugin.AIMSDataManager.Address.Address.type
+QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressChange.type
+QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressResolution.type
+QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature.type
+QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupChange.type
+QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupResolution.type
+QGIS-AIMS-Plugin.Test.AimsService_Mock._Layer.type
+qgis._core.QgsSnappingUtils.LayerConfig.type
+qgis._core.QgsVectorFileWriter.Option.type" class="py-name" href="#" onclick="return doclink('link-8', 'type', 'link-8');">type</a></tt><tt class="py-op">(</tt><tt class="py-string">'Enum'</tt><tt class="py-op">,</tt> <tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-name">enums</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line"> </tt>
+<a name="_results"></a><div id="_results-def"><a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line"> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt> <a class="py-toggle" href="#" id="_results-toggle" onclick="return toggle('_results');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._results-class.html">_results</a><tt class="py-op">(</tt><tt class="py-base-class">object</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_results-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="_results-expanded"><a name="_results.mFeature"></a><div id="_results.mFeature-def"><a name="L123"></a><tt class="py-lineno">123</tt> <a class="py-toggle" href="#" id="_results.mFeature-toggle" onclick="return toggle('_results.mFeature');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._results-class.html#mFeature">mFeature</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_results.mFeature-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="_results.mFeature-expanded"><a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">_attribute</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line"> </tt>
+<a name="_AimsHttp"></a><div id="_AimsHttp-def"><a name="L126"></a><tt class="py-lineno">126</tt> <a class="py-toggle" href="#" id="_AimsHttp-toggle" onclick="return toggle('_AimsHttp');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._AimsHttp-class.html">_AimsHttp</a><tt class="py-op">(</tt><tt class="py-base-class">object</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_AimsHttp-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="_AimsHttp-expanded"><a name="_AimsHttp.call"></a><div id="_AimsHttp.call-def"><a name="L127"></a><tt class="py-lineno">127</tt> <a class="py-toggle" href="#" id="_AimsHttp.call-toggle" onclick="return toggle('_AimsHttp.call');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._AimsHttp-class.html#call">call</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_AimsHttp.call-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="_AimsHttp.call-expanded"><a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line">        <tt class="py-keyword">pass</tt> </tt>
+</div><a name="_AimsHttp.get"></a><div id="_AimsHttp.get-def"><a name="L129"></a><tt class="py-lineno">129</tt> <a class="py-toggle" href="#" id="_AimsHttp.get-toggle" onclick="return toggle('_AimsHttp.get');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._AimsHttp-class.html#get">get</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_AimsHttp.get-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="_AimsHttp.get-expanded"><a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line">        <tt class="py-keyword">pass</tt> </tt>
+</div></div><a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line">     </tt>
+<a name="_QInterface"></a><div id="_QInterface-def"><a name="L132"></a><tt class="py-lineno">132</tt> <a class="py-toggle" href="#" id="_QInterface-toggle" onclick="return toggle('_QInterface');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._QInterface-class.html">_QInterface</a><tt class="py-op">(</tt><tt class="py-base-class">object</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_QInterface-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="_QInterface-expanded"><a name="_QInterface.__getattr__"></a><div id="_QInterface.__getattr__-def"><a name="L133"></a><tt class="py-lineno">133</tt> <a class="py-toggle" href="#" id="_QInterface.__getattr__-toggle" onclick="return toggle('_QInterface.__getattr__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._QInterface-class.html#__getattr__">__getattr__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_QInterface.__getattr__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="_QInterface.__getattr__-expanded"><a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line">        <tt class="py-keyword">def</tt> <tt class="py-def-name">dummy</tt><tt class="py-op">(</tt><tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">self</tt> </tt>
+</div><a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">dummy</tt> </tt>
+</div><a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line">     </tt>
+<a name="_QInterface.__iter__"></a><div id="_QInterface.__iter__-def"><a name="L138"></a><tt class="py-lineno">138</tt> <a class="py-toggle" href="#" id="_QInterface.__iter__-toggle" onclick="return toggle('_QInterface.__iter__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._QInterface-class.html#__iter__">__iter__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_QInterface.__iter__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="_QInterface.__iter__-expanded"><a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt> </tt>
+</div><a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line">     </tt>
+<a name="_QInterface.next"></a><div id="_QInterface.next-def"><a name="L141"></a><tt class="py-lineno">141</tt> <a class="py-toggle" href="#" id="_QInterface.next-toggle" onclick="return toggle('_QInterface.next');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._QInterface-class.html#next">next</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_QInterface.next-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="_QInterface.next-expanded"><a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt class="py-name">StopIteration</tt> </tt>
+</div><a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line">     </tt>
+<a name="_QInterface.layers"></a><div id="_QInterface.layers-def"><a name="L144"></a><tt class="py-lineno">144</tt> <a class="py-toggle" href="#" id="_QInterface.layers-toggle" onclick="return toggle('_QInterface.layers');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._QInterface-class.html#layers">layers</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line">        <tt class="py-comment"># simulate iface.legendInterface().layers()</tt> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line">        <tt class="py-comment">#return QgsMapLayerRegistry.instance().mapLayers().values()</tt> </tt>
+<a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line">     </tt>
+<a name="_QInterface.mainWindow"></a><div id="_QInterface.mainWindow-def"><a name="L148"></a><tt class="py-lineno">148</tt> <a class="py-toggle" href="#" id="_QInterface.mainWindow-toggle" onclick="return toggle('_QInterface.mainWindow');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._QInterface-class.html#mainWindow">mainWindow</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_QInterface.mainWindow-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="_QInterface.mainWindow-expanded"><a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-9" class="py-name" targets="Class QGIS-AIMS-Plugin.Test.AimsService_Mock._MainWindow=QGIS-AIMS-Plugin.Test.AimsService_Mock._MainWindow-class.html"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock._MainWindow" class="py-name" href="#" onclick="return doclink('link-9', '_MainWindow', 'link-9');">_MainWindow</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line">     </tt>
+<a name="_QInterface.mapCanvas"></a><div id="_QInterface.mapCanvas-def"><a name="L151"></a><tt class="py-lineno">151</tt> <a class="py-toggle" href="#" id="_QInterface.mapCanvas-toggle" onclick="return toggle('_QInterface.mapCanvas');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._QInterface-class.html#mapCanvas">mapCanvas</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_QInterface.mapCanvas-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="_QInterface.mapCanvas-expanded"><a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-10" class="py-name" targets="Class QGIS-AIMS-Plugin.Test.AimsService_Mock._MapCanvas=QGIS-AIMS-Plugin.Test.AimsService_Mock._MapCanvas-class.html"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock._MapCanvas" class="py-name" href="#" onclick="return doclink('link-10', '_MapCanvas', 'link-10');">_MapCanvas</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line">     </tt>
+<a name="_QInterface.legendInterface"></a><div id="_QInterface.legendInterface-def"><a name="L154"></a><tt class="py-lineno">154</tt> <a class="py-toggle" href="#" id="_QInterface.legendInterface-toggle" onclick="return toggle('_QInterface.legendInterface');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._QInterface-class.html#legendInterface">legendInterface</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_QInterface.legendInterface-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="_QInterface.legendInterface-expanded"><a name="L155"></a><tt class="py-lineno">155</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-11" class="py-name" targets="Class QGIS-AIMS-Plugin.Test.AimsService_Mock._Legend=QGIS-AIMS-Plugin.Test.AimsService_Mock._Legend-class.html"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock._Legend" class="py-name" href="#" onclick="return doclink('link-11', '_Legend', 'link-11');">_Legend</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line">     </tt>
+<a name="_QInterface.messageBar"></a><div id="_QInterface.messageBar-def"><a name="L157"></a><tt class="py-lineno">157</tt> <a class="py-toggle" href="#" id="_QInterface.messageBar-toggle" onclick="return toggle('_QInterface.messageBar');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._QInterface-class.html#messageBar">messageBar</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-keyword">pass</tt> </tt>
+</div></div><a name="L158"></a><tt class="py-lineno">158</tt>  <tt class="py-line">     </tt>
+<a name="_MapCanvas"></a><div id="_MapCanvas-def"><a name="L159"></a><tt class="py-lineno">159</tt> <a class="py-toggle" href="#" id="_MapCanvas-toggle" onclick="return toggle('_MapCanvas');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._MapCanvas-class.html">_MapCanvas</a><tt class="py-op">(</tt><tt class="py-base-class">object</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_MapCanvas-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="_MapCanvas-expanded"><a name="_MapCanvas.mapSettings"></a><div id="_MapCanvas.mapSettings-def"><a name="L160"></a><tt class="py-lineno">160</tt> <a class="py-toggle" href="#" id="_MapCanvas.mapSettings-toggle" onclick="return toggle('_MapCanvas.mapSettings');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._MapCanvas-class.html#mapSettings">mapSettings</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_MapCanvas.mapSettings-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="_MapCanvas.mapSettings-expanded"><a name="L161"></a><tt class="py-lineno">161</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-12" class="py-name" targets="Class QGIS-AIMS-Plugin.Test.AimsService_Mock._MapSettings=QGIS-AIMS-Plugin.Test.AimsService_Mock._MapSettings-class.html"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock._MapSettings" class="py-name" href="#" onclick="return doclink('link-12', '_MapSettings', 'link-12');">_MapSettings</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="_MapCanvas.extent"></a><div id="_MapCanvas.extent-def"><a name="L162"></a><tt class="py-lineno">162</tt> <a class="py-toggle" href="#" id="_MapCanvas.extent-toggle" onclick="return toggle('_MapCanvas.extent');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._MapCanvas-class.html#extent">extent</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-keyword">return</tt> <tt id="link-13" class="py-name" targets="Class QGIS-AIMS-Plugin.Test.AimsService_Mock._Extent=QGIS-AIMS-Plugin.Test.AimsService_Mock._Extent-class.html"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock._Extent" class="py-name" href="#" onclick="return doclink('link-13', '_Extent', 'link-13');">_Extent</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L163"></a><tt class="py-lineno">163</tt>  <tt class="py-line">     </tt>
+<a name="_MapSettings"></a><div id="_MapSettings-def"><a name="L164"></a><tt class="py-lineno">164</tt> <a class="py-toggle" href="#" id="_MapSettings-toggle" onclick="return toggle('_MapSettings');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._MapSettings-class.html">_MapSettings</a><tt class="py-op">(</tt><tt class="py-base-class">object</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_MapSettings-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="_MapSettings-expanded"><a name="_MapSettings.setDestinationCrs"></a><div id="_MapSettings.setDestinationCrs-def"><a name="L165"></a><tt class="py-lineno">165</tt> <a class="py-toggle" href="#" id="_MapSettings.setDestinationCrs-toggle" onclick="return toggle('_MapSettings.setDestinationCrs');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._MapSettings-class.html#setDestinationCrs">setDestinationCrs</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">_displayCrs</tt><tt class="py-op">)</tt><tt class="py-op">:</tt><tt class="py-keyword">pass</tt> </tt>
+</div></div><a name="L166"></a><tt class="py-lineno">166</tt>  <tt class="py-line">     </tt>
+<a name="_Extent"></a><div id="_Extent-def"><a name="L167"></a><tt class="py-lineno">167</tt> <a class="py-toggle" href="#" id="_Extent-toggle" onclick="return toggle('_Extent');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._Extent-class.html">_Extent</a><tt class="py-op">(</tt><tt class="py-base-class">object</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_Extent-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="_Extent-expanded"><a name="_Extent.xMaximum"></a><div id="_Extent.xMaximum-def"><a name="L168"></a><tt class="py-lineno">168</tt> <a class="py-toggle" href="#" id="_Extent.xMaximum-toggle" onclick="return toggle('_Extent.xMaximum');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._Extent-class.html#xMaximum">xMaximum</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt><tt class="py-keyword">pass</tt> </tt>
+</div><a name="_Extent.yMaximum"></a><div id="_Extent.yMaximum-def"><a name="L169"></a><tt class="py-lineno">169</tt> <a class="py-toggle" href="#" id="_Extent.yMaximum-toggle" onclick="return toggle('_Extent.yMaximum');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._Extent-class.html#yMaximum">yMaximum</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt><tt class="py-keyword">pass</tt> </tt>
+</div><a name="_Extent.xMinimum"></a><div id="_Extent.xMinimum-def"><a name="L170"></a><tt class="py-lineno">170</tt> <a class="py-toggle" href="#" id="_Extent.xMinimum-toggle" onclick="return toggle('_Extent.xMinimum');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._Extent-class.html#xMinimum">xMinimum</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt><tt class="py-keyword">pass</tt> </tt>
+</div><a name="_Extent.yMinimum"></a><div id="_Extent.yMinimum-def"><a name="L171"></a><tt class="py-lineno">171</tt> <a class="py-toggle" href="#" id="_Extent.yMinimum-toggle" onclick="return toggle('_Extent.yMinimum');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._Extent-class.html#yMinimum">yMinimum</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt><tt class="py-keyword">pass</tt> </tt>
+</div></div><a name="L172"></a><tt class="py-lineno">172</tt>  <tt class="py-line">         </tt>
+<a name="_MainWindow"></a><div id="_MainWindow-def"><a name="L173"></a><tt class="py-lineno">173</tt> <a class="py-toggle" href="#" id="_MainWindow-toggle" onclick="return toggle('_MainWindow');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._MainWindow-class.html">_MainWindow</a><tt class="py-op">(</tt><tt class="py-base-class">object</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_MainWindow-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="_MainWindow-expanded"><a name="_MainWindow.statusBar"></a><div id="_MainWindow.statusBar-def"><a name="L174"></a><tt class="py-lineno">174</tt> <a class="py-toggle" href="#" id="_MainWindow.statusBar-toggle" onclick="return toggle('_MainWindow.statusBar');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._MainWindow-class.html#statusBar">statusBar</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-keyword">return</tt> <tt id="link-14" class="py-name" targets="Variable PyQt4.QtCore.QEvent.None=PyQt4.QtCore.QEvent-class.html#None,Variable PyQt4.QtCore.QUrl.None=PyQt4.QtCore.QUrl-class.html#None,Variable PyQt4.QtGui.QAbstractPrintDialog.None=PyQt4.QtGui.QAbstractPrintDialog-class.html#None,Variable PyQt4.QtGui.QStyleOptionButton.None=PyQt4.QtGui.QStyleOptionButton-class.html#None,Variable PyQt4.QtGui.QStyleOptionFrameV2.None=PyQt4.QtGui.QStyleOptionFrameV2-class.html#None,Variable PyQt4.QtGui.QStyleOptionHeader.None=PyQt4.QtGui.QStyleOptionHeader-class.html#None,Variable PyQt4.QtGui.QStyleOptionToolBar.None=PyQt4.QtGui.QStyleOptionToolBar-class.html#None,Variable PyQt4.QtGui.QStyleOptionToolButton.None=PyQt4.QtGui.QStyleOptionToolButton-class.html#None,Variable PyQt4.QtGui.QStyleOptionViewItemV2.None=PyQt4.QtGui.QStyleOptionViewItemV2-class.html#None,Variable qgis._core.QgsRasterBandStats.None=qgis._core.QgsRasterBandStats-class.html#None"><a title="PyQt4.QtCore.QEvent.None
+PyQt4.QtCore.QUrl.None
+PyQt4.QtGui.QAbstractPrintDialog.None
+PyQt4.QtGui.QStyleOptionButton.None
+PyQt4.QtGui.QStyleOptionFrameV2.None
+PyQt4.QtGui.QStyleOptionHeader.None
+PyQt4.QtGui.QStyleOptionToolBar.None
+PyQt4.QtGui.QStyleOptionToolButton.None
+PyQt4.QtGui.QStyleOptionViewItemV2.None
+qgis._core.QgsRasterBandStats.None" class="py-name" href="#" onclick="return doclink('link-14', 'None', 'link-14');">None</a></tt> </tt>
+</div></div><a name="L175"></a><tt class="py-lineno">175</tt>  <tt class="py-line">     </tt>
+<a name="_Legend"></a><div id="_Legend-def"><a name="L176"></a><tt class="py-lineno">176</tt> <a class="py-toggle" href="#" id="_Legend-toggle" onclick="return toggle('_Legend');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._Legend-class.html">_Legend</a><tt class="py-op">(</tt><tt class="py-base-class">object</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_Legend-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="_Legend-expanded"><a name="_Legend.isLayerVisible"></a><div id="_Legend.isLayerVisible-def"><a name="L177"></a><tt class="py-lineno">177</tt> <a class="py-toggle" href="#" id="_Legend.isLayerVisible-toggle" onclick="return toggle('_Legend.isLayerVisible');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._Legend-class.html#isLayerVisible">isLayerVisible</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">layer</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-keyword">pass</tt> </tt>
+</div><a name="_Legend.setLayerVisible"></a><div id="_Legend.setLayerVisible-def"><a name="L178"></a><tt class="py-lineno">178</tt> <a class="py-toggle" href="#" id="_Legend.setLayerVisible-toggle" onclick="return toggle('_Legend.setLayerVisible');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._Legend-class.html#setLayerVisible">setLayerVisible</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">layer</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-keyword">pass</tt> </tt>
+</div></div><a name="L179"></a><tt class="py-lineno">179</tt>  <tt class="py-line">     </tt>
+<a name="_Layer"></a><div id="_Layer-def"><a name="L180"></a><tt class="py-lineno">180</tt>  <tt class="py-line"><tt class="py-comment">#------------------------------------------------------------------------------</tt> </tt>
+<a name="L181"></a><tt class="py-lineno">181</tt>  <tt class="py-line">     </tt>
+<a name="L182"></a><tt class="py-lineno">182</tt> <a class="py-toggle" href="#" id="_Layer-toggle" onclick="return toggle('_Layer');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._Layer-class.html">_Layer</a><tt class="py-op">(</tt><tt class="py-base-class">object</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_Layer-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="_Layer-expanded"><a name="L183"></a><tt class="py-lineno">183</tt>  <tt class="py-line">    <tt id="link-15" class="py-name" targets="Variable QGIS-AIMS-Plugin.Test.AimsService_Mock._Layer.Layer=QGIS-AIMS-Plugin.Test.AimsService_Mock._Layer-class.html#Layer,Variable qgis._core.QgsDataItem.Layer=qgis._core.QgsDataItem-class.html#Layer,Variable qgis._gui.QgsMapLayerAction.Layer=qgis._gui.QgsMapLayerAction-class.html#Layer"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock._Layer.Layer
+qgis._core.QgsDataItem.Layer
+qgis._gui.QgsMapLayerAction.Layer" class="py-name" href="#" onclick="return doclink('link-15', 'Layer', 'link-15');">Layer</a></tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+<a name="L184"></a><tt class="py-lineno">184</tt>  <tt class="py-line">    <tt id="link-16" class="py-name" targets="Variable QGIS-AIMS-Plugin.AIMSDataManager.Config.ConfigReader.cp=QGIS-AIMS-Plugin.AIMSDataManager.Config.ConfigReader-class.html#cp,Variable QGIS-AIMS-Plugin.Test.AimsService_Mock._Layer.cp=QGIS-AIMS-Plugin.Test.AimsService_Mock._Layer-class.html#cp,Variable QGIS-AIMS-Plugin.Test.CreateNewTool_Test._Dummy_Layer.cp=QGIS-AIMS-Plugin.Test.CreateNewTool_Test._Dummy_Layer-class.html#cp"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Config.ConfigReader.cp
+QGIS-AIMS-Plugin.Test.AimsService_Mock._Layer.cp
+QGIS-AIMS-Plugin.Test.CreateNewTool_Test._Dummy_Layer.cp" class="py-name" href="#" onclick="return doclink('link-16', 'cp', 'link-16');">cp</a></tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
+<a name="_Layer.id"></a><div id="_Layer.id-def"><a name="L185"></a><tt class="py-lineno">185</tt> <a class="py-toggle" href="#" id="_Layer.id-toggle" onclick="return toggle('_Layer.id');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._Layer-class.html#id">id</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt><tt class="py-keyword">pass</tt><tt class="py-comment">#id = None</tt> </tt>
+</div><a name="_Layer.setCustomProperty"></a><div id="_Layer.setCustomProperty-def"><a name="L186"></a><tt class="py-lineno">186</tt> <a class="py-toggle" href="#" id="_Layer.setCustomProperty-toggle" onclick="return toggle('_Layer.setCustomProperty');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._Layer-class.html#setCustomProperty">setCustomProperty</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">prop</tt><tt class="py-op">,</tt><tt class="py-param">id</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-keyword">pass</tt><tt class="py-comment">#self.cp[prop] = id </tt> </tt>
+</div><a name="_Layer.customProperty"></a><div id="_Layer.customProperty-def"><a name="L187"></a><tt class="py-lineno">187</tt> <a class="py-toggle" href="#" id="_Layer.customProperty-toggle" onclick="return toggle('_Layer.customProperty');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._Layer-class.html#customProperty">customProperty</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">prop</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-keyword">pass</tt><tt class="py-comment">#return self.cp[prop]</tt> </tt>
+</div><a name="_Layer.type"></a><div id="_Layer.type-def"><a name="L188"></a><tt class="py-lineno">188</tt> <a class="py-toggle" href="#" id="_Layer.type-toggle" onclick="return toggle('_Layer.type');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._Layer-class.html#type">type</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-keyword">pass</tt><tt class="py-comment">#return type(self)</tt> </tt>
+</div><a name="_Layer.dataProvider"></a><div id="_Layer.dataProvider-def"><a name="L189"></a><tt class="py-lineno">189</tt> <a class="py-toggle" href="#" id="_Layer.dataProvider-toggle" onclick="return toggle('_Layer.dataProvider');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._Layer-class.html#dataProvider">dataProvider</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-keyword">return</tt> <tt id="link-17" class="py-name" targets="Class QGIS-AIMS-Plugin.Test.AimsService_Mock._Provider=QGIS-AIMS-Plugin.Test.AimsService_Mock._Provider-class.html"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock._Provider" class="py-name" href="#" onclick="return doclink('link-17', '_Provider', 'link-17');">_Provider</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="_Layer.updateFields"></a><div id="_Layer.updateFields-def"><a name="L190"></a><tt class="py-lineno">190</tt> <a class="py-toggle" href="#" id="_Layer.updateFields-toggle" onclick="return toggle('_Layer.updateFields');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._Layer-class.html#updateFields">updateFields</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-keyword">pass</tt> </tt>
+</div><a name="_Layer.commitChanges"></a><div id="_Layer.commitChanges-def"><a name="L191"></a><tt class="py-lineno">191</tt> <a class="py-toggle" href="#" id="_Layer.commitChanges-toggle" onclick="return toggle('_Layer.commitChanges');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._Layer-class.html#commitChanges">commitChanges</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-keyword">pass</tt> </tt>
+</div><a name="_Layer.loadNamedStyle"></a><div id="_Layer.loadNamedStyle-def"><a name="L192"></a><tt class="py-lineno">192</tt> <a class="py-toggle" href="#" id="_Layer.loadNamedStyle-toggle" onclick="return toggle('_Layer.loadNamedStyle');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._Layer-class.html#loadNamedStyle">loadNamedStyle</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt><tt class="py-keyword">pass</tt> </tt>
+</div></div><a name="L193"></a><tt class="py-lineno">193</tt>  <tt class="py-line">    <tt class="py-comment">#def createFeaturesLayer(self):pass</tt> </tt>
+<a name="_VectorLayer"></a><div id="_VectorLayer-def"><a name="L194"></a><tt class="py-lineno">194</tt>  <tt class="py-line">     </tt>
+<a name="L195"></a><tt class="py-lineno">195</tt> <a class="py-toggle" href="#" id="_VectorLayer-toggle" onclick="return toggle('_VectorLayer');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._VectorLayer-class.html">_VectorLayer</a><tt class="py-op">(</tt><tt class="py-base-class">_Layer</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_VectorLayer-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="_VectorLayer-expanded"><a name="L196"></a><tt class="py-lineno">196</tt>  <tt class="py-line">    <tt id="link-18" class="py-name" targets="Variable QGIS-AIMS-Plugin.Test.AimsService_Mock._VectorLayer.VectorLayer=QGIS-AIMS-Plugin.Test.AimsService_Mock._VectorLayer-class.html#VectorLayer,Variable qgis._core.QgsMapLayer.VectorLayer=qgis._core.QgsMapLayer-class.html#VectorLayer,Variable qgis._gui.QgsMapLayerProxyModel.VectorLayer=qgis._gui.QgsMapLayerProxyModel-class.html#VectorLayer,Variable qgis._gui.QgsMapToolIdentify.VectorLayer=qgis._gui.QgsMapToolIdentify-class.html#VectorLayer"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock._VectorLayer.VectorLayer
+qgis._core.QgsMapLayer.VectorLayer
+qgis._gui.QgsMapLayerProxyModel.VectorLayer
+qgis._gui.QgsMapToolIdentify.VectorLayer" class="py-name" href="#" onclick="return doclink('link-18', 'VectorLayer', 'link-18');">VectorLayer</a></tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+</div><a name="L197"></a><tt class="py-lineno">197</tt>  <tt class="py-line">     </tt>
+<a name="_Provider"></a><div id="_Provider-def"><a name="L198"></a><tt class="py-lineno">198</tt> <a class="py-toggle" href="#" id="_Provider-toggle" onclick="return toggle('_Provider');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._Provider-class.html">_Provider</a><tt class="py-op">(</tt><tt class="py-base-class">object</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_Provider-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="_Provider-expanded"><a name="_Provider.addAttributes"></a><div id="_Provider.addAttributes-def"><a name="L199"></a><tt class="py-lineno">199</tt> <a class="py-toggle" href="#" id="_Provider.addAttributes-toggle" onclick="return toggle('_Provider.addAttributes');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._Provider-class.html#addAttributes">addAttributes</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">listofattributes</tt><tt class="py-op">)</tt><tt class="py-op">:</tt><tt class="py-keyword">pass</tt> </tt>
+</div></div><a name="L200"></a><tt class="py-lineno">200</tt>  <tt class="py-line">     </tt>
+<a name="_Feature"></a><div id="_Feature-def"><a name="L201"></a><tt class="py-lineno">201</tt> <a class="py-toggle" href="#" id="_Feature-toggle" onclick="return toggle('_Feature');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._Feature-class.html">_Feature</a><tt class="py-op">(</tt><tt class="py-base-class">object</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_Feature-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="_Feature-expanded"><a name="_Feature.setGeometry"></a><div id="_Feature.setGeometry-def"><a name="L202"></a><tt class="py-lineno">202</tt> <a class="py-toggle" href="#" id="_Feature.setGeometry-toggle" onclick="return toggle('_Feature.setGeometry');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._Feature-class.html#setGeometry">setGeometry</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt><tt class="py-keyword">pass</tt> </tt>
+</div><a name="_Feature.setAttributes"></a><div id="_Feature.setAttributes-def"><a name="L203"></a><tt class="py-lineno">203</tt> <a class="py-toggle" href="#" id="_Feature.setAttributes-toggle" onclick="return toggle('_Feature.setAttributes');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._Feature-class.html#setAttributes">setAttributes</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt><tt class="py-keyword">pass</tt> </tt>
+</div></div><a name="L204"></a><tt class="py-lineno">204</tt>  <tt class="py-line"> </tt>
+<a name="_Geometry"></a><div id="_Geometry-def"><a name="L205"></a><tt class="py-lineno">205</tt> <a class="py-toggle" href="#" id="_Geometry-toggle" onclick="return toggle('_Geometry');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._Geometry-class.html">_Geometry</a><tt class="py-op">(</tt><tt class="py-base-class">object</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_Geometry-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="_Geometry-expanded"><a name="_Geometry.fromPoint"></a><div id="_Geometry.fromPoint-def"><a name="L206"></a><tt class="py-lineno">206</tt> <a class="py-toggle" href="#" id="_Geometry.fromPoint-toggle" onclick="return toggle('_Geometry.fromPoint');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._Geometry-class.html#fromPoint">fromPoint</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt><tt class="py-keyword">return</tt> <tt id="link-19" class="py-name" targets="Class QGIS-AIMS-Plugin.Test.AimsService_Mock._Geometry=QGIS-AIMS-Plugin.Test.AimsService_Mock._Geometry-class.html"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock._Geometry" class="py-name" href="#" onclick="return doclink('link-19', '_Geometry', 'link-19');">_Geometry</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="_Geometry.asPoint"></a><div id="_Geometry.asPoint-def"><a name="L207"></a><tt class="py-lineno">207</tt> <a class="py-toggle" href="#" id="_Geometry.asPoint-toggle" onclick="return toggle('_Geometry.asPoint');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._Geometry-class.html#asPoint">asPoint</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt><tt class="py-keyword">return</tt> <tt id="link-20" class="py-name"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock._Geometry" class="py-name" href="#" onclick="return doclink('link-20', '_Geometry', 'link-19');">_Geometry</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L208"></a><tt class="py-lineno">208</tt>  <tt class="py-line">     </tt>
+<a name="_Point"></a><div id="_Point-def"><a name="L209"></a><tt class="py-lineno">209</tt> <a class="py-toggle" href="#" id="_Point-toggle" onclick="return toggle('_Point');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._Point-class.html">_Point</a><tt class="py-op">(</tt><tt class="py-base-class">object</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_Point-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="_Point-expanded"><a name="_Point.__init__"></a><div id="_Point.__init__-def"><a name="L210"></a><tt class="py-lineno">210</tt> <a class="py-toggle" href="#" id="_Point.__init__-toggle" onclick="return toggle('_Point.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._Point-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">x</tt><tt class="py-op">,</tt><tt class="py-param">y</tt><tt class="py-op">)</tt><tt class="py-op">:</tt><tt class="py-keyword">pass</tt> </tt>
+</div></div><a name="L211"></a><tt class="py-lineno">211</tt>  <tt class="py-line"><tt class="py-comment">#-------------------------------------------------------------</tt> </tt>
+<a name="_pyqtSignal"></a><div id="_pyqtSignal-def"><a name="L212"></a><tt class="py-lineno">212</tt>  <tt class="py-line"> </tt>
+<a name="L213"></a><tt class="py-lineno">213</tt> <a class="py-toggle" href="#" id="_pyqtSignal-toggle" onclick="return toggle('_pyqtSignal');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._pyqtSignal-class.html">_pyqtSignal</a><tt class="py-op">(</tt><tt class="py-base-class">object</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_pyqtSignal-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="_pyqtSignal-expanded"><a name="_pyqtSignal.emit"></a><div id="_pyqtSignal.emit-def"><a name="L214"></a><tt class="py-lineno">214</tt> <a class="py-toggle" href="#" id="_pyqtSignal.emit-toggle" onclick="return toggle('_pyqtSignal.emit');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._pyqtSignal-class.html#emit">emit</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-keyword">pass</tt> </tt>
+</div></div><a name="L215"></a><tt class="py-lineno">215</tt>  <tt class="py-line">     </tt>
+<a name="ContextMock"></a><div id="ContextMock-def"><a name="L216"></a><tt class="py-lineno">216</tt>  <tt class="py-line"><tt class="py-comment">#------------------------------------------------------------- </tt> </tt>
+<a name="L217"></a><tt class="py-lineno">217</tt>  <tt class="py-line"><tt class="py-comment">#from contextlib import contextmanager</tt> </tt>
+<a name="L218"></a><tt class="py-lineno">218</tt>  <tt class="py-line"><tt class="py-comment">#@contextmanager</tt> </tt>
+<a name="L219"></a><tt class="py-lineno">219</tt> <a class="py-toggle" href="#" id="ContextMock-toggle" onclick="return toggle('ContextMock');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock.ContextMock-class.html">ContextMock</a><tt class="py-op">(</tt><tt class="py-base-class">Mock</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ContextMock-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="ContextMock-expanded"><a name="ContextMock.__exit__"></a><div id="ContextMock.__exit__-def"><a name="L220"></a><tt class="py-lineno">220</tt> <a class="py-toggle" href="#" id="ContextMock.__exit__-toggle" onclick="return toggle('ContextMock.__exit__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock.ContextMock-class.html#__exit__">__exit__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">exc_type</tt><tt class="py-op">=</tt><tt id="link-21" class="py-name"><a title="PyQt4.QtCore.QEvent.None
+PyQt4.QtCore.QUrl.None
+PyQt4.QtGui.QAbstractPrintDialog.None
+PyQt4.QtGui.QStyleOptionButton.None
+PyQt4.QtGui.QStyleOptionFrameV2.None
+PyQt4.QtGui.QStyleOptionHeader.None
+PyQt4.QtGui.QStyleOptionToolBar.None
+PyQt4.QtGui.QStyleOptionToolButton.None
+PyQt4.QtGui.QStyleOptionViewItemV2.None
+qgis._core.QgsRasterBandStats.None" class="py-name" href="#" onclick="return doclink('link-21', 'None', 'link-14');">None</a></tt><tt class="py-op">,</tt> <tt class="py-param">exc_val</tt><tt class="py-op">=</tt><tt id="link-22" class="py-name"><a title="PyQt4.QtCore.QEvent.None
+PyQt4.QtCore.QUrl.None
+PyQt4.QtGui.QAbstractPrintDialog.None
+PyQt4.QtGui.QStyleOptionButton.None
+PyQt4.QtGui.QStyleOptionFrameV2.None
+PyQt4.QtGui.QStyleOptionHeader.None
+PyQt4.QtGui.QStyleOptionToolBar.None
+PyQt4.QtGui.QStyleOptionToolButton.None
+PyQt4.QtGui.QStyleOptionViewItemV2.None
+qgis._core.QgsRasterBandStats.None" class="py-name" href="#" onclick="return doclink('link-22', 'None', 'link-14');">None</a></tt><tt class="py-op">,</tt> <tt class="py-param">exc_tb</tt><tt class="py-op">=</tt><tt id="link-23" class="py-name"><a title="PyQt4.QtCore.QEvent.None
+PyQt4.QtCore.QUrl.None
+PyQt4.QtGui.QAbstractPrintDialog.None
+PyQt4.QtGui.QStyleOptionButton.None
+PyQt4.QtGui.QStyleOptionFrameV2.None
+PyQt4.QtGui.QStyleOptionHeader.None
+PyQt4.QtGui.QStyleOptionToolBar.None
+PyQt4.QtGui.QStyleOptionToolButton.None
+PyQt4.QtGui.QStyleOptionViewItemV2.None
+qgis._core.QgsRasterBandStats.None" class="py-name" href="#" onclick="return doclink('link-23', 'None', 'link-14');">None</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-keyword">pass</tt> </tt>
+</div><a name="ContextMock.__enter__"></a><div id="ContextMock.__enter__-def"><a name="L221"></a><tt class="py-lineno">221</tt> <a class="py-toggle" href="#" id="ContextMock.__enter__-toggle" onclick="return toggle('ContextMock.__enter__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock.ContextMock-class.html#__enter__">__enter__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-keyword">pass</tt> </tt>
+</div></div><a name="L222"></a><tt class="py-lineno">222</tt>  <tt class="py-line">     </tt>
+<a name="_QgsMapLayerRegistry"></a><div id="_QgsMapLayerRegistry-def"><a name="L223"></a><tt class="py-lineno">223</tt> <a class="py-toggle" href="#" id="_QgsMapLayerRegistry-toggle" onclick="return toggle('_QgsMapLayerRegistry');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._QgsMapLayerRegistry-class.html">_QgsMapLayerRegistry</a><tt class="py-op">(</tt><tt class="py-base-class">object</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_QgsMapLayerRegistry-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="_QgsMapLayerRegistry-expanded"><a name="L224"></a><tt class="py-lineno">224</tt>  <tt class="py-line"> </tt>
+<a name="_QgsMapLayerRegistry.instance"></a><div id="_QgsMapLayerRegistry.instance-def"><a name="L225"></a><tt class="py-lineno">225</tt> <a class="py-toggle" href="#" id="_QgsMapLayerRegistry.instance-toggle" onclick="return toggle('_QgsMapLayerRegistry.instance');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._QgsMapLayerRegistry-class.html#instance">instance</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-keyword">return</tt> <tt class="py-name">self</tt> </tt>
+</div><a name="_QgsMapLayerRegistry.mapLayers"></a><div id="_QgsMapLayerRegistry.mapLayers-def"><a name="L226"></a><tt class="py-lineno">226</tt> <a class="py-toggle" href="#" id="_QgsMapLayerRegistry.mapLayers-toggle" onclick="return toggle('_QgsMapLayerRegistry.mapLayers');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._QgsMapLayerRegistry-class.html#mapLayers">mapLayers</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-keyword">return</tt> <tt id="link-24" class="py-name" targets="Class QGIS-AIMS-Plugin.Test.AimsService_Mock._MapLayers=QGIS-AIMS-Plugin.Test.AimsService_Mock._MapLayers-class.html"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock._MapLayers" class="py-name" href="#" onclick="return doclink('link-24', '_MapLayers', 'link-24');">_MapLayers</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L227"></a><tt class="py-lineno">227</tt>  <tt class="py-line">     </tt>
+<a name="_MapLayers"></a><div id="_MapLayers-def"><a name="L228"></a><tt class="py-lineno">228</tt> <a class="py-toggle" href="#" id="_MapLayers-toggle" onclick="return toggle('_MapLayers');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._MapLayers-class.html">_MapLayers</a><tt class="py-op">(</tt><tt class="py-base-class">object</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_MapLayers-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="_MapLayers-expanded"><a name="_MapLayers.values"></a><div id="_MapLayers.values-def"><a name="L229"></a><tt class="py-lineno">229</tt> <a class="py-toggle" href="#" id="_MapLayers.values-toggle" onclick="return toggle('_MapLayers.values');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock._MapLayers-class.html#values">values</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-keyword">return</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+</div></div><a name="L230"></a><tt class="py-lineno">230</tt>  <tt class="py-line"><tt class="py-comment">#-------------------------------------------------------------</tt> </tt>
+<a name="ASM"></a><div id="ASM-def"><a name="L231"></a><tt class="py-lineno">231</tt>  <tt class="py-line"> </tt>
+<a name="L232"></a><tt class="py-lineno">232</tt>  <tt class="py-line"> </tt>
+<a name="L233"></a><tt class="py-lineno">233</tt> <a class="py-toggle" href="#" id="ASM-toggle" onclick="return toggle('ASM');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM-class.html">ASM</a><tt class="py-op">(</tt><tt class="py-base-class">object</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ASM-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="ASM-expanded"><a name="L234"></a><tt class="py-lineno">234</tt>  <tt class="py-line">    <tt class="py-docstring">'''Aims Service Mock accessor'''</tt> </tt>
+<a name="L235"></a><tt class="py-lineno">235</tt>  <tt class="py-line">     </tt>
+<a name="L236"></a><tt class="py-lineno">236</tt>  <tt class="py-line">    <tt id="link-25" class="py-name" targets="Variable QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM.ASMenum=QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM-class.html#ASMenum"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM.ASMenum" class="py-name" href="#" onclick="return doclink('link-25', 'ASMenum', 'link-25');">ASMenum</a></tt> <tt class="py-op">=</tt> <tt id="link-26" class="py-name" targets="Static Method QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.Enumeration.enum()=QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.Enumeration-class.html#enum,Function QGIS-AIMS-Plugin.Test.AimsService_Mock.enum()=QGIS-AIMS-Plugin.Test.AimsService_Mock-module.html#enum"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.Enumeration.enum
+QGIS-AIMS-Plugin.Test.AimsService_Mock.enum" class="py-name" href="#" onclick="return doclink('link-26', 'enum', 'link-26');">enum</a></tt><tt class="py-op">(</tt><tt class="py-string">'HTTP'</tt><tt class="py-op">,</tt><tt class="py-string">'QI'</tt><tt class="py-op">,</tt><tt class="py-string">'LAYER'</tt><tt class="py-op">,</tt><tt class="py-string">'FEATURE'</tt><tt class="py-op">,</tt><tt class="py-string">'GEOMETRY'</tt><tt class="py-op">,</tt><tt class="py-string">'POINT'</tt><tt class="py-op">,</tt><tt class="py-string">'SIGNAL'</tt><tt class="py-op">,</tt><tt class="py-string">'QMLR'</tt><tt class="py-op">,</tt><tt class="py-string">'QLGD'</tt><tt class="py-op">)</tt> </tt>
+<a name="L237"></a><tt class="py-lineno">237</tt>  <tt class="py-line">     </tt>
+<a name="L238"></a><tt class="py-lineno">238</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">classmethod</tt> </tt>
+<a name="ASM.getMock"></a><div id="ASM.getMock-def"><a name="L239"></a><tt class="py-lineno">239</tt> <a class="py-toggle" href="#" id="ASM.getMock-toggle" onclick="return toggle('ASM.getMock');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM-class.html#getMock">getMock</a><tt class="py-op">(</tt><tt class="py-param">cls</tt><tt class="py-op">,</tt><tt class="py-param">type</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ASM.getMock-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="ASM.getMock-expanded"><a name="L240"></a><tt class="py-lineno">240</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-op">{</tt><tt class="py-name">cls</tt><tt class="py-op">.</tt><tt id="link-27" class="py-name"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM.ASMenum" class="py-name" href="#" onclick="return doclink('link-27', 'ASMenum', 'link-25');">ASMenum</a></tt><tt class="py-op">.</tt><tt class="py-name">HTTP</tt> <tt class="py-op">:</tt>      <tt id="link-28" class="py-name" targets="Class QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM=QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM-class.html"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM" class="py-name" href="#" onclick="return doclink('link-28', 'ASM', 'link-28');">ASM</a></tt><tt class="py-op">.</tt><tt id="link-29" class="py-name" targets="Static Method QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM.getAimsHttpMock()=QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM-class.html#getAimsHttpMock"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM.getAimsHttpMock" class="py-name" href="#" onclick="return doclink('link-29', 'getAimsHttpMock', 'link-29');">getAimsHttpMock</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L241"></a><tt class="py-lineno">241</tt>  <tt class="py-line">                <tt class="py-name">cls</tt><tt class="py-op">.</tt><tt id="link-30" class="py-name"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM.ASMenum" class="py-name" href="#" onclick="return doclink('link-30', 'ASMenum', 'link-25');">ASMenum</a></tt><tt class="py-op">.</tt><tt class="py-name">QI</tt> <tt class="py-op">:</tt>        <tt id="link-31" class="py-name"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM" class="py-name" href="#" onclick="return doclink('link-31', 'ASM', 'link-28');">ASM</a></tt><tt class="py-op">.</tt><tt id="link-32" class="py-name" targets="Static Method QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM.getQIMock()=QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM-class.html#getQIMock"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM.getQIMock" class="py-name" href="#" onclick="return doclink('link-32', 'getQIMock', 'link-32');">getQIMock</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L242"></a><tt class="py-lineno">242</tt>  <tt class="py-line">                <tt class="py-name">cls</tt><tt class="py-op">.</tt><tt id="link-33" class="py-name"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM.ASMenum" class="py-name" href="#" onclick="return doclink('link-33', 'ASMenum', 'link-25');">ASMenum</a></tt><tt class="py-op">.</tt><tt class="py-name">LAYER</tt> <tt class="py-op">:</tt>     <tt id="link-34" class="py-name"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM" class="py-name" href="#" onclick="return doclink('link-34', 'ASM', 'link-28');">ASM</a></tt><tt class="py-op">.</tt><tt id="link-35" class="py-name" targets="Static Method QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM.getLayerMock()=QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM-class.html#getLayerMock"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM.getLayerMock" class="py-name" href="#" onclick="return doclink('link-35', 'getLayerMock', 'link-35');">getLayerMock</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L243"></a><tt class="py-lineno">243</tt>  <tt class="py-line">                <tt class="py-name">cls</tt><tt class="py-op">.</tt><tt id="link-36" class="py-name"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM.ASMenum" class="py-name" href="#" onclick="return doclink('link-36', 'ASMenum', 'link-25');">ASMenum</a></tt><tt class="py-op">.</tt><tt class="py-name">FEATURE</tt> <tt class="py-op">:</tt>   <tt id="link-37" class="py-name"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM" class="py-name" href="#" onclick="return doclink('link-37', 'ASM', 'link-28');">ASM</a></tt><tt class="py-op">.</tt><tt id="link-38" class="py-name" targets="Static Method QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM.getFeatureMock()=QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM-class.html#getFeatureMock"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM.getFeatureMock" class="py-name" href="#" onclick="return doclink('link-38', 'getFeatureMock', 'link-38');">getFeatureMock</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L244"></a><tt class="py-lineno">244</tt>  <tt class="py-line">                <tt class="py-name">cls</tt><tt class="py-op">.</tt><tt id="link-39" class="py-name"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM.ASMenum" class="py-name" href="#" onclick="return doclink('link-39', 'ASMenum', 'link-25');">ASMenum</a></tt><tt class="py-op">.</tt><tt class="py-name">GEOMETRY</tt> <tt class="py-op">:</tt>  <tt id="link-40" class="py-name"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM" class="py-name" href="#" onclick="return doclink('link-40', 'ASM', 'link-28');">ASM</a></tt><tt class="py-op">.</tt><tt id="link-41" class="py-name" targets="Static Method QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM.getGeometryMock()=QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM-class.html#getGeometryMock"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM.getGeometryMock" class="py-name" href="#" onclick="return doclink('link-41', 'getGeometryMock', 'link-41');">getGeometryMock</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L245"></a><tt class="py-lineno">245</tt>  <tt class="py-line">                <tt class="py-name">cls</tt><tt class="py-op">.</tt><tt id="link-42" class="py-name"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM.ASMenum" class="py-name" href="#" onclick="return doclink('link-42', 'ASMenum', 'link-25');">ASMenum</a></tt><tt class="py-op">.</tt><tt class="py-name">POINT</tt> <tt class="py-op">:</tt>     <tt id="link-43" class="py-name"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM" class="py-name" href="#" onclick="return doclink('link-43', 'ASM', 'link-28');">ASM</a></tt><tt class="py-op">.</tt><tt id="link-44" class="py-name" targets="Static Method QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM.getPointMock()=QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM-class.html#getPointMock"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM.getPointMock" class="py-name" href="#" onclick="return doclink('link-44', 'getPointMock', 'link-44');">getPointMock</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L246"></a><tt class="py-lineno">246</tt>  <tt class="py-line">                <tt class="py-name">cls</tt><tt class="py-op">.</tt><tt id="link-45" class="py-name"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM.ASMenum" class="py-name" href="#" onclick="return doclink('link-45', 'ASMenum', 'link-25');">ASMenum</a></tt><tt class="py-op">.</tt><tt class="py-name">SIGNAL</tt> <tt class="py-op">:</tt>    <tt id="link-46" class="py-name"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM" class="py-name" href="#" onclick="return doclink('link-46', 'ASM', 'link-28');">ASM</a></tt><tt class="py-op">.</tt><tt id="link-47" class="py-name" targets="Static Method QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM.getPyQtSignalMock()=QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM-class.html#getPyQtSignalMock"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM.getPyQtSignalMock" class="py-name" href="#" onclick="return doclink('link-47', 'getPyQtSignalMock', 'link-47');">getPyQtSignalMock</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L247"></a><tt class="py-lineno">247</tt>  <tt class="py-line">                <tt class="py-name">cls</tt><tt class="py-op">.</tt><tt id="link-48" class="py-name"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM.ASMenum" class="py-name" href="#" onclick="return doclink('link-48', 'ASMenum', 'link-25');">ASMenum</a></tt><tt class="py-op">.</tt><tt class="py-name">QMLR</tt> <tt class="py-op">:</tt>      <tt id="link-49" class="py-name"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM" class="py-name" href="#" onclick="return doclink('link-49', 'ASM', 'link-28');">ASM</a></tt><tt class="py-op">.</tt><tt id="link-50" class="py-name" targets="Static Method QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM.getQMLRMock()=QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM-class.html#getQMLRMock"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM.getQMLRMock" class="py-name" href="#" onclick="return doclink('link-50', 'getQMLRMock', 'link-50');">getQMLRMock</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L248"></a><tt class="py-lineno">248</tt>  <tt class="py-line">                <tt class="py-name">cls</tt><tt class="py-op">.</tt><tt id="link-51" class="py-name"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM.ASMenum" class="py-name" href="#" onclick="return doclink('link-51', 'ASMenum', 'link-25');">ASMenum</a></tt><tt class="py-op">.</tt><tt class="py-name">QLGD</tt> <tt class="py-op">:</tt>      <tt id="link-52" class="py-name"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM" class="py-name" href="#" onclick="return doclink('link-52', 'ASM', 'link-28');">ASM</a></tt><tt class="py-op">.</tt><tt id="link-53" class="py-name" targets="Static Method QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM.getQLGDMock()=QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM-class.html#getQLGDMock"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM.getQLGDMock" class="py-name" href="#" onclick="return doclink('link-53', 'getQLGDMock', 'link-53');">getQLGDMock</a></tt> </tt>
+<a name="L249"></a><tt class="py-lineno">249</tt>  <tt class="py-line">                <tt class="py-op">}</tt><tt class="py-op">[</tt><tt id="link-54" class="py-name"><a title="PyQt4.QtGui.QInputMethodEvent.Attribute.type
+PyQt4.QtGui.QPainterPath.Element.type
+PyQt4.QtGui.QStyleHintReturn.type
+PyQt4.QtGui.QStyleOption.type
+PyQt4.QtGui.QTextOption.Tab.type
+QGIS-AIMS-Plugin.AIMSDataManager.Address.Address.type
+QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressChange.type
+QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressResolution.type
+QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature.type
+QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupChange.type
+QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupResolution.type
+QGIS-AIMS-Plugin.Test.AimsService_Mock._Layer.type
+qgis._core.QgsSnappingUtils.LayerConfig.type
+qgis._core.QgsVectorFileWriter.Option.type" class="py-name" href="#" onclick="return doclink('link-54', 'type', 'link-8');">type</a></tt><tt class="py-op">]</tt> </tt>
+</div><a name="L250"></a><tt class="py-lineno">250</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">classmethod</tt>             </tt>
+<a name="ASM.getMockSpec"></a><div id="ASM.getMockSpec-def"><a name="L251"></a><tt class="py-lineno">251</tt> <a class="py-toggle" href="#" id="ASM.getMockSpec-toggle" onclick="return toggle('ASM.getMockSpec');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM-class.html#getMockSpec">getMockSpec</a><tt class="py-op">(</tt><tt class="py-param">cls</tt><tt class="py-op">,</tt><tt class="py-param">type</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ASM.getMockSpec-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="ASM.getMockSpec-expanded"><a name="L252"></a><tt class="py-lineno">252</tt>  <tt class="py-line">        <tt class="py-docstring">'''doesn't work, getmock is evaluated before __class__'''</tt> </tt>
+<a name="L253"></a><tt class="py-lineno">253</tt>  <tt class="py-line">        <tt class="py-name">m</tt> <tt class="py-op">=</tt>  <tt id="link-55" class="py-name"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM" class="py-name" href="#" onclick="return doclink('link-55', 'ASM', 'link-28');">ASM</a></tt><tt class="py-op">.</tt><tt id="link-56" class="py-name" targets="Class Method QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM.getMock()=QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM-class.html#getMock"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM.getMock" class="py-name" href="#" onclick="return doclink('link-56', 'getMock', 'link-56');">getMock</a></tt><tt class="py-op">(</tt><tt id="link-57" class="py-name"><a title="PyQt4.QtGui.QInputMethodEvent.Attribute.type
+PyQt4.QtGui.QPainterPath.Element.type
+PyQt4.QtGui.QStyleHintReturn.type
+PyQt4.QtGui.QStyleOption.type
+PyQt4.QtGui.QTextOption.Tab.type
+QGIS-AIMS-Plugin.AIMSDataManager.Address.Address.type
+QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressChange.type
+QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressResolution.type
+QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature.type
+QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupChange.type
+QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupResolution.type
+QGIS-AIMS-Plugin.Test.AimsService_Mock._Layer.type
+qgis._core.QgsSnappingUtils.LayerConfig.type
+qgis._core.QgsVectorFileWriter.Option.type" class="py-name" href="#" onclick="return doclink('link-57', 'type', 'link-8');">type</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L254"></a><tt class="py-lineno">254</tt>  <tt class="py-line">        <tt class="py-keyword">print</tt> <tt id="link-58" class="py-name"><a title="PyQt4.QtGui.QInputMethodEvent.Attribute.type
+PyQt4.QtGui.QPainterPath.Element.type
+PyQt4.QtGui.QStyleHintReturn.type
+PyQt4.QtGui.QStyleOption.type
+PyQt4.QtGui.QTextOption.Tab.type
+QGIS-AIMS-Plugin.AIMSDataManager.Address.Address.type
+QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressChange.type
+QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressResolution.type
+QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature.type
+QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupChange.type
+QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupResolution.type
+QGIS-AIMS-Plugin.Test.AimsService_Mock._Layer.type
+qgis._core.QgsSnappingUtils.LayerConfig.type
+qgis._core.QgsVectorFileWriter.Option.type" class="py-name" href="#" onclick="return doclink('link-58', 'type', 'link-8');">type</a></tt> </tt>
+<a name="L255"></a><tt class="py-lineno">255</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-59" class="py-name"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM" class="py-name" href="#" onclick="return doclink('link-59', 'ASM', 'link-28');">ASM</a></tt><tt class="py-op">.</tt><tt id="link-60" class="py-name"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM.getMock" class="py-name" href="#" onclick="return doclink('link-60', 'getMock', 'link-56');">getMock</a></tt><tt class="py-op">(</tt><tt id="link-61" class="py-name"><a title="PyQt4.QtGui.QInputMethodEvent.Attribute.type
+PyQt4.QtGui.QPainterPath.Element.type
+PyQt4.QtGui.QStyleHintReturn.type
+PyQt4.QtGui.QStyleOption.type
+PyQt4.QtGui.QTextOption.Tab.type
+QGIS-AIMS-Plugin.AIMSDataManager.Address.Address.type
+QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressChange.type
+QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressResolution.type
+QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature.type
+QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupChange.type
+QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupResolution.type
+QGIS-AIMS-Plugin.Test.AimsService_Mock._Layer.type
+qgis._core.QgsSnappingUtils.LayerConfig.type
+qgis._core.QgsVectorFileWriter.Option.type" class="py-name" href="#" onclick="return doclink('link-61', 'type', 'link-8');">type</a></tt><tt class="py-op">)</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">__class__</tt> </tt>
+</div><a name="L256"></a><tt class="py-lineno">256</tt>  <tt class="py-line">                 </tt>
+<a name="L257"></a><tt class="py-lineno">257</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">staticmethod</tt> </tt>
+<a name="ASM.getAimsHttpMock"></a><div id="ASM.getAimsHttpMock-def"><a name="L258"></a><tt class="py-lineno">258</tt> <a class="py-toggle" href="#" id="ASM.getAimsHttpMock-toggle" onclick="return toggle('ASM.getAimsHttpMock');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM-class.html#getAimsHttpMock">getAimsHttpMock</a><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ASM.getAimsHttpMock-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="ASM.getAimsHttpMock-expanded"><a name="L259"></a><tt class="py-lineno">259</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">Mock</tt><tt class="py-op">(</tt><tt class="py-name">spec</tt><tt class="py-op">=</tt><tt id="link-62" class="py-name" targets="Class QGIS-AIMS-Plugin.Test.AimsService_Mock._AimsHttp=QGIS-AIMS-Plugin.Test.AimsService_Mock._AimsHttp-class.html"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock._AimsHttp" class="py-name" href="#" onclick="return doclink('link-62', '_AimsHttp', 'link-62');">_AimsHttp</a></tt><tt class="py-op">)</tt> </tt>
+</div><a name="L260"></a><tt class="py-lineno">260</tt>  <tt class="py-line">     </tt>
+<a name="L261"></a><tt class="py-lineno">261</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">staticmethod</tt> </tt>
+<a name="ASM.getQIMock"></a><div id="ASM.getQIMock-def"><a name="L262"></a><tt class="py-lineno">262</tt> <a class="py-toggle" href="#" id="ASM.getQIMock-toggle" onclick="return toggle('ASM.getQIMock');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM-class.html#getQIMock">getQIMock</a><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ASM.getQIMock-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="ASM.getQIMock-expanded"><a name="L263"></a><tt class="py-lineno">263</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">Mock</tt><tt class="py-op">(</tt><tt class="py-name">spec</tt><tt class="py-op">=</tt><tt id="link-63" class="py-name" targets="Class QGIS-AIMS-Plugin.Test.AimsService_Mock._QInterface=QGIS-AIMS-Plugin.Test.AimsService_Mock._QInterface-class.html"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock._QInterface" class="py-name" href="#" onclick="return doclink('link-63', '_QInterface', 'link-63');">_QInterface</a></tt><tt class="py-op">)</tt> </tt>
+</div><a name="L264"></a><tt class="py-lineno">264</tt>  <tt class="py-line">     </tt>
+<a name="L265"></a><tt class="py-lineno">265</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">staticmethod</tt> </tt>
+<a name="ASM.getLayerMock"></a><div id="ASM.getLayerMock-def"><a name="L266"></a><tt class="py-lineno">266</tt> <a class="py-toggle" href="#" id="ASM.getLayerMock-toggle" onclick="return toggle('ASM.getLayerMock');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM-class.html#getLayerMock">getLayerMock</a><tt class="py-op">(</tt><tt class="py-param">idrv</tt><tt class="py-op">=</tt><tt id="link-64" class="py-name"><a title="PyQt4.QtCore.QEvent.None
+PyQt4.QtCore.QUrl.None
+PyQt4.QtGui.QAbstractPrintDialog.None
+PyQt4.QtGui.QStyleOptionButton.None
+PyQt4.QtGui.QStyleOptionFrameV2.None
+PyQt4.QtGui.QStyleOptionHeader.None
+PyQt4.QtGui.QStyleOptionToolBar.None
+PyQt4.QtGui.QStyleOptionToolButton.None
+PyQt4.QtGui.QStyleOptionViewItemV2.None
+qgis._core.QgsRasterBandStats.None" class="py-name" href="#" onclick="return doclink('link-64', 'None', 'link-14');">None</a></tt><tt class="py-op">,</tt> <tt class="py-param">cprv</tt><tt class="py-op">=</tt><tt id="link-65" class="py-name"><a title="PyQt4.QtCore.QEvent.None
+PyQt4.QtCore.QUrl.None
+PyQt4.QtGui.QAbstractPrintDialog.None
+PyQt4.QtGui.QStyleOptionButton.None
+PyQt4.QtGui.QStyleOptionFrameV2.None
+PyQt4.QtGui.QStyleOptionHeader.None
+PyQt4.QtGui.QStyleOptionToolBar.None
+PyQt4.QtGui.QStyleOptionToolButton.None
+PyQt4.QtGui.QStyleOptionViewItemV2.None
+qgis._core.QgsRasterBandStats.None" class="py-name" href="#" onclick="return doclink('link-65', 'None', 'link-14');">None</a></tt><tt class="py-op">,</tt> <tt class="py-param">vlrv</tt><tt class="py-op">=</tt><tt id="link-66" class="py-name"><a title="PyQt4.QtCore.QEvent.None
+PyQt4.QtCore.QUrl.None
+PyQt4.QtGui.QAbstractPrintDialog.None
+PyQt4.QtGui.QStyleOptionButton.None
+PyQt4.QtGui.QStyleOptionFrameV2.None
+PyQt4.QtGui.QStyleOptionHeader.None
+PyQt4.QtGui.QStyleOptionToolBar.None
+PyQt4.QtGui.QStyleOptionToolButton.None
+PyQt4.QtGui.QStyleOptionViewItemV2.None
+qgis._core.QgsRasterBandStats.None" class="py-name" href="#" onclick="return doclink('link-66', 'None', 'link-14');">None</a></tt><tt class="py-op">,</tt><tt class="py-param">tprv</tt><tt class="py-op">=</tt><tt id="link-67" class="py-name"><a title="PyQt4.QtCore.QEvent.None
+PyQt4.QtCore.QUrl.None
+PyQt4.QtGui.QAbstractPrintDialog.None
+PyQt4.QtGui.QStyleOptionButton.None
+PyQt4.QtGui.QStyleOptionFrameV2.None
+PyQt4.QtGui.QStyleOptionHeader.None
+PyQt4.QtGui.QStyleOptionToolBar.None
+PyQt4.QtGui.QStyleOptionToolButton.None
+PyQt4.QtGui.QStyleOptionViewItemV2.None
+qgis._core.QgsRasterBandStats.None" class="py-name" href="#" onclick="return doclink('link-67', 'None', 'link-14');">None</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ASM.getLayerMock-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="ASM.getLayerMock-expanded"><a name="L267"></a><tt class="py-lineno">267</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">vlrv</tt><tt class="py-op">:</tt> </tt>
+<a name="L268"></a><tt class="py-lineno">268</tt>  <tt class="py-line">            <tt class="py-name">m</tt> <tt class="py-op">=</tt> <tt class="py-name">Mock</tt><tt class="py-op">(</tt><tt class="py-name">spec</tt><tt class="py-op">=</tt><tt id="link-68" class="py-name" targets="Class QGIS-AIMS-Plugin.Test.AimsService_Mock._VectorLayer=QGIS-AIMS-Plugin.Test.AimsService_Mock._VectorLayer-class.html"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock._VectorLayer" class="py-name" href="#" onclick="return doclink('link-68', '_VectorLayer', 'link-68');">_VectorLayer</a></tt><tt class="py-op">)</tt> <tt class="py-comment">#spec argument configures the mock to take its specification from another object</tt> </tt>
+<a name="L269"></a><tt class="py-lineno">269</tt>  <tt class="py-line">            <tt class="py-name">m</tt><tt class="py-op">.</tt><tt id="link-69" class="py-name"><a title="PyQt4.QtGui.QInputMethodEvent.Attribute.type
+PyQt4.QtGui.QPainterPath.Element.type
+PyQt4.QtGui.QStyleHintReturn.type
+PyQt4.QtGui.QStyleOption.type
+PyQt4.QtGui.QTextOption.Tab.type
+QGIS-AIMS-Plugin.AIMSDataManager.Address.Address.type
+QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressChange.type
+QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressResolution.type
+QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature.type
+QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupChange.type
+QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupResolution.type
+QGIS-AIMS-Plugin.Test.AimsService_Mock._Layer.type
+qgis._core.QgsSnappingUtils.LayerConfig.type
+qgis._core.QgsVectorFileWriter.Option.type" class="py-name" href="#" onclick="return doclink('link-69', 'type', 'link-8');">type</a></tt><tt class="py-op">.</tt><tt class="py-name">return_value</tt> <tt class="py-op">=</tt> <tt class="py-name">m</tt><tt class="py-op">.</tt><tt id="link-70" class="py-name"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock._VectorLayer.VectorLayer
+qgis._core.QgsMapLayer.VectorLayer
+qgis._gui.QgsMapLayerProxyModel.VectorLayer
+qgis._gui.QgsMapToolIdentify.VectorLayer" class="py-name" href="#" onclick="return doclink('link-70', 'VectorLayer', 'link-18');">VectorLayer</a></tt> </tt>
+<a name="L270"></a><tt class="py-lineno">270</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L271"></a><tt class="py-lineno">271</tt>  <tt class="py-line">            <tt class="py-name">m</tt> <tt class="py-op">=</tt> <tt class="py-name">Mock</tt><tt class="py-op">(</tt><tt class="py-name">spec</tt><tt class="py-op">=</tt><tt id="link-71" class="py-name" targets="Class QGIS-AIMS-Plugin.Test.AimsService_Mock._Layer=QGIS-AIMS-Plugin.Test.AimsService_Mock._Layer-class.html"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock._Layer" class="py-name" href="#" onclick="return doclink('link-71', '_Layer', 'link-71');">_Layer</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L272"></a><tt class="py-lineno">272</tt>  <tt class="py-line">            <tt class="py-name">m</tt><tt class="py-op">.</tt><tt id="link-72" class="py-name"><a title="PyQt4.QtGui.QInputMethodEvent.Attribute.type
+PyQt4.QtGui.QPainterPath.Element.type
+PyQt4.QtGui.QStyleHintReturn.type
+PyQt4.QtGui.QStyleOption.type
+PyQt4.QtGui.QTextOption.Tab.type
+QGIS-AIMS-Plugin.AIMSDataManager.Address.Address.type
+QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressChange.type
+QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressResolution.type
+QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature.type
+QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupChange.type
+QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupResolution.type
+QGIS-AIMS-Plugin.Test.AimsService_Mock._Layer.type
+qgis._core.QgsSnappingUtils.LayerConfig.type
+qgis._core.QgsVectorFileWriter.Option.type" class="py-name" href="#" onclick="return doclink('link-72', 'type', 'link-8');">type</a></tt><tt class="py-op">.</tt><tt class="py-name">return_value</tt> <tt class="py-op">=</tt> <tt class="py-name">m</tt><tt class="py-op">.</tt><tt id="link-73" class="py-name"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock._Layer.Layer
+qgis._core.QgsDataItem.Layer
+qgis._gui.QgsMapLayerAction.Layer" class="py-name" href="#" onclick="return doclink('link-73', 'Layer', 'link-15');">Layer</a></tt> </tt>
+<a name="L273"></a><tt class="py-lineno">273</tt>  <tt class="py-line">        <tt class="py-name">m</tt><tt class="py-op">.</tt><tt id="link-74" class="py-name" targets="Method QGIS-AIMS-Plugin.Test.AimsService_Mock._Layer.id()=QGIS-AIMS-Plugin.Test.AimsService_Mock._Layer-class.html#id,Variable qgis._core.QgsSatelliteInfo.id=qgis._core.QgsSatelliteInfo-class.html#id"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock._Layer.id
+qgis._core.QgsSatelliteInfo.id" class="py-name" href="#" onclick="return doclink('link-74', 'id', 'link-74');">id</a></tt><tt class="py-op">.</tt><tt class="py-name">return_value</tt> <tt class="py-op">=</tt> <tt class="py-name">idrv</tt> </tt>
+<a name="L274"></a><tt class="py-lineno">274</tt>  <tt class="py-line">        <tt class="py-name">m</tt><tt class="py-op">.</tt><tt id="link-75" class="py-name" targets="Method QGIS-AIMS-Plugin.Test.AimsService_Mock._Layer.customProperty()=QGIS-AIMS-Plugin.Test.AimsService_Mock._Layer-class.html#customProperty,Method QGIS-AIMS-Plugin.Test.CreateNewTool_Test._Dummy_Layer.customProperty()=QGIS-AIMS-Plugin.Test.CreateNewTool_Test._Dummy_Layer-class.html#customProperty"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock._Layer.customProperty
+QGIS-AIMS-Plugin.Test.CreateNewTool_Test._Dummy_Layer.customProperty" class="py-name" href="#" onclick="return doclink('link-75', 'customProperty', 'link-75');">customProperty</a></tt><tt class="py-op">.</tt><tt class="py-name">return_value</tt> <tt class="py-op">=</tt> <tt class="py-name">cprv</tt> </tt>
+<a name="L275"></a><tt class="py-lineno">275</tt>  <tt class="py-line"> </tt>
+<a name="L276"></a><tt class="py-lineno">276</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">m</tt> </tt>
+</div><a name="L277"></a><tt class="py-lineno">277</tt>  <tt class="py-line">     </tt>
+<a name="L278"></a><tt class="py-lineno">278</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">staticmethod</tt> </tt>
+<a name="ASM.getFeatureMock"></a><div id="ASM.getFeatureMock-def"><a name="L279"></a><tt class="py-lineno">279</tt> <a class="py-toggle" href="#" id="ASM.getFeatureMock-toggle" onclick="return toggle('ASM.getFeatureMock');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM-class.html#getFeatureMock">getFeatureMock</a><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ASM.getFeatureMock-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="ASM.getFeatureMock-expanded"><a name="L280"></a><tt class="py-lineno">280</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">Mock</tt><tt class="py-op">(</tt><tt class="py-name">spec</tt><tt class="py-op">=</tt><tt id="link-76" class="py-name" targets="Class QGIS-AIMS-Plugin.Test.AimsService_Mock._Feature=QGIS-AIMS-Plugin.Test.AimsService_Mock._Feature-class.html"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock._Feature" class="py-name" href="#" onclick="return doclink('link-76', '_Feature', 'link-76');">_Feature</a></tt><tt class="py-op">)</tt>        </tt>
+</div><a name="L281"></a><tt class="py-lineno">281</tt>  <tt class="py-line">     </tt>
+<a name="L282"></a><tt class="py-lineno">282</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">staticmethod</tt> </tt>
+<a name="ASM.getGeometryMock"></a><div id="ASM.getGeometryMock-def"><a name="L283"></a><tt class="py-lineno">283</tt> <a class="py-toggle" href="#" id="ASM.getGeometryMock-toggle" onclick="return toggle('ASM.getGeometryMock');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM-class.html#getGeometryMock">getGeometryMock</a><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ASM.getGeometryMock-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="ASM.getGeometryMock-expanded"><a name="L284"></a><tt class="py-lineno">284</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">Mock</tt><tt class="py-op">(</tt><tt class="py-name">spec</tt><tt class="py-op">=</tt><tt id="link-77" class="py-name"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock._Geometry" class="py-name" href="#" onclick="return doclink('link-77', '_Geometry', 'link-19');">_Geometry</a></tt><tt class="py-op">)</tt>     </tt>
+</div><a name="L285"></a><tt class="py-lineno">285</tt>  <tt class="py-line">     </tt>
+<a name="L286"></a><tt class="py-lineno">286</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">staticmethod</tt> </tt>
+<a name="ASM.getPointMock"></a><div id="ASM.getPointMock-def"><a name="L287"></a><tt class="py-lineno">287</tt> <a class="py-toggle" href="#" id="ASM.getPointMock-toggle" onclick="return toggle('ASM.getPointMock');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM-class.html#getPointMock">getPointMock</a><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ASM.getPointMock-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="ASM.getPointMock-expanded"><a name="L288"></a><tt class="py-lineno">288</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">Mock</tt><tt class="py-op">(</tt><tt class="py-name">spec</tt><tt class="py-op">=</tt><tt id="link-78" class="py-name" targets="Class QGIS-AIMS-Plugin.Test.AimsService_Mock._Point=QGIS-AIMS-Plugin.Test.AimsService_Mock._Point-class.html"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock._Point" class="py-name" href="#" onclick="return doclink('link-78', '_Point', 'link-78');">_Point</a></tt><tt class="py-op">)</tt> </tt>
+</div><a name="L289"></a><tt class="py-lineno">289</tt>  <tt class="py-line">     </tt>
+<a name="L290"></a><tt class="py-lineno">290</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">staticmethod</tt> </tt>
+<a name="ASM.getPyQtSignalMock"></a><div id="ASM.getPyQtSignalMock-def"><a name="L291"></a><tt class="py-lineno">291</tt> <a class="py-toggle" href="#" id="ASM.getPyQtSignalMock-toggle" onclick="return toggle('ASM.getPyQtSignalMock');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM-class.html#getPyQtSignalMock">getPyQtSignalMock</a><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ASM.getPyQtSignalMock-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="ASM.getPyQtSignalMock-expanded"><a name="L292"></a><tt class="py-lineno">292</tt>  <tt class="py-line">        <tt class="py-name">m</tt> <tt class="py-op">=</tt> <tt class="py-name">Mock</tt><tt class="py-op">(</tt><tt class="py-name">spec</tt><tt class="py-op">=</tt><tt id="link-79" class="py-name" targets="Class QGIS-AIMS-Plugin.Test.AimsService_Mock._pyqtSignal=QGIS-AIMS-Plugin.Test.AimsService_Mock._pyqtSignal-class.html"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock._pyqtSignal" class="py-name" href="#" onclick="return doclink('link-79', '_pyqtSignal', 'link-79');">_pyqtSignal</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L293"></a><tt class="py-lineno">293</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">m</tt>     </tt>
+</div><a name="L294"></a><tt class="py-lineno">294</tt>  <tt class="py-line">     </tt>
+<a name="L295"></a><tt class="py-lineno">295</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">staticmethod</tt> </tt>
+<a name="ASM.getQMLRMock"></a><div id="ASM.getQMLRMock-def"><a name="L296"></a><tt class="py-lineno">296</tt> <a class="py-toggle" href="#" id="ASM.getQMLRMock-toggle" onclick="return toggle('ASM.getQMLRMock');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM-class.html#getQMLRMock">getQMLRMock</a><tt class="py-op">(</tt><tt class="py-param">qmlr_rv</tt><tt class="py-op">=</tt><tt class="py-op">[</tt><tt id="link-80" class="py-name"><a title="PyQt4.QtCore.QEvent.None
+PyQt4.QtCore.QUrl.None
+PyQt4.QtGui.QAbstractPrintDialog.None
+PyQt4.QtGui.QStyleOptionButton.None
+PyQt4.QtGui.QStyleOptionFrameV2.None
+PyQt4.QtGui.QStyleOptionHeader.None
+PyQt4.QtGui.QStyleOptionToolBar.None
+PyQt4.QtGui.QStyleOptionToolButton.None
+PyQt4.QtGui.QStyleOptionViewItemV2.None
+qgis._core.QgsRasterBandStats.None" class="py-name" href="#" onclick="return doclink('link-80', 'None', 'link-14');">None</a></tt><tt class="py-op">,</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ASM.getQMLRMock-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="ASM.getQMLRMock-expanded"><a name="L297"></a><tt class="py-lineno">297</tt>  <tt class="py-line">        <tt class="py-name">m</tt> <tt class="py-op">=</tt> <tt id="link-81" class="py-name" targets="Class QGIS-AIMS-Plugin.Test.AimsService_Mock.ContextMock=QGIS-AIMS-Plugin.Test.AimsService_Mock.ContextMock-class.html"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock.ContextMock" class="py-name" href="#" onclick="return doclink('link-81', 'ContextMock', 'link-81');">ContextMock</a></tt><tt class="py-op">(</tt><tt class="py-name">spec</tt><tt class="py-op">=</tt><tt id="link-82" class="py-name" targets="Class QGIS-AIMS-Plugin.Test.AimsService_Mock._QgsMapLayerRegistry=QGIS-AIMS-Plugin.Test.AimsService_Mock._QgsMapLayerRegistry-class.html"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock._QgsMapLayerRegistry" class="py-name" href="#" onclick="return doclink('link-82', '_QgsMapLayerRegistry', 'link-82');">_QgsMapLayerRegistry</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L298"></a><tt class="py-lineno">298</tt>  <tt class="py-line">        <tt class="py-name">m</tt><tt class="py-op">.</tt><tt id="link-83" class="py-name" targets="Function QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.Controller.instance()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.Controller-module.html#instance,Method QGIS-AIMS-Plugin.Test.AimsService_Mock._QgsMapLayerRegistry.instance()=QGIS-AIMS-Plugin.Test.AimsService_Mock._QgsMapLayerRegistry-class.html#instance"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.Controller.instance
+QGIS-AIMS-Plugin.Test.AimsService_Mock._QgsMapLayerRegistry.instance" class="py-name" href="#" onclick="return doclink('link-83', 'instance', 'link-83');">instance</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-84" class="py-name" targets="Method QGIS-AIMS-Plugin.Test.AimsService_Mock._QgsMapLayerRegistry.mapLayers()=QGIS-AIMS-Plugin.Test.AimsService_Mock._QgsMapLayerRegistry-class.html#mapLayers"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock._QgsMapLayerRegistry.mapLayers" class="py-name" href="#" onclick="return doclink('link-84', 'mapLayers', 'link-84');">mapLayers</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-85" class="py-name" targets="Method QGIS-AIMS-Plugin.Test.AimsService_Mock._MapLayers.values()=QGIS-AIMS-Plugin.Test.AimsService_Mock._MapLayers-class.html#values,Variable qgis._core.QgsVectorFileWriter.SetOption.values=qgis._core.QgsVectorFileWriter.SetOption-class.html#values"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock._MapLayers.values
+qgis._core.QgsVectorFileWriter.SetOption.values" class="py-name" href="#" onclick="return doclink('link-85', 'values', 'link-85');">values</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">return_value</tt> <tt class="py-op">=</tt> <tt class="py-name">qmlr_rv</tt> </tt>
+<a name="L299"></a><tt class="py-lineno">299</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">m</tt>     </tt>
+</div><a name="L300"></a><tt class="py-lineno">300</tt>  <tt class="py-line">     </tt>
+<a name="L301"></a><tt class="py-lineno">301</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">staticmethod</tt> </tt>
+<a name="ASM.getQLGDMock"></a><div id="ASM.getQLGDMock-def"><a name="L302"></a><tt class="py-lineno">302</tt> <a class="py-toggle" href="#" id="ASM.getQLGDMock-toggle" onclick="return toggle('ASM.getQLGDMock');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM-class.html#getQLGDMock">getQLGDMock</a><tt class="py-op">(</tt><tt class="py-param">qlgd_rv</tt><tt class="py-op">=</tt><tt id="link-86" class="py-name"><a title="PyQt4.QtCore.QEvent.None
+PyQt4.QtCore.QUrl.None
+PyQt4.QtGui.QAbstractPrintDialog.None
+PyQt4.QtGui.QStyleOptionButton.None
+PyQt4.QtGui.QStyleOptionFrameV2.None
+PyQt4.QtGui.QStyleOptionHeader.None
+PyQt4.QtGui.QStyleOptionToolBar.None
+PyQt4.QtGui.QStyleOptionToolButton.None
+PyQt4.QtGui.QStyleOptionViewItemV2.None
+qgis._core.QgsRasterBandStats.None" class="py-name" href="#" onclick="return doclink('link-86', 'None', 'link-14');">None</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ASM.getQLGDMock-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="ASM.getQLGDMock-expanded"><a name="L303"></a><tt class="py-lineno">303</tt>  <tt class="py-line">        <tt class="py-name">m</tt> <tt class="py-op">=</tt> <tt class="py-name">Mock</tt><tt class="py-op">(</tt><tt class="py-name">spec</tt><tt class="py-op">=</tt><tt id="link-87" class="py-name"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock._Legend" class="py-name" href="#" onclick="return doclink('link-87', '_Legend', 'link-11');">_Legend</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L304"></a><tt class="py-lineno">304</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">m</tt> </tt>
+</div></div><a name="L305"></a><tt class="py-lineno">305</tt>  <tt class="py-line"> </tt>
+<a name="main"></a><div id="main-def"><a name="L306"></a><tt class="py-lineno">306</tt>  <tt class="py-line"> </tt>
+<a name="L307"></a><tt class="py-lineno">307</tt>  <tt class="py-line"><tt class="py-comment">###------</tt> </tt>
+<a name="L308"></a><tt class="py-lineno">308</tt>  <tt class="py-line"> </tt>
+<a name="L309"></a><tt class="py-lineno">309</tt> <a class="py-toggle" href="#" id="main-toggle" onclick="return toggle('main');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test.AimsService_Mock-module.html#main">main</a><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="main-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="main-expanded"><a name="L310"></a><tt class="py-lineno">310</tt>  <tt class="py-line">     </tt>
+<a name="L311"></a><tt class="py-lineno">311</tt>  <tt class="py-line">    <tt class="py-name">m</tt> <tt class="py-op">=</tt> <tt id="link-88" class="py-name"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM" class="py-name" href="#" onclick="return doclink('link-88', 'ASM', 'link-28');">ASM</a></tt><tt class="py-op">.</tt><tt id="link-89" class="py-name"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM.getLayerMock" class="py-name" href="#" onclick="return doclink('link-89', 'getLayerMock', 'link-35');">getLayerMock</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L312"></a><tt class="py-lineno">312</tt>  <tt class="py-line">    <tt class="py-keyword">print</tt> <tt class="py-name">m</tt><tt class="py-op">.</tt><tt id="link-90" class="py-name"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock._Layer.customProperty
+QGIS-AIMS-Plugin.Test.CreateNewTool_Test._Dummy_Layer.customProperty" class="py-name" href="#" onclick="return doclink('link-90', 'customProperty', 'link-75');">customProperty</a></tt><tt class="py-op">(</tt><tt class="py-number">2222</tt><tt class="py-op">)</tt> </tt>
+<a name="L313"></a><tt class="py-lineno">313</tt>  <tt class="py-line">     </tt>
+<a name="L314"></a><tt class="py-lineno">314</tt>  <tt class="py-line">     </tt>
+<a name="L315"></a><tt class="py-lineno">315</tt>  <tt class="py-line">    <tt class="py-name">m</tt> <tt class="py-op">=</tt> <tt id="link-91" class="py-name"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM" class="py-name" href="#" onclick="return doclink('link-91', 'ASM', 'link-28');">ASM</a></tt><tt class="py-op">.</tt><tt id="link-92" class="py-name"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock.ASM.getAimsHttpMock" class="py-name" href="#" onclick="return doclink('link-92', 'getAimsHttpMock', 'link-29');">getAimsHttpMock</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L316"></a><tt class="py-lineno">316</tt>  <tt class="py-line">    <tt class="py-keyword">print</tt> <tt class="py-name">m</tt> </tt>
+<a name="L317"></a><tt class="py-lineno">317</tt>  <tt class="py-line">    <tt class="py-name">m</tt><tt class="py-op">.</tt><tt id="link-93" class="py-name" targets="Method QGIS-AIMS-Plugin.Test.AimsService_Mock._AimsHttp.call()=QGIS-AIMS-Plugin.Test.AimsService_Mock._AimsHttp-class.html#call"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock._AimsHttp.call" class="py-name" href="#" onclick="return doclink('link-93', 'call', 'link-93');">call</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L318"></a><tt class="py-lineno">318</tt>  <tt class="py-line">         </tt>
+<a name="L319"></a><tt class="py-lineno">319</tt>  <tt class="py-line">     </tt>
+<a name="L320"></a><tt class="py-lineno">320</tt>  <tt class="py-line"><tt class="py-keyword">if</tt> <tt class="py-name">__name__</tt> <tt class="py-op">==</tt> <tt class="py-string">"__main__"</tt><tt class="py-op">:</tt> </tt>
+<a name="L321"></a><tt class="py-lineno">321</tt>  <tt class="py-line">    <tt id="link-94" class="py-name" targets="Function QGIS-AIMS-Plugin.RunAllTests.main()=QGIS-AIMS-Plugin.RunAllTests-module.html#main,Function QGIS-AIMS-Plugin.Test.AimsService_Mock.main()=QGIS-AIMS-Plugin.Test.AimsService_Mock-module.html#main"><a title="QGIS-AIMS-Plugin.RunAllTests.main
+QGIS-AIMS-Plugin.Test.AimsService_Mock.main" class="py-name" href="#" onclick="return doclink('link-94', 'main', 'link-94');">main</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L322"></a><tt class="py-lineno">322</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="QGIS-AIMS-Plugin-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Jun 14 13:29:24 2016
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>
