@@ -13,22 +13,25 @@
 
 #http://devassgeo01:8080/aims/api/sdmin/users
 from AimsUtility import UserActionType
+from AimsUtility import AimsException
 from AimsLogging import Logger
 from Feature import Feature
-
-
-#aimslog = None
-
-        
+       
+class UserException(AimsException): pass
+ 
 #------------------------------------------------------------------------------
-# G R O U P 
+# U S E R
 
 class User(Feature):
+    '''Class representing AIMS user'''
     
     global aimslog
     aimslog = Logger.setup()
     
     def __init__(self, ref=None): 
+        '''Initialise User object
+        @param ref: Unique reference string
+        '''
         #aimslog.info('AdrRef.{}'.format(ref))
         self._ref = ref
     
@@ -42,6 +45,7 @@ class User(Feature):
     
     def setEmail(self, email):
         self._email = email if Feature._vEmail(email) else None
+        
 
 
     

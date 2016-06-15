@@ -31,13 +31,18 @@ aimslog = None
     
     
 class DataManager(Observable):
-    '''Initialises maintenance thread and provides queue accessors'''
+    '''Initialises maintenance thread and provides queue accessors and request channels'''
 
     global aimslog
     aimslog = Logger.setup()
     
   
     def __init__(self,start=FIRST,initialise=False):
+        '''Initialises DataManager initialising DataSync objects, setting up persistence and reading configuration.
+        @param start: List of sync objects to be started (excluded FeatureFeed by default until BBOX defined
+        @param initialise: Flag to signal initialisation of persisted objects
+        @type initialise: Boolean
+        '''
         #self.ioq = {'in':Queue.Queue(),'out':Queue.Queue()}   
         super(DataManager,self).__init__()
         if start and hasattr(start,'__iter__'): self._start = start.values()
@@ -46,7 +51,7 @@ class DataManager(Observable):
         self._initDS()
         
     def _initDS(self):
-        '''initialise the data sync queues/threads'''
+        '''Initialises all DataSync, Queue and timestamping containers and begin check process'''
         self.ioq = {etft:None for etft in FEEDS.values()}
         self.ds = {etft:None for etft in FEEDS.values()}
         self.stamp = {etft:time.time() for etft in FEEDS.values()}
@@ -54,16 +59,24 @@ class DataManager(Observable):
         #init the g2+a2+a1 different feed threads
         self.dsr = {f:DataSyncFeeds for f in FIRST.values()}
         self.dsr[FeedRef((FeatureType.ADDRESS,FeedType.FEATURES))] = DataSyncFeatures
+        #Users feed not included in DSR for Release1.0
         for etft in self._start: self._checkDS(etft)
             
     def start(self,etft):
-        '''Add new thread to startup list and initialise'''
+        '''Add a requested (FeedRef) thread to startup list and initialise 
+        @param etft: FeedRef of requested thread
+        @type etft: FeedRef
+        '''
         if not etft in self._start: self._start.append(etft)
         self._checkDS(etft)
         
     #local override of observe
     def observe(self, observable, *args, **kwargs):
-        '''Do some housekeeping and notify listener'''
+        '''Local override of observe chaining observe calls without notification
+        @param observable: Instance of the class calling the notification
+        @param *args: Wrapped args
+        @param **kwargs: Wrapped kwargs
+        '''
         if self.stopped():
             aimslog.warn('Attempt to call stopped DM listener {}'.format(self.getName()))
             return
@@ -76,18 +89,23 @@ class DataManager(Observable):
         
     #Second register/observer method for main calling class
     def registermain(self,reg):
-        '''Register "single" class as a listener'''
+        '''Register "single" object as the main listener, intended for DataManager calling class.
+        @param reg: Registered (main) object
+        '''
         self.registered = reg if hasattr(reg, 'observe') else None
         
     def _checkDS(self,etft):
-        '''Starts a sync thread unless its a address-features feed with a zero bbox'''
+        '''Starts a sync thread unless its a address-features feed with a zero bbox
+        @param etft: FeedRef of requested thread
+        @type etft: FeedRef
+        '''
         if (etft == FEEDS['AF'] and self.persist.coords['sw'] == SWZERO and self.persist.coords['ne'] == NEZERO):# or int(self.persist.tracker[etft]['threads'])==0:                
             self.ds[etft] = None
         else:
             self.ds[etft],self.ioq[etft] = self._spawnDS(etft,self.dsr[etft])
             if etft.ft != FeedType.FEATURES: self.register(self.ds[etft].drc)
             self.ds[etft].register(self)
-            #HACK to start DRC even if feed thread count is zero
+            #HACK to start DRC even if feed thread count is zero. If changefeed isn't running we may still want to send requests to it
             if int(self.persist.tracker[etft]['threads'])>0:
                 self.ds[etft].start()
             else:
@@ -95,7 +113,13 @@ class DataManager(Observable):
             
         
     def _spawnDS(self,etft,feedclass): 
-        '''Spawn and return a new DS matching the etft'''
+        '''Spawn and return a new DS matching the etft 
+        @param etft: FeedRef of requested thread
+        @type etft: FeedRef
+        @param feedclass: Alias of Sync setup function
+        @type feedclass: DataSync class alias
+        @return: (DataSync, {IOR Queues})
+        '''
         ts = '{0:%y%m%d.%H%M%S}'.format(DT.now())
         params = ('DSF..{}.{ts}'.format(etft,ts=ts),etft,self.persist.tracker[etft],self.conf)
         #self.ioq[etft] = {n:Queue.Queue() for n in ('in','out','resp')}
@@ -107,19 +131,22 @@ class DataManager(Observable):
         return ds,dq    
     
     def _cullDS(self,etft):
-        '''Remove temporary queue and ds instances, this does the anti spawn'''
+        '''Remove temporary queue and ds instances, this does the anti spawn
+        @param etft: FeedRef of thread to stop
+        @type etft: FeedRef
+        '''
         del self.ioq[etft]
         self.deregister(self.uads.drc)
         del self.uads
         
     def close(self):
-        '''shutdown closing/stopping ds threads and persisting data'''
+        '''Shutdown, closing/stopping DataSync threads and persist current data'''
         for ds in self.ds.values():
             if ds: ds.close()
         self.persist.write()
         
     def _check(self):
-        '''If a DataSync thread crashes restart it'''
+        '''Safety method to check if a DataSync thread has crashed and restart it'''
         for etft in self._start:
             if self._confirmstart(etft):
                 aimslog.warn('DS thread {} absent, starting'.format(etft))
@@ -127,12 +154,23 @@ class DataManager(Observable):
                 self._checkDS(etft)
                 
     def _confirmstart(self,etft):    
-        '''simple test to determine whether thread shoule be started or not'''    
+        '''Simple test to determine whether thread should be started or not
+        - Tests: Max thread count non zero AND thread is not already running
+        @param etft: FeedRef of requested thread test
+        @type etft: FeedRef
+        ''' 
         return int(self.persist.tracker[etft]['threads'])>0 and not (self.ds.has_key(etft) and self.ds[etft] and self.ds[etft].isAlive())
     
     #Client Access
     def setbb(self,sw=None,ne=None):
-        '''Resetting the bounding box triggers a complete refresh of the features address data'''
+        '''Reset the saved bounding box on the current DataManager which triggers a complete refresh of the features address data.
+        - Tests whether provided coordinates are nonzero and dont match existing saved BBOX coordinates
+        - Function attempts to gracefully kill previously running features thread during THREAD_JOIN_TIMEOUT period
+        @param sw: South-West corner, coordinate value pair (optional)
+        @type sw: List<Double>{2}
+        @param ne: North-East corner, coordinate value pair (optional)
+        @type ne: List<Double>{2}
+        '''
         #TODO add move-threshold to prevent small moves triggering an update
         if self.persist.coords['sw'] != sw or self.persist.coords['ne'] != ne:
             #throw out the current features addresses
@@ -154,7 +192,12 @@ class DataManager(Observable):
     
     #@Deprecated     
     def restart(self,etft):
-        '''Restart a specific thread type'''
+        '''I{DEPRECATED} Restart method provided for calling application to explicitly kill running feed threads. 
+        This was required by the plugin application when in single thread mode to clear up contention issues but discouraged due to 
+        unpredictable thread hanging problems.         
+        @param etft: FeedRef of requested restart thread
+        @type etft: FeedRef
+        ''' 
         #NB UI feature request. 
         aimslog.warn('WARNING {} Thread Restart requested'.format(etft))
         if self.ds.has_key(etft) and self.ds[etft] and self.ds[etft].isAlive():
@@ -169,11 +212,17 @@ class DataManager(Observable):
         self._check()
         
     def pull(self):
-        '''Return copy of the ADL. Speedup, insist on deepcopy at address level'''
+        '''Return copy of the current list of Address objects (ADL).
+        @return: Dictionary<FeedRef,List<Address>>
+        '''
         return self.persist.ADL    
         
     def _monitor(self,etft):
-        '''for each feed check the out queue and put any new items into the ADL'''
+        '''Intermittent data saving function which checks a requested feed's out queue and puts any new items into the ADL
+        @param etft: FeedRef of requested restart thread
+        @type etft: FeedRef
+        @return: Dictionary<FeedRef*,List<Address>>
+        ''' 
         #for etft in self.ds:#FeedType.reverse:
         if self.ds[etft]:
             while not self.ioq[etft]['out'].empty():
@@ -185,7 +234,12 @@ class DataManager(Observable):
         return self.persist.ADL[etft]
     
     def response(self,etft=FeedRef((FeatureType.ADDRESS,FeedType.RESOLUTIONFEED))):
-        '''Returns any features lurking in the response queue'''
+        '''Returns any features lurking in the response queue
+        - Response queue contains esponses to user generated requests
+        @param etft: FeedRef of response thread. Default=Address/Resolution
+        @type etft: FeedRef
+        @return: Feature
+        '''
         resp = ()
         delflag = False
         #while self.ioq.has_key((et,ft)) and not self.ioq[(et,ft)]['resp'].empty():
@@ -194,85 +248,206 @@ class DataManager(Observable):
             #don't delete the queue while we're still getting items from it, instead mark it for deletion
             if etft in FEED0.values(): delflag = True
         if delflag: self._cullDS(etft)
-        return resp     
+        return resp
+    
+    #--------------------------------------------------------------------------
       
     def _populateAddress(self,feature):
-        '''Fill in any required+missing fields if a default value is known (in this case the configured user/org)'''
+        '''Fill in any required+missing fields if a default value is known (in this case the configured user/org)
+        @param feature: Address object to test and populate
+        @type feature: Address
+        @return: Address
+        '''
         if not hasattr(feature,'_workflow_sourceUser') or not feature.getSourceUser(): feature.setSourceUser(self.conf['user'])
         if not hasattr(feature,'_workflow_sourceOrganisation') or not feature.getSourceOrganisation(): feature.setSourceOrganisation(self.conf['org'])
         return feature    
     
     def _populateGroup(self,feature):
-        '''Fill in any required+missing fields if a default value is known (in this case the configured user/submitter)'''
+        '''Fill in any required+missing fields if a default value is known (in this case the configured user/submitter)
+        @param feature: Group object to test and populate
+        @type feature: Group
+        @return: Group
+        '''
         if not hasattr(feature,'_workflow_sourceUser') or not feature.getSourceUser(): feature.setSourceUser(self.conf['user'])
         if not hasattr(feature,'_submitterUserName') or not feature.getSubmitterUserName(): feature.setSubmitterUserName(self.conf['user'])
         return feature
     
-    #convenience methods 
+    # Convenience Methods 
     #---------------------------- 
     def addAddress(self,address,reqid=None):
+        '''Convenience method to send/add an Address to the changefeed.
+        @param address: Address object to add
+        @param reqid: User supplied reference value, used to coordinate asynchronous requests/responses
+        @type reqid: Integer
+        '''
         self._addressAction(address,ActionType.ADD,reqid)      
     
-    def retireAddress(self,address,reqid=None):
+    def retireAddress(self,address,reqid=None):        
+        '''Convenience method to send/retire an Address from the changefeed.
+        @param address: Address object to retire
+        @param reqid: User supplied reference value, used to coordinate asynchronous requests/responses
+        @type reqid: Integer
+        '''
         self._addressAction(address,ActionType.RETIRE,reqid)
     
-    def updateAddress(self,address,reqid=None):
+    def updateAddress(self,address,reqid=None):        
+        '''Convenience method to send/update an Address on the changefeed.
+        @param address: Address object to update
+        @param reqid: User supplied reference value, used to coordinate asynchronous requests/responses
+        @type reqid: Integer
+        '''
         self._addressAction(address,ActionType.UPDATE,reqid)
         
     def _addressAction(self,address,at,reqid=None):
+        '''Address action method performing address/action on the change feed
+        @param address: Address object to update
+        @type address: Address
+        @param at: Action function to perform
+        @type at: ActionType
+        @param reqid: User supplied reference value, used to coordinate asynchronous requests/responses
+        @type reqid: Integer
+        '''
         if reqid: address.setRequestId(reqid)
         self._populateAddress(address).setChangeType(ActionType.reverse[at].title())
         self._queueAction(FeedRef((FeatureType.ADDRESS,FeedType.CHANGEFEED)), at, address)
     #----------------------------
-    def acceptAddress(self,address,reqid=None):
+    def acceptAddress(self,address,reqid=None):        
+        '''Convenience method to send/accept an Address on the resolutionfeed.
+        @param address: Address object to accept
+        @type address: Address
+        @param reqid: User supplied reference value, used to coordinate asynchronous requests/responses
+        @type reqid: Integer
+        '''
         self._addressApprove(address,ApprovalType.ACCEPT,reqid)    
 
-    def declineAddress(self,address,reqid=None):
+    def declineAddress(self,address,reqid=None):        
+        '''Convenience method to send/decline an Address on the resolutionfeed.
+        @param address: Address object to decline
+        @type address: Address
+        @param reqid: User supplied reference value, used to coordinate asynchronous requests/responses
+        @type reqid: Integer
+        '''
         self._addressApprove(address,ApprovalType.DECLINE,reqid)
     
-    def repairAddress(self,address,reqid=None):
+    def repairAddress(self,address,reqid=None):        
+        '''Convenience method to send/update an Address on the resolutionfeed.
+        @param address: Address object to update
+        @type address: Address
+        @param reqid: User supplied reference value, used to coordinate asynchronous requests/responses
+        @type reqid: Integer
+        '''
         self._addressApprove(address,ApprovalType.UPDATE,reqid) 
         
     def _addressApprove(self,address,at,reqid=None):
+        '''Address approval method performing address/approve actions on the resolution feed
+        @param address: Address object to update
+        @type address: Address
+        @param at: Approval function to perform
+        @type at: ApprovalType
+        @param reqid: User supplied reference value, used to coordinate asynchronous requests/responses
+        @type reqid: Integer
+        '''
         if reqid: address.setRequestId(reqid)
         address.setQueueStatus(ApprovalType.LABEL[at].title())
         self._queueAction(FeedRef((FeatureType.ADDRESS,FeedType.RESOLUTIONFEED)), at, address)
         
     #============================
-    def acceptGroup(self,group,reqid=None):
+    
+    def acceptGroup(self,group,reqid=None):        
+        '''Convenience method to send/accept a Group on the resolutionfeed.
+        @param group: Group object to accept
+        @param reqid: User supplied reference value, used to coordinate asynchronous requests/responses
+        @type reqid: Integer
+        '''
         self._groupApprove(group, GroupApprovalType.ACCEPT, reqid)
         
-    def declineGroup(self,group,reqid=None):
+    def declineGroup(self,group,reqid=None):        
+        '''Convenience method to send/decline a Group on the resolutionfeed.
+        @param group: Group object to decline
+        @param reqid: User supplied reference value, used to coordinate asynchronous requests/responses
+        @type reqid: Integer
+        '''
         self._groupApprove(group, GroupApprovalType.DECLINE, reqid) 
         
-    def repairGroup(self,group,reqid=None):
+    def repairGroup(self,group,reqid=None):        
+        '''Convenience method to send/update a Group on the resolutionfeed.
+        @param group: Group object to update
+        @param reqid: User supplied reference value, used to coordinate asynchronous requests/responses
+        @type reqid: Integer
+        '''
         self._groupApprove(group, GroupApprovalType.UPDATE, reqid)   
         
     def _groupApprove(self,group,gat,reqid=None):
+        '''Group approval method performing group/approve actions on the resolution feed
+        @param group: Group object to update
+        @type group: Group
+        @param gat: Group approval function to perform
+        @type gat: GroupApprovalType
+        @param reqid: User supplied reference value, used to coordinate asynchronous requests/responses
+        @type reqid: Integer
+        '''
         if reqid: group.setRequestId(reqid)
         group.setQueueStatus(GroupApprovalType.LABEL[gat].title())
         self._queueAction(FeedRef((FeatureType.GROUPS,FeedType.RESOLUTIONFEED)),gat,group)
           
     #----------------------------
-    def replaceGroup(self,group,reqid=None):
+    def replaceGroup(self,group,reqid=None):        
+        '''Convenience method to send/replace a Group on the changefeed.
+        @param group: Group object to replace
+        @param reqid: User supplied reference value, used to coordinate asynchronous requests/responses
+        @type reqid: Integer
+        '''
         self._groupAction(group, GroupActionType.REPLACE, reqid)       
         
-    def updateGroup(self,group,reqid=None):
+    def updateGroup(self,group,reqid=None):        
+        '''Convenience method to send/update a Group on the changefeed.
+        @param group: Group object to update
+        @param reqid: User supplied reference value, used to coordinate asynchronous requests/responses
+        @type reqid: Integer
+        '''
         self._groupAction(group, GroupActionType.UPDATE, reqid)       
         
-    def submitGroup(self,group,reqid=None):
+    def submitGroup(self,group,reqid=None):        
+        '''Convenience method to send/submit a Group to the changefeed.
+        @param group: Group object to submit
+        @param reqid: User supplied reference value, used to coordinate asynchronous requests/responses
+        @type reqid: Integer
+        '''
         self._groupAction(group, GroupActionType.SUBMIT, reqid)    
     
-    def closeGroup(self,group,reqid=None):
+    def closeGroup(self,group,reqid=None):        
+        '''Convenience method to send/close a Group on the changefeed.
+        @param group: Group object to close
+        @param reqid: User supplied reference value, used to coordinate asynchronous requests/responses
+        @type reqid: Integer
+        '''
         self._groupAction(group, GroupActionType.CLOSE, reqid)
         
-    def addGroup(self,group,reqid=None):
+    def addGroup(self,group,reqid=None):        
+        '''Convenience method to send/add a Group to the changefeed.
+        @param group: Group object to add
+        @param reqid: User supplied reference value, used to coordinate asynchronous requests/responses
+        @type reqid: Integer
+        '''
         self._groupAction(group, GroupActionType.ADD, reqid)
              
-    def removeGroup(self,group,reqid=None):
+    def removeGroup(self,group,reqid=None):        
+        '''Convenience method to send/remove a Group from the changefeed.
+        @param group: Group object to remove
+        @param reqid: User supplied reference value, used to coordinate asynchronous requests/responses
+        @type reqid: Integer
+        '''
         self._groupAction(group, GroupActionType.REMOVE, reqid)        
   
     def _groupAction(self,group,gat,reqid=None):        
+        '''Group action method performing group/actions on the change feed
+        @param group: Group object to update
+        @type group: Group
+        @param gat: Group action function to perform
+        @type gat: GroupActionType
+        @param reqid: User supplied reference value, used to coordinate asynchronous requests/responses
+        @type reqid: Integer
+        '''        
         if reqid: group.setRequestId(reqid)
         self._populateGroup(group).setChangeType(GroupActionType.reverse[gat].title())
         self._queueAction(FeedRef((FeatureType.GROUPS,FeedType.CHANGEFEED)),gat,group)
@@ -287,16 +462,39 @@ class DataManager(Observable):
     #----------------------------
     '''User actions are on-demand only and because they won't be run very often are set up and torn down on each use'''
     
-    def addUser(self,user,reqid=None):
+    def addUser(self,user,reqid=None):        
+        '''Convenience method to send/add a User to the adminfeed.
+        @param user: User object to add
+        @param reqid: User supplied reference value, used to coordinate asynchronous requests/responses
+        @type reqid: Integer
+        '''
         self._userAction(user, UserActionType.ADD, reqid)
         
-    def removeUser(self,user,reqid=None):
+    def removeUser(self,user,reqid=None):        
+        '''Convenience method to send/remove a User from the adminfeed.
+        @param user: User object to remove
+        @param reqid: User supplied reference value, used to coordinate asynchronous requests/responses
+        @type reqid: Integer
+        '''
         self._userAction(user, UserActionType.DELETE, reqid)
             
-    def updateUser(self,user,reqid=None):
+    def updateUser(self,user,reqid=None):        
+        '''Convenience method to send/update a User on the adminfeed.
+        @param user: User object to update
+        @param reqid: User supplied reference value, used to coordinate asynchronous requests/responses
+        @type reqid: Integer
+        '''
         self._userAction(user, UserActionType.UPDATE, reqid)       
     
-    def _userAction(self,user,uat,reqid=None):        
+    def _userAction(self,user,uat,reqid=None): 
+        '''User action method performing user/action on the admin feed
+        @param user: User object to update
+        @type user: User
+        @param uat: User action function to perform
+        @type uat: UserActionType
+        @param reqid: User supplied reference value, used to coordinate asynchronous requests/responses
+        @type reqid: Integer
+        '''       
         if reqid: user.setRequestId(reqid)
         #self._populateUser(user).setChangeType(UserActionType.reverse[uat].title())
         #self._queueAction(FeedRef((FeatureType.GROUPS,FeedType.CHANGEFEED)),gat,group)
@@ -309,6 +507,13 @@ class DataManager(Observable):
         
     #convenience method for address casting
     def castTo(self,requiredtype,address):
+        '''Convenience method abstracting the casting function used to downcast address objects to the various feed required formats
+        @param requiredtype: Address format requirement in FeedRef format 
+        @type requiredtype: FeedRef
+        @param address: Address object being cast
+        @type address: Address
+        @return: Address
+        '''
         if not requiredtype in FeedType.reverse.keys(): raise Exception('unknown feed/address type')
         return FeatureFactory.getInstance(FeedRef((FeatureType.ADDRESS,requiredtype))).cast(address)
     
@@ -324,7 +529,7 @@ class DataManager(Observable):
         
 
 class Persistence():
-    '''static class for persisting config/long-lived information'''
+    '''Independent storage class for persisting configuration and session feature information'''
     
     tracker = {}
     coords = {'sw':SWZERO,'ne':NEZERO}
@@ -332,7 +537,10 @@ class Persistence():
     RP = os.path.join(os.path.dirname(__file__),'..',RES_PATH,LOCAL_ADL)
     
     def __init__(self,initialise=False):
-        '''read or setup the tracked data'''
+        '''Setup stored/tracked data
+        @param initialise: Re-read initial data values
+        @type initialise: Boolean
+        '''
         if initialise or not self.read():
             self.ADL = self._initADL() 
             #default tracker, gets overwrittens
@@ -353,7 +561,10 @@ class Persistence():
     #Disk Access
     #TODO OS agnostic path sep
     def read(self,localds=RP):
-        '''unpickle local store'''  
+        '''Read function that unpickles local file store
+        @param localds: Path to local file store
+        @type localds: String
+        '''  
         try:
             archive = pickle.load(open(localds,'rb'))
             #self.tracker,self.coords,self.ADL = archive
@@ -362,7 +573,11 @@ class Persistence():
             return False
         return True
     
-    def write(self, localds=RP):
+    def write(self, localds=RP):        
+        '''Write function that builds array and pickles this to a local file store
+        @param localds: Path to local file store
+        @type localds: String
+        '''  
         try:
             #archive = [self.tracker,self.coords,self.ADL]
             archive = [self.tracker,self.ADL]

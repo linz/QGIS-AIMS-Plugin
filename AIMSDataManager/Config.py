@@ -20,6 +20,7 @@ AIMS_CONFIG = os.path.join(os.path.dirname(__file__),'aimsConfig.ini')
 
 
 class ConfigReader(object):
+    '''Reader class for configparser object'''
     
     cp = ConfigParser.ConfigParser()
     
@@ -29,7 +30,7 @@ class ConfigReader(object):
         self._fillConfig()
         
     def _readConfig(self):
-        '''Read the CP to a dict'''
+        '''Read ConfigParser object to saved dict'''
         self.d = {}
         for sect in self.cp.sections():
             self.d[sect] = {}
@@ -37,14 +38,20 @@ class ConfigReader(object):
                 val = self._retype(self.cp.get(sect,opt).replace('"','').strip("'"))
                 self.d[sect][opt] = val# or None (doesn't work if tryng to assign x=False)
                             
-    def _retype(self,val):    
+    def _retype(self,val):
+        '''Utility function that attempts to cast String values to their correct type after reading from config file
+        @param val: String or string representing some numeric/boolean
+        @type val: String 
+        '''    
         if val.isdigit(): val = int(val)
         elif val.replace('.','',1).isdigit(): val = float(val)
         elif val.lower() in ('true','false'): val = bool(val.lower()=='true')
         return val
                 
     def _fillConfig(self):
-        '''Attempt to fill missing values in config file with matching env vars'''
+        '''Attempt to fill missing local dict values not included in config file with matching environment variables.
+        - I{This if needed to pass encrypted values when it is unsafe to be store them in a git repo}
+        '''
         #NOTE env vars must use aims_sec_opt=val format and are bypassed with null value
         for sect in self.d:
             for k,val in self.d[sect].items():
@@ -55,11 +62,11 @@ class ConfigReader(object):
                     self.d[sect][k] = eval or DEF_CONFIG.get(sect,{}).get(k)
                     
     def _promptUser(self):
-        '''If config cannot be populated with ini file and envvars prompt the user for missing values or report failure'''
+        '''I{unused}. If config cannot be populated with ini file and envvars prompt the user for missing values or report failure'''
         pass
                     
     def configSectionMap(self,section=None):
-        '''per section config matcher'''
+        '''Per section config matcher, used in constant reader class'''
         return self.d[section] if section else self.d
             
 
