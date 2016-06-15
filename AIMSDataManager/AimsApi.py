@@ -95,7 +95,7 @@ class AimsApi(object):
     #--- A G G R E G A T E S  &  A L I A S E S -----------------------------------------------------------------------------
     #-----------------------------------------------------------------------------------------------------------------------
     @LogWrap.timediff(prefix='onePage')
-    def getOnePage(self,etft,sw,ne,page,count=MAX_FEATURE_COUNT):
+    def getOnePage(self,etft,sw,ne,pno,count=MAX_FEATURE_COUNT):
         '''Retrieve a numbered page from a specific feed with optional bbox parameters
         @param etft: Feed/Feature identifier
         @type etft: FeedRef
@@ -103,8 +103,8 @@ class AimsApi(object):
         @type sw: List<Double>{2}
         @param ne: North-East corner, coordinate value pair (optional)
         @type ne: List<Double>{2}
-        @param page: Feed page number
-        @type page: Integer 
+        @param pno: Feed page number
+        @type pno: Integer 
         @param count: Feature count (defaults to MAX_FEATURE_COUNT = 1000)
         @type count: Integer
         @return: Dictionary<Entity>
@@ -114,9 +114,9 @@ class AimsApi(object):
         addrlist = []
         if sw and ne:
             bb = ','.join([str(c) for c in (sw[0],sw[1],ne[0],ne[1])])
-            url = '{}/{}/{}?count={}&bbox={}&page={}'.format(self._url,et,ft,count,bb,page)
+            url = '{}/{}/{}?count={}&bbox={}&page={}'.format(self._url,et,ft,count,bb,pno)
         else:
-            url = '{}/{}/{}?count={}&page={}'.format(self._url,et,ft,count,page)
+            url = '{}/{}/{}?count={}&page={}'.format(self._url,et,ft,count,pno)
         aimslog.debug('1P REQUEST {}'.format(url))
         resp, content = self.h.request(url,'GET', headers = self._headers)
         _,jcontent = self.handleResponse(url,resp["status"], json.loads(content))

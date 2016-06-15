@@ -49,9 +49,14 @@ pool_lock = threading.Lock()
 class IncorrectlyConfiguredRequestClientException(AimsException):pass
 
 
-class DataRequestChannel(Observable):   
-    '''Request response channel for user initiated actions eg add decline retire etc. One for each feed class, client, whose pIQ method is accessed'''
+class DataRequestChannel(Observable):
+    '''Observable class providing request/response channel for user initiated actions '''
+    
     def __init__(self,client):
+        '''Initialises a new DRC using an instance of a feeds DataSync to communincate with contained feed functions
+        @param client: DataSync object used as proxy to communicate with API
+        @type client: DataSyncFeeds
+        '''
         super(DataRequestChannel,self).__init__()
         if hasattr(client,'etft') and hasattr(client,'inq') and hasattr(client,'processInputQueue'):
             self.client = client
@@ -59,13 +64,16 @@ class DataRequestChannel(Observable):
             raise IncorrectlyConfiguredRequestClientException('Require client with [ etft,inq,pIQ() ] attributes')
         
     def run(self):
-        '''Continual loop looking for input queue requests and running periodic updates'''
+        '''Run method using loop for thread keepalive'''
         while not self.stopped():
             aimslog.debug('DRC {} listening'.format(self.client.etft))
             time.sleep(THREAD_KEEPALIVE)
     
     def observe(self,*args,**kwargs):
-        '''if the dm makes a request, do something with it'''
+        '''Override of observe method receiving calls from DataManager to trigger requests, on client
+        @param *args: Wrapped args
+        @param **kwargs: Wrapped kwargs
+        '''
         if self.stopped(): 
             aimslog.warn('DM attempt to call stopped DRC listener {}'.format(self.getName()))
             return
@@ -77,8 +85,7 @@ class DataRequestChannel(Observable):
 
     
 class DataSync(Observable):
-    '''Background thread triggering periodic data updates and synchronising update requests from DM.  
-    '''
+    '''Background thread triggering periodic data updates and synchronising update requests from DM.'''
     
     global aimslog
     aimslog = Logger.setup()
@@ -92,6 +99,12 @@ class DataSync(Observable):
     sw,ne = None,None
     
     def __init__(self,params,queues):
+        '''Initialise new DataSync object splitting out config parameters
+        @param params: List of configuration parameters
+        @type params: List<?>
+        @param queues: List of IOR queues
+        @type queues: Dict<String,Queue.Queue>        
+        '''
         from DataManager import FEEDS
         super(DataSync,self).__init__()
         #thread reference, ft to AD/CF/RF, config info
@@ -100,42 +113,56 @@ class DataSync(Observable):
         self.ref,self.etft,self.ftracker,self.conf = params
         self.data_hash = {dh:0 for dh in FEEDS.values()}
         self.afactory = FeatureFactory.getInstance(self.etft)
-        self.updater = DataUpdater.getInstance(self.etft)
+        self.updater = DataUpdater.getInstance(self.etft) # unevaluated class
         self.inq = queues['in']
         self.outq = queues['out']
         self.respq = queues['resp']
         #self._stop = threading.Event()
         
     def setup(self,sw=None,ne=None):
-        '''Parameter setup'''
+        '''Parameter setup for coordinate feature requests.
+        @param sw: South-West corner, coordinate value pair (optional)
+        @type sw: List<Double>{2}
+        @param ne: North-East corner, coordinate value pair (optional)
+        @type ne: List<Double>{2}
+        '''
         self.sw,self.ne = sw,ne
 
     def run(self):
-        '''Continual loop looking for input queue requests and running periodic updates'''
+        '''Continual loop running periodic feed fetch updates'''
         while not self.stopped():
             if not self.updater_running: self.fetchFeedUpdates(self.ftracker['threads'])
             time.sleep(self.ftracker['interval'])
             
     #@override
     def stop(self):
+        '''Thread stop override to also stop subordinate threads'''
         #brutal stop on du threads
         for du in self.duinst.values():
             du.stop()
         self._stop.set()
     
     def close(self):
+        '''Alias of stop'''
         self.stop()
         #self.inq.task_done()
         #self.outq.task_done()
         
     def observe(self,ref):
+        '''Overridden observe method calling thread management function
+        @param ref: Unique reference string
+        @type ref: String
+        '''
         if not self.stopped():
             self._managePage(ref)
         
     def _managePage(self,ref):
-        '''Called when a periodic thread ends, posting new data and starting a new thread in pool if required'''
+        '''Thread management function called when a periodic thread ends, posting new data and starting a new thread in pool if required
+        @param ref: Unique reference string
+        @type ref: String
+        '''
         #print '{}{} finished'.format(FeedType.reverse[self.ft][:2].capitalize(),r['page'])
-        aimslog.info('extracting queue for DU pool {}'.format(ref))
+        aimslog.info('Extracting queue for DU pool {}'.format(ref))
         #print [r['ref'] for r in self.pool]
         #print 'extracting queue for DU pool {}'.format(ref)
         r = None
@@ -179,7 +206,12 @@ class DataSync(Observable):
 
     #@LogWrap.timediff
     def fetchFeedUpdates(self,thr,lastpage=FIRST_PAGE):
-        '''get full page loads'''
+        '''Main feed updater method
+        @param thr: Number of updater threads to spawn into pool, this can be negative to count back from a lastpage value
+        @type thr; Integer
+        @param lastpage: Initial page number for feed requests
+        @type lastpage: Integer
+        '''
         self.updater_running = True
         self.exhausted = PAGE_LIMIT
         self.lastpage = lastpage
@@ -188,33 +220,52 @@ class DataSync(Observable):
         with pool_lock: self.pool = self._buildPool(lastpage,thr)
 
     def _buildPool(self,lastpage,thr):
-        '''builds a pool based on page spec provided, accepts negative thresholds for backfill requests'''
+        '''Builds a pool based on page spec provided, accepts negative thresholds for backfill requests
+        @param thr: Number of updater threads to spawn into pool, this can be negative to count back from a lastpage value
+        @type thr; Integer
+        @param lastpage: Initial page number for feed requests
+        @type lastpage: Integer
+        '''
         span = range(min(lastpage,lastpage+thr),max(lastpage,lastpage+thr))
-        return [{'page':p,'ref':self._monitorPage(p),'time':time.time()} for p in span]
+        return [{'page':pno,'ref':self._monitorPage(pno),'time':time.time()} for pno in span]
     
-    def _monitorPage(self,p):
-        ref = 'FP.{0}.Page{1}.{2:%y%m%d.%H%M%S}.p{3}'.format(self.etft,p,DT.now(),p)
+    def _monitorPage(self,pno):
+        '''Initialise and store a DataUpdater instance for a single page request
+        @param pno: Page number to build DataUpdater request from
+        @type pno: Integer
+        @return: DataUpdater reference value
+        '''
+        ref = 'FP.{0}.Page{1}.{2:%y%m%d.%H%M%S}.p{3}'.format(self.etft,pno,DT.now(),pno)
         aimslog.info('init DU {}'.format(ref))
-        self.duinst[ref] = self._fetchPage(ref,p)
+        self.duinst[ref] = self._fetchPage(ref,pno)
         self.duinst[ref].register(self)
         self.duinst[ref].start()
         return ref    
     
-    def _fetchPage(self,ref,p):
-        '''Regular page fetch, periodic or demand'''   
+    def _fetchPage(self,ref,pno):
+        '''Build DataUpdate instance          
+        @param ref: Unique reference string
+        @type ref: String      
+        @param pno: Page number to build DataUpdater request from
+        @type pno: Integer
+        @return: DataUpdater
+        '''   
         params = (ref,self.conf,self.afactory)
         adrq = Queue.Queue()
         pager = self.updater(params,adrq)
         #address/feature requests called with bbox parameters
-        if self.etft==FEEDS['AF']: pager.setup(self.etft,self.sw,self.ne,p)
-        else: pager.setup(self.etft,None,None,p)
+        if self.etft==FEEDS['AF']: pager.setup(self.etft,self.sw,self.ne,pno)
+        else: pager.setup(self.etft,None,None,pno)
         pager.setName(ref)
         pager.setDaemon(True)
         return pager
 
     #NOTE. To override the behaviour, return feed once full, override this method RLock
     def syncFeeds(self,new_addresses):
-        '''check if the addresses are diferent from existing set and return in the out queue'''
+        '''Checks if supplied addresses are different from a saved existing set and return in the out queue, with notification
+        @param new_addresses: List of all fetched pages from a full feed request, spanning all pages
+        @type new_addresses: List<Feature>
+        '''
         #new_hash = hash(frozenset(new_addresses))
         new_hash = hash(frozenset([na.getHash() for na in new_addresses]))
         if self.data_hash[self.etft] != new_hash:
@@ -228,15 +279,26 @@ class DataSync(Observable):
     #--------------------------------------------------------------------------
     
     def returnResp(self,resp):
+        '''I{DEPRECATED} Function to put response objects in DataSync response queue
+        @param resp: Response object, 
+        @type resp: Feature
+        '''
         aimslog.info('RESP.{}'.format(resp))
         self.respq.put(resp)
 
 
 class DataSyncFeatures(DataSync):
+    '''DataSync subclass for the Features feed'''
     
     #ft = FeedType.FEATURES
     
     def __init__(self,params,queues):
+        '''Initialisation for DataSync Features feed reader
+        @param params: List of configuration parameters
+        @type params: List<?>
+        @param queues: List of IOR queues
+        @type queues: Dict<String,Queue.Queue>
+        '''
         super(DataSyncFeatures,self).__init__(params,queues)
         #self.ftracker = {'page':[1,1],'index':1,'threads':2,'interval':30}
             
@@ -245,6 +307,7 @@ class DataSyncFeatures(DataSync):
         
         
 class DataSyncFeeds(DataSync): 
+    '''DataSync subclass for the Change and Resolution feeds'''
     
     parameters = {FeedRef((FeatureType.ADDRESS,FeedType.CHANGEFEED)):{'atype':ActionType,'action':DataUpdaterAction},
                   FeedRef((FeatureType.ADDRESS,FeedType.RESOLUTIONFEED)):{'atype':ApprovalType,'action':DataUpdaterApproval},
@@ -254,13 +317,24 @@ class DataSyncFeeds(DataSync):
                   }
     
     def __init__(self,params,queues):
-        '''Create an additional DRC thread to watch the feed input queue'''
+        '''Create an additional DRC thread to watch the feed input queue
+        @param params: List of configuration parameters
+        @type params: List<?>
+        @param queues: List of IOR queues
+        @type queues: Dict<String,Queue.Queue>   
+        '''
         super(DataSyncFeeds,self).__init__(params,queues)
         self.drc = DataSyncFeeds.setupDRC(self,params[0])
         
     @staticmethod
     def setupDRC(client,p0):
-        '''Set up the request listener, requires minimal version of datasync client'''
+        '''Static method to set up a request listener containing a instance of a matching DataSyncFeeds client
+        @param client: DataSync object used as proxy to communicate with API
+        @type client: DataSyncFeeds
+        @param p0: The zero indexed parameter containing the client ref string
+        @type p0: String
+        @return: DataRequestChannel
+        '''
         drc = DataRequestChannel(client)
         drc.setName('DRC.{}'.format(p0))
         drc.setDaemon(True)
@@ -272,6 +346,7 @@ class DataSyncFeeds(DataSync):
         super(DataSyncFeeds,self).run()
     
     def stop(self):
+        '''Thread stop also stops related DRC thread'''
         self.drc.stop()
         super(DataSyncFeeds,self).stop()
 
@@ -282,7 +357,10 @@ class DataSyncFeeds(DataSync):
     #Processes the input queue sending address changes to the API
     #@LogWrap.timediff
     def processInputQueue(self,changelist):
-        '''Take the input change queue and split out individual address objects for DU processing'''
+        '''Take the requests from an input queue and split out individual address objects for DU processing
+        @param changelist: Dictionary of address lists taken from the input queue
+        @type changelist: Dictionary<FeedRef,List<Feature>>  
+        '''
         #{ADD:addr_1,RETIRE:adr_2...
         for at in changelist:
             #self.outq.put(act[addr](changelist[addr]))
@@ -291,7 +369,13 @@ class DataSyncFeeds(DataSync):
                 aimslog.info('{} thread started'.format(str(duref)))
                 
     def processFeature(self,at,feature): 
-        '''override'''
+        '''Individual feature request processor.
+        @param at: Address/Group Action/Approval type indicator
+        @type at: Integer 
+        @param feature: Feature being acted upon/approved
+        @type feature: Feature
+        @return: Reference value for DataUpdater thread
+        '''
         at2 = self.parameters[self.etft]['atype'].reverse[at][:3].capitalize()      
         ref = 'PR.{0}.{1:%y%m%d.%H%M%S}'.format(at2,DT.now())
         params = (ref,self.conf,self.afactory)
@@ -306,6 +390,10 @@ class DataSyncFeeds(DataSync):
         return ref
     
     def managePage(self,p):
+        '''Saves page numbers back to tracker array
+        @param p: first and last page numbers
+        @type p: List<Integer>{2}
+        '''
         if p[0]: self.ftracker['page'][0] = p[0]
         if p[1]: self.ftracker['page'][1] = p[1]
         
@@ -315,12 +403,17 @@ class DataSyncAdmin(DataSyncFeeds):
     parameters = {FeedRef((FeatureType.USERS,FeedType.ADMIN)):{'atype':UserActionType,'action':DataUpdaterUserAction}}
         
     def __init__(self,params,queues):
-        '''Create an additional DRC thread to watch the feed input queue'''
+        '''Admin feed initialiser
+        @param params: List of configuration parameters
+        @type params: List<?>
+        @param queues: List of IOR queues
+        @type queues: Dict<String,Queue.Queue>
+        '''
         super(DataSyncAdmin,self).__init__(params,queues)
         #self.drc = DataSyncAdmin.setupDRC(self,params[0])
         
     def run(self):
-        '''Start the DRC thread only'''
+        '''Admin feed run but with no requirement to read admin feed only starts the DRC'''
         self.drc.start()
         
   

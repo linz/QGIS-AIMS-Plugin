@@ -40,14 +40,14 @@ aimslog = None
 class DataUpdaterSelectionException(AimsException):pass
 
 class DataUpdater(Observable):
-    '''Mantenence thread comtrolling data updates and api interaction
+    '''Mantenence thread comtrolling data updates and api interaction.
     Instantiates an amisapi instance with wrappers for initialisation of local data store 
     and change/resolution feed updating
     '''
     #et = FeatureType.ADDRESS
     #ft = FeedType.FEATURES
     address = None
-    page = 0
+    pno = 0
     changeId = 0
     
     global aimslog
@@ -56,36 +56,56 @@ class DataUpdater(Observable):
     getfeat = None
     
     def __init__(self,params,queue):
+        '''DataUpdater base initialiser.
+        @param params: List of configuration parameters
+        @type params: List<?>
+        @param queue: Response queue
+        @type queues: Queue.Queue
+        '''
         super(DataUpdater,self).__init__()
         self.ref,self.conf,self.afactory = params
         self.queue = queue
         #self._stop = threading.Event()
         self.api = AimsApi(self.conf)    
         
-    def setup(self,etft,sw,ne,page):
-        '''request a page'''
+    def setup(self,etft,sw,ne,pno):
+        '''Parameter setup.
+        @param etft: Feed/Feature identifier
+        @type etft: FeedRef
+        @param sw: South-West corner, coordinate value pair
+        @type sw: List<Double>{2}
+        @param ne: North-East corner, coordinate value pair
+        @type ne: List<Double>{2}
+        @param page: Feed pno number
+        @type pno: Integer 
+        '''
         self.etft = etft
         self.sw,self.ne = sw,ne
-        self.page = page
+        self.pno = pno
 
     def run(self):
-        '''Main updater run method for feed cycling gets single page of addresses from API'''
-        aimslog.info('GET.{} {} - Page{}'.format(self.ref,self.etft,self.page))
+        '''Main updater run method fetching single page of addresses from API'''
+        aimslog.info('GET.{} {} - Page{}'.format(self.ref,self.etft,self.pno))
         featlist = []
-        for page in self.api.getOnePage(self.etft,self.sw,self.ne,self.page):
+        for page in self.api.getOnePage(self.etft,self.sw,self.ne,self.pno):
             featlist.append(self.processPage(page,self.etft))            
         self.queue.put(featlist)
         self.notify(self.ref)
         
     def processPage(self,page,etft):
-        '''process an individual page, pulling nested entities on 3E'''
+        '''Process an individual page. If page is resolution type optionally re-query at individual level        
+        @param page: Processed results from pno request
+        @type page: Dict<?>
+        @param etft: Feed/Feature identifier
+        @type etft: FeedRef
+        '''
         if etft.ft == FeedType.RESOLUTIONFEED and ENABLE_ENTITY_EVALUATION:
             cid = self.cid(page)
             feat = self.api.getOneFeature(etft,cid)
             if feat == {u'class': [u'error']}: 
-                #if the page request returns the not-supposed-to-happen error, it gets special treatment
+                #if the pno request returns the not-supposed-to-happen error, it gets special treatment
                 aimslog.error('Invalid API response {}'.format(feat))
-                #return self.getfeat(model=page['properties'])
+                #return self.getfeat(model=pno['properties'])
             else:
                 return self._processEntity(feat,cid,etft)
         else:
@@ -93,7 +113,15 @@ class DataUpdater(Observable):
             return self.getfeat(model=page['properties'])
     
     def _processEntity(self,feat,cid,etft):
-        '''Select processing option'''
+        '''Identify and select group, address or entity processing for a reolutionfeed feature        
+        @param feat: dict representation of feature before object processing
+        @type feat: Dict
+        @param cid: Change ID or group change ID
+        @type cid: Integer
+        @param etft: Feed/Feature identifier
+        @type etft: FeedRef
+        @return: Instantiated feature object
+        '''
         if feat['class'][0] == 'validation':
             return self._processValidationEntity(feat)
             #e = EntityValidation.getInstance(feat)# self.getEntityInstance()
@@ -110,14 +138,30 @@ class DataUpdater(Observable):
             return self._processSimpleEntity(self.getfeat,feat)
         
     def _processValidationEntity(self,feat):
+        '''Wraps call to validation entity instantiator
+        @param feat: dict representation of feature before object processing
+        @type feat: Dict
+        @return: Instantiated validation Entity
+        '''
         return EntityValidation.getInstance(feat)
     
-    def _processAddressEntity(self,feat):
+    def _processAddressEntity(self,feat):        
+        '''Processes feature data into address object
+        @param feat: dict representation of feature before object processing
+        @type feat: Dict
+        @return: Instantiated Address entity
+        '''
         #return EntityAddress.getInstance(feat)
         return self._processSimpleEntity(FeatureFactory.getInstance(FeedRef((FeatureType.ADDRESS,FeedType.RESOLUTIONFEED))).getAddress,feat)
         
     def _processSimpleEntity(self,fact,feat):                
-        '''this is the default processor, for gereric entities but the same as addr res'''
+        '''Default processor for generic entities but the same as address resolution processor (below).
+        @param fact: Link to factory, object instantiation method
+        @type fact: <Function>
+        @param feat: dict representation of feature before object processing
+        @type feat: Dict
+        @return: Instantiated Address entity
+        '''
         featurelist = []
         a = fact(model=feat['properties'])
         if feat.has_key('entities'):
@@ -127,7 +171,11 @@ class DataUpdater(Observable):
         return a
     
     def _processAddressResolution(self,feat):                
-        '''process entries in the addressresolution->entities list'''
+        '''Processes entries in the addressresolution entities list
+        @param feat: dict representation of feature before object processing
+        @type feat: Dict
+        @return: Instantiated Address entity
+        '''
         featurelist = []
         a = self.getfeat(model=feat['properties'])
         for e in feat['entities']:
@@ -136,7 +184,15 @@ class DataUpdater(Observable):
         return a
         
     def _processResolutionGroup(self,feat,cid,etft):
-        '''process the entities in a res-group. these are res-address objects. in turn populate the sub entities as feature-addresses'''
+        '''Processes the res-address objects in a res-group. Subsequently populates the sub entities as feature-addresses.
+        @param feat: dict representation of feature before object processing
+        @type feat: Dict
+        @param cid: Change ID or group change ID
+        @type cid: Integer
+        @param etft: Feed/Feature identifier
+        @type etft: FeedRef
+        @return: Instantiated feature object
+        '''
         featurelist = []
         g = self.getfeat(model=feat['properties'])#group
         feat2 = self.api.getOneFeature(etft,'{}/address'.format(cid))#group entity/adr list
@@ -153,6 +209,10 @@ class DataUpdater(Observable):
         return g
         
     def _populateEntity(self,ent):
+        '''Selects type and instantiates appropriate entity object.
+        @param ent: dict representation of feature before object processing
+        @type ent: Dict
+        '''
         if ent['class'][0] == 'validation':
             return self._processValidationEntity(ent)
         elif ent['class'][0] == 'address':
@@ -167,6 +227,10 @@ class DataUpdater(Observable):
         
     @staticmethod
     def getInstance(etft):
+        '''Based on the provided FeedRef this getInstance returns a group,address or user updater object 
+        @param etft: Feed/Feature identifier
+        @type etft: FeedRef
+        '''
         if etft.et == FeatureType.GROUPS: return DataUpdaterGroup
         elif etft.et == FeatureType.ADDRESS: return DataUpdaterAddress
         elif etft.et == FeatureType.USERS: return DataUpdaterUser
@@ -189,7 +253,14 @@ class DataUpdater(Observable):
     
 #simple subclasses to assign getaddress/getgroup function    
 class DataUpdaterAddress(DataUpdater):
+    '''Dataupdater subclass for Address objects'''
     def __init__(self,params,queue):
+        '''Initialises Address DataUpdater
+        @param params: List of configuration parameters
+        @type params: List<?>
+        @param queue: Response queue
+        @type queues: Queue.Queue
+        '''
         super(DataUpdaterAddress,self).__init__(params,queue)
         self.getfeat = self.afactory.getAddress
         
@@ -201,7 +272,14 @@ class DataUpdaterAddress(DataUpdater):
         
         
 class DataUpdaterGroup(DataUpdater):
-    def __init__(self,params,queue):
+    '''Dataupdater subclass for Group objects'''
+    def __init__(self,params,queue):        
+        '''Initialises Group DataUpdater
+        @param params: List of configuration parameters
+        @type params: List<?>
+        @param queue: Response queue
+        @type queues: Queue.Queue
+        '''
         super(DataUpdaterGroup,self).__init__(params,queue)
         self.getfeat = self.afactory.getGroup   
          
@@ -211,8 +289,15 @@ class DataUpdaterGroup(DataUpdater):
     def getEntityInstance(self,d,etft):
         return EntityAddress(d,etft)
     
-class DataUpdaterUser(DataUpdater):    
-    def __init__(self,params,queue):
+class DataUpdaterUser(DataUpdater): 
+    '''Dataupdater subclass for User objects'''   
+    def __init__(self,params,queue):        
+        '''Initialises User DataUpdater
+        @param params: List of configuration parameters
+        @type params: List<?>
+        @param queue: Response queue
+        @type queues: Queue.Queue
+        '''
         super(DataUpdaterUser,self).__init__(params,queue)
         self.getfeat = self.afactory.getUser 
     
@@ -221,10 +306,19 @@ class DataUpdaterUser(DataUpdater):
 #TODO Consolidate group/address + action/approve subclasses. might be enough variation to retain seperate classes
 #NOTES variables incl; oft=FF/RF,id=addressId/changeId/groupChangeId, action=approve/action/groupaction
 class DataUpdaterDRC(DataUpdater):
+    '''Super class for DRC DataUpdater classes'''
+    
     #instantiated in subclass
     oft,etft,identifier,payload,actiontype,action,agu,at,build,requestId = 10*(None,)
     
     def version(self):
+        '''Quick self checker for existing version number to save additional request
+        I{This functionality is under development in the API}
+        '''
+        return self.agu._version if self.agu._version else self._version() 
+    
+    def _version(self):
+        '''Function to read AIMS version value from single Feature pages'''        
         jc = self.api.getOneFeature(FeedRef((self.etft.et,self.oft)),self.identifier)
         if jc['properties'].has_key('version'):
             return jc['properties']['version']
@@ -234,7 +328,14 @@ class DataUpdaterDRC(DataUpdater):
             return 1    
         
     def run(self):
-        '''group change action on the CF'''
+        '''One pass run method to intercat with APi and return sincel page results
+        - Call appropriate API method
+        - Parse response Entities and attach to feature
+        - Attach error messages and request ID
+        - Merge response object with request object
+        - Put featre on output queue
+        - Notify listeners 
+        '''
         aimslog.info('DUr.{} {} - AGU{}'.format(self.ref,self.actiontype.reverse[self.at],self.agu))
         err,resp = self.action(self.at,self.payload,self.identifier)
         featurelist = []
@@ -255,18 +356,28 @@ class DataUpdaterDRC(DataUpdater):
         self.notify(self.ref)
         
         
-class DataUpdaterAction(DataUpdaterDRC):
+class DataUpdaterAction(DataUpdaterDRC): 
+    '''DataUpdater class for Address Action requests on the changefeed'''
+    
     #et = FeatureType.ADDRESS
     #ft = FeedType.CHANGEFEED 
     oft = FeedType.FEATURES
+    
     def setup(self,etft,aat,address):
-        '''set address parameters'''
+        '''Set Address Action specific parameters
+        @param etft: Validation Entity feedref 
+        @type etft: FeedRef
+        @param aat: Action type for this address 
+        @type aat: ActionType
+        @param address: Address object detailing action changes
+        @type address: Address
+        '''
         self.etft = etft
         self.at = aat
         self.agu = address
         self.identifier = self.agu.getAddressId()
         self.requestId = self.agu.getRequestId()
-        if aat!=ActionType.ADD: self.agu.setVersion(self.version())
+        if aat != ActionType.ADD: self.agu.setVersion(self.version())
         self.payload = self.afactory.convertAddress(self.agu,self.at)
         #run actions
         self.actiontype = ActionType
@@ -274,12 +385,21 @@ class DataUpdaterAction(DataUpdaterDRC):
         self.build = self.afactory.getAddress
 
 class DataUpdaterApproval(DataUpdaterDRC):
-    '''Updater to request and process response objects for resolution queue actions'''
+    '''DataUpdater class for Address Approval requests on the resolutionfeed'''
+    
     #et = FeatureType.ADDRESS
     #ft = FeedType.RESOLUTIONFEED
     oft = FeedType.RESOLUTIONFEED
+    
     def setup(self,etft,aat,address):
-        '''set address parameters'''
+        '''Set Address Approval specific parameters
+        @param etft: Validation Entity feedref 
+        @type etft: FeedRef
+        @param aat: Approval type for this address 
+        @type aat: ApprovalType
+        @param address: Address object detailing approval action
+        @type address: Address
+        '''
         self.etft = etft
         self.at = aat
         self.agu = address
@@ -293,11 +413,21 @@ class DataUpdaterApproval(DataUpdaterDRC):
         self.build = self.afactory.getAddress
 
 class DataUpdaterGroupAction(DataUpdaterDRC):
+    '''DataUpdater class for Group Action requests on the changefeed'''
+    
     #et = FeatureType.ADDRESS
     #ft = FeedType.CHANGEFEED 
     oft = FeedType.FEATURES
+    
     def setup(self,etft,gat,group):
-        '''set group parameters'''
+        '''Set Group Action specific parameters
+        @param etft: Validation Entity feedref 
+        @type etft: FeedRef
+        @param gat: Group action type for this address 
+        @type gat: GroupActionType
+        @param address: Address object detailing action changes
+        @type address: Address
+        '''
         self.etft = etft
         self.at = gat
         self.agu = group
@@ -311,11 +441,21 @@ class DataUpdaterGroupAction(DataUpdaterDRC):
         self.build = self.afactory.getGroup
         
 class DataUpdaterGroupApproval(DataUpdaterDRC):
+    '''DataUpdater class for Group Approval requests on the resolutionfeed'''
+    
     #et = FeatureType.ADDRESS
     #ft = FeedType.CHANGEFEED 
     oft = FeedType.RESOLUTIONFEED
+    
     def setup(self,etft,gat,group):
-        '''set group parameters'''
+        '''Set Group Approval specific parameters
+        @param etft: Validation Entity feedref 
+        @type etft: FeedRef
+        @param gat: Group approval type for this address 
+        @type gat: GroupApprovalType
+        @param address: Address object detailing approval action
+        @type address: Address
+        '''
         self.etft = etft
         self.at = gat
         self.agu = group
@@ -329,11 +469,21 @@ class DataUpdaterGroupApproval(DataUpdaterDRC):
         self.build = self.afactory.getGroup
         
 class DataUpdaterUserAction(DataUpdaterDRC):
+    '''DataUpdater class for User Action requests on the adminfeed'''
+    
     #et = FeatureType.ADDRESS
     #ft = FeedType.CHANGEFEED 
     oft = FeedType.ADMIN
+    
     def setup(self,etft,uat,user):
-        '''set user parameters'''
+        '''Set User specific parameters
+        @param etft: Validation Entity feedref 
+        @type etft: FeedRef
+        @param uat: User action type for this user 
+        @type uat: UserActionType
+        @param user: User object detailing admin action
+        @type user: User
+        '''    
         self.etft = etft
         self.at = uat
         self.agu = user
