@@ -397,6 +397,7 @@ def instance():
     @return: The single Controller Instance      
     @rtype: AimsUI.AimsClient.Gui.Controller() Instance
     """
+    
     if Controller._instance == None:
         Controller._instance = Controller()
     return Controller._instance

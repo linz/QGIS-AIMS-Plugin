@@ -69,8 +69,8 @@ class CreateNewAddressTool(QgsMapToolIdentify):
 
     def setEnabled(self, enabled):
         """ 
-        When Tool related QAction is checked/unchecked
-        Activate / Disable respectively
+        When Tool related QAction is checked/unchecked,
+        Activate / Disable the tool respectively
 
         @param enabled: Tool enabled. Boolean value
         @type enabled: boolean
@@ -84,7 +84,8 @@ class CreateNewAddressTool(QgsMapToolIdentify):
  
     def canvasReleaseEvent(self,mouseEvent):
         """
-        Capture user clicked coordinates for new feature
+        Capture users left click event coordinates for 
+        the new AIMS Feature
 
         @param mouseEvent: QtGui.QMouseEvent
         @type mouseEvent: QtGui.QMouseEvent
@@ -106,7 +107,7 @@ class CreateNewAddressTool(QgsMapToolIdentify):
         
     def setMarker(self, coords):
         """
-        Place marker on canvas to show the user the 
+        Set marker on canvas to indicate the
         position of the feature they are creating
 
         @param coords: QgsPoint

@@ -35,8 +35,9 @@ class Mapping():
         ('fullAddressNumber',['_components_fullAddressNumber', None]),
         ('fullRoadName',['_components_fullRoadName', None]),
         ('suburbLocality',['_components_suburbLocality', None]),
-        ('townCity',['_components_townCity' '', None]),
+        ('townCity',['_components_townCity', None]),
         ('meshblock',['_codes_meshblock', None]),
+        ('mblkOverride',['_codes_isMeshblockOverride',None]),
         ('lifecycle',['_components_lifecycle', None]), 
         ('roadPrefix',['_components_roadSuffix',None]),
         ('roadName',['_components_roadName', None]),                                
@@ -515,8 +516,8 @@ class LayerManager(QObject):
             fet.setGeometry(QgsGeometry.fromPoint(QgsPoint(point[0], point[1])))           
             fet.setAttributes([getattr(feature, v[0]) if hasattr (feature, v[0]) else '' for v in Mapping.adrLayerObjMappings.values()])
             if hasattr(getattr(feature,'_addressedObject_addressPositions')[0],'_positionType'):
-                # If positionType update field index 29
-                fet.setAttribute(29, feature._addressedObject_addressPositions[0]._positionType)
+                # If positionType update field index 30. Would rather use the explicit name but had issues
+                fet.setAttribute(30, feature._addressedObject_addressPositions[0]._positionType)
             layer.dataProvider().addFeatures([fet])
 
         layer.updateExtents()
