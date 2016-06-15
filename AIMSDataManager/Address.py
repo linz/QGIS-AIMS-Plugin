@@ -363,7 +363,9 @@ class Address(Feature):
     def setAppellation( self, appellation ): 
         self._addressedObject_appellation = appellation
     def setMeshblock(self, meshblock):
-        self._codes_meshblock = meshblock          
+        self._codes_meshblock = meshblock
+    def setIsMeshblockOverride(self, isMeshblockOverride):
+        self._codes_isMeshblockOverride = isMeshblockOverride              
     # realted to Features feed only
     def setFullAddressNumber (self, fullAddressNumber): 
         self._components_fullAddressNumber = fullAddressNumber

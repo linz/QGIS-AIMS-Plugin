@@ -55,6 +55,7 @@
     "codes":{
         "suburbLocalityId":0,
         "parcelId":0,
-        "meshblock":None
+        "meshblock":None,
+        "isMeshblockOverride":False
     }
 }
