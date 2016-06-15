@@ -1,0 +1,2404 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>PyQt4.QtGui.QLineEdit</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="QGIS-AIMS-Plugin-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        PyQt4 ::
+        QtGui ::
+        QLineEdit ::
+        Class&nbsp;QLineEdit
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="PyQt4.QtGui.QLineEdit-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class QLineEdit</h1><p class="nomargin-top"></p>
+<pre class="base-tree">
+       object --+                
+                |                
+sip.simplewrapper --+            
+                    |            
+          sip.wrapper --+        
+                        |        
+           <a href="PyQt4.QtCore.QObject-class.html">QtCore.QObject</a> --+    
+                            |    
+           object --+       |    
+                    |       |    
+    sip.simplewrapper --+   |    
+                        |   |    
+             <a href="PyQt4.QtGui.QPaintDevice-class.html">QPaintDevice</a> --+    
+                            |    
+                      <a href="PyQt4.QtGui.QWidget-class.html">QWidget</a> --+
+                                |
+                               <strong class="uidshort">QLineEdit</strong>
+</pre>
+
+<dl><dt>Known Subclasses:</dt>
+<dd>
+      <ul class="subclass-list">
+<li><a href="qgis._gui.QgsFileDropEdit-class.html">qgis._gui.QgsFileDropEdit</a></li><li>, <a href="qgis._gui.QgsFilterLineEdit-class.html">qgis._gui.QgsFilterLineEdit</a></li>  </ul>
+</dd></dl>
+
+<hr />
+<p>QLineEdit(QWidget parent=None) QLineEdit(QString, QWidget 
+  parent=None)</p>
+
+<!-- ==================== NESTED CLASSES ==================== -->
+<a name="section-NestedClasses"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Nested Classes</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-NestedClasses"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="PyQt4.QtGui.QLineEdit.EchoMode-class.html" class="summary-name">EchoMode</a>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="PyQt4.QtGui.QWidget-class.html">QWidget</a></code></b>:
+      <code><a href="PyQt4.QtGui.QWidget.RenderFlag-class.html">RenderFlag</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget.RenderFlags-class.html">RenderFlags</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="PyQt4.QtGui.QPaintDevice-class.html">QPaintDevice</a></code></b>:
+      <code><a href="PyQt4.QtGui.QPaintDevice.PaintDeviceMetric-class.html">PaintDeviceMetric</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="alignment"></a><span class="summary-sig-name">alignment</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="backspace"></a><span class="summary-sig-name">backspace</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="PyQt4.QtGui.QLineEdit-class.html#changeEvent" class="summary-sig-name">changeEvent</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="clear"></a><span class="summary-sig-name">clear</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="completer"></a><span class="summary-sig-name">completer</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="PyQt4.QtGui.QLineEdit-class.html#contextMenuEvent" class="summary-sig-name">contextMenuEvent</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="copy"></a><span class="summary-sig-name">copy</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="createStandardContextMenu"></a><span class="summary-sig-name">createStandardContextMenu</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="cursorBackward"></a><span class="summary-sig-name">cursorBackward</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="cursorForward"></a><span class="summary-sig-name">cursorForward</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="cursorMoveStyle"></a><span class="summary-sig-name">cursorMoveStyle</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="cursorPosition"></a><span class="summary-sig-name">cursorPosition</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="cursorPositionAt"></a><span class="summary-sig-name">cursorPositionAt</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="cursorPositionChanged"></a><span class="summary-sig-name">cursorPositionChanged</span>(<span class="summary-sig-arg">...</span>)</span><br />
+      QLineEdit.cursorPositionChanged[int, int] [signal]</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="cursorRect"></a><span class="summary-sig-name">cursorRect</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="cursorWordBackward"></a><span class="summary-sig-name">cursorWordBackward</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="cursorWordForward"></a><span class="summary-sig-name">cursorWordForward</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="cut"></a><span class="summary-sig-name">cut</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="del_"></a><span class="summary-sig-name">del_</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="deselect"></a><span class="summary-sig-name">deselect</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="displayText"></a><span class="summary-sig-name">displayText</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="dragEnabled"></a><span class="summary-sig-name">dragEnabled</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="PyQt4.QtGui.QLineEdit-class.html#dragEnterEvent" class="summary-sig-name">dragEnterEvent</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="PyQt4.QtGui.QLineEdit-class.html#dragLeaveEvent" class="summary-sig-name">dragLeaveEvent</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="PyQt4.QtGui.QLineEdit-class.html#dragMoveEvent" class="summary-sig-name">dragMoveEvent</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="PyQt4.QtGui.QLineEdit-class.html#dropEvent" class="summary-sig-name">dropEvent</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="echoMode"></a><span class="summary-sig-name">echoMode</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="editingFinished"></a><span class="summary-sig-name">editingFinished</span>(<span class="summary-sig-arg">...</span>)</span><br />
+      QLineEdit.editingFinished [signal]</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="end"></a><span class="summary-sig-name">end</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="PyQt4.QtGui.QLineEdit-class.html#event" class="summary-sig-name">event</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="PyQt4.QtGui.QLineEdit-class.html#focusInEvent" class="summary-sig-name">focusInEvent</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="PyQt4.QtGui.QLineEdit-class.html#focusOutEvent" class="summary-sig-name">focusOutEvent</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getTextMargins"></a><span class="summary-sig-name">getTextMargins</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="hasAcceptableInput"></a><span class="summary-sig-name">hasAcceptableInput</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="hasFrame"></a><span class="summary-sig-name">hasFrame</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="hasSelectedText"></a><span class="summary-sig-name">hasSelectedText</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="home"></a><span class="summary-sig-name">home</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="initStyleOption"></a><span class="summary-sig-name">initStyleOption</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="inputMask"></a><span class="summary-sig-name">inputMask</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="PyQt4.QtGui.QLineEdit-class.html#inputMethodEvent" class="summary-sig-name">inputMethodEvent</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="PyQt4.QtGui.QLineEdit-class.html#inputMethodQuery" class="summary-sig-name">inputMethodQuery</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="insert"></a><span class="summary-sig-name">insert</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="isModified"></a><span class="summary-sig-name">isModified</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="isReadOnly"></a><span class="summary-sig-name">isReadOnly</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="isRedoAvailable"></a><span class="summary-sig-name">isRedoAvailable</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="isUndoAvailable"></a><span class="summary-sig-name">isUndoAvailable</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="PyQt4.QtGui.QLineEdit-class.html#keyPressEvent" class="summary-sig-name">keyPressEvent</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="maxLength"></a><span class="summary-sig-name">maxLength</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="PyQt4.QtGui.QLineEdit-class.html#minimumSizeHint" class="summary-sig-name">minimumSizeHint</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="PyQt4.QtGui.QLineEdit-class.html#mouseDoubleClickEvent" class="summary-sig-name">mouseDoubleClickEvent</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="PyQt4.QtGui.QLineEdit-class.html#mouseMoveEvent" class="summary-sig-name">mouseMoveEvent</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="PyQt4.QtGui.QLineEdit-class.html#mousePressEvent" class="summary-sig-name">mousePressEvent</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="PyQt4.QtGui.QLineEdit-class.html#mouseReleaseEvent" class="summary-sig-name">mouseReleaseEvent</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="PyQt4.QtGui.QLineEdit-class.html#paintEvent" class="summary-sig-name">paintEvent</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="paste"></a><span class="summary-sig-name">paste</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="placeholderText"></a><span class="summary-sig-name">placeholderText</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="redo"></a><span class="summary-sig-name">redo</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="returnPressed"></a><span class="summary-sig-name">returnPressed</span>(<span class="summary-sig-arg">...</span>)</span><br />
+      QLineEdit.returnPressed [signal]</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="selectAll"></a><span class="summary-sig-name">selectAll</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="selectedText"></a><span class="summary-sig-name">selectedText</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="selectionChanged"></a><span class="summary-sig-name">selectionChanged</span>(<span class="summary-sig-arg">...</span>)</span><br />
+      QLineEdit.selectionChanged [signal]</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="selectionStart"></a><span class="summary-sig-name">selectionStart</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setAlignment"></a><span class="summary-sig-name">setAlignment</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setCompleter"></a><span class="summary-sig-name">setCompleter</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setCursorMoveStyle"></a><span class="summary-sig-name">setCursorMoveStyle</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setCursorPosition"></a><span class="summary-sig-name">setCursorPosition</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setDragEnabled"></a><span class="summary-sig-name">setDragEnabled</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setEchoMode"></a><span class="summary-sig-name">setEchoMode</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setFrame"></a><span class="summary-sig-name">setFrame</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setInputMask"></a><span class="summary-sig-name">setInputMask</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setMaxLength"></a><span class="summary-sig-name">setMaxLength</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setModified"></a><span class="summary-sig-name">setModified</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setPlaceholderText"></a><span class="summary-sig-name">setPlaceholderText</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setReadOnly"></a><span class="summary-sig-name">setReadOnly</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setSelection"></a><span class="summary-sig-name">setSelection</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setText"></a><span class="summary-sig-name">setText</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setTextMargins"></a><span class="summary-sig-name">setTextMargins</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setValidator"></a><span class="summary-sig-name">setValidator</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="PyQt4.QtGui.QLineEdit-class.html#sizeHint" class="summary-sig-name">sizeHint</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="text"></a><span class="summary-sig-name">text</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="textChanged"></a><span class="summary-sig-name">textChanged</span>(<span class="summary-sig-arg">...</span>)</span><br />
+      QLineEdit.textChanged[QString] [signal]</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="textEdited"></a><span class="summary-sig-name">textEdited</span>(<span class="summary-sig-arg">...</span>)</span><br />
+      QLineEdit.textEdited[QString] [signal]</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="textMargins"></a><span class="summary-sig-name">textMargins</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="undo"></a><span class="summary-sig-name">undo</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="validator"></a><span class="summary-sig-name">validator</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="PyQt4.QtGui.QWidget-class.html">QWidget</a></code></b>:
+      <code><a href="PyQt4.QtGui.QWidget-class.html#acceptDrops">acceptDrops</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#accessibleDescription">accessibleDescription</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#accessibleName">accessibleName</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#actionEvent">actionEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#actions">actions</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#activateWindow">activateWindow</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#addAction">addAction</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#addActions">addActions</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#adjustSize">adjustSize</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#autoFillBackground">autoFillBackground</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#backgroundRole">backgroundRole</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#baseSize">baseSize</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#childAt">childAt</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#childrenRect">childrenRect</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#childrenRegion">childrenRegion</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#clearFocus">clearFocus</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#clearMask">clearMask</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#close">close</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#closeEvent">closeEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#contentsMargins">contentsMargins</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#contentsRect">contentsRect</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#contextMenuPolicy">contextMenuPolicy</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#create">create</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#cursor">cursor</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#customContextMenuRequested">customContextMenuRequested</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#destroy">destroy</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#devType">devType</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#effectiveWinId">effectiveWinId</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#enabledChange">enabledChange</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#ensurePolished">ensurePolished</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#enterEvent">enterEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#find">find</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#focusNextChild">focusNextChild</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#focusNextPrevChild">focusNextPrevChild</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#focusPolicy">focusPolicy</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#focusPreviousChild">focusPreviousChild</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#focusProxy">focusProxy</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#focusWidget">focusWidget</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#font">font</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#fontChange">fontChange</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#fontInfo">fontInfo</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#fontMetrics">fontMetrics</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#foregroundRole">foregroundRole</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#frameGeometry">frameGeometry</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#frameSize">frameSize</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#geometry">geometry</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#getContentsMargins">getContentsMargins</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#grabGesture">grabGesture</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#grabKeyboard">grabKeyboard</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#grabMouse">grabMouse</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#grabShortcut">grabShortcut</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#graphicsEffect">graphicsEffect</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#graphicsProxyWidget">graphicsProxyWidget</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#handle">handle</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#hasFocus">hasFocus</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#hasMouseTracking">hasMouseTracking</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#height">height</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#heightForWidth">heightForWidth</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#hide">hide</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#hideEvent">hideEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#inputContext">inputContext</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#inputMethodHints">inputMethodHints</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#insertAction">insertAction</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#insertActions">insertActions</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isActiveWindow">isActiveWindow</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isAncestorOf">isAncestorOf</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isEnabled">isEnabled</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isEnabledTo">isEnabledTo</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isEnabledToTLW">isEnabledToTLW</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isFullScreen">isFullScreen</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isHidden">isHidden</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isLeftToRight">isLeftToRight</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isMaximized">isMaximized</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isMinimized">isMinimized</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isModal">isModal</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isRightToLeft">isRightToLeft</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isTopLevel">isTopLevel</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isVisible">isVisible</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isVisibleTo">isVisibleTo</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isWindow">isWindow</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isWindowModified">isWindowModified</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#keyReleaseEvent">keyReleaseEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#keyboardGrabber">keyboardGrabber</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#languageChange">languageChange</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#layout">layout</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#layoutDirection">layoutDirection</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#leaveEvent">leaveEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#locale">locale</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#lower">lower</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#mapFrom">mapFrom</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#mapFromGlobal">mapFromGlobal</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#mapFromParent">mapFromParent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#mapTo">mapTo</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#mapToGlobal">mapToGlobal</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#mapToParent">mapToParent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#mask">mask</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#maximumHeight">maximumHeight</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#maximumSize">maximumSize</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#maximumWidth">maximumWidth</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#metric">metric</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#minimumHeight">minimumHeight</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#minimumSize">minimumSize</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#minimumWidth">minimumWidth</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#mouseGrabber">mouseGrabber</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#move">move</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#moveEvent">moveEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#nativeParentWidget">nativeParentWidget</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#nextInFocusChain">nextInFocusChain</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#normalGeometry">normalGeometry</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#overrideWindowFlags">overrideWindowFlags</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#overrideWindowState">overrideWindowState</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#paintEngine">paintEngine</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#palette">palette</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#paletteChange">paletteChange</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#parentWidget">parentWidget</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#pos">pos</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#previousInFocusChain">previousInFocusChain</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#raise_">raise_</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#rect">rect</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#releaseKeyboard">releaseKeyboard</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#releaseMouse">releaseMouse</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#releaseShortcut">releaseShortcut</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#removeAction">removeAction</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#render">render</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#repaint">repaint</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#resetInputContext">resetInputContext</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#resize">resize</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#resizeEvent">resizeEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#restoreGeometry">restoreGeometry</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#saveGeometry">saveGeometry</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#scroll">scroll</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setAcceptDrops">setAcceptDrops</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setAccessibleDescription">setAccessibleDescription</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setAccessibleName">setAccessibleName</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setAttribute">setAttribute</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setAutoFillBackground">setAutoFillBackground</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setBackgroundRole">setBackgroundRole</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setBaseSize">setBaseSize</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setContentsMargins">setContentsMargins</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setContextMenuPolicy">setContextMenuPolicy</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setCursor">setCursor</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setDisabled">setDisabled</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setEnabled">setEnabled</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setFixedHeight">setFixedHeight</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setFixedSize">setFixedSize</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setFixedWidth">setFixedWidth</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setFocus">setFocus</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setFocusPolicy">setFocusPolicy</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setFocusProxy">setFocusProxy</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setFont">setFont</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setForegroundRole">setForegroundRole</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setGeometry">setGeometry</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setGraphicsEffect">setGraphicsEffect</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setHidden">setHidden</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setInputContext">setInputContext</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setInputMethodHints">setInputMethodHints</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setLayout">setLayout</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setLayoutDirection">setLayoutDirection</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setLocale">setLocale</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setMask">setMask</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setMaximumHeight">setMaximumHeight</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setMaximumSize">setMaximumSize</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setMaximumWidth">setMaximumWidth</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setMinimumHeight">setMinimumHeight</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setMinimumSize">setMinimumSize</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setMinimumWidth">setMinimumWidth</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setMouseTracking">setMouseTracking</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setPalette">setPalette</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setParent">setParent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setShortcutAutoRepeat">setShortcutAutoRepeat</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setShortcutEnabled">setShortcutEnabled</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setShown">setShown</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setSizeIncrement">setSizeIncrement</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setSizePolicy">setSizePolicy</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setStatusTip">setStatusTip</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setStyle">setStyle</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setStyleSheet">setStyleSheet</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setTabOrder">setTabOrder</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setToolTip">setToolTip</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setUpdatesEnabled">setUpdatesEnabled</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setVisible">setVisible</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setWhatsThis">setWhatsThis</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setWindowFilePath">setWindowFilePath</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setWindowFlags">setWindowFlags</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setWindowIcon">setWindowIcon</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setWindowIconText">setWindowIconText</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setWindowModality">setWindowModality</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setWindowModified">setWindowModified</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setWindowOpacity">setWindowOpacity</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setWindowRole">setWindowRole</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setWindowState">setWindowState</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setWindowTitle">setWindowTitle</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#show">show</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#showEvent">showEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#showFullScreen">showFullScreen</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#showMaximized">showMaximized</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#showMinimized">showMinimized</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#showNormal">showNormal</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#size">size</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#sizeIncrement">sizeIncrement</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#sizePolicy">sizePolicy</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#stackUnder">stackUnder</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#statusTip">statusTip</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#style">style</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#styleSheet">styleSheet</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#tabletEvent">tabletEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#testAttribute">testAttribute</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#toolTip">toolTip</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#topLevelWidget">topLevelWidget</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#underMouse">underMouse</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#ungrabGesture">ungrabGesture</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#unsetCursor">unsetCursor</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#unsetLayoutDirection">unsetLayoutDirection</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#unsetLocale">unsetLocale</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#update">update</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#updateGeometry">updateGeometry</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#updateMicroFocus">updateMicroFocus</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#updatesEnabled">updatesEnabled</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#visibleRegion">visibleRegion</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#whatsThis">whatsThis</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#wheelEvent">wheelEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#width">width</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#winId">winId</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#window">window</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#windowActivationChange">windowActivationChange</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#windowFilePath">windowFilePath</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#windowFlags">windowFlags</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#windowIcon">windowIcon</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#windowIconText">windowIconText</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#windowModality">windowModality</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#windowOpacity">windowOpacity</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#windowRole">windowRole</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#windowState">windowState</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#windowTitle">windowTitle</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#windowType">windowType</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#x">x</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#x11Info">x11Info</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#x11PictureHandle">x11PictureHandle</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#y">y</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="PyQt4.QtCore.QObject-class.html">QtCore.QObject</a></code></b>:
+      <code><a href="PyQt4.QtCore.QObject-class.html#__getattr__">__getattr__</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#blockSignals">blockSignals</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#childEvent">childEvent</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#children">children</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#connect">connect</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#connectNotify">connectNotify</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#customEvent">customEvent</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#deleteLater">deleteLater</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#destroyed">destroyed</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#disconnect">disconnect</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#disconnectNotify">disconnectNotify</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#dumpObjectInfo">dumpObjectInfo</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#dumpObjectTree">dumpObjectTree</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#dynamicPropertyNames">dynamicPropertyNames</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#emit">emit</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#eventFilter">eventFilter</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#findChild">findChild</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#findChildren">findChildren</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#inherits">inherits</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#installEventFilter">installEventFilter</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#isWidgetType">isWidgetType</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#killTimer">killTimer</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#metaObject">metaObject</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#moveToThread">moveToThread</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#objectName">objectName</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#parent">parent</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#property">property</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#pyqtConfigure">pyqtConfigure</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#receivers">receivers</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#removeEventFilter">removeEventFilter</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#sender">sender</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#senderSignalIndex">senderSignalIndex</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#setObjectName">setObjectName</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#setProperty">setProperty</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#signalsBlocked">signalsBlocked</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#startTimer">startTimer</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#thread">thread</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#timerEvent">timerEvent</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#tr">tr</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#trUtf8">trUtf8</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="PyQt4.QtGui.QPaintDevice-class.html">QPaintDevice</a></code></b>:
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#colorCount">colorCount</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#depth">depth</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#heightMM">heightMM</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#logicalDpiX">logicalDpiX</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#logicalDpiY">logicalDpiY</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#numColors">numColors</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#paintingActive">paintingActive</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#physicalDpiX">physicalDpiX</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#physicalDpiY">physicalDpiY</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#widthMM">widthMM</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>sip.simplewrapper</code></b>:
+      <code>__init__</code>,
+      <code>__new__</code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__repr__</code>,
+      <code>__setattr__</code>,
+      <code>__sizeof__</code>,
+      <code>__str__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS VARIABLES ==================== -->
+<a name="section-ClassVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NoEcho"></a><span class="summary-name">NoEcho</span> = <code title="1">1</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="Normal"></a><span class="summary-name">Normal</span> = <code title="0">0</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="Password"></a><span class="summary-name">Password</span> = <code title="2">2</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="PasswordEchoOnEdit"></a><span class="summary-name">PasswordEchoOnEdit</span> = <code title="3">3</code>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="PyQt4.QtGui.QWidget-class.html">QWidget</a></code></b>:
+      <code><a href="PyQt4.QtGui.QWidget-class.html#DrawChildren">DrawChildren</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#DrawWindowBackground">DrawWindowBackground</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#IgnoreMask">IgnoreMask</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="PyQt4.QtCore.QObject-class.html">QtCore.QObject</a></code></b>:
+      <code><a href="PyQt4.QtCore.QObject-class.html#staticMetaObject">staticMetaObject</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="PyQt4.QtGui.QPaintDevice-class.html">QPaintDevice</a></code></b>:
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#PdmDepth">PdmDepth</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#PdmDpiX">PdmDpiX</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#PdmDpiY">PdmDpiY</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#PdmHeight">PdmHeight</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#PdmHeightMM">PdmHeightMM</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#PdmNumColors">PdmNumColors</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#PdmPhysicalDpiX">PdmPhysicalDpiX</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#PdmPhysicalDpiY">PdmPhysicalDpiY</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#PdmWidth">PdmWidth</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#PdmWidthMM">PdmWidthMM</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="changeEvent"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">changeEvent</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QWidget.changeEvent
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="contextMenuEvent"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">contextMenuEvent</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QWidget.contextMenuEvent
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="dragEnterEvent"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">dragEnterEvent</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QWidget.dragEnterEvent
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="dragLeaveEvent"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">dragLeaveEvent</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QWidget.dragLeaveEvent
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="dragMoveEvent"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">dragMoveEvent</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QWidget.dragMoveEvent
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="dropEvent"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">dropEvent</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QWidget.dropEvent
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="event"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">event</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QtCore.QObject.event
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="focusInEvent"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">focusInEvent</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QWidget.focusInEvent
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="focusOutEvent"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">focusOutEvent</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QWidget.focusOutEvent
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="inputMethodEvent"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">inputMethodEvent</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QWidget.inputMethodEvent
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="inputMethodQuery"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">inputMethodQuery</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QWidget.inputMethodQuery
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="keyPressEvent"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">keyPressEvent</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QWidget.keyPressEvent
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="minimumSizeHint"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">minimumSizeHint</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QWidget.minimumSizeHint
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="mouseDoubleClickEvent"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">mouseDoubleClickEvent</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QWidget.mouseDoubleClickEvent
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="mouseMoveEvent"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">mouseMoveEvent</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QWidget.mouseMoveEvent
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="mousePressEvent"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">mousePressEvent</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QWidget.mousePressEvent
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="mouseReleaseEvent"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">mouseReleaseEvent</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QWidget.mouseReleaseEvent
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="paintEvent"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">paintEvent</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QWidget.paintEvent
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="sizeHint"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">sizeHint</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QWidget.sizeHint
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="QGIS-AIMS-Plugin-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Jun 14 13:16:26 2016
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

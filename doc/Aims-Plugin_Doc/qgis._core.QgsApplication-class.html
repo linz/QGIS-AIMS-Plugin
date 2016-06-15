@@ -1,0 +1,1643 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>qgis._core.QgsApplication</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="QGIS-AIMS-Plugin-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        qgis ::
+        _core ::
+        QgsApplication ::
+        Class&nbsp;QgsApplication
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="qgis._core.QgsApplication-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class QgsApplication</h1><p class="nomargin-top"></p>
+<pre class="base-tree">
+       object --+                    
+                |                    
+sip.simplewrapper --+                
+                    |                
+          sip.wrapper --+            
+                        |            
+     <a href="PyQt4.QtCore.QObject-class.html">PyQt4.QtCore.QObject</a> --+        
+                            |        
+<a href="PyQt4.QtCore.QCoreApplication-class.html">PyQt4.QtCore.QCoreApplication</a> --+    
+                                |    
+         <a href="PyQt4.QtGui.QApplication-class.html">PyQt4.QtGui.QApplication</a> --+
+                                    |
+                                   <strong class="uidshort">QgsApplication</strong>
+</pre>
+
+<hr />
+<p>QgsApplication(list, bool, QString customConfigPath=QString())</p>
+
+<!-- ==================== NESTED CLASSES ==================== -->
+<a name="section-NestedClasses"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Nested Classes</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-NestedClasses"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="qgis._core.QgsApplication.endian_t-class.html" class="summary-name">endian_t</a>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="PyQt4.QtGui.QApplication-class.html">PyQt4.QtGui.QApplication</a></code></b>:
+      <code><a href="PyQt4.QtGui.QApplication.ColorSpec-class.html">ColorSpec</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication.Type-class.html">Type</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="PyQt4.QtCore.QCoreApplication-class.html">PyQt4.QtCore.QCoreApplication</a></code></b>:
+      <code><a href="PyQt4.QtCore.QCoreApplication.Encoding-class.html">Encoding</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="absolutePathToRelativePath"></a><span class="summary-sig-name">absolutePathToRelativePath</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="activeThemePath"></a><span class="summary-sig-name">activeThemePath</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="applyGdalSkippedDrivers"></a><span class="summary-sig-name">applyGdalSkippedDrivers</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="authorsFilePath"></a><span class="summary-sig-name">authorsFilePath</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="buildOutputPath"></a><span class="summary-sig-name">buildOutputPath</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="buildSourcePath"></a><span class="summary-sig-name">buildSourcePath</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="qgis._core.QgsApplication-class.html#childEvent" class="summary-sig-name">childEvent</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="qgis._core.QgsApplication-class.html#connectNotify" class="summary-sig-name">connectNotify</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="contributorsFilePath"></a><span class="summary-sig-name">contributorsFilePath</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="createDB"></a><span class="summary-sig-name">createDB</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="qgis._core.QgsApplication-class.html#customEvent" class="summary-sig-name">customEvent</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="defaultStyleV2Path"></a><span class="summary-sig-name">defaultStyleV2Path</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="defaultThemePath"></a><span class="summary-sig-name">defaultThemePath</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="developersMapFilePath"></a><span class="summary-sig-name">developersMapFilePath</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="qgis._core.QgsApplication-class.html#disconnectNotify" class="summary-sig-name">disconnectNotify</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="donorsFilePath"></a><span class="summary-sig-name">donorsFilePath</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="endian"></a><span class="summary-sig-name">endian</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="qgis._core.QgsApplication-class.html#event" class="summary-sig-name">event</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="exitQgis"></a><span class="summary-sig-name">exitQgis</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getThemeIcon"></a><span class="summary-sig-name">getThemeIcon</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getThemePixmap"></a><span class="summary-sig-name">getThemePixmap</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="helpAppPath"></a><span class="summary-sig-name">helpAppPath</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="i18nPath"></a><span class="summary-sig-name">i18nPath</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="iconPath"></a><span class="summary-sig-name">iconPath</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="iconsPath"></a><span class="summary-sig-name">iconsPath</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="initQgis"></a><span class="summary-sig-name">initQgis</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="isRunningFromBuildDir"></a><span class="summary-sig-name">isRunningFromBuildDir</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="libexecPath"></a><span class="summary-sig-name">libexecPath</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="libraryPath"></a><span class="summary-sig-name">libraryPath</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="licenceFilePath"></a><span class="summary-sig-name">licenceFilePath</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="maxThreads"></a><span class="summary-sig-name">maxThreads</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="pkgDataPath"></a><span class="summary-sig-name">pkgDataPath</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="pluginPath"></a><span class="summary-sig-name">pluginPath</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="prefixPath"></a><span class="summary-sig-name">prefixPath</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="qgisMasterDbFilePath"></a><span class="summary-sig-name">qgisMasterDbFilePath</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="qgisSettingsDirPath"></a><span class="summary-sig-name">qgisSettingsDirPath</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="qgisUserDbFilePath"></a><span class="summary-sig-name">qgisUserDbFilePath</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="qgis._core.QgsApplication-class.html#receivers" class="summary-sig-name">receivers</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="registerOgrDrivers"></a><span class="summary-sig-name">registerOgrDrivers</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="relativePathToAbsolutePath"></a><span class="summary-sig-name">relativePathToAbsolutePath</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="reportStyleSheet"></a><span class="summary-sig-name">reportStyleSheet</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="restoreGdalDriver"></a><span class="summary-sig-name">restoreGdalDriver</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="qgis._core.QgsApplication-class.html#sender" class="summary-sig-name">sender</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="qgis._core.QgsApplication-class.html#senderSignalIndex" class="summary-sig-name">senderSignalIndex</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setDefaultSvgPaths"></a><span class="summary-sig-name">setDefaultSvgPaths</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setMaxThreads"></a><span class="summary-sig-name">setMaxThreads</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setPkgDataPath"></a><span class="summary-sig-name">setPkgDataPath</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setPluginPath"></a><span class="summary-sig-name">setPluginPath</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setPrefixPath"></a><span class="summary-sig-name">setPrefixPath</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setThemeName"></a><span class="summary-sig-name">setThemeName</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="showSettings"></a><span class="summary-sig-name">showSettings</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="skipGdalDriver"></a><span class="summary-sig-name">skipGdalDriver</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="skippedGdalDrivers"></a><span class="summary-sig-name">skippedGdalDrivers</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="splashPath"></a><span class="summary-sig-name">splashPath</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="sponsorsFilePath"></a><span class="summary-sig-name">sponsorsFilePath</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="srsDbFilePath"></a><span class="summary-sig-name">srsDbFilePath</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="svgPaths"></a><span class="summary-sig-name">svgPaths</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="systemEnvVars"></a><span class="summary-sig-name">systemEnvVars</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="themeName"></a><span class="summary-sig-name">themeName</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="qgis._core.QgsApplication-class.html#timerEvent" class="summary-sig-name">timerEvent</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="translatorsFilePath"></a><span class="summary-sig-name">translatorsFilePath</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="userStyleV2Path"></a><span class="summary-sig-name">userStyleV2Path</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="PyQt4.QtGui.QApplication-class.html">PyQt4.QtGui.QApplication</a></code></b>:
+      <code><a href="PyQt4.QtGui.QApplication-class.html#aboutQt">aboutQt</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#activeModalWidget">activeModalWidget</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#activePopupWidget">activePopupWidget</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#activeWindow">activeWindow</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#alert">alert</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#allWidgets">allWidgets</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#autoSipEnabled">autoSipEnabled</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#beep">beep</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#changeOverrideCursor">changeOverrideCursor</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#clipboard">clipboard</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#closeAllWindows">closeAllWindows</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#colorSpec">colorSpec</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#commitData">commitData</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#commitDataRequest">commitDataRequest</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#cursorFlashTime">cursorFlashTime</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#desktop">desktop</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#desktopSettingsAware">desktopSettingsAware</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#doubleClickInterval">doubleClickInterval</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#exec_">exec_</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#focusChanged">focusChanged</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#focusWidget">focusWidget</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#font">font</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#fontDatabaseChanged">fontDatabaseChanged</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#fontMetrics">fontMetrics</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#globalStrut">globalStrut</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#inputContext">inputContext</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#isEffectEnabled">isEffectEnabled</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#isLeftToRight">isLeftToRight</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#isRightToLeft">isRightToLeft</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#isSessionRestored">isSessionRestored</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#keyboardInputDirection">keyboardInputDirection</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#keyboardInputInterval">keyboardInputInterval</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#keyboardInputLocale">keyboardInputLocale</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#keyboardModifiers">keyboardModifiers</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#lastWindowClosed">lastWindowClosed</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#layoutDirection">layoutDirection</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#mouseButtons">mouseButtons</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#notify">notify</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#overrideCursor">overrideCursor</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#palette">palette</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#queryKeyboardModifiers">queryKeyboardModifiers</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#quitOnLastWindowClosed">quitOnLastWindowClosed</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#restoreOverrideCursor">restoreOverrideCursor</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#saveState">saveState</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#saveStateRequest">saveStateRequest</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#sessionId">sessionId</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#sessionKey">sessionKey</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#setActiveWindow">setActiveWindow</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#setAutoSipEnabled">setAutoSipEnabled</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#setColorSpec">setColorSpec</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#setCursorFlashTime">setCursorFlashTime</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#setDesktopSettingsAware">setDesktopSettingsAware</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#setDoubleClickInterval">setDoubleClickInterval</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#setEffectEnabled">setEffectEnabled</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#setFont">setFont</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#setGlobalStrut">setGlobalStrut</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#setGraphicsSystem">setGraphicsSystem</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#setInputContext">setInputContext</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#setKeyboardInputInterval">setKeyboardInputInterval</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#setLayoutDirection">setLayoutDirection</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#setOverrideCursor">setOverrideCursor</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#setPalette">setPalette</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#setQuitOnLastWindowClosed">setQuitOnLastWindowClosed</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#setStartDragDistance">setStartDragDistance</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#setStartDragTime">setStartDragTime</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#setStyle">setStyle</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#setStyleSheet">setStyleSheet</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#setWheelScrollLines">setWheelScrollLines</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#setWindowIcon">setWindowIcon</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#startDragDistance">startDragDistance</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#startDragTime">startDragTime</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#style">style</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#styleSheet">styleSheet</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#syncX">syncX</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#topLevelAt">topLevelAt</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#topLevelWidgets">topLevelWidgets</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#type">type</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#wheelScrollLines">wheelScrollLines</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#widgetAt">widgetAt</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#windowIcon">windowIcon</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#x11EventFilter">x11EventFilter</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#x11ProcessEvent">x11ProcessEvent</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="PyQt4.QtCore.QCoreApplication-class.html">PyQt4.QtCore.QCoreApplication</a></code></b>:
+      <code><a href="PyQt4.QtCore.QCoreApplication-class.html#aboutToQuit">aboutToQuit</a></code>,
+      <code><a href="PyQt4.QtCore.QCoreApplication-class.html#addLibraryPath">addLibraryPath</a></code>,
+      <code><a href="PyQt4.QtCore.QCoreApplication-class.html#applicationDirPath">applicationDirPath</a></code>,
+      <code><a href="PyQt4.QtCore.QCoreApplication-class.html#applicationFilePath">applicationFilePath</a></code>,
+      <code><a href="PyQt4.QtCore.QCoreApplication-class.html#applicationName">applicationName</a></code>,
+      <code><a href="PyQt4.QtCore.QCoreApplication-class.html#applicationPid">applicationPid</a></code>,
+      <code><a href="PyQt4.QtCore.QCoreApplication-class.html#applicationVersion">applicationVersion</a></code>,
+      <code><a href="PyQt4.QtCore.QCoreApplication-class.html#argc">argc</a></code>,
+      <code><a href="PyQt4.QtCore.QCoreApplication-class.html#arguments">arguments</a></code>,
+      <code><a href="PyQt4.QtCore.QCoreApplication-class.html#argv">argv</a></code>,
+      <code><a href="PyQt4.QtCore.QCoreApplication-class.html#closingDown">closingDown</a></code>,
+      <code><a href="PyQt4.QtCore.QCoreApplication-class.html#exit">exit</a></code>,
+      <code><a href="PyQt4.QtCore.QCoreApplication-class.html#flush">flush</a></code>,
+      <code><a href="PyQt4.QtCore.QCoreApplication-class.html#hasPendingEvents">hasPendingEvents</a></code>,
+      <code><a href="PyQt4.QtCore.QCoreApplication-class.html#installTranslator">installTranslator</a></code>,
+      <code><a href="PyQt4.QtCore.QCoreApplication-class.html#instance">instance</a></code>,
+      <code><a href="PyQt4.QtCore.QCoreApplication-class.html#libraryPaths">libraryPaths</a></code>,
+      <code><a href="PyQt4.QtCore.QCoreApplication-class.html#organizationDomain">organizationDomain</a></code>,
+      <code><a href="PyQt4.QtCore.QCoreApplication-class.html#organizationName">organizationName</a></code>,
+      <code><a href="PyQt4.QtCore.QCoreApplication-class.html#postEvent">postEvent</a></code>,
+      <code><a href="PyQt4.QtCore.QCoreApplication-class.html#processEvents">processEvents</a></code>,
+      <code><a href="PyQt4.QtCore.QCoreApplication-class.html#quit">quit</a></code>,
+      <code><a href="PyQt4.QtCore.QCoreApplication-class.html#removeLibraryPath">removeLibraryPath</a></code>,
+      <code><a href="PyQt4.QtCore.QCoreApplication-class.html#removePostedEvents">removePostedEvents</a></code>,
+      <code><a href="PyQt4.QtCore.QCoreApplication-class.html#removeTranslator">removeTranslator</a></code>,
+      <code><a href="PyQt4.QtCore.QCoreApplication-class.html#sendEvent">sendEvent</a></code>,
+      <code><a href="PyQt4.QtCore.QCoreApplication-class.html#sendPostedEvents">sendPostedEvents</a></code>,
+      <code><a href="PyQt4.QtCore.QCoreApplication-class.html#setApplicationName">setApplicationName</a></code>,
+      <code><a href="PyQt4.QtCore.QCoreApplication-class.html#setApplicationVersion">setApplicationVersion</a></code>,
+      <code><a href="PyQt4.QtCore.QCoreApplication-class.html#setAttribute">setAttribute</a></code>,
+      <code><a href="PyQt4.QtCore.QCoreApplication-class.html#setLibraryPaths">setLibraryPaths</a></code>,
+      <code><a href="PyQt4.QtCore.QCoreApplication-class.html#setOrganizationDomain">setOrganizationDomain</a></code>,
+      <code><a href="PyQt4.QtCore.QCoreApplication-class.html#setOrganizationName">setOrganizationName</a></code>,
+      <code><a href="PyQt4.QtCore.QCoreApplication-class.html#startingUp">startingUp</a></code>,
+      <code><a href="PyQt4.QtCore.QCoreApplication-class.html#testAttribute">testAttribute</a></code>,
+      <code><a href="PyQt4.QtCore.QCoreApplication-class.html#translate">translate</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="PyQt4.QtCore.QObject-class.html">PyQt4.QtCore.QObject</a></code></b>:
+      <code><a href="PyQt4.QtCore.QObject-class.html#__getattr__">__getattr__</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#blockSignals">blockSignals</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#children">children</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#connect">connect</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#deleteLater">deleteLater</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#destroyed">destroyed</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#disconnect">disconnect</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#dumpObjectInfo">dumpObjectInfo</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#dumpObjectTree">dumpObjectTree</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#dynamicPropertyNames">dynamicPropertyNames</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#emit">emit</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#eventFilter">eventFilter</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#findChild">findChild</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#findChildren">findChildren</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#inherits">inherits</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#installEventFilter">installEventFilter</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#isWidgetType">isWidgetType</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#killTimer">killTimer</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#metaObject">metaObject</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#moveToThread">moveToThread</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#objectName">objectName</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#parent">parent</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#property">property</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#pyqtConfigure">pyqtConfigure</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#removeEventFilter">removeEventFilter</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#setObjectName">setObjectName</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#setParent">setParent</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#setProperty">setProperty</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#signalsBlocked">signalsBlocked</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#startTimer">startTimer</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#thread">thread</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#tr">tr</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#trUtf8">trUtf8</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>sip.simplewrapper</code></b>:
+      <code>__init__</code>,
+      <code>__new__</code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__repr__</code>,
+      <code>__setattr__</code>,
+      <code>__sizeof__</code>,
+      <code>__str__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS VARIABLES ==================== -->
+<a name="section-ClassVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NDR"></a><span class="summary-name">NDR</span> = <code title="1">1</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="XDR"></a><span class="summary-name">XDR</span> = <code title="0">0</code>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="PyQt4.QtGui.QApplication-class.html">PyQt4.QtGui.QApplication</a></code></b>:
+      <code><a href="PyQt4.QtGui.QApplication-class.html#CustomColor">CustomColor</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#GuiClient">GuiClient</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#GuiServer">GuiServer</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#ManyColor">ManyColor</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#NormalColor">NormalColor</a></code>,
+      <code><a href="PyQt4.QtGui.QApplication-class.html#Tty">Tty</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="PyQt4.QtCore.QCoreApplication-class.html">PyQt4.QtCore.QCoreApplication</a></code></b>:
+      <code><a href="PyQt4.QtCore.QCoreApplication-class.html#CodecForTr">CodecForTr</a></code>,
+      <code><a href="PyQt4.QtCore.QCoreApplication-class.html#DefaultCodec">DefaultCodec</a></code>,
+      <code><a href="PyQt4.QtCore.QCoreApplication-class.html#UnicodeUTF8">UnicodeUTF8</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="PyQt4.QtCore.QObject-class.html">PyQt4.QtCore.QObject</a></code></b>:
+      <code><a href="PyQt4.QtCore.QObject-class.html#staticMetaObject">staticMetaObject</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="childEvent"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">childEvent</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        PyQt4.QtCore.QObject.childEvent
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="connectNotify"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">connectNotify</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        PyQt4.QtCore.QObject.connectNotify
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="customEvent"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">customEvent</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        PyQt4.QtCore.QObject.customEvent
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="disconnectNotify"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">disconnectNotify</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        PyQt4.QtCore.QObject.disconnectNotify
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="event"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">event</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        PyQt4.QtCore.QObject.event
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="receivers"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">receivers</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        PyQt4.QtCore.QObject.receivers
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="sender"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">sender</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        PyQt4.QtCore.QObject.sender
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="senderSignalIndex"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">senderSignalIndex</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        PyQt4.QtCore.QObject.senderSignalIndex
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="timerEvent"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">timerEvent</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        PyQt4.QtCore.QObject.timerEvent
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="QGIS-AIMS-Plugin-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Jun 14 13:16:29 2016
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

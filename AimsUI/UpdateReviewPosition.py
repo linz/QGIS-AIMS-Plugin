@@ -22,8 +22,22 @@ from AimsUI.AimsClient.Gui.ResponseHandler import ResponseHandler
 from AIMSDataManager.AimsUtility import FEEDS
 
 class UpdateReviewPosition(QgsMapToolIdentifyFeature):
+    """
+    Tool for relocating AIMS Review Features
+    """ 
 
     def __init__(self, iface, layerManager, controller):
+        """
+        Intialise Update Address Tool
+        
+        @param iface: QgisInterface Abstract base class defining interfaces exposed by QgisApp  
+        @type iface: Qgisinterface Object
+        @param layerManager: Plugins layer manager
+        @type  layerManager: AimsUI.LayerManager()
+        @param controller: Instance of the plugins controller
+        @type  controller: AimsUI.AimsClient.Gui.Controller()
+        """
+       
         QgsMapToolIdentify.__init__(self, iface.mapCanvas())
         self._iface = iface
         self._controller = controller
@@ -33,16 +47,32 @@ class UpdateReviewPosition(QgsMapToolIdentifyFeature):
         self._currentRevItem = None
 
     def activate(self):
+        """
+        Activate Update Review Position Tool
+        """
+        
         QgsMapTool.activate(self)
         self._currentRevItem = self._controller.currentRevItem
         sb = self._iface.mainWindow().statusBar()
         sb.showMessage('Click map to select new position for review item')
     
     def deactivate(self):
+        """
+        Deactivate Update Review Position Tool
+        """
+        
         sb = self._iface.mainWindow().statusBar()
         sb.clearMessage()
         
     def setEnabled(self, enabled):
+        """ 
+        When Tool related QAction is checked/unchecked
+        Activate / Disable the tool respectively
+
+        @param enabled: Tool enabled. Boolean value
+        @type enabled: boolean
+        """
+        
         self._enabled = enabled
         if enabled:
             self.activate()
@@ -50,6 +80,13 @@ class UpdateReviewPosition(QgsMapToolIdentifyFeature):
             self.deactivate()
     
     def canvasReleaseEvent(self, mouseEvent):
+        """
+        Identify the AIMS Feature(s) the user clicked
+
+        @param mouseEvent: QtGui.QMouseEvent
+        @type mouseEvent: QtGui.QMouseEvent
+        """
+
         self._iface.setActiveLayer(self._layers.addressLayer())
         
         results = self.identify(mouseEvent.x(), mouseEvent.y(), self.ActiveLayer, self.VectorLayer)

@@ -18,10 +18,22 @@ from UiUtility import UiUtility
 
 
 class QueueEditorWidget( Ui_QueueEditorWidget, QWidget ):
+    """
+    QWidget hosting the user fields used to edit an AIMS Feature
+    
+    @param Ui_QueueEditorWidget: QWidget hosting the user fields used to edit an AIMS Feature
+    @type  Ui_QueueEditorWidget: QWidget
+    
+    @param QWidget: Inherits from QtGui.QWidget
+    """
 
     warningStyle = "* { color : red; font-weight: bold }"
 
     def __init__( self, parent=None, controller=None ):
+        """
+        Intialise Queue Feature UI components
+        """
+        
         QWidget.__init__( self, parent )
         self.setupUi(self)
         self.feature = None
@@ -34,26 +46,59 @@ class QueueEditorWidget( Ui_QueueEditorWidget, QWidget ):
         self.setWarningColour()
         
     def setController( self, controller ):
+        """
+        Assign the controller to the QueueWditorWidget
+        
+        @param controller: controller Instance      
+        @type  AimsUI.AimsClient.Gui.Controller() Instance
+        """
+        
         import Controller
         if not controller:
             controller = Controller.instance()
         self._controller = controller
     
     def setWarningColour( self ):
+        """
+        Define the warning stylisation
+        """
+        
         style = ""
         style = self.warningStyle
         self.uWarning.setStyleSheet(style)
          
-    def currentFeatureToUi(self, feature ):
+    def currentFeatureToUi(self, feature):
+        """
+        Populate the Edit Feature Form when the user selects an AIMS Feature 
+        
+        @param feature: AIMS Feature
+        @type  feature: AIMSDataManager.Address()
+        AIMSDataManager.Address
+        """
+        
         self.feature = feature
         UiUtility.featureToUi(self)
     
     def setEditability(self):
+        """ 
+        Set the editability of each user input field embedded with the feature 
+        form based on the user supplied address class
+        """ 
+        
         UiUtility.setEditability(self)
    
-    def getRcl(self):        
+    def getRcl(self):
+        """ 
+        Enable the Road Centre Line Tool allowing the user to 
+        Populate the edit feature form with road information 
+        """   
         self._controller.startRclTool(self)
     
     def updatePosition(self):
+        """ 
+        Enable the UpdateReviewPosTool and pass the current feautre to it
+        for position editing
+        """
+        
         self._controller.startUpdateReviewPosTool(self.feature)
         

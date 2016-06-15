@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="QGIS-AIMS-Plugin-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="QGIS-AIMS-Plugin-module.html">Package&nbsp;QGIS-AIMS-Plugin</a> ::
+        Package&nbsp;AIMSDataManager ::
+        Module&nbsp;FeatureFactory
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory-module.html">Module QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-comment">#!/usr/bin/python</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-comment"># -*- coding: utf-8 -*-</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-comment">################################################################################</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-comment"># Copyright 2015 Crown copyright (c)</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-comment"># Land Information New Zealand and the New Zealand Government.</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-comment"># All rights reserved</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-comment"># This program is released under the terms of the 3 clause BSD license. See the </tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-comment"># LICENSE file for more information.</tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-comment">################################################################################</tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt class="py-comment">#http://devassgeo01:8080/aims/api/address/features - properties</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">re</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">os</tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-0" class="py-name" targets="Module sys=sys-module.html"><a title="sys" class="py-name" href="#" onclick="return doclink('link-0', 'sys', 'link-0');">sys</a></tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">copy</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-1" class="py-name" targets="Module QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility=QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility-module.html"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility" class="py-name" href="#" onclick="return doclink('link-1', 'AimsUtility', 'link-1');">AimsUtility</a></tt> <tt class="py-keyword">import</tt> <tt id="link-2" class="py-name" targets="Variable QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeatureType=QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility-module.html#FeatureType"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeatureType" class="py-name" href="#" onclick="return doclink('link-2', 'FeatureType', 'link-2');">FeatureType</a></tt><tt class="py-op">,</tt><tt id="link-3" class="py-name" targets="Variable QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.ActionType=QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility-module.html#ActionType,Class qgis._core.QgsAction.ActionType=qgis._core.QgsAction.ActionType-class.html"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.ActionType
+qgis._core.QgsAction.ActionType" class="py-name" href="#" onclick="return doclink('link-3', 'ActionType', 'link-3');">ActionType</a></tt><tt class="py-op">,</tt><tt id="link-4" class="py-name" targets="Variable QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.ApprovalType=QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility-module.html#ApprovalType"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.ApprovalType" class="py-name" href="#" onclick="return doclink('link-4', 'ApprovalType', 'link-4');">ApprovalType</a></tt><tt class="py-op">,</tt><tt id="link-5" class="py-name" targets="Variable QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeedType=QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility-module.html#FeedType"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeedType" class="py-name" href="#" onclick="return doclink('link-5', 'FeedType', 'link-5');">FeedType</a></tt><tt class="py-op">,</tt><tt id="link-6" class="py-name" targets="Class QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.InvalidEnumerationType=QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.InvalidEnumerationType-class.html"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.InvalidEnumerationType" class="py-name" href="#" onclick="return doclink('link-6', 'InvalidEnumerationType', 'link-6');">InvalidEnumerationType</a></tt><tt class="py-op">,</tt><tt id="link-7" class="py-name" targets="Class QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.AimsException=QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.AimsException-class.html"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.AimsException" class="py-name" href="#" onclick="return doclink('link-7', 'AimsException', 'link-7');">AimsException</a></tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-8" class="py-name" targets="Module QGIS-AIMS-Plugin.AIMSDataManager.Const=QGIS-AIMS-Plugin.AIMSDataManager.Const-module.html"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Const" class="py-name" href="#" onclick="return doclink('link-8', 'Const', 'link-8');">Const</a></tt> <tt class="py-keyword">import</tt> <tt class="py-name">SKIP_NULL</tt><tt class="py-op">,</tt> <tt class="py-name">DEF_SEP</tt><tt class="py-op">,</tt><tt class="py-name">RES_PATH</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-9" class="py-name" targets="Module QGIS-AIMS-Plugin.AIMSDataManager.Address=QGIS-AIMS-Plugin.AIMSDataManager.Address-module.html,Class QGIS-AIMS-Plugin.AIMSDataManager.Address.Address=QGIS-AIMS-Plugin.AIMSDataManager.Address.Address-class.html"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Address
+QGIS-AIMS-Plugin.AIMSDataManager.Address.Address" class="py-name" href="#" onclick="return doclink('link-9', 'Address', 'link-9');">Address</a></tt> <tt class="py-keyword">import</tt> <tt id="link-10" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Address
+QGIS-AIMS-Plugin.AIMSDataManager.Address.Address" class="py-name" href="#" onclick="return doclink('link-10', 'Address', 'link-9');">Address</a></tt><tt class="py-op">,</tt><tt id="link-11" class="py-name" targets="Class QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressChange=QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressChange-class.html"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressChange" class="py-name" href="#" onclick="return doclink('link-11', 'AddressChange', 'link-11');">AddressChange</a></tt><tt class="py-op">,</tt><tt id="link-12" class="py-name" targets="Class QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressResolution=QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressResolution-class.html"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressResolution" class="py-name" href="#" onclick="return doclink('link-12', 'AddressResolution', 'link-12');">AddressResolution</a></tt><tt class="py-op">,</tt><tt id="link-13" class="py-name" targets="Class PyQt4.QtGui.QStyleOptionViewItem.Position=PyQt4.QtGui.QStyleOptionViewItem.Position-class.html,Class PyQt4.QtGui.QTextFrameFormat.Position=PyQt4.QtGui.QTextFrameFormat.Position-class.html,Class QGIS-AIMS-Plugin.AIMSDataManager.Address.Position=QGIS-AIMS-Plugin.AIMSDataManager.Address.Position-class.html"><a title="PyQt4.QtGui.QStyleOptionViewItem.Position
+PyQt4.QtGui.QTextFrameFormat.Position
+QGIS-AIMS-Plugin.AIMSDataManager.Address.Position" class="py-name" href="#" onclick="return doclink('link-13', 'Position', 'link-13');">Position</a></tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-14" class="py-name" targets="Module QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging=QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging-module.html,Module QGIS-AIMS-Plugin.AimsUI.AimsLogging=QGIS-AIMS-Plugin.AimsUI.AimsLogging-module.html"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging
+QGIS-AIMS-Plugin.AimsUI.AimsLogging" class="py-name" href="#" onclick="return doclink('link-14', 'AimsLogging', 'link-14');">AimsLogging</a></tt> <tt class="py-keyword">import</tt> <tt id="link-15" class="py-name" targets="Class QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging.Logger=QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging.Logger-class.html,Class QGIS-AIMS-Plugin.AimsUI.AimsLogging.Logger=QGIS-AIMS-Plugin.AimsUI.AimsLogging.Logger-class.html"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging.Logger
+QGIS-AIMS-Plugin.AimsUI.AimsLogging.Logger" class="py-name" href="#" onclick="return doclink('link-15', 'Logger', 'link-15');">Logger</a></tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"><tt id="link-16" class="py-name" targets="Variable QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.P=QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory-module.html#P"><a title="QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.P" class="py-name" href="#" onclick="return doclink('link-16', 'P', 'link-16');">P</a></tt> <tt class="py-op">=</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt id="link-17" class="py-name" targets="Variable sys.path=sys-module.html#path"><a title="sys.path" class="py-name" href="#" onclick="return doclink('link-17', 'path', 'link-17');">path</a></tt><tt class="py-op">.</tt><tt class="py-name">join</tt><tt class="py-op">(</tt><tt class="py-name">os</tt><tt class="py-op">.</tt><tt id="link-18" class="py-name"><a title="sys.path" class="py-name" href="#" onclick="return doclink('link-18', 'path', 'link-17');">path</a></tt><tt class="py-op">.</tt><tt class="py-name">dirname</tt><tt class="py-op">(</tt><tt class="py-name">__file__</tt><tt class="py-op">)</tt><tt class="py-op">,</tt><tt class="py-string">'../resources/'</tt><tt class="py-op">)</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"><tt class="py-comment"># ET = FeatureType.ADDRESS</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"><tt class="py-comment"># </tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line"><tt class="py-comment"># TP = {'{}.{}'.format(FeatureType.reverse[ET].lower(),a):b for a,b in zip(</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"><tt class="py-comment">#         [FeedType.reverse[ft].lower() for ft in FeedType.reverse],</tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line"><tt class="py-comment">#         [   {},</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line"><tt class="py-comment">#             {ActionType.reverse[at].lower():None for at in ActionType.reverse},</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line"><tt class="py-comment">#             {ApprovalType.reverse[at].lower():None for at in ApprovalType.reverse}</tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line"><tt class="py-comment">#         ]</tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line"><tt class="py-comment">#         )</tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line"><tt class="py-comment">#     }</tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line"><tt class="py-comment">#AT = {FeedType.FEATURES:Address,FeedType.CHANGEFEED:AddressChange,FeedType.RESOLUTIONFEED:AddressResolution}</tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line"> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line"><tt id="link-19" class="py-name" targets="Variable QGIS-AIMS-Plugin.AIMSDataManager.Address.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.Address-module.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFactory.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFactory-class.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory-module.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.AimsApi.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.AimsApi-module.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging-module.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility-module.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.DataManager.DataManager.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.DataManager.DataManager-class.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.DataManager.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.DataManager-module.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSync.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSync-class.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.DataSync.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.DataSync-module.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdater.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdater-class.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater-module.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature-class.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.Feature.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.Feature-module.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory-class.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory-module.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupFactory.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupFactory-class.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory-module.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.User.User.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.User.User-class.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.UserFactory.UserFactory.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.UserFactory.UserFactory-class.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.UserFactory.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.UserFactory-module.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager._localtest.LocalTest.aimslog=QGIS-AIMS-Plugin.AIMSDataManager._localtest.LocalTest-class.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager._localtest.aimslog=QGIS-AIMS-Plugin.AIMSDataManager._localtest-module.html#aimslog,Variable QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.aimslog=QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#aimslog,Variable QGIS-AIMS-Plugin.AimsUI.AimsLogging.aimslog=QGIS-AIMS-Plugin.AimsUI.AimsLogging-module.html#aimslog,Variable QGIS-AIMS-Plugin.AimsUI.LayerManager.aimslog=QGIS-AIMS-Plugin.AimsUI.LayerManager-module.html#aimslog"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Address.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.AimsApi.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.DataManager.DataManager.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.DataManager.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSync.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.DataSync.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdater.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.Feature.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.User.User.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.UserFactory.UserFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.UserFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager._localtest.LocalTest.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager._localtest.aimslog
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.aimslog
+QGIS-AIMS-Plugin.AimsUI.AimsLogging.aimslog
+QGIS-AIMS-Plugin.AimsUI.LayerManager.aimslog" class="py-name" href="#" onclick="return doclink('link-19', 'aimslog', 'link-19');">aimslog</a></tt> <tt class="py-op">=</tt> <tt id="link-20" class="py-name" targets="Variable PyQt4.QtCore.QEvent.None=PyQt4.QtCore.QEvent-class.html#None,Variable PyQt4.QtCore.QUrl.None=PyQt4.QtCore.QUrl-class.html#None,Variable PyQt4.QtGui.QAbstractPrintDialog.None=PyQt4.QtGui.QAbstractPrintDialog-class.html#None,Variable PyQt4.QtGui.QStyleOptionButton.None=PyQt4.QtGui.QStyleOptionButton-class.html#None,Variable PyQt4.QtGui.QStyleOptionFrameV2.None=PyQt4.QtGui.QStyleOptionFrameV2-class.html#None,Variable PyQt4.QtGui.QStyleOptionHeader.None=PyQt4.QtGui.QStyleOptionHeader-class.html#None,Variable PyQt4.QtGui.QStyleOptionToolBar.None=PyQt4.QtGui.QStyleOptionToolBar-class.html#None,Variable PyQt4.QtGui.QStyleOptionToolButton.None=PyQt4.QtGui.QStyleOptionToolButton-class.html#None,Variable PyQt4.QtGui.QStyleOptionViewItemV2.None=PyQt4.QtGui.QStyleOptionViewItemV2-class.html#None,Variable qgis._core.QgsRasterBandStats.None=qgis._core.QgsRasterBandStats-class.html#None"><a title="PyQt4.QtCore.QEvent.None
+PyQt4.QtCore.QUrl.None
+PyQt4.QtGui.QAbstractPrintDialog.None
+PyQt4.QtGui.QStyleOptionButton.None
+PyQt4.QtGui.QStyleOptionFrameV2.None
+PyQt4.QtGui.QStyleOptionHeader.None
+PyQt4.QtGui.QStyleOptionToolBar.None
+PyQt4.QtGui.QStyleOptionToolButton.None
+PyQt4.QtGui.QStyleOptionViewItemV2.None
+qgis._core.QgsRasterBandStats.None" class="py-name" href="#" onclick="return doclink('link-20', 'None', 'link-20');">None</a></tt> </tt>
+<a name="AddressException"></a><div id="AddressException-def"><a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line">  </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt> <a class="py-toggle" href="#" id="AddressException-toggle" onclick="return toggle('AddressException');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.AddressException-class.html">AddressException</a><tt class="py-op">(</tt><tt class="py-base-class">AimsException</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-keyword">pass</tt>     </tt>
+</div><a name="AddressFieldRequiredException"></a><div id="AddressFieldRequiredException-def"><a name="L41"></a><tt class="py-lineno"> 41</tt> <a class="py-toggle" href="#" id="AddressFieldRequiredException-toggle" onclick="return toggle('AddressFieldRequiredException');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.AddressFieldRequiredException-class.html">AddressFieldRequiredException</a><tt class="py-op">(</tt><tt class="py-base-class">AddressException</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-keyword">pass</tt> </tt>
+</div><a name="AddressFieldIncorrectException"></a><div id="AddressFieldIncorrectException-def"><a name="L42"></a><tt class="py-lineno"> 42</tt> <a class="py-toggle" href="#" id="AddressFieldIncorrectException-toggle" onclick="return toggle('AddressFieldIncorrectException');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.AddressFieldIncorrectException-class.html">AddressFieldIncorrectException</a><tt class="py-op">(</tt><tt class="py-base-class">AddressException</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-keyword">pass</tt> </tt>
+</div><a name="AddressConversionException"></a><div id="AddressConversionException-def"><a name="L43"></a><tt class="py-lineno"> 43</tt> <a class="py-toggle" href="#" id="AddressConversionException-toggle" onclick="return toggle('AddressConversionException');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.AddressConversionException-class.html">AddressConversionException</a><tt class="py-op">(</tt><tt class="py-base-class">AddressException</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-keyword">pass</tt> </tt>
+</div><a name="AddressCreationException"></a><div id="AddressCreationException-def"><a name="L44"></a><tt class="py-lineno"> 44</tt> <a class="py-toggle" href="#" id="AddressCreationException-toggle" onclick="return toggle('AddressCreationException');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.AddressCreationException-class.html">AddressCreationException</a><tt class="py-op">(</tt><tt class="py-base-class">AddressException</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line"> </tt>
+<a name="FeatureFactory"></a><div id="FeatureFactory-def"><a name="L46"></a><tt class="py-lineno"> 46</tt> <a class="py-toggle" href="#" id="FeatureFactory-toggle" onclick="return toggle('FeatureFactory');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory-class.html">FeatureFactory</a><tt class="py-op">(</tt><tt class="py-base-class">object</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="FeatureFactory-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="FeatureFactory-expanded"><a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line">    <tt class="py-docstring">''' AddressFactory class used to build address objects without the overhead of re-reading templates each time an address is needed'''</tt>  </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line">    <tt id="link-21" class="py-name" targets="Variable QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFactory.PBRANCH=QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFactory-class.html#PBRANCH,Variable QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory.PBRANCH=QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory-class.html#PBRANCH"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFactory.PBRANCH
+QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory.PBRANCH" class="py-name" href="#" onclick="return doclink('link-21', 'PBRANCH', 'link-21');">PBRANCH</a></tt> <tt class="py-op">=</tt> <tt class="py-string">'{d}{}{d}{}'</tt><tt class="py-op">.</tt><tt id="link-22" class="py-name" targets="Variable PyQt4.QtGui.QAbstractTextDocumentLayout.Selection.format=PyQt4.QtGui.QAbstractTextDocumentLayout.Selection-class.html#format,Variable PyQt4.QtGui.QTextEdit.ExtraSelection.format=PyQt4.QtGui.QTextEdit.ExtraSelection-class.html#format,Variable PyQt4.QtGui.QTextLayout.FormatRange.format=PyQt4.QtGui.QTextLayout.FormatRange-class.html#format,Variable qgis._gui.QgsOWSSourceSelect.SupportedFormat.format=qgis._gui.QgsOWSSourceSelect.SupportedFormat-class.html#format"><a title="PyQt4.QtGui.QAbstractTextDocumentLayout.Selection.format
+PyQt4.QtGui.QTextEdit.ExtraSelection.format
+PyQt4.QtGui.QTextLayout.FormatRange.format
+qgis._gui.QgsOWSSourceSelect.SupportedFormat.format" class="py-name" href="#" onclick="return doclink('link-22', 'format', 'link-22');">format</a></tt><tt class="py-op">(</tt><tt class="py-name">d</tt><tt class="py-op">=</tt><tt class="py-name">DEF_SEP</tt><tt class="py-op">,</tt><tt class="py-op">*</tt><tt id="link-23" class="py-name"><a title="PyQt4.QtGui.QStyleOptionViewItem.Position
+PyQt4.QtGui.QTextFrameFormat.Position
+QGIS-AIMS-Plugin.AIMSDataManager.Address.Position" class="py-name" href="#" onclick="return doclink('link-23', 'Position', 'link-13');">Position</a></tt><tt class="py-op">.</tt><tt id="link-24" class="py-name" targets="Variable QGIS-AIMS-Plugin.AIMSDataManager.Address.Position.BRANCH=QGIS-AIMS-Plugin.AIMSDataManager.Address.Position-class.html#BRANCH"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Address.Position.BRANCH" class="py-name" href="#" onclick="return doclink('link-24', 'BRANCH', 'link-24');">BRANCH</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line">    <tt id="link-25" class="py-name" targets="Variable QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressChangeFactory.AFFT=QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressChangeFactory-class.html#AFFT,Variable QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFactory.AFFT=QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFactory-class.html#AFFT,Variable QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressResolutionFactory.AFFT=QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressResolutionFactory-class.html#AFFT,Variable QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory.AFFT=QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory-class.html#AFFT"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressChangeFactory.AFFT
+QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFactory.AFFT
+QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressResolutionFactory.AFFT
+QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory.AFFT" class="py-name" href="#" onclick="return doclink('link-25', 'AFFT', 'link-25');">AFFT</a></tt> <tt class="py-op">=</tt> <tt id="link-26" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeedType" class="py-name" href="#" onclick="return doclink('link-26', 'FeedType', 'link-5');">FeedType</a></tt><tt class="py-op">.</tt><tt class="py-name">FEATURES</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line">    <tt id="link-27" class="py-name" targets="Variable QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressChangeFactory.DEF_REF=QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressChangeFactory-class.html#DEF_REF,Variable QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFactory.DEF_REF=QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFactory-class.html#DEF_REF,Variable QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressResolutionFactory.DEF_REF=QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressResolutionFactory-class.html#DEF_REF,Variable QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory.DEF_REF=QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory-class.html#DEF_REF,Variable QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupChangeFactory.DEF_REF=QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupChangeFactory-class.html#DEF_REF,Variable QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupFactory.DEF_REF=QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupFactory-class.html#DEF_REF,Variable QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupResolutionFactory.DEF_REF=QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupResolutionFactory-class.html#DEF_REF,Variable QGIS-AIMS-Plugin.AIMSDataManager.UserFactory.UserFactory.DEF_REF=QGIS-AIMS-Plugin.AIMSDataManager.UserFactory.UserFactory-class.html#DEF_REF"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressChangeFactory.DEF_REF
+QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFactory.DEF_REF
+QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressResolutionFactory.DEF_REF
+QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory.DEF_REF
+QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupChangeFactory.DEF_REF
+QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupFactory.DEF_REF
+QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupResolutionFactory.DEF_REF
+QGIS-AIMS-Plugin.AIMSDataManager.UserFactory.UserFactory.DEF_REF" class="py-name" href="#" onclick="return doclink('link-27', 'DEF_REF', 'link-27');">DEF_REF</a></tt> <tt class="py-op">=</tt> <tt id="link-28" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeedType" class="py-name" href="#" onclick="return doclink('link-28', 'FeedType', 'link-5');">FeedType</a></tt><tt class="py-op">.</tt><tt id="link-29" class="py-name" targets="Variable QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.IterEnum.reverse=QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.IterEnum-class.html#reverse"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.IterEnum.reverse" class="py-name" href="#" onclick="return doclink('link-29', 'reverse', 'link-29');">reverse</a></tt><tt class="py-op">[</tt><tt id="link-30" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressChangeFactory.AFFT
+QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFactory.AFFT
+QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressResolutionFactory.AFFT
+QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory.AFFT" class="py-name" href="#" onclick="return doclink('link-30', 'AFFT', 'link-25');">AFFT</a></tt><tt class="py-op">]</tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line">    <tt id="link-31" class="py-name" targets="Variable QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressChangeFactory.addrtype=QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressChangeFactory-class.html#addrtype,Variable QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFactory.addrtype=QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFactory-class.html#addrtype,Variable QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressResolutionFactory.addrtype=QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressResolutionFactory-class.html#addrtype,Variable QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory.addrtype=QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory-class.html#addrtype"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressChangeFactory.addrtype
+QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFactory.addrtype
+QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressResolutionFactory.addrtype
+QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory.addrtype" class="py-name" href="#" onclick="return doclink('link-31', 'addrtype', 'link-31');">addrtype</a></tt> <tt class="py-op">=</tt> <tt id="link-32" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Address
+QGIS-AIMS-Plugin.AIMSDataManager.Address.Address" class="py-name" href="#" onclick="return doclink('link-32', 'Address', 'link-9');">Address</a></tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line">    <tt id="link-33" class="py-name" targets="Variable QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressChangeFactory.reqtype=QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressChangeFactory-class.html#reqtype,Variable QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFactory.reqtype=QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFactory-class.html#reqtype,Variable QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressResolutionFactory.reqtype=QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressResolutionFactory-class.html#reqtype,Variable QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory.reqtype=QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory-class.html#reqtype,Variable QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupChangeFactory.reqtype=QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupChangeFactory-class.html#reqtype,Variable QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupResolutionFactory.reqtype=QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupResolutionFactory-class.html#reqtype,Variable QGIS-AIMS-Plugin.AIMSDataManager.UserFactory.UserFactory.reqtype=QGIS-AIMS-Plugin.AIMSDataManager.UserFactory.UserFactory-class.html#reqtype"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressChangeFactory.reqtype
+QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFactory.reqtype
+QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressResolutionFactory.reqtype
+QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory.reqtype
+QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupChangeFactory.reqtype
+QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupResolutionFactory.reqtype
+QGIS-AIMS-Plugin.AIMSDataManager.UserFactory.UserFactory.reqtype" class="py-name" href="#" onclick="return doclink('link-33', 'reqtype', 'link-33');">reqtype</a></tt> <tt class="py-op">=</tt> <tt id="link-34" class="py-name"><a title="PyQt4.QtCore.QEvent.None
+PyQt4.QtCore.QUrl.None
+PyQt4.QtGui.QAbstractPrintDialog.None
+PyQt4.QtGui.QStyleOptionButton.None
+PyQt4.QtGui.QStyleOptionFrameV2.None
+PyQt4.QtGui.QStyleOptionHeader.None
+PyQt4.QtGui.QStyleOptionToolBar.None
+PyQt4.QtGui.QStyleOptionToolButton.None
+PyQt4.QtGui.QStyleOptionViewItemV2.None
+qgis._core.QgsRasterBandStats.None" class="py-name" href="#" onclick="return doclink('link-34', 'None', 'link-20');">None</a></tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line">    <tt class="py-comment">#RP = eval(RES_PATH)</tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line">    <tt id="link-35" class="py-name" targets="Variable QGIS-AIMS-Plugin.AIMSDataManager.DataManager.Persistence.RP=QGIS-AIMS-Plugin.AIMSDataManager.DataManager.Persistence-class.html#RP,Variable QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory.RP=QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory-class.html#RP"><a title="QGIS-AIMS-Plugin.AIMSDataManager.DataManager.Persistence.RP
+QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory.RP" class="py-name" href="#" onclick="return doclink('link-35', 'RP', 'link-35');">RP</a></tt> <tt class="py-op">=</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt id="link-36" class="py-name"><a title="sys.path" class="py-name" href="#" onclick="return doclink('link-36', 'path', 'link-17');">path</a></tt><tt class="py-op">.</tt><tt class="py-name">join</tt><tt class="py-op">(</tt><tt class="py-name">os</tt><tt class="py-op">.</tt><tt id="link-37" class="py-name"><a title="sys.path" class="py-name" href="#" onclick="return doclink('link-37', 'path', 'link-17');">path</a></tt><tt class="py-op">.</tt><tt class="py-name">dirname</tt><tt class="py-op">(</tt><tt class="py-name">__file__</tt><tt class="py-op">)</tt><tt class="py-op">,</tt><tt class="py-string">'..'</tt><tt class="py-op">,</tt><tt class="py-name">RES_PATH</tt><tt class="py-op">)</tt> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line">     </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line">    <tt class="py-keyword">global</tt> <tt id="link-38" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Address.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.AimsApi.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.DataManager.DataManager.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.DataManager.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSync.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.DataSync.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdater.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.Feature.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.User.User.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.UserFactory.UserFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.UserFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager._localtest.LocalTest.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager._localtest.aimslog
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.aimslog
+QGIS-AIMS-Plugin.AimsUI.AimsLogging.aimslog
+QGIS-AIMS-Plugin.AimsUI.LayerManager.aimslog" class="py-name" href="#" onclick="return doclink('link-38', 'aimslog', 'link-19');">aimslog</a></tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line">    <tt id="link-39" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Address.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.AimsApi.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.DataManager.DataManager.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.DataManager.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSync.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.DataSync.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdater.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.Feature.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.User.User.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.UserFactory.UserFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.UserFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager._localtest.LocalTest.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager._localtest.aimslog
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.aimslog
+QGIS-AIMS-Plugin.AimsUI.AimsLogging.aimslog
+QGIS-AIMS-Plugin.AimsUI.LayerManager.aimslog" class="py-name" href="#" onclick="return doclink('link-39', 'aimslog', 'link-19');">aimslog</a></tt> <tt class="py-op">=</tt> <tt id="link-40" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging.Logger
+QGIS-AIMS-Plugin.AimsUI.AimsLogging.Logger" class="py-name" href="#" onclick="return doclink('link-40', 'Logger', 'link-15');">Logger</a></tt><tt class="py-op">.</tt><tt id="link-41" class="py-name" targets="Static Method QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging.Logger.setup()=QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging.Logger-class.html#setup,Method QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSync.setup()=QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSync-class.html#setup,Method QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdater.setup()=QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdater-class.html#setup,Method QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterAction.setup()=QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterAction-class.html#setup,Method QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterApproval.setup()=QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterApproval-class.html#setup,Method QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterGroupAction.setup()=QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterGroupAction-class.html#setup,Method QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterGroupApproval.setup()=QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterGroupApproval-class.html#setup,Method QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterUserAction.setup()=QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterUserAction-class.html#setup,Function QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.setup()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#setup,Static Method QGIS-AIMS-Plugin.AimsUI.AimsLogging.Logger.setup()=QGIS-AIMS-Plugin.AimsUI.AimsLogging.Logger-class.html#setup"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging.Logger.setup
+QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSync.setup
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdater.setup
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterAction.setup
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterApproval.setup
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterGroupAction.setup
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterGroupApproval.setup
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterUserAction.setup
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.setup
+QGIS-AIMS-Plugin.AimsUI.AimsLogging.Logger.setup" class="py-name" href="#" onclick="return doclink('link-41', 'setup', 'link-41');">setup</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line">     </tt>
+<a name="FeatureFactory.__init__"></a><div id="FeatureFactory.__init__-def"><a name="L59"></a><tt class="py-lineno"> 59</tt> <a class="py-toggle" href="#" id="FeatureFactory.__init__-toggle" onclick="return toggle('FeatureFactory.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">ref</tt><tt class="py-op">=</tt><tt id="link-42" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressChangeFactory.DEF_REF
+QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFactory.DEF_REF
+QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressResolutionFactory.DEF_REF
+QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory.DEF_REF
+QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupChangeFactory.DEF_REF
+QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupFactory.DEF_REF
+QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupResolutionFactory.DEF_REF
+QGIS-AIMS-Plugin.AIMSDataManager.UserFactory.UserFactory.DEF_REF" class="py-name" href="#" onclick="return doclink('link-42', 'DEF_REF', 'link-27');">DEF_REF</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="FeatureFactory.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="FeatureFactory.__init__-expanded"><a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line">        <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line">        <tt class="py-comment">#self.ref = ref</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line">        <tt class="py-comment">#key = '{}.{}'.format(FeatureType.reverse[ET].lower(),FeedType.reverse[ref].lower())</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line">        <tt class="py-comment">#self.template = TemplateReader().get()[key]</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line">     </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line">    <tt class="py-comment">#def __str__(self):</tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line">    <tt class="py-comment">#    return 'AFC.{}'.format(FeedType.reverse(self.AFFT)[:3])</tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">     </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">staticmethod</tt> </tt>
+<a name="FeatureFactory.getInstance"></a><div id="FeatureFactory.getInstance-def"><a name="L69"></a><tt class="py-lineno"> 69</tt> <a class="py-toggle" href="#" id="FeatureFactory.getInstance-toggle" onclick="return toggle('FeatureFactory.getInstance');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory-class.html#getInstance">getInstance</a><tt class="py-op">(</tt><tt class="py-param">etft</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="FeatureFactory.getInstance-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="FeatureFactory.getInstance-expanded"><a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">        <tt class="py-docstring">'''Gets an instance of a factory to generate a particular (ft) type of address object'''</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">        <tt class="py-comment">#NOTE. Double duty for ft, consider (et,ft) - since enums are just ints et.g=ft.f</tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">etft</tt><tt class="py-op">.</tt><tt id="link-43" class="py-name" targets="Method QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeedRef.et()=QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeedRef-class.html#et"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeedRef.et" class="py-name" href="#" onclick="return doclink('link-43', 'et', 'link-43');">et</a></tt><tt class="py-op">==</tt><tt id="link-44" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeatureType" class="py-name" href="#" onclick="return doclink('link-44', 'FeatureType', 'link-2');">FeatureType</a></tt><tt class="py-op">.</tt><tt class="py-name">GROUPS</tt><tt class="py-op">:</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line">            <tt class="py-keyword">from</tt> <tt id="link-45" class="py-name" targets="Module QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory=QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory-module.html,Class QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupFactory=QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupFactory-class.html"><a title="QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory
+QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupFactory" class="py-name" href="#" onclick="return doclink('link-45', 'GroupFactory', 'link-45');">GroupFactory</a></tt> <tt class="py-keyword">import</tt> <tt id="link-46" class="py-name" targets="Class QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupChangeFactory=QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupChangeFactory-class.html"><a title="QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupChangeFactory" class="py-name" href="#" onclick="return doclink('link-46', 'GroupChangeFactory', 'link-46');">GroupChangeFactory</a></tt><tt class="py-op">,</tt><tt id="link-47" class="py-name" targets="Class QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupResolutionFactory=QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupResolutionFactory-class.html"><a title="QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupResolutionFactory" class="py-name" href="#" onclick="return doclink('link-47', 'GroupResolutionFactory', 'link-47');">GroupResolutionFactory</a></tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">etft</tt><tt class="py-op">.</tt><tt id="link-48" class="py-name" targets="Method QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeedRef.ft()=QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeedRef-class.html#ft"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeedRef.ft" class="py-name" href="#" onclick="return doclink('link-48', 'ft', 'link-48');">ft</a></tt><tt class="py-op">==</tt><tt id="link-49" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeedType" class="py-name" href="#" onclick="return doclink('link-49', 'FeedType', 'link-5');">FeedType</a></tt><tt class="py-op">.</tt><tt class="py-name">CHANGEFEED</tt><tt class="py-op">:</tt> <tt class="py-keyword">return</tt> <tt id="link-50" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupChangeFactory" class="py-name" href="#" onclick="return doclink('link-50', 'GroupChangeFactory', 'link-46');">GroupChangeFactory</a></tt><tt class="py-op">(</tt><tt class="py-name">etft</tt><tt class="py-op">)</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line">            <tt class="py-keyword">elif</tt> <tt class="py-name">etft</tt><tt class="py-op">.</tt><tt id="link-51" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeedRef.ft" class="py-name" href="#" onclick="return doclink('link-51', 'ft', 'link-48');">ft</a></tt><tt class="py-op">==</tt><tt id="link-52" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeedType" class="py-name" href="#" onclick="return doclink('link-52', 'FeedType', 'link-5');">FeedType</a></tt><tt class="py-op">.</tt><tt class="py-name">RESOLUTIONFEED</tt><tt class="py-op">:</tt> <tt class="py-keyword">return</tt> <tt id="link-53" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupResolutionFactory" class="py-name" href="#" onclick="return doclink('link-53', 'GroupResolutionFactory', 'link-47');">GroupResolutionFactory</a></tt><tt class="py-op">(</tt><tt class="py-name">etft</tt><tt class="py-op">)</tt> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">            <tt class="py-keyword">else</tt><tt class="py-op">:</tt> <tt class="py-keyword">raise</tt> <tt id="link-54" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.InvalidEnumerationType" class="py-name" href="#" onclick="return doclink('link-54', 'InvalidEnumerationType', 'link-6');">InvalidEnumerationType</a></tt><tt class="py-op">(</tt><tt class="py-string">'FeedType {} not available'</tt><tt class="py-op">.</tt><tt id="link-55" class="py-name"><a title="PyQt4.QtGui.QAbstractTextDocumentLayout.Selection.format
+PyQt4.QtGui.QTextEdit.ExtraSelection.format
+PyQt4.QtGui.QTextLayout.FormatRange.format
+qgis._gui.QgsOWSSourceSelect.SupportedFormat.format" class="py-name" href="#" onclick="return doclink('link-55', 'format', 'link-22');">format</a></tt><tt class="py-op">(</tt><tt class="py-name">etft</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line">        <tt class="py-keyword">elif</tt> <tt class="py-name">etft</tt><tt class="py-op">.</tt><tt id="link-56" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeedRef.et" class="py-name" href="#" onclick="return doclink('link-56', 'et', 'link-43');">et</a></tt><tt class="py-op">==</tt><tt id="link-57" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeatureType" class="py-name" href="#" onclick="return doclink('link-57', 'FeatureType', 'link-2');">FeatureType</a></tt><tt class="py-op">.</tt><tt class="py-name">ADDRESS</tt><tt class="py-op">:</tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line">            <tt class="py-keyword">from</tt> <tt id="link-58" class="py-name" targets="Module QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory=QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory-module.html,Class QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFactory=QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFactory-class.html"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory
+QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFactory" class="py-name" href="#" onclick="return doclink('link-58', 'AddressFactory', 'link-58');">AddressFactory</a></tt> <tt class="py-keyword">import</tt> <tt id="link-59" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory
+QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFactory" class="py-name" href="#" onclick="return doclink('link-59', 'AddressFactory', 'link-58');">AddressFactory</a></tt><tt class="py-op">,</tt><tt id="link-60" class="py-name" targets="Class QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressChangeFactory=QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressChangeFactory-class.html"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressChangeFactory" class="py-name" href="#" onclick="return doclink('link-60', 'AddressChangeFactory', 'link-60');">AddressChangeFactory</a></tt><tt class="py-op">,</tt><tt id="link-61" class="py-name" targets="Class QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressResolutionFactory=QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressResolutionFactory-class.html"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressResolutionFactory" class="py-name" href="#" onclick="return doclink('link-61', 'AddressResolutionFactory', 'link-61');">AddressResolutionFactory</a></tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">etft</tt><tt class="py-op">.</tt><tt id="link-62" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeedRef.ft" class="py-name" href="#" onclick="return doclink('link-62', 'ft', 'link-48');">ft</a></tt><tt class="py-op">==</tt><tt id="link-63" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeedType" class="py-name" href="#" onclick="return doclink('link-63', 'FeedType', 'link-5');">FeedType</a></tt><tt class="py-op">.</tt><tt class="py-name">FEATURES</tt><tt class="py-op">:</tt> <tt class="py-keyword">return</tt> <tt id="link-64" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory
+QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFactory" class="py-name" href="#" onclick="return doclink('link-64', 'AddressFactory', 'link-58');">AddressFactory</a></tt><tt class="py-op">(</tt><tt class="py-name">etft</tt><tt class="py-op">)</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">            <tt class="py-keyword">elif</tt> <tt class="py-name">etft</tt><tt class="py-op">.</tt><tt id="link-65" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeedRef.ft" class="py-name" href="#" onclick="return doclink('link-65', 'ft', 'link-48');">ft</a></tt><tt class="py-op">==</tt><tt id="link-66" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeedType" class="py-name" href="#" onclick="return doclink('link-66', 'FeedType', 'link-5');">FeedType</a></tt><tt class="py-op">.</tt><tt class="py-name">CHANGEFEED</tt><tt class="py-op">:</tt> <tt class="py-keyword">return</tt> <tt id="link-67" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressChangeFactory" class="py-name" href="#" onclick="return doclink('link-67', 'AddressChangeFactory', 'link-60');">AddressChangeFactory</a></tt><tt class="py-op">(</tt><tt class="py-name">etft</tt><tt class="py-op">)</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line">            <tt class="py-keyword">elif</tt> <tt class="py-name">etft</tt><tt class="py-op">.</tt><tt id="link-68" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeedRef.ft" class="py-name" href="#" onclick="return doclink('link-68', 'ft', 'link-48');">ft</a></tt><tt class="py-op">==</tt><tt id="link-69" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeedType" class="py-name" href="#" onclick="return doclink('link-69', 'FeedType', 'link-5');">FeedType</a></tt><tt class="py-op">.</tt><tt class="py-name">RESOLUTIONFEED</tt><tt class="py-op">:</tt> <tt class="py-keyword">return</tt> <tt id="link-70" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressResolutionFactory" class="py-name" href="#" onclick="return doclink('link-70', 'AddressResolutionFactory', 'link-61');">AddressResolutionFactory</a></tt><tt class="py-op">(</tt><tt class="py-name">etft</tt><tt class="py-op">)</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line">            <tt class="py-keyword">else</tt><tt class="py-op">:</tt> <tt class="py-keyword">raise</tt> <tt id="link-71" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.InvalidEnumerationType" class="py-name" href="#" onclick="return doclink('link-71', 'InvalidEnumerationType', 'link-6');">InvalidEnumerationType</a></tt><tt class="py-op">(</tt><tt class="py-string">'FeedType {} not available'</tt><tt class="py-op">.</tt><tt id="link-72" class="py-name"><a title="PyQt4.QtGui.QAbstractTextDocumentLayout.Selection.format
+PyQt4.QtGui.QTextEdit.ExtraSelection.format
+PyQt4.QtGui.QTextLayout.FormatRange.format
+qgis._gui.QgsOWSSourceSelect.SupportedFormat.format" class="py-name" href="#" onclick="return doclink('link-72', 'format', 'link-22');">format</a></tt><tt class="py-op">(</tt><tt class="py-name">etft</tt><tt class="py-op">.</tt><tt id="link-73" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeedRef.ft" class="py-name" href="#" onclick="return doclink('link-73', 'ft', 'link-48');">ft</a></tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line">        <tt class="py-keyword">elif</tt> <tt class="py-name">etft</tt><tt class="py-op">.</tt><tt id="link-74" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeedRef.et" class="py-name" href="#" onclick="return doclink('link-74', 'et', 'link-43');">et</a></tt><tt class="py-op">==</tt><tt id="link-75" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeatureType" class="py-name" href="#" onclick="return doclink('link-75', 'FeatureType', 'link-2');">FeatureType</a></tt><tt class="py-op">.</tt><tt class="py-name">USERS</tt><tt class="py-op">:</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line">            <tt class="py-keyword">from</tt> <tt id="link-76" class="py-name" targets="Module QGIS-AIMS-Plugin.AIMSDataManager.UserFactory=QGIS-AIMS-Plugin.AIMSDataManager.UserFactory-module.html,Class QGIS-AIMS-Plugin.AIMSDataManager.UserFactory.UserFactory=QGIS-AIMS-Plugin.AIMSDataManager.UserFactory.UserFactory-class.html"><a title="QGIS-AIMS-Plugin.AIMSDataManager.UserFactory
+QGIS-AIMS-Plugin.AIMSDataManager.UserFactory.UserFactory" class="py-name" href="#" onclick="return doclink('link-76', 'UserFactory', 'link-76');">UserFactory</a></tt> <tt class="py-keyword">import</tt> <tt id="link-77" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.UserFactory
+QGIS-AIMS-Plugin.AIMSDataManager.UserFactory.UserFactory" class="py-name" href="#" onclick="return doclink('link-77', 'UserFactory', 'link-76');">UserFactory</a></tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">etft</tt><tt class="py-op">.</tt><tt id="link-78" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeedRef.ft" class="py-name" href="#" onclick="return doclink('link-78', 'ft', 'link-48');">ft</a></tt><tt class="py-op">==</tt><tt id="link-79" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeedType" class="py-name" href="#" onclick="return doclink('link-79', 'FeedType', 'link-5');">FeedType</a></tt><tt class="py-op">.</tt><tt class="py-name">ADMIN</tt><tt class="py-op">:</tt> <tt class="py-keyword">return</tt> <tt id="link-80" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.UserFactory
+QGIS-AIMS-Plugin.AIMSDataManager.UserFactory.UserFactory" class="py-name" href="#" onclick="return doclink('link-80', 'UserFactory', 'link-76');">UserFactory</a></tt><tt class="py-op">(</tt><tt class="py-name">etft</tt><tt class="py-op">)</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">            <tt class="py-keyword">else</tt><tt class="py-op">:</tt> <tt class="py-keyword">raise</tt> <tt id="link-81" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.InvalidEnumerationType" class="py-name" href="#" onclick="return doclink('link-81', 'InvalidEnumerationType', 'link-6');">InvalidEnumerationType</a></tt><tt class="py-op">(</tt><tt class="py-string">'FeedType {} not available'</tt><tt class="py-op">.</tt><tt id="link-82" class="py-name"><a title="PyQt4.QtGui.QAbstractTextDocumentLayout.Selection.format
+PyQt4.QtGui.QTextEdit.ExtraSelection.format
+PyQt4.QtGui.QTextLayout.FormatRange.format
+qgis._gui.QgsOWSSourceSelect.SupportedFormat.format" class="py-name" href="#" onclick="return doclink('link-82', 'format', 'link-22');">format</a></tt><tt class="py-op">(</tt><tt class="py-name">etft</tt><tt class="py-op">.</tt><tt id="link-83" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeedRef.ft" class="py-name" href="#" onclick="return doclink('link-83', 'ft', 'link-48');">ft</a></tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> <tt class="py-keyword">raise</tt> <tt id="link-84" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.InvalidEnumerationType" class="py-name" href="#" onclick="return doclink('link-84', 'InvalidEnumerationType', 'link-6');">InvalidEnumerationType</a></tt><tt class="py-op">(</tt><tt class="py-string">'FeatureType {} not available'</tt><tt class="py-op">.</tt><tt id="link-85" class="py-name"><a title="PyQt4.QtGui.QAbstractTextDocumentLayout.Selection.format
+PyQt4.QtGui.QTextEdit.ExtraSelection.format
+PyQt4.QtGui.QTextLayout.FormatRange.format
+qgis._gui.QgsOWSSourceSelect.SupportedFormat.format" class="py-name" href="#" onclick="return doclink('link-85', 'format', 'link-22');">format</a></tt><tt class="py-op">(</tt><tt class="py-name">etft</tt><tt class="py-op">.</tt><tt id="link-86" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeedRef.et" class="py-name" href="#" onclick="return doclink('link-86', 'et', 'link-43');">et</a></tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">     </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">     </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">staticmethod</tt> </tt>
+<a name="FeatureFactory.filterPI"></a><div id="FeatureFactory.filterPI-def"><a name="L91"></a><tt class="py-lineno"> 91</tt> <a class="py-toggle" href="#" id="FeatureFactory.filterPI-toggle" onclick="return toggle('FeatureFactory.filterPI');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory-class.html#filterPI">filterPI</a><tt class="py-op">(</tt><tt class="py-param">ppi</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="FeatureFactory.filterPI-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="FeatureFactory.filterPI-expanded"><a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">        <tt class="py-docstring">'''filters out possible Processing Instructions'''</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">        <tt class="py-name">sppi</tt> <tt class="py-op">=</tt> <tt class="py-name">ppi</tt><tt class="py-op">.</tt><tt class="py-name">encode</tt><tt class="py-op">(</tt><tt class="py-string">'utf8'</tt><tt class="py-op">)</tt> <tt class="py-keyword">if</tt> <tt class="py-name">hasattr</tt><tt class="py-op">(</tt><tt class="py-name">ppi</tt><tt class="py-op">,</tt><tt class="py-string">'find'</tt><tt class="py-op">)</tt> <tt class="py-keyword">else</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">ppi</tt><tt class="py-op">)</tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">sppi</tt><tt class="py-op">.</tt><tt class="py-name">find</tt><tt class="py-op">(</tt><tt class="py-string">'#'</tt><tt class="py-op">)</tt><tt class="py-op">&gt;</tt><tt class="py-op">-</tt><tt class="py-number">1</tt><tt class="py-op">:</tt> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">            <tt class="py-name">dflt</tt> <tt class="py-op">=</tt> <tt class="py-name">re</tt><tt class="py-op">.</tt><tt class="py-name">search</tt><tt class="py-op">(</tt><tt class="py-string">'default=(\w+)'</tt><tt class="py-op">,</tt><tt class="py-name">sppi</tt><tt class="py-op">)</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">            <tt class="py-name">oneof</tt> <tt class="py-op">=</tt> <tt class="py-name">re</tt><tt class="py-op">.</tt><tt class="py-name">search</tt><tt class="py-op">(</tt><tt class="py-string">'oneof=(\w+)'</tt><tt class="py-op">,</tt><tt class="py-name">sppi</tt><tt class="py-op">)</tt><tt class="py-comment">#first as default</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">dflt</tt><tt class="py-op">.</tt><tt class="py-name">group</tt><tt class="py-op">(</tt><tt class="py-number">1</tt><tt class="py-op">)</tt> <tt class="py-keyword">if</tt> <tt class="py-name">dflt</tt> <tt class="py-keyword">else</tt> <tt class="py-op">(</tt><tt class="py-name">oneof</tt><tt class="py-op">.</tt><tt class="py-name">group</tt><tt class="py-op">(</tt><tt class="py-number">1</tt><tt class="py-op">)</tt> <tt class="py-keyword">if</tt> <tt class="py-name">oneof</tt> <tt class="py-keyword">else</tt> <tt id="link-87" class="py-name"><a title="PyQt4.QtCore.QEvent.None
+PyQt4.QtCore.QUrl.None
+PyQt4.QtGui.QAbstractPrintDialog.None
+PyQt4.QtGui.QStyleOptionButton.None
+PyQt4.QtGui.QStyleOptionFrameV2.None
+PyQt4.QtGui.QStyleOptionHeader.None
+PyQt4.QtGui.QStyleOptionToolBar.None
+PyQt4.QtGui.QStyleOptionToolButton.None
+PyQt4.QtGui.QStyleOptionViewItemV2.None
+qgis._core.QgsRasterBandStats.None" class="py-name" href="#" onclick="return doclink('link-87', 'None', 'link-20');">None</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">ppi</tt> </tt>
+</div><a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line">     </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">staticmethod</tt> </tt>
+<a name="FeatureFactory.readTemplate"></a><div id="FeatureFactory.readTemplate-def"><a name="L101"></a><tt class="py-lineno">101</tt> <a class="py-toggle" href="#" id="FeatureFactory.readTemplate-toggle" onclick="return toggle('FeatureFactory.readTemplate');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory-class.html#readTemplate">readTemplate</a><tt class="py-op">(</tt><tt class="py-param">tp</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="FeatureFactory.readTemplate-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="FeatureFactory.readTemplate-expanded"><a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">t1</tt> <tt class="py-keyword">in</tt> <tt class="py-name">tp</tt><tt class="py-op">:</tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt id="link-88" class="py-name" targets="Method QGIS-AIMS-Plugin.AIMSDataManager._localtest.LocalTest.t2()=QGIS-AIMS-Plugin.AIMSDataManager._localtest.LocalTest-class.html#t2"><a title="QGIS-AIMS-Plugin.AIMSDataManager._localtest.LocalTest.t2" class="py-name" href="#" onclick="return doclink('link-88', 't2', 'link-88');">t2</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">tp</tt><tt class="py-op">[</tt><tt class="py-name">t1</tt><tt class="py-op">]</tt><tt class="py-op">:</tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line">                <tt class="py-keyword">with</tt> <tt class="py-name">open</tt><tt class="py-op">(</tt><tt class="py-name">os</tt><tt class="py-op">.</tt><tt id="link-89" class="py-name"><a title="sys.path" class="py-name" href="#" onclick="return doclink('link-89', 'path', 'link-17');">path</a></tt><tt class="py-op">.</tt><tt class="py-name">join</tt><tt class="py-op">(</tt><tt id="link-90" class="py-name" targets="Module QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory=QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory-module.html,Class QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory=QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory-class.html"><a title="QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory
+QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory" class="py-name" href="#" onclick="return doclink('link-90', 'FeatureFactory', 'link-90');">FeatureFactory</a></tt><tt class="py-op">.</tt><tt id="link-91" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.DataManager.Persistence.RP
+QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory.RP" class="py-name" href="#" onclick="return doclink('link-91', 'RP', 'link-35');">RP</a></tt><tt class="py-op">,</tt><tt class="py-string">'{}.{}.template'</tt><tt class="py-op">.</tt><tt id="link-92" class="py-name"><a title="PyQt4.QtGui.QAbstractTextDocumentLayout.Selection.format
+PyQt4.QtGui.QTextEdit.ExtraSelection.format
+PyQt4.QtGui.QTextLayout.FormatRange.format
+qgis._gui.QgsOWSSourceSelect.SupportedFormat.format" class="py-name" href="#" onclick="return doclink('link-92', 'format', 'link-22');">format</a></tt><tt class="py-op">(</tt><tt class="py-name">t1</tt><tt class="py-op">,</tt><tt id="link-93" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager._localtest.LocalTest.t2" class="py-name" href="#" onclick="return doclink('link-93', 't2', 'link-88');">t2</a></tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">,</tt><tt class="py-string">'r'</tt><tt class="py-op">)</tt> <tt class="py-keyword">as</tt> <tt class="py-name">handle</tt><tt class="py-op">:</tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line">                    <tt class="py-name">tstr</tt> <tt class="py-op">=</tt> <tt class="py-name">handle</tt><tt class="py-op">.</tt><tt id="link-94" class="py-name" targets="Method QGIS-AIMS-Plugin.AIMSDataManager.DataManager.Persistence.read()=QGIS-AIMS-Plugin.AIMSDataManager.DataManager.Persistence-class.html#read"><a title="QGIS-AIMS-Plugin.AIMSDataManager.DataManager.Persistence.read" class="py-name" href="#" onclick="return doclink('link-94', 'read', 'link-94');">read</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line">                    <tt class="py-comment">#print 'read template',t1t,t2t</tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line">                    <tt class="py-name">tp</tt><tt class="py-op">[</tt><tt class="py-name">t1</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt id="link-95" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager._localtest.LocalTest.t2" class="py-name" href="#" onclick="return doclink('link-95', 't2', 'link-88');">t2</a></tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">eval</tt><tt class="py-op">(</tt><tt class="py-name">tstr</tt><tt class="py-op">)</tt> <tt class="py-keyword">if</tt> <tt class="py-name">tstr</tt> <tt class="py-keyword">else</tt> <tt class="py-string">''</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line">            <tt class="py-comment">#response address type is the template of the address-json we get from the api</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line">            <tt class="py-keyword">with</tt> <tt class="py-name">open</tt><tt class="py-op">(</tt><tt class="py-name">os</tt><tt class="py-op">.</tt><tt id="link-96" class="py-name"><a title="sys.path" class="py-name" href="#" onclick="return doclink('link-96', 'path', 'link-17');">path</a></tt><tt class="py-op">.</tt><tt class="py-name">join</tt><tt class="py-op">(</tt><tt id="link-97" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory
+QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory" class="py-name" href="#" onclick="return doclink('link-97', 'FeatureFactory', 'link-90');">FeatureFactory</a></tt><tt class="py-op">.</tt><tt id="link-98" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.DataManager.Persistence.RP
+QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory.RP" class="py-name" href="#" onclick="return doclink('link-98', 'RP', 'link-35');">RP</a></tt><tt class="py-op">,</tt><tt class="py-string">'{}.response.template'</tt><tt class="py-op">.</tt><tt id="link-99" class="py-name"><a title="PyQt4.QtGui.QAbstractTextDocumentLayout.Selection.format
+PyQt4.QtGui.QTextEdit.ExtraSelection.format
+PyQt4.QtGui.QTextLayout.FormatRange.format
+qgis._gui.QgsOWSSourceSelect.SupportedFormat.format" class="py-name" href="#" onclick="return doclink('link-99', 'format', 'link-22');">format</a></tt><tt class="py-op">(</tt><tt class="py-name">t1</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">,</tt><tt class="py-string">'r'</tt><tt class="py-op">)</tt> <tt class="py-keyword">as</tt> <tt class="py-name">handle</tt><tt class="py-op">:</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line">                <tt class="py-name">tstr</tt> <tt class="py-op">=</tt> <tt class="py-name">handle</tt><tt class="py-op">.</tt><tt id="link-100" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.DataManager.Persistence.read" class="py-name" href="#" onclick="return doclink('link-100', 'read', 'link-94');">read</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line">                <tt class="py-name">tp</tt><tt class="py-op">[</tt><tt class="py-name">t1</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'response'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">eval</tt><tt class="py-op">(</tt><tt class="py-name">tstr</tt><tt class="py-op">)</tt> <tt class="py-keyword">if</tt> <tt class="py-name">tstr</tt> <tt class="py-keyword">else</tt> <tt class="py-string">''</tt> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">tp</tt> </tt>
+</div><a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line">     </tt>
+<a name="FeatureFactory._delNull"></a><div id="FeatureFactory._delNull-def"><a name="L114"></a><tt class="py-lineno">114</tt> <a class="py-toggle" href="#" id="FeatureFactory._delNull-toggle" onclick="return toggle('FeatureFactory._delNull');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory-class.html#_delNull">_delNull</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">obj</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="FeatureFactory._delNull-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="FeatureFactory._delNull-expanded"><a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">hasattr</tt><tt class="py-op">(</tt><tt class="py-name">obj</tt><tt class="py-op">,</tt> <tt class="py-string">'items'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line">            <tt class="py-name">new_obj</tt> <tt class="py-op">=</tt> <tt id="link-101" class="py-name" targets="Variable PyQt4.QtGui.QInputMethodEvent.Attribute.type=PyQt4.QtGui.QInputMethodEvent.Attribute-class.html#type,Variable PyQt4.QtGui.QPainterPath.Element.type=PyQt4.QtGui.QPainterPath.Element-class.html#type,Variable PyQt4.QtGui.QStyleHintReturn.type=PyQt4.QtGui.QStyleHintReturn-class.html#type,Variable PyQt4.QtGui.QStyleOption.type=PyQt4.QtGui.QStyleOption-class.html#type,Variable PyQt4.QtGui.QTextOption.Tab.type=PyQt4.QtGui.QTextOption.Tab-class.html#type,Variable QGIS-AIMS-Plugin.AIMSDataManager.Address.Address.type=QGIS-AIMS-Plugin.AIMSDataManager.Address.Address-class.html#type,Variable QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressChange.type=QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressChange-class.html#type,Variable QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressResolution.type=QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressResolution-class.html#type,Variable QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature.type=QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature-class.html#type,Variable QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupChange.type=QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupChange-class.html#type,Variable QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupResolution.type=QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupResolution-class.html#type,Method QGIS-AIMS-Plugin.Test.AimsService_Mock._Layer.type()=QGIS-AIMS-Plugin.Test.AimsService_Mock._Layer-class.html#type,Variable qgis._core.QgsSnappingUtils.LayerConfig.type=qgis._core.QgsSnappingUtils.LayerConfig-class.html#type,Variable qgis._core.QgsVectorFileWriter.Option.type=qgis._core.QgsVectorFileWriter.Option-class.html#type"><a title="PyQt4.QtGui.QInputMethodEvent.Attribute.type
+PyQt4.QtGui.QPainterPath.Element.type
+PyQt4.QtGui.QStyleHintReturn.type
+PyQt4.QtGui.QStyleOption.type
+PyQt4.QtGui.QTextOption.Tab.type
+QGIS-AIMS-Plugin.AIMSDataManager.Address.Address.type
+QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressChange.type
+QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressResolution.type
+QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature.type
+QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupChange.type
+QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupResolution.type
+QGIS-AIMS-Plugin.Test.AimsService_Mock._Layer.type
+qgis._core.QgsSnappingUtils.LayerConfig.type
+qgis._core.QgsVectorFileWriter.Option.type" class="py-name" href="#" onclick="return doclink('link-101', 'type', 'link-101');">type</a></tt><tt class="py-op">(</tt><tt class="py-name">obj</tt><tt class="py-op">)</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt id="link-102" class="py-name" targets="Method QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeedRef.k()=QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeedRef-class.html#k"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeedRef.k" class="py-name" href="#" onclick="return doclink('link-102', 'k', 'link-102');">k</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">obj</tt><tt class="py-op">:</tt> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line">                <tt class="py-comment">#if k != 'NULL' and obj[k] != 'NULL' and obj[k] != None:</tt> </tt>
+<a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt id="link-103" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeedRef.k" class="py-name" href="#" onclick="return doclink('link-103', 'k', 'link-102');">k</a></tt> <tt class="py-keyword">and</tt> <tt class="py-name">obj</tt><tt class="py-op">[</tt><tt id="link-104" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeedRef.k" class="py-name" href="#" onclick="return doclink('link-104', 'k', 'link-102');">k</a></tt><tt class="py-op">]</tt><tt class="py-op">:</tt> </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line">                    <tt id="link-105" class="py-name" targets="Variable QGIS-AIMS-Plugin.Test.Database_Test.Test_2_DatabaseConnectivity.res=QGIS-AIMS-Plugin.Test.Database_Test.Test_2_DatabaseConnectivity-class.html#res"><a title="QGIS-AIMS-Plugin.Test.Database_Test.Test_2_DatabaseConnectivity.res" class="py-name" href="#" onclick="return doclink('link-105', 'res', 'link-105');">res</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-106" class="py-name" targets="Method QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory._delNull()=QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory-class.html#_delNull"><a title="QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory._delNull" class="py-name" href="#" onclick="return doclink('link-106', '_delNull', 'link-106');">_delNull</a></tt><tt class="py-op">(</tt><tt class="py-name">obj</tt><tt class="py-op">[</tt><tt id="link-107" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeedRef.k" class="py-name" href="#" onclick="return doclink('link-107', 'k', 'link-102');">k</a></tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line">                    <tt class="py-keyword">if</tt> <tt id="link-108" class="py-name"><a title="QGIS-AIMS-Plugin.Test.Database_Test.Test_2_DatabaseConnectivity.res" class="py-name" href="#" onclick="return doclink('link-108', 'res', 'link-105');">res</a></tt><tt class="py-op">:</tt> <tt class="py-name">new_obj</tt><tt class="py-op">[</tt><tt id="link-109" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeedRef.k" class="py-name" href="#" onclick="return doclink('link-109', 'k', 'link-102');">k</a></tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt id="link-110" class="py-name"><a title="QGIS-AIMS-Plugin.Test.Database_Test.Test_2_DatabaseConnectivity.res" class="py-name" href="#" onclick="return doclink('link-110', 'res', 'link-105');">res</a></tt> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line">        <tt class="py-keyword">elif</tt> <tt class="py-name">hasattr</tt><tt class="py-op">(</tt><tt class="py-name">obj</tt><tt class="py-op">,</tt> <tt class="py-string">'__iter__'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line">            <tt class="py-name">new_obj</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt>  </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt class="py-name">it</tt> <tt class="py-keyword">in</tt> <tt class="py-name">obj</tt><tt class="py-op">:</tt> </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line">                <tt class="py-comment">#if it != 'NULL' and it != None:</tt> </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">it</tt><tt class="py-op">:</tt> <tt class="py-name">new_obj</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-111" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory._delNull" class="py-name" href="#" onclick="return doclink('link-111', '_delNull', 'link-106');">_delNull</a></tt><tt class="py-op">(</tt><tt class="py-name">it</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> <tt class="py-keyword">return</tt> <tt class="py-name">obj</tt> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-112" class="py-name"><a title="PyQt4.QtGui.QInputMethodEvent.Attribute.type
+PyQt4.QtGui.QPainterPath.Element.type
+PyQt4.QtGui.QStyleHintReturn.type
+PyQt4.QtGui.QStyleOption.type
+PyQt4.QtGui.QTextOption.Tab.type
+QGIS-AIMS-Plugin.AIMSDataManager.Address.Address.type
+QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressChange.type
+QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressResolution.type
+QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature.type
+QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupChange.type
+QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupResolution.type
+QGIS-AIMS-Plugin.Test.AimsService_Mock._Layer.type
+qgis._core.QgsSnappingUtils.LayerConfig.type
+qgis._core.QgsVectorFileWriter.Option.type" class="py-name" href="#" onclick="return doclink('link-112', 'type', 'link-101');">type</a></tt><tt class="py-op">(</tt><tt class="py-name">obj</tt><tt class="py-op">)</tt><tt class="py-op">(</tt><tt class="py-name">new_obj</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="QGIS-AIMS-Plugin-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Jun 14 13:16:34 2016
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>
