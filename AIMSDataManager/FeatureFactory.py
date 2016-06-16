@@ -49,7 +49,7 @@ class FeatureFactory(object):
     
     PBRANCH = '{d}{}{d}{}'.format(d=DEF_SEP,*Position.BRANCH)
     AFFT = FeedType.FEATURES
-    DEF_REF = FeedType.reverse[AFFT]
+    DEF_FRT = FeedType.reverse[AFFT]
     addrtype = Address
     reqtype = None
     #RP = eval(RES_PATH)
@@ -57,15 +57,6 @@ class FeatureFactory(object):
     
     global aimslog
     aimslog = Logger.setup()
-    
-    def __init__(self, ref=DEF_REF):
-        pass
-        #self.ref = ref
-        #key = '{}.{}'.format(FeatureType.reverse[ET].lower(),FeedType.reverse[ref].lower())
-        #self.template = TemplateReader().get()[key]
-    
-    #def __str__(self):
-    #    return 'AFC.{}'.format(FeedType.reverse(self.AFFT)[:3])
     
     @staticmethod
     def getInstance(etft):
@@ -126,7 +117,8 @@ class FeatureFactory(object):
                 tp[t1]['response'] = eval(tstr) if tstr else ''
         return tp
     
-    def _delNull(self, obj):
+    @staticmethod
+    def _delNull(obj):
         '''Removes Null/empty attributes from dict of attributes
         @param obj: Object to strip of null values
         @return: Stripped down object
@@ -136,13 +128,13 @@ class FeatureFactory(object):
             for k in obj:
                 #if k != 'NULL' and obj[k] != 'NULL' and obj[k] != None:
                 if k and obj[k]:
-                    res = self._delNull(obj[k])
+                    res = FeatureFactory._delNull(obj[k])
                     if res: new_obj[k] = res
         elif hasattr(obj, '__iter__'):
             new_obj = [] 
             for it in obj:
                 #if it != 'NULL' and it != None:
-                if it: new_obj.append(self._delNull(it))
+                if it: new_obj.append(FeatureFactory._delNull(it))
         else: return obj
         return type(obj)(new_obj)
     

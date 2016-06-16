@@ -63,7 +63,7 @@ class DataUpdater(Observable):
         @type queues: Queue.Queue
         '''
         super(DataUpdater,self).__init__()
-        self.ref,self.conf,self.afactory = params
+        self.ref,self.conf,self.factory = params
         self.queue = queue
         #self._stop = threading.Event()
         self.api = AimsApi(self.conf)    
@@ -105,12 +105,12 @@ class DataUpdater(Observable):
             if feat == {u'class': [u'error']}: 
                 #if the pno request returns the not-supposed-to-happen error, it gets special treatment
                 aimslog.error('Invalid API response {}'.format(feat))
-                #return self.getfeat(model=pno['properties'])
+                #return self.factory.get(model=pno['properties'])
             else:
                 return self._processEntity(feat,cid,etft)
         else:
             #just return the main feedlevel address objects
-            return self.getfeat(model=page['properties'])
+            return self.factory.get(model=page['properties'])
     
     def _processEntity(self,feat,cid,etft):
         '''Identify and select group, address or entity processing for a reolutionfeed feature        
@@ -135,7 +135,7 @@ class DataUpdater(Observable):
         #--------------------------------
         # Simple Entity object
         else:
-            return self._processSimpleEntity(self.getfeat,feat)
+            return self._processSimpleEntity(self.factory.get,feat)
         
     def _processValidationEntity(self,feat):
         '''Wraps call to validation entity instantiator
@@ -152,7 +152,7 @@ class DataUpdater(Observable):
         @return: Instantiated Address entity
         '''
         #return EntityAddress.getInstance(feat)
-        return self._processSimpleEntity(FeatureFactory.getInstance(FeedRef((FeatureType.ADDRESS,FeedType.RESOLUTIONFEED))).getAddress,feat)
+        return self._processSimpleEntity(FeatureFactory.getInstance(FeedRef((FeatureType.ADDRESS,FeedType.RESOLUTIONFEED))).get,feat)
         
     def _processSimpleEntity(self,fact,feat):                
         '''Default processor for generic entities but the same as address resolution processor (below).
@@ -177,7 +177,7 @@ class DataUpdater(Observable):
         @return: Instantiated Address entity
         '''
         featurelist = []
-        a = self.getfeat(model=feat['properties'])
+        a = self.factory.get(model=feat['properties'])
         for e in feat['entities']:
             featurelist.append(self._populateEntity(e))
         a._setEntities(featurelist)
@@ -194,12 +194,12 @@ class DataUpdater(Observable):
         @return: Instantiated feature object
         '''
         featurelist = []
-        g = self.getfeat(model=feat['properties'])#group
+        g = self.factory.get(model=feat['properties'])#group
         feat2 = self.api.getOneFeature(etft,'{}/address'.format(cid))#group entity/adr list
         etft2 = FeedRef((FeatureType.ADDRESS,FeedType.RESOLUTIONFEED))
-        afactory2 = FeatureFactory.getInstance(etft2)
+        factory2 = FeatureFactory.getInstance(etft2)
         for f in feat2['entities']:
-            a = afactory2.getAddress(model=f['properties'])
+            a = factory2.get(model=f['properties'])
             elist2 = []
             for e in f['entities']:
                 elist2.append(self._populateEntity(e))
@@ -218,8 +218,8 @@ class DataUpdater(Observable):
         elif ent['class'][0] == 'address':
             ###res factory might work here instead
             #etft3 = FeedRef((FeatureType.ADDRESS,FeedType.FEATURES))
-            #afactory3 = FeatureFactory.getInstance(etft3)
-            #return afactory3.getAddress(model=e['properties'])
+            #factory3 = FeatureFactory.getInstance(etft3)
+            #return factory3.get(model=e['properties'])
             return self._processAddressEntity(ent)
         
         else:
@@ -262,7 +262,6 @@ class DataUpdaterAddress(DataUpdater):
         @type queues: Queue.Queue
         '''
         super(DataUpdaterAddress,self).__init__(params,queue)
-        self.getfeat = self.afactory.getAddress
         
     def cid(self,f):
         return f['properties']['changeId']
@@ -281,7 +280,6 @@ class DataUpdaterGroup(DataUpdater):
         @type queues: Queue.Queue
         '''
         super(DataUpdaterGroup,self).__init__(params,queue)
-        self.getfeat = self.afactory.getGroup   
          
     def cid(self,f):
         return f['properties']['changeGroupId']
@@ -299,10 +297,7 @@ class DataUpdaterUser(DataUpdater):
         @type queues: Queue.Queue
         '''
         super(DataUpdaterUser,self).__init__(params,queue)
-        self.getfeat = self.afactory.getUser 
     
-    
-
 #TODO Consolidate group/address + action/approve subclasses. might be enough variation to retain seperate classes
 #NOTES variables incl; oft=FF/RF,id=addressId/changeId/groupChangeId, action=approve/action/groupaction
 class DataUpdaterDRC(DataUpdater):
@@ -337,9 +332,10 @@ class DataUpdaterDRC(DataUpdater):
         - Notify listeners 
         '''
         aimslog.info('DUr.{} {} - AGU{}'.format(self.ref,self.actiontype.reverse[self.at],self.agu))
-        err,resp = self.action(self.at,self.payload,self.identifier)
+        payload = self.factory.convert(self.agu,self.at)
+        err,resp = self.action(self.at,payload,self.identifier)
         featurelist = []
-        feature = self.build(model=resp['properties'])
+        feature = self.factory.get(model=resp['properties'])
         if hasattr(resp,'entities'):
             for e in resp['entities']:
                 featurelist.append(self._populateEntity(e))
@@ -378,11 +374,9 @@ class DataUpdaterAction(DataUpdaterDRC):
         self.identifier = self.agu.getAddressId()
         self.requestId = self.agu.getRequestId()
         if aat != ActionType.ADD: self.agu.setVersion(self.version())
-        self.payload = self.afactory.convertAddress(self.agu,self.at)
         #run actions
         self.actiontype = ActionType
         self.action = self.api.addressAction
-        self.build = self.afactory.getAddress
 
 class DataUpdaterApproval(DataUpdaterDRC):
     '''DataUpdater class for Address Approval requests on the resolutionfeed'''
@@ -406,11 +400,9 @@ class DataUpdaterApproval(DataUpdaterDRC):
         self.identifier = self.agu.getChangeId()
         self.requestId = self.agu.getRequestId()
         self.agu.setVersion(self.version())
-        self.payload = self.afactory.convertAddress(self.agu,self.at)
         #run actions
         self.actiontype = ApprovalType
         self.action = self.api.addressApprove
-        self.build = self.afactory.getAddress
 
 class DataUpdaterGroupAction(DataUpdaterDRC):
     '''DataUpdater class for Group Action requests on the changefeed'''
@@ -434,11 +426,9 @@ class DataUpdaterGroupAction(DataUpdaterDRC):
         self.identifier = self.agu.getChangeGroupId()
         self.requestId = self.agu.getRequestId()
         self.agu.setVersion(self.version())
-        self.payload = self.afactory.convertGroup(self.agu,self.at)
         #run actions
         self.actiontype = GroupActionType
         self.action = self.api.groupAction
-        self.build = self.afactory.getGroup
         
 class DataUpdaterGroupApproval(DataUpdaterDRC):
     '''DataUpdater class for Group Approval requests on the resolutionfeed'''
@@ -462,11 +452,9 @@ class DataUpdaterGroupApproval(DataUpdaterDRC):
         self.identifier = self.agu.getChangeGroupId()
         self.requestId = self.agu.getRequestId()
         self.agu.setVersion(self.version())
-        self.payload = self.afactory.convertGroup(self.agu,self.at)
         #run actions
         self.actiontype = GroupApprovalType
         self.action = self.api.groupApprove
-        self.build = self.afactory.getGroup
         
 class DataUpdaterUserAction(DataUpdaterDRC):
     '''DataUpdater class for User Action requests on the adminfeed'''
@@ -490,11 +478,9 @@ class DataUpdaterUserAction(DataUpdaterDRC):
         self.identifier = self.agu.getUserId()
         self.requestId = self.agu.getRequestId()
         #self.agu.setVersion(self.version())
-        self.payload = self.afactory.convertUser(self.agu,self.at)
         #run actions
         self.actiontype = UserActionType
         self.action = self.api.userAction
-        self.build = self.afactory.getUser
         
         
     

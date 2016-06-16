@@ -117,7 +117,7 @@ class FeedRef(object):
         @param arg1: Value for Feature type or Feature/Feed tuple
         @param arg2: Value for Feed type (or none if arg1 defined as tuple
         '''
-        if arg2:
+        if arg2 is not None:
             self._et = arg1
             self._ft = arg2
         else:

@@ -112,7 +112,7 @@ class DataSync(Observable):
         self.updater_running = False
         self.ref,self.etft,self.ftracker,self.conf = params
         self.data_hash = {dh:0 for dh in FEEDS.values()}
-        self.afactory = FeatureFactory.getInstance(self.etft)
+        self.factory = FeatureFactory.getInstance(self.etft)
         self.updater = DataUpdater.getInstance(self.etft) # unevaluated class
         self.inq = queues['in']
         self.outq = queues['out']
@@ -250,7 +250,7 @@ class DataSync(Observable):
         @type pno: Integer
         @return: DataUpdater
         '''   
-        params = (ref,self.conf,self.afactory)
+        params = (ref,self.conf,self.factory)
         adrq = Queue.Queue()
         pager = self.updater(params,adrq)
         #address/feature requests called with bbox parameters
@@ -378,7 +378,7 @@ class DataSyncFeeds(DataSync):
         '''
         at2 = self.parameters[self.etft]['atype'].reverse[at][:3].capitalize()      
         ref = 'PR.{0}.{1:%y%m%d.%H%M%S}'.format(at2,DT.now())
-        params = (ref,self.conf,self.afactory)
+        params = (ref,self.conf,self.factory)
         #self.ioq = {'in':Queue.Queue(),'out':Queue.Queue()}
         self.duinst[ref] = self.parameters[self.etft]['action'](params,self.respq)
         self.duinst[ref].setup(self.etft,at,feature)

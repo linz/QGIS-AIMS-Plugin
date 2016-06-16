@@ -52,7 +52,8 @@ class DataManager(Observable):
         
     def _initDS(self):
         '''Initialises all DataSync, Queue and timestamping containers and begin check process'''
-        self.ioq,self.ds = 2*({etft:None for etft in FEEDS.values()},)
+        self.ioq = {etft:None for etft in FEEDS.values()}
+        self.ds = {etft:None for etft in FEEDS.values()}
         self.stamp = {etft:time.time() for etft in FEEDS.values()}
         
         #init the g2+a2+a1 different feed threads

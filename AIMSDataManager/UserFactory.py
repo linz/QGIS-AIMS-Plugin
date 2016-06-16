@@ -18,9 +18,9 @@ import sys
 import copy
 from FeatureFactory import FeatureFactory
 from AimsUtility import FeedType,FeatureType,UserActionType
-from AimsUtility import AimsException
 from Const import SKIP_NULL, DEF_SEP
 from User import User
+from User import UserException
 from AimsLogging import Logger
 #from FeatureFactory import TemplateReader
 
@@ -32,39 +32,56 @@ TP = {'users.admin': {u.lower():None for u in UserActionType.reverse.values()}}
 
 aimslog = None
 
-class UserException(AimsException): pass    
+class UserTemplateReferenceException(UserException): pass    
 class UserFieldRequiredException(UserException): pass
 class UserFieldIncorrectException(UserException): pass
 class UserConversionException(UserException): pass
 class UserCreationException(UserException): pass
 
 class UserFactory(FeatureFactory):
-    ''' AddressFactory class used to build address objects without the overhead of re-reading templates each time an address is needed''' 
+    ''' UserFactory class used to build user objects'''
+     
     #PBRANCH = '{d}{}{d}{}'.format(d=DEF_SEP,*Position.BRANCH)
     UFFT = FeedType.ADMIN
-    DEF_REF = FeedType.reverse[UFFT]
+    DEF_FRT = FeedType.reverse[UFFT]
     usrtype = User
     reqtype = UserActionType
     
     global aimslog
     aimslog = Logger.setup()
     
-    def __init__(self, ref=DEF_REF):
-        self.ref = ref
-        self.template = self.readTemplate(TP)[ref.k]
+    def __init__(self, frt=DEF_FRT):        
+        '''Initialise UserFactory object
+        @param frt: FeedRef template reference used to select factory build
+        @type frt: String
+        '''
+        if frt.k in TP.keys():
+            self.frt = frt
+        else: raise  UserTemplateReferenceException('{} is not a template key'.format(frt))
+        self.template = self.readTemplate(TP)[self.frt.k]
     
     def __str__(self):
-        return 'AFC.{}'.format(FeedType.reverse(self.GFFT)[:3])
+        return 'AFC.{}'.format(FeedType.reverse(self.UFFT)[:3])
     
     @staticmethod
     def getInstance(ft):
-        '''Gets an instance of a factory to generate a particular (ft) type of address object'''
+        '''Gets an instance of a factory to generate a particular (ft) type of user object
+        @param ft: 
+        '''
         return UserFactory(ft)
     
     #HACK to save rewriting getaddress at gfactory call
-    #def getAddress(self,ref=None,adr=None,model=None,prefix=''):self.getUser(ref,adr,model,prefix)
-    def getUser(self,ref=None,usr=None,model=None,prefix=''):
-        '''Creates an address object from a model (using the response template if model is not provided)'''
+    def get(self,ref=None,usr=None,model=None,prefix=''):
+        '''Creates a user object from a model (using the response template if model is not provided)
+        @param ref: Application generated unique reference string
+        @type ref: String
+        @param usr: User object being populated
+        @type usr: User
+        @param model: Dictionary object (matching or derived from a template) containing address attribute information
+        @param prefix: String value used to flatten/identify nested dictionary elements
+        @type prefix: String   
+        @return: (Minimally) Populated user object
+        '''
         #overwrite = model OR NOT(address). If an address is provided only fill it with model provided, presume dont want template fill
         overwrite = False
         if not usr: 
@@ -79,19 +96,26 @@ class UserFactory(FeatureFactory):
         if overwrite:
             try:
                 #if SKIP_NULL: data = self._delNull(data)
-                usr = self._readUser(usr, data, prefix)        
+                usr = self._read(usr, data, prefix)        
             except Exception as e:
                 msg = 'Error creating address object using model {} with {}'.format(data,e)
                 aimslog.error(msg)
                 raise UserCreationException(msg)
         return usr
         
-    def _readUser(self,usr,data,prefix):
-        '''Recursive address dict reader'''
+    def _read(self,usr,data,prefix):
+        '''Recursive user setting attribute dict reader.
+        @param usr: Active user object
+        @type usr: User
+        @param data: Active (subset) dict
+        @param prefix: String value used to flatten/identify nested dictionary elements
+        @type prefix: String   
+        @return: Active (partially filled) user object
+        '''
         for k in data:
             setter = 'set'+k[0].upper()+k[1:]
             new_prefix = prefix+DEF_SEP+k
-            if isinstance(data[k],dict): usr = self._readUser(usr=usr,data=data[k],prefix=new_prefix)
+            if isinstance(data[k],dict): usr = self._read(usr=usr,data=data[k],prefix=new_prefix)
             #elif isinstance(data[k],list) and new_prefix == self.PBRANCH:
             #    pstns = [] 
             #    for pd in data[k]: pstns.append(Position.getInstance(pd,self))
@@ -100,22 +124,23 @@ class UserFactory(FeatureFactory):
         return usr
     
     def cast(self,usr):
-        '''casts Users from curent to requested User-type'''
-        return User.clone(usr, self.getUser())
-    
-#     @staticmethod
-#     def filterPI(ppi):
-#         '''filters out possible Processing Instructions'''
-#         sppi = str(ppi)
-#         if sppi.find('#')>-1:
-#             dflt = re.search('default=(\w+)',sppi)
-#             oneof = re.search('oneof=(\w+)',sppi)#first as default
-#             return dflt.user(1) if dflt else (oneof.group(1) if oneof else None)
-#         return ppi
+        '''Casts user from current type to requested user-type, eg UserAdmin... <future enhancement?>
+        @param usr: User being converted 
+        @type usr: User
+        @return: User cast to the self type
+        '''
+        #this is going to return the same thing since there is only one user type. *Left in as enhancement
+        return User.clone(usr, self.get())
         
      
-    def convertUser(self,usr,uat):
-        '''Converts a user into its json payload equivalent '''
+    def convert(self,usr,uat):
+        '''Converts a user into its json payload equivalent
+        @param usr: User objects being converted to JSON string
+        @type usr: User
+        @param uat: Action to perform on group
+        @type uat: UserActionType
+        @return: Representative JSON string (minimally compliant with type template) 
+        '''
         full = None
         try:
             full = self._convert(usr, copy.deepcopy(self.template[self.reqtype.reverse[uat].lower()]))
@@ -127,6 +152,14 @@ class UserFactory(FeatureFactory):
         return full
      
     def _convert(self,usr,dat,key=''):
+        '''Recursive part of convert
+        @param usr: Active user object
+        @type usr: User
+        @param dat: Active (subset) dict
+        @param key: String value used to flatten/identify nested dictionary elements
+        @type key: String   
+        @return: Processed (nested) dict
+        '''
         for attr in dat:
             new_key = key+DEF_SEP+attr
             #if new_key == self.PBRANCH:
@@ -138,7 +171,16 @@ class UserFactory(FeatureFactory):
         return dat
      
     def _assign(self,dat,usr,key):
-        '''validates address data value against template requirements'''
+        '''Validates group data value against template requirements reading tags to identify default and required data fields
+        - `oneof` indicates field is required and is one of the values in the subsequent pipe separated list
+        - `required` indicates the field is required. An error will be thrown if a suitable values is unavailable
+        @param dat: Active (subset) dict
+        @param usr: Active user object
+        @type usr: User
+        @param key: String value used to flatten/identify nested dictionary elements
+        @type key: String   
+        @return: Active (partially filled) address
+        '''
         #TODO add default or remove from filterpi
         required,oneof,default,datatype = 4*(None,)
         val = usr.__dict__[key] if hasattr(usr,key) else None
@@ -162,7 +204,7 @@ def test():
     from AimsUtility import FeedRef
     uf_f = UserFactory.getInstance(FeedRef(FeatureType.USERS,FeedType.ADMIN))
     
-    uxx = uf_f.getUser()
+    uxx = uf_f.get()
     #uxx.setVersion(11112222)
     uxx.setUserId(22334455)
     uxx._version = 1
@@ -171,9 +213,9 @@ def test():
     uxx._requiresProgress = 'False'
     uxx._organisation = 'LINZ'
     uxx._role = 'follower'
-    uc1 = uf_f.convertUser(uxx,UserActionType.ADD)
-    uc2 = uf_f.convertUser(uxx,UserActionType.UPDATE)
-    uc3 = uf_f.convertUser(uxx,UserActionType.DELETE)
+    uc1 = uf_f.convert(uxx,UserActionType.ADD)
+    uc2 = uf_f.convert(uxx,UserActionType.UPDATE)
+    uc3 = uf_f.convert(uxx,UserActionType.DELETE)
 
     
     print 'ADD'
