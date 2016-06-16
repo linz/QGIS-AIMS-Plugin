@@ -310,7 +310,7 @@ class DataUpdaterDRC(DataUpdater):
         '''Quick self checker for existing version number to save additional request
         I{This functionality is under development in the API}
         '''
-        return self.agu._version if self.agu._version else self._version() 
+        return self.agu._version if hasattr(self.agu,'_version') and self.agu._version else self._version() 
     
     def _version(self):
         '''Function to read AIMS version value from single Feature pages'''        
