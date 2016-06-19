@@ -38,6 +38,7 @@
         "suburbLocality":None,
         "townCity":None
     },
+    
     "addressedObject":{
         "objectType":'#oneof=Parcel|Building',
         "objectName":None,
