@@ -14,6 +14,7 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from qgis.core import *
 from qgis.gui import *
+import sip
 
 from AimsClient import Database
 from AimsUI.AimsLogging import Logger
@@ -24,6 +25,8 @@ from collections import OrderedDict
 aimslog = Logger.setup()
 
 uilog = None
+
+sip.setapi('QVariant', 2)
 
 class Mapping():
     """ 

@@ -72,7 +72,7 @@ class FeatureHighlighter(QObject):
         """
         
         self._enabled = enabled
-        if self._enabled:
+        if self._enabled and self.isVisible(self._layers.revLayer()):
             self._revMarker.show()
         else: 
             self._revMarker.hide() 
@@ -126,8 +126,8 @@ class FeatureHighlighter(QObject):
         Highlight the feature under review
         """
         
-        if self.isVisible( self._layers.revLayer() ):
-            self._revMarker.setCenter( QgsPoint(coords[0], coords[1]) )
+        self._revMarker.setCenter( QgsPoint(coords[0], coords[1]) )
+        if self._enabled and self.isVisible(self._layers.revLayer()):
             self._revMarker.show()
     
     def hideReview(self):

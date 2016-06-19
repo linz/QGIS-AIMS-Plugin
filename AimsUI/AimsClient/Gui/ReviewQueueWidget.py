@@ -131,8 +131,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         @type coords: list
         """
         
-        if self._controller._highlightaction.isChecked():
-            self.highlight.setReview(coords)
+        self.highlight.setReview(coords)
         
     def refreshData(self):
         """

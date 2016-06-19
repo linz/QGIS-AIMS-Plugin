@@ -57,7 +57,7 @@ class ResponseHandler(object):
             if action == 'accept':
                 self.uidm.updateFdata(respObj)
         return True
-     
+    
     def displayWarnings (self, warnings):
         """
         Raise warnings to the user
