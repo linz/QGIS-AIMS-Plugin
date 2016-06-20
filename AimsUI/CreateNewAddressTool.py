@@ -139,7 +139,7 @@ class CreateNewAddressTool(QgsMapToolIdentify):
         UiUtility.clearForm(self._controller._queues.tabWidget)
         coords = UiUtility.transform(self._iface, coords)
         self.setMarker(coords)        
-        addInstance = self.af.getAddress()
+        addInstance = self.af.get()
         self._controller._queues.uEditFeatureTab.setFeature('add', addInstance, coords)
         self._controller._queues.tabWidget.setCurrentIndex(0)
         UiUtility.setEditability(self._controller._queues.uEditFeatureTab)

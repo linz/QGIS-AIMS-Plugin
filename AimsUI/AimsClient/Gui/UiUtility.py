@@ -212,10 +212,13 @@ class UiUtility (object):
                 if ui == 'uWarning':
                     warnings = ''                        
                     for i in prop:
-                        try: #<-- temp. currently retires are under going reformatting at the api level - then this can be removed 
-                            warnings += i._severity.upper()+': '+ i._description+('\n'*2)              
-                            uiElement.setText(warnings)
-                        except: pass #temp 
+                        #try: #<-- temp. currently retires are under going reformatting at the api level - then this can be removed 
+                        warnings += i._severity.upper()+': '+ i._description+('\n'*2)              
+                        uiElement.setText(warnings)
+                        #except: pass #temp 
+                # New MBLK overwrite flag implemented in API
+                elif ui == 'uMblkOverride' and parent == 'update' and self.feature._codes_isMeshblockOverride != True:
+                    continue
                 else: 
                     uiElement.setText(unicode(prop))
             elif isinstance(uiElement, QComboBox):

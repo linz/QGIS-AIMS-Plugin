@@ -95,7 +95,7 @@ class Controller( QObject ):
         self.actions = self.iface.mapNavToolToolBar().actions()
         
         # Main address editing window
-        self._loadaction = QAction(QIcon(':/python/plugins/QGIS-AIMS-Plugin/resources/loadaddress.png'), 
+        self._loadaction = QAction(QIcon(':/plugins/QGIS-AIMS-Plugin/resources/loadaddress.png'), 
             'QGIS-AIMS-Plugin', self.iface.mainWindow())
         self._loadaction.setWhatsThis('Open the QGIS-AIMS-Plugin')
         self._loadaction.setStatusTip('Open the QGIS-AIMS-Plugin')
@@ -105,7 +105,7 @@ class Controller( QObject ):
         self._loadaction.triggered.connect(self.startDM)
         
         # Create new address tool
-        self._createnewaddressaction = QAction(QIcon(':/python/plugins/QGIS-AIMS-Plugin/resources/newaddresspoint.png'), 
+        self._createnewaddressaction = QAction(QIcon(':/plugins/QGIS-AIMS-Plugin/resources/newaddresspoint.png'), 
             'Create AIMS Feature', self.iface.mainWindow())
         self._createnewaddressaction.setWhatsThis('Create AIMS Feature')
         self._createnewaddressaction.setStatusTip('Create AIMS Feature')
@@ -117,7 +117,7 @@ class Controller( QObject ):
         self.actions.append(self._createnewaddressaction)
 
         # Delete address point
-        self._deladdressaction = QAction(QIcon(':/python/plugins/QGIS-AIMS-Plugin/resources/deleteaddress.png'), 
+        self._deladdressaction = QAction(QIcon(':/plugins/QGIS-AIMS-Plugin/resources/deleteaddress.png'), 
             'Delete AIMS Feature', self.iface.mainWindow())
         self._deladdressaction.setWhatsThis('Delete AIMS Feature')
         self._deladdressaction.setStatusTip('Delete AIMS Feature')
@@ -129,7 +129,7 @@ class Controller( QObject ):
         self.actions.append(self._deladdressaction)
 
         # Move address
-        self._moveaddressaction = QAction(QIcon(':/python/plugins/QGIS-AIMS-Plugin/resources/moveaddress.png'), 
+        self._moveaddressaction = QAction(QIcon(':/plugins/QGIS-AIMS-Plugin/resources/moveaddress.png'), 
             'Move AIMS Feature(s)', self.iface.mainWindow())
         self._moveaddressaction.setWhatsThis('Move AIMS Feature(s)')
         self._moveaddressaction.setStatusTip('Move AIMS Feature(s)')
@@ -141,7 +141,7 @@ class Controller( QObject ):
         self.actions.append(self._moveaddressaction)
         
         # Update address
-        self._updateaddressaction = QAction(QIcon(':/python/plugins/QGIS-AIMS-Plugin/resources/updateaddress.png'), 
+        self._updateaddressaction = QAction(QIcon(':/plugins/QGIS-AIMS-Plugin/resources/updateaddress.png'), 
             'Update AIMS Feature', self.iface.mainWindow())
         self._updateaddressaction.setWhatsThis('Update AIMS Feature')
         self._updateaddressaction.setStatusTip('Update AIMS Feature')
@@ -159,7 +159,7 @@ class Controller( QObject ):
         self._updateReviewPos = UpdateReviewPosition(self.iface, self._layerManager, self)
        
         # Address lineage
-        self._lineageaction = QAction(QIcon(':/python/plugins/QGIS-AIMS-Plugin/resources/lineage.png'), 
+        self._lineageaction = QAction(QIcon(':/plugins/QGIS-AIMS-Plugin/resources/lineage.png'), 
             'Build Lineage Relationships Between Features', self.iface.mainWindow())
         self._lineageaction.setWhatsThis('Build Lineage Relationships Between Features')
         self._lineageaction.setStatusTip('Build Lineage Relationships Between Features')
@@ -170,7 +170,7 @@ class Controller( QObject ):
         self.actions.append(self._lineageaction)
 
         # Address highlighter
-        self._highlightaction = QAction(QIcon(":/python/plugins/QGIS-AIMS-Plugin/resources/addresshighlight.png"), 
+        self._highlightaction = QAction(QIcon(":/plugins/QGIS-AIMS-Plugin/resources/addresshighlight.png"), 
             "Electoral address highlighter", self.iface.mainWindow())
         self._highlightaction.setWhatsThis("Turn the electoral address highlighter on or off")
         self._highlightaction.setStatusTip("Turn the electoral address highlighter on or off")     
