@@ -424,7 +424,8 @@ class Address(Feature):
 
     def _getFullNumber(self):
         '''I{*Incomplete* Address combining function}
-        @return: String'''
+        @return: String
+        '''
         d = {'unitValue':'{}/','addressNumber':'{}','addressNumberHigh':'-{}','addressNumberSuffix':'{}'}
         reduce(lambda x,y: y+getattr(c+x),d.keys())
 
@@ -435,6 +436,14 @@ class AddressRequestFeed(Address):
     
     def __init__(self, ref=None): 
         super(AddressRequestFeed,self).__init__(ref)  
+        
+    #TEST. set version demoted from Feature to prevent setting on objects without version information
+    #and those object getting passed to the API action feeds and causing conflict. 
+    def setVersion (self, version): 
+        self._version = version if Feature._vInt(version) else None
+        
+    def getVersion(self): 
+        return self._version
 
 #------------------------------------------------------------------------------
 

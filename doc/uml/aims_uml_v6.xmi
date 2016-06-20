@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<XMI verified="false" xmi.version="1.2" timestamp="2016-06-17T15:36:04" xmlns:UML="http://schema.omg.org/spec/UML/1.3">
+<XMI verified="false" xmi.version="1.2" timestamp="2016-06-17T15:46:41" xmlns:UML="http://schema.omg.org/spec/UML/1.3">
  <XMI.header>
   <XMI.documentation>
    <XMI.exporter>umbrello uml modeller http://uml.sf.net</XMI.exporter>
@@ -2357,7 +2357,9 @@
      <UML:Namespace.ownedElement/>
     </UML:Model>
     <UML:Model stereotype="folder" visibility="public" isSpecification="false" namespace="m1" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="Component View" name="Component View">
-     <UML:Namespace.ownedElement/>
+     <UML:Namespace.ownedElement>
+      <UML:Component stereotype="database" visibility="public" isSpecification="false" namespace="Component View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="Ms7Gcy5LPMMz" name="postgresql9.3" executable="0"/>
+     </UML:Namespace.ownedElement>
     </UML:Model>
     <UML:Model stereotype="folder" visibility="public" isSpecification="false" namespace="m1" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="Deployment View" name="Deployment View">
      <UML:Namespace.ownedElement>
@@ -2370,14 +2372,14 @@
      </UML:Namespace.ownedElement>
      <XMI.extension xmi.extender="umbrello">
       <diagrams>
-       <diagram showopsig="1" linecolor="#0000c0" snapx="10" showattribassocs="1" snapy="10" linewidth="0" showattsig="1" isopen="1" showpackage="1" showpubliconly="1" showstereotype="1" name="deployment diagram" font="Ubuntu,9,-1,5,50,0,0,0,0,0" canvasheight="1105" canvaswidth="1529" localid="BRqATEVCO49O" snapcsgrid="0" showgrid="0" showops="1" griddotcolor="#000000" backgroundcolor="#ffffff" usefillcolor="1" fillcolor="#e3ffe9" zoom="100" xmi.id="fztV0bQMP7pB" documentation="" showscope="1" snapgrid="0" showatts="1" type="8">
+       <diagram showopsig="1" linecolor="#0000c0" snapx="10" showattribassocs="1" snapy="10" linewidth="0" showattsig="1" isopen="1" showpackage="1" showpubliconly="1" showstereotype="1" name="deployment diagram" font="Ubuntu,9,-1,5,50,0,0,0,0,0" canvasheight="1124" canvaswidth="1529" localid="BRqATEVCO49O" snapcsgrid="0" showgrid="0" showops="1" griddotcolor="#000000" backgroundcolor="#ffffff" usefillcolor="1" fillcolor="#e3ffe9" zoom="100" xmi.id="fztV0bQMP7pB" documentation="" showscope="1" snapgrid="0" showatts="1" type="8">
         <widgets>
-         <nodewidget width="109" showstereotype="1" x="471" usesdiagramusefillcolor="0" y="187" usesdiagramfillcolor="0" isinstance="0" fillcolor="#e3ffe9" height="58" linecolor="#0000c0" xmi.id="jEw4JWeipGmG" instancename="tstassgeo01" usefillcolor="1" linewidth="none" font="Ubuntu,9,-1,5,75,1,0,0,0,0"/>
+         <nodewidget width="109" showstereotype="1" x="743" usesdiagramusefillcolor="0" y="350" usesdiagramfillcolor="0" isinstance="0" fillcolor="#e3ffe9" height="58" linecolor="#0000c0" xmi.id="jEw4JWeipGmG" instancename="tstassgeo01" usefillcolor="1" linewidth="none" font="Ubuntu,9,-1,5,75,1,0,0,0,0"/>
          <nodewidget width="109" showstereotype="1" x="827" usesdiagramusefillcolor="1" y="425" usesdiagramfillcolor="1" isinstance="0" fillcolor="none" height="58" linecolor="none" xmi.id="QeXyudsIPOnv" usefillcolor="1" linewidth="none" font="Ubuntu,9,-1,5,75,0,0,0,0,0"/>
-         <nodewidget width="145" showstereotype="1" x="251" usesdiagramusefillcolor="1" y="250" usesdiagramfillcolor="1" isinstance="0" fillcolor="none" height="58" linecolor="none" xmi.id="BM4rMkoEDppb" usefillcolor="1" linewidth="none" font="Ubuntu,9,-1,5,75,0,0,0,0,0"/>
-         <nodewidget width="145" showstereotype="1" x="272" usesdiagramusefillcolor="1" y="294" usesdiagramfillcolor="1" isinstance="0" fillcolor="none" height="58" linecolor="none" xmi.id="ltpjQJ3altkE" usefillcolor="1" linewidth="none" font="Ubuntu,9,-1,5,75,0,0,0,0,0"/>
-         <nodewidget width="110" showstereotype="1" x="496" usesdiagramusefillcolor="1" y="502" usesdiagramfillcolor="1" isinstance="0" fillcolor="none" height="58" linecolor="none" xmi.id="lCZwzOX9aF8w" usefillcolor="1" linewidth="none" font="Ubuntu,9,-1,5,75,0,0,0,0,0"/>
-         <nodewidget width="170" showstereotype="1" x="204" usesdiagramusefillcolor="1" y="201" usesdiagramfillcolor="1" isinstance="0" fillcolor="none" height="58" linecolor="none" xmi.id="BCizNCgc7ktd" usefillcolor="1" linewidth="none" font="Ubuntu,9,-1,5,75,0,0,0,0,0"/>
+         <nodewidget width="145" showstereotype="1" x="58" usesdiagramusefillcolor="1" y="428" usesdiagramfillcolor="1" isinstance="0" fillcolor="none" height="58" linecolor="none" xmi.id="BM4rMkoEDppb" usefillcolor="1" linewidth="none" font="Ubuntu,9,-1,5,75,0,0,0,0,0"/>
+         <nodewidget width="309" showstereotype="1" x="272" usesdiagramusefillcolor="1" y="294" usesdiagramfillcolor="1" isinstance="0" fillcolor="none" height="285" linecolor="none" xmi.id="ltpjQJ3altkE" usefillcolor="1" linewidth="none" font="Ubuntu,9,-1,5,75,0,0,0,0,0"/>
+         <nodewidget width="182" showstereotype="1" x="210" usesdiagramusefillcolor="1" y="624" usesdiagramfillcolor="1" isinstance="0" fillcolor="none" height="350" linecolor="none" xmi.id="BCizNCgc7ktd" usefillcolor="1" linewidth="none" font="Ubuntu,9,-1,5,75,0,0,0,0,0"/>
+         <componentwidget width="150" showstereotype="1" x="319" usesdiagramusefillcolor="1" y="494" usesdiagramfillcolor="1" isinstance="1" fillcolor="none" height="58" linecolor="none" xmi.id="Ms7Gcy5LPMMz" usefillcolor="1" linewidth="none" font="Ubuntu,9,-1,5,75,0,0,0,0,0"/>
         </widgets>
         <messages/>
         <associations/>
@@ -2392,10 +2394,12 @@
   </UML:Model>
  </XMI.content>
  <XMI.extensions xmi.extender="umbrello">
-  <docsettings viewid="fztV0bQMP7pB" uniqueid="FQTHXphCMd4x" documentation=""/>
+  <docsettings viewid="fztV0bQMP7pB" uniqueid="Ms7Gcy5LPMMz" documentation=""/>
   <listview>
    <listitem open="1" type="800" id="Views">
-    <listitem open="1" type="821" id="Component View"/>
+    <listitem open="1" type="821" id="Component View">
+     <listitem open="1" type="822" id="Ms7Gcy5LPMMz"/>
+    </listitem>
     <listitem open="1" type="827" id="Deployment View">
      <listitem open="1" type="828" id="QeXyudsIPOnv"/>
      <listitem open="0" type="825" id="fztV0bQMP7pB" label="deployment diagram"/>

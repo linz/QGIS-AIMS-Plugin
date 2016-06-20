@@ -49,11 +49,11 @@ class Feature(object):
     
 
     #COMMON---------------------------------------------
-    #version not used on non feed feaures types but its inclusion here won't matter
-    def setVersion (self, version): 
-        self._version = version if Feature._vInt(version) else None
-    def getVersion(self): 
-        return self._version
+#     #version not used on non feed feaures types but its inclusion here won't matter
+#     def setVersion (self, version): 
+#         self._version = version if Feature._vInt(version) else None
+#     def getVersion(self): 
+#         return self._version
     
     def setSourceUser (self, sourceUser): 
         self._workflow_sourceUser = sourceUser    
