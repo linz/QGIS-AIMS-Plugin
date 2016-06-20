@@ -10,3 +10,5 @@
 AIMSDataManager/.cache/*
 .gitignore
 /.cache/
+/AimsLogging.html
+/Config.html

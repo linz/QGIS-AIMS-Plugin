@@ -346,6 +346,7 @@ class DataUpdaterDRC(DataUpdater):
         if self.requestId: feature.setRequestId(self.requestId)
         if MERGE_RESPONSE:
             aimslog.info('Merge req/res for {}'.format(self.agu))
+            self.agu.setVersion(None)
             self.agu.merge(feature)
             self.queue.put(self.agu)
         else: self.queue.put(feature)
