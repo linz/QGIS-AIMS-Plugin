@@ -687,7 +687,7 @@ class UiDataManager(QObject):
         @rtype: AIMSDataManager.Address
         """
         
-        if currentGroup[1] in ('Replace', 'AddLineage', 'ParcelReferenceData' ):
+        if currentGroup[1] in ('Replace', 'AddLineage', 'ParcelReferenceData' ,'MeshblockReferenceData' ):
             for group in self.data.get(FEEDS['GR']).values():
                 if group.has_key(currentFeatureKey):
                     return group[currentFeatureKey]
