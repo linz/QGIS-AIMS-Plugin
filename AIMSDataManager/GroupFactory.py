@@ -17,9 +17,10 @@ import os
 import sys
 import copy
 from FeatureFactory import FeatureFactory
-from AimsUtility import FeatureType,GroupActionType,GroupApprovalType,FeedType,AimsException
+from AimsUtility import FeatureType,GroupActionType,GroupApprovalType,FeedType
 from Const import SKIP_NULL, DEF_SEP
 from Group import GroupChange,GroupResolution
+from Group import GroupException
 from AimsLogging import Logger
 #from FeatureFactory import TemplateReader
 
@@ -38,7 +39,7 @@ TP = {'{}.{}'.format(FeatureType.reverse[ET].lower(),a):b for a,b in zip(
     }
 aimslog = None
 
-class GroupException(AimsException): pass    
+class GroupTemplateReferenceException(GroupException): pass    
 class GroupFieldRequiredException(GroupException): pass
 class GroupFieldIncorrectException(GroupException): pass
 class GroupConversionException(GroupException): pass
@@ -48,16 +49,22 @@ class GroupFactory(FeatureFactory):
     ''' AddressFactory class used to build address objects without the overhead of re-reading templates each time an address is needed''' 
     #PBRANCH = '{d}{}{d}{}'.format(d=DEF_SEP,*Position.BRANCH)
     GFFT = FeedType.CHANGEFEED
-    DEF_REF = FeedType.reverse[GFFT]
+    DEF_FRT = FeedType.reverse[GFFT]
     #grptype = Group
     #reqtype = GroupActionType
     
     global aimslog
     aimslog = Logger.setup()
     
-    def __init__(self, ref=DEF_REF):
-        self.ref = ref
-        self.template = self.readTemplate(TP)[ref.k]
+    def __init__(self, frt=DEF_FRT):
+        '''Initialises a group factory with static templates.
+        @param frt: FeedRef template reference used to select factory build
+        @type frt: String
+        '''
+        if frt.k in TP.keys():
+            self.frt = frt
+        else: raise  GroupTemplateReferenceException('{} is not a template key'.format(frt))
+        self.template = self.readTemplate(TP)[self.frt.k]
     
     def __str__(self):
         return 'AFC.{}'.format(FeedType.reverse(self.GFFT)[:3])
@@ -68,9 +75,18 @@ class GroupFactory(FeatureFactory):
         return GroupFactory(ft)
     
     #HACK to save rewriting getaddress at gfactory call
-    #def getAddress(self,ref=None,adr=None,model=None,prefix=''):self.getGroup(ref,adr,model,prefix)
-    def getGroup(self,ref=None,grp=None,model=None,prefix=''):
-        '''Creates an address object from a model (using the response template if model is not provided)'''
+    #def get(self,ref=None,adr=None,model=None,prefix=''):self.get(ref,adr,model,prefix)
+    def get(self,ref=None,grp=None,model=None,prefix=''):
+        '''Creates a group object from a model (using the response template if model is not provided)
+        @param ref: Application generated unique reference string
+        @type ref: String
+        @param grp: Group object being populated
+        @type grp: Group
+        @param model: Dictionary object (matching or derived from a template) containing group attribute information
+        @param prefix: String value used to flatten/identify nested dictionary elements
+        @type prefix: String   
+        @return: (Minimally) Populated group object
+        '''
         #overwrite = model OR NOT(address). If an address is provided only fill it with model provided, presume dont want template fill
         overwrite = False
         if not grp: 
@@ -85,19 +101,26 @@ class GroupFactory(FeatureFactory):
         if overwrite:
             try:
                 #if SKIP_NULL: data = self._delNull(data)
-                grp = self._readGroup(grp, data, prefix)        
+                grp = self._read(grp, data, prefix)        
             except Exception as e:
                 msg = 'Error creating address object using model {} with {}'.format(data,e)
                 aimslog.error(msg)
                 raise GroupCreationException(msg)
         return grp
         
-    def _readGroup(self,grp,data,prefix):
-        '''Recursive address dict reader'''
+    def _read(self,grp,data,prefix):
+        '''Recursive group setting attribute dict reader.
+        @param grp: Active group object
+        @type grp: Group
+        @param data: Active (subset) dict
+        @param prefix: String value used to flatten/identify nested dictionary elements
+        @type prefix: String   
+        @return: Active (partially filled) group
+        '''
         for k in data:
             setter = 'set'+k[0].upper()+k[1:]
             new_prefix = prefix+DEF_SEP+k
-            if isinstance(data[k],dict): grp = self._readGroup(grp=grp,data=data[k],prefix=new_prefix)
+            if isinstance(data[k],dict): grp = self._read(grp=grp,data=data[k],prefix=new_prefix)
             #elif isinstance(data[k],list) and new_prefix == self.PBRANCH:
             #    pstns = [] 
             #    for pd in data[k]: pstns.append(Position.getInstance(pd,self))
@@ -106,22 +129,22 @@ class GroupFactory(FeatureFactory):
         return grp
     
     def cast(self,grp):
-        '''casts groups from curent to requested group-type'''
-        return Group.clone(grp, self.getGroup())
-    
-#     @staticmethod
-#     def filterPI(ppi):
-#         '''filters out possible Processing Instructions'''
-#         sppi = str(ppi)
-#         if sppi.find('#')>-1:
-#             dflt = re.search('default=(\w+)',sppi)
-#             oneof = re.search('oneof=(\w+)',sppi)#first as default
-#             return dflt.group(1) if dflt else (oneof.group(1) if oneof else None)
-#         return ppi
+        '''Casts group from current type to requested group-type, eg GroupResolution -> GroupChange
+        @param grp: Group being converted 
+        @type grp: Group
+        @return: Group cast to the self type
+        '''
+        return Group.clone(grp, self.get())
         
      
-    def convertGroup(self,grp,gat):
-        '''Converts a group into its json payload equivalent '''
+    def convert(self,grp,gat):
+        '''Converts a group into its json payload equivalent.
+        @param grp: Group objects being converted to JSON string
+        @type grp: Group
+        @param gat: Action to perform on group
+        @type gat: GroupAction|ApprovalType
+        @return: Representative JSON string (minimally compliant with type template)
+        '''
         full = None
         try:
             full = self._convert(grp, copy.deepcopy(self.template[self.reqtype.reverse[gat].lower()]))
@@ -133,6 +156,14 @@ class GroupFactory(FeatureFactory):
         return full
      
     def _convert(self,grp,dat,key=''):
+        '''Recursive part of convert
+        @param grp: Active group object
+        @type grp: Group
+        @param dat: Active (subset) dict
+        @param key: String value used to flatten/identify nested dictionary elements
+        @type key: String   
+        @return: Processed (nested) dict
+        '''
         for attr in dat:
             new_key = key+DEF_SEP+attr
             #if new_key == self.PBRANCH:
@@ -144,7 +175,16 @@ class GroupFactory(FeatureFactory):
         return dat
      
     def _assign(self,dat,grp,key):
-        '''validates address data value against template requirements'''
+        '''Validates group data value against template requirements reading tags to identify default and required data fields
+        - `oneof` indicates field is required and is one of the values in the subsequent pipe separated list
+        - `required` indicates the field is required. An error will be thrown if a suitable values is unavailable
+        @param dat: Active (subset) dict
+        @param grp: Active group object
+        @type grp: Group
+        @param key: String value used to flatten/identify nested dictionary elements
+        @type key: String   
+        @return: Active (partially filled) address
+        '''
         #TODO add default or remove from filterpi
         required,oneof,default,datatype = 4*(None,)
         val = grp.__dict__[key] if hasattr(grp,key) else None
@@ -163,40 +203,40 @@ class GroupFactory(FeatureFactory):
         return val if val else default
 
 class GroupChangeFactory(GroupFactory):
+    '''Const setting GroupFactory subclass specifically for changefeed groups'''
     GFFT = FeedType.CHANGEFEED
-    DEF_REF = FeedType.reverse[GFFT]
+    DEF_FRT = FeedType.reverse[GFFT]
     grptype = GroupChange
     reqtype = GroupActionType
-    def __init__(self,ref):
-        super(GroupChangeFactory,self).__init__(ref)
+    def __init__(self,frt):
+        super(GroupChangeFactory,self).__init__(frt)
 
 
 class GroupResolutionFactory(GroupFactory):
+    '''Const setting GroupFactory subclass specifically for resolutionfeed groups'''
     GFFT = FeedType.RESOLUTIONFEED
-    DEF_REF = FeedType.reverse[GFFT]
+    DEF_FRT = FeedType.reverse[GFFT]
     grptype = GroupResolution
     reqtype = GroupApprovalType
-    def __init__(self,ref):
-        super(GroupResolutionFactory,self).__init__(ref)
+    def __init__(self,frt):
+        super(GroupResolutionFactory,self).__init__(frt)
 
-    
-    
     
 def test():
     from pprint import pprint as pp
     from AimsUtility import FeedRef
     gf_f = GroupFactory.getInstance(FeedRef(FeatureType.GROUPS,FeedType.CHANGEFEED))
     
-    axx = gf_f.getGroup()
+    axx = gf_f.get()
     axx.setVersion(11112222)
     axx.setChangeGroupId(22334455)
-    ac1 = gf_f.convertGroup(axx,GroupActionType.REPLACE)
-    ac2 = gf_f.convertGroup(axx,GroupActionType.SUBMIT)
-    ac3 = gf_f.convertGroup(axx,GroupActionType.CLOSE)
-    ac4 = gf_f.convertGroup(axx,GroupActionType.ADDRESS)
+    ac1 = gf_f.convert(axx,GroupActionType.REPLACE)
+    ac2 = gf_f.convert(axx,GroupActionType.SUBMIT)
+    ac3 = gf_f.convert(axx,GroupActionType.CLOSE)
+    ac4 = gf_f.convert(axx,GroupActionType.ADDRESS)
     axx.setAddressId(99887766)
-    ac5 = gf_f.convertGroup(axx,GroupActionType.ADD)     
-    ac6 = gf_f.convertGroup(axx,GroupActionType.REMOVE)
+    ac5 = gf_f.convert(axx,GroupActionType.ADD)     
+    ac6 = gf_f.convert(axx,GroupActionType.REMOVE)
 
     
     print 'CHGF-REP'

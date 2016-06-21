@@ -1,0 +1,3470 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>PyQt4.QtGui.QAbstractItemView</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="QGIS-AIMS-Plugin-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        PyQt4 ::
+        QtGui ::
+        QAbstractItemView ::
+        Class&nbsp;QAbstractItemView
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="PyQt4.QtGui.QAbstractItemView-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class QAbstractItemView</h1><p class="nomargin-top"></p>
+<pre class="base-tree">
+       object --+                        
+                |                        
+sip.simplewrapper --+                    
+                    |                    
+          sip.wrapper --+                
+                        |                
+           <a href="PyQt4.QtCore.QObject-class.html">QtCore.QObject</a> --+            
+                            |            
+           object --+       |            
+                    |       |            
+    sip.simplewrapper --+   |            
+                        |   |            
+             <a href="PyQt4.QtGui.QPaintDevice-class.html">QPaintDevice</a> --+            
+                            |            
+                      <a href="PyQt4.QtGui.QWidget-class.html">QWidget</a> --+        
+                                |        
+                           <a href="PyQt4.QtGui.QFrame-class.html">QFrame</a> --+    
+                                    |    
+                  <a href="PyQt4.QtGui.QAbstractScrollArea-class.html">QAbstractScrollArea</a> --+
+                                        |
+                                       <strong class="uidshort">QAbstractItemView</strong>
+</pre>
+
+<dl><dt>Known Subclasses:</dt>
+<dd>
+      <ul class="subclass-list">
+<li><a href="PyQt4.QtGui.QColumnView-class.html">QColumnView</a></li><li>, <a href="PyQt4.QtGui.QHeaderView-class.html">QHeaderView</a></li><li>, <a href="PyQt4.QtGui.QListView-class.html">QListView</a></li><li>, <a href="PyQt4.QtGui.QTableView-class.html">QTableView</a></li><li>, <a href="PyQt4.QtGui.QTreeView-class.html">QTreeView</a></li>  </ul>
+</dd></dl>
+
+<hr />
+<p>QAbstractItemView(QWidget parent=None)</p>
+
+<!-- ==================== NESTED CLASSES ==================== -->
+<a name="section-NestedClasses"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Nested Classes</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-NestedClasses"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="PyQt4.QtGui.QAbstractItemView.CursorAction-class.html" class="summary-name">CursorAction</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="PyQt4.QtGui.QAbstractItemView.DragDropMode-class.html" class="summary-name">DragDropMode</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="PyQt4.QtGui.QAbstractItemView.DropIndicatorPosition-class.html" class="summary-name">DropIndicatorPosition</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="PyQt4.QtGui.QAbstractItemView.EditTrigger-class.html" class="summary-name">EditTrigger</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="PyQt4.QtGui.QAbstractItemView.EditTriggers-class.html" class="summary-name">EditTriggers</a><br />
+      QAbstractItemView.EditTriggers(QAbstractItemView.EditTriggers) 
+        QAbstractItemView.EditTriggers(int) 
+        QAbstractItemView.EditTriggers()
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="PyQt4.QtGui.QAbstractItemView.ScrollHint-class.html" class="summary-name">ScrollHint</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="PyQt4.QtGui.QAbstractItemView.ScrollMode-class.html" class="summary-name">ScrollMode</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="PyQt4.QtGui.QAbstractItemView.SelectionBehavior-class.html" class="summary-name">SelectionBehavior</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="PyQt4.QtGui.QAbstractItemView.SelectionMode-class.html" class="summary-name">SelectionMode</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="PyQt4.QtGui.QAbstractItemView.State-class.html" class="summary-name">State</a>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="PyQt4.QtGui.QFrame-class.html">QFrame</a></code></b>:
+      <code><a href="PyQt4.QtGui.QFrame.Shadow-class.html">Shadow</a></code>,
+      <code><a href="PyQt4.QtGui.QFrame.Shape-class.html">Shape</a></code>,
+      <code><a href="PyQt4.QtGui.QFrame.StyleMask-class.html">StyleMask</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="PyQt4.QtGui.QWidget-class.html">QWidget</a></code></b>:
+      <code><a href="PyQt4.QtGui.QWidget.RenderFlag-class.html">RenderFlag</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget.RenderFlags-class.html">RenderFlags</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="PyQt4.QtGui.QPaintDevice-class.html">QPaintDevice</a></code></b>:
+      <code><a href="PyQt4.QtGui.QPaintDevice.PaintDeviceMetric-class.html">PaintDeviceMetric</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="activated"></a><span class="summary-sig-name">activated</span>(<span class="summary-sig-arg">...</span>)</span><br />
+      QAbstractItemView.activated[QModelIndex] [signal]</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="alternatingRowColors"></a><span class="summary-sig-name">alternatingRowColors</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="autoScrollMargin"></a><span class="summary-sig-name">autoScrollMargin</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="clearSelection"></a><span class="summary-sig-name">clearSelection</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="clicked"></a><span class="summary-sig-name">clicked</span>(<span class="summary-sig-arg">...</span>)</span><br />
+      QAbstractItemView.clicked[QModelIndex] [signal]</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="closeEditor"></a><span class="summary-sig-name">closeEditor</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="closePersistentEditor"></a><span class="summary-sig-name">closePersistentEditor</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="commitData"></a><span class="summary-sig-name">commitData</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="currentChanged"></a><span class="summary-sig-name">currentChanged</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="currentIndex"></a><span class="summary-sig-name">currentIndex</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="dataChanged"></a><span class="summary-sig-name">dataChanged</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="defaultDropAction"></a><span class="summary-sig-name">defaultDropAction</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="dirtyRegionOffset"></a><span class="summary-sig-name">dirtyRegionOffset</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="doubleClicked"></a><span class="summary-sig-name">doubleClicked</span>(<span class="summary-sig-arg">...</span>)</span><br />
+      QAbstractItemView.doubleClicked[QModelIndex] [signal]</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="dragDropMode"></a><span class="summary-sig-name">dragDropMode</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="dragDropOverwriteMode"></a><span class="summary-sig-name">dragDropOverwriteMode</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="dragEnabled"></a><span class="summary-sig-name">dragEnabled</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="PyQt4.QtGui.QAbstractItemView-class.html#dragEnterEvent" class="summary-sig-name">dragEnterEvent</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="PyQt4.QtGui.QAbstractItemView-class.html#dragLeaveEvent" class="summary-sig-name">dragLeaveEvent</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="PyQt4.QtGui.QAbstractItemView-class.html#dragMoveEvent" class="summary-sig-name">dragMoveEvent</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="PyQt4.QtGui.QAbstractItemView-class.html#dropEvent" class="summary-sig-name">dropEvent</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="dropIndicatorPosition"></a><span class="summary-sig-name">dropIndicatorPosition</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="edit"></a><span class="summary-sig-name">edit</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="editTriggers"></a><span class="summary-sig-name">editTriggers</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="editorDestroyed"></a><span class="summary-sig-name">editorDestroyed</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="entered"></a><span class="summary-sig-name">entered</span>(<span class="summary-sig-arg">...</span>)</span><br />
+      QAbstractItemView.entered[QModelIndex] [signal]</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="PyQt4.QtGui.QAbstractItemView-class.html#event" class="summary-sig-name">event</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="executeDelayedItemsLayout"></a><span class="summary-sig-name">executeDelayedItemsLayout</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="PyQt4.QtGui.QAbstractItemView-class.html#focusInEvent" class="summary-sig-name">focusInEvent</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="PyQt4.QtGui.QAbstractItemView-class.html#focusNextPrevChild" class="summary-sig-name">focusNextPrevChild</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="PyQt4.QtGui.QAbstractItemView-class.html#focusOutEvent" class="summary-sig-name">focusOutEvent</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="hasAutoScroll"></a><span class="summary-sig-name">hasAutoScroll</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="horizontalOffset"></a><span class="summary-sig-name">horizontalOffset</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="horizontalScrollMode"></a><span class="summary-sig-name">horizontalScrollMode</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="horizontalScrollbarAction"></a><span class="summary-sig-name">horizontalScrollbarAction</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="horizontalScrollbarValueChanged"></a><span class="summary-sig-name">horizontalScrollbarValueChanged</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="horizontalStepsPerItem"></a><span class="summary-sig-name">horizontalStepsPerItem</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="iconSize"></a><span class="summary-sig-name">iconSize</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="indexAt"></a><span class="summary-sig-name">indexAt</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="indexWidget"></a><span class="summary-sig-name">indexWidget</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="PyQt4.QtGui.QAbstractItemView-class.html#inputMethodEvent" class="summary-sig-name">inputMethodEvent</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="PyQt4.QtGui.QAbstractItemView-class.html#inputMethodQuery" class="summary-sig-name">inputMethodQuery</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="isIndexHidden"></a><span class="summary-sig-name">isIndexHidden</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="itemDelegate"></a><span class="summary-sig-name">itemDelegate</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="itemDelegateForColumn"></a><span class="summary-sig-name">itemDelegateForColumn</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="itemDelegateForRow"></a><span class="summary-sig-name">itemDelegateForRow</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="PyQt4.QtGui.QAbstractItemView-class.html#keyPressEvent" class="summary-sig-name">keyPressEvent</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="keyboardSearch"></a><span class="summary-sig-name">keyboardSearch</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="model"></a><span class="summary-sig-name">model</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="PyQt4.QtGui.QAbstractItemView-class.html#mouseDoubleClickEvent" class="summary-sig-name">mouseDoubleClickEvent</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="PyQt4.QtGui.QAbstractItemView-class.html#mouseMoveEvent" class="summary-sig-name">mouseMoveEvent</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="PyQt4.QtGui.QAbstractItemView-class.html#mousePressEvent" class="summary-sig-name">mousePressEvent</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="PyQt4.QtGui.QAbstractItemView-class.html#mouseReleaseEvent" class="summary-sig-name">mouseReleaseEvent</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="moveCursor"></a><span class="summary-sig-name">moveCursor</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="openPersistentEditor"></a><span class="summary-sig-name">openPersistentEditor</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="pressed"></a><span class="summary-sig-name">pressed</span>(<span class="summary-sig-arg">...</span>)</span><br />
+      QAbstractItemView.pressed[QModelIndex] [signal]</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="reset"></a><span class="summary-sig-name">reset</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="PyQt4.QtGui.QAbstractItemView-class.html#resizeEvent" class="summary-sig-name">resizeEvent</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="rootIndex"></a><span class="summary-sig-name">rootIndex</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="rowsAboutToBeRemoved"></a><span class="summary-sig-name">rowsAboutToBeRemoved</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="rowsInserted"></a><span class="summary-sig-name">rowsInserted</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="scheduleDelayedItemsLayout"></a><span class="summary-sig-name">scheduleDelayedItemsLayout</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="scrollDirtyRegion"></a><span class="summary-sig-name">scrollDirtyRegion</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="scrollTo"></a><span class="summary-sig-name">scrollTo</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="scrollToBottom"></a><span class="summary-sig-name">scrollToBottom</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="scrollToTop"></a><span class="summary-sig-name">scrollToTop</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="selectAll"></a><span class="summary-sig-name">selectAll</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="selectedIndexes"></a><span class="summary-sig-name">selectedIndexes</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="selectionBehavior"></a><span class="summary-sig-name">selectionBehavior</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="selectionChanged"></a><span class="summary-sig-name">selectionChanged</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="selectionCommand"></a><span class="summary-sig-name">selectionCommand</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="selectionMode"></a><span class="summary-sig-name">selectionMode</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="selectionModel"></a><span class="summary-sig-name">selectionModel</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setAlternatingRowColors"></a><span class="summary-sig-name">setAlternatingRowColors</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setAutoScroll"></a><span class="summary-sig-name">setAutoScroll</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setAutoScrollMargin"></a><span class="summary-sig-name">setAutoScrollMargin</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setCurrentIndex"></a><span class="summary-sig-name">setCurrentIndex</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setDefaultDropAction"></a><span class="summary-sig-name">setDefaultDropAction</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setDirtyRegion"></a><span class="summary-sig-name">setDirtyRegion</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setDragDropMode"></a><span class="summary-sig-name">setDragDropMode</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setDragDropOverwriteMode"></a><span class="summary-sig-name">setDragDropOverwriteMode</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setDragEnabled"></a><span class="summary-sig-name">setDragEnabled</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setDropIndicatorShown"></a><span class="summary-sig-name">setDropIndicatorShown</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setEditTriggers"></a><span class="summary-sig-name">setEditTriggers</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setHorizontalScrollMode"></a><span class="summary-sig-name">setHorizontalScrollMode</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setHorizontalStepsPerItem"></a><span class="summary-sig-name">setHorizontalStepsPerItem</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setIconSize"></a><span class="summary-sig-name">setIconSize</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setIndexWidget"></a><span class="summary-sig-name">setIndexWidget</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setItemDelegate"></a><span class="summary-sig-name">setItemDelegate</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setItemDelegateForColumn"></a><span class="summary-sig-name">setItemDelegateForColumn</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setItemDelegateForRow"></a><span class="summary-sig-name">setItemDelegateForRow</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setModel"></a><span class="summary-sig-name">setModel</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setRootIndex"></a><span class="summary-sig-name">setRootIndex</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setSelection"></a><span class="summary-sig-name">setSelection</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setSelectionBehavior"></a><span class="summary-sig-name">setSelectionBehavior</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setSelectionMode"></a><span class="summary-sig-name">setSelectionMode</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setSelectionModel"></a><span class="summary-sig-name">setSelectionModel</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setState"></a><span class="summary-sig-name">setState</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setTabKeyNavigation"></a><span class="summary-sig-name">setTabKeyNavigation</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setTextElideMode"></a><span class="summary-sig-name">setTextElideMode</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setVerticalScrollMode"></a><span class="summary-sig-name">setVerticalScrollMode</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setVerticalStepsPerItem"></a><span class="summary-sig-name">setVerticalStepsPerItem</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="showDropIndicator"></a><span class="summary-sig-name">showDropIndicator</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="sizeHintForColumn"></a><span class="summary-sig-name">sizeHintForColumn</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="sizeHintForIndex"></a><span class="summary-sig-name">sizeHintForIndex</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="sizeHintForRow"></a><span class="summary-sig-name">sizeHintForRow</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="startDrag"></a><span class="summary-sig-name">startDrag</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="state"></a><span class="summary-sig-name">state</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="tabKeyNavigation"></a><span class="summary-sig-name">tabKeyNavigation</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="textElideMode"></a><span class="summary-sig-name">textElideMode</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="PyQt4.QtGui.QAbstractItemView-class.html#timerEvent" class="summary-sig-name">timerEvent</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="PyQt4.QtGui.QAbstractItemView-class.html#update" class="summary-sig-name">update</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="updateEditorData"></a><span class="summary-sig-name">updateEditorData</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="updateEditorGeometries"></a><span class="summary-sig-name">updateEditorGeometries</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="updateGeometries"></a><span class="summary-sig-name">updateGeometries</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="verticalOffset"></a><span class="summary-sig-name">verticalOffset</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="verticalScrollMode"></a><span class="summary-sig-name">verticalScrollMode</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="verticalScrollbarAction"></a><span class="summary-sig-name">verticalScrollbarAction</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="verticalScrollbarValueChanged"></a><span class="summary-sig-name">verticalScrollbarValueChanged</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="verticalStepsPerItem"></a><span class="summary-sig-name">verticalStepsPerItem</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="viewOptions"></a><span class="summary-sig-name">viewOptions</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="viewportEntered"></a><span class="summary-sig-name">viewportEntered</span>(<span class="summary-sig-arg">...</span>)</span><br />
+      QAbstractItemView.viewportEntered [signal]</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="PyQt4.QtGui.QAbstractItemView-class.html#viewportEvent" class="summary-sig-name">viewportEvent</a>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="visualRect"></a><span class="summary-sig-name">visualRect</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="visualRegionForSelection"></a><span class="summary-sig-name">visualRegionForSelection</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="PyQt4.QtGui.QAbstractScrollArea-class.html">QAbstractScrollArea</a></code></b>:
+      <code><a href="PyQt4.QtGui.QAbstractScrollArea-class.html#addScrollBarWidget">addScrollBarWidget</a></code>,
+      <code><a href="PyQt4.QtGui.QAbstractScrollArea-class.html#contextMenuEvent">contextMenuEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QAbstractScrollArea-class.html#cornerWidget">cornerWidget</a></code>,
+      <code><a href="PyQt4.QtGui.QAbstractScrollArea-class.html#horizontalScrollBar">horizontalScrollBar</a></code>,
+      <code><a href="PyQt4.QtGui.QAbstractScrollArea-class.html#horizontalScrollBarPolicy">horizontalScrollBarPolicy</a></code>,
+      <code><a href="PyQt4.QtGui.QAbstractScrollArea-class.html#maximumViewportSize">maximumViewportSize</a></code>,
+      <code><a href="PyQt4.QtGui.QAbstractScrollArea-class.html#minimumSizeHint">minimumSizeHint</a></code>,
+      <code><a href="PyQt4.QtGui.QAbstractScrollArea-class.html#paintEvent">paintEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QAbstractScrollArea-class.html#scrollBarWidgets">scrollBarWidgets</a></code>,
+      <code><a href="PyQt4.QtGui.QAbstractScrollArea-class.html#scrollContentsBy">scrollContentsBy</a></code>,
+      <code><a href="PyQt4.QtGui.QAbstractScrollArea-class.html#setCornerWidget">setCornerWidget</a></code>,
+      <code><a href="PyQt4.QtGui.QAbstractScrollArea-class.html#setHorizontalScrollBar">setHorizontalScrollBar</a></code>,
+      <code><a href="PyQt4.QtGui.QAbstractScrollArea-class.html#setHorizontalScrollBarPolicy">setHorizontalScrollBarPolicy</a></code>,
+      <code><a href="PyQt4.QtGui.QAbstractScrollArea-class.html#setVerticalScrollBar">setVerticalScrollBar</a></code>,
+      <code><a href="PyQt4.QtGui.QAbstractScrollArea-class.html#setVerticalScrollBarPolicy">setVerticalScrollBarPolicy</a></code>,
+      <code><a href="PyQt4.QtGui.QAbstractScrollArea-class.html#setViewport">setViewport</a></code>,
+      <code><a href="PyQt4.QtGui.QAbstractScrollArea-class.html#setViewportMargins">setViewportMargins</a></code>,
+      <code><a href="PyQt4.QtGui.QAbstractScrollArea-class.html#setupViewport">setupViewport</a></code>,
+      <code><a href="PyQt4.QtGui.QAbstractScrollArea-class.html#sizeHint">sizeHint</a></code>,
+      <code><a href="PyQt4.QtGui.QAbstractScrollArea-class.html#verticalScrollBar">verticalScrollBar</a></code>,
+      <code><a href="PyQt4.QtGui.QAbstractScrollArea-class.html#verticalScrollBarPolicy">verticalScrollBarPolicy</a></code>,
+      <code><a href="PyQt4.QtGui.QAbstractScrollArea-class.html#viewport">viewport</a></code>,
+      <code><a href="PyQt4.QtGui.QAbstractScrollArea-class.html#wheelEvent">wheelEvent</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="PyQt4.QtGui.QFrame-class.html">QFrame</a></code></b>:
+      <code><a href="PyQt4.QtGui.QFrame-class.html#changeEvent">changeEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QFrame-class.html#drawFrame">drawFrame</a></code>,
+      <code><a href="PyQt4.QtGui.QFrame-class.html#frameRect">frameRect</a></code>,
+      <code><a href="PyQt4.QtGui.QFrame-class.html#frameShadow">frameShadow</a></code>,
+      <code><a href="PyQt4.QtGui.QFrame-class.html#frameShape">frameShape</a></code>,
+      <code><a href="PyQt4.QtGui.QFrame-class.html#frameStyle">frameStyle</a></code>,
+      <code><a href="PyQt4.QtGui.QFrame-class.html#frameWidth">frameWidth</a></code>,
+      <code><a href="PyQt4.QtGui.QFrame-class.html#lineWidth">lineWidth</a></code>,
+      <code><a href="PyQt4.QtGui.QFrame-class.html#midLineWidth">midLineWidth</a></code>,
+      <code><a href="PyQt4.QtGui.QFrame-class.html#setFrameRect">setFrameRect</a></code>,
+      <code><a href="PyQt4.QtGui.QFrame-class.html#setFrameShadow">setFrameShadow</a></code>,
+      <code><a href="PyQt4.QtGui.QFrame-class.html#setFrameShape">setFrameShape</a></code>,
+      <code><a href="PyQt4.QtGui.QFrame-class.html#setFrameStyle">setFrameStyle</a></code>,
+      <code><a href="PyQt4.QtGui.QFrame-class.html#setLineWidth">setLineWidth</a></code>,
+      <code><a href="PyQt4.QtGui.QFrame-class.html#setMidLineWidth">setMidLineWidth</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="PyQt4.QtGui.QWidget-class.html">QWidget</a></code></b>:
+      <code><a href="PyQt4.QtGui.QWidget-class.html#acceptDrops">acceptDrops</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#accessibleDescription">accessibleDescription</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#accessibleName">accessibleName</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#actionEvent">actionEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#actions">actions</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#activateWindow">activateWindow</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#addAction">addAction</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#addActions">addActions</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#adjustSize">adjustSize</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#autoFillBackground">autoFillBackground</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#backgroundRole">backgroundRole</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#baseSize">baseSize</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#childAt">childAt</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#childrenRect">childrenRect</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#childrenRegion">childrenRegion</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#clearFocus">clearFocus</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#clearMask">clearMask</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#close">close</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#closeEvent">closeEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#contentsMargins">contentsMargins</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#contentsRect">contentsRect</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#contextMenuPolicy">contextMenuPolicy</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#create">create</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#cursor">cursor</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#customContextMenuRequested">customContextMenuRequested</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#destroy">destroy</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#devType">devType</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#effectiveWinId">effectiveWinId</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#enabledChange">enabledChange</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#ensurePolished">ensurePolished</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#enterEvent">enterEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#find">find</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#focusNextChild">focusNextChild</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#focusPolicy">focusPolicy</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#focusPreviousChild">focusPreviousChild</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#focusProxy">focusProxy</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#focusWidget">focusWidget</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#font">font</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#fontChange">fontChange</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#fontInfo">fontInfo</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#fontMetrics">fontMetrics</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#foregroundRole">foregroundRole</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#frameGeometry">frameGeometry</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#frameSize">frameSize</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#geometry">geometry</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#getContentsMargins">getContentsMargins</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#grabGesture">grabGesture</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#grabKeyboard">grabKeyboard</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#grabMouse">grabMouse</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#grabShortcut">grabShortcut</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#graphicsEffect">graphicsEffect</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#graphicsProxyWidget">graphicsProxyWidget</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#handle">handle</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#hasFocus">hasFocus</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#hasMouseTracking">hasMouseTracking</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#height">height</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#heightForWidth">heightForWidth</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#hide">hide</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#hideEvent">hideEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#inputContext">inputContext</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#inputMethodHints">inputMethodHints</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#insertAction">insertAction</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#insertActions">insertActions</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isActiveWindow">isActiveWindow</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isAncestorOf">isAncestorOf</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isEnabled">isEnabled</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isEnabledTo">isEnabledTo</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isEnabledToTLW">isEnabledToTLW</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isFullScreen">isFullScreen</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isHidden">isHidden</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isLeftToRight">isLeftToRight</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isMaximized">isMaximized</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isMinimized">isMinimized</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isModal">isModal</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isRightToLeft">isRightToLeft</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isTopLevel">isTopLevel</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isVisible">isVisible</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isVisibleTo">isVisibleTo</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isWindow">isWindow</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#isWindowModified">isWindowModified</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#keyReleaseEvent">keyReleaseEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#keyboardGrabber">keyboardGrabber</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#languageChange">languageChange</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#layout">layout</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#layoutDirection">layoutDirection</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#leaveEvent">leaveEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#locale">locale</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#lower">lower</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#mapFrom">mapFrom</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#mapFromGlobal">mapFromGlobal</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#mapFromParent">mapFromParent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#mapTo">mapTo</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#mapToGlobal">mapToGlobal</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#mapToParent">mapToParent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#mask">mask</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#maximumHeight">maximumHeight</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#maximumSize">maximumSize</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#maximumWidth">maximumWidth</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#metric">metric</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#minimumHeight">minimumHeight</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#minimumSize">minimumSize</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#minimumWidth">minimumWidth</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#mouseGrabber">mouseGrabber</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#move">move</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#moveEvent">moveEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#nativeParentWidget">nativeParentWidget</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#nextInFocusChain">nextInFocusChain</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#normalGeometry">normalGeometry</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#overrideWindowFlags">overrideWindowFlags</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#overrideWindowState">overrideWindowState</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#paintEngine">paintEngine</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#palette">palette</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#paletteChange">paletteChange</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#parentWidget">parentWidget</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#pos">pos</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#previousInFocusChain">previousInFocusChain</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#raise_">raise_</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#rect">rect</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#releaseKeyboard">releaseKeyboard</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#releaseMouse">releaseMouse</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#releaseShortcut">releaseShortcut</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#removeAction">removeAction</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#render">render</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#repaint">repaint</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#resetInputContext">resetInputContext</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#resize">resize</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#restoreGeometry">restoreGeometry</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#saveGeometry">saveGeometry</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#scroll">scroll</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setAcceptDrops">setAcceptDrops</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setAccessibleDescription">setAccessibleDescription</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setAccessibleName">setAccessibleName</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setAttribute">setAttribute</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setAutoFillBackground">setAutoFillBackground</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setBackgroundRole">setBackgroundRole</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setBaseSize">setBaseSize</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setContentsMargins">setContentsMargins</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setContextMenuPolicy">setContextMenuPolicy</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setCursor">setCursor</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setDisabled">setDisabled</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setEnabled">setEnabled</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setFixedHeight">setFixedHeight</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setFixedSize">setFixedSize</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setFixedWidth">setFixedWidth</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setFocus">setFocus</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setFocusPolicy">setFocusPolicy</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setFocusProxy">setFocusProxy</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setFont">setFont</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setForegroundRole">setForegroundRole</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setGeometry">setGeometry</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setGraphicsEffect">setGraphicsEffect</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setHidden">setHidden</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setInputContext">setInputContext</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setInputMethodHints">setInputMethodHints</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setLayout">setLayout</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setLayoutDirection">setLayoutDirection</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setLocale">setLocale</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setMask">setMask</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setMaximumHeight">setMaximumHeight</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setMaximumSize">setMaximumSize</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setMaximumWidth">setMaximumWidth</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setMinimumHeight">setMinimumHeight</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setMinimumSize">setMinimumSize</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setMinimumWidth">setMinimumWidth</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setMouseTracking">setMouseTracking</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setPalette">setPalette</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setParent">setParent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setShortcutAutoRepeat">setShortcutAutoRepeat</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setShortcutEnabled">setShortcutEnabled</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setShown">setShown</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setSizeIncrement">setSizeIncrement</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setSizePolicy">setSizePolicy</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setStatusTip">setStatusTip</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setStyle">setStyle</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setStyleSheet">setStyleSheet</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setTabOrder">setTabOrder</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setToolTip">setToolTip</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setUpdatesEnabled">setUpdatesEnabled</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setVisible">setVisible</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setWhatsThis">setWhatsThis</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setWindowFilePath">setWindowFilePath</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setWindowFlags">setWindowFlags</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setWindowIcon">setWindowIcon</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setWindowIconText">setWindowIconText</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setWindowModality">setWindowModality</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setWindowModified">setWindowModified</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setWindowOpacity">setWindowOpacity</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setWindowRole">setWindowRole</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setWindowState">setWindowState</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#setWindowTitle">setWindowTitle</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#show">show</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#showEvent">showEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#showFullScreen">showFullScreen</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#showMaximized">showMaximized</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#showMinimized">showMinimized</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#showNormal">showNormal</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#size">size</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#sizeIncrement">sizeIncrement</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#sizePolicy">sizePolicy</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#stackUnder">stackUnder</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#statusTip">statusTip</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#style">style</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#styleSheet">styleSheet</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#tabletEvent">tabletEvent</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#testAttribute">testAttribute</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#toolTip">toolTip</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#topLevelWidget">topLevelWidget</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#underMouse">underMouse</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#ungrabGesture">ungrabGesture</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#unsetCursor">unsetCursor</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#unsetLayoutDirection">unsetLayoutDirection</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#unsetLocale">unsetLocale</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#updateGeometry">updateGeometry</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#updateMicroFocus">updateMicroFocus</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#updatesEnabled">updatesEnabled</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#visibleRegion">visibleRegion</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#whatsThis">whatsThis</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#width">width</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#winId">winId</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#window">window</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#windowActivationChange">windowActivationChange</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#windowFilePath">windowFilePath</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#windowFlags">windowFlags</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#windowIcon">windowIcon</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#windowIconText">windowIconText</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#windowModality">windowModality</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#windowOpacity">windowOpacity</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#windowRole">windowRole</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#windowState">windowState</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#windowTitle">windowTitle</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#windowType">windowType</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#x">x</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#x11Info">x11Info</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#x11PictureHandle">x11PictureHandle</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#y">y</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="PyQt4.QtCore.QObject-class.html">QtCore.QObject</a></code></b>:
+      <code><a href="PyQt4.QtCore.QObject-class.html#__getattr__">__getattr__</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#blockSignals">blockSignals</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#childEvent">childEvent</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#children">children</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#connect">connect</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#connectNotify">connectNotify</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#customEvent">customEvent</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#deleteLater">deleteLater</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#destroyed">destroyed</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#disconnect">disconnect</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#disconnectNotify">disconnectNotify</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#dumpObjectInfo">dumpObjectInfo</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#dumpObjectTree">dumpObjectTree</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#dynamicPropertyNames">dynamicPropertyNames</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#emit">emit</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#eventFilter">eventFilter</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#findChild">findChild</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#findChildren">findChildren</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#inherits">inherits</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#installEventFilter">installEventFilter</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#isWidgetType">isWidgetType</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#killTimer">killTimer</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#metaObject">metaObject</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#moveToThread">moveToThread</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#objectName">objectName</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#parent">parent</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#property">property</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#pyqtConfigure">pyqtConfigure</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#receivers">receivers</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#removeEventFilter">removeEventFilter</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#sender">sender</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#senderSignalIndex">senderSignalIndex</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#setObjectName">setObjectName</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#setProperty">setProperty</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#signalsBlocked">signalsBlocked</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#startTimer">startTimer</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#thread">thread</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#tr">tr</a></code>,
+      <code><a href="PyQt4.QtCore.QObject-class.html#trUtf8">trUtf8</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="PyQt4.QtGui.QPaintDevice-class.html">QPaintDevice</a></code></b>:
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#colorCount">colorCount</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#depth">depth</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#heightMM">heightMM</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#logicalDpiX">logicalDpiX</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#logicalDpiY">logicalDpiY</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#numColors">numColors</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#paintingActive">paintingActive</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#physicalDpiX">physicalDpiX</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#physicalDpiY">physicalDpiY</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#widthMM">widthMM</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>sip.simplewrapper</code></b>:
+      <code>__init__</code>,
+      <code>__new__</code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__repr__</code>,
+      <code>__setattr__</code>,
+      <code>__sizeof__</code>,
+      <code>__str__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS VARIABLES ==================== -->
+<a name="section-ClassVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="AboveItem"></a><span class="summary-name">AboveItem</span> = <code title="1">1</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="AllEditTriggers"></a><span class="summary-name">AllEditTriggers</span> = <code title="31">31</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="AnimatingState"></a><span class="summary-name">AnimatingState</span> = <code title="6">6</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="AnyKeyPressed"></a><span class="summary-name">AnyKeyPressed</span> = <code title="16">16</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="BelowItem"></a><span class="summary-name">BelowItem</span> = <code title="2">2</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="CollapsingState"></a><span class="summary-name">CollapsingState</span> = <code title="5">5</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="ContiguousSelection"></a><span class="summary-name">ContiguousSelection</span> = <code title="4">4</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="CurrentChanged"></a><span class="summary-name">CurrentChanged</span> = <code title="1">1</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="DoubleClicked"></a><span class="summary-name">DoubleClicked</span> = <code title="2">2</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="DragDrop"></a><span class="summary-name">DragDrop</span> = <code title="3">3</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="DragOnly"></a><span class="summary-name">DragOnly</span> = <code title="1">1</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="DragSelectingState"></a><span class="summary-name">DragSelectingState</span> = <code title="2">2</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="DraggingState"></a><span class="summary-name">DraggingState</span> = <code title="1">1</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="DropOnly"></a><span class="summary-name">DropOnly</span> = <code title="2">2</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="EditKeyPressed"></a><span class="summary-name">EditKeyPressed</span> = <code title="8">8</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="EditingState"></a><span class="summary-name">EditingState</span> = <code title="3">3</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="EnsureVisible"></a><span class="summary-name">EnsureVisible</span> = <code title="0">0</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="ExpandingState"></a><span class="summary-name">ExpandingState</span> = <code title="4">4</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="ExtendedSelection"></a><span class="summary-name">ExtendedSelection</span> = <code title="3">3</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="InternalMove"></a><span class="summary-name">InternalMove</span> = <code title="4">4</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="MoveDown"></a><span class="summary-name">MoveDown</span> = <code title="1">1</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="MoveEnd"></a><span class="summary-name">MoveEnd</span> = <code title="5">5</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="MoveHome"></a><span class="summary-name">MoveHome</span> = <code title="4">4</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="MoveLeft"></a><span class="summary-name">MoveLeft</span> = <code title="2">2</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="MoveNext"></a><span class="summary-name">MoveNext</span> = <code title="8">8</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="MovePageDown"></a><span class="summary-name">MovePageDown</span> = <code title="7">7</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="MovePageUp"></a><span class="summary-name">MovePageUp</span> = <code title="6">6</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="MovePrevious"></a><span class="summary-name">MovePrevious</span> = <code title="9">9</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="MoveRight"></a><span class="summary-name">MoveRight</span> = <code title="3">3</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="MoveUp"></a><span class="summary-name">MoveUp</span> = <code title="0">0</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="MultiSelection"></a><span class="summary-name">MultiSelection</span> = <code title="2">2</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NoDragDrop"></a><span class="summary-name">NoDragDrop</span> = <code title="0">0</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NoEditTriggers"></a><span class="summary-name">NoEditTriggers</span> = <code title="0">0</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NoSelection"></a><span class="summary-name">NoSelection</span> = <code title="0">0</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NoState"></a><span class="summary-name">NoState</span> = <code title="0">0</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="OnItem"></a><span class="summary-name">OnItem</span> = <code title="0">0</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="OnViewport"></a><span class="summary-name">OnViewport</span> = <code title="3">3</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="PositionAtBottom"></a><span class="summary-name">PositionAtBottom</span> = <code title="2">2</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="PositionAtCenter"></a><span class="summary-name">PositionAtCenter</span> = <code title="3">3</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="PositionAtTop"></a><span class="summary-name">PositionAtTop</span> = <code title="1">1</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="ScrollPerItem"></a><span class="summary-name">ScrollPerItem</span> = <code title="0">0</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="ScrollPerPixel"></a><span class="summary-name">ScrollPerPixel</span> = <code title="1">1</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="SelectColumns"></a><span class="summary-name">SelectColumns</span> = <code title="2">2</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="SelectItems"></a><span class="summary-name">SelectItems</span> = <code title="0">0</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="SelectRows"></a><span class="summary-name">SelectRows</span> = <code title="1">1</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="SelectedClicked"></a><span class="summary-name">SelectedClicked</span> = <code title="4">4</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="SingleSelection"></a><span class="summary-name">SingleSelection</span> = <code title="1">1</code>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="PyQt4.QtGui.QFrame-class.html">QFrame</a></code></b>:
+      <code><a href="PyQt4.QtGui.QFrame-class.html#Box">Box</a></code>,
+      <code><a href="PyQt4.QtGui.QFrame-class.html#HLine">HLine</a></code>,
+      <code><a href="PyQt4.QtGui.QFrame-class.html#NoFrame">NoFrame</a></code>,
+      <code><a href="PyQt4.QtGui.QFrame-class.html#Panel">Panel</a></code>,
+      <code><a href="PyQt4.QtGui.QFrame-class.html#Plain">Plain</a></code>,
+      <code><a href="PyQt4.QtGui.QFrame-class.html#Raised">Raised</a></code>,
+      <code><a href="PyQt4.QtGui.QFrame-class.html#Shadow_Mask">Shadow_Mask</a></code>,
+      <code><a href="PyQt4.QtGui.QFrame-class.html#Shape_Mask">Shape_Mask</a></code>,
+      <code><a href="PyQt4.QtGui.QFrame-class.html#StyledPanel">StyledPanel</a></code>,
+      <code><a href="PyQt4.QtGui.QFrame-class.html#Sunken">Sunken</a></code>,
+      <code><a href="PyQt4.QtGui.QFrame-class.html#VLine">VLine</a></code>,
+      <code><a href="PyQt4.QtGui.QFrame-class.html#WinPanel">WinPanel</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="PyQt4.QtGui.QWidget-class.html">QWidget</a></code></b>:
+      <code><a href="PyQt4.QtGui.QWidget-class.html#DrawChildren">DrawChildren</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#DrawWindowBackground">DrawWindowBackground</a></code>,
+      <code><a href="PyQt4.QtGui.QWidget-class.html#IgnoreMask">IgnoreMask</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="PyQt4.QtCore.QObject-class.html">QtCore.QObject</a></code></b>:
+      <code><a href="PyQt4.QtCore.QObject-class.html#staticMetaObject">staticMetaObject</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="PyQt4.QtGui.QPaintDevice-class.html">QPaintDevice</a></code></b>:
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#PdmDepth">PdmDepth</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#PdmDpiX">PdmDpiX</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#PdmDpiY">PdmDpiY</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#PdmHeight">PdmHeight</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#PdmHeightMM">PdmHeightMM</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#PdmNumColors">PdmNumColors</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#PdmPhysicalDpiX">PdmPhysicalDpiX</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#PdmPhysicalDpiY">PdmPhysicalDpiY</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#PdmWidth">PdmWidth</a></code>,
+      <code><a href="PyQt4.QtGui.QPaintDevice-class.html#PdmWidthMM">PdmWidthMM</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="dragEnterEvent"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">dragEnterEvent</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QWidget.dragEnterEvent
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="dragLeaveEvent"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">dragLeaveEvent</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QWidget.dragLeaveEvent
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="dragMoveEvent"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">dragMoveEvent</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QWidget.dragMoveEvent
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="dropEvent"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">dropEvent</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QWidget.dropEvent
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="event"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">event</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QtCore.QObject.event
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="focusInEvent"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">focusInEvent</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QWidget.focusInEvent
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="focusNextPrevChild"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">focusNextPrevChild</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QWidget.focusNextPrevChild
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="focusOutEvent"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">focusOutEvent</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QWidget.focusOutEvent
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="inputMethodEvent"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">inputMethodEvent</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QWidget.inputMethodEvent
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="inputMethodQuery"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">inputMethodQuery</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QWidget.inputMethodQuery
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="keyPressEvent"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">keyPressEvent</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QWidget.keyPressEvent
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="mouseDoubleClickEvent"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">mouseDoubleClickEvent</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QWidget.mouseDoubleClickEvent
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="mouseMoveEvent"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">mouseMoveEvent</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QWidget.mouseMoveEvent
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="mousePressEvent"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">mousePressEvent</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QWidget.mousePressEvent
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="mouseReleaseEvent"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">mouseReleaseEvent</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QWidget.mouseReleaseEvent
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="resizeEvent"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">resizeEvent</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QWidget.resizeEvent
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="timerEvent"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">timerEvent</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QtCore.QObject.timerEvent
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="update"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">update</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QWidget.update
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="viewportEvent"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">viewportEvent</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        QAbstractScrollArea.viewportEvent
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="QGIS-AIMS-Plugin-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Jun 14 13:29:14 2016
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

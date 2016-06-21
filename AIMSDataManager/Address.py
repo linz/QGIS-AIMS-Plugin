@@ -14,7 +14,8 @@
 '''Address module containing data classes representing basic address object as returned from the AIMS API feature.change and resolution feeds'''
 
 #http://devassgeo01:8080/aims/api/address/features - properties
-from AimsUtility import FeatureType,ActionType,ApprovalType,FeedType,AimsException,FeedRef
+from AimsUtility import FeatureType,ActionType,ApprovalType,FeedType,FeedRef
+from AimsUtility import AimsException
 from AimsLogging import Logger
 from Feature import Feature,FeatureMetaData
 from collections import OrderedDict
@@ -24,11 +25,13 @@ from collections import OrderedDict
 #global aimslog
 aimslog = Logger.setup()
 
-        
+
+class AddressException(AimsException): pass
+      
 #------------------------------------------------------------------------------
 # P O S I T I O N
 
-class InvalidPositionException(AimsException):pass
+class InvalidPositionException(AddressException):pass
 PDEF = {'position':{'type':'Point','coordinates':[0.0,0.0],'crs':{'type':'name','properties':{'name':'urn:ogc:def:crs:EPSG::4167'}}},'positionType':'Unknown','primary':True}
     
 class Position(object):
@@ -251,7 +254,7 @@ class EntityAddress(Entity):
         '''
         from FeatureFactory import FeatureFactory
         ff = FeatureFactory.getInstance(etft)
-        return ff.getAddress(model=data)
+        return ff.get(model=data)
         
 
 #------------------------------------------------------------------------------
@@ -284,8 +287,6 @@ class Address(Feature):
         self._changeId = changeId
     def getChangeId(self): 
         return self._changeId 
-    
-
     
     def setAddressId (self, addressId):
         self._components_addressId = addressId
@@ -362,7 +363,9 @@ class Address(Feature):
     def setAppellation( self, appellation ): 
         self._addressedObject_appellation = appellation
     def setMeshblock(self, meshblock):
-        self._codes_meshblock = meshblock          
+        self._codes_meshblock = meshblock
+    def setIsMeshblockOverride(self, isMeshblockOverride):
+        self._codes_isMeshblockOverride = isMeshblockOverride              
     # realted to Features feed only
     def setFullAddressNumber (self, fullAddressNumber): 
         self._components_fullAddressNumber = fullAddressNumber
@@ -376,7 +379,8 @@ class Address(Feature):
     #---------------------------------------------------         
     def setAddressPositions(self,pl):
         '''Setter for Address positions accepting single or list/multiple position objects
-        @param pl: Position (List)
+        @param pl: Position
+        @type
         '''
         '''adds (nb 'add' not 'set', bcse setter recogniser needs set) another position object'''
         if isinstance(pl,list): self._addressedObject_addressPositions = pl  
@@ -420,48 +424,26 @@ class Address(Feature):
 
     def _getFullNumber(self):
         '''I{*Incomplete* Address combining function}
-        @return: String'''
+        @return: String
+        '''
         d = {'unitValue':'{}/','addressNumber':'{}','addressNumberHigh':'-{}','addressNumberSuffix':'{}'}
         reduce(lambda x,y: y+getattr(c+x),d.keys())
-        
-#     def compare(self,other):
-#         '''Equality comparator'''
-#         #return False if isinstance(self,other) else hash(self)==hash(other)
-#         #IMPORTANT. Attribute value compare only useful with distinct (deepcopy'd) instances
-#         return all((getattr(self,a)==getattr(other,a) for a in self.__dict__.keys()))
-    
-    
-    @staticmethod
-    def clone(a,b=None):
-        '''clones attributes of A to B and instantiates B (as type A) if not provided'''
-        #duplicates only attributes set in source object
-        from AddressFactory import AddressFactory
-        if not b: b = FeatureFactory.getInstance(self.feature,et,a.type).getAddress()
-        for attr in a.__dict__.keys(): setattr(b,attr,getattr(a,attr))
-        return b
 
 #------------------------------------------------------------------------------
     
 class AddressRequestFeed(Address):
     '''Subclass of address representing address types available from AIMS feed mechanism'''
-              
-    def setVersion (self, version): self._version = version if Feature._vInt(version) else None
     
-#     def setRequestId(self,requestId):
-#         self.setMeta()
-#         self.meta.requestId = requestId      
-#           
-#     def getRequestId(self):
-#         return self.meta.requestId if hasattr(self,'meta') else None
-#     
-#     def setErrors(self,errors):
-#         self.setMeta()
-#         self.meta.errors = errors      
-#           
-#     def getErrors(self):
-#         return self.meta.errors if hasattr(self,'meta') else None
-
+    def __init__(self, ref=None): 
+        super(AddressRequestFeed,self).__init__(ref)  
         
+#     #TEST. set version demoted from Feature to prevent setting on objects without version information
+#     #and those object getting passed to the API action feeds and causing conflict. 
+#     def setVersion (self, version): 
+#         self._version = version if Feature._vInt(version) else None
+#         
+#     def getVersion(self): 
+#         return self._version
 
 #------------------------------------------------------------------------------
 
@@ -502,10 +484,10 @@ def test():
     import pprint
     from FeatureFactory import FeatureFactory
     af1 = FeatureFactory.getInstance(FeatureType.ADDRESS,FeedType.FEATURES)
-    a1 = af1.getAddress(ref='one_feat')
+    a1 = af1.get(ref='one_feat')
     
     af2 = FeatureFactory.getInstance(FeatureType.ADDRESS,FeedType.CHANGEFEED)
-    a2 = af2.getAddress(ref='two_chg')
+    a2 = af2.get(ref='two_chg')
     a2.setVersion(100)
     a2.setObjectType('Parcel')
     a2.setAddressNumber(100)
@@ -513,7 +495,7 @@ def test():
     a2.setRoadName('Smith Street')
     
     af3 = FeatureFactory.getInstance(FeatureType.ADDRESS,FeedType.RESOLUTIONFEED)
-    a3 = af3.getAddress(ref='three_res')
+    a3 = af3.get(ref='three_res')
     a3.setChangeId(200)
     a3.setVersion(200)
     a3.setAddressNumber(200)
@@ -522,8 +504,8 @@ def test():
     
     print a1,a2,a3
 
-    r2 = af2.convertAddress(a2,ActionType.UPDATE)
-    r3 = af3.convertAddress(a3,ApprovalType.UPDATE)
+    r2 = af2.convert(a2,ActionType.UPDATE)
+    r3 = af3.convert(a3,ApprovalType.UPDATE)
 
     pprint.pprint (r2)
     pprint.pprint (r3)

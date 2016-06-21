@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QGIS-AIMS-Plugin.Test._QGisInterface</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="QGIS-AIMS-Plugin-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="QGIS-AIMS-Plugin-module.html">Package&nbsp;QGIS-AIMS-Plugin</a> ::
+        Package&nbsp;Test ::
+        Module&nbsp;_QGisInterface
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="QGIS-AIMS-Plugin.Test._QGisInterface-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="QGIS-AIMS-Plugin.Test._QGisInterface-module.html">Module QGIS-AIMS-Plugin.Test._QGisInterface</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-comment"># coding=utf-8</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-docstring">"""QGIS plugin implementation.</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-docstring">.. note:: This program is free software; you can redistribute it and/or modify</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-docstring">     it under the terms of the GNU General Public License as published by</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-docstring">     the Free Software Foundation; either version 2 of the License, or</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-docstring">     (at your option) any later version.</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-docstring">.. note:: This source code was copied from the 'postgis viewer' application</tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-docstring">     with original authors:</tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-docstring">     Copyright (c) 2010 by Ivan Mincik, ivan.mincik@gista.sk</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-docstring">     Copyright (c) 2011 German Carrillo, geotux_tuxman@linuxmail.org</tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-docstring">     Copyright (c) 2014 Tim Sutton, tim@linfiniti.com</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-name">__author__</tt> <tt class="py-op">=</tt> <tt class="py-string">'tim@linfiniti.com'</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"><tt id="link-0" class="py-name" targets="Variable QGIS-AIMS-Plugin.Test._QGisInterface.__revision__=QGIS-AIMS-Plugin.Test._QGisInterface-module.html#__revision__"><a title="QGIS-AIMS-Plugin.Test._QGisInterface.__revision__" class="py-name" href="#" onclick="return doclink('link-0', '__revision__', 'link-0');">__revision__</a></tt> <tt class="py-op">=</tt> <tt class="py-string">'$Format:%H$'</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"><tt class="py-name">__date__</tt> <tt class="py-op">=</tt> <tt class="py-string">'10/01/2011'</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"><tt class="py-name">__copyright__</tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line">    <tt class="py-string">'Copyright (c) 2010 by Ivan Mincik, ivan.mincik@gista.sk and '</tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line">    <tt class="py-string">'Copyright (c) 2011 German Carrillo, geotux_tuxman@linuxmail.org'</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line">    <tt class="py-string">'Copyright (c) 2014 Tim Sutton, tim@linfiniti.com'</tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"><tt class="py-op">)</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">logging</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">PyQt4</tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Module PyQt4.QtCore=PyQt4.QtCore-module.html"><a title="PyQt4.QtCore" class="py-name" href="#" onclick="return doclink('link-1', 'QtCore', 'link-1');">QtCore</a></tt> <tt class="py-keyword">import</tt> <tt id="link-2" class="py-name" targets="Class PyQt4.QtCore.QObject=PyQt4.QtCore.QObject-class.html"><a title="PyQt4.QtCore.QObject" class="py-name" href="#" onclick="return doclink('link-2', 'QObject', 'link-2');">QObject</a></tt><tt class="py-op">,</tt> <tt class="py-name">pyqtSlot</tt><tt class="py-op">,</tt> <tt id="link-3" class="py-name" targets="Class PyQt4.QtCore.pyqtSignal=PyQt4.QtCore.pyqtSignal-class.html"><a title="PyQt4.QtCore.pyqtSignal" class="py-name" href="#" onclick="return doclink('link-3', 'pyqtSignal', 'link-3');">pyqtSignal</a></tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">qgis</tt><tt class="py-op">.</tt><tt class="py-name">core</tt> <tt class="py-keyword">import</tt> <tt id="link-4" class="py-name" targets="Class qgis._core.QgsMapLayerRegistry=qgis._core.QgsMapLayerRegistry-class.html"><a title="qgis._core.QgsMapLayerRegistry" class="py-name" href="#" onclick="return doclink('link-4', 'QgsMapLayerRegistry', 'link-4');">QgsMapLayerRegistry</a></tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">qgis</tt><tt class="py-op">.</tt><tt class="py-name">gui</tt> <tt class="py-keyword">import</tt> <tt id="link-5" class="py-name" targets="Class qgis._gui.QgsMapCanvasLayer=qgis._gui.QgsMapCanvasLayer-class.html"><a title="qgis._gui.QgsMapCanvasLayer" class="py-name" href="#" onclick="return doclink('link-5', 'QgsMapCanvasLayer', 'link-5');">QgsMapCanvasLayer</a></tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line"><tt id="link-6" class="py-name" targets="Variable QGIS-AIMS-Plugin.Test._QGisInterface.LOGGER=QGIS-AIMS-Plugin.Test._QGisInterface-module.html#LOGGER"><a title="QGIS-AIMS-Plugin.Test._QGisInterface.LOGGER" class="py-name" href="#" onclick="return doclink('link-6', 'LOGGER', 'link-6');">LOGGER</a></tt> <tt class="py-op">=</tt> <tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">getLogger</tt><tt class="py-op">(</tt><tt class="py-string">'QGIS'</tt><tt class="py-op">)</tt> </tt>
+<a name="QgisInterface"></a><div id="QgisInterface-def"><a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line"> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line"> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line"><tt class="py-comment">#noinspection PyMethodMayBeStatic,PyPep8Naming</tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt> <a class="py-toggle" href="#" id="QgisInterface-toggle" onclick="return toggle('QgisInterface');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test._QGisInterface.QgisInterface-class.html">QgisInterface</a><tt class="py-op">(</tt><tt class="py-base-class">QObject</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="QgisInterface-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="QgisInterface-expanded"><a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line">    <tt class="py-docstring">"""Class to expose QGIS objects and functions to plugins.</tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line"><tt class="py-docstring">    This class is here for enabling us to run unit tests only,</tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line"><tt class="py-docstring">    so most methods are simply stubs.</tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line">    <tt id="link-7" class="py-name" targets="Variable QGIS-AIMS-Plugin.Test._QGisInterface.QgisInterface.currentLayerChanged=QGIS-AIMS-Plugin.Test._QGisInterface.QgisInterface-class.html#currentLayerChanged"><a title="QGIS-AIMS-Plugin.Test._QGisInterface.QgisInterface.currentLayerChanged" class="py-name" href="#" onclick="return doclink('link-7', 'currentLayerChanged', 'link-7');">currentLayerChanged</a></tt> <tt class="py-op">=</tt> <tt id="link-8" class="py-name"><a title="PyQt4.QtCore.pyqtSignal" class="py-name" href="#" onclick="return doclink('link-8', 'pyqtSignal', 'link-3');">pyqtSignal</a></tt><tt class="py-op">(</tt><tt id="link-9" class="py-name"><a title="qgis._gui.QgsMapCanvasLayer" class="py-name" href="#" onclick="return doclink('link-9', 'QgsMapCanvasLayer', 'link-5');">QgsMapCanvasLayer</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line"> </tt>
+<a name="QgisInterface.__init__"></a><div id="QgisInterface.__init__-def"><a name="L42"></a><tt class="py-lineno"> 42</tt> <a class="py-toggle" href="#" id="QgisInterface.__init__-toggle" onclick="return toggle('QgisInterface.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test._QGisInterface.QgisInterface-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">canvas</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="QgisInterface.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="QgisInterface.__init__-expanded"><a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line">        <tt class="py-docstring">"""Constructor</tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line"><tt class="py-docstring">        :param canvas:</tt> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line">        <tt id="link-10" class="py-name"><a title="PyQt4.QtCore.QObject" class="py-name" href="#" onclick="return doclink('link-10', 'QObject', 'link-2');">QObject</a></tt><tt class="py-op">.</tt><tt id="link-11" class="py-name" targets="Method QGIS-AIMS-Plugin.AIMSDataManager.Address.Address.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.Address.Address-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressChange.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressChange-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressResolution.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressResolution-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.Address.Entity.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.Address.Entity-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.Address.EntityAddress.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.Address.EntityAddress-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.Address.EntityValidation.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.Address.EntityValidation-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.Address.Position.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.Address.Position-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressChangeFactory.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressChangeFactory-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFactory.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFactory-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressResolutionFactory.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressResolutionFactory-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.AimsApi.AimsApi.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.AimsApi.AimsApi-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.AimsApi.AimsHttpException.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.AimsApi.AimsHttpException-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.AimsException.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.AimsException-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.Configuration.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.Configuration-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeedRef.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeedRef-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.Config.ConfigReader.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.Config.ConfigReader-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.Const.const.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.Const.const-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.DataManager.DataManager.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.DataManager.DataManager-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.DataManager.Persistence.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.DataManager.Persistence-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataRequestChannel.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataRequestChannel-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSync.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSync-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSyncAdmin.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSyncAdmin-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSyncFeatures.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSyncFeatures-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSyncFeeds.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSyncFeeds-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdater.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdater-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterAddress.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterAddress-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterGroup.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterGroup-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterUser.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterUser-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.Feature.FeatureMetaData.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.Feature.FeatureMetaData-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.Group.Group.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.Group.Group-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupChange.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupChange-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupResolution.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupResolution-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupChangeFactory.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupChangeFactory-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupFactory.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupFactory-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupResolutionFactory.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupResolutionFactory-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.Observable.Observable.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.Observable.Observable-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.User.User.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.User.User-class.html#__init__,Method QGIS-AIMS-Plugin.AIMSDataManager.UserFactory.UserFactory.__init__()=QGIS-AIMS-Plugin.AIMSDataManager.UserFactory.UserFactory-class.html#__init__,Method QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.AimsQueueWidget.AimsQueueWidget.__init__()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.AimsQueueWidget.AimsQueueWidget-class.html#__init__,Method QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.Controller.Controller.__init__()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.Controller.Controller-class.html#__init__,Method QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.EditFeatureWidget.EditFeatureWidget.__init__()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.EditFeatureWidget.EditFeatureWidget-class.html#__init__,Method QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.QueueEditorWidget.QueueEditorWidget.__init__()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.QueueEditorWidget.QueueEditorWidget-class.html#__init__,Method QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.ResponseHandler.ResponseHandler.__init__()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.ResponseHandler.ResponseHandler-class.html#__init__,Method QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.ReviewQueueWidget.ReviewQueueWidget.__init__()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.ReviewQueueWidget.ReviewQueueWidget-class.html#__init__,Method QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.DMData.__init__()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.DMData-class.html#__init__,Method QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.DMObserver.__init__()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.DMObserver-class.html#__init__,Method QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.Listener.__init__()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.Listener-class.html#__init__,Method QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.UiDataManager.__init__()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.UiDataManager-class.html#__init__,Method QGIS-AIMS-Plugin.AimsUI.CreateNewAddressTool.CreateNewAddressTool.__init__()=QGIS-AIMS-Plugin.AimsUI.CreateNewAddressTool.CreateNewAddressTool-class.html#__init__,Method QGIS-AIMS-Plugin.AimsUI.DelAddressTool.DelAddressDialog.__init__()=QGIS-AIMS-Plugin.AimsUI.DelAddressTool.DelAddressDialog-class.html#__init__,Method QGIS-AIMS-Plugin.AimsUI.DelAddressTool.DelAddressTool.__init__()=QGIS-AIMS-Plugin.AimsUI.DelAddressTool.DelAddressTool-class.html#__init__,Method QGIS-AIMS-Plugin.AimsUI.GetRclTool.GetRcl.__init__()=QGIS-AIMS-Plugin.AimsUI.GetRclTool.GetRcl-class.html#__init__,Method QGIS-AIMS-Plugin.AimsUI.LayerManager.LayerManager.__init__()=QGIS-AIMS-Plugin.AimsUI.LayerManager.LayerManager-class.html#__init__,Method QGIS-AIMS-Plugin.AimsUI.LineageTool.LineageDialog.__init__()=QGIS-AIMS-Plugin.AimsUI.LineageTool.LineageDialog-class.html#__init__,Method QGIS-AIMS-Plugin.AimsUI.LineageTool.LineageTool.__init__()=QGIS-AIMS-Plugin.AimsUI.LineageTool.LineageTool-class.html#__init__,Method QGIS-AIMS-Plugin.AimsUI.MoveAddressTool.MoveAddressDialog.__init__()=QGIS-AIMS-Plugin.AimsUI.MoveAddressTool.MoveAddressDialog-class.html#__init__,Method QGIS-AIMS-Plugin.AimsUI.MoveAddressTool.MoveAddressTool.__init__()=QGIS-AIMS-Plugin.AimsUI.MoveAddressTool.MoveAddressTool-class.html#__init__,Method QGIS-AIMS-Plugin.AimsUI.UpdateAddressTool.UpdateAddressTool.__init__()=QGIS-AIMS-Plugin.AimsUI.UpdateAddressTool.UpdateAddressTool-class.html#__init__,Method QGIS-AIMS-Plugin.AimsUI.UpdateAddressTool.updateAddressDialog.__init__()=QGIS-AIMS-Plugin.AimsUI.UpdateAddressTool.updateAddressDialog-class.html#__init__,Method QGIS-AIMS-Plugin.AimsUI.UpdateReviewPosition.UpdateReviewPosition.__init__()=QGIS-AIMS-Plugin.AimsUI.UpdateReviewPosition.UpdateReviewPosition-class.html#__init__,Method QGIS-AIMS-Plugin.Plugin.Plugin.__init__()=QGIS-AIMS-Plugin.Plugin.Plugin-class.html#__init__,Method QGIS-AIMS-Plugin.RunAllTests.FullSuite.__init__()=QGIS-AIMS-Plugin.RunAllTests.FullSuite-class.html#__init__,Method QGIS-AIMS-Plugin.Test.AimsService_Mock._Point.__init__()=QGIS-AIMS-Plugin.Test.AimsService_Mock._Point-class.html#__init__,Method QGIS-AIMS-Plugin.Test._QGisInterface.QgisInterface.__init__()=QGIS-AIMS-Plugin.Test._QGisInterface.QgisInterface-class.html#__init__"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Address.Address.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressChange.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.Address.AddressResolution.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.Address.Entity.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.Address.EntityAddress.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.Address.EntityValidation.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.Address.Position.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressChangeFactory.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFactory.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressResolutionFactory.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.AimsApi.AimsApi.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.AimsApi.AimsHttpException.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.AimsException.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.Configuration.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.FeedRef.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.Config.ConfigReader.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.Const.const.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.DataManager.DataManager.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.DataManager.Persistence.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataRequestChannel.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSync.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSyncAdmin.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSyncFeatures.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSyncFeeds.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdater.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterAddress.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterGroup.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterUser.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.Feature.FeatureMetaData.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.Group.Group.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupChange.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.Group.GroupResolution.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupChangeFactory.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupFactory.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupResolutionFactory.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.Observable.Observable.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.User.User.__init__
+QGIS-AIMS-Plugin.AIMSDataManager.UserFactory.UserFactory.__init__
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.AimsQueueWidget.AimsQueueWidget.__init__
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.Controller.Controller.__init__
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.EditFeatureWidget.EditFeatureWidget.__init__
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.QueueEditorWidget.QueueEditorWidget.__init__
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.ResponseHandler.ResponseHandler.__init__
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.ReviewQueueWidget.ReviewQueueWidget.__init__
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.DMData.__init__
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.DMObserver.__init__
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.Listener.__init__
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.UiDataManager.UiDataManager.__init__
+QGIS-AIMS-Plugin.AimsUI.CreateNewAddressTool.CreateNewAddressTool.__init__
+QGIS-AIMS-Plugin.AimsUI.DelAddressTool.DelAddressDialog.__init__
+QGIS-AIMS-Plugin.AimsUI.DelAddressTool.DelAddressTool.__init__
+QGIS-AIMS-Plugin.AimsUI.GetRclTool.GetRcl.__init__
+QGIS-AIMS-Plugin.AimsUI.LayerManager.LayerManager.__init__
+QGIS-AIMS-Plugin.AimsUI.LineageTool.LineageDialog.__init__
+QGIS-AIMS-Plugin.AimsUI.LineageTool.LineageTool.__init__
+QGIS-AIMS-Plugin.AimsUI.MoveAddressTool.MoveAddressDialog.__init__
+QGIS-AIMS-Plugin.AimsUI.MoveAddressTool.MoveAddressTool.__init__
+QGIS-AIMS-Plugin.AimsUI.UpdateAddressTool.UpdateAddressTool.__init__
+QGIS-AIMS-Plugin.AimsUI.UpdateAddressTool.updateAddressDialog.__init__
+QGIS-AIMS-Plugin.AimsUI.UpdateReviewPosition.UpdateReviewPosition.__init__
+QGIS-AIMS-Plugin.Plugin.Plugin.__init__
+QGIS-AIMS-Plugin.RunAllTests.FullSuite.__init__
+QGIS-AIMS-Plugin.Test.AimsService_Mock._Point.__init__
+QGIS-AIMS-Plugin.Test._QGisInterface.QgisInterface.__init__" class="py-name" href="#" onclick="return doclink('link-11', '__init__', 'link-11');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">)</tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">canvas</tt> <tt class="py-op">=</tt> <tt class="py-name">canvas</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line">        <tt class="py-comment"># Set up slots so we can mimic the behaviour of QGIS when layers</tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line">        <tt class="py-comment"># are added.</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line">        <tt id="link-12" class="py-name"><a title="QGIS-AIMS-Plugin.Test._QGisInterface.LOGGER" class="py-name" href="#" onclick="return doclink('link-12', 'LOGGER', 'link-6');">LOGGER</a></tt><tt class="py-op">.</tt><tt class="py-name">debug</tt><tt class="py-op">(</tt><tt class="py-string">'Initialising canvas...'</tt><tt class="py-op">)</tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line">        <tt class="py-comment"># noinspection PyArgumentList</tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line">        <tt id="link-13" class="py-name"><a title="qgis._core.QgsMapLayerRegistry" class="py-name" href="#" onclick="return doclink('link-13', 'QgsMapLayerRegistry', 'link-4');">QgsMapLayerRegistry</a></tt><tt class="py-op">.</tt><tt id="link-14" class="py-name" targets="Function QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.Controller.instance()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.Controller-module.html#instance,Method QGIS-AIMS-Plugin.Test.AimsService_Mock._QgsMapLayerRegistry.instance()=QGIS-AIMS-Plugin.Test.AimsService_Mock._QgsMapLayerRegistry-class.html#instance"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.Controller.instance
+QGIS-AIMS-Plugin.Test.AimsService_Mock._QgsMapLayerRegistry.instance" class="py-name" href="#" onclick="return doclink('link-14', 'instance', 'link-14');">instance</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">layersAdded</tt><tt class="py-op">.</tt><tt class="py-name">connect</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-15" class="py-name" targets="Method QGIS-AIMS-Plugin.Test._QGisInterface.QgisInterface.addLayers()=QGIS-AIMS-Plugin.Test._QGisInterface.QgisInterface-class.html#addLayers"><a title="QGIS-AIMS-Plugin.Test._QGisInterface.QgisInterface.addLayers" class="py-name" href="#" onclick="return doclink('link-15', 'addLayers', 'link-15');">addLayers</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line">        <tt class="py-comment"># noinspection PyArgumentList</tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line">        <tt id="link-16" class="py-name"><a title="qgis._core.QgsMapLayerRegistry" class="py-name" href="#" onclick="return doclink('link-16', 'QgsMapLayerRegistry', 'link-4');">QgsMapLayerRegistry</a></tt><tt class="py-op">.</tt><tt id="link-17" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.Controller.instance
+QGIS-AIMS-Plugin.Test.AimsService_Mock._QgsMapLayerRegistry.instance" class="py-name" href="#" onclick="return doclink('link-17', 'instance', 'link-14');">instance</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">layerWasAdded</tt><tt class="py-op">.</tt><tt class="py-name">connect</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-18" class="py-name" targets="Method QGIS-AIMS-Plugin.Test._QGisInterface.QgisInterface.addLayer()=QGIS-AIMS-Plugin.Test._QGisInterface.QgisInterface-class.html#addLayer"><a title="QGIS-AIMS-Plugin.Test._QGisInterface.QgisInterface.addLayer" class="py-name" href="#" onclick="return doclink('link-18', 'addLayer', 'link-18');">addLayer</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line">        <tt class="py-comment"># noinspection PyArgumentList</tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line">        <tt id="link-19" class="py-name"><a title="qgis._core.QgsMapLayerRegistry" class="py-name" href="#" onclick="return doclink('link-19', 'QgsMapLayerRegistry', 'link-4');">QgsMapLayerRegistry</a></tt><tt class="py-op">.</tt><tt id="link-20" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.Controller.instance
+QGIS-AIMS-Plugin.Test.AimsService_Mock._QgsMapLayerRegistry.instance" class="py-name" href="#" onclick="return doclink('link-20', 'instance', 'link-14');">instance</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">removeAll</tt><tt class="py-op">.</tt><tt class="py-name">connect</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-21" class="py-name" targets="Method QGIS-AIMS-Plugin.Test._QGisInterface.QgisInterface.removeAllLayers()=QGIS-AIMS-Plugin.Test._QGisInterface.QgisInterface-class.html#removeAllLayers"><a title="QGIS-AIMS-Plugin.Test._QGisInterface.QgisInterface.removeAllLayers" class="py-name" href="#" onclick="return doclink('link-21', 'removeAllLayers', 'link-21');">removeAllLayers</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line"> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line">        <tt class="py-comment"># For processing module</tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">destCrs</tt> <tt class="py-op">=</tt> <tt id="link-22" class="py-name" targets="Variable PyQt4.QtCore.QEvent.None=PyQt4.QtCore.QEvent-class.html#None,Variable PyQt4.QtCore.QUrl.None=PyQt4.QtCore.QUrl-class.html#None,Variable PyQt4.QtGui.QAbstractPrintDialog.None=PyQt4.QtGui.QAbstractPrintDialog-class.html#None,Variable PyQt4.QtGui.QStyleOptionButton.None=PyQt4.QtGui.QStyleOptionButton-class.html#None,Variable PyQt4.QtGui.QStyleOptionFrameV2.None=PyQt4.QtGui.QStyleOptionFrameV2-class.html#None,Variable PyQt4.QtGui.QStyleOptionHeader.None=PyQt4.QtGui.QStyleOptionHeader-class.html#None,Variable PyQt4.QtGui.QStyleOptionToolBar.None=PyQt4.QtGui.QStyleOptionToolBar-class.html#None,Variable PyQt4.QtGui.QStyleOptionToolButton.None=PyQt4.QtGui.QStyleOptionToolButton-class.html#None,Variable PyQt4.QtGui.QStyleOptionViewItemV2.None=PyQt4.QtGui.QStyleOptionViewItemV2-class.html#None,Variable qgis._core.QgsRasterBandStats.None=qgis._core.QgsRasterBandStats-class.html#None"><a title="PyQt4.QtCore.QEvent.None
+PyQt4.QtCore.QUrl.None
+PyQt4.QtGui.QAbstractPrintDialog.None
+PyQt4.QtGui.QStyleOptionButton.None
+PyQt4.QtGui.QStyleOptionFrameV2.None
+PyQt4.QtGui.QStyleOptionHeader.None
+PyQt4.QtGui.QStyleOptionToolBar.None
+PyQt4.QtGui.QStyleOptionToolButton.None
+PyQt4.QtGui.QStyleOptionViewItemV2.None
+qgis._core.QgsRasterBandStats.None" class="py-name" href="#" onclick="return doclink('link-22', 'None', 'link-22');">None</a></tt> </tt>
+</div><a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line"> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">pyqtSlot</tt><tt class="py-op">(</tt><tt class="py-string">'QStringList'</tt><tt class="py-op">)</tt> </tt>
+<a name="QgisInterface.addLayers"></a><div id="QgisInterface.addLayers-def"><a name="L62"></a><tt class="py-lineno"> 62</tt> <a class="py-toggle" href="#" id="QgisInterface.addLayers-toggle" onclick="return toggle('QgisInterface.addLayers');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test._QGisInterface.QgisInterface-class.html#addLayers">addLayers</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">layers</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="QgisInterface.addLayers-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="QgisInterface.addLayers-expanded"><a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line">        <tt class="py-docstring">"""Handle layers being added to the registry so they show up in canvas.</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line"><tt class="py-docstring">        :param layers: list&lt;QgsMapLayer&gt; list of map layers that were added</tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line"><tt class="py-docstring">        .. note:: The QgsInterface api does not include this method,</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line"><tt class="py-docstring">            it is added here as a helper to facilitate testing.</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">        <tt class="py-comment">#LOGGER.debug('addLayers called on qgis_interface')</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">        <tt class="py-comment">#LOGGER.debug('Number of layers being added: %s' % len(layers))</tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">        <tt class="py-comment">#LOGGER.debug('Layer Count Before: %s' % len(self.canvas.layers()))</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line">        <tt class="py-name">current_layers</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">canvas</tt><tt class="py-op">.</tt><tt id="link-23" class="py-name" targets="Method QGIS-AIMS-Plugin.AimsUI.LayerManager.LayerManager.layers()=QGIS-AIMS-Plugin.AimsUI.LayerManager.LayerManager-class.html#layers,Method QGIS-AIMS-Plugin.Test.AimsService_Mock._QInterface.layers()=QGIS-AIMS-Plugin.Test.AimsService_Mock._QInterface-class.html#layers"><a title="QGIS-AIMS-Plugin.AimsUI.LayerManager.LayerManager.layers
+QGIS-AIMS-Plugin.Test.AimsService_Mock._QInterface.layers" class="py-name" href="#" onclick="return doclink('link-23', 'layers', 'link-23');">layers</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">        <tt class="py-name">final_layers</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt id="link-24" class="py-name" targets="Variable qgis._core.QgsSnappingResult.layer=qgis._core.QgsSnappingResult-class.html#layer,Variable qgis._core.QgsSnappingUtils.LayerConfig.layer=qgis._core.QgsSnappingUtils.LayerConfig-class.html#layer"><a title="qgis._core.QgsSnappingResult.layer
+qgis._core.QgsSnappingUtils.LayerConfig.layer" class="py-name" href="#" onclick="return doclink('link-24', 'layer', 'link-24');">layer</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">current_layers</tt><tt class="py-op">:</tt> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">            <tt class="py-name">final_layers</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt id="link-25" class="py-name"><a title="qgis._gui.QgsMapCanvasLayer" class="py-name" href="#" onclick="return doclink('link-25', 'QgsMapCanvasLayer', 'link-5');">QgsMapCanvasLayer</a></tt><tt class="py-op">(</tt><tt id="link-26" class="py-name"><a title="qgis._core.QgsSnappingResult.layer
+qgis._core.QgsSnappingUtils.LayerConfig.layer" class="py-name" href="#" onclick="return doclink('link-26', 'layer', 'link-24');">layer</a></tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt id="link-27" class="py-name"><a title="qgis._core.QgsSnappingResult.layer
+qgis._core.QgsSnappingUtils.LayerConfig.layer" class="py-name" href="#" onclick="return doclink('link-27', 'layer', 'link-24');">layer</a></tt> <tt class="py-keyword">in</tt> <tt id="link-28" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.LayerManager.LayerManager.layers
+QGIS-AIMS-Plugin.Test.AimsService_Mock._QInterface.layers" class="py-name" href="#" onclick="return doclink('link-28', 'layers', 'link-23');">layers</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line">            <tt class="py-name">final_layers</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt id="link-29" class="py-name"><a title="qgis._gui.QgsMapCanvasLayer" class="py-name" href="#" onclick="return doclink('link-29', 'QgsMapCanvasLayer', 'link-5');">QgsMapCanvasLayer</a></tt><tt class="py-op">(</tt><tt id="link-30" class="py-name"><a title="qgis._core.QgsSnappingResult.layer
+qgis._core.QgsSnappingUtils.LayerConfig.layer" class="py-name" href="#" onclick="return doclink('link-30', 'layer', 'link-24');">layer</a></tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line"> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">canvas</tt><tt class="py-op">.</tt><tt class="py-name">setLayerSet</tt><tt class="py-op">(</tt><tt class="py-name">final_layers</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line">        <tt class="py-comment">#LOGGER.debug('Layer Count After: %s' % len(self.canvas.layers()))</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line"> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">pyqtSlot</tt><tt class="py-op">(</tt><tt class="py-string">'QgsMapLayer'</tt><tt class="py-op">)</tt> </tt>
+<a name="QgisInterface.addLayer"></a><div id="QgisInterface.addLayer-def"><a name="L84"></a><tt class="py-lineno"> 84</tt> <a class="py-toggle" href="#" id="QgisInterface.addLayer-toggle" onclick="return toggle('QgisInterface.addLayer');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test._QGisInterface.QgisInterface-class.html#addLayer">addLayer</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">layer</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="QgisInterface.addLayer-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="QgisInterface.addLayer-expanded"><a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line">        <tt class="py-docstring">"""Handle a layer being added to the registry so it shows up in canvas.</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line"><tt class="py-docstring">        :param layer: list&lt;QgsMapLayer&gt; list of map layers that were added</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line"><tt class="py-docstring">        .. note: The QgsInterface api does not include this method, it is added</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line"><tt class="py-docstring">                 here as a helper to facilitate testing.</tt> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line"><tt class="py-docstring">        .. note: The addLayer method was deprecated in QGIS 1.8 so you should</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line"><tt class="py-docstring">                 not need this method much.</tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">        <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line"> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">pyqtSlot</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="QgisInterface.removeAllLayers"></a><div id="QgisInterface.removeAllLayers-def"><a name="L98"></a><tt class="py-lineno"> 98</tt> <a class="py-toggle" href="#" id="QgisInterface.removeAllLayers-toggle" onclick="return toggle('QgisInterface.removeAllLayers');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test._QGisInterface.QgisInterface-class.html#removeAllLayers">removeAllLayers</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="QgisInterface.removeAllLayers-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="QgisInterface.removeAllLayers-expanded"><a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line">        <tt class="py-docstring">"""Remove layers from the canvas before they get deleted."""</tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">canvas</tt><tt class="py-op">.</tt><tt class="py-name">setLayerSet</tt><tt class="py-op">(</tt><tt class="py-op">[</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line"> </tt>
+<a name="QgisInterface.newProject"></a><div id="QgisInterface.newProject-def"><a name="L102"></a><tt class="py-lineno">102</tt> <a class="py-toggle" href="#" id="QgisInterface.newProject-toggle" onclick="return toggle('QgisInterface.newProject');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test._QGisInterface.QgisInterface-class.html#newProject">newProject</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="QgisInterface.newProject-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="QgisInterface.newProject-expanded"><a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line">        <tt class="py-docstring">"""Create new project."""</tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line">        <tt class="py-comment"># noinspection PyArgumentList</tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line">        <tt id="link-31" class="py-name"><a title="qgis._core.QgsMapLayerRegistry" class="py-name" href="#" onclick="return doclink('link-31', 'QgsMapLayerRegistry', 'link-4');">QgsMapLayerRegistry</a></tt><tt class="py-op">.</tt><tt id="link-32" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.Controller.instance
+QGIS-AIMS-Plugin.Test.AimsService_Mock._QgsMapLayerRegistry.instance" class="py-name" href="#" onclick="return doclink('link-32', 'instance', 'link-14');">instance</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">removeAllMapLayers</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line"> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line">    <tt class="py-comment"># ---------------- API Mock for QgsInterface follows -------------------</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line"> </tt>
+<a name="QgisInterface.zoomFull"></a><div id="QgisInterface.zoomFull-def"><a name="L109"></a><tt class="py-lineno">109</tt> <a class="py-toggle" href="#" id="QgisInterface.zoomFull-toggle" onclick="return toggle('QgisInterface.zoomFull');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test._QGisInterface.QgisInterface-class.html#zoomFull">zoomFull</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="QgisInterface.zoomFull-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="QgisInterface.zoomFull-expanded"><a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line">        <tt class="py-docstring">"""Zoom to the map full extent."""</tt> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line">        <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line"> </tt>
+<a name="QgisInterface.zoomToPrevious"></a><div id="QgisInterface.zoomToPrevious-def"><a name="L113"></a><tt class="py-lineno">113</tt> <a class="py-toggle" href="#" id="QgisInterface.zoomToPrevious-toggle" onclick="return toggle('QgisInterface.zoomToPrevious');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test._QGisInterface.QgisInterface-class.html#zoomToPrevious">zoomToPrevious</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="QgisInterface.zoomToPrevious-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="QgisInterface.zoomToPrevious-expanded"><a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line">        <tt class="py-docstring">"""Zoom to previous view extent."""</tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line">        <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line"> </tt>
+<a name="QgisInterface.zoomToNext"></a><div id="QgisInterface.zoomToNext-def"><a name="L117"></a><tt class="py-lineno">117</tt> <a class="py-toggle" href="#" id="QgisInterface.zoomToNext-toggle" onclick="return toggle('QgisInterface.zoomToNext');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test._QGisInterface.QgisInterface-class.html#zoomToNext">zoomToNext</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="QgisInterface.zoomToNext-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="QgisInterface.zoomToNext-expanded"><a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line">        <tt class="py-docstring">"""Zoom to next view extent."""</tt> </tt>
+<a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line">        <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line"> </tt>
+<a name="QgisInterface.zoomToActiveLayer"></a><div id="QgisInterface.zoomToActiveLayer-def"><a name="L121"></a><tt class="py-lineno">121</tt> <a class="py-toggle" href="#" id="QgisInterface.zoomToActiveLayer-toggle" onclick="return toggle('QgisInterface.zoomToActiveLayer');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test._QGisInterface.QgisInterface-class.html#zoomToActiveLayer">zoomToActiveLayer</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="QgisInterface.zoomToActiveLayer-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="QgisInterface.zoomToActiveLayer-expanded"><a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line">        <tt class="py-docstring">"""Zoom to extent of active layer."""</tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line">        <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line"> </tt>
+<a name="QgisInterface.addVectorLayer"></a><div id="QgisInterface.addVectorLayer-def"><a name="L125"></a><tt class="py-lineno">125</tt> <a class="py-toggle" href="#" id="QgisInterface.addVectorLayer-toggle" onclick="return toggle('QgisInterface.addVectorLayer');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test._QGisInterface.QgisInterface-class.html#addVectorLayer">addVectorLayer</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">path</tt><tt class="py-op">,</tt> <tt class="py-param">base_name</tt><tt class="py-op">,</tt> <tt class="py-param">provider_key</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="QgisInterface.addVectorLayer-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="QgisInterface.addVectorLayer-expanded"><a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line">        <tt class="py-docstring">"""Add a vector layer.</tt> </tt>
+<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line"><tt class="py-docstring">        :param path: Path to layer.</tt> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line"><tt class="py-docstring">        :type path: str</tt> </tt>
+<a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line"><tt class="py-docstring">        :param base_name: Base name for layer.</tt> </tt>
+<a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line"><tt class="py-docstring">        :type base_name: str</tt> </tt>
+<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line"><tt class="py-docstring">        :param provider_key: Provider key e.g. 'ogr'</tt> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line"><tt class="py-docstring">        :type provider_key: str</tt> </tt>
+<a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line">        <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line"> </tt>
+<a name="QgisInterface.addRasterLayer"></a><div id="QgisInterface.addRasterLayer-def"><a name="L139"></a><tt class="py-lineno">139</tt> <a class="py-toggle" href="#" id="QgisInterface.addRasterLayer-toggle" onclick="return toggle('QgisInterface.addRasterLayer');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test._QGisInterface.QgisInterface-class.html#addRasterLayer">addRasterLayer</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">path</tt><tt class="py-op">,</tt> <tt class="py-param">base_name</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="QgisInterface.addRasterLayer-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="QgisInterface.addRasterLayer-expanded"><a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line">        <tt class="py-docstring">"""Add a raster layer given a raster layer file name</tt> </tt>
+<a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line"><tt class="py-docstring">        :param path: Path to layer.</tt> </tt>
+<a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line"><tt class="py-docstring">        :type path: str</tt> </tt>
+<a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line"><tt class="py-docstring">        :param base_name: Base name for layer.</tt> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line"><tt class="py-docstring">        :type base_name: str</tt> </tt>
+<a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line">        <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line"> </tt>
+<a name="QgisInterface.activeLayer"></a><div id="QgisInterface.activeLayer-def"><a name="L150"></a><tt class="py-lineno">150</tt> <a class="py-toggle" href="#" id="QgisInterface.activeLayer-toggle" onclick="return toggle('QgisInterface.activeLayer');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test._QGisInterface.QgisInterface-class.html#activeLayer">activeLayer</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="QgisInterface.activeLayer-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="QgisInterface.activeLayer-expanded"><a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line">        <tt class="py-docstring">"""Get pointer to the active layer (layer selected in the legend)."""</tt> </tt>
+<a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line">        <tt class="py-comment"># noinspection PyArgumentList</tt> </tt>
+<a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line">        <tt id="link-33" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.LayerManager.LayerManager.layers
+QGIS-AIMS-Plugin.Test.AimsService_Mock._QInterface.layers" class="py-name" href="#" onclick="return doclink('link-33', 'layers', 'link-23');">layers</a></tt> <tt class="py-op">=</tt> <tt id="link-34" class="py-name"><a title="qgis._core.QgsMapLayerRegistry" class="py-name" href="#" onclick="return doclink('link-34', 'QgsMapLayerRegistry', 'link-4');">QgsMapLayerRegistry</a></tt><tt class="py-op">.</tt><tt id="link-35" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Gui.Controller.instance
+QGIS-AIMS-Plugin.Test.AimsService_Mock._QgsMapLayerRegistry.instance" class="py-name" href="#" onclick="return doclink('link-35', 'instance', 'link-14');">instance</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-36" class="py-name" targets="Method QGIS-AIMS-Plugin.Test.AimsService_Mock._QgsMapLayerRegistry.mapLayers()=QGIS-AIMS-Plugin.Test.AimsService_Mock._QgsMapLayerRegistry-class.html#mapLayers"><a title="QGIS-AIMS-Plugin.Test.AimsService_Mock._QgsMapLayerRegistry.mapLayers" class="py-name" href="#" onclick="return doclink('link-36', 'mapLayers', 'link-36');">mapLayers</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">item</tt> <tt class="py-keyword">in</tt> <tt id="link-37" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.LayerManager.LayerManager.layers
+QGIS-AIMS-Plugin.Test.AimsService_Mock._QInterface.layers" class="py-name" href="#" onclick="return doclink('link-37', 'layers', 'link-23');">layers</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L155"></a><tt class="py-lineno">155</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt id="link-38" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.LayerManager.LayerManager.layers
+QGIS-AIMS-Plugin.Test.AimsService_Mock._QInterface.layers" class="py-name" href="#" onclick="return doclink('link-38', 'layers', 'link-23');">layers</a></tt><tt class="py-op">[</tt><tt class="py-name">item</tt><tt class="py-op">]</tt> </tt>
+</div><a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line"> </tt>
+<a name="QgisInterface.addToolBarIcon"></a><div id="QgisInterface.addToolBarIcon-def"><a name="L157"></a><tt class="py-lineno">157</tt> <a class="py-toggle" href="#" id="QgisInterface.addToolBarIcon-toggle" onclick="return toggle('QgisInterface.addToolBarIcon');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test._QGisInterface.QgisInterface-class.html#addToolBarIcon">addToolBarIcon</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">action</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="QgisInterface.addToolBarIcon-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="QgisInterface.addToolBarIcon-expanded"><a name="L158"></a><tt class="py-lineno">158</tt>  <tt class="py-line">        <tt class="py-docstring">"""Add an icon to the plugins toolbar.</tt> </tt>
+<a name="L159"></a><tt class="py-lineno">159</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L160"></a><tt class="py-lineno">160</tt>  <tt class="py-line"><tt class="py-docstring">        :param action: Action to add to the toolbar.</tt> </tt>
+<a name="L161"></a><tt class="py-lineno">161</tt>  <tt class="py-line"><tt class="py-docstring">        :type action: QAction</tt> </tt>
+<a name="L162"></a><tt class="py-lineno">162</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L163"></a><tt class="py-lineno">163</tt>  <tt class="py-line">        <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L164"></a><tt class="py-lineno">164</tt>  <tt class="py-line"> </tt>
+<a name="QgisInterface.removeToolBarIcon"></a><div id="QgisInterface.removeToolBarIcon-def"><a name="L165"></a><tt class="py-lineno">165</tt> <a class="py-toggle" href="#" id="QgisInterface.removeToolBarIcon-toggle" onclick="return toggle('QgisInterface.removeToolBarIcon');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test._QGisInterface.QgisInterface-class.html#removeToolBarIcon">removeToolBarIcon</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">action</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="QgisInterface.removeToolBarIcon-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="QgisInterface.removeToolBarIcon-expanded"><a name="L166"></a><tt class="py-lineno">166</tt>  <tt class="py-line">        <tt class="py-docstring">"""Remove an action (icon) from the plugin toolbar.</tt> </tt>
+<a name="L167"></a><tt class="py-lineno">167</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L168"></a><tt class="py-lineno">168</tt>  <tt class="py-line"><tt class="py-docstring">        :param action: Action to add to the toolbar.</tt> </tt>
+<a name="L169"></a><tt class="py-lineno">169</tt>  <tt class="py-line"><tt class="py-docstring">        :type action: QAction</tt> </tt>
+<a name="L170"></a><tt class="py-lineno">170</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L171"></a><tt class="py-lineno">171</tt>  <tt class="py-line">        <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L172"></a><tt class="py-lineno">172</tt>  <tt class="py-line"> </tt>
+<a name="QgisInterface.addToolBar"></a><div id="QgisInterface.addToolBar-def"><a name="L173"></a><tt class="py-lineno">173</tt> <a class="py-toggle" href="#" id="QgisInterface.addToolBar-toggle" onclick="return toggle('QgisInterface.addToolBar');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test._QGisInterface.QgisInterface-class.html#addToolBar">addToolBar</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">name</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="QgisInterface.addToolBar-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="QgisInterface.addToolBar-expanded"><a name="L174"></a><tt class="py-lineno">174</tt>  <tt class="py-line">        <tt class="py-docstring">"""Add toolbar with specified name.</tt> </tt>
+<a name="L175"></a><tt class="py-lineno">175</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L176"></a><tt class="py-lineno">176</tt>  <tt class="py-line"><tt class="py-docstring">        :param name: Name for the toolbar.</tt> </tt>
+<a name="L177"></a><tt class="py-lineno">177</tt>  <tt class="py-line"><tt class="py-docstring">        :type name: str</tt> </tt>
+<a name="L178"></a><tt class="py-lineno">178</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L179"></a><tt class="py-lineno">179</tt>  <tt class="py-line">        <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L180"></a><tt class="py-lineno">180</tt>  <tt class="py-line"> </tt>
+<a name="QgisInterface.mapCanvas"></a><div id="QgisInterface.mapCanvas-def"><a name="L181"></a><tt class="py-lineno">181</tt> <a class="py-toggle" href="#" id="QgisInterface.mapCanvas-toggle" onclick="return toggle('QgisInterface.mapCanvas');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test._QGisInterface.QgisInterface-class.html#mapCanvas">mapCanvas</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="QgisInterface.mapCanvas-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="QgisInterface.mapCanvas-expanded"><a name="L182"></a><tt class="py-lineno">182</tt>  <tt class="py-line">        <tt class="py-docstring">"""Return a pointer to the map canvas."""</tt> </tt>
+<a name="L183"></a><tt class="py-lineno">183</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">canvas</tt> </tt>
+</div><a name="L184"></a><tt class="py-lineno">184</tt>  <tt class="py-line"> </tt>
+<a name="QgisInterface.mainWindow"></a><div id="QgisInterface.mainWindow-def"><a name="L185"></a><tt class="py-lineno">185</tt> <a class="py-toggle" href="#" id="QgisInterface.mainWindow-toggle" onclick="return toggle('QgisInterface.mainWindow');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test._QGisInterface.QgisInterface-class.html#mainWindow">mainWindow</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="QgisInterface.mainWindow-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="QgisInterface.mainWindow-expanded"><a name="L186"></a><tt class="py-lineno">186</tt>  <tt class="py-line">        <tt class="py-docstring">"""Return a pointer to the main window.</tt> </tt>
+<a name="L187"></a><tt class="py-lineno">187</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L188"></a><tt class="py-lineno">188</tt>  <tt class="py-line"><tt class="py-docstring">        In case of QGIS it returns an instance of QgisApp.</tt> </tt>
+<a name="L189"></a><tt class="py-lineno">189</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L190"></a><tt class="py-lineno">190</tt>  <tt class="py-line">        <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L191"></a><tt class="py-lineno">191</tt>  <tt class="py-line"> </tt>
+<a name="QgisInterface.addDockWidget"></a><div id="QgisInterface.addDockWidget-def"><a name="L192"></a><tt class="py-lineno">192</tt> <a class="py-toggle" href="#" id="QgisInterface.addDockWidget-toggle" onclick="return toggle('QgisInterface.addDockWidget');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test._QGisInterface.QgisInterface-class.html#addDockWidget">addDockWidget</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">area</tt><tt class="py-op">,</tt> <tt class="py-param">dock_widget</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="QgisInterface.addDockWidget-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="QgisInterface.addDockWidget-expanded"><a name="L193"></a><tt class="py-lineno">193</tt>  <tt class="py-line">        <tt class="py-docstring">"""Add a dock widget to the main window.</tt> </tt>
+<a name="L194"></a><tt class="py-lineno">194</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L195"></a><tt class="py-lineno">195</tt>  <tt class="py-line"><tt class="py-docstring">        :param area: Where in the ui the dock should be placed.</tt> </tt>
+<a name="L196"></a><tt class="py-lineno">196</tt>  <tt class="py-line"><tt class="py-docstring">        :type area:</tt> </tt>
+<a name="L197"></a><tt class="py-lineno">197</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L198"></a><tt class="py-lineno">198</tt>  <tt class="py-line"><tt class="py-docstring">        :param dock_widget: A dock widget to add to the UI.</tt> </tt>
+<a name="L199"></a><tt class="py-lineno">199</tt>  <tt class="py-line"><tt class="py-docstring">        :type dock_widget: QDockWidget</tt> </tt>
+<a name="L200"></a><tt class="py-lineno">200</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L201"></a><tt class="py-lineno">201</tt>  <tt class="py-line">        <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L202"></a><tt class="py-lineno">202</tt>  <tt class="py-line"> </tt>
+<a name="QgisInterface.legendInterface"></a><div id="QgisInterface.legendInterface-def"><a name="L203"></a><tt class="py-lineno">203</tt> <a class="py-toggle" href="#" id="QgisInterface.legendInterface-toggle" onclick="return toggle('QgisInterface.legendInterface');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.Test._QGisInterface.QgisInterface-class.html#legendInterface">legendInterface</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="QgisInterface.legendInterface-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="QgisInterface.legendInterface-expanded"><a name="L204"></a><tt class="py-lineno">204</tt>  <tt class="py-line">        <tt class="py-docstring">"""Get the legend."""</tt> </tt>
+<a name="L205"></a><tt class="py-lineno">205</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">canvas</tt> </tt>
+</div></div><a name="L206"></a><tt class="py-lineno">206</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="QGIS-AIMS-Plugin-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Jun 14 13:29:23 2016
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

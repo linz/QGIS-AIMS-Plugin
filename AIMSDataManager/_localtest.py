@@ -303,7 +303,7 @@ class LocalTest():
         etft = FeedRef((FeatureType.USERS,FeedType.ADMIN))
         uf = FeatureFactory.getInstance(etft)
         
-        user = uf.getUser('local_test_user')
+        user = uf.get('local_test_user')
         user.setUserId(uid)
         user._version = ver
         user._userName = 'Scott Tiger'
@@ -371,7 +371,7 @@ class LocalTest():
         return resp1,resp2,resp3
                 
     def gettestaddress(self,ff):
-        a = ff.getAddress('test_featuretype_address')
+        a = ff.get('test_featuretype_address')
         p = Position.getInstance(
             {'position':{'type':'Point','coordinates': [168.38392191667,-44.8511013],'crs':{'type':'name','properties':{'name':'urn:ogc:def:crs:EPSG::4167'}}},'positionType':'Centroid','primary':True}
         )
@@ -400,7 +400,7 @@ class LocalTest():
         return a    
     
     def getmacronatedtestaddress(self,ff):
-        a = ff.getAddress('test_macronated_address')
+        a = ff.get('test_macronated_address')
         p = Position.getInstance(
             {'position':{'type':'Point','coordinates': [170.62953346606358,-45.768294405809044],'crs':{'type':'name','properties':{'name':'urn:ogc:def:crs:EPSG::4167'}}},'positionType':'Centroid','primary':True}
         )
@@ -430,7 +430,7 @@ class LocalTest():
 
     
     def gettestgroup(self,ff):
-        g = ff.getGroup('test_res_group')
+        g = ff.get('test_res_group')
         g.setChangeGroupId('4118268')#override this
         g.setVersion('9266184')#override this too
         return g

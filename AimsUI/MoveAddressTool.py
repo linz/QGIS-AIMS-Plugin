@@ -18,11 +18,26 @@ from AIMSDataManager.AimsLogging import Logger
 uilog = None
 
 class MoveAddressTool(QgsMapToolIdentify):
+    """
+    Tool for relocating AIMS Features
+    """ 
+
     # logging
     global uilog
     uilog = Logger.setup(lf='uiLog')
 
     def __init__(self, iface, layerManager, controller):
+        """
+        Intialise Move Address Tool
+        
+        @param iface: QgisInterface Abstract base class defining interfaces exposed by QgisApp  
+        @type iface: Qgisinterface Object
+        @param layerManager: Plugins layer manager
+        @type  layerManager: AimsUI.LayerManager()
+        @param controller: Instance of the plugins controller
+        @type  controller: AimsUI.AimsClient.Gui.Controller()
+        """
+            
         QgsMapToolIdentify.__init__(self, iface.mapCanvas())
         self._iface = iface
         self._canvas = iface.mapCanvas()
@@ -36,15 +51,31 @@ class MoveAddressTool(QgsMapToolIdentify):
         self.activate()
 
     def activate(self):
+        """
+        Activate Move Address Tool
+        """
+        
         QgsMapTool.activate(self)
         self._sb.showMessage("Select feature to move")
         self.cursor = QCursor(Qt.CrossCursor)
         self.parent().setCursor(self.cursor)
     
     def deactivate(self):
+        """
+        Deactivate Move Address Tool
+        """
+        
         self._sb.clearMessage()
     
     def setEnabled(self, enabled):
+        """ 
+        When Tool related QAction is checked/unchecked
+        Activate / Disable respectively
+
+        @param enabled: Tool enabled. Boolean value
+        @type enabled: boolean
+        """
+        
         self._enabled = enabled
         if enabled:
             self.activate()
@@ -52,12 +83,30 @@ class MoveAddressTool(QgsMapToolIdentify):
             self.deactivate()
     
     def setMarker(self, coords):
+        """
+        Place marker on canvas to indicate the feature to be moved
+
+        @param coords: QgsPoint
+        @type coords: QgsPoint
+        """
+
         self.highlighter.setAddress(coords)
     
     def hideMarker(self):
+        """
+        Remove the marker from the canvas
+        """
+        
         self.highlighter.hideAddress()
 
     def canvasReleaseEvent(self, mouseEvent):
+        """
+        Identify the AIMS Feature(s) the user clicked
+
+        @param mouseEvent: QtGui.QMouseEvent
+        @type mouseEvent: QtGui.QMouseEvent
+        """
+
         self._iface.setActiveLayer(self._layers.addressLayer())
         
         if mouseEvent.button() == Qt.LeftButton:
@@ -118,6 +167,8 @@ class MoveAddressTool(QgsMapToolIdentify):
 
                 for feature in self._features:
                     feature._addressedObject_addressPositions[0].setCoordinates(coords) # setter for this?
+                    if feature._codes_isMeshblockOverride != True:
+                        feature.setMeshblock(None)
                     feature = self.af[FeedType.CHANGEFEED].cast(feature)
                     respId = int(time.time()) 
                     self._controller.uidm.updateAddress(feature, respId)
@@ -128,12 +179,36 @@ class MoveAddressTool(QgsMapToolIdentify):
                 self._sb.clearMessage()
 
 class MoveAddressDialog(Ui_ComfirmSelection, QDialog ):
+    """
+    Dialog that is shown to the user if more than one feature is selected to
+    allow the user to refine and confirm their selection
 
+    @param Ui_ComfirmSelection: Ui Dialog to allow user to refine selection
+    @type  Ui_ComfirmSelection: AimsUI.AimsClient.Gui.Ui_ComfirmSelection
+    """
+        
     def __init__( self, parent ):
+        """
+        Intialise dialog
+        
+        @param parent: Main Window
+        @type  parent: QtGui.QMainWindow
+        """
         QDialog.__init__(self,parent)
         self.setupUi(self)
     
     def selectFeatures( self, identifiedFeatures ):
+        """
+        Show selected features to user and return the users
+        refined selection
+
+        @param identifiedFeatures: List of dictionaries representing each selected feature
+        @type  identifiedFeatures: list
+        
+        @return: List of dictionaries representing the refined selection
+        @rtype: list
+        """
+        
         self.uSadListView.setList(identifiedFeatures,
                                  ['fullAddress','addressId'])
         if self.exec_() == QDialog.Accepted:

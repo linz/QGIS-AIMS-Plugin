@@ -1,0 +1,2112 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>inspect</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="QGIS-AIMS-Plugin-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        Module&nbsp;inspect
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="inspect-module.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== MODULE DESCRIPTION ==================== -->
+<h1 class="epydoc">Module inspect</h1><p class="nomargin-top"><span class="codelink"><a href="inspect-pysrc.html">source&nbsp;code</a></span></p>
+<pre class="literalblock">
+Get useful information from live Python objects.
+
+This module encapsulates the interface provided by the internal special
+attributes (func_*, co_*, im_*, tb_*, etc.) in a friendlier fashion.
+It also provides some help for examining source code and class layout.
+
+Here are some of the useful functions provided by this module:
+
+    ismodule(), isclass(), ismethod(), isfunction(), isgeneratorfunction(),
+        isgenerator(), istraceback(), isframe(), iscode(), isbuiltin(),
+        isroutine() - check object types
+    getmembers() - get members of an object that satisfy a given condition
+
+    getfile(), getsourcefile(), getsource() - find an object's source code
+    getdoc(), getcomments() - get documentation on an object
+    getmodule() - determine the module that an object came from
+    getclasstree() - arrange classes so as to represent their hierarchy
+
+    getargspec(), getargvalues(), getcallargs() - get info about function arguments
+    formatargspec(), formatargvalues() - format an argument spec
+    getouterframes(), getinnerframes() - get info about frames
+    currentframe() - get the current stack frame
+    stack(), trace() - get info about frames on the stack or in a traceback
+
+</pre>
+
+<hr />
+<div class="fields">      <p><strong>Date:</strong>
+        1 Jan 2001
+      </p>
+      <p><strong>Author:</strong>
+        Ka-Ping Yee &lt;ping@lfw.org&gt;
+      </p>
+</div><!-- ==================== CLASSES ==================== -->
+<a name="section-Classes"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Classes</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Classes"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="inspect.ArgInfo-class.html" class="summary-name">ArgInfo</a><br />
+      ArgInfo(args, varargs, keywords, locals)
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="inspect.ArgSpec-class.html" class="summary-name">ArgSpec</a><br />
+      ArgSpec(args, varargs, keywords, defaults)
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="inspect.Arguments-class.html" class="summary-name">Arguments</a><br />
+      Arguments(args, varargs, keywords)
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="inspect.Attribute-class.html" class="summary-name">Attribute</a><br />
+      Attribute(name, kind, defining_class, object)
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="inspect.BlockFinder-class.html" class="summary-name">BlockFinder</a><br />
+      Provide a tokeneater() method to detect the end of a code block.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="inspect.EndOfBlock-class.html" class="summary-name">EndOfBlock</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="inspect.ModuleInfo-class.html" class="summary-name">ModuleInfo</a><br />
+      ModuleInfo(name, suffix, mode, module_type)
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="inspect.Traceback-class.html" class="summary-name">Traceback</a><br />
+      Traceback(filename, lineno, function, code_context, index)
+    </td>
+  </tr>
+</table>
+<!-- ==================== FUNCTIONS ==================== -->
+<a name="section-Functions"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Functions</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Functions"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_searchbases"></a><span class="summary-sig-name">_searchbases</span>(<span class="summary-sig-arg">cls</span>,
+        <span class="summary-sig-arg">accum</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#_searchbases">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="inspect-module.html#classify_class_attrs" class="summary-sig-name">classify_class_attrs</a>(<span class="summary-sig-arg">cls</span>)</span><br />
+      Return list of attribute-descriptor tuples.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#classify_class_attrs">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="inspect-module.html#cleandoc" class="summary-sig-name">cleandoc</a>(<span class="summary-sig-arg">doc</span>)</span><br />
+      Clean up indentation from docstrings.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#cleandoc">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="inspect-module.html#findsource" class="summary-sig-name">findsource</a>(<span class="summary-sig-arg">object</span>)</span><br />
+      Return the entire source file and starting line number for an object.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#findsource">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="inspect-module.html#formatargspec" class="summary-sig-name">formatargspec</a>(<span class="summary-sig-arg">args</span>,
+        <span class="summary-sig-arg">varargs</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">varkw</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">defaults</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">formatarg</span>=<span class="summary-sig-default">&lt;type 'str'&gt;</span>,
+        <span class="summary-sig-arg">formatvarargs</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x7f88f55bf140&gt;</span>,
+        <span class="summary-sig-arg">formatvarkw</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x7f88f55bf1b8&gt;</span>,
+        <span class="summary-sig-arg">formatvalue</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x7f88f55bf230&gt;</span>,
+        <span class="summary-sig-arg">join</span>=<span class="summary-sig-default">&lt;function joinseq at 0x7f88f55bf050&gt;</span>)</span><br />
+      Format an argument spec from the 4 values returned by getargspec.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#formatargspec">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="inspect-module.html#formatargvalues" class="summary-sig-name">formatargvalues</a>(<span class="summary-sig-arg">args</span>,
+        <span class="summary-sig-arg">varargs</span>,
+        <span class="summary-sig-arg">varkw</span>,
+        <span class="summary-sig-arg">locals</span>,
+        <span class="summary-sig-arg">formatarg</span>=<span class="summary-sig-default">&lt;type 'str'&gt;</span>,
+        <span class="summary-sig-arg">formatvarargs</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x7f88f55bf320&gt;</span>,
+        <span class="summary-sig-arg">formatvarkw</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x7f88f55bf398&gt;</span>,
+        <span class="summary-sig-arg">formatvalue</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x7f88f55bf410&gt;</span>,
+        <span class="summary-sig-arg">join</span>=<span class="summary-sig-default">&lt;function joinseq at 0x7f88f55bf050&gt;</span>)</span><br />
+      Format an argument spec from the 4 values returned by getargvalues.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#formatargvalues">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="inspect-module.html#getabsfile" class="summary-sig-name">getabsfile</a>(<span class="summary-sig-arg">object</span>,
+        <span class="summary-sig-arg">_filename</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Return an absolute path to the source or compiled file for an object.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#getabsfile">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="inspect-module.html#getargs" class="summary-sig-name">getargs</a>(<span class="summary-sig-arg">co</span>)</span><br />
+      Get information about the arguments accepted by a code object.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#getargs">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="inspect-module.html#getargspec" class="summary-sig-name">getargspec</a>(<span class="summary-sig-arg">func</span>)</span><br />
+      Get the names and default values of a function's arguments.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#getargspec">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="inspect-module.html#getargvalues" class="summary-sig-name">getargvalues</a>(<span class="summary-sig-arg">frame</span>)</span><br />
+      Get information about arguments passed into a particular frame.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#getargvalues">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getblock"></a><span class="summary-sig-name">getblock</span>(<span class="summary-sig-arg">lines</span>)</span><br />
+      Extract the block of code at the top of the given list of lines.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#getblock">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="inspect-module.html#getcallargs" class="summary-sig-name">getcallargs</a>(<span class="summary-sig-arg">func</span>,
+        <span class="summary-sig-arg">*positional</span>,
+        <span class="summary-sig-arg">**named</span>)</span><br />
+      Get the mapping of arguments to values.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#getcallargs">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="inspect-module.html#getclasstree" class="summary-sig-name">getclasstree</a>(<span class="summary-sig-arg">classes</span>,
+        <span class="summary-sig-arg">unique</span>=<span class="summary-sig-default">0</span>)</span><br />
+      Arrange the given list of classes into a hierarchy of nested lists.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#getclasstree">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="inspect-module.html#getcomments" class="summary-sig-name">getcomments</a>(<span class="summary-sig-arg">object</span>)</span><br />
+      Get lines of comments immediately preceding an object's source code.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#getcomments">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="inspect-module.html#getdoc" class="summary-sig-name">getdoc</a>(<span class="summary-sig-arg">object</span>)</span><br />
+      Get the documentation string for an object.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#getdoc">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getfile"></a><span class="summary-sig-name">getfile</span>(<span class="summary-sig-arg">object</span>)</span><br />
+      Work out which source or compiled file an object was defined in.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#getfile">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="inspect-module.html#getframeinfo" class="summary-sig-name">getframeinfo</a>(<span class="summary-sig-arg">frame</span>,
+        <span class="summary-sig-arg">context</span>=<span class="summary-sig-default">1</span>)</span><br />
+      Get information about a frame or traceback object.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#getframeinfo">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="inspect-module.html#getinnerframes" class="summary-sig-name">getinnerframes</a>(<span class="summary-sig-arg">tb</span>,
+        <span class="summary-sig-arg">context</span>=<span class="summary-sig-default">1</span>)</span><br />
+      Get a list of records for a traceback's frame and all lower frames.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#getinnerframes">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getlineno"></a><span class="summary-sig-name">getlineno</span>(<span class="summary-sig-arg">frame</span>)</span><br />
+      Get the line number from a frame object, allowing for optimization.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#getlineno">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="inspect-module.html#getmembers" class="summary-sig-name">getmembers</a>(<span class="summary-sig-arg">object</span>,
+        <span class="summary-sig-arg">predicate</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Return all members of an object as (name, value) pairs sorted by 
+      name.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#getmembers">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getmodule"></a><span class="summary-sig-name">getmodule</span>(<span class="summary-sig-arg">object</span>,
+        <span class="summary-sig-arg">_filename</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Return the module an object was defined in, or None if not found.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#getmodule">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getmoduleinfo"></a><span class="summary-sig-name">getmoduleinfo</span>(<span class="summary-sig-arg">path</span>)</span><br />
+      Get the module name, suffix, mode, and module type for a given file.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#getmoduleinfo">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getmodulename"></a><span class="summary-sig-name">getmodulename</span>(<span class="summary-sig-arg">path</span>)</span><br />
+      Return the module name for a given file, or None.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#getmodulename">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getmro"></a><span class="summary-sig-name">getmro</span>(<span class="summary-sig-arg">cls</span>)</span><br />
+      Return tuple of base classes (including cls) in method resolution 
+      order.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#getmro">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="inspect-module.html#getouterframes" class="summary-sig-name">getouterframes</a>(<span class="summary-sig-arg">frame</span>,
+        <span class="summary-sig-arg">context</span>=<span class="summary-sig-default">1</span>)</span><br />
+      Get a list of records for a frame and all higher (calling) frames.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#getouterframes">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="inspect-module.html#getsource" class="summary-sig-name">getsource</a>(<span class="summary-sig-arg">object</span>)</span><br />
+      Return the text of the source code for an object.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#getsource">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="inspect-module.html#getsourcefile" class="summary-sig-name">getsourcefile</a>(<span class="summary-sig-arg">object</span>)</span><br />
+      Return the filename that can be used to locate an object's source.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#getsourcefile">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="inspect-module.html#getsourcelines" class="summary-sig-name">getsourcelines</a>(<span class="summary-sig-arg">object</span>)</span><br />
+      Return a list of source lines and starting line number for an object.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#getsourcelines">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="indentsize"></a><span class="summary-sig-name">indentsize</span>(<span class="summary-sig-arg">line</span>)</span><br />
+      Return the indent size, in spaces, at the start of a line of text.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#indentsize">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="isabstract"></a><span class="summary-sig-name">isabstract</span>(<span class="summary-sig-arg">object</span>)</span><br />
+      Return true if the object is an abstract base class (ABC).</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#isabstract">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="inspect-module.html#isbuiltin" class="summary-sig-name">isbuiltin</a>(<span class="summary-sig-arg">object</span>)</span><br />
+      Return true if the object is a built-in function or method.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#isbuiltin">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="inspect-module.html#isclass" class="summary-sig-name">isclass</a>(<span class="summary-sig-arg">object</span>)</span><br />
+      Return true if the object is a class.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#isclass">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="inspect-module.html#iscode" class="summary-sig-name">iscode</a>(<span class="summary-sig-arg">object</span>)</span><br />
+      Return true if the object is a code object.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#iscode">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="inspect-module.html#isdatadescriptor" class="summary-sig-name">isdatadescriptor</a>(<span class="summary-sig-arg">object</span>)</span><br />
+      Return true if the object is a data descriptor.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#isdatadescriptor">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="inspect-module.html#isframe" class="summary-sig-name">isframe</a>(<span class="summary-sig-arg">object</span>)</span><br />
+      Return true if the object is a frame object.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#isframe">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="inspect-module.html#isfunction" class="summary-sig-name">isfunction</a>(<span class="summary-sig-arg">object</span>)</span><br />
+      Return true if the object is a user-defined function.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#isfunction">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="inspect-module.html#isgenerator" class="summary-sig-name">isgenerator</a>(<span class="summary-sig-arg">object</span>)</span><br />
+      Return true if the object is a generator.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#isgenerator">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="inspect-module.html#isgeneratorfunction" class="summary-sig-name">isgeneratorfunction</a>(<span class="summary-sig-arg">object</span>)</span><br />
+      Return true if the object is a user-defined generator function.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#isgeneratorfunction">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="inspect-module.html#isgetsetdescriptor" class="summary-sig-name">isgetsetdescriptor</a>(<span class="summary-sig-arg">object</span>)</span><br />
+      Return true if the object is a getset descriptor.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#isgetsetdescriptor">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="inspect-module.html#ismemberdescriptor" class="summary-sig-name">ismemberdescriptor</a>(<span class="summary-sig-arg">object</span>)</span><br />
+      Return true if the object is a member descriptor.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#ismemberdescriptor">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="inspect-module.html#ismethod" class="summary-sig-name">ismethod</a>(<span class="summary-sig-arg">object</span>)</span><br />
+      Return true if the object is an instance method.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#ismethod">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="inspect-module.html#ismethoddescriptor" class="summary-sig-name">ismethoddescriptor</a>(<span class="summary-sig-arg">object</span>)</span><br />
+      Return true if the object is a method descriptor.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#ismethoddescriptor">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="inspect-module.html#ismodule" class="summary-sig-name">ismodule</a>(<span class="summary-sig-arg">object</span>)</span><br />
+      Return true if the object is a module.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#ismodule">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="isroutine"></a><span class="summary-sig-name">isroutine</span>(<span class="summary-sig-arg">object</span>)</span><br />
+      Return true if the object is any kind of function or method.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#isroutine">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="inspect-module.html#istraceback" class="summary-sig-name">istraceback</a>(<span class="summary-sig-arg">object</span>)</span><br />
+      Return true if the object is a traceback.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#istraceback">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="joinseq"></a><span class="summary-sig-name">joinseq</span>(<span class="summary-sig-arg">seq</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#joinseq">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="stack"></a><span class="summary-sig-name">stack</span>(<span class="summary-sig-arg">context</span>=<span class="summary-sig-default">1</span>)</span><br />
+      Return a list of records for the stack above the caller's frame.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#stack">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="strseq"></a><span class="summary-sig-name">strseq</span>(<span class="summary-sig-arg">object</span>,
+        <span class="summary-sig-arg">convert</span>,
+        <span class="summary-sig-arg">join</span>=<span class="summary-sig-default">&lt;function joinseq at 0x7f88f55bf050&gt;</span>)</span><br />
+      Recursively walk a sequence, stringifying each element.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#strseq">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="trace"></a><span class="summary-sig-name">trace</span>(<span class="summary-sig-arg">context</span>=<span class="summary-sig-default">1</span>)</span><br />
+      Return a list of records for the stack below the current exception.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#trace">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="walktree"></a><span class="summary-sig-name">walktree</span>(<span class="summary-sig-arg">classes</span>,
+        <span class="summary-sig-arg">children</span>,
+        <span class="summary-sig-arg">parent</span>)</span><br />
+      Recursive helper function for getclasstree().</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="inspect-pysrc.html#walktree">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== VARIABLES ==================== -->
+<a name="section-Variables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Variables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="CO_GENERATOR"></a><span class="summary-name">CO_GENERATOR</span> = <code title="32">32</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="CO_NESTED"></a><span class="summary-name">CO_NESTED</span> = <code title="16">16</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="CO_NEWLOCALS"></a><span class="summary-name">CO_NEWLOCALS</span> = <code title="2">2</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="CO_NOFREE"></a><span class="summary-name">CO_NOFREE</span> = <code title="64">64</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="CO_OPTIMIZED"></a><span class="summary-name">CO_OPTIMIZED</span> = <code title="1">1</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="CO_VARARGS"></a><span class="summary-name">CO_VARARGS</span> = <code title="4">4</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="CO_VARKEYWORDS"></a><span class="summary-name">CO_VARKEYWORDS</span> = <code title="8">8</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="TPFLAGS_IS_ABSTRACT"></a><span class="summary-name">TPFLAGS_IS_ABSTRACT</span> = <code title="1048576">1048576</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="__package__"></a><span class="summary-name">__package__</span> = <code title="None">None</code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="_filesbymodname"></a><span class="summary-name">_filesbymodname</span> = <code title="{}"><code class="variable-group">{</code><code class="variable-group">}</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="modulesbyfile"></a><span class="summary-name">modulesbyfile</span> = <code title="{}"><code class="variable-group">{</code><code class="variable-group">}</code></code>
+    </td>
+  </tr>
+</table>
+<!-- ==================== FUNCTION DETAILS ==================== -->
+<a name="section-FunctionDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Function Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-FunctionDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="classify_class_attrs"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">classify_class_attrs</span>(<span class="sig-arg">cls</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="inspect-pysrc.html#classify_class_attrs">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Return list of attribute-descriptor tuples.</p>
+  <p>For each name in dir(cls), the return list contains a 4-tuple with 
+  these elements:</p>
+  <ol start="0">
+    <li>
+      The name (a string).
+    </li>
+    <li>
+      The kind of attribute this is, one of these strings: 'class method'
+      created via classmethod() 'static method'   created via 
+      staticmethod() 'property'        created via property() 'method'
+      any other flavor of method 'data'            not a method
+    </li>
+    <li>
+      The class which defined this attribute (a class).
+    </li>
+    <li>
+      The object as obtained directly from the defining class's __dict__, 
+      not via getattr.  This is especially important for data attributes:  
+      C.data is just a data object, but C.__dict__['data'] may be a data 
+      descriptor with additional info, like a __doc__ string.
+    </li>
+  </ol>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="cleandoc"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">cleandoc</span>(<span class="sig-arg">doc</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="inspect-pysrc.html#cleandoc">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Clean up indentation from docstrings.</p>
+  <p>Any whitespace that can be uniformly removed from the second line 
+  onwards is removed.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="findsource"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">findsource</span>(<span class="sig-arg">object</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="inspect-pysrc.html#findsource">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Return the entire source file and starting line number for an 
+  object.</p>
+  <p>The argument may be a module, class, method, function, traceback, 
+  frame, or code object.  The source code is returned as a list of all the 
+  lines in the file and the line number indexes a line in that list.  An 
+  IOError is raised if the source code cannot be retrieved.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="formatargspec"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">formatargspec</span>(<span class="sig-arg">args</span>,
+        <span class="sig-arg">varargs</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">varkw</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">defaults</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">formatarg</span>=<span class="sig-default">&lt;type 'str'&gt;</span>,
+        <span class="sig-arg">formatvarargs</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x7f88f55bf140&gt;</span>,
+        <span class="sig-arg">formatvarkw</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x7f88f55bf1b8&gt;</span>,
+        <span class="sig-arg">formatvalue</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x7f88f55bf230&gt;</span>,
+        <span class="sig-arg">join</span>=<span class="sig-default">&lt;function joinseq at 0x7f88f55bf050&gt;</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="inspect-pysrc.html#formatargspec">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Format an argument spec from the 4 values returned by getargspec.</p>
+  <p>The first four arguments are (args, varargs, varkw, defaults).  The 
+  other four arguments are the corresponding optional formatting functions 
+  that are called to turn names and values into strings.  The ninth 
+  argument is an optional function to format the sequence of arguments.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="formatargvalues"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">formatargvalues</span>(<span class="sig-arg">args</span>,
+        <span class="sig-arg">varargs</span>,
+        <span class="sig-arg">varkw</span>,
+        <span class="sig-arg">locals</span>,
+        <span class="sig-arg">formatarg</span>=<span class="sig-default">&lt;type 'str'&gt;</span>,
+        <span class="sig-arg">formatvarargs</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x7f88f55bf320&gt;</span>,
+        <span class="sig-arg">formatvarkw</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x7f88f55bf398&gt;</span>,
+        <span class="sig-arg">formatvalue</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x7f88f55bf410&gt;</span>,
+        <span class="sig-arg">join</span>=<span class="sig-default">&lt;function joinseq at 0x7f88f55bf050&gt;</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="inspect-pysrc.html#formatargvalues">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Format an argument spec from the 4 values returned by 
+  getargvalues.</p>
+  <p>The first four arguments are (args, varargs, varkw, locals).  The next
+  four arguments are the corresponding optional formatting functions that 
+  are called to turn names and values into strings.  The ninth argument is 
+  an optional function to format the sequence of arguments.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="getabsfile"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">getabsfile</span>(<span class="sig-arg">object</span>,
+        <span class="sig-arg">_filename</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="inspect-pysrc.html#getabsfile">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Return an absolute path to the source or compiled file for an 
+  object.</p>
+  <p>The idea is for each object to have a unique origin, so this routine 
+  normalizes the result as much as possible.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="getargs"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">getargs</span>(<span class="sig-arg">co</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="inspect-pysrc.html#getargs">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Get information about the arguments accepted by a code object.</p>
+  <p>Three things are returned: (args, varargs, varkw), where 'args' is a 
+  list of argument names (possibly containing nested lists), and 'varargs' 
+  and 'varkw' are the names of the * and ** arguments or None.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="getargspec"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">getargspec</span>(<span class="sig-arg">func</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="inspect-pysrc.html#getargspec">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Get the names and default values of a function's arguments.</p>
+  <p>A tuple of four things is returned: (args, varargs, varkw, defaults). 
+  'args' is a list of the argument names (it may contain nested lists). 
+  'varargs' and 'varkw' are the names of the * and ** arguments or None. 
+  'defaults' is an n-tuple of the default values of the last n 
+  arguments.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="getargvalues"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">getargvalues</span>(<span class="sig-arg">frame</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="inspect-pysrc.html#getargvalues">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Get information about arguments passed into a particular frame.</p>
+  <p>A tuple of four things is returned: (args, varargs, varkw, locals). 
+  'args' is a list of the argument names (it may contain nested lists). 
+  'varargs' and 'varkw' are the names of the * and ** arguments or None. 
+  'locals' is the locals dictionary of the given frame.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="getcallargs"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">getcallargs</span>(<span class="sig-arg">func</span>,
+        <span class="sig-arg">*positional</span>,
+        <span class="sig-arg">**named</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="inspect-pysrc.html#getcallargs">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Get the mapping of arguments to values.</p>
+  <p>A dict is returned, with keys the function argument names (including 
+  the names of the * and ** arguments, if any), and values the respective 
+  bound values from 'positional' and 'named'.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="getclasstree"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">getclasstree</span>(<span class="sig-arg">classes</span>,
+        <span class="sig-arg">unique</span>=<span class="sig-default">0</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="inspect-pysrc.html#getclasstree">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Arrange the given list of classes into a hierarchy of nested 
+  lists.</p>
+  <p>Where a nested list appears, it contains classes derived from the 
+  class whose entry immediately precedes the list.  Each entry is a 2-tuple
+  containing a class and a tuple of its base classes.  If the 'unique' 
+  argument is true, exactly one entry appears in the returned structure for
+  each class in the given list.  Otherwise, classes using multiple 
+  inheritance and their descendants will appear multiple times.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="getcomments"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">getcomments</span>(<span class="sig-arg">object</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="inspect-pysrc.html#getcomments">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Get lines of comments immediately preceding an object's source 
+  code.</p>
+  <p>Returns None when source can't be found.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="getdoc"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">getdoc</span>(<span class="sig-arg">object</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="inspect-pysrc.html#getdoc">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Get the documentation string for an object.</p>
+  <p>All tabs are expanded to spaces.  To clean up docstrings that are 
+  indented to line up with blocks of code, any whitespace than can be 
+  uniformly removed from the second line onwards is removed.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="getframeinfo"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">getframeinfo</span>(<span class="sig-arg">frame</span>,
+        <span class="sig-arg">context</span>=<span class="sig-default">1</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="inspect-pysrc.html#getframeinfo">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Get information about a frame or traceback object.</p>
+  <p>A tuple of five things is returned: the filename, the line number of 
+  the current line, the function name, a list of lines of context from the 
+  source code, and the index of the current line within that list. The 
+  optional second argument specifies the number of lines of context to 
+  return, which are centered around the current line.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="getinnerframes"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">getinnerframes</span>(<span class="sig-arg">tb</span>,
+        <span class="sig-arg">context</span>=<span class="sig-default">1</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="inspect-pysrc.html#getinnerframes">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Get a list of records for a traceback's frame and all lower 
+  frames.</p>
+  <p>Each record contains a frame object, filename, line number, function 
+  name, a list of lines of context, and index within the context.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="getmembers"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">getmembers</span>(<span class="sig-arg">object</span>,
+        <span class="sig-arg">predicate</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="inspect-pysrc.html#getmembers">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Return all members of an object as (name, value) pairs sorted by name.
+  Optionally, only return members that satisfy a given predicate.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="getouterframes"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">getouterframes</span>(<span class="sig-arg">frame</span>,
+        <span class="sig-arg">context</span>=<span class="sig-default">1</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="inspect-pysrc.html#getouterframes">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Get a list of records for a frame and all higher (calling) frames.</p>
+  <p>Each record contains a frame object, filename, line number, function 
+  name, a list of lines of context, and index within the context.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="getsource"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">getsource</span>(<span class="sig-arg">object</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="inspect-pysrc.html#getsource">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Return the text of the source code for an object.</p>
+  <p>The argument may be a module, class, method, function, traceback, 
+  frame, or code object.  The source code is returned as a single string.  
+  An IOError is raised if the source code cannot be retrieved.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="getsourcefile"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">getsourcefile</span>(<span class="sig-arg">object</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="inspect-pysrc.html#getsourcefile">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Return the filename that can be used to locate an object's source. 
+  Return None if no way can be identified to get the source.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="getsourcelines"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">getsourcelines</span>(<span class="sig-arg">object</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="inspect-pysrc.html#getsourcelines">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Return a list of source lines and starting line number for an 
+  object.</p>
+  <p>The argument may be a module, class, method, function, traceback, 
+  frame, or code object.  The source code is returned as a list of the 
+  lines corresponding to the object and the line number indicates where in 
+  the original source file the first line of code was found.  An IOError is
+  raised if the source code cannot be retrieved.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="isbuiltin"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">isbuiltin</span>(<span class="sig-arg">object</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="inspect-pysrc.html#isbuiltin">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+Return true if the object is a built-in function or method.
+
+Built-in functions and methods provide these attributes:
+    __doc__         documentation string
+    __name__        original name of this function or method
+    __self__        instance to which a method is bound, or None
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="isclass"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">isclass</span>(<span class="sig-arg">object</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="inspect-pysrc.html#isclass">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+Return true if the object is a class.
+
+Class objects provide these attributes:
+    __doc__         documentation string
+    __module__      name of module in which this class was defined
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="iscode"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">iscode</span>(<span class="sig-arg">object</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="inspect-pysrc.html#iscode">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+Return true if the object is a code object.
+
+Code objects provide these attributes:
+    co_argcount     number of arguments (not including * or ** args)
+    co_code         string of raw compiled bytecode
+    co_consts       tuple of constants used in the bytecode
+    co_filename     name of file in which this code object was created
+    co_firstlineno  number of first line in Python source code
+    co_flags        bitmap: 1=optimized | 2=newlocals | 4=*arg | 8=**arg
+    co_lnotab       encoded mapping of line numbers to bytecode indices
+    co_name         name with which this code object was defined
+    co_names        tuple of names of local variables
+    co_nlocals      number of local variables
+    co_stacksize    virtual machine stack space required
+    co_varnames     tuple of names of arguments and local variables
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="isdatadescriptor"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">isdatadescriptor</span>(<span class="sig-arg">object</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="inspect-pysrc.html#isdatadescriptor">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Return true if the object is a data descriptor.</p>
+  <p>Data descriptors have both a __get__ and a __set__ attribute.  
+  Examples are properties (defined in Python) and getsets and members 
+  (defined in C). Typically, data descriptors will also have __name__ and 
+  __doc__ attributes (properties, getsets, and members have both of these 
+  attributes), but this is not guaranteed.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="isframe"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">isframe</span>(<span class="sig-arg">object</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="inspect-pysrc.html#isframe">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+Return true if the object is a frame object.
+
+Frame objects provide these attributes:
+    f_back          next outer frame object (this frame's caller)
+    f_builtins      built-in namespace seen by this frame
+    f_code          code object being executed in this frame
+    f_exc_traceback traceback if raised in this frame, or None
+    f_exc_type      exception type if raised in this frame, or None
+    f_exc_value     exception value if raised in this frame, or None
+    f_globals       global namespace seen by this frame
+    f_lasti         index of last attempted instruction in bytecode
+    f_lineno        current line number in Python source code
+    f_locals        local namespace seen by this frame
+    f_restricted    0 or 1 if frame is in restricted execution mode
+    f_trace         tracing function for this frame, or None
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="isfunction"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">isfunction</span>(<span class="sig-arg">object</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="inspect-pysrc.html#isfunction">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+Return true if the object is a user-defined function.
+
+Function objects provide these attributes:
+    __doc__         documentation string
+    __name__        name with which this function was defined
+    func_code       code object containing compiled function bytecode
+    func_defaults   tuple of any default values for arguments
+    func_doc        (same as __doc__)
+    func_globals    global namespace in which this function was defined
+    func_name       (same as __name__)
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="isgenerator"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">isgenerator</span>(<span class="sig-arg">object</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="inspect-pysrc.html#isgenerator">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+Return true if the object is a generator.
+
+Generator objects provide these attributes:
+    __iter__        defined to support iteration over container
+    close           raises a new GeneratorExit exception inside the
+                    generator to terminate the iteration
+    gi_code         code object
+    gi_frame        frame object or possibly None once the generator has
+                    been exhausted
+    gi_running      set to 1 when generator is executing, 0 otherwise
+    next            return the next item from the container
+    send            resumes the generator and &quot;sends&quot; a value that becomes
+                    the result of the current yield-expression
+    throw           used to raise an exception inside the generator
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="isgeneratorfunction"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">isgeneratorfunction</span>(<span class="sig-arg">object</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="inspect-pysrc.html#isgeneratorfunction">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Return true if the object is a user-defined generator function.</p>
+  <p>Generator function objects provides same attributes as functions.</p>
+  <p>See help(isfunction) for attributes listing.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="isgetsetdescriptor"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">isgetsetdescriptor</span>(<span class="sig-arg">object</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="inspect-pysrc.html#isgetsetdescriptor">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Return true if the object is a getset descriptor.</p>
+  <p>getset descriptors are specialized descriptors defined in extension 
+  modules.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="ismemberdescriptor"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">ismemberdescriptor</span>(<span class="sig-arg">object</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="inspect-pysrc.html#ismemberdescriptor">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Return true if the object is a member descriptor.</p>
+  <p>Member descriptors are specialized descriptors defined in extension 
+  modules.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="ismethod"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">ismethod</span>(<span class="sig-arg">object</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="inspect-pysrc.html#ismethod">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+Return true if the object is an instance method.
+
+Instance method objects provide these attributes:
+    __doc__         documentation string
+    __name__        name with which this method was defined
+    im_class        class object in which this method belongs
+    im_func         function object containing implementation of method
+    im_self         instance to which this method is bound, or None
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="ismethoddescriptor"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">ismethoddescriptor</span>(<span class="sig-arg">object</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="inspect-pysrc.html#ismethoddescriptor">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Return true if the object is a method descriptor.</p>
+  <p>But not if ismethod() or isclass() or isfunction() are true.</p>
+  <p>This is new in Python 2.2, and, for example, is true of int.__add__. 
+  An object passing this test has a __get__ attribute but not a __set__ 
+  attribute, but beyond that the set of attributes varies.  __name__ is 
+  usually sensible, and __doc__ often is.</p>
+  <p>Methods implemented via descriptors that also pass one of the other 
+  tests return false from the ismethoddescriptor() test, simply because the
+  other tests promise more -- you can, e.g., count on having the im_func 
+  attribute (etc) when an object passes ismethod().</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="ismodule"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">ismodule</span>(<span class="sig-arg">object</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="inspect-pysrc.html#ismodule">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+Return true if the object is a module.
+
+Module objects provide these attributes:
+    __doc__         documentation string
+    __file__        filename (missing for built-in modules)
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="istraceback"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">istraceback</span>(<span class="sig-arg">object</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="inspect-pysrc.html#istraceback">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+Return true if the object is a traceback.
+
+Traceback objects provide these attributes:
+    tb_frame        frame object at this level
+    tb_lasti        index of last attempted instruction in bytecode
+    tb_lineno       current line number in Python source code
+    tb_next         next inner traceback object (called by this level)
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="QGIS-AIMS-Plugin-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Jun 14 13:29:12 2016
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

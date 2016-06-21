@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QGIS-AIMS-Plugin.AimsUI.AimsClient.Database</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="QGIS-AIMS-Plugin-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="QGIS-AIMS-Plugin-module.html">Package&nbsp;QGIS-AIMS-Plugin</a> ::
+        Package&nbsp;AimsUI ::
+        <a href="QGIS-AIMS-Plugin.AimsUI.AimsClient-module.html">Package&nbsp;AimsClient</a> ::
+        Module&nbsp;Database
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html">Module QGIS-AIMS-Plugin.AimsUI.AimsClient.Database</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-comment">################################################################################</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-comment"># Copyright 2015 Crown copyright (c)</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-comment"># Land Information New Zealand and the New Zealand Government.</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-comment"># All rights reserved</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-comment"># This program is released under the terms of the 3 clause BSD license. See the </tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-comment"># LICENSE file for more information.</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-comment">################################################################################</tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">psycopg2</tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Class PyQt4.QtCore.QStateMachine.Error=PyQt4.QtCore.QStateMachine.Error-class.html,Class PyQt4.QtCore.QXmlStreamReader.Error=PyQt4.QtCore.QXmlStreamReader.Error-class.html,Variable PyQt4.QtGui.QPrinter.Error=PyQt4.QtGui.QPrinter-class.html#Error,Class PyQt4.QtGui.QX11EmbedContainer.Error=PyQt4.QtGui.QX11EmbedContainer.Error-class.html,Class PyQt4.QtGui.QX11EmbedWidget.Error=PyQt4.QtGui.QX11EmbedWidget.Error-class.html,Class QGIS-AIMS-Plugin.AimsUI.AimsClient.Error.Error=QGIS-AIMS-Plugin.AimsUI.AimsClient.Error.Error-class.html,Variable qgis._core.QgsDataItem.Error=qgis._core.QgsDataItem-class.html#Error,Class qgis._core.QgsGeometry.Error=qgis._core.QgsGeometry.Error-class.html,Class qgis._core.QgsMapRendererJob.Error=qgis._core.QgsMapRendererJob.Error-class.html"><a title="PyQt4.QtCore.QStateMachine.Error
+PyQt4.QtCore.QXmlStreamReader.Error
+PyQt4.QtGui.QPrinter.Error
+PyQt4.QtGui.QX11EmbedContainer.Error
+PyQt4.QtGui.QX11EmbedWidget.Error
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Error.Error
+qgis._core.QgsDataItem.Error
+qgis._core.QgsGeometry.Error
+qgis._core.QgsMapRendererJob.Error" class="py-name" href="#" onclick="return doclink('link-0', 'Error', 'link-0');">Error</a></tt> <tt class="py-keyword">import</tt> <tt id="link-1" class="py-name"><a title="PyQt4.QtCore.QStateMachine.Error
+PyQt4.QtCore.QXmlStreamReader.Error
+PyQt4.QtGui.QPrinter.Error
+PyQt4.QtGui.QX11EmbedContainer.Error
+PyQt4.QtGui.QX11EmbedWidget.Error
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Error.Error
+qgis._core.QgsDataItem.Error
+qgis._core.QgsGeometry.Error
+qgis._core.QgsMapRendererJob.Error" class="py-name" href="#" onclick="return doclink('link-1', 'Error', 'link-0');">Error</a></tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">AIMSDataManager</tt><tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Module QGIS-AIMS-Plugin.AIMSDataManager.Config=QGIS-AIMS-Plugin.AIMSDataManager.Config-module.html"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Config" class="py-name" href="#" onclick="return doclink('link-2', 'Config', 'link-2');">Config</a></tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">getpass</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">AIMSDataManager</tt><tt class="py-op">.</tt><tt id="link-3" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Config" class="py-name" href="#" onclick="return doclink('link-3', 'Config', 'link-2');">Config</a></tt> <tt class="py-keyword">import</tt> <tt id="link-4" class="py-name" targets="Class QGIS-AIMS-Plugin.AIMSDataManager.Config.ConfigReader=QGIS-AIMS-Plugin.AIMSDataManager.Config.ConfigReader-class.html"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Config.ConfigReader" class="py-name" href="#" onclick="return doclink('link-4', 'ConfigReader', 'link-4');">ConfigReader</a></tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">AimsUI</tt><tt class="py-op">.</tt><tt id="link-5" class="py-name" targets="Module QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging=QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging-module.html,Module QGIS-AIMS-Plugin.AimsUI.AimsLogging=QGIS-AIMS-Plugin.AimsUI.AimsLogging-module.html"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging
+QGIS-AIMS-Plugin.AimsUI.AimsLogging" class="py-name" href="#" onclick="return doclink('link-5', 'AimsLogging', 'link-5');">AimsLogging</a></tt> <tt class="py-keyword">import</tt> <tt id="link-6" class="py-name" targets="Class QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging.Logger=QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging.Logger-class.html,Class QGIS-AIMS-Plugin.AimsUI.AimsLogging.Logger=QGIS-AIMS-Plugin.AimsUI.AimsLogging.Logger-class.html"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging.Logger
+QGIS-AIMS-Plugin.AimsUI.AimsLogging.Logger" class="py-name" href="#" onclick="return doclink('link-6', 'Logger', 'link-6');">Logger</a></tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"><tt id="link-7" class="py-name" targets="Variable QGIS-AIMS-Plugin.AIMSDataManager.Address.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.Address-module.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFactory.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFactory-class.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory-module.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.AimsApi.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.AimsApi-module.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging-module.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility-module.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.DataManager.DataManager.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.DataManager.DataManager-class.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.DataManager.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.DataManager-module.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSync.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSync-class.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.DataSync.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.DataSync-module.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdater.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdater-class.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater-module.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature-class.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.Feature.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.Feature-module.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory-class.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory-module.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupFactory.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupFactory-class.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory-module.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.User.User.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.User.User-class.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.UserFactory.UserFactory.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.UserFactory.UserFactory-class.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager.UserFactory.aimslog=QGIS-AIMS-Plugin.AIMSDataManager.UserFactory-module.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager._localtest.LocalTest.aimslog=QGIS-AIMS-Plugin.AIMSDataManager._localtest.LocalTest-class.html#aimslog,Variable QGIS-AIMS-Plugin.AIMSDataManager._localtest.aimslog=QGIS-AIMS-Plugin.AIMSDataManager._localtest-module.html#aimslog,Variable QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.aimslog=QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#aimslog,Variable QGIS-AIMS-Plugin.AimsUI.AimsLogging.aimslog=QGIS-AIMS-Plugin.AimsUI.AimsLogging-module.html#aimslog,Variable QGIS-AIMS-Plugin.AimsUI.LayerManager.aimslog=QGIS-AIMS-Plugin.AimsUI.LayerManager-module.html#aimslog"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Address.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.AimsApi.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.DataManager.DataManager.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.DataManager.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSync.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.DataSync.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdater.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.Feature.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.User.User.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.UserFactory.UserFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.UserFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager._localtest.LocalTest.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager._localtest.aimslog
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.aimslog
+QGIS-AIMS-Plugin.AimsUI.AimsLogging.aimslog
+QGIS-AIMS-Plugin.AimsUI.LayerManager.aimslog" class="py-name" href="#" onclick="return doclink('link-7', 'aimslog', 'link-7');">aimslog</a></tt> <tt class="py-op">=</tt> <tt id="link-8" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging.Logger
+QGIS-AIMS-Plugin.AimsUI.AimsLogging.Logger" class="py-name" href="#" onclick="return doclink('link-8', 'Logger', 'link-6');">Logger</a></tt><tt class="py-op">.</tt><tt id="link-9" class="py-name" targets="Static Method QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging.Logger.setup()=QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging.Logger-class.html#setup,Method QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSync.setup()=QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSync-class.html#setup,Method QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdater.setup()=QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdater-class.html#setup,Method QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterAction.setup()=QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterAction-class.html#setup,Method QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterApproval.setup()=QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterApproval-class.html#setup,Method QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterGroupAction.setup()=QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterGroupAction-class.html#setup,Method QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterGroupApproval.setup()=QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterGroupApproval-class.html#setup,Method QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterUserAction.setup()=QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterUserAction-class.html#setup,Function QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.setup()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#setup,Static Method QGIS-AIMS-Plugin.AimsUI.AimsLogging.Logger.setup()=QGIS-AIMS-Plugin.AimsUI.AimsLogging.Logger-class.html#setup"><a title="QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging.Logger.setup
+QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSync.setup
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdater.setup
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterAction.setup
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterApproval.setup
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterGroupAction.setup
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterGroupApproval.setup
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdaterUserAction.setup
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.setup
+QGIS-AIMS-Plugin.AimsUI.AimsLogging.Logger.setup" class="py-name" href="#" onclick="return doclink('link-9', 'setup', 'link-9');">setup</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"><tt id="link-10" class="py-name" targets="Variable QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._db=QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#_db"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._db" class="py-name" href="#" onclick="return doclink('link-10', '_db', 'link-10');">_db</a></tt> <tt class="py-op">=</tt> <tt id="link-11" class="py-name" targets="Variable PyQt4.QtCore.QEvent.None=PyQt4.QtCore.QEvent-class.html#None,Variable PyQt4.QtCore.QUrl.None=PyQt4.QtCore.QUrl-class.html#None,Variable PyQt4.QtGui.QAbstractPrintDialog.None=PyQt4.QtGui.QAbstractPrintDialog-class.html#None,Variable PyQt4.QtGui.QStyleOptionButton.None=PyQt4.QtGui.QStyleOptionButton-class.html#None,Variable PyQt4.QtGui.QStyleOptionFrameV2.None=PyQt4.QtGui.QStyleOptionFrameV2-class.html#None,Variable PyQt4.QtGui.QStyleOptionHeader.None=PyQt4.QtGui.QStyleOptionHeader-class.html#None,Variable PyQt4.QtGui.QStyleOptionToolBar.None=PyQt4.QtGui.QStyleOptionToolBar-class.html#None,Variable PyQt4.QtGui.QStyleOptionToolButton.None=PyQt4.QtGui.QStyleOptionToolButton-class.html#None,Variable PyQt4.QtGui.QStyleOptionViewItemV2.None=PyQt4.QtGui.QStyleOptionViewItemV2-class.html#None,Variable qgis._core.QgsRasterBandStats.None=qgis._core.QgsRasterBandStats-class.html#None"><a title="PyQt4.QtCore.QEvent.None
+PyQt4.QtCore.QUrl.None
+PyQt4.QtGui.QAbstractPrintDialog.None
+PyQt4.QtGui.QStyleOptionButton.None
+PyQt4.QtGui.QStyleOptionFrameV2.None
+PyQt4.QtGui.QStyleOptionHeader.None
+PyQt4.QtGui.QStyleOptionToolBar.None
+PyQt4.QtGui.QStyleOptionToolButton.None
+PyQt4.QtGui.QStyleOptionViewItemV2.None
+qgis._core.QgsRasterBandStats.None" class="py-name" href="#" onclick="return doclink('link-11', 'None', 'link-11');">None</a></tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"><tt id="link-12" class="py-name" targets="Variable QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._autocommit=QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#_autocommit"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._autocommit" class="py-name" href="#" onclick="return doclink('link-12', '_autocommit', 'link-12');">_autocommit</a></tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"><tt id="link-13" class="py-name" targets="Variable QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._restartRequired=QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#_restartRequired"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._restartRequired" class="py-name" href="#" onclick="return doclink('link-13', '_restartRequired', 'link-13');">_restartRequired</a></tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"><tt id="link-14" class="py-name" targets="Variable QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.config=QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#config"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.config" class="py-name" href="#" onclick="return doclink('link-14', 'config', 'link-14');">config</a></tt> <tt class="py-op">=</tt> <tt id="link-15" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Config.ConfigReader" class="py-name" href="#" onclick="return doclink('link-15', 'ConfigReader', 'link-4');">ConfigReader</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"><tt id="link-16" class="py-name" targets="Variable QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._host=QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#_host"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._host" class="py-name" href="#" onclick="return doclink('link-16', '_host', 'link-16');">_host</a></tt> <tt class="py-op">=</tt> <tt id="link-17" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.config" class="py-name" href="#" onclick="return doclink('link-17', 'config', 'link-14');">config</a></tt><tt class="py-op">.</tt><tt id="link-18" class="py-name" targets="Method QGIS-AIMS-Plugin.AIMSDataManager.Config.ConfigReader.configSectionMap()=QGIS-AIMS-Plugin.AIMSDataManager.Config.ConfigReader-class.html#configSectionMap"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Config.ConfigReader.configSectionMap" class="py-name" href="#" onclick="return doclink('link-18', 'configSectionMap', 'link-18');">configSectionMap</a></tt><tt class="py-op">(</tt><tt class="py-string">'db'</tt><tt class="py-op">)</tt><tt class="py-op">[</tt><tt class="py-string">'host'</tt><tt class="py-op">]</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"><tt id="link-19" class="py-name" targets="Variable QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._port=QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#_port"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._port" class="py-name" href="#" onclick="return doclink('link-19', '_port', 'link-19');">_port</a></tt> <tt class="py-op">=</tt> <tt id="link-20" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.config" class="py-name" href="#" onclick="return doclink('link-20', 'config', 'link-14');">config</a></tt><tt class="py-op">.</tt><tt id="link-21" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Config.ConfigReader.configSectionMap" class="py-name" href="#" onclick="return doclink('link-21', 'configSectionMap', 'link-18');">configSectionMap</a></tt><tt class="py-op">(</tt><tt class="py-string">'db'</tt><tt class="py-op">)</tt><tt class="py-op">[</tt><tt class="py-string">'port'</tt><tt class="py-op">]</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line"><tt id="link-22" class="py-name" targets="Variable QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._name=QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#_name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._name" class="py-name" href="#" onclick="return doclink('link-22', '_name', 'link-22');">_name</a></tt> <tt class="py-op">=</tt> <tt id="link-23" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.config" class="py-name" href="#" onclick="return doclink('link-23', 'config', 'link-14');">config</a></tt><tt class="py-op">.</tt><tt id="link-24" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Config.ConfigReader.configSectionMap" class="py-name" href="#" onclick="return doclink('link-24', 'configSectionMap', 'link-18');">configSectionMap</a></tt><tt class="py-op">(</tt><tt class="py-string">'db'</tt><tt class="py-op">)</tt><tt class="py-op">[</tt><tt class="py-string">'name'</tt><tt class="py-op">]</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"><tt id="link-25" class="py-name" targets="Variable QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._user=QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#_user"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._user" class="py-name" href="#" onclick="return doclink('link-25', '_user', 'link-25');">_user</a></tt><tt class="py-op">=</tt><tt class="py-name">getpass</tt><tt class="py-op">.</tt><tt class="py-name">getuser</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line"><tt id="link-26" class="py-name" targets="Variable QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._password=QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#_password"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._password" class="py-name" href="#" onclick="return doclink('link-26', '_password', 'link-26');">_password</a></tt><tt class="py-op">=</tt><tt class="py-string">''</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line"> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line"><tt id="link-27" class="py-name" targets="Variable QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._aimsSchema=QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#_aimsSchema"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._aimsSchema" class="py-name" href="#" onclick="return doclink('link-27', '_aimsSchema', 'link-27');">_aimsSchema</a></tt><tt class="py-op">=</tt><tt class="py-string">'reference'</tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line"> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line"> </tt>
+<a name="setup"></a><div id="setup-def"><a name="L35"></a><tt class="py-lineno"> 35</tt> <a class="py-toggle" href="#" id="setup-toggle" onclick="return toggle('setup');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#setup">setup</a><tt class="py-op">(</tt><tt class="py-param">d</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="setup-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="setup-expanded"><a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line">    <tt id="link-28" class="py-name"><a title="QGIS-AIMS-Plugin.AIMSDataManager.Address.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.AddressFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.AddressFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.AimsApi.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.AimsLogging.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.AimsUtility.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.DataManager.DataManager.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.DataManager.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.DataSync.DataSync.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.DataSync.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.DataUpdater.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.DataUpdater.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.Feature.Feature.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.Feature.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.FeatureFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.FeatureFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.GroupFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.GroupFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.User.User.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.UserFactory.UserFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager.UserFactory.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager._localtest.LocalTest.aimslog
+QGIS-AIMS-Plugin.AIMSDataManager._localtest.aimslog
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.aimslog
+QGIS-AIMS-Plugin.AimsUI.AimsLogging.aimslog
+QGIS-AIMS-Plugin.AimsUI.LayerManager.aimslog" class="py-name" href="#" onclick="return doclink('link-28', 'aimslog', 'link-7');">aimslog</a></tt><tt class="py-op">.</tt><tt class="py-name">info</tt><tt class="py-op">(</tt><tt class="py-string">'Setting DB, {}'</tt><tt class="py-op">.</tt><tt id="link-29" class="py-name" targets="Variable PyQt4.QtGui.QAbstractTextDocumentLayout.Selection.format=PyQt4.QtGui.QAbstractTextDocumentLayout.Selection-class.html#format,Variable PyQt4.QtGui.QTextEdit.ExtraSelection.format=PyQt4.QtGui.QTextEdit.ExtraSelection-class.html#format,Variable PyQt4.QtGui.QTextLayout.FormatRange.format=PyQt4.QtGui.QTextLayout.FormatRange-class.html#format,Variable qgis._gui.QgsOWSSourceSelect.SupportedFormat.format=qgis._gui.QgsOWSSourceSelect.SupportedFormat-class.html#format"><a title="PyQt4.QtGui.QAbstractTextDocumentLayout.Selection.format
+PyQt4.QtGui.QTextEdit.ExtraSelection.format
+PyQt4.QtGui.QTextLayout.FormatRange.format
+qgis._gui.QgsOWSSourceSelect.SupportedFormat.format" class="py-name" href="#" onclick="return doclink('link-29', 'format', 'link-29');">format</a></tt><tt class="py-op">(</tt><tt class="py-name">d</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line">    <tt id="link-30" class="py-name" targets="Function QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.setHost()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#setHost"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.setHost" class="py-name" href="#" onclick="return doclink('link-30', 'setHost', 'link-30');">setHost</a></tt><tt class="py-op">(</tt><tt class="py-name">d</tt><tt class="py-op">[</tt><tt class="py-string">'host'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line">    <tt id="link-31" class="py-name" targets="Function QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.setPort()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#setPort"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.setPort" class="py-name" href="#" onclick="return doclink('link-31', 'setPort', 'link-31');">setPort</a></tt><tt class="py-op">(</tt><tt class="py-name">d</tt><tt class="py-op">[</tt><tt class="py-string">'port'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line">    <tt id="link-32" class="py-name" targets="Function QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.setDatabase()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#setDatabase"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.setDatabase" class="py-name" href="#" onclick="return doclink('link-32', 'setDatabase', 'link-32');">setDatabase</a></tt><tt class="py-op">(</tt><tt class="py-name">d</tt><tt class="py-op">[</tt><tt class="py-string">'name'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt>  </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line">    <tt id="link-33" class="py-name" targets="Function QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.setAimsSchema()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#setAimsSchema"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.setAimsSchema" class="py-name" href="#" onclick="return doclink('link-33', 'setAimsSchema', 'link-33');">setAimsSchema</a></tt><tt class="py-op">(</tt><tt class="py-name">d</tt><tt class="py-op">[</tt><tt class="py-string">'aimsschema'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line">    <tt id="link-34" class="py-name" targets="Function QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.setUser()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#setUser"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.setUser" class="py-name" href="#" onclick="return doclink('link-34', 'setUser', 'link-34');">setUser</a></tt><tt class="py-op">(</tt><tt class="py-name">d</tt><tt class="py-op">[</tt><tt class="py-string">'user'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line">    <tt id="link-35" class="py-name" targets="Function QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.setPassword()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#setPassword"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.setPassword" class="py-name" href="#" onclick="return doclink('link-35', 'setPassword', 'link-35');">setPassword</a></tt><tt class="py-op">(</tt><tt class="py-name">d</tt><tt class="py-op">[</tt><tt class="py-string">'password'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line"> </tt>
+<a name="host"></a><div id="host-def"><a name="L44"></a><tt class="py-lineno"> 44</tt> <a class="py-toggle" href="#" id="host-toggle" onclick="return toggle('host');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#host">host</a><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-keyword">return</tt> <tt id="link-36" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._host" class="py-name" href="#" onclick="return doclink('link-36', '_host', 'link-16');">_host</a></tt> </tt>
+</div><a name="setHost"></a><div id="setHost-def"><a name="L45"></a><tt class="py-lineno"> 45</tt> <a class="py-toggle" href="#" id="setHost-toggle" onclick="return toggle('setHost');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#setHost">setHost</a><tt class="py-op">(</tt><tt class="py-param">host</tt><tt class="py-op">)</tt><tt class="py-op">:</tt>  </tt>
+</div><a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line">    <tt class="py-keyword">global</tt> <tt id="link-37" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._host" class="py-name" href="#" onclick="return doclink('link-37', '_host', 'link-16');">_host</a></tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt id="link-38" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._host" class="py-name" href="#" onclick="return doclink('link-38', '_host', 'link-16');">_host</a></tt><tt class="py-op">!=</tt><tt id="link-39" class="py-name" targets="Function QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.host()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#host"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.host" class="py-name" href="#" onclick="return doclink('link-39', 'host', 'link-39');">host</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line">        <tt id="link-40" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._host" class="py-name" href="#" onclick="return doclink('link-40', '_host', 'link-16');">_host</a></tt><tt class="py-op">=</tt><tt id="link-41" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.host" class="py-name" href="#" onclick="return doclink('link-41', 'host', 'link-39');">host</a></tt><tt class="py-op">;</tt>  </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line">        <tt id="link-42" class="py-name" targets="Function QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._reset()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#_reset"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._reset" class="py-name" href="#" onclick="return doclink('link-42', '_reset', 'link-42');">_reset</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line"> </tt>
+<a name="port"></a><div id="port-def"><a name="L51"></a><tt class="py-lineno"> 51</tt> <a class="py-toggle" href="#" id="port-toggle" onclick="return toggle('port');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#port">port</a><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-keyword">return</tt> <tt id="link-43" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._port" class="py-name" href="#" onclick="return doclink('link-43', '_port', 'link-19');">_port</a></tt> </tt>
+</div><a name="setPort"></a><div id="setPort-def"><a name="L52"></a><tt class="py-lineno"> 52</tt> <a class="py-toggle" href="#" id="setPort-toggle" onclick="return toggle('setPort');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#setPort">setPort</a><tt class="py-op">(</tt><tt class="py-param">port</tt><tt class="py-op">)</tt><tt class="py-op">:</tt>  </tt>
+</div><a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line">    <tt class="py-keyword">global</tt> <tt id="link-44" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._port" class="py-name" href="#" onclick="return doclink('link-44', '_port', 'link-19');">_port</a></tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt id="link-45" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._port" class="py-name" href="#" onclick="return doclink('link-45', '_port', 'link-19');">_port</a></tt><tt class="py-op">!=</tt><tt id="link-46" class="py-name" targets="Function QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.port()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#port"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.port" class="py-name" href="#" onclick="return doclink('link-46', 'port', 'link-46');">port</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line">        <tt id="link-47" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._port" class="py-name" href="#" onclick="return doclink('link-47', '_port', 'link-19');">_port</a></tt><tt class="py-op">=</tt><tt id="link-48" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.port" class="py-name" href="#" onclick="return doclink('link-48', 'port', 'link-46');">port</a></tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line">        <tt id="link-49" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._reset" class="py-name" href="#" onclick="return doclink('link-49', '_reset', 'link-42');">_reset</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line"> </tt>
+<a name="database"></a><div id="database-def"><a name="L58"></a><tt class="py-lineno"> 58</tt> <a class="py-toggle" href="#" id="database-toggle" onclick="return toggle('database');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#database">database</a><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-keyword">return</tt> <tt id="link-50" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._name" class="py-name" href="#" onclick="return doclink('link-50', '_name', 'link-22');">_name</a></tt> </tt>
+</div><a name="setDatabase"></a><div id="setDatabase-def"><a name="L59"></a><tt class="py-lineno"> 59</tt> <a class="py-toggle" href="#" id="setDatabase-toggle" onclick="return toggle('setDatabase');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#setDatabase">setDatabase</a><tt class="py-op">(</tt><tt class="py-param">name</tt><tt class="py-op">)</tt><tt class="py-op">:</tt>  </tt>
+</div><a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line">    <tt class="py-keyword">global</tt> <tt id="link-51" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._name" class="py-name" href="#" onclick="return doclink('link-51', '_name', 'link-22');">_name</a></tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt id="link-52" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._name" class="py-name" href="#" onclick="return doclink('link-52', '_name', 'link-22');">_name</a></tt><tt class="py-op">!=</tt><tt id="link-53" class="py-name" targets="Variable qgis._core.QgsMimeDataUtils.Uri.name=qgis._core.QgsMimeDataUtils.Uri-class.html#name"><a title="qgis._core.QgsMimeDataUtils.Uri.name" class="py-name" href="#" onclick="return doclink('link-53', 'name', 'link-53');">name</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line">        <tt id="link-54" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._name" class="py-name" href="#" onclick="return doclink('link-54', '_name', 'link-22');">_name</a></tt><tt class="py-op">=</tt><tt id="link-55" class="py-name"><a title="qgis._core.QgsMimeDataUtils.Uri.name" class="py-name" href="#" onclick="return doclink('link-55', 'name', 'link-53');">name</a></tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line">        <tt id="link-56" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._reset" class="py-name" href="#" onclick="return doclink('link-56', '_reset', 'link-42');">_reset</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line"> </tt>
+<a name="user"></a><div id="user-def"><a name="L65"></a><tt class="py-lineno"> 65</tt> <a class="py-toggle" href="#" id="user-toggle" onclick="return toggle('user');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#user">user</a><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-keyword">return</tt> <tt id="link-57" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._user" class="py-name" href="#" onclick="return doclink('link-57', '_user', 'link-25');">_user</a></tt> </tt>
+</div><a name="setUser"></a><div id="setUser-def"><a name="L66"></a><tt class="py-lineno"> 66</tt> <a class="py-toggle" href="#" id="setUser-toggle" onclick="return toggle('setUser');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#setUser">setUser</a><tt class="py-op">(</tt><tt class="py-param">user</tt><tt class="py-op">)</tt><tt class="py-op">:</tt>  </tt>
+</div><a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">    <tt class="py-keyword">global</tt> <tt id="link-58" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._user" class="py-name" href="#" onclick="return doclink('link-58', '_user', 'link-25');">_user</a></tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt id="link-59" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._user" class="py-name" href="#" onclick="return doclink('link-59', '_user', 'link-25');">_user</a></tt><tt class="py-op">!=</tt><tt id="link-60" class="py-name" targets="Function QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.user()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#user"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.user" class="py-name" href="#" onclick="return doclink('link-60', 'user', 'link-60');">user</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line">        <tt id="link-61" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._user" class="py-name" href="#" onclick="return doclink('link-61', '_user', 'link-25');">_user</a></tt><tt class="py-op">=</tt><tt id="link-62" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.user" class="py-name" href="#" onclick="return doclink('link-62', 'user', 'link-60');">user</a></tt> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">        <tt id="link-63" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._reset" class="py-name" href="#" onclick="return doclink('link-63', '_reset', 'link-42');">_reset</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line"> </tt>
+<a name="password"></a><div id="password-def"><a name="L72"></a><tt class="py-lineno"> 72</tt> <a class="py-toggle" href="#" id="password-toggle" onclick="return toggle('password');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#password">password</a><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-keyword">return</tt> <tt id="link-64" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._password" class="py-name" href="#" onclick="return doclink('link-64', '_password', 'link-26');">_password</a></tt> </tt>
+</div><a name="setPassword"></a><div id="setPassword-def"><a name="L73"></a><tt class="py-lineno"> 73</tt> <a class="py-toggle" href="#" id="setPassword-toggle" onclick="return toggle('setPassword');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#setPassword">setPassword</a><tt class="py-op">(</tt><tt class="py-param">password</tt><tt class="py-op">)</tt><tt class="py-op">:</tt>  </tt>
+</div><a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">    <tt class="py-keyword">global</tt> <tt id="link-65" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._password" class="py-name" href="#" onclick="return doclink('link-65', '_password', 'link-26');">_password</a></tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt id="link-66" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._password" class="py-name" href="#" onclick="return doclink('link-66', '_password', 'link-26');">_password</a></tt><tt class="py-op">!=</tt><tt id="link-67" class="py-name" targets="Function QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.password()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#password"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.password" class="py-name" href="#" onclick="return doclink('link-67', 'password', 'link-67');">password</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">        <tt id="link-68" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._password" class="py-name" href="#" onclick="return doclink('link-68', '_password', 'link-26');">_password</a></tt><tt class="py-op">=</tt><tt id="link-69" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.password" class="py-name" href="#" onclick="return doclink('link-69', 'password', 'link-67');">password</a></tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line">        <tt id="link-70" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._reset" class="py-name" href="#" onclick="return doclink('link-70', '_reset', 'link-42');">_reset</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line"> </tt>
+<a name="aimsSchema"></a><div id="aimsSchema-def"><a name="L79"></a><tt class="py-lineno"> 79</tt> <a class="py-toggle" href="#" id="aimsSchema-toggle" onclick="return toggle('aimsSchema');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#aimsSchema">aimsSchema</a><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-keyword">return</tt> <tt id="link-71" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._aimsSchema" class="py-name" href="#" onclick="return doclink('link-71', '_aimsSchema', 'link-27');">_aimsSchema</a></tt> </tt>
+</div><a name="setAimsSchema"></a><div id="setAimsSchema-def"><a name="L80"></a><tt class="py-lineno"> 80</tt> <a class="py-toggle" href="#" id="setAimsSchema-toggle" onclick="return toggle('setAimsSchema');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#setAimsSchema">setAimsSchema</a><tt class="py-op">(</tt><tt class="py-param">aimsSchema</tt><tt class="py-op">)</tt><tt class="py-op">:</tt>  </tt>
+</div><a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line">    <tt class="py-keyword">global</tt> <tt id="link-72" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._aimsSchema" class="py-name" href="#" onclick="return doclink('link-72', '_aimsSchema', 'link-27');">_aimsSchema</a></tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt id="link-73" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._aimsSchema" class="py-name" href="#" onclick="return doclink('link-73', '_aimsSchema', 'link-27');">_aimsSchema</a></tt><tt class="py-op">!=</tt><tt id="link-74" class="py-name" targets="Function QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.aimsSchema()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#aimsSchema"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.aimsSchema" class="py-name" href="#" onclick="return doclink('link-74', 'aimsSchema', 'link-74');">aimsSchema</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line">        <tt id="link-75" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._aimsSchema" class="py-name" href="#" onclick="return doclink('link-75', '_aimsSchema', 'link-27');">_aimsSchema</a></tt><tt class="py-op">=</tt><tt id="link-76" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.aimsSchema" class="py-name" href="#" onclick="return doclink('link-76', 'aimsSchema', 'link-74');">aimsSchema</a></tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line">        <tt id="link-77" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._reset" class="py-name" href="#" onclick="return doclink('link-77', '_reset', 'link-42');">_reset</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line"> </tt>
+<a name="_reset"></a><div id="_reset-def"><a name="L86"></a><tt class="py-lineno"> 86</tt> <a class="py-toggle" href="#" id="_reset-toggle" onclick="return toggle('_reset');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#_reset">_reset</a><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_reset-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="_reset-expanded"><a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">    <tt class="py-keyword">global</tt> <tt id="link-78" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._db" class="py-name" href="#" onclick="return doclink('link-78', '_db', 'link-10');">_db</a></tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">    <tt class="py-keyword">global</tt> <tt id="link-79" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._restartRequired" class="py-name" href="#" onclick="return doclink('link-79', '_restartRequired', 'link-13');">_restartRequired</a></tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt id="link-80" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._db" class="py-name" href="#" onclick="return doclink('link-80', '_db', 'link-10');">_db</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line">        <tt id="link-81" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._restartRequired" class="py-name" href="#" onclick="return doclink('link-81', '_restartRequired', 'link-13');">_restartRequired</a></tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">        <tt id="link-82" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._db" class="py-name" href="#" onclick="return doclink('link-82', '_db', 'link-10');">_db</a></tt> <tt class="py-op">=</tt> <tt id="link-83" class="py-name"><a title="PyQt4.QtCore.QEvent.None
+PyQt4.QtCore.QUrl.None
+PyQt4.QtGui.QAbstractPrintDialog.None
+PyQt4.QtGui.QStyleOptionButton.None
+PyQt4.QtGui.QStyleOptionFrameV2.None
+PyQt4.QtGui.QStyleOptionHeader.None
+PyQt4.QtGui.QStyleOptionToolBar.None
+PyQt4.QtGui.QStyleOptionToolButton.None
+PyQt4.QtGui.QStyleOptionViewItemV2.None
+qgis._core.QgsRasterBandStats.None" class="py-name" href="#" onclick="return doclink('link-83', 'None', 'link-11');">None</a></tt> </tt>
+</div><a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line"> </tt>
+<a name="connection"></a><div id="connection-def"><a name="L93"></a><tt class="py-lineno"> 93</tt> <a class="py-toggle" href="#" id="connection-toggle" onclick="return toggle('connection');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#connection">connection</a><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="connection-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="connection-expanded"><a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line">    <tt class="py-keyword">global</tt> <tt id="link-84" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._db" class="py-name" href="#" onclick="return doclink('link-84', '_db', 'link-10');">_db</a></tt><tt class="py-op">,</tt> <tt id="link-85" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._autocommit" class="py-name" href="#" onclick="return doclink('link-85', '_autocommit', 'link-12');">_autocommit</a></tt> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt id="link-86" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._db" class="py-name" href="#" onclick="return doclink('link-86', '_db', 'link-10');">_db</a></tt> <tt class="py-op">==</tt> <tt id="link-87" class="py-name"><a title="PyQt4.QtCore.QEvent.None
+PyQt4.QtCore.QUrl.None
+PyQt4.QtGui.QAbstractPrintDialog.None
+PyQt4.QtGui.QStyleOptionButton.None
+PyQt4.QtGui.QStyleOptionFrameV2.None
+PyQt4.QtGui.QStyleOptionHeader.None
+PyQt4.QtGui.QStyleOptionToolBar.None
+PyQt4.QtGui.QStyleOptionToolButton.None
+PyQt4.QtGui.QStyleOptionViewItemV2.None
+qgis._core.QgsRasterBandStats.None" class="py-name" href="#" onclick="return doclink('link-87', 'None', 'link-11');">None</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-88" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._restartRequired" class="py-name" href="#" onclick="return doclink('link-88', '_restartRequired', 'link-13');">_restartRequired</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">            <tt class="py-keyword">raise</tt> <tt id="link-89" class="py-name"><a title="PyQt4.QtCore.QStateMachine.Error
+PyQt4.QtCore.QXmlStreamReader.Error
+PyQt4.QtGui.QPrinter.Error
+PyQt4.QtGui.QX11EmbedContainer.Error
+PyQt4.QtGui.QX11EmbedWidget.Error
+QGIS-AIMS-Plugin.AimsUI.AimsClient.Error.Error
+qgis._core.QgsDataItem.Error
+qgis._core.QgsGeometry.Error
+qgis._core.QgsMapRendererJob.Error" class="py-name" href="#" onclick="return doclink('link-89', 'Error', 'link-0');">Error</a></tt><tt class="py-op">(</tt><tt class="py-string">"You need to restart the application after changing database settings"</tt><tt class="py-op">)</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line">        <tt class="py-name">db</tt> <tt class="py-op">=</tt> <tt class="py-name">psycopg2</tt><tt class="py-op">.</tt><tt class="py-name">connect</tt><tt class="py-op">(</tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line">            <tt id="link-90" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.host" class="py-name" href="#" onclick="return doclink('link-90', 'host', 'link-39');">host</a></tt><tt class="py-op">=</tt><tt id="link-91" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._host" class="py-name" href="#" onclick="return doclink('link-91', '_host', 'link-16');">_host</a></tt><tt class="py-op">,</tt>  </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line">            <tt id="link-92" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.port" class="py-name" href="#" onclick="return doclink('link-92', 'port', 'link-46');">port</a></tt><tt class="py-op">=</tt><tt id="link-93" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._port" class="py-name" href="#" onclick="return doclink('link-93', '_port', 'link-19');">_port</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line">            <tt id="link-94" class="py-name" targets="Function QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.database()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#database"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.database" class="py-name" href="#" onclick="return doclink('link-94', 'database', 'link-94');">database</a></tt><tt class="py-op">=</tt><tt id="link-95" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._name" class="py-name" href="#" onclick="return doclink('link-95', '_name', 'link-22');">_name</a></tt><tt class="py-op">,</tt>  </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line">            <tt id="link-96" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.user" class="py-name" href="#" onclick="return doclink('link-96', 'user', 'link-60');">user</a></tt><tt class="py-op">=</tt><tt id="link-97" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._user" class="py-name" href="#" onclick="return doclink('link-97', '_user', 'link-25');">_user</a></tt><tt class="py-op">,</tt>  </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line">            <tt id="link-98" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.password" class="py-name" href="#" onclick="return doclink('link-98', 'password', 'link-67');">password</a></tt><tt class="py-op">=</tt><tt id="link-99" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._password" class="py-name" href="#" onclick="return doclink('link-99', '_password', 'link-26');">_password</a></tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line">        <tt class="py-op">)</tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line">        <tt class="py-name">db</tt><tt class="py-op">.</tt><tt class="py-name">set_isolation_level</tt><tt class="py-op">(</tt><tt class="py-number">0</tt><tt class="py-op">)</tt> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line">        <tt class="py-name">c</tt> <tt class="py-op">=</tt> <tt class="py-name">db</tt><tt class="py-op">.</tt><tt id="link-100" class="py-name" targets="Variable PyQt4.QtGui.QAbstractTextDocumentLayout.Selection.cursor=PyQt4.QtGui.QAbstractTextDocumentLayout.Selection-class.html#cursor,Variable PyQt4.QtGui.QTextEdit.ExtraSelection.cursor=PyQt4.QtGui.QTextEdit.ExtraSelection-class.html#cursor"><a title="PyQt4.QtGui.QAbstractTextDocumentLayout.Selection.cursor
+PyQt4.QtGui.QTextEdit.ExtraSelection.cursor" class="py-name" href="#" onclick="return doclink('link-100', 'cursor', 'link-100');">cursor</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line">        <tt class="py-name">c</tt><tt class="py-op">.</tt><tt id="link-101" class="py-name" targets="Function QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.execute()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#execute"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.execute" class="py-name" href="#" onclick="return doclink('link-101', 'execute', 'link-101');">execute</a></tt><tt class="py-op">(</tt><tt class="py-string">'set search_path='</tt><tt class="py-op">+</tt><tt id="link-102" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._aimsSchema" class="py-name" href="#" onclick="return doclink('link-102', '_aimsSchema', 'link-27');">_aimsSchema</a></tt><tt class="py-op">+</tt><tt class="py-string">', public'</tt> <tt class="py-op">)</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line">        <tt id="link-103" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._db" class="py-name" href="#" onclick="return doclink('link-103', '_db', 'link-10');">_db</a></tt> <tt class="py-op">=</tt> <tt class="py-name">db</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line">        <tt id="link-104" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._autocommit" class="py-name" href="#" onclick="return doclink('link-104', '_autocommit', 'link-12');">_autocommit</a></tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt id="link-105" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._db" class="py-name" href="#" onclick="return doclink('link-105', '_db', 'link-10');">_db</a></tt> </tt>
+</div><a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line"> </tt>
+<a name="execute"></a><div id="execute-def"><a name="L112"></a><tt class="py-lineno">112</tt> <a class="py-toggle" href="#" id="execute-toggle" onclick="return toggle('execute');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#execute">execute</a><tt class="py-op">(</tt>  <tt class="py-param">sql</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">params</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="execute-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="execute-expanded"><a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line">    <tt class="py-keyword">global</tt> <tt id="link-106" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._db" class="py-name" href="#" onclick="return doclink('link-106', '_db', 'link-10');">_db</a></tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line">    <tt class="py-comment"># Handle special case where sql is just a function name</tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-string">' '</tt> <tt class="py-keyword">not</tt> <tt class="py-keyword">in</tt> <tt class="py-name">sql</tt><tt class="py-op">:</tt> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line">        <tt class="py-name">sql</tt> <tt class="py-op">=</tt> <tt class="py-string">'select '</tt> <tt class="py-op">+</tt> <tt class="py-name">sql</tt> <tt class="py-op">+</tt> <tt class="py-string">'('</tt> <tt class="py-op">+</tt> <tt class="py-string">','</tt><tt class="py-op">.</tt><tt class="py-name">join</tt><tt class="py-op">(</tt><tt class="py-op">(</tt><tt class="py-string">'%s'</tt><tt class="py-op">,</tt><tt class="py-op">)</tt><tt class="py-op">*</tt><tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">params</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">+</tt><tt class="py-string">')'</tt> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line">    <tt class="py-name">db</tt> <tt class="py-op">=</tt> <tt id="link-107" class="py-name" targets="Function QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.connection()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#connection"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.connection" class="py-name" href="#" onclick="return doclink('link-107', 'connection', 'link-107');">connection</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">db</tt><tt class="py-op">:</tt> </tt>
+<a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-108" class="py-name"><a title="PyQt4.QtCore.QEvent.None
+PyQt4.QtCore.QUrl.None
+PyQt4.QtGui.QAbstractPrintDialog.None
+PyQt4.QtGui.QStyleOptionButton.None
+PyQt4.QtGui.QStyleOptionFrameV2.None
+PyQt4.QtGui.QStyleOptionHeader.None
+PyQt4.QtGui.QStyleOptionToolBar.None
+PyQt4.QtGui.QStyleOptionToolButton.None
+PyQt4.QtGui.QStyleOptionViewItemV2.None
+qgis._core.QgsRasterBandStats.None" class="py-name" href="#" onclick="return doclink('link-108', 'None', 'link-11');">None</a></tt> </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line">    <tt id="link-109" class="py-name" targets="Variable QGIS-AIMS-Plugin.Test.Database_Test.Test_2_DatabaseConnectivity.cur=QGIS-AIMS-Plugin.Test.Database_Test.Test_2_DatabaseConnectivity-class.html#cur"><a title="QGIS-AIMS-Plugin.Test.Database_Test.Test_2_DatabaseConnectivity.cur" class="py-name" href="#" onclick="return doclink('link-109', 'cur', 'link-109');">cur</a></tt> <tt class="py-op">=</tt> <tt class="py-name">db</tt><tt class="py-op">.</tt><tt id="link-110" class="py-name"><a title="PyQt4.QtGui.QAbstractTextDocumentLayout.Selection.cursor
+PyQt4.QtGui.QTextEdit.ExtraSelection.cursor" class="py-name" href="#" onclick="return doclink('link-110', 'cursor', 'link-100');">cursor</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line">    <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line">        <tt id="link-111" class="py-name"><a title="QGIS-AIMS-Plugin.Test.Database_Test.Test_2_DatabaseConnectivity.cur" class="py-name" href="#" onclick="return doclink('link-111', 'cur', 'link-109');">cur</a></tt><tt class="py-op">.</tt><tt id="link-112" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.execute" class="py-name" href="#" onclick="return doclink('link-112', 'execute', 'link-101');">execute</a></tt><tt class="py-op">(</tt> <tt class="py-name">sql</tt><tt class="py-op">,</tt> <tt class="py-name">params</tt> <tt class="py-op">)</tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-113" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._autocommit" class="py-name" href="#" onclick="return doclink('link-113', '_autocommit', 'link-12');">_autocommit</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line">            <tt class="py-name">db</tt><tt class="py-op">.</tt><tt id="link-114" class="py-name" targets="Function QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.commit()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#commit"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.commit" class="py-name" href="#" onclick="return doclink('link-114', 'commit', 'link-114');">commit</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line">    <tt class="py-keyword">except</tt><tt class="py-op">:</tt> </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-115" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._autocommit" class="py-name" href="#" onclick="return doclink('link-115', '_autocommit', 'link-12');">_autocommit</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line">            <tt class="py-name">db</tt><tt class="py-op">.</tt><tt id="link-116" class="py-name" targets="Function QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.rollback()=QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#rollback"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.rollback" class="py-name" href="#" onclick="return doclink('link-116', 'rollback', 'link-116');">rollback</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt id="link-117" class="py-name"><a title="QGIS-AIMS-Plugin.Test.Database_Test.Test_2_DatabaseConnectivity.cur" class="py-name" href="#" onclick="return doclink('link-117', 'cur', 'link-109');">cur</a></tt> </tt>
+</div><a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line"> </tt>
+<a name="executeScalar"></a><div id="executeScalar-def"><a name="L131"></a><tt class="py-lineno">131</tt> <a class="py-toggle" href="#" id="executeScalar-toggle" onclick="return toggle('executeScalar');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#executeScalar">executeScalar</a><tt class="py-op">(</tt>  <tt class="py-param">sql</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">params</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="executeScalar-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="executeScalar-expanded"><a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line">    <tt id="link-118" class="py-name"><a title="QGIS-AIMS-Plugin.Test.Database_Test.Test_2_DatabaseConnectivity.cur" class="py-name" href="#" onclick="return doclink('link-118', 'cur', 'link-109');">cur</a></tt> <tt class="py-op">=</tt> <tt id="link-119" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.execute" class="py-name" href="#" onclick="return doclink('link-119', 'execute', 'link-101');">execute</a></tt><tt class="py-op">(</tt> <tt class="py-name">sql</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-name">params</tt> <tt class="py-op">)</tt> </tt>
+<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt class="py-name">r</tt> <tt class="py-keyword">in</tt> <tt id="link-120" class="py-name"><a title="QGIS-AIMS-Plugin.Test.Database_Test.Test_2_DatabaseConnectivity.cur" class="py-name" href="#" onclick="return doclink('link-120', 'cur', 'link-109');">cur</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">r</tt><tt class="py-op">)</tt> <tt class="py-op">==</tt> <tt class="py-number">1</tt><tt class="py-op">:</tt> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">r</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> </tt>
+<a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line">        <tt class="py-keyword">break</tt> </tt>
+<a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt id="link-121" class="py-name"><a title="PyQt4.QtCore.QEvent.None
+PyQt4.QtCore.QUrl.None
+PyQt4.QtGui.QAbstractPrintDialog.None
+PyQt4.QtGui.QStyleOptionButton.None
+PyQt4.QtGui.QStyleOptionFrameV2.None
+PyQt4.QtGui.QStyleOptionHeader.None
+PyQt4.QtGui.QStyleOptionToolBar.None
+PyQt4.QtGui.QStyleOptionToolButton.None
+PyQt4.QtGui.QStyleOptionViewItemV2.None
+qgis._core.QgsRasterBandStats.None" class="py-name" href="#" onclick="return doclink('link-121', 'None', 'link-11');">None</a></tt> </tt>
+</div><a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line"> </tt>
+<a name="executeRow"></a><div id="executeRow-def"><a name="L139"></a><tt class="py-lineno">139</tt> <a class="py-toggle" href="#" id="executeRow-toggle" onclick="return toggle('executeRow');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#executeRow">executeRow</a><tt class="py-op">(</tt>  <tt class="py-param">sql</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">params</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="executeRow-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="executeRow-expanded"><a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line">    <tt id="link-122" class="py-name"><a title="QGIS-AIMS-Plugin.Test.Database_Test.Test_2_DatabaseConnectivity.cur" class="py-name" href="#" onclick="return doclink('link-122', 'cur', 'link-109');">cur</a></tt> <tt class="py-op">=</tt> <tt id="link-123" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.execute" class="py-name" href="#" onclick="return doclink('link-123', 'execute', 'link-101');">execute</a></tt><tt class="py-op">(</tt> <tt class="py-name">sql</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-name">params</tt> <tt class="py-op">)</tt> </tt>
+<a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt class="py-name">r</tt> <tt class="py-keyword">in</tt> <tt id="link-124" class="py-name"><a title="QGIS-AIMS-Plugin.Test.Database_Test.Test_2_DatabaseConnectivity.cur" class="py-name" href="#" onclick="return doclink('link-124', 'cur', 'link-109');">cur</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">r</tt> </tt>
+<a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line">        <tt class="py-keyword">break</tt> </tt>
+<a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt id="link-125" class="py-name"><a title="PyQt4.QtCore.QEvent.None
+PyQt4.QtCore.QUrl.None
+PyQt4.QtGui.QAbstractPrintDialog.None
+PyQt4.QtGui.QStyleOptionButton.None
+PyQt4.QtGui.QStyleOptionFrameV2.None
+PyQt4.QtGui.QStyleOptionHeader.None
+PyQt4.QtGui.QStyleOptionToolBar.None
+PyQt4.QtGui.QStyleOptionToolButton.None
+PyQt4.QtGui.QStyleOptionViewItemV2.None
+qgis._core.QgsRasterBandStats.None" class="py-name" href="#" onclick="return doclink('link-125', 'None', 'link-11');">None</a></tt> </tt>
+</div><a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line"> </tt>
+<a name="beginTransaction"></a><div id="beginTransaction-def"><a name="L146"></a><tt class="py-lineno">146</tt> <a class="py-toggle" href="#" id="beginTransaction-toggle" onclick="return toggle('beginTransaction');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#beginTransaction">beginTransaction</a><tt class="py-op">(</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="beginTransaction-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="beginTransaction-expanded"><a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line">    <tt class="py-keyword">global</tt> <tt id="link-126" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._autocommit" class="py-name" href="#" onclick="return doclink('link-126', '_autocommit', 'link-12');">_autocommit</a></tt> </tt>
+<a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt id="link-127" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._db" class="py-name" href="#" onclick="return doclink('link-127', '_db', 'link-10');">_db</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line">        <tt id="link-128" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._db" class="py-name" href="#" onclick="return doclink('link-128', '_db', 'link-10');">_db</a></tt><tt class="py-op">.</tt><tt id="link-129" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.commit" class="py-name" href="#" onclick="return doclink('link-129', 'commit', 'link-114');">commit</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line">        <tt id="link-130" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._autocommit" class="py-name" href="#" onclick="return doclink('link-130', '_autocommit', 'link-12');">_autocommit</a></tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt> </tt>
+</div><a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line"> </tt>
+<a name="commit"></a><div id="commit-def"><a name="L152"></a><tt class="py-lineno">152</tt> <a class="py-toggle" href="#" id="commit-toggle" onclick="return toggle('commit');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#commit">commit</a><tt class="py-op">(</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="commit-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="commit-expanded"><a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line">    <tt class="py-keyword">global</tt> <tt id="link-131" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._autocommit" class="py-name" href="#" onclick="return doclink('link-131', '_autocommit', 'link-12');">_autocommit</a></tt> </tt>
+<a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt id="link-132" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._db" class="py-name" href="#" onclick="return doclink('link-132', '_db', 'link-10');">_db</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L155"></a><tt class="py-lineno">155</tt>  <tt class="py-line">        <tt id="link-133" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._db" class="py-name" href="#" onclick="return doclink('link-133', '_db', 'link-10');">_db</a></tt><tt class="py-op">.</tt><tt id="link-134" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.commit" class="py-name" href="#" onclick="return doclink('link-134', 'commit', 'link-114');">commit</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line">        <tt id="link-135" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._autocommit" class="py-name" href="#" onclick="return doclink('link-135', '_autocommit', 'link-12');">_autocommit</a></tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+</div><a name="L157"></a><tt class="py-lineno">157</tt>  <tt class="py-line"> </tt>
+<a name="rollback"></a><div id="rollback-def"><a name="L158"></a><tt class="py-lineno">158</tt> <a class="py-toggle" href="#" id="rollback-toggle" onclick="return toggle('rollback');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database-module.html#rollback">rollback</a><tt class="py-op">(</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="rollback-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="rollback-expanded"><a name="L159"></a><tt class="py-lineno">159</tt>  <tt class="py-line">    <tt class="py-keyword">global</tt> <tt id="link-136" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._autocommit" class="py-name" href="#" onclick="return doclink('link-136', '_autocommit', 'link-12');">_autocommit</a></tt> </tt>
+<a name="L160"></a><tt class="py-lineno">160</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt id="link-137" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._db" class="py-name" href="#" onclick="return doclink('link-137', '_db', 'link-10');">_db</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L161"></a><tt class="py-lineno">161</tt>  <tt class="py-line">        <tt id="link-138" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._db" class="py-name" href="#" onclick="return doclink('link-138', '_db', 'link-10');">_db</a></tt><tt class="py-op">.</tt><tt id="link-139" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database.rollback" class="py-name" href="#" onclick="return doclink('link-139', 'rollback', 'link-116');">rollback</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L162"></a><tt class="py-lineno">162</tt>  <tt class="py-line">        <tt id="link-140" class="py-name"><a title="QGIS-AIMS-Plugin.AimsUI.AimsClient.Database._autocommit" class="py-name" href="#" onclick="return doclink('link-140', '_autocommit', 'link-12');">_autocommit</a></tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+</div><a name="L163"></a><tt class="py-lineno">163</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="QGIS-AIMS-Plugin-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Jun 14 13:29:23 2016
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>
