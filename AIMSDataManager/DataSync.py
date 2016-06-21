@@ -192,7 +192,7 @@ class DataSync(Observable):
         if len(self.pool)==0:
             self.syncFeeds(self.newaddr)#syncfeeds does notify DM
             self.managePage((None,self.lastpage))
-            aimslog.debug('FULL TIME {} {}s'.format(ref,time.time()-self.start_time))
+            aimslog.debug('FULL TIME {} took {}s'.format(ref,time.time()-self.start_time))
             self.updater_running = False
             #print 'POOLCLOSE',ref,time.strftime('%Y-%M-%d %H:%m:%S')
 

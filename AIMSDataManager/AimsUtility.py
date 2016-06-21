@@ -72,7 +72,7 @@ class LogWrap(object):
             t1 = time.time()
             res = func(*args, **kwargs)
             tdif = time.time()-t1
-            aimslog.debug(msg+' {}s'.format(tdif))
+            #aimslog.debug(msg+' {}s'.format(tdif))
             return res
         
         return wrapper
@@ -190,5 +190,6 @@ FEEDS.update(FEED0)
 FIRST = {'AC':FeedRef((FeatureType.ADDRESS,FeedType.CHANGEFEED)),'AR':FeedRef((FeatureType.ADDRESS,FeedType.RESOLUTIONFEED)),
          'GC':FeedRef((FeatureType.GROUPS,FeedType.CHANGEFEED)), 'GR':FeedRef((FeatureType.GROUPS,FeedType.RESOLUTIONFEED))}
 
+PersistActionType = Enumeration.enum('INIT', 'APPEND', 'REPLACE', 'ALL')
 
    
