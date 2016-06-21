@@ -137,3 +137,4 @@ class GetRcl(QgsMapToolIdentifyFeature):
                 
             self.fillform()
             self._controller.setPreviousMapTool() 
+    
