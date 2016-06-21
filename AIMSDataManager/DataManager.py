@@ -13,10 +13,7 @@ import os
 import sys
 import Queue
 import pickle
-import copy
 import time
-import pprint
-import collections
 from Address import Address, AddressChange, AddressResolution,Position
 from FeatureFactory import FeatureFactory
 #from DataUpdater import DataUpdater
@@ -62,7 +59,7 @@ class DataManager(Observable):
         #Users feed not included in DSR for Release1.0
         for etft in self._start: self._checkDS(etft)
             
-    def start(self,etft):
+    def startfeed(self,etft):
         '''Add a requested (FeedRef) thread to startup list and initialise 
         @param etft: FeedRef of requested thread
         @type etft: FeedRef
@@ -81,7 +78,7 @@ class DataManager(Observable):
             aimslog.warn('Attempt to call stopped DM listener {}'.format(self.getName()))
             return
         aimslog.info('DM Listen A[{}], K[{}] - {}'.format(args,kwargs,observable))
-        args += (self._monitor(observable),)
+        args += (self._monitor(args[0]),)#observable),)
         #chained notify/listen calls
         if hasattr(self,'registered') and self.registered: 
             self.registered.observe(observable, *args, **kwargs)
@@ -188,7 +185,7 @@ class DataManager(Observable):
             del self.ds[etft]
             #reinitialise a new features DataSync
             #self._initFeedDSChecker(etft)
-            self.start(etft)
+            self.startfeed(etft)
     
     #@Deprecated     
     def restart(self,etft):
@@ -499,7 +496,6 @@ class DataManager(Observable):
         #self._populateUser(user).setChangeType(UserActionType.reverse[uat].title())
         #self._queueAction(FeedRef((FeatureType.GROUPS,FeedType.CHANGEFEED)),gat,group)
         etft = FeedRef((FeatureType.USERS,FeedType.ADMIN))
-        self.ioq[etft]
         self.uads,self.ioq[etft] = self._spawnDS(etft,DataSyncAdmin)
         self.register(self.uads.drc)
         self.ioq[etft]['in'].put({uat:(user,)})

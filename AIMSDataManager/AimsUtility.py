@@ -112,6 +112,8 @@ class Enumeration(object):
 
 class FeedRef(object):
     '''Convenience container class holding Feature/Feed type key'''
+    TRUNC = 3
+    
     def __init__(self,arg1,arg2=None):
         '''Initialiser for Feature value and Feed value combinations
         @param arg1: Value for Feature type or Feature/Feed tuple
@@ -124,8 +126,8 @@ class FeedRef(object):
             self._et = arg1[0]
             self._ft = arg1[1]
         
-    def __str__(self,trunc=3):
-        return '{}{}'.format(FeatureType.reverse[self._et].title()[:trunc],FeedType.reverse[self._ft].title()[:trunc]) 
+    def __str__(self):
+        return '{}{}'.format(FeatureType.reverse[self._et].title()[:self.TRUNC],FeedType.reverse[self._ft].title()[:self.TRUNC]) 
     
     def __hash__(self):
         return hash((self._et, self._ft))

@@ -12,17 +12,10 @@
 from datetime import datetime as DT
 #from functools import wraps
 
-import Image, ImageStat, ImageDraw
-import urllib2
-import StringIO
-import random
 import os
 import sys
 import re
-import pickle
-import getopt
 import logging
-import zipfile
 import time
 import threading
 import Queue
@@ -69,8 +62,9 @@ class DataRequestChannel(Observable):
             aimslog.debug('DRC {} listening'.format(self.client.etft))
             time.sleep(THREAD_KEEPALIVE)
     
-    def observe(self,*args,**kwargs):
+    def observe(self,_,*args,**kwargs):
         '''Override of observe method receiving calls from DataManager to trigger requests, on client
+        @param _: Discarded observable.
         @param *args: Wrapped args
         @param **kwargs: Wrapped kwargs
         '''
@@ -105,7 +99,7 @@ class DataSync(Observable):
         @param queues: List of IOR queues
         @type queues: Dict<String,Queue.Queue>        
         '''
-        from DataManager import FEEDS
+        #from DataManager import FEEDS
         super(DataSync,self).__init__()
         #thread reference, ft to AD/CF/RF, config info
         self.start_time = time.time()
@@ -148,13 +142,14 @@ class DataSync(Observable):
         #self.inq.task_done()
         #self.outq.task_done()
         
-    def observe(self,ref):
+    def observe(self,_,*args, **kwargs):
         '''Overridden observe method calling thread management function
-        @param ref: Unique reference string
-        @type ref: String
+        @params _: Discarded observable
+        @param *args: Wrapped args, where we only use the first arg as the managePage ref value
+        @param **kwargs: Wrapped kwargs, discarded
         '''
         if not self.stopped():
-            self._managePage(ref)
+            self._managePage(args[0])
         
     def _managePage(self,ref):
         '''Thread management function called when a periodic thread ends, posting new data and starting a new thread in pool if required
@@ -285,6 +280,9 @@ class DataSync(Observable):
         '''
         aimslog.info('RESP.{}'.format(resp))
         self.respq.put(resp)
+    
+    #null method for features since page count not saved
+    def managePage(self,p):pass
 
 
 class DataSyncFeatures(DataSync):
@@ -301,10 +299,7 @@ class DataSyncFeatures(DataSync):
         '''
         super(DataSyncFeatures,self).__init__(params,queues)
         #self.ftracker = {'page':[1,1],'index':1,'threads':2,'interval':30}
-            
-    #null method for features since page count not saved
-    def managePage(self,p):pass
-        
+
         
 class DataSyncFeeds(DataSync): 
     '''DataSync subclass for the Change and Resolution feeds'''
@@ -381,7 +376,7 @@ class DataSyncFeeds(DataSync):
         params = (ref,self.conf,self.factory)
         #self.ioq = {'in':Queue.Queue(),'out':Queue.Queue()}
         self.duinst[ref] = self.parameters[self.etft]['action'](params,self.respq)
-        self.duinst[ref].setup(self.etft,at,feature)
+        self.duinst[ref].setup(self.etft,at,feature,None)
         print 'PROCESS FEAT',self.etft,ref
         self.duinst[ref].setName(ref)
         self.duinst[ref].setDaemon(True)

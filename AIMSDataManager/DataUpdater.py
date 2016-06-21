@@ -12,20 +12,12 @@
 from datetime import datetime as DT
 #from functools import wraps
 
-import Image, ImageStat, ImageDraw
-import urllib2
-import StringIO
-import random
 import os
 import sys
 import re
-import pickle
-import getopt
 import logging
-import zipfile
 
 import threading
-import Queue
 from AimsApi import AimsApi 
 from AimsUtility import FeedRef,ActionType,ApprovalType,GroupActionType,GroupApprovalType,UserActionType,FeatureType,FeedType
 from AimsUtility import AimsException
@@ -76,7 +68,7 @@ class DataUpdater(Observable):
         @type sw: List<Double>{2}
         @param ne: North-East corner, coordinate value pair
         @type ne: List<Double>{2}
-        @param page: Feed pno number
+        @param pno: Feed page number
         @type pno: Integer 
         '''
         self.etft = etft
@@ -223,7 +215,7 @@ class DataUpdater(Observable):
             return self._processAddressEntity(ent)
         
         else:
-            return Entity.getInstance(e)
+            return Entity.getInstance(ent)
         
     @staticmethod
     def getInstance(etft):
@@ -247,7 +239,7 @@ class DataUpdater(Observable):
         self.queue.task_done()
         
     #executed by subclass
-    def cid(self): pass
+    def cid(self,_): pass
         
 #---------------------------------------------------------------
     
@@ -266,8 +258,8 @@ class DataUpdaterAddress(DataUpdater):
     def cid(self,f):
         return f['properties']['changeId']
     
-    def getEntityInstance(self,d,etft):
-        return EntityValidation(d,etft)
+#     def getEntityInstance(self,ref):
+#         return EntityValidation(ref)
         
         
 class DataUpdaterGroup(DataUpdater):
@@ -284,8 +276,8 @@ class DataUpdaterGroup(DataUpdater):
     def cid(self,f):
         return f['properties']['changeGroupId']
         
-    def getEntityInstance(self,d,etft):
-        return EntityAddress(d,etft)
+#     def getEntityInstance(self,ref):
+#         return EntityAddress(ref)
     
 class DataUpdaterUser(DataUpdater): 
     '''Dataupdater subclass for User objects'''   
@@ -360,7 +352,7 @@ class DataUpdaterAction(DataUpdaterDRC):
     #ft = FeedType.CHANGEFEED 
     oft = FeedType.FEATURES
     
-    def setup(self,etft,aat,address):
+    def setup(self,etft,aat,address,_):
         '''Set Address Action specific parameters
         @param etft: Validation Entity feedref 
         @type etft: FeedRef
@@ -386,7 +378,7 @@ class DataUpdaterApproval(DataUpdaterDRC):
     #ft = FeedType.RESOLUTIONFEED
     oft = FeedType.RESOLUTIONFEED
     
-    def setup(self,etft,aat,address):
+    def setup(self,etft,aat,address,_):
         '''Set Address Approval specific parameters
         @param etft: Validation Entity feedref 
         @type etft: FeedRef
@@ -412,7 +404,7 @@ class DataUpdaterGroupAction(DataUpdaterDRC):
     #ft = FeedType.CHANGEFEED 
     oft = FeedType.FEATURES
     
-    def setup(self,etft,gat,group):
+    def setup(self,etft,gat,group,_):
         '''Set Group Action specific parameters
         @param etft: Validation Entity feedref 
         @type etft: FeedRef
@@ -438,7 +430,7 @@ class DataUpdaterGroupApproval(DataUpdaterDRC):
     #ft = FeedType.CHANGEFEED 
     oft = FeedType.RESOLUTIONFEED
     
-    def setup(self,etft,gat,group):
+    def setup(self,etft,gat,group,_):
         '''Set Group Approval specific parameters
         @param etft: Validation Entity feedref 
         @type etft: FeedRef
@@ -464,7 +456,7 @@ class DataUpdaterUserAction(DataUpdaterDRC):
     #ft = FeedType.CHANGEFEED 
     oft = FeedType.ADMIN
     
-    def setup(self,etft,uat,user):
+    def setup(self,etft,uat,user,_):
         '''Set User specific parameters
         @param etft: Validation Entity feedref 
         @type etft: FeedRef

@@ -46,10 +46,11 @@ class Observable(threading.Thread):
         '''
         for observer in self._observers:
             with notify_lock:
-                observer.observe(*args, **kwargs)
+                observer.observe(self,*args, **kwargs)
                 
-    def observe(self, *args, **kwargs):
+    def observe(self, observable, *args, **kwargs):
         '''Listen method called by notification, default calls in turm call notify but override this as needed.
+        @param observable: Instance of the calling class
         @param *args: Wrapped args
         @param **kwargs: Wrapped kwargs
         '''
