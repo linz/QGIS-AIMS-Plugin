@@ -196,7 +196,7 @@ class UiUtility (object):
                 continue
             # Test the object has the required property or a getter
             #UiUtility.getProperty(self.feature, objProp[0])
-            if self.feature._changeType in ( 'Retire' ,'Replace', 'AddLineage', 'ParcelReferenceData' ):
+            if self.feature._changeType in ( 'Retire' ,'Replace', 'AddLineage', 'ParcelReferenceData', 'MeshblockReferenceData' ):
                 if hasattr(self.feature, objProp[0]) or hasattr(self.feature, objProp[2]):
                     prop = UiUtility.extractFlatProperty(self.feature, objProp[0],objProp[2])
                 elif hasattr(getattr(getattr(self.feature, 'meta'), '_entities')[0],objProp[0]):                    
