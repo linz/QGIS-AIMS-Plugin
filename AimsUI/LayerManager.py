@@ -524,6 +524,6 @@ class LayerManager(QObject):
             layer.dataProvider().addFeatures([fet])
 
         layer.updateExtents()
-        layer.setCacheImage(None)
+        #layer.setCacheImage(None)
         uilog.info(' *** CANVAS ***    FEATURES ADDED')  
         
