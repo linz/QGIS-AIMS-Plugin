@@ -45,6 +45,7 @@ class Position(object):
         '''Initialise Position object
         @param ref: Unique reference string
         '''
+        self._ref = ref        
         self._position_type = 'Point'
         self._position_coordinates = [0.0,0.0]
         self._position_crs_type = 'name'
@@ -226,11 +227,11 @@ class EntityValidation(Entity):
         super(EntityValidation,self).__init__(ref)
         
     @staticmethod
-    def getInstance(data,etft=None): 
+    def getInstance(data):#,etft=None): 
         '''Gets instance of Entity object taking optional entity dict
         @param data: Dict containing Validation Entity object attributes
-        @param etft: Validation Entity feedref 
-        @type etft: FeedRef
+        #@param etft: Validation Entity feedref 
+        #@type etft: FeedRef
         @return: Populated Entity object 
         '''
         return super(EntityValidation,EntityValidation).getInstance(data)
@@ -422,12 +423,12 @@ class Address(Feature):
                     if numComponent: fullNumber += v.format(numComponent) 
         return fullNumber
 
-    def _getFullNumber(self):
-        '''I{*Incomplete* Address combining function}
-        @return: String
-        '''
-        d = {'unitValue':'{}/','addressNumber':'{}','addressNumberHigh':'-{}','addressNumberSuffix':'{}'}
-        reduce(lambda x,y: y+getattr(c+x),d.keys())
+#     def _getFullNumber(self):
+#         '''I{*Incomplete* Address combining function}
+#         @return: String
+#         '''
+#         d = {'unitValue':'{}/','addressNumber':'{}','addressNumberHigh':'-{}','addressNumberSuffix':'{}'}
+#         reduce(lambda x,y: y+getattr(c+x),d.keys())
 
 #------------------------------------------------------------------------------
     

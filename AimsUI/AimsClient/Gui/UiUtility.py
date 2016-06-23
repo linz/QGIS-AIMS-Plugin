@@ -18,6 +18,7 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import QRegExp 
 import re
 import time
+from collections import OrderedDict
 
 from AIMSDataManager.AimsLogging import Logger
 from matplotlib.cbook import Null
@@ -32,40 +33,39 @@ class UiUtility (object):
     # logging
     global uilog
     uilog = Logger.setup(lf='uiLog')
-    
-    retainInfo = [ 'v0005', 'v0006', 'v0007', 'v0012', 'v0023', 'RP001', 'RP002' ]
         
-    uiObjMappings = {'uWarning':['_warning','setWarnings', '_getEntities' ],
-                    'uNotes':['_workflow_sourceReason','setSourceReason', ''],
-                    'uAddressType':['_components_addressType','setAddressType', ''], 
-                    'ulifeCycle':['_components_lifecycle','setLifecycle', ''],   
-                    'uLevelType':['_components_levelType','setLevelType', ''], 
-                    'uLevelValue':['_components_levelValue','setLevelValue', ''], 
-                    'uUnitType':['_components_unitType','setUnitType', ''],
-                    'uUnit':['_components_unitValue','setUnitValue', ''],
-                    'uPrefix':['_components_addressNumberPrefix','setAddressNumberPrefix', ''],
-                    'uBase':['_components_addressNumber','setAddressNumber', ''],
-                    'uAlpha':['_components_addressNumberSuffix','setAddressNumberSuffix', ''],
-                    'uHigh':['_components_addressNumberHigh','setAddressNumberHigh', ''],
-                    'uExternalIdScheme':['_components_externalAddressIdScheme','setExternalAddressIdScheme', ''],
-                    'uExternalAddId':['_components_externalAddressId','setExternalAddressId', ''], 
-                    'uRclId':['_components_roadCentrelineId','setRoadCentrelineId', ''],
-                    'uRoadPrefix':['_components_addressNumberPrefix','setRoadPrefix', ''],
-                    'uRoadName':['_components_roadName','setRoadName', ''], 
-                    'uRoadTypeName':['_components_roadType','setRoadType', ''],   
-                    'uRoadSuffix':['_components_roadSuffix','setRoadSuffix', ''], 
-                    'uWaterName':['_components_waterName','setWaterName', ''], 
-                    'uWaterRouteName':['_components_waterRoute','setWaterRoute', ''],
-                    'uObjectType':['_addressedObject_objectType','setObjectType', ''],
-                    'uObjectName':['_addressedObject_objectName','setObjectName', ''],
+    uiObjMappings = OrderedDict([
+                    ('uAddressType',['_components_addressType','setAddressType', '']), 
+                    ('uWarning',['_warning','setWarnings', '_getEntities' ]),
+                    ('uNotes',['_workflow_sourceReason','setSourceReason', '']),
+                    ('ulifeCycle',['_components_lifecycle','setLifecycle', '']),   
+                    ('uLevelType',['_components_levelType','setLevelType', '']), 
+                    ('uLevelValue',['_components_levelValue','setLevelValue', '']), 
+                    ('uUnitType',['_components_unitType','setUnitType', '']),
+                    ('uUnit',['_components_unitValue','setUnitValue', '']),
+                    ('uPrefix',['_components_addressNumberPrefix','setAddressNumberPrefix', '']),
+                    ('uBase',['_components_addressNumber','setAddressNumber', '']),
+                    ('uAlpha',['_components_addressNumberSuffix','setAddressNumberSuffix', '']),
+                    ('uHigh',['_components_addressNumberHigh','setAddressNumberHigh', '']),
+                    ('uExternalIdScheme',['_components_externalAddressIdScheme','setExternalAddressIdScheme', '']),
+                    ('uExternalAddId',['_components_externalAddressId','setExternalAddressId', '']), 
+                    ('uRclId',['_components_roadCentrelineId','setRoadCentrelineId', '']),
+                    ('uRoadPrefix',['_components_addressNumberPrefix','setRoadPrefix', '']),
+                    ('uRoadName',['_components_roadName','setRoadName', '']), 
+                    ('uRoadTypeName',['_components_roadType','setRoadType', '']),   
+                    ('uRoadSuffix',['_components_roadSuffix','setRoadSuffix', '']), 
+                    ('uWaterName',['_components_waterName','setWaterName', '']), 
+                    ('uWaterRouteName',['_components_waterRoute','setWaterRoute', '']),
+                    ('uObjectType',['_addressedObject_objectType','setObjectType', '']),
+                    ('uObjectName',['_addressedObject_objectName','setObjectName', '']),
                     #'uPositionType':['_addressedObject_addressPositions[0]','_addressedObject_addressPositions[0].setPositionType',''],
-                    'uExtObjectIdScheme':['_addressedObject_externalObjectIdScheme','setExternalObjectIdScheme', ''],
-                    'uExternalObjectId':['_addressedObject_externalObjectId','setExternalObjectId', ''],
-                    'uValuationReference':['_addressedObject_valuationReference','setValuationReference', ''],
-                    'uCertificateOfTitle':['_addressedObject_certificateOfTitle','setCertificateOfTitle', ''],
-                    'uAppellation':['_addressedObject_appellation','setAppellation', ''],
-                    'uMblkOverride':['_codes_meshblock','setMeshblock', '']
-                    }
+                    ('uExtObjectIdScheme',['_addressedObject_externalObjectIdScheme','setExternalObjectIdScheme', '']),
+                    ('uExternalObjectId',['_addressedObject_externalObjectId','setExternalObjectId', '']),
+                    ('uValuationReference',['_addressedObject_valuationReference','setValuationReference', '']),
+                    ('uCertificateOfTitle',['_addressedObject_certificateOfTitle','setCertificateOfTitle', '']),
+                    ('uAppellation',['_addressedObject_appellation','setAppellation', '']),
+                    ('uMblkOverride',['_codes_meshblock','setMeshblock', ''])
+                    ])
     
     @staticmethod
     def transform (iface, coords, tgt=4167):
@@ -221,10 +221,11 @@ class UiUtility (object):
                     continue
                 else: 
                     uiElement.setText(unicode(prop))
+                    continue
             elif isinstance(uiElement, QComboBox):
                 uiElement.setCurrentIndex(0)  
                 uiElement.setCurrentIndex(QComboBox.findText(uiElement, prop))
-        if self.feature._changeType not in ( 'Retire' ): #Therefore flat
+        if self.feature._changeType not in ( 'Retire' ) or self.feature.meta.requestId: #Therefore flat
             posType = self.feature._addressedObject_addressPositions[0]._positionType
         else:
             posType = self.feature.meta.entities[0]._addressedObject_addressPositions[0]._positionType

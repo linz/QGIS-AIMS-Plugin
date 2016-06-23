@@ -14,12 +14,11 @@
 #http://devassgeo01:8080/aims/api/address/features - properties
 import re
 import os
-import sys
 import copy
 from FeatureFactory import FeatureFactory
 from AimsUtility import FeatureType,GroupActionType,GroupApprovalType,FeedType
 from Const import SKIP_NULL, DEF_SEP
-from Group import GroupChange,GroupResolution
+from Group import Group,GroupChange,GroupResolution
 from Group import GroupException
 from AimsLogging import Logger
 #from FeatureFactory import TemplateReader
@@ -28,12 +27,10 @@ from AimsLogging import Logger
 
 ET = FeatureType.GROUPS
 
-#TP = {'{}.{}'.format(FeatureType.reverse[ET].lower(),FeedType.reverse[FeedType.CHANGEFEED].lower()):{b.lower():None for b in GroupActionType.reverse.values()}}
-
 TP = {'{}.{}'.format(FeatureType.reverse[ET].lower(),a):b for a,b in zip(
-        [FeedType.reverse[ft].lower() for ft in (FeedType.CHANGEFEED,FeedType.RESOLUTIONFEED)],
-        [   {GroupActionType.reverse[at].lower():None for at in GroupActionType.reverse},
-            {GroupApprovalType.reverse[at].lower():None for at in GroupApprovalType.reverse}
+        [FeedType.reverse[ftcr].lower() for ftcr in (FeedType.CHANGEFEED,FeedType.RESOLUTIONFEED)],
+        [   {GroupActionType.reverse[gact].lower():None for gact in GroupActionType.reverse},
+            {GroupApprovalType.reverse[gapt].lower():None for gapt in GroupApprovalType.reverse}
         ]
         )
     }
@@ -50,7 +47,7 @@ class GroupFactory(FeatureFactory):
     #PBRANCH = '{d}{}{d}{}'.format(d=DEF_SEP,*Position.BRANCH)
     GFFT = FeedType.CHANGEFEED
     DEF_FRT = FeedType.reverse[GFFT]
-    #grptype = Group
+    grptype = Group
     #reqtype = GroupActionType
     
     global aimslog
@@ -70,9 +67,9 @@ class GroupFactory(FeatureFactory):
         return 'AFC.{}'.format(FeedType.reverse(self.GFFT)[:3])
     
     @staticmethod
-    def getInstance(ft):
+    def getInstance(ift):
         '''Gets an instance of a factory to generate a particular (ft) type of address object'''
-        return GroupFactory(ft)
+        return GroupFactory(ift)
     
     #HACK to save rewriting getaddress at gfactory call
     #def get(self,ref=None,adr=None,model=None,prefix=''):self.get(ref,adr,model,prefix)

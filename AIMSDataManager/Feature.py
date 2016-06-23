@@ -88,15 +88,14 @@ class Feature(object):
     def getMeta(self): 
         return self.meta if hasattr(self, 'meta') else None    
     
-    
-    def compare(self,other):
-        '''Feature equality comparator using simple attribute comparison
-        @param other: Another Feature object whose attributes will be compared to selfs
-        @return: Boolean
-        '''
-        #return False if isinstance(self,other) else hash(self)==hash(other)
-        #IMPORTANT. Attribute value compare only useful with distinct (deepcopy'd) instances
-        return all((getattr(self,a)==getattr(other,a) for a in self.__dict__.keys()))
+#     def compare(self,other):
+#         '''Feature equality comparator using simple attribute comparison
+#         @param other: Another Feature object whose attributes will be compared to selfs
+#         @return: Boolean
+#         '''
+#         #return False if isinstance(self,other) else hash(self)==hash(other)
+#         #IMPORTANT. Attribute value compare only useful with distinct (deepcopy'd) instances
+#         return all((getattr(self,a)==getattr(other,a) for a in self.__dict__.keys()))
     
     def merge(self,other):
         '''Merges new (other) atributes into existing (self) object
@@ -164,12 +163,6 @@ class Feature(object):
         if not b: b = FeatureFactory.getInstance(a.type).get()
         for attr in a.__dict__.keys(): setattr(b,attr,getattr(a,attr))
         return b
-    
-#     def compare(self,other):
-#         '''Equality comparator'''
-#         #return False if isinstance(self,other) else hash(self)==hash(other)
-#         #IMPORTANT. Attribute value compare only useful with distinct (deepcopy'd) instances
-#         return all((getattr(self,a)==getattr(other,a) for a in self.__dict__.keys()))
 
     @staticmethod
     def compare(a,b):

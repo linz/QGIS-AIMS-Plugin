@@ -13,16 +13,14 @@ import os
 import sys
 import Queue
 import pickle
-import copy
 import time
-import pprint
-import collections
 from Address import Address, AddressChange, AddressResolution,Position
 from FeatureFactory import FeatureFactory
 #from DataUpdater import DataUpdater
 from DataSync import DataSync,DataSyncFeatures,DataSyncFeeds,DataSyncAdmin
 from datetime import datetime as DT
-from AimsUtility import FeedRef,ActionType,ApprovalType,GroupActionType,GroupApprovalType,UserActionType,FeatureType,FeedType,Configuration,FEED0,FEEDS,FIRST
+from AimsUtility import FeedRef,ActionType,ApprovalType,GroupActionType,GroupApprovalType,UserActionType,FeatureType,FeedType,PersistActionType,Configuration,FEED0,FEEDS,FIRST
+from AimsUtility import AimsException
 from AimsLogging import Logger
 from Const import THREAD_JOIN_TIMEOUT,RES_PATH,LOCAL_ADL,SWZERO,NEZERO,NULL_PAGE_VALUE as NPV
 from Observable import Observable
@@ -62,7 +60,7 @@ class DataManager(Observable):
         #Users feed not included in DSR for Release1.0
         for etft in self._start: self._checkDS(etft)
             
-    def start(self,etft):
+    def startfeed(self,etft):
         '''Add a requested (FeedRef) thread to startup list and initialise 
         @param etft: FeedRef of requested thread
         @type etft: FeedRef
@@ -81,7 +79,7 @@ class DataManager(Observable):
             aimslog.warn('Attempt to call stopped DM listener {}'.format(self.getName()))
             return
         aimslog.info('DM Listen A[{}], K[{}] - {}'.format(args,kwargs,observable))
-        args += (self._monitor(observable),)
+        args += (self._monitor(args[0]),)#observable),)
         #chained notify/listen calls
         if hasattr(self,'registered') and self.registered: 
             self.registered.observe(observable, *args, **kwargs)
@@ -175,7 +173,7 @@ class DataManager(Observable):
         if self.persist.coords['sw'] != sw or self.persist.coords['ne'] != ne:
             #throw out the current features addresses
             etft = FEEDS['AF']#(FeatureType.ADDRESS,FeedType.FEATURES)
-            self.persist.ADL[etft] = self.persist._initADL()[etft]
+            self.persist.set(etft,None,pat=PersistActionType.INIT)
             #save the new coordinates
             self.persist.coords['sw'],self.persist.coords['ne'] = sw,ne
             #kill the old features thread
@@ -188,7 +186,7 @@ class DataManager(Observable):
             del self.ds[etft]
             #reinitialise a new features DataSync
             #self._initFeedDSChecker(etft)
-            self.start(etft)
+            self.startfeed(etft)
     
     #@Deprecated     
     def restart(self,etft):
@@ -211,11 +209,13 @@ class DataManager(Observable):
             aimslog.warn('Requested thread {} does not exist')
         self._check()
         
-    def pull(self):
+    def pull(self,etft=None):
         '''Return copy of the current list of Address objects (ADL).
+        @param etft: Optional feedref arg indicating which feature class to return
+        @type etft: FeedRef
         @return: Dictionary<FeedRef,List<Address>>
         '''
-        return self.persist.ADL    
+        return self.persist.get(etft)  
         
     def _monitor(self,etft):
         '''Intermittent data saving function which checks a requested feed's out queue and puts any new items into the ADL
@@ -227,11 +227,11 @@ class DataManager(Observable):
         if self.ds[etft]:
             while not self.ioq[etft]['out'].empty():
                 #because the queue isnt populated till all pages are loaded we can just swap out the ADL
-                self.persist.ADL[etft] = self.ioq[etft]['out'].get()
+                self.persist.set(etft,self.ioq[etft]['out'].get(),pat=PersistActionType.REPLACE)
                 self.stamp[etft] = time.time()
 
         #self.persist.write()
-        return self.persist.ADL[etft]
+        return self.persist.get(etft)
     
     def response(self,etft=FeedRef((FeatureType.ADDRESS,FeedType.RESOLUTIONFEED))):
         '''Returns any features lurking in the response queue
@@ -499,7 +499,6 @@ class DataManager(Observable):
         #self._populateUser(user).setChangeType(UserActionType.reverse[uat].title())
         #self._queueAction(FeedRef((FeatureType.GROUPS,FeedType.CHANGEFEED)),gat,group)
         etft = FeedRef((FeatureType.USERS,FeedType.ADMIN))
-        self.ioq[etft]
         self.uads,self.ioq[etft] = self._spawnDS(etft,DataSyncAdmin)
         self.register(self.uads.drc)
         self.ioq[etft]['in'].put({uat:(user,)})
@@ -527,7 +526,7 @@ class DataManager(Observable):
         return self.close()
 
         
-
+class PersistenceException(AimsException): pass
 class Persistence():
     '''Independent storage class for persisting configuration and session feature information'''
     
@@ -557,6 +556,42 @@ class Persistence():
     def _initADL(self):
         '''Read ADL from serial and update from API'''
         return {f:[] for f in FEEDS.values()}
+    
+    def get(self,etft):
+        '''Get data from persistent storage.
+        @param etft: Type is feature class to return
+        @type etft: FeedRef
+        @return: List of features
+        '''
+        if etft: 
+            return self.ADL[etft]
+        return self.ADL
+    
+    def set(self,etft,data=None,pat=PersistActionType.REPLACE):        
+        '''Set some persistent data to the ADL.
+        @param etft: Type is features being set or where to store them
+        @type etft: FeedRef
+        @param data: List of features to save
+        @type data: List<Feature>
+        @param append: Whether to append to overwrite data in store. Default to append
+        @type append: Boolean
+        '''
+        #TODO validation of type vs data provided
+        #append a particular type of feature to existing
+        if pat == PersistActionType.APPEND:
+            self.ADL[etft] += data
+        #initialise data for a particular feature type
+        elif pat == PersistActionType.INIT:
+            self.ADL[etft] = self._initADL()[etft]
+        #replace all of a particular feature type    
+        elif pat == PersistActionType.REPLACE:
+            self.ADL[etft] = data
+        #replace all of the persisted data
+        elif pat == PersistActionType.ALL:
+            self.ADL = data
+        else:
+            raise PersistenceException('Unknown persistence action, {}'.format(pat))
+
     
     #Disk Access
     #TODO OS agnostic path sep

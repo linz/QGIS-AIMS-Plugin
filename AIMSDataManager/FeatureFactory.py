@@ -14,8 +14,6 @@
 #http://devassgeo01:8080/aims/api/address/features - properties
 import re
 import os
-import sys
-import copy
 from AimsUtility import FeatureType,ActionType,ApprovalType,FeedType
 from AimsUtility import AimsException,InvalidEnumerationType
 from Const import SKIP_NULL, DEF_SEP,RES_PATH

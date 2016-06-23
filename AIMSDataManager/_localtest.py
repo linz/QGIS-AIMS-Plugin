@@ -65,7 +65,7 @@ class LocalTest():
         #self.testuseractions(dm)
         
         #TEST RESTART
-        #self.testrestartCR(dm)
+        self.testrestartCR(dm)
         
         #TEST ADDRESS ADD REQUEST
         self.testaddaddress(dm,af)        
@@ -74,16 +74,16 @@ class LocalTest():
         self.testfeatureshift(dm)
         
         # TEST ACF
-        #self.testchangefeedAUR(dm,af)
+        self.testchangefeedAUR(dm,af)
         
         # TEST ARF
-        #self.testresolutionfeedAUD(dm,af)        
+        self.testresolutionfeedAUD(dm,af)        
         
         # TEST GRF
-        #self.testgrpresfeedAUD(dm,af)
+        self.testgrpresfeedAUD(dm,af)
         
         #TEST SHIFT
-        #self.testfeatureshift(dm)
+        self.testfeatureshift(dm)
         
         aimslog.info('*** Resolution ADD '+str(time.clock()))   
         time.sleep(30) 
