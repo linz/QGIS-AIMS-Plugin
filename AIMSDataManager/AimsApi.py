@@ -9,9 +9,9 @@
 # LICENSE file for more information.
 #
 ################################################################################
-import json
-import sys
+
 import httplib2
+import json
 
 from Address import Address,AddressChange,AddressResolution#,AimsWarning
 from Config import ConfigReader
@@ -52,7 +52,7 @@ class AimsApi(object):
     
     def handleErrors(self, url, resp, jcontent):
         '''Process error messages flagging 400 class errors.
-        @param url: URL of request
+        @param url: URL of request (plan to use in err msg)
         @type url: String
         @param resp: Response code
         @type resp: int

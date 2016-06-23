@@ -14,7 +14,6 @@
 #http://devassgeo01:8080/aims/api/address/features - properties
 import re
 import os
-import sys
 import copy
 from FeatureFactory import FeatureFactory
 from AimsUtility import FeedType,FeatureType,UserActionType

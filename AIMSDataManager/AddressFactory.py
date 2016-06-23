@@ -14,7 +14,6 @@
 #http://devassgeo01:8080/aims/api/address/features - properties
 import re
 import os
-import sys
 import copy
 from FeatureFactory import FeatureFactory
 from AimsUtility import FeatureType,ActionType,ApprovalType,FeedType,InvalidEnumerationType,FeedRef
@@ -229,7 +228,7 @@ def test():
     af_r = FeatureFactory.getInstance(FeedRef(FeatureType.ADDRESS,FeedType.RESOLUTIONFEED))
     
     
-    axx = af_r.get()
+    #axx = af_r.get()
     ac1 = af_f.get()
     #ac1._addressedObject_externalObjectId = 1000
     ac1._components_addressType = 'Road'
