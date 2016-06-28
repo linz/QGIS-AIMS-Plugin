@@ -121,7 +121,7 @@ class UpdateAddressTool(QgsMapToolIdentify):
             self.setMarker(results[0].mFeature.geometry().asPoint())
             self._controller._queues.uEditFeatureTab.setFeature('update', self._feature )
             self._controller._queues.tabWidget.setCurrentIndex(0)
-            UiUtility.setEditability(self._controller._queues.uEditFeatureTab)
+            UiUtility.setEditability(self._controller._queues.uEditFeatureTab, 'update')
 
 class updateAddressDialog(Ui_ComfirmSelection, QDialog ):
     """

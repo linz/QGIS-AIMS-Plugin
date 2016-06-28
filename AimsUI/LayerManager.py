@@ -360,14 +360,18 @@ class LayerManager(QObject):
         @param displayname: displayname
         @type  displayname: string
         """
-  
-        layer = QgsVectorLayer("Point?crs=EPSG:4167", displayname, "memory") 
-        self.setLayerId(layer, id)
-        provider = layer.dataProvider()
-        if id == 'adr' and not self.findLayer(id):
-            self.addLayerFields(layer, provider, id, [QgsField(layerAttName, QVariant.String) for layerAttName in Mapping.adrLayerObjMappings.keys()] )
-        elif id == 'rev' and not self.findLayer(id):
+
+        if id == 'adr' and not self._adrLayer:
+            layer = QgsVectorLayer("Point?crs=EPSG:4167", displayname, "memory") 
+            self.setLayerId(layer, id)
+            provider = layer.dataProvider()
+            self.addLayerFields(layer, provider, id, [QgsField(layerAttName, QVariant.String) for layerAttName in Mapping.adrLayerObjMappings.keys()] ) 
+        elif id == 'rev' and not self._revLayer:
+            layer = QgsVectorLayer("Point?crs=EPSG:4167", displayname, "memory") 
+            self.setLayerId(layer, id)
+            provider = layer.dataProvider()
             self.addLayerFields(layer, provider, id, [QgsField('AimsId', QVariant.String), QgsField('AddressNumber', QVariant.String),QgsField('Action', QVariant.String)])
+        else: return
         layer.updateFields()
         QgsMapLayerRegistry.instance().addMapLayer(layer)           
         
@@ -417,7 +421,9 @@ class LayerManager(QObject):
         provider = layer.dataProvider()
         for k, reviewItem in rData.items():
             fet = QgsFeature()
-            if reviewItem._changeType in ('Update', 'Add') or reviewItem.meta.requestId:
+            if reviewItem._changeType in ('Update', 'Add') or reviewItem.meta.requestId:#(reviewItem._changeType == 'Retire' and reviewItem.meta.requestId):
+            #if reviewItem.getAddressPositions()[0]:
+                #uilog.info(' {} '.format(reviewItem.getAddressPositions()[0]))    
                 point = reviewItem.getAddressPositions()[0]._position_coordinates
             else:
                 point = reviewItem.meta.entities[0].getAddressPositions()[0]._position_coordinates 

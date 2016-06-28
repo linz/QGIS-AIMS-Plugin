@@ -269,9 +269,9 @@ class Controller( QObject ):
         if not self.refLayer:
             self.refLayer = self._layerManager.installRefLayers()
         if not self.adrlayer:
-            self.adrlayer = self._layerManager.installAimsLayer('adr', 'AIMS Features')
+            self._layerManager.installAimsLayer('adr', 'AIMS Features')
         if not self.revLayer:
-            self.revLayer = self._layerManager.installAimsLayer('rev', 'AIMS Review')
+            self._layerManager.installAimsLayer('rev', 'AIMS Review')
         self._layerManager.initialiseExtentEvent()
     
     def mapToolChanged(self):

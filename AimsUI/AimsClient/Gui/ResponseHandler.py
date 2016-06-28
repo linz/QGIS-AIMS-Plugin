@@ -52,9 +52,9 @@ class ResponseHandler(object):
             respObj = self.afar[FeedType.RESOLUTIONFEED].cast(respObj)
             self.uidm.updateRdata(respObj, feedType)
         elif feedType == FEEDS['AR']:# and action == 'accept':
-            respObj = self.afaf[FeedType.FEATURES].cast(respObj)
             self.uidm.updateRdata(respObj, feedType)
             if action == 'accept':
+                respObj = self.afaf[FeedType.FEATURES].cast(respObj)
                 self.uidm.updateFdata(respObj)
         return True
     
