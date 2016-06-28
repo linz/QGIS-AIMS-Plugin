@@ -815,6 +815,9 @@ class DMObserver(QThread):
         @type  args: tuple
         """
   
+        fType = args[0]
+        data = args[1]
+        
         uilog.info('*** NOTIFY ***     Notify A[{}]'.format(observable))
-        setattr(self.DMData, self.feedData.get(observable),args[0])
+        setattr(self.DMData, self.feedData.get(fType),data)
      

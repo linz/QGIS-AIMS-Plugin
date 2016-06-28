@@ -10,9 +10,9 @@ class FeatureHighlighter(QObject):
     Manager the highlighting of selected AIMS features
     """
     
-    _adrMarkerColor = QColor(255,0,0)
+    _adrMarkerColor = QColor(76,255,0)
     _revMarkerColor = QColor(255,0,0)
-    _newAdrMarkerColor = QColor(255,0,0)
+    _newAdrMarkerColor = QColor(76,255,0)
     _rclMarkerColor = QColor(76,255,0)
 
     def __init__( self, iface, layerManager, controller=None ):

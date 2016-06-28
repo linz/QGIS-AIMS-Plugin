@@ -143,9 +143,8 @@ class MoveAddressTool(QgsMapToolIdentify):
                     # Form a list of Ids as selected by the user
                     moveFeaturesIds = [d['addressId'] for d in moveFeatures]
                     
-                    for result in results:
-                        if result.mFeature.attribute('addressId') in moveFeaturesIds:
-                            self._features.append(self._controller.uidm.singleFeatureObj(results[0].mFeature.attribute('addressId')))
+                    for featureId in moveFeaturesIds:
+                        self._features.append(self._controller.uidm.singleFeatureObj(featureId))
                                            
                     self._sb.showMessage("Right click for features new location")
                     

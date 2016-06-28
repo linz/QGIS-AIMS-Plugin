@@ -61,32 +61,6 @@
        </item>
        <item>
         <layout class="QGridLayout" name="gridLayout_4">
-         <item row="0" column="2">
-          <widget class="QLabel" name="label_39">
-           <property name="font">
-            <font>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>Unit:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="4">
-          <widget class="QLabel" name="label_40">
-           <property name="font">
-            <font>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>Base:</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="8">
           <widget class="QLabel" name="label_41">
            <property name="font">
@@ -194,6 +168,32 @@
            </property>
            <property name="maxLength">
             <number>4</number>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QLabel" name="label_39">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Unit:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="4">
+          <widget class="QLabel" name="label_40">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Base:</string>
            </property>
           </widget>
          </item>
@@ -437,6 +437,9 @@
            <property name="maxLength">
             <number>40</number>
            </property>
+           <property name="readOnly">
+            <bool>false</bool>
+           </property>
           </widget>
          </item>
          <item row="14" column="0">
@@ -451,6 +454,9 @@
            <property name="maxLength">
             <number>100</number>
            </property>
+           <property name="readOnly">
+            <bool>false</bool>
+           </property>
           </widget>
          </item>
          <item row="15" column="0">
@@ -464,6 +470,9 @@
           <widget class="QLineEdit" name="uWaterName">
            <property name="maxLength">
             <number>100</number>
+           </property>
+           <property name="readOnly">
+            <bool>false</bool>
            </property>
           </widget>
          </item>
@@ -557,7 +566,7 @@
           </widget>
          </item>
          <item row="23" column="0">
-          <widget class="QLabel" name="valuationReferenceLabel_5">
+          <widget class="QLabel" name="lValref">
            <property name="text">
             <string>Valuation Reference:</string>
            </property>
@@ -577,7 +586,7 @@
           </widget>
          </item>
          <item row="24" column="0">
-          <widget class="QLabel" name="certificateOfTitleLabel_5">
+          <widget class="QLabel" name="lCertTitle">
            <property name="text">
             <string>Certificate Of Title:</string>
            </property>
@@ -591,7 +600,7 @@
           </widget>
          </item>
          <item row="25" column="0">
-          <widget class="QLabel" name="appellationLabel_5">
+          <widget class="QLabel" name="lAppellation">
            <property name="text">
             <string>Appellation:</string>
            </property>
@@ -702,6 +711,43 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>uFullNum</tabstop>
+  <tabstop>uAddressType</tabstop>
+  <tabstop>uPrefix</tabstop>
+  <tabstop>uUnit</tabstop>
+  <tabstop>uBase</tabstop>
+  <tabstop>uHigh</tabstop>
+  <tabstop>uAlpha</tabstop>
+  <tabstop>uExternalAddId</tabstop>
+  <tabstop>uExternalAddressIdScheme</tabstop>
+  <tabstop>ulifeCycle</tabstop>
+  <tabstop>uUnitType</tabstop>
+  <tabstop>uLevelType</tabstop>
+  <tabstop>uLevelValue</tabstop>
+  <tabstop>uRclId</tabstop>
+  <tabstop>uRoadPrefix</tabstop>
+  <tabstop>uRoadName</tabstop>
+  <tabstop>uRoadTypeName</tabstop>
+  <tabstop>uRoadSuffix</tabstop>
+  <tabstop>uWaterRouteName</tabstop>
+  <tabstop>uWaterName</tabstop>
+  <tabstop>uObjectType</tabstop>
+  <tabstop>uObjectName</tabstop>
+  <tabstop>uPositionType</tabstop>
+  <tabstop>uExternalObjectId</tabstop>
+  <tabstop>uExtObjectIdScheme</tabstop>
+  <tabstop>uValuationReference</tabstop>
+  <tabstop>uCertificateOfTitle</tabstop>
+  <tabstop>uAppellation</tabstop>
+  <tabstop>uMblkOverride</tabstop>
+  <tabstop>uNotes</tabstop>
+  <tabstop>uAbort</tabstop>
+  <tabstop>uSubmitAddressButton</tabstop>
+  <tabstop>scrollArea</tabstop>
+  <tabstop>uPersistRcl</tabstop>
+  <tabstop>uGetRclToolButton</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

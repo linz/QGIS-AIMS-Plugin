@@ -33,6 +33,13 @@ class EditFeatureWidget( Ui_EditFeatureDialog, QWidget ):
         self.highlight = self._controller.highlighter
         self.coords = None
         self.feature = None
+        
+        # Val Ref, Cert Title and App have been temp taken out of scope
+        hide = (self.lAppellation, self.uAppellation, self.uCertificateOfTitle, 
+                self.lCertTitle, self.uValuationReference, self.lValref)
+        
+        for uiElement in hide:
+            uiElement.hide()
  
         # Make connections
         self.uAddressType.currentIndexChanged.connect(self.setEditability)
@@ -56,7 +63,6 @@ class EditFeatureWidget( Ui_EditFeatureDialog, QWidget ):
         UiUtility.setFormCombos(self)
         # set addressType to trigger currentIndexChanged
         self.uAddressType.setCurrentIndex(QComboBox.findText(self.uAddressType,'Road'))
-        self.show()
         
     def setController(self, controller):
         """  
@@ -106,7 +112,7 @@ class EditFeatureWidget( Ui_EditFeatureDialog, QWidget ):
         form based on the user supplied address class
         """
         
-        UiUtility.setEditability(self)
+        UiUtility.setEditability(self, self.parent)
             
     def getRcl(self):
         """
@@ -150,47 +156,45 @@ class EditFeatureWidget( Ui_EditFeatureDialog, QWidget ):
         position = Position.getInstance(pos)
         self.feature.setAddressPositions(position)
     
-    def raiseErrorMesg(self, mesg):
-        QMessageBox.warning(self._iface.mainWindow(),"AIMS Warnings", '{0}'.format(mesg))
+#     def raiseErrorMesg(self, mesg):
+#         QMessageBox.warning(self._iface.mainWindow(),"AIMS Warnings", '{0}'.format(mesg))
         
-    def objCompleteness(self):
-        """
-        Test the minimum required properties have been set
-        
-        @rtype: boolean
-        """
-        
-        if self.uAddressType.currentText() == 'Road' and not self.feature._components_roadName: 
-            self.raiseErrorMesg('Please supply a Road Name')
-            return False
-        elif self.uAddressType.currentText() == 'Water' and not self.feature._components_waterRoute: 
-            self.raiseErrorMesg('Please supply a Water Route Name')
-            return False
-        elif not self.feature._components_addressNumber:
-            self.raiseErrorMesg('Please supply a Complete Address Number')
-            return False
-        elif self.parent == 'update' and self.ulifeCycle.currentText() == 'Proposed':
-            self.raiseErrorMesg('A Feature may not be updated to "Proposed"')
-        else: return True
+#     def objCompleteness(self):
+#         """
+#         Test the minimum required properties have been set
+#         
+#         @rtype: boolean
+#         """
+#         
+#         if self.uAddressType.currentText() == 'Road' and not self.feature._components_roadName: 
+#             self.raiseErrorMesg('Please supply a Road Name')
+#             return False
+#         elif self.uAddressType.currentText() == 'Water' and not self.feature._components_waterRoute: 
+#             self.raiseErrorMesg('Please supply a Water Route Name')
+#             return False
+#         elif not self.feature._components_addressNumber:
+#             self.raiseErrorMesg('Please supply a Complete Address Number')
+#             return False
+#         elif self.parent == 'update' and self.ulifeCycle.currentText() == 'Proposed':
+#             self.raiseErrorMesg('A Feature may not be updated to "Proposed"')
+#         else: return True
                 
     def submitAddress(self):
         """ 
         Submit the user inputed information to DataManager
         """
+        if not UiUtility.formCompleteness(self.parent, self, self._iface ):
+            return
+        
         respId = int(time.time())
 
         if self.parent == 'add': 
-            self.setPosition() 
+            self.setPosition()   
             UiUtility.formToObj(self)
-            if not self.objCompleteness():
-                return
-            self.objCompleteness()
             self._controller.uidm.addAddress(self.feature, respId)
         
         elif self.parent == 'update': 
             UiUtility.formToObj(self)
-            if not self.objCompleteness():
-                return
             self.feature = self.af[FeedType.CHANGEFEED].cast(self.feature)            
             self._controller.uidm.updateAddress(self.feature, respId)
         

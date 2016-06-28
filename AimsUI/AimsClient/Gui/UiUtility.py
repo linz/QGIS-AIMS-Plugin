@@ -19,9 +19,12 @@ from PyQt4.QtCore import QRegExp
 import re
 import time
 from collections import OrderedDict
+import sys
 
 from AIMSDataManager.AimsLogging import Logger
 from matplotlib.cbook import Null
+
+sys.path.append('.qgis2/python/plugins/QGIS-AIMS-Plugin')
 
 uilog = None
 
@@ -47,7 +50,7 @@ class UiUtility (object):
                     ('uBase',['_components_addressNumber','setAddressNumber', '']),
                     ('uAlpha',['_components_addressNumberSuffix','setAddressNumberSuffix', '']),
                     ('uHigh',['_components_addressNumberHigh','setAddressNumberHigh', '']),
-                    ('uExternalIdScheme',['_components_externalAddressIdScheme','setExternalAddressIdScheme', '']),
+                    ('uExternalAddressIdScheme',['_components_externalAddressIdScheme','setExternalAddressIdScheme', '']),
                     ('uExternalAddId',['_components_externalAddressId','setExternalAddressId', '']), 
                     ('uRclId',['_components_roadCentrelineId','setRoadCentrelineId', '']),
                     ('uRoadPrefix',['_components_addressNumberPrefix','setRoadPrefix', '']),
@@ -135,7 +138,7 @@ class UiUtility (object):
         else: return uInput
     
     @staticmethod
-    def nullEqualsNone (uInput): #Now also handling NULL
+    def nullEqualsNone (uInput):
         """
         Cast whitespace or 'NULL' to None
 
@@ -180,12 +183,11 @@ class UiUtility (object):
     
     @staticmethod
     def featureToUi(self, parent = None):
-    #def featureToUi(self, parent = None):
         """ 
         Populates update form and review editor queue from aims obj 
         """
         
-        UiUtility.setEditability(self)
+        UiUtility.setEditability(self, parent)
         UiUtility.clearForm(self)
         
         for ui, objProp in UiUtility.uiObjMappings.items():
@@ -195,13 +197,14 @@ class UiUtility (object):
             else: 
                 continue
             # Test the object has the required property or a getter
-            #UiUtility.getProperty(self.feature, objProp[0])
+            # Groups and retired feature properties may be either nested or flat
             if self.feature._changeType in ( 'Retire' ,'Replace', 'AddLineage', 'ParcelReferenceData', 'MeshblockReferenceData' ):
                 if hasattr(self.feature, objProp[0]) or hasattr(self.feature, objProp[2]):
                     prop = UiUtility.extractFlatProperty(self.feature, objProp[0],objProp[2])
                 elif hasattr(getattr(getattr(self.feature, 'meta'), '_entities')[0],objProp[0]):                    
                     prop = getattr(getattr(getattr(self.feature, 'meta'), '_entities')[0],objProp[0])     
                 else : continue
+            # Add and update properties are only flat least the are temp objs
             else: 
                 if hasattr(self.feature, objProp[0]) or hasattr(self.feature, objProp[2]):
                     prop = UiUtility.extractFlatProperty(self.feature, objProp[0],objProp[2])
@@ -274,17 +277,52 @@ class UiUtility (object):
                 child.setCurrentIndex(0)
             elif isinstance(child, QPlainTextEdit):
                 child.clear()
+
+    @staticmethod               
+    def setReadability(self, regMatch, bool = False ):
+        """
+        set the writeabilty of UI Fields
+
+        @param self: the class that called featureToUi() 
+        @type  self: ui object
+        @param bool: boolean, True = Writeable
+        @type  bool: boolean
+        """
+        
+        uiElements = self.findChildren(QWidget, QRegExp(regMatch)) 
+        for uiElement in uiElements:
+            if isinstance(uiElement, QLineEdit):
+                uiElement.setReadOnly(bool)
+            elif isinstance(uiElement, QComboBox):
+                uiElement.setDisabled(bool)
         
     @staticmethod               
-    def setEditability(self):  
+    def setEditability(self, parent = None):  
         """
         Toggle editable fields depending 
         on the objects Address Type (road or water) 
-        """
 
+        @param self: the class that called featureToUi() 
+        @type  self: ui object
+        """
+        
+        # Set wrtieability of EditFeature Form
+
+        if not parent:
+            UiUtility.setReadability(self, r'^u.*', False)        
+        elif parent == 'update':
+            UiUtility.setReadability(self, r'Road.*|Water.*', True)
+        elif parent == 'rRetire':
+            UiUtility.setReadability(self, r'^u.*', True)
+            return # no
+        elif parent == 'rUpdate' or parent == 'rAdd':
+            UiUtility.setReadability(self, r'^u.*', False)
+            UiUtility.setReadability(self, r'Road.*|Water.*', True)
+            
         for child in self.findChildren(QWidget):
             child.setEnabled(True)
-                             
+        
+        # Toggle between Water and Road Fields              
         if self.uAddressType.currentText() == 'Road':
             waterChildern = self.findChildren(QWidget, QRegExp(r'Water.*'))
             for child in waterChildern:
@@ -296,7 +334,67 @@ class UiUtility (object):
             for child in roadChildern:
                 child.clear() 
                 child.setDisabled(True)
+    
+    @staticmethod
+    def raiseErrorMesg(iface, mesg):
+        QMessageBox.warning(iface.mainWindow(),"AIMS Warnings", '{0}'.format(mesg))
 
+    @staticmethod
+    def formCompleteness(action, form, iface):
+        """
+        Test the minimum required properties have been set.
+        This is different for New Features and Updated Features
+        
+        @rtype: boolean
+        """
+        
+        
+        # All Features must have a Base Number
+        if not form.uBase.text():
+            UiUtility.raiseErrorMesg(iface, 'Please supply a Complete Address Number')
+            return False   
+        
+        # Updates must have both an RCL and Road Name 
+        if action == 'update':
+            if (form.uAddressType.currentText() == 'Road' and
+                (not UiUtility.nullEqualsNone(form.uRclId.text()) or not UiUtility.nullEqualsNone(form.uRoadName.text()))): 
+                    UiUtility.raiseErrorMesg(iface, 'An Update must Supply a Road Name and RCL Id')
+                    return False
+            elif (form.uAddressType.currentText() == 'Water' and
+                (not UiUtility.nullEqualsNone(form.uRclId.text()) or not UiUtility.nullEqualsNone(form.uWaterRouteName.text()))): 
+                    UiUtility.raiseErrorMesg(iface, 'An Update must Supply a Water Route Name and RCL Id')
+                    return False    
+            # An address can not got from <x> to proposed
+            elif form.ulifeCycle.currentText() == 'Proposed':
+                UiUtility.raiseErrorMesg(iface, 'A Feature may not be updated to "Proposed"')
+                return False    
+        
+        # For New Features a road Name is required
+        if action == 'add':
+            if form.uAddressType.currentText() == 'Road' and not UiUtility.nullEqualsNone(form.uRoadName.text()): 
+                    UiUtility.raiseErrorMesg(iface, 'Please supply a Road Name')
+                    return False
+            elif (form.uAddressType.currentText() == 'Water' and
+                (not UiUtility.nullEqualsNone(form.uWaterName.text()) or not UiUtility.nullEqualsNone(form.uWaterRouteName.text()))): 
+                    UiUtility.raiseErrorMesg(iface, 'Please supply a Water Route Name and Water Name')
+                    return False    
+
+        return True
+        
+        
+#         if form.uAddressType.currentText() == 'Road' and (not form.uRclId.text() and not form.uRoadName.text()): 
+#             UiUtility.raiseErrorMesg(iface, 'Please supply a Road Name')
+#             return False
+#         elif form.uAddressType.currentText() == 'Water' and (not form.uRclId.text() and not form.uWaterRouteName.text()): 
+#             UiUtility.raiseErrorMesg(iface, 'Please supply a Water Route Name')
+#             return False
+#         elif not form.uBase.text():
+#             UiUtility.raiseErrorMesg(iface, 'Please supply a Complete Address Number')
+#             return False
+#         elif action == 'update' and form.ulifeCycle.currentText() == 'Proposed':
+#             UiUtility.raiseErrorMesg(iface, 'A Feature may not be updated to "Proposed"')
+#         else: return True
+        
     @staticmethod
     def fullNumChanged(obj, newnumber):
         """

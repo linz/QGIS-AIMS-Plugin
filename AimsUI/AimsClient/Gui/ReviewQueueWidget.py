@@ -59,6 +59,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.currentGroup = (0,0) #(id, type)
         self.altSelectionId = ()
         
+        
         # Connections
         self.uDisplayButton.clicked.connect(self.display)
         self.uUpdateButton.clicked.connect(self.updateFeature)
@@ -295,15 +296,21 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
             item = QStandardItem(cElements[i])
             item.setCheckState(Qt.Checked)
             item.setCheckable(True)
-            model.setItem(i,item)
-                
+            model.setItem(i,item)    
+
+   
     def updateFeature(self):
         """
         Update the properties of a review queue item 
         """
         
         self.feature = self.currentReviewFeature()
-        if self.feature:             
+        if not self.feature:
+            return 
+        if self.feature._changeType == 'Retire':
+            UiUtility.raiseErrorMesg(self._iface, 'Retire Items cannot be updated')
+            return
+        if UiUtility.formCompleteness('update', self.uQueueEditor, self._iface ):        
             UiUtility.formToObj(self)
             respId = int(time.time())
             self.uidm.repairAddress(self.feature, respId)
