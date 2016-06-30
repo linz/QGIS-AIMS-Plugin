@@ -174,7 +174,7 @@ class UiDataManager(QObject):
             self.exlopdeGroup()
 
     def setData(self, dataRefresh, FeedType):
-        # redundant? straight to keyData?
+        # redundant? now straight to keyData?
         """ 
         Method receives new data from the data manager via the UIDM
         observer pattern and then starts the data update process        
@@ -641,6 +641,9 @@ class UiDataManager(QObject):
                 kProperties = props[0] 
                 vProperties = props[1] 
                 for k, v in self.data.get(feedtype).items():
+                    if feedtype == FEEDS['AR']:
+                        if v._queueStatus in  ('Declined', 'Accepted'):
+                            continue
                     featureValues = [] 
                     if feedtype == FEEDS['AR']:
                         groupValues = self.formatGroupTableData(v,kProperties) 

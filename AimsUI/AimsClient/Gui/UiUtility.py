@@ -291,10 +291,14 @@ class UiUtility (object):
         
         uiElements = self.findChildren(QWidget, QRegExp(regMatch)) 
         for uiElement in uiElements:
-            if isinstance(uiElement, QLineEdit):
+            if uiElement.objectName() == 'uRclId':
+                uiElement.setReadOnly(True)
+            elif isinstance(uiElement, QLineEdit):
                 uiElement.setReadOnly(bool)
             elif isinstance(uiElement, QComboBox):
                 uiElement.setDisabled(bool)
+        
+            
         
     @staticmethod               
     def setEditability(self, parent = None):  
