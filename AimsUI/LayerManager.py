@@ -16,6 +16,9 @@ from qgis.core import *
 from qgis.gui import *
 import sip
 
+import json # temp bug fix test only
+
+
 from AimsClient import Database
 from AimsUI.AimsLogging import Logger
 from AIMSDataManager.AimsUtility import FEEDS
@@ -420,13 +423,21 @@ class LayerManager(QObject):
 
         provider = layer.dataProvider()
         for k, reviewItem in rData.items():
+            if hasattr(reviewItem,'_queueStatus'):
+                if reviewItem._queueStatus in ('Declined, Accepted'):
+                    continue 
+                
             fet = QgsFeature()
             if reviewItem._changeType in ('Update', 'Add') or reviewItem.meta.requestId:#(reviewItem._changeType == 'Retire' and reviewItem.meta.requestId):
             #if reviewItem.getAddressPositions()[0]:
                 #uilog.info(' {} '.format(reviewItem.getAddressPositions()[0]))    
                 point = reviewItem.getAddressPositions()[0]._position_coordinates
             else:
-                point = reviewItem.meta.entities[0].getAddressPositions()[0]._position_coordinates 
+                try:
+                    point = reviewItem.meta.entities[0].getAddressPositions()[0]._position_coordinates
+                except: 
+                    uilog.error(' *** ERROR ***  ') 
+                    #uilog.info(' *** DATA ***    {} review items being loaded '.format(len(rData)))
             fet.setGeometry(QgsGeometry.fromPoint(QgsPoint(point[0], point[1])))
             fet.setAttributes([ k, reviewItem.getFullNumber(), reviewItem._changeType])
             provider.addFeatures([fet])

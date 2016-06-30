@@ -92,6 +92,7 @@ class EditFeatureWidget( Ui_EditFeatureDialog, QWidget ):
         self.parent = parent
         self.feature = addInstance
         self.coords = coords
+        self.uFullNum.setFocus()
         if parent == 'update':
             self.feature = self.af[FeedType.CHANGEFEED].cast(self.feature)
             UiUtility.featureToUi(self, parent) 
