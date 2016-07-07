@@ -130,7 +130,90 @@ class Position(object):
                 "positionType":self._positionType,
                 "primary":self._primary
                 }
+#------------------------------------------------------------------------------
+# S U P P L E M E N T A L
+SDEF = {'class':[], 'rel':[],'properties':{'ruleId':None, 'description':None,'severity':None}}
+class Supplemental(object):
+    '''Additional class storing code data from extra data feature requests'''
+    def __init__(self, ref=None):
+        '''Initialise Supplemental object
+        @param ref: Unique reference string
+        '''
+        #aimslog.info('AdrRef.{}'.format(ref))
+        self._ref = ref        
+        self._class = []
+        self._rel = []
+        self._properties_ruleId = None
+        self._properties_description = None
+        self._properties_severity = None
+    
+    def __str__(self):
+        return 'SUP.{}.{}'.format(self._ref,self._class)
+    
+    @staticmethod
+    def getInstance(d = SDEF):
+        '''Gets instance of Supplemental object taking optional supplemental dict
+        @param d: Dict containing Supplemental object attributes
+        @return: Populated Supplemental object 
+        '''
+        s = Supplemental()
+        #WORKAROUND
+        if d<>SDEF and d['class'][0]=='validation': s.set(d)
+        else: aimslog.debug('Supplemental something {}'.format(d['class'][0]))
+        return s
         
+    def set(self,d = SDEF):
+        '''Set for Supplemental object taking optional supplemental dict
+        @param d: Dict containing Supplemental object attributes
+        @return: Populated Supplemental object 
+        '''
+        #try: print d['properties']['ruleId']
+        #except: pass
+        self._set(
+            d['class'],
+            d['rel'],
+            d['properties']['ruleId'],
+            d['properties']['description'],
+            d['properties']['severity']
+        )
+        
+    def _set(self,_class,rel,ruleId,description,severity):
+        '''Supplemental setter for full object parameters spread
+        @param _class: Supplemental class, eg Upper, Middle, Working, Lower, Bacteria, Dirt, NationalPartyVoter
+        @param rel: The rel
+        @type rel: String
+        @param ruleId: The ruleId
+        @type ruleId: String
+        @param description: Description of the supplemental
+        @type description: String
+        @param severity: How severe it is, eg WetBusTicketSlap, DoingTheDishesForAWeek, Fine, Prison, FiringSquad
+        @type severity: String
+        '''
+        self.setClass(_class)
+        self.setRel(rel)
+        self.setRuleId(ruleId)
+        self.setDescription(description)
+        self.setSeverity(severity)        
+        
+    def setClass(self, _class): self._class = _class
+    def setRel(self,rel): self._rel = rel
+    def setRuleId(self,ruleId): self._ruleId = ruleId
+    def setDescription(self,description):self._description = description
+    def setSeverity(self,severity): self._severity = severity
+    
+    def get(self):
+        '''Returns dict of self, Supplemental object
+        @return: Dictionary
+        '''
+        return {'class':self._class,
+                'rel':self._rel,
+                'properties':{
+                    'ruleId':self._ruleId,
+                    'description':self._description,
+                    'severity':self._severity
+                              }
+            }
+    
 #------------------------------------------------------------------------------
 # E N T I T Y 
 
