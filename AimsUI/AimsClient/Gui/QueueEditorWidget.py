@@ -83,8 +83,9 @@ class QueueEditorWidget( Ui_QueueEditorWidget, QWidget ):
         AIMSDataManager.Address
         """
         
-        self.feature = feature
-        UiUtility.featureToUi(self, 'r'+self.feature._changeType)
+        if feature:
+            self.feature = feature
+            UiUtility.featureToUi(self, 'r'+self.feature._changeType)
     
     def setEditability(self):
         """ 

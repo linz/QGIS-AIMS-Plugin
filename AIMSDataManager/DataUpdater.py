@@ -79,8 +79,15 @@ class DataUpdater(Observable):
         '''Main updater run method fetching single page of addresses from API'''
         aimslog.info('GET.{} {} - Page{}'.format(self.ref,self.etft,self.pno))
         featlist = []
-        for page in self.api.getOnePage(self.etft,self.sw,self.ne,self.pno):
-            featlist.append(self.processPage(page,self.etft))            
+        #for page in self.api.getOnePage(self.etft,self.sw,self.ne,self.pno):
+        #    featlist.append(self.processPage(page,self.etft))
+        ce,pages = self.api.getOnePage(self.etft,self.sw,self.ne,self.pno)  
+        if any(ce.values()): aimslog.error('Single-page request failure {}'.format(ce))       
+        if pages.has_key('entities'): 
+            for page in pages['entities']:
+                featlist.append(self.processPage(page,self.etft))     
+        else:
+            aimslog.error('Single-page response missing entities')
         self.queue.put(featlist)
         self.notify(self.ref)
         
@@ -93,7 +100,8 @@ class DataUpdater(Observable):
         '''
         if etft.ft == FeedType.RESOLUTIONFEED and ENABLE_ENTITY_EVALUATION:
             cid = self.cid(page)
-            feat = self.api.getOneFeature(etft,cid)
+            ce,feat = self.api.getOneFeature(etft,cid)
+            if any(ce.values()): aimslog.error('Single-feature request failure {}'.format(ce))
             if feat == {u'class': [u'error']}: 
                 #if the pno request returns the not-supposed-to-happen error, it gets special treatment
                 aimslog.error('Invalid API response {}'.format(feat))
@@ -187,7 +195,8 @@ class DataUpdater(Observable):
         '''
         featurelist = []
         g = self.factory.get(model=feat['properties'])#group
-        feat2 = self.api.getOneFeature(etft,'{}/address'.format(cid))#group entity/adr list
+        ce,feat2 = self.api.getOneFeature(etft,'{}/address'.format(cid))#group entity/adr list
+        if any(ce.values()): aimslog.error('Single-feature request failure {}'.format(ce))
         etft2 = FeedRef((FeatureType.ADDRESS,FeedType.RESOLUTIONFEED))
         factory2 = FeatureFactory.getInstance(etft2)
         for f in feat2['entities']:
@@ -306,7 +315,8 @@ class DataUpdaterDRC(DataUpdater):
     
     def _version(self):
         '''Function to read AIMS version value from single Feature pages'''        
-        jc = self.api.getOneFeature(FeedRef((self.etft.et,self.oft)),self.identifier)
+        ce,jc = self.api.getOneFeature(FeedRef((self.etft.et,self.oft)),self.identifier)
+        if any(ce.values()): aimslog.error('Single-feature request failure {}'.format(ce))
         if jc['properties'].has_key('version'):
             return jc['properties']['version']
         else:

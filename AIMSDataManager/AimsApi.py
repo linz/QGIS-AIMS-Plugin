@@ -119,8 +119,8 @@ class AimsApi(object):
             url = '{}/{}/{}?count={}&page={}'.format(self._url,et,ft,count,pno)
         aimslog.debug('1P REQUEST {}'.format(url))
         resp, content = self.h.request(url,'GET', headers = self._headers)
-        _,jcontent = self.handleResponse(url,resp["status"], json.loads(content))
-        return jcontent['entities']
+        return self.handleResponse(url,resp["status"], json.loads(content))
+        #return jcontent['entities']
     
     @LogWrap.timediff(prefix='oneFeat')
     def getOneFeature(self,etft,cid):
@@ -135,8 +135,8 @@ class AimsApi(object):
         ft = FeedType.reverse[etft.ft].lower()
         url = '/'.join((self._url,et,ft.lower(),str(cid) if cid else '')).rstrip('/')
         resp, content = self.h.request(url,'GET', headers = self._headers)
-        _,jcontent = self.handleResponse(url,resp["status"], json.loads(content))
-        return jcontent        
+        return self.handleResponse(url,resp["status"], json.loads(content))
+        #return jcontent        
     
     # specific request response methods
     
