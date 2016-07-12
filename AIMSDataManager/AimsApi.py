@@ -43,7 +43,7 @@ class AimsApi(object):
         @param config: Dictionary of configuration values from CP
         '''
         self._url = config['url']
-        self._password = config['password']
+        self._password = Config.readp()
         self.user = config['user']
         self._headers = config['headers']
 
