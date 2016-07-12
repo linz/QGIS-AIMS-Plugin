@@ -82,14 +82,21 @@ class ConfigReader(object):
     
     #and now some security theatre for your amusement
     
+    @staticmethod
+    def _detect(p):
+        '''detects whether p has been ciphered or not, add conditions as required'''
+        return len(p)!=24 or bool(re.match('^[a-zA-Z0-9_-]*$',p))
     
     @staticmethod
-    def readp():
+    def readp():            
         cp = ConfigParser.ConfigParser()
         cp.read(AIMS_CONFIG)
         user = getpass.getuser()
         aes = AES.new(K, AES.MODE_CBC,pad(user))
         ciphertext = cp.get('user','pass')
+        if ConfigReader._detect(ciphertext):
+            ConfigReader.writep(ciphertext)
+            return ciphertext
         return DecodeAES(aes,ciphertext)
 
     @staticmethod  
@@ -101,11 +108,17 @@ class ConfigReader(object):
         ciphertext = EncodeAES(aes,plaintext)
         cp.set('user','pass',ciphertext)
         cp.write(open(AIMS_CONFIG,'w'))
+        
 
             
 def test():
-    ConfigReader.writep('secretpassword')
+    #ConfigReader.writep('secretpassword')
     p = ConfigReader.readp()
+    print p
+    
+    p = ConfigReader.readp()
+    print p
+    
     ConfigReader.writep(p)
     
     
