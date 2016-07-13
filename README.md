@@ -18,11 +18,7 @@ Zealand Government.
 	*Qgis 2.6 (min version)
 
 ##Installation
-UI components must be compiled by running the makefile.
 
-Once compiled copy the plugin directory to:
- *~\.qgis2\python\plugins
- 
  This plugin is under development. As development is undertaken and finalised further documentation will be supplied. 
 
 
