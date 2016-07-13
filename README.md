@@ -15,12 +15,7 @@ Zealand Government.
 [![Coverage Status](https://coveralls.io/repos/linz/QGIS-AIMS-Plugin/badge.svg?branch=master&service=github)](https://coveralls.io/github/linz/QGIS-AIMS-Plugin?branch=master)
 
 ##Dependencies
-	*Postgres 9.0
-	*Postgis 1.5
 	*Qgis 2.6 (min version)
-	*python 2.7
-	*pyqt (dev only)
-	
 
 ##Installation
 UI components must be compiled by running the makefile.
