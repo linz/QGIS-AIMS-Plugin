@@ -17,10 +17,9 @@ Zealand Government.
 ##Dependencies
 	*Postgres 9.0
 	*Postgis 1.5
-	*Qgis2.6
+	*Qgis 2.6 (min version)
 	*python 2.7
-	*pyqt
-	*python requests lib
+	*pyqt (dev only)
 	
 
 ##Installation
