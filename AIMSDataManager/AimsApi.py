@@ -13,6 +13,7 @@
 import httplib2
 import json
 
+
 from Address import Address,AddressChange,AddressResolution#,AimsWarning
 from Config import ConfigReader
 from AimsUtility import FeatureType,ActionType,ApprovalType,GroupActionType,GroupApprovalType,UserActionType,FeedType,LogWrap
@@ -43,7 +44,7 @@ class AimsApi(object):
         @param config: Dictionary of configuration values from CP
         '''
         self._url = config['url']
-        self._password = Config.readp()
+        self._password = ConfigReader.readp()
         self.user = config['user']
         self._headers = config['headers']
 
