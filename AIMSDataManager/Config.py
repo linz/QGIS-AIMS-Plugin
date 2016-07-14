@@ -16,19 +16,24 @@ from string import whitespace
 
 
 import getpass
-from Crypto.Cipher import AES
 import base64
+try:
+    from Crypto.Cipher import AES
+    USE_PLAINTEXT = False
+except:
+    USE_PLAINTEXT = True
 
 UNAME = os.environ['USERNAME'] if re.search('win',sys.platform) else os.environ['LOGNAME']
 DEF_CONFIG = {'db':{'host':'127.0.0.1'},'user':{'name':UNAME}}
 AIMS_CONFIG = os.path.join(os.path.dirname(__file__),'aimsConfig.ini')
 
-K='12345678901234567890123456789012'
-PADDING = '{'
-BLOCK_SIZE = 16
-pad = lambda s: s + (BLOCK_SIZE - len(s) % BLOCK_SIZE) * PADDING
-EncodeAES = lambda c, s: base64.b64encode(c.encrypt(pad(s)))
-DecodeAES = lambda c, e: c.decrypt(base64.b64decode(e)).rstrip(PADDING)
+if USE_PLAINTEXT:
+    K='12345678901234567890123456789012'
+    PADDING = '{'
+    BLOCK_SIZE = 16
+    pad = lambda s: s + (BLOCK_SIZE - len(s) % BLOCK_SIZE) * PADDING
+    EncodeAES = lambda c, s: base64.b64encode(c.encrypt(pad(s)))
+    DecodeAES = lambda c, e: c.decrypt(base64.b64decode(e)).rstrip(PADDING)
 
 class ConfigReader(object):
     '''Reader class for configparser object'''
@@ -91,16 +96,20 @@ class ConfigReader(object):
     def readp():            
         cp = ConfigParser.ConfigParser()
         cp.read(AIMS_CONFIG)
-        user = getpass.getuser()
-        aes = AES.new(K, AES.MODE_CBC,pad(user))
         ciphertext = cp.get('user','pass')
-        if ConfigReader._detect(ciphertext):
-            ConfigReader.writep(ciphertext)
+        if USE_PLAINTEXT:
             return ciphertext
-        return DecodeAES(aes,ciphertext)
+        else:
+            if ConfigReader._detect(ciphertext):
+                ConfigReader._writep(ciphertext)
+                return ciphertext
+            else:
+                user = getpass.getuser()
+                aes = AES.new(K, AES.MODE_CBC,pad(user))
+                return DecodeAES(aes,ciphertext)
 
     @staticmethod  
-    def writep(plaintext):
+    def _writep(plaintext):
         cp = ConfigParser.ConfigParser()
         cp.read(AIMS_CONFIG)
         user = getpass.getuser()
@@ -119,7 +128,7 @@ def test():
     p = ConfigReader.readp()
     print p
     
-    ConfigReader.writep(p)
+    ConfigReader._writep(p)
     
     
     
