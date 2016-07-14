@@ -27,7 +27,7 @@ UNAME = os.environ['USERNAME'] if re.search('win',sys.platform) else os.environ[
 DEF_CONFIG = {'db':{'host':'127.0.0.1'},'user':{'name':UNAME}}
 AIMS_CONFIG = os.path.join(os.path.dirname(__file__),'aimsConfig.ini')
 
-if USE_PLAINTEXT:
+if not USE_PLAINTEXT:
     K='12345678901234567890123456789012'
     PADDING = '{'
     BLOCK_SIZE = 16
