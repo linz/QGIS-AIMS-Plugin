@@ -53,7 +53,7 @@ class UiUtility (object):
                     ('uExternalAddressIdScheme',['_components_externalAddressIdScheme','setExternalAddressIdScheme', '']),
                     ('uExternalAddId',['_components_externalAddressId','setExternalAddressId', '']), 
                     ('uRclId',['_components_roadCentrelineId','setRoadCentrelineId', '']),
-                    ('uRoadPrefix',['_components_addressNumberPrefix','setRoadPrefix', '']),
+                    ('uRoadPrefix',['_components_roadPrefix','setRoadPrefix', '']),
                     ('uRoadName',['_components_roadName','setRoadName', '']), 
                     ('uRoadTypeName',['_components_roadType','setRoadType', '']),   
                     ('uRoadSuffix',['_components_roadSuffix','setRoadSuffix', '']), 
@@ -102,7 +102,8 @@ class UiUtility (object):
         self.uUnitType.addItems([None, 'Apartment', 'Kiosk', 'Room', 'Shop', 'Suite', 'Villa',  'Flat', 'Unit'])
         self.uLevelType.addItems([None, 'Floor', "Level"])
         self.uObjectType.addItems(['Parcel', 'Building'])
-        self.uPositionType.addItems(['Unknown', 'Centroid', 'Label', 'Set Back off Road'])
+        self.uPositionType.addItems(['Unknown', 'Property Centroid', 'Unit Centroid', 'Frontage Centre Set Back', 'Building Centroid',
+                                     'Property Access Point Set Back', 'Building Access Point', 'Front Door Access'])
 
     @staticmethod
     def formMask(self): 
@@ -111,13 +112,14 @@ class UiUtility (object):
         """   
             
         intValidator = QIntValidator()    
-        self.uExternalAddId.setValidator(intValidator)
         self.uBase.setValidator(intValidator)
         self.uHigh.setValidator(intValidator)
+        self.uMblkOverride.setValidator(intValidator)
         self.uAlpha.setValidator(QRegExpValidator(QRegExp(r'^[A-Za-z]{0,3}'), self))
         self.uUnit.setValidator(QRegExpValidator(QRegExp(r'^\w+'), self))
         self.uPrefix.setValidator(QRegExpValidator(QRegExp(r'^\w+'), self))
-    
+        self.uLevelValue.setValidator(QRegExpValidator(QRegExp(r'^\w+'), self))
+        
     @staticmethod
     def toUpper (uInput, UiElement): 
         """
@@ -281,7 +283,7 @@ class UiUtility (object):
     @staticmethod               
     def setReadability(self, regMatch, bool = False ):
         """
-        set the writeabilty of UI Fields
+        set the readability / writeabilty of UI Fields
 
         @param self: the class that called featureToUi() 
         @type  self: ui object
@@ -315,13 +317,13 @@ class UiUtility (object):
         if not parent:
             UiUtility.setReadability(self, r'^u.*', False)        
         elif parent == 'update':
-            UiUtility.setReadability(self, r'Road.*|Water.*', True)
+            UiUtility.setReadability(self, r'Road.*|WaterR.*', True)
         elif parent == 'rRetire':
             UiUtility.setReadability(self, r'^u.*', True)
             return # no
         elif parent == 'rUpdate' or parent == 'rAdd':
             UiUtility.setReadability(self, r'^u.*', False)
-            UiUtility.setReadability(self, r'Road.*|Water.*', True)
+            UiUtility.setReadability(self, r'Road.*|WaterR.*', True)
             
         for child in self.findChildren(QWidget):
             child.setEnabled(True)
@@ -414,7 +416,7 @@ class UiUtility (object):
         [i.setText(None) for i in ([obj.uPrefix, obj.uUnit, obj.uBase, obj.uAlpha, obj.uHigh])]
         # Split full address into components
         if '-' not in newnumber: 
-            p = re.compile(r'^(?P<flat_prefix>[A-Z]+)?(?:\s)?(?P<flat>[0-9]+/\s*|^[A-Z]{,2}/\s*)?(?P<base>[0-9]+)(?P<alpha>[A-Z]+)?$') 
+            p = re.compile(r'^(?P<flat_prefix>[A-Z]+)?(?:\s)?(?P<flat>[0-9]+/\s*|[0-9]+[A-Z]{,2}/\s*)?(?P<base>[0-9]+)(?P<alpha>[A-Z]+)?$') 
             m = p.match(newnumber.upper())
             try:
                 if m.group('flat_prefix') is not None: obj.uPrefix.setText(m.group('flat_prefix'))
@@ -424,7 +426,7 @@ class UiUtility (object):
             except:
                 pass #silently  
         else:
-            p = re.compile(r'^(?P<flat_prefix>[A-Z]+)?(?:\s)?(?P<flat>[0-9]+/\s*|^[A-Z]{,2}/\s*)?(?P<base>[0-9]+)(?:-)(?P<high>[0-9]+)(?P<alpha>[A-Z]+)?$') 
+            p = re.compile(r'^(?P<flat_prefix>[A-Z]+)?(?:\s)?(?P<flat>[0-9]+/\s*|[0-9]+[A-Z]{,2}/\s*)?(?P<base>[0-9]+)(?:-)(?P<high>[0-9]+)(?P<alpha>[A-Z]+)?$') 
             m = p.match(newnumber.upper())
             try:
                 if m.group('flat_prefix') is not None: obj.uPrefix.setText(m.group('flat_prefix'))

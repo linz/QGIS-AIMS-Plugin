@@ -44,7 +44,10 @@ class QueueEditorWidget( Ui_QueueEditorWidget, QWidget ):
         self.setController( controller )
         self.uAddressType.currentIndexChanged.connect(self.setEditability)
         self.setWarningColour()
-    
+        
+        # limit user inputs
+        UiUtility.formMask(self)
+        
         # Val Ref, Cert Title and App have been temp taken out of scope
         hide = (self.lAppellation, self.uAppellation, self.uCertificateOfTitle, 
                 self.lCertTitle, self.uValuationReference, self.lValref)

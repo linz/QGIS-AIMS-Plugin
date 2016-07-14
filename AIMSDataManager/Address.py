@@ -489,7 +489,7 @@ class Address(Feature):
     def getFullNumber(self):
         '''Combines Address components to create a full address label
         @return: String'''
-        # in some instance we could to the API get 'full number' however this 
+        # in some instance we could go to the API get 'full number' however this 
         # is not included in responses hence the need for this method
         d = OrderedDict(
             [('_components_unitValue','{}/'),('_components_addressNumber','{}'),
@@ -506,12 +506,6 @@ class Address(Feature):
                     if numComponent: fullNumber += v.format(numComponent) 
         return fullNumber
 
-#     def _getFullNumber(self):
-#         '''I{*Incomplete* Address combining function}
-#         @return: String
-#         '''
-#         d = {'unitValue':'{}/','addressNumber':'{}','addressNumberHigh':'-{}','addressNumberSuffix':'{}'}
-#         reduce(lambda x,y: y+getattr(c+x),d.keys())
 
 #------------------------------------------------------------------------------
     
