@@ -22,6 +22,9 @@
     <edittype widgetv2type="TextEdit" name="meshblock">
       <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
     </edittype>
+    <edittype widgetv2type="TextEdit" name="mblkOverride">
+      <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
+    </edittype>
     <edittype widgetv2type="TextEdit" name="lifecycle">
       <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
     </edittype>
@@ -199,14 +202,14 @@
     <property key="labeling/bufferColorB" value="255"/>
     <property key="labeling/bufferColorG" value="255"/>
     <property key="labeling/bufferColorR" value="255"/>
-    <property key="labeling/bufferDraw" value="false"/>
+    <property key="labeling/bufferDraw" value="true"/>
     <property key="labeling/bufferJoinStyle" value="64"/>
     <property key="labeling/bufferNoFill" value="false"/>
     <property key="labeling/bufferSize" value="1"/>
     <property key="labeling/bufferSizeInMapUnits" value="false"/>
     <property key="labeling/bufferSizeMapUnitMaxScale" value="0"/>
     <property key="labeling/bufferSizeMapUnitMinScale" value="0"/>
-    <property key="labeling/bufferTransp" value="0"/>
+    <property key="labeling/bufferTransp" value="20"/>
     <property key="labeling/centroidInside" value="false"/>
     <property key="labeling/centroidWhole" value="false"/>
     <property key="labeling/dataDefined/Color" value="1~~1~~CASE WHEN &quot;lifecycle&quot; = 'Current' THEN color_rgb( 31, 120, 180)  WHEN &quot;lifecycle&quot; = 'Proposed' THEN color_rgb( 255,165,0)  ELSE color_rgb( 251, 76, 76) END~~"/>
@@ -236,7 +239,7 @@
     <property key="labeling/fontWordSpacing" value="0"/>
     <property key="labeling/formatNumbers" value="false"/>
     <property key="labeling/isExpression" value="true"/>
-    <property key="labeling/labelOffsetInMapUnits" value="true"/>
+    <property key="labeling/labelOffsetInMapUnits" value="false"/>
     <property key="labeling/labelOffsetMapUnitMaxScale" value="0"/>
     <property key="labeling/labelOffsetMapUnitMinScale" value="0"/>
     <property key="labeling/labelPerPart" value="false"/>
@@ -252,13 +255,13 @@
     <property key="labeling/namedStyle" value="Medium"/>
     <property key="labeling/obstacle" value="true"/>
     <property key="labeling/placeDirectionSymbol" value="0"/>
-    <property key="labeling/placement" value="0"/>
+    <property key="labeling/placement" value="1"/>
     <property key="labeling/placementFlags" value="0"/>
     <property key="labeling/plussign" value="false"/>
     <property key="labeling/preserveRotation" value="true"/>
     <property key="labeling/previewBkgrdColor" value="#ffffff"/>
     <property key="labeling/priority" value="5"/>
-    <property key="labeling/quadOffset" value="4"/>
+    <property key="labeling/quadOffset" value="2"/>
     <property key="labeling/repeatDistance" value="0"/>
     <property key="labeling/repeatDistanceMapUnitMaxScale" value="0"/>
     <property key="labeling/repeatDistanceMapUnitMinScale" value="0"/>
@@ -272,7 +275,7 @@
     <property key="labeling/shadowColorB" value="0"/>
     <property key="labeling/shadowColorG" value="0"/>
     <property key="labeling/shadowColorR" value="0"/>
-    <property key="labeling/shadowDraw" value="true"/>
+    <property key="labeling/shadowDraw" value="false"/>
     <property key="labeling/shadowOffsetAngle" value="135"/>
     <property key="labeling/shadowOffsetDist" value="1"/>
     <property key="labeling/shadowOffsetGlobal" value="true"/>
@@ -330,7 +333,7 @@
     <property key="labeling/textTransp" value="0"/>
     <property key="labeling/upsidedownLabels" value="0"/>
     <property key="labeling/wrapChar" value=""/>
-    <property key="labeling/xOffset" value="0"/>
+    <property key="labeling/xOffset" value="0.65"/>
     <property key="labeling/yOffset" value="0"/>
   </customproperties>
   <blendMode>0</blendMode>

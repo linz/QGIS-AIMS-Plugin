@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'AimsUI/AimsClient/Gui/Ui_EditFeatureDialog.ui'
 #
-# Created: Tue Jun 28 14:31:24 2016
+# Created: Tue Jul 12 08:46:13 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -340,6 +340,7 @@ class Ui_EditFeatureDialog(object):
         self.label.setObjectName(_fromUtf8("label"))
         self.formLayout_5.setWidget(26, QtGui.QFormLayout.LabelRole, self.label)
         self.uMblkOverride = QtGui.QLineEdit(self.scrollAreaWidgetContents_4)
+        self.uMblkOverride.setMaxLength(7)
         self.uMblkOverride.setObjectName(_fromUtf8("uMblkOverride"))
         self.formLayout_5.setWidget(26, QtGui.QFormLayout.FieldRole, self.uMblkOverride)
         self.line_16 = QtGui.QFrame(self.scrollAreaWidgetContents_4)
