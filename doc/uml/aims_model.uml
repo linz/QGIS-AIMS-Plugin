@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_BF6NoDQSEeaVAPp3LGAgrw" name="RootElement" visibility="private">
+  <packagedElement xmi:type="uml:Interaction" xmi:id="_BGrpsDQSEeaVAPp3LGAgrw" name="Interaction1"/>
+  <packagedElement xmi:type="uml:Activity" xmi:id="_BHSGoDQSEeaVAPp3LGAgrw" name="Activity1" classifierBehavior="__TNekDi_EeaAsZ1BBV9ELA">
+    <ownedBehavior xmi:type="uml:Interaction" xmi:id="__TNekDi_EeaAsZ1BBV9ELA" name="Interaction1"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Device" xmi:id="_ehgbsDjCEeaAsZ1BBV9ELA" name="tstassgeo01">
+    <nestedClassifier xmi:type="uml:ExecutionEnvironment" xmi:id="_hCVZsDjCEeaAsZ1BBV9ELA" name="postgresql9.3"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Node" xmi:id="_4GLIwDjCEeaAsZ1BBV9ELA" name="AIMS (DB)">
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_FrZL0DjEEeaAsZ1BBV9ELA" name="aims (api)" type="_WWYX4DjDEeaAsZ1BBV9ELA" association="_FrM-kDjEEeaAsZ1BBV9ELA"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Device" xmi:id="_86fMUDjCEeaAsZ1BBV9ELA" name="tstassgeo02">
+    <nestedClassifier xmi:type="uml:ExecutionEnvironment" xmi:id="_86fMUTjCEeaAsZ1BBV9ELA" name="tomcat8"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Node" xmi:id="_WWYX4DjDEeaAsZ1BBV9ELA" name="AIMS (API)"/>
+  <packagedElement xmi:type="uml:CommunicationPath" xmi:id="_FrM-kDjEEeaAsZ1BBV9ELA" name="AIMS:5432" memberEnd="_FrZL0DjEEeaAsZ1BBV9ELA _FrZy4DjEEeaAsZ1BBV9ELA">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_FrOzwDjEEeaAsZ1BBV9ELA" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_FrOzwTjEEeaAsZ1BBV9ELA" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_FrZy4DjEEeaAsZ1BBV9ELA" name="aims (db)" type="_4GLIwDjCEeaAsZ1BBV9ELA" association="_FrM-kDjEEeaAsZ1BBV9ELA"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Node" xmi:id="_bKiN8DjEEeaAsZ1BBV9ELA" name="BDE (DB)">
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_MhRpEDjFEeaAsZ1BBV9ELA" name="aims (ui)" type="_Sk84MDjEEeaAsZ1BBV9ELA" association="_MhRCADjFEeaAsZ1BBV9ELA"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:CommunicationPath" xmi:id="_2mRKUDjEEeaAsZ1BBV9ELA" name="HTTP:8080" memberEnd="_2mRxYjjEEeaAsZ1BBV9ELA _2mRxYzjEEeaAsZ1BBV9ELA">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_2mRxYDjEEeaAsZ1BBV9ELA" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_2mRxYTjEEeaAsZ1BBV9ELA" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_2mRxYzjEEeaAsZ1BBV9ELA" name="aims (ui)" type="_Sk84MDjEEeaAsZ1BBV9ELA" association="_2mRKUDjEEeaAsZ1BBV9ELA"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Device" xmi:id="_8Mt1cDjEEeaAsZ1BBV9ELA" name="OPA/Windows">
+    <nestedClassifier xmi:type="uml:ExecutionEnvironment" xmi:id="_U1L1cDjEEeaAsZ1BBV9ELA" name="QGIS">
+      <nestedClassifier xmi:type="uml:Node" xmi:id="_Sk84MDjEEeaAsZ1BBV9ELA" name="AIMS (UI)">
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_2mRxYjjEEeaAsZ1BBV9ELA" name="aims (api)" type="_WWYX4DjDEeaAsZ1BBV9ELA" association="_2mRKUDjEEeaAsZ1BBV9ELA"/>
+      </nestedClassifier>
+    </nestedClassifier>
+  </packagedElement>
+  <packagedElement xmi:type="uml:CommunicationPath" xmi:id="_MhRCADjFEeaAsZ1BBV9ELA" memberEnd="_MhRpEDjFEeaAsZ1BBV9ELA _MhRpETjFEeaAsZ1BBV9ELA">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_MhRCATjFEeaAsZ1BBV9ELA" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_MhRCAjjFEeaAsZ1BBV9ELA" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_MhRpETjFEeaAsZ1BBV9ELA" name="bde (db)" type="_bKiN8DjEEeaAsZ1BBV9ELA" association="_MhRCADjFEeaAsZ1BBV9ELA"/>
+  </packagedElement>
+</uml:Model>

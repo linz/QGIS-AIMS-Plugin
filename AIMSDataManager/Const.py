@@ -10,7 +10,7 @@
 ################################################################################
 
 # NOTE
-# This is potentiall quite a dangerous way to set constants since it overwrites sys.modules and deletes the builtins.
+# This is potentially quite a dangerous way to set constants since it overwrites sys.modules and deletes the builtins.
 # To prevent this we have to hold a _ref to sys to keep it from being deleted
 
 import sys

@@ -219,6 +219,10 @@ class UiDataManager(QObject):
         @type  respFeature: AIMSDataManager.Address
         """
         
+        # responses do not have a 'full number'
+        # as it is required for labeling it is set here
+        respFeature.setFullAddressNumber(respFeature.getFullNumber())
+        
         self.data[FEEDS['AF']][respFeature._components_addressId] = respFeature
         self.fDataChangedSignal.emit()
     
@@ -690,7 +694,7 @@ class UiDataManager(QObject):
         @rtype: AIMSDataManager.Address
         """
         
-        if currentGroup[1] in ('Replace', 'AddLineage', 'ParcelReferenceData' ,'MeshblockReferenceData' ):
+        if currentGroup[1] not in ('Add', 'Update', 'Retire' ):
             for group in self.data.get(FEEDS['GR']).values():
                 if group.has_key(currentFeatureKey):
                     return group[currentFeatureKey]

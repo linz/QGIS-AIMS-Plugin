@@ -227,12 +227,19 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
 
         proxyIndex = self.groupTableView.selectionModel().currentIndex()
         sourceIndex = self._groupProxyModel.mapToSource(proxyIndex)
-        sourceRow = sourceIndex.row()
-        altProxyIndex = self.groupTableView.model().index(sourceRow,0)
-        # set current and next row
-        self.currentGroup = self.groupModel.tableSelectionMade(sourceIndex.row()) # was source
-        self.altSelectionId = self.groupModel.altSelectionId(altProxyIndex.row())
+        self.currentGroup = self.groupModel.tableSelectionMade(sourceIndex.row())
+
+        altProxyIndex = self.groupTableView.model().index(proxyIndex.row()+1,0)
+        if self._groupProxyModel.rowCount() == 0:
+            self.altSelectionId = 0
+            return
+        elif altProxyIndex.row() == -1:
+            altProxyIndex = self.groupTableView.model().index(proxyIndex.row()-1,0)
+        self.altSelectionId = self.groupTableView.model().data(altProxyIndex)
+        
         self.featuresTableView.selectRow(0)
+
+        #QgsMessageLog.logMessage("Primary: {0}, Alternative: {1}".format(self.currentGroup[0], self.altSelectionId), 'AIMS', QgsMessageLog.INFO) 
    
     def userFilterChanged(self, index):
         """ 
@@ -329,7 +336,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
             sourceIndex = self._groupProxyModel.mapToSource(row)
             objRef = ()
             objRef = self.groupModel.getObjRef(sourceIndex)
-            feedType = FEEDS['GR'] if objRef[1] == 'Replace' else FEEDS['AR'] # also ref?            
+            feedType = FEEDS['GR'] if objRef[1] not in ('Add', 'Update', 'Retire' ) else FEEDS['AR'] 
             reviewObj = self.singleReviewObj(feedType, objRef[0])
             if reviewObj: 
                 respId = int(time.time()) 
