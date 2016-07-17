@@ -12,11 +12,12 @@
 
 import httplib2
 import json
+import re
 
 
 from Address import Address,AddressChange,AddressResolution#,AimsWarning
 from Config import ConfigReader
-from AimsUtility import FeatureType,ActionType,ApprovalType,GroupActionType,GroupApprovalType,UserActionType,FeedType,LogWrap
+from AimsUtility import FeatureType,ActionType,ApprovalType,GroupActionType,GroupApprovalType,UserActionType,FeedType,LogWrap,FeedRef
 from AimsUtility import AimsException
 from Const import MAX_FEATURE_COUNT,TEST_MODE
 from AimsLogging import Logger
@@ -91,6 +92,15 @@ class AimsApi(object):
             # list of validation errors
             ce = self.handleErrors(url, resp, jcontent)
         return ce,jcontent
+    
+    def _xxxExtractLinkWorkaround(self,jcf):
+        for link in jcf['links']:
+            if link['rel'][0] == 'addressresolution':
+                l = link['href']
+                break
+        match = re.search('.*\/(\d+)$',l)
+        return match.group(1)
+        
 
     #-----------------------------------------------------------------------------------------------------------------------
     #--- A G G R E G A T E S  &  A L I A S E S -----------------------------------------------------------------------------
@@ -123,6 +133,25 @@ class AimsApi(object):
         return self.handleResponse(url,resp["status"], json.loads(content))
         #return jcontent['entities']
     
+    @LogWrap.timediff(prefix='LinkedFeatureHack')
+    def _xxxGetLinkedFeatureWorkaround(self,cid1):
+        '''Workaround to handle supplementary links
+        @param etft: Feed/Feature identifier
+        @type etft: FeedRef
+        @param cid: ChangeId
+        @type cid: Integer
+        @return: Dict of JSON response
+        '''
+        etft1 = FeedRef(FeatureType.ADDRESS,FeedType.FEATURES)
+        cef,jcf = self.getOneFeature(etft1, cid1)
+        
+        cid2 = self._xxxExtractLinkWorkaround(jcf)
+        
+        etft2 = FeedRef(FeatureType.ADDRESS,FeedType.RESOLUTIONFEED)
+        cer,jcr = self.getOneFeature(etft2, cid2)
+        
+        return cer,jcr
+           
     @LogWrap.timediff(prefix='oneFeat')
     def getOneFeature(self,etft,cid):
         '''Get a CID numbered address including feature entities
@@ -169,6 +198,10 @@ class AimsApi(object):
         @type cid: Integer
         @return: Response from HTTP request
         '''
+        #HACK (2) Bypass on supplemental
+        m = re.search('supplemental(\d+$)',cid)
+        if m: return self._xxxGetLinkedFeatureWorkaround(m.group(1))
+        #
         aimslog.debug('{0}'.format(payload))
         '''Approve/Decline a change by submitting address to resolutionfeed'''
         et = FeatureType.reverse[FeatureType.ADDRESS].lower()

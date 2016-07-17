@@ -61,6 +61,9 @@ class LocalTest():
         listofaddresses = dm.pull()
         print 'addr list before feed checkin',[len(l) for l in listofaddresses.values()]
         
+        #TESTSUPP
+        self.testsupp(dm,af)
+        
         #TESTUSER
         #self.testuseractions(dm)
         
@@ -95,6 +98,11 @@ class LocalTest():
             rr = self.testresp(dm)
             time.sleep(30)
             countdown -= 1
+            
+    def testsupp(self,dm,af):
+        a = self.gettestaddress(af[FeedType.FEATURES])
+        a._version = 3058411
+        dm.supplementAddress(a,2000)
             
     def testaddaddress(self,dm,af):
         a = self.getmacronatedtestaddress(af[FeedType.FEATURES])        
