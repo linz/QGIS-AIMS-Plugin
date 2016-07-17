@@ -344,7 +344,14 @@ class DataManager(Observable):
         @param reqid: User supplied reference value, used to coordinate asynchronous requests/responses
         @type reqid: Integer
         '''
-        address.setChangeId(address.getVersion())#HACK
+        #HACK. Since a feature address doesn't have a changeid (but its needed for the construction of a resolution feed
+        #request) we substitute the changeId for the version number. This usefully also provides the final component of 
+        #the request URL. Note also, approval requests include a payload but for this GET request it isn't needed.
+        ###address.setChangeId(address.getVersion())
+        ###self._addressApprove(address,ApprovalType.SUPPLEMENT,reqid) 
+        
+        #HACK (2). Set changeid to flag supplemental request
+        address.setChangeId('supplemental{}'.format(address.getAddressId()))
         self._addressApprove(address,ApprovalType.SUPPLEMENT,reqid) 
         
         
