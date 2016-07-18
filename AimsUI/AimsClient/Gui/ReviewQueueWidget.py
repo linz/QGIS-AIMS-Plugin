@@ -145,7 +145,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.groupModel.beginResetModel()
         self.groupModel.refreshData(self.reviewData)        
         self.groupModel.endResetModel()
-
+        
         self.featureModel.beginResetModel()
         self.featureModel.refreshData(self.reviewData)
         self.featureModel.endResetModel()
@@ -170,10 +170,12 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
             row = matchedIndex.row()
             self.groupModel.setKey(row)
             #self.groupTableView.selectRow(row)
-            self.groupTableView.selectRow(self._groupProxyModel.mapFromSource(matchedIndex).row())
-            self.featuresTableView.selectRow(0)
-            coords = self.uidm.reviewItemCoords(self.currentGroup, self.currentFeatureKey)
-            self.setMarker(coords)                            
+            if row != -1:
+                self.groupTableView.selectRow(self._groupProxyModel.mapFromSource(matchedIndex).row())
+                self.featuresTableView.selectRow(0)
+                coords = self.uidm.reviewItemCoords(self.currentGroup, self.currentFeatureKey)
+                self.setMarker(coords) 
+                                     
         
     def singleReviewObj(self, feedType, objKey): # can the below replace this?
         """
@@ -230,13 +232,18 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.currentGroup = self.groupModel.tableSelectionMade(sourceIndex.row())
 
         altProxyIndex = self.groupTableView.model().index(proxyIndex.row()+1,0)
+        
         if self._groupProxyModel.rowCount() == 0:
+            self.currentGroup = None
             self.altSelectionId = 0
+        elif self._groupProxyModel.rowCount() == 1:
+            self.altSelectionId = 0
+            self.featuresTableView.selectRow(0)
             return
         elif altProxyIndex.row() == -1:
             altProxyIndex = self.groupTableView.model().index(proxyIndex.row()-1,0)
+            
         self.altSelectionId = self.groupTableView.model().data(altProxyIndex)
-        
         self.featuresTableView.selectRow(0)
 
         #QgsMessageLog.logMessage("Primary: {0}, Alternative: {1}".format(self.currentGroup[0], self.altSelectionId), 'AIMS', QgsMessageLog.INFO) 
@@ -344,8 +351,9 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
                     self.uidm.accept(reviewObj,feedType, respId)
                 elif action == 'decline':
                     self.uidm.decline(reviewObj, feedType, respId)
-                #UiUtility.handleResp(respId, self._controller,feedType, self._iface)
-                self._controller.RespHandler.handleResp(respId, FEEDS['AR'], action)
+                    
+                if self._controller.RespHandler.handleResp(respId, FEEDS['AR'], action):
+                    self.highlight.hideReview()
                 self.reinstateSelection()
                 
     def decline(self):

@@ -94,10 +94,10 @@ class FeatureTableModel(QAbstractTableModel):
                         
     def setKey(self, key = None):
         """
-        Update the dictionary key the repersents the selected group
+        Update the dictionary key the represents the selected group
 
         @param key: Tuple that is a self._data key of which
-                    repersents a group record.
+                    represents a group record.
         @type key: tuple
         """
         
@@ -113,7 +113,7 @@ class FeatureTableModel(QAbstractTableModel):
         @rtype: integer
         """
         
-        if self._data == self.dummyData: return 0
+        if self._data == self.dummyData or not self.dict_key: return 0
         return len(self._data[self.dict_key])
 
     def columnCount(self, QModelIndex_parent=None, *args, **kwargs):
@@ -241,8 +241,11 @@ class GroupTableModel(QAbstractTableModel):
         @param row: The row the user selected
         @type row: integer
         """
-
-        key = self._data[row]
+        
+        if row == -1:
+            key = None
+        else:
+            key = self._data[row]
         self.groupModel.setKey(key)
         
     def rowCount(self, QModelIndex_parent=None, *args, **kwargs):
