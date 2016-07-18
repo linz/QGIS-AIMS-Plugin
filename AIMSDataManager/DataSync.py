@@ -344,7 +344,7 @@ class DataSyncFeeds(DataSync):
         '''Thread stop also stops related DRC thread'''
         self.drc.stop()
         super(DataSyncFeeds,self).stop()
-
+gis2\python\plugins\aims\AIMSDataManager\Da
     def stopped(self):
         return super(DataSyncFeeds,self).stopped() and self.drc.stopped() 
     
@@ -377,7 +377,7 @@ class DataSyncFeeds(DataSync):
         #self.ioq = {'in':Queue.Queue(),'out':Queue.Queue()}
         self.duinst[ref] = self.parameters[self.etft]['action'](params,self.respq)
         self.duinst[ref].setup(self.etft,at,feature,None)
-        print 'PROCESS FEAT',self.etft,ref
+        #print 'PROCESS FEAT',self.etft,ref
         self.duinst[ref].setName(ref)
         self.duinst[ref].setDaemon(True)
         self.duinst[ref].start()

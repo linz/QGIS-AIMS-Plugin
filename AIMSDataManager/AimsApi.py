@@ -100,7 +100,7 @@ class AimsApi(object):
                 l = link['href']
                 break
         match = re.search('.*\/(\d+)$',l)
-        return match.group(1)
+        return match.group(1) if match else ''
         
 
     #-----------------------------------------------------------------------------------------------------------------------
