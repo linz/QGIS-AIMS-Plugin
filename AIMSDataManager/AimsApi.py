@@ -94,6 +94,7 @@ class AimsApi(object):
         return ce,jcontent
     
     def _xxxExtractLinkWorkaround(self,jcf):
+        l = ''
         for link in jcf['links']:
             if link['rel'][0] == 'addressresolution':
                 l = link['href']
@@ -199,7 +200,7 @@ class AimsApi(object):
         @return: Response from HTTP request
         '''
         #HACK (2) Bypass on supplemental
-        m = re.search('supplemental(\d+$)',cid)
+        m = re.search('supplemental(\d+$)',str(cid))
         if m: return self._xxxGetLinkedFeatureWorkaround(m.group(1))
         #
         aimslog.debug('{0}'.format(payload))
