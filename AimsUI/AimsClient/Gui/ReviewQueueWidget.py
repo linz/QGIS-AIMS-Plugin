@@ -174,8 +174,10 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
                 self.groupTableView.selectRow(self._groupProxyModel.mapFromSource(matchedIndex).row())
                 self.featuresTableView.selectRow(0)
                 coords = self.uidm.reviewItemCoords(self.currentGroup, self.currentFeatureKey)
-                self.setMarker(coords) 
-                                     
+                self.setMarker(coords)
+            else:
+                self.uQueueEditor.clearForm()
+                
         
     def singleReviewObj(self, feedType, objKey): # can the below replace this?
         """

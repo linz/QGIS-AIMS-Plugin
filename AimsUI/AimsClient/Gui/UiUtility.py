@@ -200,7 +200,8 @@ class UiUtility (object):
                 continue
             # Test the object has the required property or a getter
             # Groups and retired feature properties may be either nested or flat
-            if self.feature._changeType in ( 'Retire' ,'Replace', 'AddLineage', 'ParcelReferenceData', 'MeshblockReferenceData' ):
+            if self.feature._changeType in ( 'Retire' ,'Replace', 'AddLineage', 'ParcelReferenceData',
+                 'MeshblockReferenceData' ) and self.feature._changeType not in ('Accepted' , 'Declined'):
                 if hasattr(self.feature, objProp[0]) or hasattr(self.feature, objProp[2]):
                     prop = UiUtility.extractFlatProperty(self.feature, objProp[0],objProp[2])
                 elif hasattr(getattr(getattr(self.feature, 'meta'), '_entities')[0],objProp[0]):                    

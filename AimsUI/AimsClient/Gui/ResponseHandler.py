@@ -52,14 +52,19 @@ class ResponseHandler(object):
         elif feedType == FEEDS['AC']:
             respObj = self.afar[FeedType.RESOLUTIONFEED].cast(respObj)
             self.uidm.updateRdata(respObj, feedType)
-        elif feedType == FEEDS['AR']:# and action == 'accept':
+        elif feedType == FEEDS['AR']:
+            # Hack to allow the supplementing of missing
+            #  AF data with AR data
+            if action == 'supplement':
+                self.updateSuccessful = respObj
+                return True
             self.uidm.updateRdata(respObj, feedType)
             if action == 'accept':
                 respObj = self.afaf[FeedType.FEATURES].cast(respObj)
                 self.uidm.updateFdata(respObj)
         else:
             self.updateSuccessful = False
-        
+            return True
         self.updateSuccessful = True
         return True
     

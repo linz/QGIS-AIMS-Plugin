@@ -1,14 +1,17 @@
 import sys
+import time
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-
 from qgis.core import *
 from qgis.gui import *
+
 from AimsUI.AimsClient.Gui.Ui_ComfirmSelection import Ui_ComfirmSelection
 from AimsUI.AimsClient.Gui.UiUtility import UiUtility
 from AimsUI.AimsClient.Gui.ResponseHandler import ResponseHandler
 from AIMSDataManager.Address import Position
+from AIMSDataManager.AimsUtility import FeedType, FEEDS
+
 
 class UpdateAddressTool(QgsMapToolIdentify):
     """
@@ -95,7 +98,7 @@ class UpdateAddressTool(QgsMapToolIdentify):
             return
         elif len(results) == 1:
             # initialise an address object and populate from selected feature
-            #self._feature = UiUtility.mapResultsToAddObj(results[0], self._controller) <-- old method i.e direct to api
+
             self._feature = self._controller.uidm.singleFeatureObj(results[0].mFeature.attribute('addressId'))
             
         else: # Stacked points
@@ -117,6 +120,11 @@ class UpdateAddressTool(QgsMapToolIdentify):
                         break
         # Open form
         if self._feature:
+            # Hack to retrieve the properties missing on the
+            # feature feed from the resolution feed 
+            respId = int(time.time()) 
+            self._controller.uidm.supplementAddress(self._feature, respId)
+            self.feature = self._controller.RespHandler.handleResp(respId, FEEDS['AR'], 'supplement')
             # highlight feature             
             self.setMarker(results[0].mFeature.geometry().asPoint())
             self._controller._queues.uEditFeatureTab.setFeature('update', self._feature )

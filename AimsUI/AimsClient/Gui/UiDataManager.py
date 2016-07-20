@@ -392,6 +392,19 @@ class UiDataManager(QObject):
         uilog.info('obj with respId: {0} passed to convenience method "{1}" '.format(respId, 'repairAddress'))
         self.dm.repairAddress(feature, respId)
     
+    def supplementAddress(self, feature, reqid=None): 
+        """
+        Retrieve properties missing on the feature feed from 
+        the last relevant resolution feed feature
+        
+        @param feature: Feature feed item that require supplement data
+        @type  feature: AIMSDataManager.Address
+        @param respId: id used to match response 
+        @type  respId: integer 
+        """
+        
+        self.dm.supplementAddress(feature, reqid)
+    
     #--- Groups DM Methods ---
     
     def repairGroup(self, feature, respId = None):
