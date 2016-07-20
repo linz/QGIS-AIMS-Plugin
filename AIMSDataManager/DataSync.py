@@ -377,7 +377,7 @@ class DataSyncFeeds(DataSync):
         #self.ioq = {'in':Queue.Queue(),'out':Queue.Queue()}
         self.duinst[ref] = self.parameters[self.etft]['action'](params,self.respq)
         self.duinst[ref].setup(self.etft,at,feature,None)
-        print 'PROCESS FEAT',self.etft,ref
+        #print 'PROCESS FEAT',self.etft,ref
         self.duinst[ref].setName(ref)
         self.duinst[ref].setDaemon(True)
         self.duinst[ref].start()
