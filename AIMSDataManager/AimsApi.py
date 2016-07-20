@@ -14,7 +14,6 @@ import httplib2
 import json
 import re
 
-
 from Address import Address,AddressChange,AddressResolution#,AimsWarning
 from Config import ConfigReader
 from AimsUtility import FeatureType,ActionType,ApprovalType,GroupActionType,GroupApprovalType,UserActionType,FeedType,LogWrap,FeedRef
@@ -106,6 +105,17 @@ class AimsApi(object):
     #-----------------------------------------------------------------------------------------------------------------------
     #--- A G G R E G A T E S  &  A L I A S E S -----------------------------------------------------------------------------
     #-----------------------------------------------------------------------------------------------------------------------
+    def _request(self,*args,**kwargs):
+        '''Wraps httplib2 requests for logging
+        @param *args: Request arguments
+        @type *args: List<?> 
+        @param **kwargs: Request named arguments 
+        @type **kwargs: Dict<String,?>
+        @return: response,content
+        '''
+        aimslog.info("Request {}".format(args))
+        return self.h.request(*args,**kwargs)
+    
     @LogWrap.timediff(prefix='onePage')
     def getOnePage(self,etft,sw,ne,pno,count=MAX_FEATURE_COUNT):
         '''Retrieve a numbered page from a specific feed with optional bbox parameters
@@ -129,8 +139,7 @@ class AimsApi(object):
             url = '{}/{}/{}?count={}&bbox={}&page={}'.format(self._url,et,ft,count,bb,pno)
         else:
             url = '{}/{}/{}?count={}&page={}'.format(self._url,et,ft,count,pno)
-        aimslog.debug('1P REQUEST {}'.format(url))
-        resp, content = self.h.request(url,'GET', headers = self._headers)
+        resp, content = self._request(url,'GET', headers = self._headers)
         return self.handleResponse(url,resp["status"], json.loads(content))
         #return jcontent['entities']
     
@@ -165,7 +174,7 @@ class AimsApi(object):
         et = FeatureType.reverse[etft.et].lower()
         ft = FeedType.reverse[etft.ft].lower()
         url = '/'.join((self._url,et,ft.lower(),str(cid) if cid else '')).rstrip('/')
-        resp, content = self.h.request(url,'GET', headers = self._headers)
+        resp, content = self._request(url,'GET', headers = self._headers)
         return self.handleResponse(url,resp["status"], json.loads(content))
         #return jcontent        
     
@@ -185,7 +194,7 @@ class AimsApi(object):
         et = FeatureType.reverse[FeatureType.ADDRESS].lower()
         ft = FeedType.reverse[FeedType.CHANGEFEED].lower()
         url = '/'.join((self._url,et,ft,ActionType.reverse[at].lower(),TESTPATH)).rstrip('/')
-        resp, content = self.h.request(url,"POST", json.dumps(payload), self._headers)
+        resp, content = self._request(url,"POST", json.dumps(payload), self._headers)
         return self.handleResponse(url,resp["status"], json.loads(content) )  
     
     @LogWrap.timediff(prefix='adrApp')
@@ -203,12 +212,12 @@ class AimsApi(object):
         m = re.search('supplemental(\d+$)',str(cid))
         if m: return self._xxxGetLinkedFeatureWorkaround(m.group(1))
         #
-        aimslog.debug('{0}'.format(payload))
+        #aimslog.debug('{0}'.format(payload))
         '''Approve/Decline a change by submitting address to resolutionfeed'''
         et = FeatureType.reverse[FeatureType.ADDRESS].lower()
         ft = FeedType.reverse[FeedType.RESOLUTIONFEED].lower()
         url = '/'.join((self._url,et,ft,str(cid),ApprovalType.PATH[at].lower(),TESTPATH)).rstrip('/')
-        resp, content = self.h.request(url,ApprovalType.HTTP[at], json.dumps(payload), self._headers)
+        resp, content = self._request(url,ApprovalType.HTTP[at], json.dumps(payload), self._headers)
         return self.handleResponse(url,resp["status"], json.loads(content) )
     
     @LogWrap.timediff(prefix='grpAct')
@@ -225,7 +234,7 @@ class AimsApi(object):
         et = FeatureType.reverse[FeatureType.GROUPS].lower()
         ft = FeedType.reverse[FeedType.CHANGEFEED].lower()
         url = '/'.join((self._url,et,ft,str(cid),GroupActionType.PATH[gat].lower(),TESTPATH)).rstrip('/')
-        resp, content = self.h.request(url,GroupActionType.HTTP[gat], json.dumps(payload), self._headers)
+        resp, content = self._request(url,GroupActionType.HTTP[gat], json.dumps(payload), self._headers)
         return self.handleResponse(url,resp["status"], json.loads(content) )    
     
     @LogWrap.timediff(prefix='grpApp')
@@ -242,7 +251,7 @@ class AimsApi(object):
         et = FeatureType.reverse[FeatureType.GROUPS].lower()
         ft = FeedType.reverse[FeedType.RESOLUTIONFEED].lower()
         url = '/'.join((self._url,et,ft,str(cid),GroupApprovalType.PATH[gat].lower(),TESTPATH)).rstrip('/')
-        resp, content = self.h.request(url,GroupApprovalType.HTTP[gat], json.dumps(payload), self._headers)
+        resp, content = self._request(url,GroupApprovalType.HTTP[gat], json.dumps(payload), self._headers)
         return self.handleResponse(url,resp["status"], json.loads(content) )
     
     @LogWrap.timediff(prefix='usrAct')
@@ -258,7 +267,7 @@ class AimsApi(object):
         '''
         #http://devassgeo01:8080/aims/api/admin/users {add/update/delete}
         url = '{}/admin/users/{}/{}'.format(self._url,uid,TESTPATH).rstrip('/')
-        resp, content = self.h.request(url,UserActionType.HTTP[uat], json.dumps(payload), self._headers)
+        resp, content = self._request(url,UserActionType.HTTP[uat], json.dumps(payload), self._headers)
         return self.handleResponse(url,resp["status"], json.loads(content) )
         
         

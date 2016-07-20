@@ -344,7 +344,7 @@ class DataSyncFeeds(DataSync):
         '''Thread stop also stops related DRC thread'''
         self.drc.stop()
         super(DataSyncFeeds,self).stop()
-gis2\python\plugins\aims\AIMSDataManager\Da
+
     def stopped(self):
         return super(DataSyncFeeds,self).stopped() and self.drc.stopped() 
     
