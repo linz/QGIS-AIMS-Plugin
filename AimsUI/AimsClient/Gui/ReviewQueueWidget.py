@@ -174,7 +174,8 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
                 self.groupTableView.selectRow(self._groupProxyModel.mapFromSource(matchedIndex).row())
                 self.featuresTableView.selectRow(0)
                 coords = self.uidm.reviewItemCoords(self.currentGroup, self.currentFeatureKey)
-                self.setMarker(coords)
+                if coords:
+                    self.setMarker(coords)
             else:
                 self.uQueueEditor.clearForm()
                 
@@ -218,8 +219,9 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         if self.currentGroup[0]:  
             self.currentFeatureKey = self.featureModel.tableSelectionMade(row)   
             self.uQueueEditor.currentFeatureToUi(self.currentReviewFeature())
-            
-            self.setMarker(self.uidm.reviewItemCoords(self.currentGroup, self.currentFeatureKey))
+            coords = self.uidm.reviewItemCoords(self.currentGroup, self.currentFeatureKey)
+            if coords:
+                self.setMarker(coords)
 
     def groupSelected(self, row = None):
         """

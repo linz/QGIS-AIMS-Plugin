@@ -671,7 +671,8 @@ class UiDataManager(QObject):
                         featureValues = self.formatFeatureTableData(v,vProperties, feedtype)
                     fData[tuple(groupValues)] = featureValues
         if fData:
-            return fData # need to test a return == {}    
+            return fData
+        else: return {('','', '', '', ''): [['', '', '', '', '']]}
     
     def singleFeatureObj(self, objkey):
         """
@@ -728,7 +729,7 @@ class UiDataManager(QObject):
         """
         
         obj = self.currentReviewFeature(currentGroup, currentFeatureKey)
-        #if not obj: return#temp
+        if not obj: return None
         if obj._changeType not in ('Update', 'Add') and not obj.meta.requestId:
             pos = obj.meta.entities[0].getAddressPositions()[0]._position_coordinates 
         else:
