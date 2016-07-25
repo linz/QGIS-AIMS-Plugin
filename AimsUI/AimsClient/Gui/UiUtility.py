@@ -110,15 +110,14 @@ class UiUtility (object):
         """
         Mask form input values
         """   
-            
-        intValidator = QIntValidator()    
-        self.uBase.setValidator(intValidator)
-        self.uHigh.setValidator(intValidator)
-        self.uMblkOverride.setValidator(intValidator)
+
+        self.uBase.setValidator(QRegExpValidator(QRegExp(r'[0-9]{0,6}'), self))
+        self.uHigh.setValidator(QRegExpValidator(QRegExp(r'[0-9]{0,6}'), self))
+        self.uMblkOverride.setValidator(QRegExpValidator(QRegExp(r'[0-9]{0,7}'), self))
         self.uAlpha.setValidator(QRegExpValidator(QRegExp(r'^[A-Za-z]{0,3}'), self))
-        self.uUnit.setValidator(QRegExpValidator(QRegExp(r'^\w+'), self))
-        self.uPrefix.setValidator(QRegExpValidator(QRegExp(r'^\w+'), self))
-        self.uLevelValue.setValidator(QRegExpValidator(QRegExp(r'^\w+'), self))
+        self.uUnit.setValidator(QRegExpValidator(QRegExp(r'[0-9A-Za-z]{0,5}'), self))
+        self.uPrefix.setValidator(QRegExpValidator(QRegExp(r'[0-9A-Za-z]{0,5}'), self))
+        self.uLevelValue.setValidator(QRegExpValidator(QRegExp(r'[0-9A-Za-z]{0,7}'), self))
         
     @staticmethod
     def toUpper (uInput, UiElement): 
