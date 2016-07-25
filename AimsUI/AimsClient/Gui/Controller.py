@@ -178,7 +178,7 @@ class Controller( QObject ):
         self._highlightaction.setEnabled(False)
         self._highlightaction.setCheckable(True)
         self._highlightaction.toggled.connect( self.highlighter.setEnabled )
-
+        
         # Add to own toolbar
         self._toolbar = self.iface.addToolBar('QGIS-AIMS-Plugin')
         self._toolbar.addAction(self._createnewaddressaction)
@@ -188,7 +188,7 @@ class Controller( QObject ):
         self._toolbar.addAction(self._lineageaction)
         self._toolbar.addAction(self._highlightaction)
         
-        # Add actions to menu and toolbar icon
+        # Add actions to menu
         self.iface.addToolBarIcon(self._loadaction)
         self.iface.addPluginToMenu('&QGIS-AIMS-Plugin', self._loadaction)
         self.iface.addPluginToMenu('&QGIS-AIMS-Plugin', self._createnewaddressaction)
@@ -259,7 +259,6 @@ class Controller( QObject ):
         self._moveaddressaction.setEnabled(True)
         self._updateaddressaction.setEnabled(True)
         self._highlightaction.setEnabled(True)
-        #self._lineageaction.setEnabled(True) # to be enale once lineage tool is in scope
         
     def loadLayers(self):
         """ 
@@ -283,6 +282,7 @@ class Controller( QObject ):
         if (isinstance(self.iface.mapCanvas().mapTool(), GetRcl) == False and
                 isinstance(self.iface.mapCanvas().mapTool(), UpdateReviewPosition) == False):          
             self._currentMapTool = self.iface.mapCanvas().mapTool()
+            #self.highlighter.hideAll()
             # logging 
             uilog.info('*** TOOL CHANGE ***    {0} started'.format(self.iface.mapCanvas().mapTool())) 
         

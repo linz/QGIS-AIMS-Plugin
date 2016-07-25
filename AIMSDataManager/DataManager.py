@@ -25,8 +25,7 @@ from AimsLogging import Logger
 from Const import THREAD_JOIN_TIMEOUT,RES_PATH,LOCAL_ADL,SWZERO,NEZERO,NULL_PAGE_VALUE as NPV
 from Observable import Observable
 
-aimslog = None
-    
+aimslog = None   
     
 class DataManager(Observable):
     '''Initialises maintenance thread and provides queue accessors and request channels'''
@@ -336,7 +335,26 @@ class DataManager(Observable):
         @param reqid: User supplied reference value, used to coordinate asynchronous requests/responses
         @type reqid: Integer
         '''
-        self._addressApprove(address,ApprovalType.UPDATE,reqid) 
+        self._addressApprove(address,ApprovalType.UPDATE,reqid)     
+        
+    def supplementAddress(self,address,reqid=None):        
+        '''Convenience method to fetch additional info on an Address from the resolutionfeed.
+        @param address: Address object to update
+        @type address: Address
+        @param reqid: User supplied reference value, used to coordinate asynchronous requests/responses
+        @type reqid: Integer
+        '''
+        #HACK. Since a feature address doesn't have a changeid (but its needed for the construction of a resolution feed
+        #request) we substitute the changeId for the version number. This usefully also provides the final component of 
+        #the request URL. Note also, approval requests include a payload but for this GET request it isn't needed.
+        ###address.setChangeId(address.getVersion())
+        ###self._addressApprove(address,ApprovalType.SUPPLEMENT,reqid) 
+        
+        #HACK (2). Set changeid to flag supplemental request
+        address.setChangeId('supplemental{}'.format(address.getAddressId()))
+        self._addressApprove(address,ApprovalType.SUPPLEMENT,reqid) 
+        
+        
         
     def _addressApprove(self,address,at,reqid=None):
         '''Address approval method performing address/approve actions on the resolution feed

@@ -30,6 +30,7 @@ class ResponseHandler(object):
     def __init__(self, iface, uidm):
         self._iface = iface
         self.uidm = uidm
+        self.updateSuccessful = None
         self.afar= {ft:AddressFactory.getInstance(FEEDS['AR']) for ft in FeedType.reverse}
         self.afaf= {ft:AddressFactory.getInstance(FEEDS['AF']) for ft in FeedType.reverse} # new method to cast
 
@@ -51,11 +52,20 @@ class ResponseHandler(object):
         elif feedType == FEEDS['AC']:
             respObj = self.afar[FeedType.RESOLUTIONFEED].cast(respObj)
             self.uidm.updateRdata(respObj, feedType)
-        elif feedType == FEEDS['AR']:# and action == 'accept':
+        elif feedType == FEEDS['AR']:
+            # Hack to allow the supplementing of missing
+            #  AF data with AR data
+            if action == 'supplement':
+                self.updateSuccessful = respObj
+                return True
             self.uidm.updateRdata(respObj, feedType)
             if action == 'accept':
                 respObj = self.afaf[FeedType.FEATURES].cast(respObj)
                 self.uidm.updateFdata(respObj)
+        else:
+            self.updateSuccessful = False
+            return True
+        self.updateSuccessful = True
         return True
     
     def displayWarnings (self, warnings):
@@ -93,7 +103,6 @@ class ResponseHandler(object):
             if resp.meta._requestId == respId:  
                 #logging
                 uilog.info(' *** DATA ***    response received from DM for respId: {0} of type: {1} after {2} seconds'.format(respId, feedType, i))    
-                # hack to meet first testing release -- Review
                 if resp.meta._errors['critical']:
                     self.displayWarnings(resp.meta.errors['critical'])
                     return True
@@ -119,13 +128,14 @@ class ResponseHandler(object):
         @param action: Either Accept or Decline indicating review actions
         @type action: QtGui.QWidget()
         """
+        self.updateSuccessful = False 
         
         for i in range(0,20):
             time.sleep(1)
             resp = self.uidm.response(feedType)
             if resp and resp != (None,): # found and processed response
                 if self.matchResp(resp, respId, feedType, i, action):
-                    return                                                 
+                    return self.updateSuccessful                                              
         #logging 
         self._iface.messageBar().pushMessage("Incomplete Response", "Layer data may not be complete", level=QgsMessageBar.WARNING)
         uilog.info(' *** DATA ***    Time Out ({0} seconds): No response received from DM for respId: {1} of feedtype: {2}'.format(i, respId, feedType))    

@@ -161,10 +161,10 @@ ActionType.PATH =            ('add', 'retire','')
 ActionType.HTTP =            ('POST','POST',  'PUT')
 
 #resolutionfeed approval action
-ApprovalType = Enumeration.enum('ACCEPT',  'DECLINE', 'UPDATE')
-ApprovalType.LABEL =           ('Accepted','Declined','Under Review')
-ApprovalType.PATH =            ('accept',  'decline', '')
-ApprovalType.HTTP =            ('POST',    'POST',    'PUT')
+ApprovalType = Enumeration.enum('ACCEPT',  'DECLINE', 'UPDATE', 'SUPPLEMENT')
+ApprovalType.LABEL =           ('Accepted','Declined','Under Review','Supplemental Information Request')
+ApprovalType.PATH =            ('accept',  'decline', '',   '')
+ApprovalType.HTTP =            ('POST',    'POST',    'PUT','GET')
 
 #group changefeed action
 GroupActionType = Enumeration.enum('REPLACE','UPDATE','SUBMIT','CLOSE','ADD', 'REMOVE','ADDRESS')

@@ -165,6 +165,12 @@ class MoveAddressTool(QgsMapToolIdentify):
                 coords = list(UiUtility.transform(self._iface, coords))
 
                 for feature in self._features:
+                    # Hack to retrieve the properties missing on the
+                    # feature feed from the resolution feed </ 
+                    respId = int(time.time()) 
+                    self._controller.uidm.supplementAddress(feature, respId)
+                    feature = self._controller.RespHandler.handleResp(respId, FEEDS['AR'], 'supplement')
+                    # />
                     feature._addressedObject_addressPositions[0].setCoordinates(coords) # setter for this?
                     if feature._codes_isMeshblockOverride != True:
                         feature.setMeshblock(None)

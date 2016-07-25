@@ -219,6 +219,10 @@ class UiDataManager(QObject):
         @type  respFeature: AIMSDataManager.Address
         """
         
+        # responses do not have a 'full number'
+        # as it is required for labeling it is set here
+        respFeature.setFullAddressNumber(respFeature.getFullNumber())
+        
         self.data[FEEDS['AF']][respFeature._components_addressId] = respFeature
         self.fDataChangedSignal.emit()
     
@@ -387,6 +391,19 @@ class UiDataManager(QObject):
         
         uilog.info('obj with respId: {0} passed to convenience method "{1}" '.format(respId, 'repairAddress'))
         self.dm.repairAddress(feature, respId)
+    
+    def supplementAddress(self, feature, reqid=None): 
+        """
+        Retrieve properties missing on the feature feed from 
+        the last relevant resolution feed feature
+        
+        @param feature: Feature feed item that require supplement data
+        @type  feature: AIMSDataManager.Address
+        @param respId: id used to match response 
+        @type  respId: integer 
+        """
+        
+        self.dm.supplementAddress(feature, reqid)
     
     #--- Groups DM Methods ---
     
@@ -654,7 +671,8 @@ class UiDataManager(QObject):
                         featureValues = self.formatFeatureTableData(v,vProperties, feedtype)
                     fData[tuple(groupValues)] = featureValues
         if fData:
-            return fData # need to test a return == {}    
+            return fData
+        else: return {('','', '', '', ''): [['', '', '', '', '']]}
     
     def singleFeatureObj(self, objkey):
         """
@@ -690,7 +708,7 @@ class UiDataManager(QObject):
         @rtype: AIMSDataManager.Address
         """
         
-        if currentGroup[1] in ('Replace', 'AddLineage', 'ParcelReferenceData' ,'MeshblockReferenceData' ):
+        if currentGroup[1] not in ('Add', 'Update', 'Retire' ):
             for group in self.data.get(FEEDS['GR']).values():
                 if group.has_key(currentFeatureKey):
                     return group[currentFeatureKey]
@@ -711,7 +729,7 @@ class UiDataManager(QObject):
         """
         
         obj = self.currentReviewFeature(currentGroup, currentFeatureKey)
-        #if not obj: return#temp
+        if not obj: return None
         if obj._changeType not in ('Update', 'Add') and not obj.meta.requestId:
             pos = obj.meta.entities[0].getAddressPositions()[0]._position_coordinates 
         else:

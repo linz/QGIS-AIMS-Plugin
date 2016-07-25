@@ -145,7 +145,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.groupModel.beginResetModel()
         self.groupModel.refreshData(self.reviewData)        
         self.groupModel.endResetModel()
-
+        
         self.featureModel.beginResetModel()
         self.featureModel.refreshData(self.reviewData)
         self.featureModel.endResetModel()
@@ -170,10 +170,15 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
             row = matchedIndex.row()
             self.groupModel.setKey(row)
             #self.groupTableView.selectRow(row)
-            self.groupTableView.selectRow(self._groupProxyModel.mapFromSource(matchedIndex).row())
-            self.featuresTableView.selectRow(0)
-            coords = self.uidm.reviewItemCoords(self.currentGroup, self.currentFeatureKey)
-            self.setMarker(coords)                            
+            if row != -1:
+                self.groupTableView.selectRow(self._groupProxyModel.mapFromSource(matchedIndex).row())
+                self.featuresTableView.selectRow(0)
+                coords = self.uidm.reviewItemCoords(self.currentGroup, self.currentFeatureKey)
+                if coords:
+                    self.setMarker(coords)
+            else:
+                self.uQueueEditor.clearForm()
+                
         
     def singleReviewObj(self, feedType, objKey): # can the below replace this?
         """
@@ -214,8 +219,9 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         if self.currentGroup[0]:  
             self.currentFeatureKey = self.featureModel.tableSelectionMade(row)   
             self.uQueueEditor.currentFeatureToUi(self.currentReviewFeature())
-            
-            self.setMarker(self.uidm.reviewItemCoords(self.currentGroup, self.currentFeatureKey))
+            coords = self.uidm.reviewItemCoords(self.currentGroup, self.currentFeatureKey)
+            if coords:
+                self.setMarker(coords)
 
     def groupSelected(self, row = None):
         """
@@ -227,12 +233,24 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
 
         proxyIndex = self.groupTableView.selectionModel().currentIndex()
         sourceIndex = self._groupProxyModel.mapToSource(proxyIndex)
-        sourceRow = sourceIndex.row()
-        altProxyIndex = self.groupTableView.model().index(sourceRow,0)
-        # set current and next row
-        self.currentGroup = self.groupModel.tableSelectionMade(sourceIndex.row()) # was source
-        self.altSelectionId = self.groupModel.altSelectionId(altProxyIndex.row())
+        self.currentGroup = self.groupModel.tableSelectionMade(sourceIndex.row())
+
+        altProxyIndex = self.groupTableView.model().index(proxyIndex.row()+1,0)
+        
+        if self._groupProxyModel.rowCount() == 0:
+            self.currentGroup = None
+            self.altSelectionId = 0
+        elif self._groupProxyModel.rowCount() == 1:
+            self.altSelectionId = 0
+            self.featuresTableView.selectRow(0)
+            return
+        elif altProxyIndex.row() == -1:
+            altProxyIndex = self.groupTableView.model().index(proxyIndex.row()-1,0)
+            
+        self.altSelectionId = self.groupTableView.model().data(altProxyIndex)
         self.featuresTableView.selectRow(0)
+
+        #QgsMessageLog.logMessage("Primary: {0}, Alternative: {1}".format(self.currentGroup[0], self.altSelectionId), 'AIMS', QgsMessageLog.INFO) 
    
     def userFilterChanged(self, index):
         """ 
@@ -329,7 +347,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
             sourceIndex = self._groupProxyModel.mapToSource(row)
             objRef = ()
             objRef = self.groupModel.getObjRef(sourceIndex)
-            feedType = FEEDS['GR'] if objRef[1] == 'Replace' else FEEDS['AR'] # also ref?            
+            feedType = FEEDS['GR'] if objRef[1] not in ('Add', 'Update', 'Retire' ) else FEEDS['AR'] 
             reviewObj = self.singleReviewObj(feedType, objRef[0])
             if reviewObj: 
                 respId = int(time.time()) 
@@ -337,8 +355,9 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
                     self.uidm.accept(reviewObj,feedType, respId)
                 elif action == 'decline':
                     self.uidm.decline(reviewObj, feedType, respId)
-                #UiUtility.handleResp(respId, self._controller,feedType, self._iface)
-                self._controller.RespHandler.handleResp(respId, FEEDS['AR'], action)
+                    
+                if self._controller.RespHandler.handleResp(respId, FEEDS['AR'], action):
+                    self.highlight.hideReview()
                 self.reinstateSelection()
                 
     def decline(self):
