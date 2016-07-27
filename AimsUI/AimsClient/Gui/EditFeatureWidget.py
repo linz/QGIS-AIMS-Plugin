@@ -35,11 +35,10 @@ class EditFeatureWidget( Ui_EditFeatureDialog, QWidget ):
         self.feature = None
         
 #         # Val Ref, Cert Title and App have been temp taken out of scope
-#         hide = (self.lAppellation, self.uAppellation, self.uCertificateOfTitle, 
-#                 self.lCertTitle, self.uValuationReference, self.lValref)
-#         
-#         for uiElement in hide:
-#             uiElement.hide()
+        hide = (self.uExternalObjectId, self.uExtObjectIdScheme, 
+                 self.lExtObjectIdScheme,  self.lExternalObjectId)
+        for uiElement in hide:
+            uiElement.hide()
  
         # Make connections
         self.uAddressType.currentIndexChanged.connect(self.setEditability)

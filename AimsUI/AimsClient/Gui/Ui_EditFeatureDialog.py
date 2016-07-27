@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'AimsUI/AimsClient/Gui/Ui_EditFeatureDialog.ui'
 #
-# Created: Tue Jul 12 08:46:13 2016
+# Created: Tue Jul 26 16:20:29 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -300,16 +300,16 @@ class Ui_EditFeatureDialog(object):
         self.uPositionType = QtGui.QComboBox(self.scrollAreaWidgetContents_4)
         self.uPositionType.setObjectName(_fromUtf8("uPositionType"))
         self.formLayout_5.setWidget(20, QtGui.QFormLayout.FieldRole, self.uPositionType)
-        self.externalObjectIdLabel_5 = QtGui.QLabel(self.scrollAreaWidgetContents_4)
-        self.externalObjectIdLabel_5.setObjectName(_fromUtf8("externalObjectIdLabel_5"))
-        self.formLayout_5.setWidget(21, QtGui.QFormLayout.LabelRole, self.externalObjectIdLabel_5)
+        self.lExternalObjectId = QtGui.QLabel(self.scrollAreaWidgetContents_4)
+        self.lExternalObjectId.setObjectName(_fromUtf8("lExternalObjectId"))
+        self.formLayout_5.setWidget(21, QtGui.QFormLayout.LabelRole, self.lExternalObjectId)
         self.uExternalObjectId = QtGui.QLineEdit(self.scrollAreaWidgetContents_4)
         self.uExternalObjectId.setMaxLength(15)
         self.uExternalObjectId.setObjectName(_fromUtf8("uExternalObjectId"))
         self.formLayout_5.setWidget(21, QtGui.QFormLayout.FieldRole, self.uExternalObjectId)
-        self.extObjectIdSchemeLabel_5 = QtGui.QLabel(self.scrollAreaWidgetContents_4)
-        self.extObjectIdSchemeLabel_5.setObjectName(_fromUtf8("extObjectIdSchemeLabel_5"))
-        self.formLayout_5.setWidget(22, QtGui.QFormLayout.LabelRole, self.extObjectIdSchemeLabel_5)
+        self.lExtObjectIdScheme = QtGui.QLabel(self.scrollAreaWidgetContents_4)
+        self.lExtObjectIdScheme.setObjectName(_fromUtf8("lExtObjectIdScheme"))
+        self.formLayout_5.setWidget(22, QtGui.QFormLayout.LabelRole, self.lExtObjectIdScheme)
         self.uExtObjectIdScheme = QtGui.QLineEdit(self.scrollAreaWidgetContents_4)
         self.uExtObjectIdScheme.setMaxLength(100)
         self.uExtObjectIdScheme.setObjectName(_fromUtf8("uExtObjectIdScheme"))
@@ -444,8 +444,8 @@ class Ui_EditFeatureDialog(object):
         self.objectTypeLabel_5.setText(_translate("EditFeatureDialog", "Object Type:", None))
         self.objectNameLabel_5.setText(_translate("EditFeatureDialog", "Object Name:", None))
         self.label_49.setText(_translate("EditFeatureDialog", "Position Type:", None))
-        self.externalObjectIdLabel_5.setText(_translate("EditFeatureDialog", "External Object Id:", None))
-        self.extObjectIdSchemeLabel_5.setText(_translate("EditFeatureDialog", "Ext Object Id Scheme:", None))
+        self.lExternalObjectId.setText(_translate("EditFeatureDialog", "External Object Id:", None))
+        self.lExtObjectIdScheme.setText(_translate("EditFeatureDialog", "Ext Object Id Scheme:", None))
         self.lValref.setText(_translate("EditFeatureDialog", "Valuation Reference:", None))
         self.lCertTitle.setText(_translate("EditFeatureDialog", "Certificate Of Title:", None))
         self.lAppellation.setText(_translate("EditFeatureDialog", "Appellation:", None))

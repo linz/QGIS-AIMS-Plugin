@@ -581,13 +581,6 @@
          <item row="4" column="1">
           <widget class="QLineEdit" name="uExtObjectIdScheme"/>
          </item>
-         <item row="5" column="0">
-          <widget class="QLabel" name="label_94">
-           <property name="text">
-            <string>Ext. Obj Id:</string>
-           </property>
-          </widget>
-         </item>
          <item row="1" column="0">
           <widget class="QLabel" name="label_92">
            <property name="minimumSize">
@@ -651,7 +644,7 @@
           </widget>
          </item>
          <item row="4" column="0">
-          <widget class="QLabel" name="label_97">
+          <widget class="QLabel" name="lExtObjectIdScheme">
            <property name="text">
             <string>Ext. Obj Id Scheme:</string>
            </property>
@@ -725,6 +718,13 @@
           <widget class="QLabel" name="lCertTitle">
            <property name="text">
             <string>Cert. of Title:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0">
+          <widget class="QLabel" name="lExternalObjectId">
+           <property name="text">
+            <string>Ext. Obj Id:</string>
            </property>
           </widget>
          </item>

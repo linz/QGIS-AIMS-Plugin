@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'AimsUI/AimsClient/Gui/Ui_QueueEditorWidget.ui'
 #
-# Created: Thu Jul 14 16:22:14 2016
+# Created: Tue Jul 26 16:20:29 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -287,9 +287,6 @@ class Ui_QueueEditorWidget(object):
         self.uExtObjectIdScheme = QtGui.QLineEdit(self.scrollAreaWidgetContents)
         self.uExtObjectIdScheme.setObjectName(_fromUtf8("uExtObjectIdScheme"))
         self.gridLayout_13.addWidget(self.uExtObjectIdScheme, 4, 1, 1, 1)
-        self.label_94 = QtGui.QLabel(self.scrollAreaWidgetContents)
-        self.label_94.setObjectName(_fromUtf8("label_94"))
-        self.gridLayout_13.addWidget(self.label_94, 5, 0, 1, 1)
         self.label_92 = QtGui.QLabel(self.scrollAreaWidgetContents)
         self.label_92.setMinimumSize(QtCore.QSize(130, 0))
         self.label_92.setObjectName(_fromUtf8("label_92"))
@@ -320,9 +317,9 @@ class Ui_QueueEditorWidget(object):
         self.label_96 = QtGui.QLabel(self.scrollAreaWidgetContents)
         self.label_96.setObjectName(_fromUtf8("label_96"))
         self.gridLayout_13.addWidget(self.label_96, 2, 0, 1, 1)
-        self.label_97 = QtGui.QLabel(self.scrollAreaWidgetContents)
-        self.label_97.setObjectName(_fromUtf8("label_97"))
-        self.gridLayout_13.addWidget(self.label_97, 4, 0, 1, 1)
+        self.lExtObjectIdScheme = QtGui.QLabel(self.scrollAreaWidgetContents)
+        self.lExtObjectIdScheme.setObjectName(_fromUtf8("lExtObjectIdScheme"))
+        self.gridLayout_13.addWidget(self.lExtObjectIdScheme, 4, 0, 1, 1)
         self.lValref = QtGui.QLabel(self.scrollAreaWidgetContents)
         self.lValref.setObjectName(_fromUtf8("lValref"))
         self.gridLayout_13.addWidget(self.lValref, 6, 0, 1, 1)
@@ -357,6 +354,9 @@ class Ui_QueueEditorWidget(object):
         self.lCertTitle = QtGui.QLabel(self.scrollAreaWidgetContents)
         self.lCertTitle.setObjectName(_fromUtf8("lCertTitle"))
         self.gridLayout_13.addWidget(self.lCertTitle, 7, 0, 1, 1)
+        self.lExternalObjectId = QtGui.QLabel(self.scrollAreaWidgetContents)
+        self.lExternalObjectId.setObjectName(_fromUtf8("lExternalObjectId"))
+        self.gridLayout_13.addWidget(self.lExternalObjectId, 5, 0, 1, 1)
         self.verticalLayout_2.addLayout(self.gridLayout_13)
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.verticalLayout.addWidget(self.scrollArea)
@@ -390,14 +390,14 @@ class Ui_QueueEditorWidget(object):
         self.label_4.setText(_translate("QueueEditorWidget", "Lifecycle:", None))
         self.label_121.setText(_translate("QueueEditorWidget", "Addressable Object:", None))
         self.label_99.setText(_translate("QueueEditorWidget", "Position Type:", None))
-        self.label_94.setText(_translate("QueueEditorWidget", "Ext. Obj Id:", None))
         self.label_92.setText(_translate("QueueEditorWidget", "Object Type:", None))
         self.lAppellation.setText(_translate("QueueEditorWidget", "Appellation:", None))
         self.label_96.setText(_translate("QueueEditorWidget", "Object Name:", None))
-        self.label_97.setText(_translate("QueueEditorWidget", "Ext. Obj Id Scheme:", None))
+        self.lExtObjectIdScheme.setText(_translate("QueueEditorWidget", "Ext. Obj Id Scheme:", None))
         self.lValref.setText(_translate("QueueEditorWidget", "Val Ref:", None))
         self.label_5.setText(_translate("QueueEditorWidget", "Mblk Override:", None))
         self.label_6.setText(_translate("QueueEditorWidget", "Update Position:", None))
         self.uUpdatePosButton.setText(_translate("QueueEditorWidget", "+", None))
         self.lCertTitle.setText(_translate("QueueEditorWidget", "Cert. of Title:", None))
+        self.lExternalObjectId.setText(_translate("QueueEditorWidget", "Ext. Obj Id:", None))
 

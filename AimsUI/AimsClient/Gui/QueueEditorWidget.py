@@ -48,12 +48,11 @@ class QueueEditorWidget( Ui_QueueEditorWidget, QWidget ):
         # limit user inputs
         UiUtility.formMask(self)
         
-#         # Val Ref, Cert Title and App have been temp taken out of scope
-#         hide = (self.lAppellation, self.uAppellation, self.uCertificateOfTitle, 
-#                 self.lCertTitle, self.uValuationReference, self.lValref)
-#         
-#         for uiElement in hide:
-#             uiElement.hide()
+#       # Val Ref, Cert Title and App have been temp taken out of scope
+        hide = (self.uExternalObjectId, self.uExtObjectIdScheme, 
+                 self.lExtObjectIdScheme,  self.lExternalObjectId)
+        for uiElement in hide:
+            uiElement.hide()
         
     def setController( self, controller ):
         """
