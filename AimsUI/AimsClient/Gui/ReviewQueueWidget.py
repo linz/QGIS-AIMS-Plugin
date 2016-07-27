@@ -58,7 +58,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.feature = None
         self.currentGroup = (0,0) #(id, type)
         self.altSelectionId = ()
-        
+        self.comboSelection = []   
         
         # Connections
         self.uDisplayButton.clicked.connect(self.display)
@@ -174,8 +174,11 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
                 self.groupTableView.selectRow(self._groupProxyModel.mapFromSource(matchedIndex).row())
                 self.featuresTableView.selectRow(0)
                 coords = self.uidm.reviewItemCoords(self.currentGroup, self.currentFeatureKey)
-                self.setMarker(coords) 
-                                     
+                if coords:
+                    self.setMarker(coords)
+            else:
+                self.uQueueEditor.clearForm()
+                
         
     def singleReviewObj(self, feedType, objKey): # can the below replace this?
         """
@@ -216,8 +219,9 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         if self.currentGroup[0]:  
             self.currentFeatureKey = self.featureModel.tableSelectionMade(row)   
             self.uQueueEditor.currentFeatureToUi(self.currentReviewFeature())
-            
-            self.setMarker(self.uidm.reviewItemCoords(self.currentGroup, self.currentFeatureKey))
+            coords = self.uidm.reviewItemCoords(self.currentGroup, self.currentFeatureKey)
+            if coords:
+                self.setMarker(coords)
 
     def groupSelected(self, row = None):
         """
@@ -262,6 +266,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         else:
             item.setCheckState(Qt.Checked)
         self.applyFilter(self.comboBoxUser)
+        self.groupSelected()
 
     def groupsFilter(self, row, data):
         """
@@ -278,13 +283,14 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         """ 
         Filter Group Table when the comboBoxUser parameters are modified
         """
-           
+        self.comboSelection = []   
         uFilter = ''
         model = parent.model()
         for row in range(model.rowCount()): 
             item = model.item(row)
             if item.checkState() == Qt.Checked:
                 uFilter+='|'+item.text()
+                self.comboSelection.append(item.text())
         self.groupsFilter(row, str(uFilter)[1:])
                 
     def popUserCombo(self):
@@ -308,8 +314,9 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         
         for i in range(len(cElements)):
             item = QStandardItem(cElements[i])
-            item.setCheckState(Qt.Checked)
             item.setCheckable(True)
+            if item.text() in self.comboSelection:
+                item.setCheckState(Qt.Checked)
             model.setItem(i,item)    
 
    

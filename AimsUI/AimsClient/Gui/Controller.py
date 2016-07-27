@@ -282,6 +282,7 @@ class Controller( QObject ):
         if (isinstance(self.iface.mapCanvas().mapTool(), GetRcl) == False and
                 isinstance(self.iface.mapCanvas().mapTool(), UpdateReviewPosition) == False):          
             self._currentMapTool = self.iface.mapCanvas().mapTool()
+            #self.highlighter.hideAll()
             # logging 
             uilog.info('*** TOOL CHANGE ***    {0} started'.format(self.iface.mapCanvas().mapTool())) 
         

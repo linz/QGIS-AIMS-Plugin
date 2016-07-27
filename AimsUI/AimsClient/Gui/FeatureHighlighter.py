@@ -153,7 +153,12 @@ class FeatureHighlighter(QObject):
         """
         
         self._rclMarker.hide()
-
+    
+    def hideAll(self):
+        self.hideRcl()
+        self.hideReview()
+        self.hideAddress()
+    
     def isVisible(self, layer):
         """
         Test is the layer is visible to the user
