@@ -68,14 +68,25 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         #self.uRefreshButton.clicked.connect(self.refreshData)
           
         # Features View 
+        self._featureProxyModel = QSortFilterProxyModel()
         featuresHeader = ['Id','Full Num', 'Full Road', 'Life Cycle', 'Town', 'Suburb Locality']
-        self.featuresTableView = self.uFeaturesTableView
+        self.featuresTableView = self.uFeaturesTableView        
         self.featureModel = FeatureTableModel(self.reviewData, featuresHeader)
-        self.featuresTableView.setModel(self.featureModel)
+        self._featureProxyModel.setSourceModel(self.featureModel)
+        self.featuresTableView.setModel(self._featureProxyModel)
         self.featuresTableView.rowSelected.connect(self.featureSelected)
         self.featuresTableView.resizeColumnsToContents()
         self.featuresTableView.setColumnHidden(5, True)
-        self.featuresTableView.selectRow(0)
+        self.featuresTableView.selectRow(0)       
+        
+#         featuresHeader = ['Id','Full Num', 'Full Road', 'Life Cycle', 'Town', 'Suburb Locality']
+#         self.featuresTableView = self.uFeaturesTableView
+#         self.featureModel = FeatureTableModel(self.reviewData, featuresHeader)
+#         self.featuresTableView.setModel(self.featureModel)
+#         self.featuresTableView.rowSelected.connect(self.featureSelected)
+#         self.featuresTableView.resizeColumnsToContents()
+#         self.featuresTableView.setColumnHidden(5, True)
+#         self.featuresTableView.selectRow(0)
         
         # Group View 
         self._groupProxyModel = QSortFilterProxyModel()
@@ -88,8 +99,6 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self._groupProxyModel.setSourceModel(self.groupModel)
         self.groupTableView.setModel(self._groupProxyModel)
         self.groupTableView.resizeColumnsToContents()
-        #self.groupTableView.selectionModel().currentRowChanged.connect(self.groupSelected)
-        #self.groupTableView.clicked.connect(self.groupSelected)
         self.groupTableView.rowSelectionChanged.connect(self.groupSelected)
                 
         # connect combobox_users to view and model
