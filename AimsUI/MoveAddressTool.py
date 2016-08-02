@@ -171,7 +171,7 @@ class MoveAddressTool(QgsMapToolIdentify):
                     self._controller.uidm.supplementAddress(feature, respId)
                     feature = self._controller.RespHandler.handleResp(respId, FEEDS['AR'], 'supplement')
                     # />
-                    feature._addressedObject_addressPositions[0].setCoordinates(coords) # setter for this?
+                    feature._addressedObject_addressPositions[0].setCoordinates(coords)
                     if feature._codes_isMeshblockOverride != True:
                         feature.setMeshblock(None)
                     feature = self.af[FeedType.CHANGEFEED].cast(feature)

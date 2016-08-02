@@ -163,13 +163,13 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         """
         
         if self.currentFeatureKey:   
-            #QgsMessageLog.logMessage("Primary: {0}, Alternative: {1}".format(self.currentGroup[0], self.altSelectionId), 'AIMS', QgsMessageLog.INFO)     
             matchedIndex = self.groupModel.findfield('{}'.format(self.currentGroup[0]))
+            
             if matchedIndex.isValid() == False:
                 matchedIndex = self.groupModel.findfield('{}'.format(self.altSelectionId)) or 0            
             row = matchedIndex.row()
             self.groupModel.setKey(row)
-            #self.groupTableView.selectRow(row)
+
             if row != -1:
                 self.groupTableView.selectRow(self._groupProxyModel.mapFromSource(matchedIndex).row())
                 self.featuresTableView.selectRow(0)
@@ -298,7 +298,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         Obtain all unique and active AIMS publisher values 
         """
         
-        data = self.groupModel.getUsers()
+        data = list(set(self.groupModel.getUsers()))
         data.sort()
         self.popCombo(data, self.comboModelUser)
                  

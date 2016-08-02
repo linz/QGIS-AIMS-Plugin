@@ -131,7 +131,9 @@ class LayerManager(QObject):
         At plugin unload, disconnect the 
             extent changed / bbox event
         """
-        try: # Temp - Review. Issue raised as unloaded called at plugin init 
+        #receiversCount = self.receivers(SIGNAL("self._canvas.extentsChanged()"))
+        #if receiversCount > 0:
+        try:    
             self._canvas.extentsChanged.disconnect(self.setbbox)
         except:
             pass

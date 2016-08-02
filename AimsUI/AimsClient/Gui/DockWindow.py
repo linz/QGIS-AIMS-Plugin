@@ -13,7 +13,8 @@ from PyQt4.QtCore import *
 from qgis.core import *
 
 class DockWindow( QDockWidget ):
-
+    unloadPlugin = pyqtSignal()
+    
     def __init__( self, parent, widget, name, title='' ):
         QDockWidget.__init__( self, parent )
         self._name = name
@@ -72,3 +73,7 @@ class DockWindow( QDockWidget ):
                 self.setPos(int(parts[2]),int(parts[3]))
         except:
             pass
+
+    def closeEvent(self, event):
+        self.unloadPlugin.emit()
+        event.accept()

@@ -229,6 +229,7 @@ class UiDataManager(QObject):
     def updateGdata(self, respFeature):
         groupKey = self.matchGroupKey(respFeature._changeGroupId)
         self.data[FEEDS['GR']][groupKey][respFeature._changeId] = respFeature
+        self.rDataChangedSignal.emit()
         
     def matchGroupKey(self, groupId):
         for groupKey in self.data.get(FEEDS['GR']).keys():
@@ -513,7 +514,7 @@ class UiDataManager(QObject):
 
         fullRoad = ''
         for prop in ['_components_roadPrefix', '_components_roadName', '_components_roadType', '_components_roadSuffix',
-                      '_components_waterRoute', '_components_waterName']:
+                      '_components_waterRoute']:
             addProp = None    
             # Groups have nested entities
             if feat._changeType in self.groups:
