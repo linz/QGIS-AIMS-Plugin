@@ -1,6 +1,6 @@
 ################################################################################
 #
-# Copyright 2015 Crown copyright (c)
+# Copyright 2016 Crown copyright (c)
 # Land Information New Zealand and the New Zealand Government.
 # All rights reserved
 #
@@ -8,6 +8,7 @@
 # LICENSE file for more information.
 #
 ################################################################################
+
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 from qgis.core import *
@@ -65,7 +66,6 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.uUpdateButton.clicked.connect(self.updateFeature)
         self.uRejectButton.clicked.connect(self.decline)
         self.uAcceptButton.clicked.connect(self.accept)
-        #self.uRefreshButton.clicked.connect(self.refreshData)
           
         # Features View 
         self._featureProxyModel = QSortFilterProxyModel()
@@ -249,8 +249,6 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
             
         self.altSelectionId = self.groupTableView.model().data(altProxyIndex)
         self.featuresTableView.selectRow(0)
-
-        #QgsMessageLog.logMessage("Primary: {0}, Alternative: {1}".format(self.currentGroup[0], self.altSelectionId), 'AIMS', QgsMessageLog.INFO) 
    
     def userFilterChanged(self, index):
         """ 
@@ -403,13 +401,3 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         """
         
         self._queues.uResolutionTab.refreshData()
-
-#   commented ou 14/6/2016  
-#     
-# if __name__ == '__main__':
-#     app = QApplication(sys.argv)
-#     
-#     
-#     wnd = ReviewQueueWidget()
-#     wnd.show()
-#     sys.exit(app.exec_())

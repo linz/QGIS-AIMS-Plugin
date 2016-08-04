@@ -427,9 +427,9 @@ class Address(Feature):
     def setTownCity( self, townCity ): 
         self._components_townCity = townCity
          
-    def setObjectType( self, objectType ): 
+    def setAddObjectType( self, objectType ): 
         self._addressedObject_objectType = objectType    
-    def setObjectName( self, objectName ): 
+    def setAddObjectName( self, objectName ): 
         self._addressedObject_objectName = objectName  
     #def setAoPositionType( self, aoPositionType ): self._aoPositionType = aoPositionType
     #def set_x( self, x ): self._x = x  
