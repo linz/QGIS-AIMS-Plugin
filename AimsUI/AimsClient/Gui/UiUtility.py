@@ -36,39 +36,40 @@ class UiUtility (object):
     # logging
     global uilog
     uilog = Logger.setup(lf='uiLog')
-        
+    
+    # (uiElement, [Address.property, Address/QueueEditorWidget.setter, Address.getter, QueueEditorWidget.getter,])
     uiObjMappings = OrderedDict([
-                    ('uAddressType',['_components_addressType','setAddressType', '']), 
-                    ('uWarning',['_warning','setWarnings', '_getEntities' ]),
-                    ('uNotes',['_workflow_sourceReason','setSourceReason', '']),
-                    ('ulifeCycle',['_components_lifecycle','setLifecycle', '']),   
-                    ('uLevelType',['_components_levelType','setLevelType', '']), 
-                    ('uLevelValue',['_components_levelValue','setLevelValue', '']), 
-                    ('uUnitType',['_components_unitType','setUnitType', '']),
-                    ('uUnit',['_components_unitValue','setUnitValue', '']),
-                    ('uPrefix',['_components_addressNumberPrefix','setAddressNumberPrefix', '']),
-                    ('uBase',['_components_addressNumber','setAddressNumber', '']),
-                    ('uAlpha',['_components_addressNumberSuffix','setAddressNumberSuffix', '']),
-                    ('uHigh',['_components_addressNumberHigh','setAddressNumberHigh', '']),
-                    ('uExternalAddressIdScheme',['_components_externalAddressIdScheme','setExternalAddressIdScheme', '']),
-                    ('uExternalAddId',['_components_externalAddressId','setExternalAddressId', '']), 
-                    ('uRclId',['_components_roadCentrelineId','setRoadCentrelineId', '']),
-                    ('uRoadPrefix',['_components_roadPrefix','setRoadPrefix', '']),
-                    ('uRoadName',['_components_roadName','setRoadName', '']), 
-                    ('uRoadTypeName',['_components_roadType','setRoadType', '']),   
-                    ('uRoadSuffix',['_components_roadSuffix','setRoadSuffix', '']), 
-                    ('uWaterName',['_components_waterName','setWaterName', '']), 
-                    ('uWaterRouteName',['_components_waterRoute','setWaterRoute', '']),
-                    ('uObjectType',['_addressedObject_objectType','setObjectType', '']),
-                    ('uObjectName',['_addressedObject_objectName','setObjectName', '']),
-                    #'uPositionType':['_addressedObject_addressPositions[0]','_addressedObject_addressPositions[0].setPositionType',''],
-                    ('uExtObjectIdScheme',['_addressedObject_externalObjectIdScheme','setExternalObjectIdScheme', '']),
-                    ('uExternalObjectId',['_addressedObject_externalObjectId','setExternalObjectId', '']),
-                    ('uValuationReference',['_addressedObject_valuationReference','setValuationReference', '']),
-                    ('uCertificateOfTitle',['_addressedObject_certificateOfTitle','setCertificateOfTitle', '']),
-                    ('uAppellation',['_addressedObject_appellation','setAppellation', '']),
-                    ('uMblkOverride',['_codes_meshblock','setMeshblock', ''])
-                    ])
+        ('uAddressType',['_components_addressType','setAddressType', '', 'set']), 
+        ('uWarning',['_warning','setWarnings', '_getEntities' ,'']),
+        ('uNotes',['_workflow_sourceReason','setSourceReason', '', '']),
+        ('ulifeCycle',['_components_lifecycle','setLifecycle', '', '']),   
+        ('uLevelType',['_components_levelType','setLevelType', '', '']), 
+        ('uLevelValue',['_components_levelValue','setLevelValue', '', '']), 
+        ('uUnitType',['_components_unitType','setUnitType', '', '']),
+        ('uUnit',['_components_unitValue','setUnitValue', '', '']),
+        ('uPrefix',['_components_addressNumberPrefix','setAddressNumberPrefix', '', '']),
+        ('uBase',['_components_addressNumber','setAddressNumber', '', '']),
+        ('uAlpha',['_components_addressNumberSuffix','setAddressNumberSuffix', '', '']),
+        ('uHigh',['_components_addressNumberHigh','setAddressNumberHigh', '', '']),
+        ('uExternalAddressIdScheme',['_components_externalAddressIdScheme','setExternalAddressIdScheme', '', '']),
+        ('uExternalAddId',['_components_externalAddressId','setExternalAddressId', '', '']), 
+        ('uRclId',['_components_roadCentrelineId','setRoadCentrelineId', '', '']),
+        ('uRoadPrefix',['_components_roadPrefix','setRoadPrefix', '', '']),
+        ('uRoadName',['_components_roadName','setRoadName', '', '']), 
+        ('uRoadTypeName',['_components_roadType','setRoadType', '', '']),   
+        ('uRoadSuffix',['_components_roadSuffix','setRoadSuffix', '', '']), 
+        ('uWaterName',['_components_waterName','setWaterName', '', '']), 
+        ('uWaterRouteName',['_components_waterRoute','setWaterRoute', '', '']),
+        ('uObjectType',['_addressedObject_objectType','setAddObjectType', '', '']),
+        ('uObjectName',['_addressedObject_objectName','setAddObjectName', '', '']),
+        #'uPositionType':['_addressedObject_addressPositions[0]','_addressedObject_addressPositions[0].setPositionType',''],
+        ('uExtObjectIdScheme',['_addressedObject_externalObjectIdScheme','setExternalObjectIdScheme', '', '']),
+        ('uExternalObjectId',['_addressedObject_externalObjectId','setExternalObjectId', '', '']),
+        ('uValuationReference',['_addressedObject_valuationReference','setValuationReference', '', '']),
+        ('uCertificateOfTitle',['_addressedObject_certificateOfTitle','setCertificateOfTitle', '', '']),
+        ('uAppellation',['_addressedObject_appellation','setAppellation', '', '']),
+        ('uMblkOverride',['_codes_meshblock','setMeshblock', '', ''])
+        ])
     
     @staticmethod
     def transform (iface, coords, tgt=4167):

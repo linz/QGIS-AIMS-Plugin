@@ -79,15 +79,6 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.featuresTableView.setColumnHidden(5, True)
         self.featuresTableView.selectRow(0)       
         
-#         featuresHeader = ['Id','Full Num', 'Full Road', 'Life Cycle', 'Town', 'Suburb Locality']
-#         self.featuresTableView = self.uFeaturesTableView
-#         self.featureModel = FeatureTableModel(self.reviewData, featuresHeader)
-#         self.featuresTableView.setModel(self.featureModel)
-#         self.featuresTableView.rowSelected.connect(self.featureSelected)
-#         self.featuresTableView.resizeColumnsToContents()
-#         self.featuresTableView.setColumnHidden(5, True)
-#         self.featuresTableView.selectRow(0)
-        
         # Group View 
         self._groupProxyModel = QSortFilterProxyModel()
         self._groupProxyModel.setFilterCaseSensitivity(Qt.CaseInsensitive)

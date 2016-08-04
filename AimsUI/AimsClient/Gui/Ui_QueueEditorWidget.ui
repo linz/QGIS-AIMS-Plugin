@@ -25,7 +25,7 @@
         <x>0</x>
         <y>0</y>
         <width>364</width>
-        <height>1161</height>
+        <height>1136</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -338,7 +338,14 @@
             </widget>
            </item>
            <item row="4" column="1">
-            <widget class="QComboBox" name="uUnitType"/>
+            <widget class="QComboBox" name="uUnitType">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+            </widget>
            </item>
            <item row="14" column="1">
             <widget class="QLineEdit" name="uRoadName">
@@ -366,7 +373,7 @@
            <item row="8" column="0">
             <widget class="QLabel" name="label_109">
              <property name="text">
-              <string>Number Suffix:</string>
+              <string>Alpha:</string>
              </property>
             </widget>
            </item>
@@ -475,7 +482,7 @@
                 </size>
                </property>
                <property name="text">
-                <string>&gt;</string>
+                <string/>
                </property>
               </widget>
              </item>
@@ -578,9 +585,6 @@
            </property>
           </widget>
          </item>
-         <item row="4" column="1">
-          <widget class="QLineEdit" name="uExtObjectIdScheme"/>
-         </item>
          <item row="1" column="0">
           <widget class="QLabel" name="label_92">
            <property name="minimumSize">
@@ -594,52 +598,10 @@
            </property>
           </widget>
          </item>
-         <item row="8" column="0">
-          <widget class="QLabel" name="lAppellation">
-           <property name="text">
-            <string>Appellation:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="7" column="1">
-          <widget class="QLineEdit" name="uCertificateOfTitle">
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item row="8" column="1">
-          <widget class="QLineEdit" name="uAppellation">
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="1">
-          <widget class="QLineEdit" name="uExternalObjectId">
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item row="6" column="1">
-          <widget class="QLineEdit" name="uValuationReference">
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="1">
-          <widget class="QLineEdit" name="uObjectName">
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="label_96">
-           <property name="text">
-            <string>Object Name:</string>
+         <item row="9" column="1">
+          <widget class="QLineEdit" name="uMblkOverride">
+           <property name="maxLength">
+            <number>7</number>
            </property>
           </widget>
          </item>
@@ -650,18 +612,32 @@
            </property>
           </widget>
          </item>
-         <item row="6" column="0">
-          <widget class="QLabel" name="lValref">
+         <item row="6" column="1">
+          <widget class="QLineEdit" name="uValuationReference">
            <property name="text">
-            <string>Val Ref:</string>
+            <string/>
            </property>
           </widget>
          </item>
          <item row="1" column="1">
           <widget class="QComboBox" name="uObjectType"/>
          </item>
-         <item row="3" column="1">
-          <widget class="QComboBox" name="uPositionType"/>
+         <item row="4" column="1">
+          <widget class="QLineEdit" name="uExtObjectIdScheme"/>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_96">
+           <property name="text">
+            <string>Object Name:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="0">
+          <widget class="QLabel" name="lCertTitle">
+           <property name="text">
+            <string>Cert. of Title:</string>
+           </property>
+          </widget>
          </item>
          <item row="9" column="0">
           <widget class="QLabel" name="label_5">
@@ -670,28 +646,62 @@
            </property>
           </widget>
          </item>
-         <item row="9" column="1">
-          <widget class="QLineEdit" name="uMblkOverride">
-           <property name="maxLength">
-            <number>7</number>
+         <item row="5" column="1">
+          <widget class="QLineEdit" name="uExternalObjectId">
+           <property name="text">
+            <string/>
            </property>
           </widget>
          </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_6">
+         <item row="8" column="0">
+          <widget class="QLabel" name="lAppellation">
            <property name="text">
-            <string>Update Position:</string>
+            <string>Appellation:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="0">
+          <widget class="QLabel" name="lValref">
+           <property name="text">
+            <string>Val Ref:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="1">
+          <widget class="QLineEdit" name="uCertificateOfTitle">
+           <property name="text">
+            <string/>
            </property>
           </widget>
          </item>
          <item row="0" column="1">
-          <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <layout class="QHBoxLayout" name="horizontalLayout_3"/>
+         </item>
+         <item row="8" column="1">
+          <widget class="QLineEdit" name="uAppellation">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0">
+          <widget class="QLabel" name="lExternalObjectId">
+           <property name="text">
+            <string>Ext. Obj Id:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QLineEdit" name="uObjectName">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
            <item>
-            <widget class="QLabel" name="uUpdatePostionLabel">
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
+            <widget class="QComboBox" name="uPositionType"/>
            </item>
            <item>
             <widget class="QPushButton" name="uUpdatePosButton">
@@ -708,25 +718,11 @@
               </size>
              </property>
              <property name="text">
-              <string>+</string>
+              <string/>
              </property>
             </widget>
            </item>
           </layout>
-         </item>
-         <item row="7" column="0">
-          <widget class="QLabel" name="lCertTitle">
-           <property name="text">
-            <string>Cert. of Title:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="0">
-          <widget class="QLabel" name="lExternalObjectId">
-           <property name="text">
-            <string>Ext. Obj Id:</string>
-           </property>
-          </widget>
          </item>
         </layout>
        </item>

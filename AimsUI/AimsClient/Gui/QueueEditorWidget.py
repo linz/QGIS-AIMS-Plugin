@@ -17,6 +17,8 @@ from Ui_QueueEditorWidget import Ui_QueueEditorWidget
 from UiUtility import UiUtility
 
 
+
+
 class QueueEditorWidget( Ui_QueueEditorWidget, QWidget ):
     """
     QWidget hosting the user fields used to edit an AIMS Feature
@@ -36,23 +38,43 @@ class QueueEditorWidget( Ui_QueueEditorWidget, QWidget ):
         
         QWidget.__init__( self, parent )
         self.setupUi(self)
+        
+        #icons for buttons
+        moveIcon = QIcon()
+        moveIcon.addPixmap(QPixmap(":/plugins/QGIS-AIMS-Plugin/resources/moveaddress.png"), QIcon.Normal, QIcon.On)
+        self.uUpdatePosButton.setIcon(moveIcon)
+        
+        getRclIcon = QIcon()
+        getRclIcon.addPixmap(QPixmap(":/plugins/QGIS-AIMS-Plugin/resources/selectrcl.png"), QIcon.Normal, QIcon.On)
+        self.uGetRclToolButton.setIcon(getRclIcon)
+        
         self.feature = None
+        self.featureId = None
         #self.uiToObjMappings = self.formObjMappings() < -- redundant? 4/3/16
         UiUtility.setFormCombos(self)
         self.uGetRclToolButton.clicked.connect(self.getRcl)      
         self.uUpdatePosButton.clicked.connect(self.updatePosition)     
-        self.setController( controller )
+        self.setController(controller)
         self.uAddressType.currentIndexChanged.connect(self.setEditability)
         self.setWarningColour()
         
         # limit user inputs
         UiUtility.formMask(self)
         
-#       # Val Ref, Cert Title and App have been temp taken out of scope
+        #Ext Object temp taken out of scope
         hide = (self.uExternalObjectId, self.uExtObjectIdScheme, 
                  self.lExtObjectIdScheme,  self.lExternalObjectId)
         for uiElement in hide:
             uiElement.hide()
+        
+        # connect all editing ui elements to 
+
+        for uiElement, v in UiUtility.uiObjMappings.iteritems():    
+            if isinstance(getattr(self, uiElement), QLineEdit):# or isinstance(getattr(self, uiElement), QLabel):
+                getattr(self, uiElement).textEdited.connect(getattr(self, v[1]))
+            elif isinstance(getattr(self, uiElement), QComboBox):
+                getattr(self, uiElement).currentIndexChanged.connect(getattr(self, v[1]))
+
         
     def setController( self, controller ):
         """
@@ -82,13 +104,19 @@ class QueueEditorWidget( Ui_QueueEditorWidget, QWidget ):
         
         @param feature: AIMS Feature
         @type  feature: AIMSDataManager.Address()
+
         AIMSDataManager.Address
         """
         
         if feature:
             self.feature = feature
             UiUtility.featureToUi(self, 'r'+self.feature._changeType)
-    
+            if self.featureId == self.feature._components_addressId:
+                self.reinstateEdits()
+            else:
+                self.clearEdits()
+                self.featureId = self.feature._components_addressId
+            
     def clearForm(self):
         UiUtility.clearForm(self)
     
@@ -114,4 +142,92 @@ class QueueEditorWidget( Ui_QueueEditorWidget, QWidget ):
         """
         
         self._controller.startUpdateReviewPosTool(self.feature)
+    
+    def reinstateEdits(self):
+        """
+        If a Data Manager data supply occurs while editing 
+        reinstate the user input values
+        """
         
+        for uiElement, v in UiUtility.uiObjMappings.iteritems():
+            if getattr(self, v[0]):
+                if isinstance(getattr(self, uiElement), QLineEdit):# or isinstance(getattr(self, uiElement), QLabel):
+                    getattr(self, uiElement).setText(getattr(self, v[0]))
+                elif isinstance(getattr(self, uiElement), QComboBox):
+                    getattr(self, uiElement).setCurrentIndex(QComboBox.findText(uiElement, getattr(self, v[0])))
+        
+    def clearEdits(self):
+        """
+        set all temp properties to None
+        """
+        
+        for v in UiUtility.uiObjMappings.values():
+            setattr(self, v[0], None)
+        
+    # Setters used to track user edit between saves
+    
+    #Could just iterate all these and use setattr where required
+    def setAddressType(self):     
+        self._components_addressType = self.uAddressType.currentText()
+    def setWarnings(self):
+        self._warning = self.uWarning.text()
+    def setSourceReason(self):
+        self._workflow_sourceReason = self.uNotes.text()
+    def setLifecycle(self):
+        self._components_lifecycle = self.ulifeCycle.currentText()
+    def setLevelType(self): 
+        self._components_levelType = self.uLevelValue.currentText()
+    def setLevelValue(self): 
+        self._components_levelValue = self.uLevelValue.text()
+    def setUnitType(self):
+        self._components_unitType = self.uUnitType.currentText()
+    def setUnitValue(self):
+        self._components_unitValue = self.uUnit.text()
+    def setAddressNumberPrefix(self):
+        self._components_addressNumberPrefix = self.uPrefix.text()
+    def setAddressNumber(self):
+        self._components_addressNumber = self.uBase.text()
+    def setAddressNumberSuffix(self):
+        self._components_addressNumberSuffix = self.uAlpha.text()
+    def setAddressNumberHigh(self):
+        self._components_addressNumberHigh = self.uHigh.text()
+    def setExternalAddressIdScheme(self):
+        self._components_externalAddressIdScheme = self.uExternalAddressIdScheme.text()
+    def setExternalAddressId(self):
+        self._components_externalAddressId = self.uExternalAddId.text()
+    def setRoadCentrelineId(self):
+        self._components_roadCentrelineId = self.uRclId.text()
+    def setRoadPrefix(self):
+        self._components_roadPrefix = self.uRoadPrefix.text()
+    def setRoadName(self): 
+        self._components_roadName = self.uRoadName.text()
+    def setRoadType(self):
+        self._components_roadType = self.uRoadTypeName.text()
+    def setRoadSuffix(self): 
+        self._components_roadSuffix = self.uRoadSuffix.text()
+    def setWaterName(self): 
+        self._components_waterName = self.uWaterName.text()
+    def setWaterRoute(self):
+        self._components_waterRoute = self.uWaterRouteName.text()
+    def setAddObjectType(self):
+        self._addressedObject_objectType = self.uObjectType.currentText()
+    def setAddObjectName(self):
+        self._addressedObject_objectName = self.uObjectName.text()
+    def setExternalObjectIdScheme(self):
+        self._addressedObject_externalObjectIdScheme = self.uExtObjectIdScheme.text()
+    def setExternalObjectId(self):
+        self._addressedObject_externalObjectId = self.uExternalObjectId.text()
+    def setValuationReference(self):
+        self._addressedObject_valuationReference = self.uValuationReference.text()
+    def setCertificateOfTitle(self):
+        self._addressedObject_certificateOfTitle = self.uCertificateOfTitle.text()
+    def setAppellation(self):
+        self._addressedObject_appellation = self.uAppellation.text()
+    def setMeshblock(self):
+        self._codes_meshblock = self.uMblkOverride.text()
+    
+    def resetValues(self):
+        ''' read over UI utility.mapping and set all to none '''
+        pass 
+    
+    
