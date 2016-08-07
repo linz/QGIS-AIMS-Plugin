@@ -107,7 +107,6 @@ class UpdateReviewPosition(QgsMapToolIdentifyFeature):
             
             respId = int(time.time())
             
-            #self._currentRevItem.__str__.im_class.type = 2
             if self._currentRevItem._changeType in ('Add', 'Update'):
                 feedType = FEEDS['AR']
                 self._currentRevItem._addressedObject_addressPositions[0].setCoordinates(coords)

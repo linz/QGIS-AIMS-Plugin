@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'AimsUI/AimsClient/Gui/Ui_QueueEditorWidget.ui'
 #
-# Created: Thu Aug  4 15:39:36 2016
+# Created: Mon Aug  8 09:12:12 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -33,10 +33,13 @@ class Ui_QueueEditorWidget(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName(_fromUtf8("scrollArea"))
         self.scrollAreaWidgetContents = QtGui.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 364, 1136))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 364, 1144))
         self.scrollAreaWidgetContents.setObjectName(_fromUtf8("scrollAreaWidgetContents"))
         self.verticalLayout_2 = QtGui.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
+        self.horizontalLayout_4 = QtGui.QHBoxLayout()
+        self.horizontalLayout_4.setObjectName(_fromUtf8("horizontalLayout_4"))
+        self.verticalLayout_2.addLayout(self.horizontalLayout_4)
         self.splitter = QtGui.QSplitter(self.scrollAreaWidgetContents)
         self.splitter.setOrientation(QtCore.Qt.Vertical)
         self.splitter.setObjectName(_fromUtf8("splitter"))
@@ -179,6 +182,11 @@ class Ui_QueueEditorWidget(object):
         self.uUnit.setObjectName(_fromUtf8("uUnit"))
         self.gridLayout_15.addWidget(self.uUnit, 5, 1, 1, 1)
         self.uUnitType = QtGui.QComboBox(self.gridLayoutWidget_8)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.MinimumExpanding, QtGui.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.uUnitType.sizePolicy().hasHeightForWidth())
+        self.uUnitType.setSizePolicy(sizePolicy)
         self.uUnitType.setObjectName(_fromUtf8("uUnitType"))
         self.gridLayout_15.addWidget(self.uUnitType, 4, 1, 1, 1)
         self.uRoadName = QtGui.QLineEdit(self.gridLayoutWidget_8)

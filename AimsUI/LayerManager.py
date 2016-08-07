@@ -330,7 +330,7 @@ class LayerManager(QObject):
         """
         
         refLayers ={'par':( 'par', 'lds', 'all_parcels', 'gid', True, "ST_GeometryType(shape) in ('ST_MultiPolygon', 'ST_Polygon' )",'Parcels' ) ,
-                    'rcl':( 'rcl', 'roads', 'road_name_mview', 'gid', True, "",'Roads' )
+                    'rcl':( 'rcl', 'roads', 'simple_road_name_view', 'uid', True, "",'Roads' )
                     }
 
         for layerId , layerProps in refLayers.items():

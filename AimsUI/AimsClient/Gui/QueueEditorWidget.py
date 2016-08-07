@@ -31,6 +31,7 @@ class QueueEditorWidget( Ui_QueueEditorWidget, QWidget ):
     """
 
     warningStyle = "* { color : red; font-weight: bold }"
+    fulladdressStyle = "* { color : black; font-weight: bold }"
 
     def __init__( self, parent=None, controller=None ):
         """
@@ -51,13 +52,12 @@ class QueueEditorWidget( Ui_QueueEditorWidget, QWidget ):
         
         self.feature = None
         self.featureId = None
-        #self.uiToObjMappings = self.formObjMappings() < -- redundant? 4/3/16
         UiUtility.setFormCombos(self)
         self.uGetRclToolButton.clicked.connect(self.getRcl)      
         self.uUpdatePosButton.clicked.connect(self.updatePosition)     
         self.setController(controller)
         self.uAddressType.currentIndexChanged.connect(self.setEditability)
-        self.setWarningColour()
+        self.setStyle()
         
         # limit user inputs
         UiUtility.formMask(self)
@@ -69,14 +69,12 @@ class QueueEditorWidget( Ui_QueueEditorWidget, QWidget ):
             uiElement.hide()
         
         # connect all editing ui elements to 
-
         for uiElement, v in UiUtility.uiObjMappings.iteritems():    
-            if isinstance(getattr(self, uiElement), QLineEdit):# or isinstance(getattr(self, uiElement), QLabel):
+            if isinstance(getattr(self, uiElement), QLineEdit):
                 getattr(self, uiElement).textEdited.connect(getattr(self, v[1]))
             elif isinstance(getattr(self, uiElement), QComboBox):
-                getattr(self, uiElement).currentIndexChanged.connect(getattr(self, v[1]))
+                getattr(self, uiElement).activated.connect(getattr(self, v[1]))
 
-        
     def setController( self, controller ):
         """
         Assign the controller to the QueueWditorWidget
@@ -90,14 +88,13 @@ class QueueEditorWidget( Ui_QueueEditorWidget, QWidget ):
             controller = Controller.instance()
         self._controller = controller
     
-    def setWarningColour( self ):
+    def setStyle( self ):
         """
         Define the warning stylisation
         """
         
         style = ""
-        style = self.warningStyle
-        self.uWarning.setStyleSheet(style)
+        self.uWarning.setStyleSheet(self.warningStyle)
          
     def currentFeatureToUi(self, feature):
         """
@@ -112,11 +109,11 @@ class QueueEditorWidget( Ui_QueueEditorWidget, QWidget ):
         if feature:
             self.feature = feature
             UiUtility.featureToUi(self, 'r'+self.feature._changeType)
-            if self.featureId == self.feature._components_addressId:
+            if self.featureId == self.feature._changeId:
                 self.reinstateEdits()
             else:
                 self.clearEdits()
-                self.featureId = self.feature._components_addressId
+            self.featureId = self.feature._changeId
             
     def clearForm(self):
         UiUtility.clearForm(self)
@@ -151,12 +148,12 @@ class QueueEditorWidget( Ui_QueueEditorWidget, QWidget ):
         """
         
         for uiElement, v in UiUtility.uiObjMappings.iteritems():
-            if getattr(self, v[0]):
-                if isinstance(getattr(self, uiElement), QLineEdit):# or isinstance(getattr(self, uiElement), QLabel):
+            if hasattr(self, v[0]):
+                if isinstance(getattr(self, uiElement), QLineEdit) and getattr(self,  v[0]):
                     getattr(self, uiElement).setText(getattr(self, v[0]))
-                elif isinstance(getattr(self, uiElement), QComboBox):
-                    getattr(self, uiElement).setCurrentIndex(QComboBox.findText(uiElement, getattr(self, v[0])))
-        
+                elif isinstance(getattr(self, uiElement), QComboBox) and getattr(self, v[0]):
+                    getattr(self, uiElement).setCurrentIndex(QComboBox.findText(getattr(self, uiElement), v[0]))
+
     def clearEdits(self):
         """
         set all temp properties to None
@@ -166,8 +163,6 @@ class QueueEditorWidget( Ui_QueueEditorWidget, QWidget ):
             setattr(self, v[0], None)
         
     # Setters used to track user edit between saves
-    
-    #Could just iterate all these and use setattr where required
     def setAddressType(self):     
         self._components_addressType = self.uAddressType.currentText()
     def setWarnings(self):
@@ -177,7 +172,7 @@ class QueueEditorWidget( Ui_QueueEditorWidget, QWidget ):
     def setLifecycle(self):
         self._components_lifecycle = self.ulifeCycle.currentText()
     def setLevelType(self): 
-        self._components_levelType = self.uLevelValue.currentText()
+        self._components_levelType = self.uLevelType.currentText()
     def setLevelValue(self): 
         self._components_levelValue = self.uLevelValue.text()
     def setUnitType(self):
@@ -226,9 +221,5 @@ class QueueEditorWidget( Ui_QueueEditorWidget, QWidget ):
         self._addressedObject_appellation = self.uAppellation.text()
     def setMeshblock(self):
         self._codes_meshblock = self.uMblkOverride.text()
-    
-    def resetValues(self):
-        ''' read over UI utility.mapping and set all to none '''
-        pass 
-    
+      
     

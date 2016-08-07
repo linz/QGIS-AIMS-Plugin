@@ -170,30 +170,7 @@ class EditFeatureWidget( Ui_EditFeatureDialog, QWidget ):
         
         position = Position.getInstance(pos)
         self.feature.setAddressPositions(position)
-    
-#     def raiseErrorMesg(self, mesg):
-#         QMessageBox.warning(self._iface.mainWindow(),"AIMS Warnings", '{0}'.format(mesg))
-        
-#     def objCompleteness(self):
-#         """
-#         Test the minimum required properties have been set
-#         
-#         @rtype: boolean
-#         """
-#         
-#         if self.uAddressType.currentText() == 'Road' and not self.feature._components_roadName: 
-#             self.raiseErrorMesg('Please supply a Road Name')
-#             return False
-#         elif self.uAddressType.currentText() == 'Water' and not self.feature._components_waterRoute: 
-#             self.raiseErrorMesg('Please supply a Water Route Name')
-#             return False
-#         elif not self.feature._components_addressNumber:
-#             self.raiseErrorMesg('Please supply a Complete Address Number')
-#             return False
-#         elif self.parent == 'update' and self.ulifeCycle.currentText() == 'Proposed':
-#             self.raiseErrorMesg('A Feature may not be updated to "Proposed"')
-#         else: return True
-                
+                   
     def submitAddress(self):
         """ 
         Submit the user inputed information to DataManager

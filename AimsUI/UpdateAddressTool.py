@@ -109,7 +109,6 @@ class UpdateAddressTool(QgsMapToolIdentify):
             return
         elif len(results) == 1:
             # initialise an address object and populate from selected feature
-
             self._feature = self._controller.uidm.singleFeatureObj(results[0].mFeature.attribute('addressId'))
             
         else: # Stacked points

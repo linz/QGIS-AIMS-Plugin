@@ -770,8 +770,8 @@ class Listener(QThread):
 
         for k , v in self.data.items():
             if v and self.previousData[k] != v:
-                self.emit(SIGNAL('dataChanged'), v, k) # failing as a new object is created for same obj in dm. Need new compare method
-        self.previousData = self.data                   # probably comparing (add_id & version)
+                self.emit(SIGNAL('dataChanged'), v, k) 
+        self.previousData = self.data                   
     
     def run(self):
         """

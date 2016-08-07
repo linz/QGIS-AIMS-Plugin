@@ -116,8 +116,7 @@ class ResponseHandler(object):
                 # precede to update self._data
                     self.updateData(resp, feedType, action)
                     return True
-                    # return resp     
-                         
+            
     def handleResp(self, respId, feedType, action = None):
         """
         Test for a response in the response queue with the relevant repId'''

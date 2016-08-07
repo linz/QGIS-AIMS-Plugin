@@ -25,10 +25,13 @@
         <x>0</x>
         <y>0</y>
         <width>364</width>
-        <height>1136</height>
+        <height>1144</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_4"/>
+       </item>
        <item>
         <widget class="QSplitter" name="splitter">
          <property name="orientation">

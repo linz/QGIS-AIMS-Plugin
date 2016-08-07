@@ -268,7 +268,7 @@ class AimsApi(object):
         @type uid: Integer
         @return: Response from HTTP request
         '''
-        #http://devassgeo01:8080/aims/api/admin/users {add/update/delete}
+        #~/aims/api/admin/users {add/update/delete}
         url = '{}/admin/users/{}/{}'.format(self._url,uid,TESTPATH).rstrip('/')
         resp, content = self._request(url,UserActionType.HTTP[uat], json.dumps(payload), self._headers)
         return self.handleResponse(url,resp["status"], json.loads(content) )
