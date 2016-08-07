@@ -1,6 +1,6 @@
 ################################################################################
 #
-# Copyright 2015 Crown copyright (c)
+# Copyright 2016 Crown copyright (c)
 # Land Information New Zealand and the New Zealand Government.
 # All rights reserved
 #
@@ -8,6 +8,7 @@
 # LICENSE file for more information.
 #
 ################################################################################
+
 from qgis.core import *
 from qgis.gui import *
 from PyQt4.QtGui import *
@@ -115,8 +116,7 @@ class ResponseHandler(object):
                 # precede to update self._data
                     self.updateData(resp, feedType, action)
                     return True
-                    # return resp     
-                         
+            
     def handleResp(self, respId, feedType, action = None):
         """
         Test for a response in the response queue with the relevant repId'''

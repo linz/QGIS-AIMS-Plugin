@@ -1,6 +1,6 @@
 ################################################################################
 #
-# Copyright 2015 Crown copyright (c)
+# Copyright 2016 Crown copyright (c)
 # Land Information New Zealand and the New Zealand Government.
 # All rights reserved
 #
@@ -8,6 +8,7 @@
 # LICENSE file for more information.
 #
 ################################################################################
+
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
@@ -87,10 +88,10 @@ class FeatureTableModel(QAbstractTableModel):
         
         QAbstractTableModel.__init__(self, parent)
         self.dummyData = {('','', '', '', ''): [['', '', '', '', '']]}
-        if not data: data = self.dummyData # dummy data if nothing return from dm
+        if not data: data = self.dummyData
         self._data = data
         self.headerdata = headerdata
-        self.dict_key = self._data.keys()[0] # on init, storing any old key until the users updates it. issue when none returned....
+        self.dict_key = self._data.keys()[0]
                         
     def setKey(self, key = None):
         """
@@ -124,10 +125,9 @@ class FeatureTableModel(QAbstractTableModel):
         @rtype: integer
         """
         
-        #if self._data == self.dummyData: return 0
         try:
             return len(self._data[self.dict_key][0])
-        except: return 0 # no data for the group class
+        except: return 0
         
     def data(self, QModelIndex, int_role=None):
         """ 
@@ -161,7 +161,6 @@ class FeatureTableModel(QAbstractTableModel):
             self._data = data
             # reset dict key
             self.dict_key = self._data.keys()[0]
-        
     
     def headerData(self, col, orientation, role):
         """ 
@@ -213,7 +212,7 @@ class GroupTableModel(QAbstractTableModel):
         """
         QAbstractTableModel.__init__(self, parent)
         self.dummyData = {('','', '', '', ''): [['', '', '', '', '']]}
-        if not data: data = self.dummyData # dummy data if nothing return from dm
+        if not data: data = self.dummyData
         self._data = sorted(data.keys())
         self.groupModel = featureModel
         self.headerdata = headerdata
@@ -321,10 +320,7 @@ class GroupTableModel(QAbstractTableModel):
         @return: unique sourceUsers as defined in self._data 
         @rtype: list
         """
-        
-        #try:# hack to ensure working demo - it seems when an conflict is raised the below list cannot be compiled
         return list(set([i[3] for i in self._data]))
-        #except: return [] 
         
     def getOrgs(self):
         """
@@ -385,7 +381,7 @@ class GroupTableModel(QAbstractTableModel):
         """
         
         startindex = self.index(0, 0)
-        items = self.match(startindex, Qt.DisplayRole, recId, 1, Qt.MatchExactly | Qt.MatchWrap) # chnage to only search the first instance
+        items = self.match(startindex, Qt.DisplayRole, recId, 1, Qt.MatchExactly | Qt.MatchWrap)
         try:
             return items[0]
         except IndexError:

@@ -21,7 +21,7 @@ import threading
 from AimsApi import AimsApi 
 from AimsUtility import FeedRef,ActionType,ApprovalType,GroupActionType,GroupApprovalType,UserActionType,FeatureType,FeedType
 from AimsUtility import AimsException
-from Const import ENABLE_ENTITY_EVALUATION, MERGE_RESPONSE
+from Const import ENABLE_ENTITY_EVALUATION, MERGE_RESPONSE,MAX_FEATURE_COUNT
 from Address import Entity, EntityValidation, EntityAddress
 from AimsLogging import Logger
 from FeatureFactory import FeatureFactory
@@ -195,7 +195,8 @@ class DataUpdater(Observable):
         '''
         featurelist = []
         g = self.factory.get(model=feat['properties'])#group
-        ce,feat2 = self.api.getOneFeature(etft,'{}/address'.format(cid))#group entity/adr list
+        #HACK subst cid for cid+count string
+        ce,feat2 = self.api.getOneFeature(etft,'{}/address?count={}'.format(cid,MAX_FEATURE_COUNT))#group entity/adr list
         if any(ce.values()): aimslog.error('Single-feature request failure {}'.format(ce))
         etft2 = FeedRef((FeatureType.ADDRESS,FeedType.RESOLUTIONFEED))
         factory2 = FeatureFactory.getInstance(etft2)
@@ -314,7 +315,9 @@ class DataUpdaterDRC(DataUpdater):
         return self.agu._version if hasattr(self.agu,'_version') and self.agu._version else self._version() 
     
     def _version(self):
-        '''Function to read AIMS version value from single Feature pages'''        
+        '''Function to read AIMS version value from single Feature pages
+        @return: Integer. Feature version number 
+        '''        
         ce,jc = self.api.getOneFeature(FeedRef((self.etft.et,self.oft)),self.identifier)
         if any(ce.values()): aimslog.error('Single-feature request failure {}'.format(ce))
         if jc['properties'].has_key('version'):

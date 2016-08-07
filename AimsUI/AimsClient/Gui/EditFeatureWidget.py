@@ -27,6 +27,11 @@ class EditFeatureWidget( Ui_EditFeatureDialog, QWidget ):
         
         QWidget.__init__( self )
         self.setupUi(self)
+        
+        getRclIcon = QIcon()
+        getRclIcon.addPixmap(QPixmap(":/plugins/QGIS-AIMS-Plugin/resources/selectrcl.png"), QIcon.Normal, QIcon.On)
+        self.uGetRclToolButton.setIcon(getRclIcon)
+        
         self.setController( controller )
         self._iface = self._controller.iface
         self._layerManager = self._controller._layerManager
@@ -35,28 +40,30 @@ class EditFeatureWidget( Ui_EditFeatureDialog, QWidget ):
         self.feature = None
         
 #         # Val Ref, Cert Title and App have been temp taken out of scope
-#         hide = (self.lAppellation, self.uAppellation, self.uCertificateOfTitle, 
-#                 self.lCertTitle, self.uValuationReference, self.lValref)
-#         
-#         for uiElement in hide:
-#             uiElement.hide()
- 
+        hide = (self.uExternalObjectId, self.uExtObjectIdScheme, 
+                 self.lExtObjectIdScheme,  self.lExternalObjectId)
+        for uiElement in hide:
+            uiElement.hide()
+            
+        self.wAddObj.hide()
+        
         # Make connections
         self.uAddressType.currentIndexChanged.connect(self.setEditability)
+        self.buttonAO.clicked.connect(self.showAddObj)
+        # connect dynamic address splitter components 
         self.uFullNum.textEdited.connect(self.fullNumChanged)
-        self.uPrefix.textEdited.connect(self.partNumChanged)
-        self.uUnit.textEdited.connect(self.partNumChanged)
-        self.uBase.textEdited.connect(self.partNumChanged)
-        self.uHigh.textEdited.connect(self.partNumChanged)
-        self.uAlpha.textEdited.connect(self.partNumChanged)
         
+        partComponents = (self.uPrefix,self.uUnit, self.uBase, 
+                          self.uBase, self.uHigh, self.uAlpha )
+        
+        for com in partComponents:
+            com.textEdited.connect(self.partNumChanged)
+         
         self.uSubmitAddressButton.clicked.connect(self.submitAddress)
         self.uAbort.clicked.connect(self.closeDlg)
-        #self.rejected.connect(self.closeDlg)
         self.uGetRclToolButton.clicked.connect(self.getRcl)
-        self.af = {ft:FeatureFactory.getInstance(FEEDS['AC']) for ft in FeedType.reverse} # old method of casting
-    
-        
+        self.af = {ft:FeatureFactory.getInstance(FEEDS['AC']) for ft in FeedType.reverse}  
+         
         # limit user inputs
         UiUtility.formMask(self)
         # set combo box defaults
@@ -133,7 +140,14 @@ class EditFeatureWidget( Ui_EditFeatureDialog, QWidget ):
         # revert back to review tab 
         self._controller._queues.tabWidget.setCurrentIndex(1)
         self.hideMarker()
-        
+    
+    def showAddObj(self):
+        if self.wAddObj.isVisible():
+            self.wAddObj.hide()
+        else:
+            self.wAddObj.show()
+                    
+      
     def setPosition(self):
         """
         Set the feature position information
@@ -156,30 +170,7 @@ class EditFeatureWidget( Ui_EditFeatureDialog, QWidget ):
         
         position = Position.getInstance(pos)
         self.feature.setAddressPositions(position)
-    
-#     def raiseErrorMesg(self, mesg):
-#         QMessageBox.warning(self._iface.mainWindow(),"AIMS Warnings", '{0}'.format(mesg))
-        
-#     def objCompleteness(self):
-#         """
-#         Test the minimum required properties have been set
-#         
-#         @rtype: boolean
-#         """
-#         
-#         if self.uAddressType.currentText() == 'Road' and not self.feature._components_roadName: 
-#             self.raiseErrorMesg('Please supply a Road Name')
-#             return False
-#         elif self.uAddressType.currentText() == 'Water' and not self.feature._components_waterRoute: 
-#             self.raiseErrorMesg('Please supply a Water Route Name')
-#             return False
-#         elif not self.feature._components_addressNumber:
-#             self.raiseErrorMesg('Please supply a Complete Address Number')
-#             return False
-#         elif self.parent == 'update' and self.ulifeCycle.currentText() == 'Proposed':
-#             self.raiseErrorMesg('A Feature may not be updated to "Proposed"')
-#         else: return True
-                
+                   
     def submitAddress(self):
         """ 
         Submit the user inputed information to DataManager

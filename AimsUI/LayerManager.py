@@ -1,6 +1,6 @@
 ################################################################################
 #
-# Copyright 2015 Crown copyright (c)
+# Copyright 2016 Crown copyright (c)
 # Land Information New Zealand and the New Zealand Government.
 # All rights reserved
 #
@@ -8,6 +8,7 @@
 # LICENSE file for more information.
 #
 ################################################################################
+
 from os.path import dirname, abspath, join
 
 from PyQt4.QtCore import *
@@ -131,7 +132,9 @@ class LayerManager(QObject):
         At plugin unload, disconnect the 
             extent changed / bbox event
         """
-        try: # Temp - Review. Issue raised as unloaded called at plugin init 
+        #receiversCount = self.receivers(SIGNAL("self._canvas.extentsChanged()"))
+        #if receiversCount > 0:
+        try:    
             self._canvas.extentsChanged.disconnect(self.setbbox)
         except:
             pass
@@ -327,7 +330,7 @@ class LayerManager(QObject):
         """
         
         refLayers ={'par':( 'par', 'lds', 'all_parcels', 'gid', True, "ST_GeometryType(shape) in ('ST_MultiPolygon', 'ST_Polygon' )",'Parcels' ) ,
-                    'rcl':( 'rcl', 'roads', 'road_name_mview', 'gid', True, "",'Roads' )
+                    'rcl':( 'rcl', 'roads', 'simple_road_name_view', 'uid', True, "",'Roads' )
                     }
 
         for layerId , layerProps in refLayers.items():

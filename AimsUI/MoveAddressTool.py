@@ -1,3 +1,14 @@
+################################################################################
+#
+# Copyright 2016 Crown copyright (c)
+# Land Information New Zealand and the New Zealand Government.
+# All rights reserved
+#
+# This program is released under the terms of the 3 clause BSD license. See the 
+# LICENSE file for more information.
+#
+################################################################################
+
 import sys
 
 from PyQt4.QtCore import *
@@ -171,7 +182,7 @@ class MoveAddressTool(QgsMapToolIdentify):
                     self._controller.uidm.supplementAddress(feature, respId)
                     feature = self._controller.RespHandler.handleResp(respId, FEEDS['AR'], 'supplement')
                     # />
-                    feature._addressedObject_addressPositions[0].setCoordinates(coords) # setter for this?
+                    feature._addressedObject_addressPositions[0].setCoordinates(coords)
                     if feature._codes_isMeshblockOverride != True:
                         feature.setMeshblock(None)
                     feature = self.af[FeedType.CHANGEFEED].cast(feature)

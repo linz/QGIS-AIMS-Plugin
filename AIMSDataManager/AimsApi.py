@@ -105,6 +105,27 @@ class AimsApi(object):
     #-----------------------------------------------------------------------------------------------------------------------
     #--- A G G R E G A T E S  &  A L I A S E S -----------------------------------------------------------------------------
     #-----------------------------------------------------------------------------------------------------------------------
+    
+    @LogWrap.timediff(prefix='LinkedFeatureHack')
+    def _xxxGetLinkedFeatureWorkaround(self,cid1):
+        '''Workaround to handle supplementary links
+        @param etft: Feed/Feature identifier
+        @type etft: FeedRef
+        @param cid: ChangeId
+        @type cid: Integer
+        @return: Dict of JSON response
+        '''
+        etft1 = FeedRef(FeatureType.ADDRESS,FeedType.FEATURES)
+        cef,jcf = self.getOneFeature(etft1, cid1)
+        
+        cid2 = self._xxxExtractLinkWorkaround(jcf)
+        
+        etft2 = FeedRef(FeatureType.ADDRESS,FeedType.RESOLUTIONFEED)
+        cer,jcr = self.getOneFeature(etft2, cid2)
+        
+        return cer,jcr
+    
+    
     def _request(self,*args,**kwargs):
         '''Wraps httplib2 requests for logging
         @param *args: Request arguments
@@ -142,25 +163,6 @@ class AimsApi(object):
         resp, content = self._request(url,'GET', headers = self._headers)
         return self.handleResponse(url,resp["status"], json.loads(content))
         #return jcontent['entities']
-    
-    @LogWrap.timediff(prefix='LinkedFeatureHack')
-    def _xxxGetLinkedFeatureWorkaround(self,cid1):
-        '''Workaround to handle supplementary links
-        @param etft: Feed/Feature identifier
-        @type etft: FeedRef
-        @param cid: ChangeId
-        @type cid: Integer
-        @return: Dict of JSON response
-        '''
-        etft1 = FeedRef(FeatureType.ADDRESS,FeedType.FEATURES)
-        cef,jcf = self.getOneFeature(etft1, cid1)
-        
-        cid2 = self._xxxExtractLinkWorkaround(jcf)
-        
-        etft2 = FeedRef(FeatureType.ADDRESS,FeedType.RESOLUTIONFEED)
-        cer,jcr = self.getOneFeature(etft2, cid2)
-        
-        return cer,jcr
            
     @LogWrap.timediff(prefix='oneFeat')
     def getOneFeature(self,etft,cid):
@@ -174,6 +176,7 @@ class AimsApi(object):
         et = FeatureType.reverse[etft.et].lower()
         ft = FeedType.reverse[etft.ft].lower()
         url = '/'.join((self._url,et,ft.lower(),str(cid) if cid else '')).rstrip('/')
+        #if count: url += '?count={}'.format(count)
         resp, content = self._request(url,'GET', headers = self._headers)
         return self.handleResponse(url,resp["status"], json.loads(content))
         #return jcontent        
@@ -208,10 +211,10 @@ class AimsApi(object):
         @type cid: Integer
         @return: Response from HTTP request
         '''
-        #HACK (2) Bypass on supplemental
+        #<HACK> (2) Bypass on supplemental
         m = re.search('supplemental(\d+$)',str(cid))
         if m: return self._xxxGetLinkedFeatureWorkaround(m.group(1))
-        #
+        #</HACK>
         #aimslog.debug('{0}'.format(payload))
         '''Approve/Decline a change by submitting address to resolutionfeed'''
         et = FeatureType.reverse[FeatureType.ADDRESS].lower()
@@ -265,7 +268,7 @@ class AimsApi(object):
         @type uid: Integer
         @return: Response from HTTP request
         '''
-        #http://devassgeo01:8080/aims/api/admin/users {add/update/delete}
+        #~/aims/api/admin/users {add/update/delete}
         url = '{}/admin/users/{}/{}'.format(self._url,uid,TESTPATH).rstrip('/')
         resp, content = self._request(url,UserActionType.HTTP[uat], json.dumps(payload), self._headers)
         return self.handleResponse(url,resp["status"], json.loads(content) )

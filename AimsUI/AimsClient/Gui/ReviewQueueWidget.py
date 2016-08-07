@@ -1,6 +1,6 @@
 ################################################################################
 #
-# Copyright 2015 Crown copyright (c)
+# Copyright 2016 Crown copyright (c)
 # Land Information New Zealand and the New Zealand Government.
 # All rights reserved
 #
@@ -8,6 +8,7 @@
 # LICENSE file for more information.
 #
 ################################################################################
+
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 from qgis.core import *
@@ -65,17 +66,18 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.uUpdateButton.clicked.connect(self.updateFeature)
         self.uRejectButton.clicked.connect(self.decline)
         self.uAcceptButton.clicked.connect(self.accept)
-        #self.uRefreshButton.clicked.connect(self.refreshData)
           
         # Features View 
+        self._featureProxyModel = QSortFilterProxyModel()
         featuresHeader = ['Id','Full Num', 'Full Road', 'Life Cycle', 'Town', 'Suburb Locality']
-        self.featuresTableView = self.uFeaturesTableView
+        self.featuresTableView = self.uFeaturesTableView        
         self.featureModel = FeatureTableModel(self.reviewData, featuresHeader)
-        self.featuresTableView.setModel(self.featureModel)
+        self._featureProxyModel.setSourceModel(self.featureModel)
+        self.featuresTableView.setModel(self._featureProxyModel)
         self.featuresTableView.rowSelected.connect(self.featureSelected)
         self.featuresTableView.resizeColumnsToContents()
         self.featuresTableView.setColumnHidden(5, True)
-        self.featuresTableView.selectRow(0)
+        self.featuresTableView.selectRow(0)       
         
         # Group View 
         self._groupProxyModel = QSortFilterProxyModel()
@@ -88,8 +90,6 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self._groupProxyModel.setSourceModel(self.groupModel)
         self.groupTableView.setModel(self._groupProxyModel)
         self.groupTableView.resizeColumnsToContents()
-        #self.groupTableView.selectionModel().currentRowChanged.connect(self.groupSelected)
-        #self.groupTableView.clicked.connect(self.groupSelected)
         self.groupTableView.rowSelectionChanged.connect(self.groupSelected)
                 
         # connect combobox_users to view and model
@@ -163,13 +163,13 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         """
         
         if self.currentFeatureKey:   
-            #QgsMessageLog.logMessage("Primary: {0}, Alternative: {1}".format(self.currentGroup[0], self.altSelectionId), 'AIMS', QgsMessageLog.INFO)     
             matchedIndex = self.groupModel.findfield('{}'.format(self.currentGroup[0]))
+            
             if matchedIndex.isValid() == False:
                 matchedIndex = self.groupModel.findfield('{}'.format(self.altSelectionId)) or 0            
             row = matchedIndex.row()
             self.groupModel.setKey(row)
-            #self.groupTableView.selectRow(row)
+
             if row != -1:
                 self.groupTableView.selectRow(self._groupProxyModel.mapFromSource(matchedIndex).row())
                 self.featuresTableView.selectRow(0)
@@ -249,8 +249,6 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
             
         self.altSelectionId = self.groupTableView.model().data(altProxyIndex)
         self.featuresTableView.selectRow(0)
-
-        #QgsMessageLog.logMessage("Primary: {0}, Alternative: {1}".format(self.currentGroup[0], self.altSelectionId), 'AIMS', QgsMessageLog.INFO) 
    
     def userFilterChanged(self, index):
         """ 
@@ -298,7 +296,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         Obtain all unique and active AIMS publisher values 
         """
         
-        data = self.groupModel.getUsers()
+        data = list(set(self.groupModel.getUsers()))
         data.sort()
         self.popCombo(data, self.comboModelUser)
                  
@@ -403,13 +401,3 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         """
         
         self._queues.uResolutionTab.refreshData()
-
-#   commented ou 14/6/2016  
-#     
-# if __name__ == '__main__':
-#     app = QApplication(sys.argv)
-#     
-#     
-#     wnd = ReviewQueueWidget()
-#     wnd.show()
-#     sys.exit(app.exec_())
