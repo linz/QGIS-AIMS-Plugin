@@ -12,7 +12,9 @@ from Config import ConfigReader
 from functools import wraps, partial
 import time
 import os
+import re
 from AimsLogging import Logger
+from Const import HACK_SUP_IND
 
 aimslog = Logger.setup()
 
@@ -109,7 +111,14 @@ class Enumeration(object):
         enums['next'] = IterEnum.next
         enums['index'] = 0
         return type('Enum', (IterEnum,), enums)
-
+    
+class SupplementalHack(object):
+    
+    @staticmethod
+    def strip(cid):
+        m = re.search('{hsi}(\d+$)'.format(hsi=HACK_SUP_IND),str(cid))
+        return (True,m.group(1)) if m else (False,cid)
+        
 class FeedRef(object):
     '''Convenience container class holding Feature/Feed type key'''
     TRUNC = 3

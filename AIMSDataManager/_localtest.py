@@ -101,8 +101,10 @@ class LocalTest():
             
     def testsupp(self,dm,af):
         a = self.gettestaddress(af[FeedType.FEATURES])
-        a._version = 3058411
+        #a._version = 3058411
         dm.supplementAddress(a,2000)
+
+        
             
     def testaddaddress(self,dm,af):
         a = self.getmacronatedtestaddress(af[FeedType.FEATURES])        

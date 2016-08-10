@@ -19,7 +19,7 @@ import logging
 
 import threading
 from AimsApi import AimsApi 
-from AimsUtility import FeedRef,ActionType,ApprovalType,GroupActionType,GroupApprovalType,UserActionType,FeatureType,FeedType
+from AimsUtility import FeedRef,ActionType,ApprovalType,GroupActionType,GroupApprovalType,UserActionType,FeatureType,FeedType,SupplementalHack
 from AimsUtility import AimsException
 from Const import ENABLE_ENTITY_EVALUATION, MERGE_RESPONSE,MAX_FEATURE_COUNT
 from Address import Entity, EntityValidation, EntityAddress
@@ -317,8 +317,9 @@ class DataUpdaterDRC(DataUpdater):
     def _version(self):
         '''Function to read AIMS version value from single Feature pages
         @return: Integer. Feature version number 
-        '''        
-        ce,jc = self.api.getOneFeature(FeedRef((self.etft.et,self.oft)),self.identifier)
+        '''
+        _,cid = SupplementalHack.strip(self.identifier)
+        ce,jc = self.api.getOneFeature(FeedRef((self.etft.et,self.oft)),cid)
         if any(ce.values()): aimslog.error('Single-feature request failure {}'.format(ce))
         if jc['properties'].has_key('version'):
             return jc['properties']['version']
