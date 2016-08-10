@@ -16,7 +16,7 @@ import re
 
 from Address import Address,AddressChange,AddressResolution#,AimsWarning
 from Config import ConfigReader
-from AimsUtility import FeatureType,ActionType,ApprovalType,GroupActionType,GroupApprovalType,UserActionType,FeedType,LogWrap,FeedRef
+from AimsUtility import FeatureType,ActionType,ApprovalType,GroupActionType,GroupApprovalType,UserActionType,FeedType,LogWrap,FeedRef,SupplementalHack
 from AimsUtility import AimsException
 from Const import MAX_FEATURE_COUNT,TEST_MODE
 from AimsLogging import Logger
@@ -216,8 +216,8 @@ class AimsApi(object):
         @return: Response from HTTP request
         '''
         #<HACK> (2) Bypass on supplemental
-        m = re.search('supplemental(\d+$)',str(cid))
-        if m: return self._xxxGetLinkedFeatureWorkaround(m.group(1))
+        sup,cid = SupplementalHack.strip(cid)
+        if sup: return self._xxxGetLinkedFeatureWorkaround(cid)
         #</HACK>
         #aimslog.debug('{0}'.format(payload))
         '''Approve/Decline a change by submitting address to resolutionfeed'''
@@ -298,4 +298,3 @@ class AimsApi(object):
         
         
         
- 
