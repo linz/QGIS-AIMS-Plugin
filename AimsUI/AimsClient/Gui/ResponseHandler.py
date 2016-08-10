@@ -107,6 +107,8 @@ class ResponseHandler(object):
                 if resp.meta._errors['critical']:
                     self.displayWarnings(resp.meta.errors['critical'])
                     return True
+                if resp.meta._errors['warn'] and resp._queueStatus == 'Accepted':
+                    self.displayWarnings(resp.meta.errors['warn'])
                 if resp.meta._errors['error'] and resp._queueStatus == 'Accepted':
                     self.displayWarnings(resp.meta.errors['error'])
                     return True
