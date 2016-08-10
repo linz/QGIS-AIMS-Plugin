@@ -395,7 +395,7 @@ class LocalTest():
         a.setFullRoadName('Islay Street')
         a.setFullAddress('17 Islay Street, Glenorchy')
         a._addressedObject_addressableObjectId = '1416143'
-        a.setObjectType('Parcel')
+        a.setAddObjectType('Parcel')
         
         a.setUnitType('Unit')
         a.setUnitValue('b')
@@ -424,7 +424,7 @@ class LocalTest():
         a.setFullRoadName('Pūrākaunui School Road')
         a.setFullAddress('11 Pūrākaunui School, Purakaunui')
         a._addressedObject_addressableObjectId = '1794488'
-        a.setObjectType('Parcel')
+        a.setAddObjectType('Parcel')
         
         a.setUnitType('Unit')
         a.setUnitValue('f')

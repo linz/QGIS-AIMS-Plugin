@@ -68,6 +68,10 @@ class AimsApi(object):
                     ce['critical'] += (entity['properties']['description'],)
                 else:
                     ce['error'] += (entity['properties']['description'],)
+        
+        elif str(resp) in ('200', '201'):
+            pass
+            
         elif str(resp) == '409':
             #criticalErrors.append(content['properties']['reason'] +'\n'+ content['properties']['message'])
             ce['critical'] += ('{} - {}'.format(jcontent['properties']['reason'],jcontent['entities'][0]['properties']['description']),)
@@ -87,7 +91,7 @@ class AimsApi(object):
         @return: Dict of categorised error messages
         '''
         ce = {'critical':(),'error':(),'warn':()}
-        if str(resp) not in ('201', '200'):
+        if str(resp) not in ('101', '100', '200', '202'):
             # list of validation errors
             ce = self.handleErrors(url, resp, jcontent)
         return ce,jcontent
