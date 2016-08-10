@@ -140,7 +140,7 @@ class ResponseHandler(object):
                     return self.updateSuccessful                                              
         #logging 
         self._iface.messageBar().pushMessage("Incomplete Response", "The AIMS Goblins are busy. Data may not be complete - Expect a data refresh shortly", level=QgsMessageBar.WARNING)
-        D
+
         uilog.info(' *** DATA ***    Time Out ({0} seconds): No response received from DM for respId: {1} of feedtype: {2}'.format(i, respId, feedType))    
     
            
