@@ -100,17 +100,7 @@ class AimsApi(object):
         if str(resp) not in ('101', '100', '200', '202'):
             # list of validation errors
             ce = self.handleErrors(url, resp, jcontent)
-        return ce,jcontent
-    
-    def _xxxExtractLinkWorkaround(self,jcf):
-        l = ''
-        for link in jcf['links']:
-            if link['rel'][0] == 'addressresolution':
-                l = link['href']
-                break
-        match = re.search('.*\/(\d+)$',l)
-        return match.group(1) if match else ''
-        
+        return ce,jcontent        
 
     #-----------------------------------------------------------------------------------------------------------------------
     #--- A G G R E G A T E S  &  A L I A S E S -----------------------------------------------------------------------------
@@ -128,7 +118,7 @@ class AimsApi(object):
         etft1 = FeedRef(FeatureType.ADDRESS,FeedType.FEATURES)
         cef,jcf = self.getOneFeature(etft1, cid1)
         
-        cid2 = self._xxxExtractLinkWorkaround(jcf)
+        cid2 = SupplementalHack.extractLinkWorkaround(jcf)
         
         etft2 = FeedRef(FeatureType.ADDRESS,FeedType.RESOLUTIONFEED)
         cer,jcr = self.getOneFeature(etft2, cid2)
