@@ -22,7 +22,7 @@ from datetime import datetime as DT
 from AimsUtility import FeedRef,ActionType,ApprovalType,GroupActionType,GroupApprovalType,UserActionType,FeatureType,FeedType,PersistActionType,Configuration,FEED0,FEEDS,FIRST
 from AimsUtility import AimsException
 from AimsLogging import Logger
-from Const import THREAD_JOIN_TIMEOUT,RES_PATH,LOCAL_ADL,SWZERO,NEZERO,NULL_PAGE_VALUE as NPV
+from Const import THREAD_JOIN_TIMEOUT,RES_PATH,LOCAL_ADL,SWZERO,NEZERO,HACK_SUP_IND,NULL_PAGE_VALUE as NPV
 from Observable import Observable
 
 aimslog = None   
@@ -351,7 +351,7 @@ class DataManager(Observable):
         ###self._addressApprove(address,ApprovalType.SUPPLEMENT,reqid) 
         
         #HACK (2). Set changeid to flag supplemental request
-        address.setChangeId('supplemental{}'.format(address.getAddressId()))
+        address.setChangeId('{hsi}{cid}'.format(hsi=HACK_SUP_IND,cid=address.getAddressId()))
         self._addressApprove(address,ApprovalType.SUPPLEMENT,reqid) 
         
         
