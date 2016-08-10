@@ -107,6 +107,8 @@ class ResponseHandler(object):
                 if resp.meta._errors['critical']:
                     self.displayWarnings(resp.meta.errors['critical'])
                     return True
+                if resp.meta._errors['warn'] and resp._queueStatus == 'Accepted':
+                    self.displayWarnings(resp.meta.errors['warn'])
                 if resp.meta._errors['error'] and resp._queueStatus == 'Accepted':
                     self.displayWarnings(resp.meta.errors['error'])
                     return True
@@ -137,7 +139,8 @@ class ResponseHandler(object):
                 if self.matchResp(resp, respId, feedType, i, action):
                     return self.updateSuccessful                                              
         #logging 
-        self._iface.messageBar().pushMessage("Incomplete Response", "Layer data may not be complete", level=QgsMessageBar.WARNING)
+        self._iface.messageBar().pushMessage("Incomplete Response", "The AIMS Goblins are busy. Data may not be complete - Expect a data refresh shortly", level=QgsMessageBar.WARNING)
+
         uilog.info(' *** DATA ***    Time Out ({0} seconds): No response received from DM for respId: {1} of feedtype: {2}'.format(i, respId, feedType))    
     
            

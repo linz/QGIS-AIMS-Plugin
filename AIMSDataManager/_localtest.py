@@ -101,8 +101,10 @@ class LocalTest():
             
     def testsupp(self,dm,af):
         a = self.gettestaddress(af[FeedType.FEATURES])
-        a._version = 3058411
+        #a._version = 3058411
         dm.supplementAddress(a,2000)
+
+        
             
     def testaddaddress(self,dm,af):
         a = self.getmacronatedtestaddress(af[FeedType.FEATURES])        
@@ -395,7 +397,7 @@ class LocalTest():
         a.setFullRoadName('Islay Street')
         a.setFullAddress('17 Islay Street, Glenorchy')
         a._addressedObject_addressableObjectId = '1416143'
-        a.setObjectType('Parcel')
+        a.setAddObjectType('Parcel')
         
         a.setUnitType('Unit')
         a.setUnitValue('b')
@@ -424,7 +426,7 @@ class LocalTest():
         a.setFullRoadName('Pūrākaunui School Road')
         a.setFullAddress('11 Pūrākaunui School, Purakaunui')
         a._addressedObject_addressableObjectId = '1794488'
-        a.setObjectType('Parcel')
+        a.setAddObjectType('Parcel')
         
         a.setUnitType('Unit')
         a.setUnitValue('f')

@@ -210,11 +210,26 @@ class UiUtility (object):
             # populate relvant UI components
             if isinstance(uiElement, QLineEdit) or isinstance(uiElement, QLabel):
                 if ui == 'uWarning':
-                    warnings = ''                        
+                    warnings = ''
+                    
                     for i in prop:
                         if hasattr(i,'_severity'):
                             warnings += i._severity.upper()+': '+ i._description+('\n'*2)              
                             uiElement.setText(warnings)
+                    
+                    for i in self.feature.meta.errors:
+                        if hasattr(i,'_severity'):
+                            warnings += i._severity.upper()+': '+ i._description+('\n'*2)              
+                    uiElement.setText(warnings)
+                    
+                    # added to handle the resp warnings which differ 
+                    if self.feature.meta.errors:
+                        for k, v in self.feature.meta.errors.iteritems():
+                                if k:
+                                    for i in v:
+                                        warnings += k.upper()+': '+i+('\n'*2)                  
+                        uiElement.setText(warnings)
+                        
 
                 # New MBLK overwrite flag implemented in API
                 elif ui == 'uMblkOverride' and parent == 'update' and self.feature._codes_isMeshblockOverride != True:

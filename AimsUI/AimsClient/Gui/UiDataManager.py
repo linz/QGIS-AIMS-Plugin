@@ -843,5 +843,4 @@ class DMObserver(QThread):
         
         uilog.info('*** NOTIFY ***     Notify A[{}]'.format(observable))
         setattr(self.DMData, self.feedData.get(fType),data)
-        #temp
-        QgsMessageLog.logMessage('*** NOTIFY ***     Notify A[{}]'.format(observable), 'AIMS', QgsMessageLog.INFO)
+        
