@@ -90,7 +90,7 @@ class ConfigReader(object):
     @staticmethod
     def _detect(p):
         '''detects whether p has been ciphered or not, add conditions as required'''
-        return len(p)!=24 or bool(re.match('^[a-zA-Z0-9_-]*$',p))
+        return bool(re.match('^[a-zA-Z0-9_-]*$',p))
     
     @staticmethod
     def readp():            
