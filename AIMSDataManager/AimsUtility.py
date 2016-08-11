@@ -120,7 +120,7 @@ class SupplementalHack(object):
         return (True,m.group(1)) if m else (False,cid)
     
     @staticmethod
-    def extractLinkWorkaround(jcf):
+    def extractlink(jcf):
         l = ''
         for link in jcf['links']:
             if link['rel'][0] == 'addressresolution':

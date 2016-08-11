@@ -118,7 +118,7 @@ class AimsApi(object):
         etft1 = FeedRef(FeatureType.ADDRESS,FeedType.FEATURES)
         cef,jcf = self.getOneFeature(etft1, cid1)
         
-        cid2 = SupplementalHack.extractLinkWorkaround(jcf)
+        cid2 = SupplementalHack.extractlink(jcf)
         
         etft2 = FeedRef(FeatureType.ADDRESS,FeedType.RESOLUTIONFEED)
         cer,jcr = self.getOneFeature(etft2, cid2)
