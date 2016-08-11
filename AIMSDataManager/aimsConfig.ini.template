@@ -75,3 +75,6 @@ MERGE_RESPONSE = True
 #string to prepend to hacked supplemental requests (can be anything)
 HACK_SUP_IND = 'supplemental'
 
+#string to prepend to ciphered passwords (can be anything)
+CT_IND = '###'
+
