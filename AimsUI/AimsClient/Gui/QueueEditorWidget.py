@@ -152,8 +152,10 @@ class QueueEditorWidget( Ui_QueueEditorWidget, QWidget ):
                 if isinstance(getattr(self, uiElement), QLineEdit) and getattr(self,  v[0]):
                     getattr(self, uiElement).setText(getattr(self, v[0]))
                 elif isinstance(getattr(self, uiElement), QComboBox) and getattr(self, v[0]):
-                    getattr(self, uiElement).setCurrentIndex(QComboBox.findText(getattr(self, uiElement), v[0]))
+                    getattr(self, uiElement).setCurrentIndex(QComboBox.findText(getattr(self, uiElement),getattr(self, v[0])))
 
+
+                    #uiElement.setCurrentIndex(QComboBox.findText(uiElement, prop))
     def clearEdits(self):
         """
         set all temp properties to None

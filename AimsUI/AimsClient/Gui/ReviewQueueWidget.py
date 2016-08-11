@@ -335,6 +335,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
             self.uidm.repairAddress(self.feature, respId)
             self._controller.RespHandler.handleResp(respId, FEEDS['AR'])
             self.feature = None
+            self.uQueueEditor.featureId = 0
     
     def reviewResolution(self, action):
         """

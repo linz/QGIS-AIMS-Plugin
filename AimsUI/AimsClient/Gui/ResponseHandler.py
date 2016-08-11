@@ -60,7 +60,8 @@ class ResponseHandler(object):
                 self.updateSuccessful = respObj
                 return True
             self.uidm.updateRdata(respObj, feedType)
-            if action == 'accept':
+            #if action == 'accept':
+            if respObj._queueStatus == 'Accepted':
                 respObj = self.afaf[FeedType.FEATURES].cast(respObj)
                 self.uidm.updateFdata(respObj)
         else:
@@ -104,20 +105,26 @@ class ResponseHandler(object):
             if resp.meta._requestId == respId:  
                 #logging
                 uilog.info(' *** DATA ***    response received from DM for respId: {0} of type: {1} after {2} seconds'.format(respId, feedType, i))    
-                if resp.meta._errors['critical']:
-                    self.displayWarnings(resp.meta.errors['critical'])
+                if resp.meta._errors['reject']:
+                    self.displayWarnings(resp.meta.errors['reject'])
                     return True
-                if resp.meta._errors['warn'] and resp._queueStatus == 'Accepted':
-                    self.displayWarnings(resp.meta.errors['warn'])
-                if resp.meta._errors['error'] and resp._queueStatus == 'Accepted':
-                    self.displayWarnings(resp.meta.errors['error'])
-                    return True
-        
-                else:                   
-                # else captured resp and no critical warnings
-                # precede to update self._data
+                if resp.meta._errors['warning'] and resp._queueStatus == 'Accepted':
+                    self.displayWarnings(resp.meta.errors['warning'])
+                    # hack -- failed acceptance but still has an accepted status
+                    resp.setQueueStatus('Under Review') 
                     self.updateData(resp, feedType, action)
                     return True
+                if resp.meta._errors['error'] and resp._queueStatus == 'Accepted':
+                    self.displayWarnings(resp.meta.errors['error'])
+                    resp.setQueueStatus('Under Review') # hack
+                    self.updateData(resp, feedType, action)
+                    return True
+        
+                  
+                # else captured resp and no critical warnings
+                # precede to update self._data
+                self.updateData(resp, feedType, action)
+                return True
             
     def handleResp(self, respId, feedType, action = None):
         """
@@ -133,13 +140,13 @@ class ResponseHandler(object):
         self.updateSuccessful = False 
         
         for i in range(0,20):
-            time.sleep(1)
             resp = self.uidm.response(feedType)
             if resp and resp != (None,): # found and processed response
                 if self.matchResp(resp, respId, feedType, i, action):
-                    return self.updateSuccessful                                              
+                    return self.updateSuccessful  
+            else: time.sleep(1)                                            
         #logging 
-        self._iface.messageBar().pushMessage("Incomplete Response", "The AIMS Goblins are busy. Data may not be complete - Expect a data refresh shortly", level=QgsMessageBar.WARNING)
+        self._iface.messageBar().pushMessage("Incomplete Response", "Data may not be complete - Please expect a data refresh shortly", level=QgsMessageBar.WARNING)
 
         uilog.info(' *** DATA ***    Time Out ({0} seconds): No response received from DM for respId: {1} of feedtype: {2}'.format(i, respId, feedType))    
     
