@@ -252,10 +252,10 @@ class UiUtility (object):
         Maps user input from the new and update form
         as well as queue editor widget to an AIMS object
         """
-
-        try: 
+        
+        if hasattr(self, 'uQueueEditor'):
             form = self.uQueueEditor 
-        except: 
+        else:
             form = self
         
         for uiElement, objProp in UiUtility.uiObjMappings.items():

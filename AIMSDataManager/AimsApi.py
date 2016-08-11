@@ -61,28 +61,26 @@ class AimsApi(object):
         @type jcontent: Dict
         @return: Dict of categorised error messages
         '''        
-        ce = {'critical':(),'error':(),'warn':(),'info':()}
-        if str(resp) in ('400', '404') and jcontent.has_key('entities'):
-            for entity in jcontent['entities']:
-                if entity['properties']['severity'] == 'Reject':
-                    ce['critical'] += (entity['properties']['description'],)
-                elif entity['properties']['severity'] == 'Warning':
-                    ce['warn'] += (entity['properties']['description'],)
-                elif entity['properties']['severity'] == 'Info':
-                    ce['info'] += (entity['properties']['description'],)
-                else:
-                    ce['error'] += (entity['properties']['description'],)
+        ce = {'reject':(),'error':(),'warning':(),'info':()}
+        if str(resp) in ('400', '404', '200', '201') and jcontent.has_key('entities'):
+            try:
+                for entity in jcontent['entities']:
+                    if entity['properties']['severity'] == 'Reject':
+                        ce['reject'] += (entity['properties']['description'],)
+                    elif entity['properties']['severity'] == 'Warning':
+                        ce['warning'] += (entity['properties']['description'],)
+                    elif entity['properties']['severity'] == 'Info':
+                        ce['info'] += (entity['properties']['description'],)
+                    else:
+                        ce['error'] += (entity['properties']['description'],)
+            except:
+                pass
         
-        elif str(resp) in ('200', '201') and jcontent.has_key('entities'):
-            for entity in jcontent['entities']:
-                if entity['properties']['severity'] == 'Info':
-                    ce['info'] += (entity['properties']['description'],)
             
         elif str(resp) == '409':
-            #criticalErrors.append(content['properties']['reason'] +'\n'+ content['properties']['message'])
-            ce['critical'] += ('{} - {}'.format(jcontent['properties']['reason'],jcontent['entities'][0]['properties']['description']),)
+            ce['reject'] += ('{} - {}'.format(jcontent['properties']['reason'],jcontent['entities'][0]['properties']['description']),)
         else:
-            ce['critical'] += ('General Exception {}'.format(resp),)
+            ce['reject'] += ('General Exception {}'.format(resp),)
              
         return ce
     
@@ -96,7 +94,7 @@ class AimsApi(object):
         @type jcontent: Dict
         @return: Dict of categorised error messages
         '''
-        ce = {'critical':(),'error':(),'warn':(),'info':()}
+        ce = {'reject':(),'error':(),'warning':(),'info':()}
         if str(resp) not in ('101', '100', '200', '202'):
             # list of validation errors
             ce = self.handleErrors(url, resp, jcontent)
@@ -118,7 +116,7 @@ class AimsApi(object):
         etft1 = FeedRef(FeatureType.ADDRESS,FeedType.FEATURES)
         cef,jcf = self.getOneFeature(etft1, cid1)
         
-        cid2 = SupplementalHack.extractLinkWorkaround(jcf)
+        cid2 = SupplementalHack.extractlink(jcf)
         
         etft2 = FeedRef(FeatureType.ADDRESS,FeedType.RESOLUTIONFEED)
         cer,jcr = self.getOneFeature(etft2, cid2)

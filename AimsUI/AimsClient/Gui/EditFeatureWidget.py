@@ -111,6 +111,7 @@ class EditFeatureWidget( Ui_EditFeatureDialog, QWidget ):
         Remove highligthing of the AIMS feature
         """
         
+        self.highlight.hideAddress()
         self.highlight.hideNewAddress()
         self.highlight.hideRcl()
      
