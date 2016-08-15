@@ -358,7 +358,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
                 elif action == 'decline':
                     self.uidm.decline(reviewObj, feedType, respId)
                     
-                if self._controller.RespHandler.handleResp(respId, FEEDS['AR'], action):
+                if self._controller.RespHandler.handleResp(respId, feedType, action):
                     self.highlight.hideReview()
                 self.reinstateSelection()
                 

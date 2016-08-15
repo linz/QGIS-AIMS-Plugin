@@ -329,7 +329,7 @@ class LayerManager(QObject):
         Install AIMS postgres reference layers
         """
         
-        refLayers ={'par':( 'par', 'lds', 'all_parcels', 'gid', True, "ST_GeometryType(shape) in ('ST_MultiPolygon', 'ST_Polygon' )",'Parcels' ) ,
+        refLayers ={'par':( 'par', 'lds', 'primary_parcels', 'gid', True, "ST_GeometryType(shape) in ('ST_MultiPolygon', 'ST_Polygon' )",'Parcels' ) ,
                     'rcl':( 'rcl', 'roads', 'simple_road_name_view', 'uid', True, "",'Roads' )
                     }
 
