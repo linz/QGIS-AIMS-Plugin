@@ -183,9 +183,11 @@ class FeatureTableModel(QAbstractTableModel):
         """
         
         if self._data == self.dummyData: return
+        
         if type(self._data[self.dict_key][index][0]) is int:
             fData = self._data[self.dict_key][index][0]
         else: fData = self._data[self.dict_key][index][0][0]
+        
         if fData: return fData
         
 class GroupTableModel(QAbstractTableModel):

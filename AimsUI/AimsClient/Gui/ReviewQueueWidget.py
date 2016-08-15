@@ -208,7 +208,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         
         return self.uidm.currentReviewFeature(self.currentGroup, self.currentFeatureKey)
             
-    def featureSelected(self, row):
+    def featureSelected(self, row = None):
         """ 
         Sets the current feature reference when the user selects a feature
 
@@ -217,7 +217,9 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         """
 
         if self.currentGroup[0]:  
-            self.currentFeatureKey = self.featureModel.tableSelectionMade(row)   
+            fProxyIndex = self.featuresTableView.selectionModel().currentIndex()
+            fSourceIndex = self._featureProxyModel.mapToSource(fProxyIndex)
+            self.currentFeatureKey = self.featureModel.tableSelectionMade(fSourceIndex.row())   
             self.uQueueEditor.currentFeatureToUi(self.currentReviewFeature())
             coords = self.uidm.reviewItemCoords(self.currentGroup, self.currentFeatureKey)
             if coords:
