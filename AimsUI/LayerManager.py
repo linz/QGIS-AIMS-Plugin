@@ -113,6 +113,8 @@ class LayerManager(QObject):
         self._adrLayer = None
         self._rclLayer = None
         self._parLayer = None
+        self._pprLayer = None # pending parcel
+        self._lprLayer = None # labels, parcels
         self._locLayer = None
         self._revLayer = None
         
@@ -223,6 +225,10 @@ class LayerManager(QObject):
             self._rclLayer = None
         if self._parLayer and self._parLayer.id() == id:
             self._parLayer = None
+        if self._pprLayer and self._pprLayer.id() == id:
+            self._pprLayer = None   
+        if self._lprLayer and self._lprLayer.id() == id:
+            self._lprLayer = None              
         if self._revLayer and self._revLayer.id() == id:
             self._revLayer = None
             
@@ -246,6 +252,10 @@ class LayerManager(QObject):
             self._rclLayer = layer
         elif layerId == 'par':
             self._parLayer = layer
+        elif layerId == 'ppr':
+            self._pprLayer = layer
+        elif layerId == 'lpr':
+            self._pprLayer = layer
         elif layerId == 'rev':
             self._revLayer = layer
     
@@ -330,7 +340,9 @@ class LayerManager(QObject):
         """
         
         refLayers ={'par':( 'par', 'lds', 'primary_parcels', 'gid', True, "ST_GeometryType(shape) in ('ST_MultiPolygon', 'ST_Polygon' )",'Parcels' ) ,
-                    'rcl':( 'rcl', 'roads', 'simple_road_name_view', 'uid', True, "",'Roads' )
+                    'lpr':( 'lpr', 'lds', 'primary_parcels', 'gid', True, "ST_GeometryType(shape) in ('ST_MultiPolygon', 'ST_Polygon' )",'Parcels (Labels)' ) ,
+                    'rcl':( 'rcl', 'roads', 'simple_road_name_view', 'uid', True, "",'Roads' ),
+                    'ppr':( 'ppr', 'lds', 'all_parcels_pend', 'id', True, "ST_GeometryType(shape) in ('ST_MultiPolygon', 'ST_Polygon' )",'Pending Parcels' )
                     }
 
         for layerId , layerProps in refLayers.items():
