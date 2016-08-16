@@ -1,5 +1,5 @@
 <!DOCTYPE qgis PUBLIC 'http://mrcc.com/qgis.dtd' 'SYSTEM'>
-<qgis version="2.8.1-Wien" minimumScale="-4.65661e-10" maximumScale="20000" simplifyDrawingHints="0" minLabelScale="1" maxLabelScale="1e+08" simplifyDrawingTol="1" simplifyMaxScale="1" hasScaleBasedVisibilityFlag="1" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
+<qgis version="2.8.1-Wien" minimumScale="0" maximumScale="20000" simplifyDrawingHints="0" minLabelScale="1" maxLabelScale="1e+08" simplifyDrawingTol="1" simplifyMaxScale="1" hasScaleBasedVisibilityFlag="1" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
   <edittypes>
     <edittype widgetv2type="TextEdit" name="AimsId">
       <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
@@ -15,7 +15,7 @@
     <rules key="{f01b8dd9-58db-4188-92f9-24c1416b35c1}">
       <rule filter=" &quot;Action&quot;   =  'Add'" key="{faa48275-b8c9-482b-96c2-fc075d4e6243}" symbol="0" label="Add"/>
       <rule filter=" &quot;Action&quot;   =  'Update'" key="{fc694bed-ff42-4473-bbdc-90f506e38973}" symbol="1" label="Update"/>
-      <rule filter=" &quot;Action&quot;   =  'Retire'" key="{4266f5cf-8ca1-4f6e-9325-8a0d4d9534ad}" symbol="2" label="Retire"/>
+      <rule checkstate="0" filter=" &quot;Action&quot;   =  'Retire'" key="{4266f5cf-8ca1-4f6e-9325-8a0d4d9534ad}" symbol="2" label="Retire"/>
       <rule filter="&quot;Action&quot; not in ('Add', 'Update', 'Retire')" key="{819fc732-ddb4-4b9b-8b2a-12294680f55c}" symbol="3" label="Group"/>
     </rules>
     <symbols>
