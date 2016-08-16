@@ -228,6 +228,11 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
 
     
     def reinstateFeatSelection(self):
+        """
+        When data is refreshed, attempt to reinstate
+        the last feature selection        
+        """
+        
         if self.currentFeatureKey:   
             matchedIndex = self.featureModel.findfield('{}'.format(self.currentFeatureKey))
             if matchedIndex.isValid():
