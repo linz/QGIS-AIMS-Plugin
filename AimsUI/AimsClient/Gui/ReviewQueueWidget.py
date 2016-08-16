@@ -54,7 +54,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.uidm = self._controller.uidm
         self.uidm.register(self)
         self.reviewData = None
-        self.currentFeatureKey = None
+        self.currentFeatureKey = 0
         self.currentAdrCoord = [0,0]
         self.feature = None
         self.currentGroup = (0,0) #(id, type)
@@ -172,7 +172,8 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
 
             if row != -1:
                 self.groupTableView.selectRow(self._groupProxyModel.mapFromSource(matchedIndex).row())
-                self.featuresTableView.selectRow(0)
+                #self.featuresTableView.selectRow(0)
+                self.reinstateFeatSelection()
                 coords = self.uidm.reviewItemCoords(self.currentGroup, self.currentFeatureKey)
                 if coords:
                     self.setMarker(coords)
@@ -208,7 +209,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         
         return self.uidm.currentReviewFeature(self.currentGroup, self.currentFeatureKey)
             
-    def featureSelected(self, row):
+    def featureSelected(self, row = None):
         """ 
         Sets the current feature reference when the user selects a feature
 
@@ -217,11 +218,27 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         """
 
         if self.currentGroup[0]:  
-            self.currentFeatureKey = self.featureModel.tableSelectionMade(row)   
+            fProxyIndex = self.featuresTableView.selectionModel().currentIndex()
+            fSourceIndex = self._featureProxyModel.mapToSource(fProxyIndex)
+            self.currentFeatureKey = self.featureModel.tableSelectionMade(fSourceIndex.row())   
             self.uQueueEditor.currentFeatureToUi(self.currentReviewFeature())
             coords = self.uidm.reviewItemCoords(self.currentGroup, self.currentFeatureKey)
             if coords:
                 self.setMarker(coords)
+
+    
+    def reinstateFeatSelection(self):
+        """
+        When data is refreshed, attempt to reinstate
+        the last feature selection        
+        """
+        
+        if self.currentFeatureKey:   
+            matchedIndex = self.featureModel.findfield('{}'.format(self.currentFeatureKey))
+            if matchedIndex.isValid():
+                self.featuresTableView.selectRow(self._featureProxyModel.mapFromSource(matchedIndex).row())
+                return
+        self.featuresTableView.selectRow(0)
 
     def groupSelected(self, row = None):
         """
@@ -242,13 +259,15 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
             self.altSelectionId = 0
         elif self._groupProxyModel.rowCount() == 1:
             self.altSelectionId = 0
-            self.featuresTableView.selectRow(0)
+            #self.featuresTableView.selectRow(0)
+            self.reinstateFeatSelection()
             return
         elif altProxyIndex.row() == -1:
             altProxyIndex = self.groupTableView.model().index(proxyIndex.row()-1,0)
             
         self.altSelectionId = self.groupTableView.model().data(altProxyIndex)
-        self.featuresTableView.selectRow(0)
+        self.reinstateFeatSelection()
+        #self.featuresTableView.selectRow(0)
    
     def userFilterChanged(self, index):
         """ 
@@ -358,7 +377,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
                 elif action == 'decline':
                     self.uidm.decline(reviewObj, feedType, respId)
                     
-                if self._controller.RespHandler.handleResp(respId, FEEDS['AR'], action):
+                if self._controller.RespHandler.handleResp(respId, feedType, action):
                     self.highlight.hideReview()
                 self.reinstateSelection()
                 

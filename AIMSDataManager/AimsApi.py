@@ -63,18 +63,17 @@ class AimsApi(object):
         '''        
         ce = {'reject':(),'error':(),'warning':(),'info':()}
         if str(resp) in ('400', '404', '200', '201') and jcontent.has_key('entities'):
-            try:
-                for entity in jcontent['entities']:
-                    if entity['properties']['severity'] == 'Reject':
-                        ce['reject'] += (entity['properties']['description'],)
-                    elif entity['properties']['severity'] == 'Warning':
-                        ce['warning'] += (entity['properties']['description'],)
-                    elif entity['properties']['severity'] == 'Info':
-                        ce['info'] += (entity['properties']['description'],)
-                    else:
+
+            for entity in jcontent['entities']:
+                if entity['properties']['severity'] == 'Reject':
+                    ce['reject'] += (entity['properties']['description'],)
+                elif entity['properties']['severity'] == 'Warning':
+                    ce['warning'] += (entity['properties']['description'],)
+                elif entity['properties']['severity'] == 'Info':
+                    ce['info'] += (entity['properties']['description'],)
+                else:
                         ce['error'] += (entity['properties']['description'],)
-            except:
-                pass
+
         
             
         elif str(resp) == '409':

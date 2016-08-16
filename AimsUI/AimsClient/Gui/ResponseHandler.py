@@ -47,8 +47,13 @@ class ResponseHandler(object):
         @type action: QtGui.QWidget()
         """
         
-        if hasattr(respObj, '_changeGroupId'):
+        if hasattr(respObj, '_changeGroupId') and feedType == FEEDS['AR']:
             respObj = self.afar[FeedType.RESOLUTIONFEED].cast(respObj)  
+            # Hack to allow the supplementing of missing
+            #  AF data with AR data
+            if action == 'supplement':
+                self.updateSuccessful = respObj
+                return True
             self.uidm.updateGdata(respObj)
         elif feedType == FEEDS['AC']:
             respObj = self.afar[FeedType.RESOLUTIONFEED].cast(respObj)
