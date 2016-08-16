@@ -189,6 +189,26 @@ class FeatureTableModel(QAbstractTableModel):
         else: fData = self._data[self.dict_key][index][0][0]
         
         if fData: return fData
+
+    def findfield(self, recId):
+        """ 
+        Returns a QmodelIndex when matched the record Id
+        matches a record Id in table model
+
+        @param recId: The Id the repersents an AIMS feature
+        @type recId: string
+                
+        @return: QmodelIndex reffernce to the index of the item in the table
+                that matches the recid param
+        @rtype: QmodelIndex
+        """
+        
+        startindex = self.index(0, 0)
+        items = self.match(startindex, Qt.DisplayRole, recId, 1, Qt.MatchExactly | Qt.MatchWrap)
+        try:
+            return items[0]
+        except IndexError:
+            return QModelIndex()
         
 class GroupTableModel(QAbstractTableModel):
     """ 
