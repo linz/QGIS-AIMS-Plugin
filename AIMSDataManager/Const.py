@@ -18,7 +18,7 @@ from Config import ConfigReader
 
 class const:
     '''Const class that reads config stored values and presents them as constant values that can be imported'''
-    
+
     class ConstError(TypeError): pass
         
     def __init__(self):

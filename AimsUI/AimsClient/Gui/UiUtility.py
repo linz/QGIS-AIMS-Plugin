@@ -36,39 +36,40 @@ class UiUtility (object):
     # logging
     global uilog
     uilog = Logger.setup(lf='uiLog')
-        
+    
+    # (uiElement, [Address.property, Address/QueueEditorWidget.setter, Address.getter, QueueEditorWidget.getter,])
     uiObjMappings = OrderedDict([
-                    ('uAddressType',['_components_addressType','setAddressType', '']), 
-                    ('uWarning',['_warning','setWarnings', '_getEntities' ]),
-                    ('uNotes',['_workflow_sourceReason','setSourceReason', '']),
-                    ('ulifeCycle',['_components_lifecycle','setLifecycle', '']),   
-                    ('uLevelType',['_components_levelType','setLevelType', '']), 
-                    ('uLevelValue',['_components_levelValue','setLevelValue', '']), 
-                    ('uUnitType',['_components_unitType','setUnitType', '']),
-                    ('uUnit',['_components_unitValue','setUnitValue', '']),
-                    ('uPrefix',['_components_addressNumberPrefix','setAddressNumberPrefix', '']),
-                    ('uBase',['_components_addressNumber','setAddressNumber', '']),
-                    ('uAlpha',['_components_addressNumberSuffix','setAddressNumberSuffix', '']),
-                    ('uHigh',['_components_addressNumberHigh','setAddressNumberHigh', '']),
-                    ('uExternalAddressIdScheme',['_components_externalAddressIdScheme','setExternalAddressIdScheme', '']),
-                    ('uExternalAddId',['_components_externalAddressId','setExternalAddressId', '']), 
-                    ('uRclId',['_components_roadCentrelineId','setRoadCentrelineId', '']),
-                    ('uRoadPrefix',['_components_roadPrefix','setRoadPrefix', '']),
-                    ('uRoadName',['_components_roadName','setRoadName', '']), 
-                    ('uRoadTypeName',['_components_roadType','setRoadType', '']),   
-                    ('uRoadSuffix',['_components_roadSuffix','setRoadSuffix', '']), 
-                    ('uWaterName',['_components_waterName','setWaterName', '']), 
-                    ('uWaterRouteName',['_components_waterRoute','setWaterRoute', '']),
-                    ('uObjectType',['_addressedObject_objectType','setObjectType', '']),
-                    ('uObjectName',['_addressedObject_objectName','setObjectName', '']),
-                    #'uPositionType':['_addressedObject_addressPositions[0]','_addressedObject_addressPositions[0].setPositionType',''],
-                    ('uExtObjectIdScheme',['_addressedObject_externalObjectIdScheme','setExternalObjectIdScheme', '']),
-                    ('uExternalObjectId',['_addressedObject_externalObjectId','setExternalObjectId', '']),
-                    ('uValuationReference',['_addressedObject_valuationReference','setValuationReference', '']),
-                    ('uCertificateOfTitle',['_addressedObject_certificateOfTitle','setCertificateOfTitle', '']),
-                    ('uAppellation',['_addressedObject_appellation','setAppellation', '']),
-                    ('uMblkOverride',['_codes_meshblock','setMeshblock', ''])
-                    ])
+        ('uAddressType',['_components_addressType','setAddressType', '', 'set']), 
+        ('uWarning',['_warning','setWarnings', '_getEntities' ,'']),
+        ('uNotes',['_workflow_sourceReason','setSourceReason', '', '']),
+        ('ulifeCycle',['_components_lifecycle','setLifecycle', '', '']),   
+        ('uLevelType',['_components_levelType','setLevelType', '', '']), 
+        ('uLevelValue',['_components_levelValue','setLevelValue', '', '']), 
+        ('uUnitType',['_components_unitType','setUnitType', '', '']),
+        ('uUnit',['_components_unitValue','setUnitValue', '', '']),
+        ('uPrefix',['_components_addressNumberPrefix','setAddressNumberPrefix', '', '']),
+        ('uBase',['_components_addressNumber','setAddressNumber', '', '']),
+        ('uAlpha',['_components_addressNumberSuffix','setAddressNumberSuffix', '', '']),
+        ('uHigh',['_components_addressNumberHigh','setAddressNumberHigh', '', '']),
+        ('uExternalAddressIdScheme',['_components_externalAddressIdScheme','setExternalAddressIdScheme', '', '']),
+        ('uExternalAddId',['_components_externalAddressId','setExternalAddressId', '', '']), 
+        ('uRclId',['_components_roadCentrelineId','setRoadCentrelineId', '', '']),
+        ('uRoadPrefix',['_components_roadPrefix','setRoadPrefix', '', '']),
+        ('uRoadName',['_components_roadName','setRoadName', '', '']), 
+        ('uRoadTypeName',['_components_roadType','setRoadType', '', '']),   
+        ('uRoadSuffix',['_components_roadSuffix','setRoadSuffix', '', '']), 
+        ('uWaterName',['_components_waterName','setWaterName', '', '']), 
+        ('uWaterRouteName',['_components_waterRoute','setWaterRoute', '', '']),
+        ('uObjectType',['_addressedObject_objectType','setAddObjectType', '', '']),
+        ('uObjectName',['_addressedObject_objectName','setAddObjectName', '', '']),
+        #'uPositionType':['_addressedObject_addressPositions[0]','_addressedObject_addressPositions[0].setPositionType',''],
+        ('uExtObjectIdScheme',['_addressedObject_externalObjectIdScheme','setExternalObjectIdScheme', '', '']),
+        ('uExternalObjectId',['_addressedObject_externalObjectId','setExternalObjectId', '', '']),
+        ('uValuationReference',['_addressedObject_valuationReference','setValuationReference', '', '']),
+        ('uCertificateOfTitle',['_addressedObject_certificateOfTitle','setCertificateOfTitle', '', '']),
+        ('uAppellation',['_addressedObject_appellation','setAppellation', '', '']),
+        ('uMblkOverride',['_codes_meshblock','setMeshblock', '', ''])
+        ])
     
     @staticmethod
     def transform (iface, coords, tgt=4167):
@@ -110,15 +111,14 @@ class UiUtility (object):
         """
         Mask form input values
         """   
-            
-        intValidator = QIntValidator()    
-        self.uBase.setValidator(intValidator)
-        self.uHigh.setValidator(intValidator)
-        self.uMblkOverride.setValidator(intValidator)
+
+        self.uBase.setValidator(QRegExpValidator(QRegExp(r'[0-9]{0,6}'), self))
+        self.uHigh.setValidator(QRegExpValidator(QRegExp(r'[0-9]{0,6}'), self))
+        self.uMblkOverride.setValidator(QRegExpValidator(QRegExp(r'[0-9]{0,7}'), self))
         self.uAlpha.setValidator(QRegExpValidator(QRegExp(r'^[A-Za-z]{0,3}'), self))
-        self.uUnit.setValidator(QRegExpValidator(QRegExp(r'^\w+'), self))
-        self.uPrefix.setValidator(QRegExpValidator(QRegExp(r'^\w+'), self))
-        self.uLevelValue.setValidator(QRegExpValidator(QRegExp(r'^\w+'), self))
+        self.uUnit.setValidator(QRegExpValidator(QRegExp(r'[0-9A-Za-z]{0,5}'), self))
+        self.uPrefix.setValidator(QRegExpValidator(QRegExp(r'[0-9A-Za-z]{0,5}'), self))
+        self.uLevelValue.setValidator(QRegExpValidator(QRegExp(r'[0-9A-Za-z]{0,7}'), self))
         
     @staticmethod
     def toUpper (uInput, UiElement): 
@@ -176,13 +176,7 @@ class UiUtility (object):
                 prop = unicode(getattr(feature, property)) 
             else: prop = ''
         return prop
-
-# commented out 14/06/2016    
-#     @staticmethod
-#     def extractNestedProperty(feature, property):
-#         ''' fetch the require property for an obj '''
-#         pass
-    
+   
     @staticmethod
     def featureToUi(self, parent = None):
         """ 
@@ -216,11 +210,26 @@ class UiUtility (object):
             # populate relvant UI components
             if isinstance(uiElement, QLineEdit) or isinstance(uiElement, QLabel):
                 if ui == 'uWarning':
-                    warnings = ''                        
+                    warnings = ''
+                    
                     for i in prop:
                         if hasattr(i,'_severity'):
                             warnings += i._severity.upper()+': '+ i._description+('\n'*2)              
                             uiElement.setText(warnings)
+                    
+                    for i in self.feature.meta.errors:
+                        if hasattr(i,'_severity'):
+                            warnings += i._severity.upper()+': '+ i._description+('\n'*2)              
+                    uiElement.setText(warnings)
+                    
+                    # added to handle the resp warnings which differ 
+                    if self.feature.meta.errors:
+                        for k, v in self.feature.meta.errors.iteritems():
+                                if k:
+                                    for i in v:
+                                        warnings += k.upper()+': '+i+('\n'*2)                  
+                        uiElement.setText(warnings)
+                        
 
                 # New MBLK overwrite flag implemented in API
                 elif ui == 'uMblkOverride' and parent == 'update' and self.feature._codes_isMeshblockOverride != True:
@@ -243,25 +252,25 @@ class UiUtility (object):
         Maps user input from the new and update form
         as well as queue editor widget to an AIMS object
         """
-
-        try: 
+        
+        if hasattr(self, 'uQueueEditor'):
             form = self.uQueueEditor 
-        except: 
+        else:
             form = self
         
         for uiElement, objProp in UiUtility.uiObjMappings.items():
-            #user can not mod warnings ... continiue              
+            #user can not mod warnings ... continue              
             if uiElement == 'uWarning':            
                 continue            
             # test if the ui widget/ form ... has the ui component
             if hasattr(form, uiElement): 
                 uiElement = getattr(form, uiElement)                   
                 setter = getattr(self.feature, objProp[1])
-                if isinstance(uiElement, QLineEdit):# and uiElement.text() != '' and uiElement.text() != 'NULL':
+                if isinstance(uiElement, QLineEdit):
                     setter(UiUtility.toUpper(uiElement.text(),uiElement))
-                elif isinstance(uiElement, QComboBox):# and uiElement.currentText() != '' and uiElement.currentText() != 'NULL':
+                elif isinstance(uiElement, QComboBox):
                     setter(uiElement.currentText())
-                elif isinstance(uiElement, QPlainTextEdit):#and uiElement.toPlainText() != '' and uiElement.toPlainText() != 'NULL':
+                elif isinstance(uiElement, QPlainTextEdit):
                     setter(uiElement.toPlainText())
         self.feature._addressedObject_addressPositions[0].setPositionType(getattr(form, 'uPositionType').currentText())
                         
@@ -314,7 +323,6 @@ class UiUtility (object):
         """
         
         # Set wrtieability of EditFeature Form
-
         if not parent:
             UiUtility.setReadability(self, r'^u.*', False)        
         elif parent == 'update':
@@ -354,8 +362,7 @@ class UiUtility (object):
         
         @rtype: boolean
         """
-        
-        
+                
         # All Features must have a Base Number
         if not form.uBase.text():
             UiUtility.raiseErrorMesg(iface, 'Please supply a Complete Address Number')
@@ -385,22 +392,8 @@ class UiUtility (object):
                 (not UiUtility.nullEqualsNone(form.uWaterName.text()) or not UiUtility.nullEqualsNone(form.uWaterRouteName.text()))): 
                     UiUtility.raiseErrorMesg(iface, 'Please supply a Water Route Name and Water Name')
                     return False    
-
         return True
         
-        
-#         if form.uAddressType.currentText() == 'Road' and (not form.uRclId.text() and not form.uRoadName.text()): 
-#             UiUtility.raiseErrorMesg(iface, 'Please supply a Road Name')
-#             return False
-#         elif form.uAddressType.currentText() == 'Water' and (not form.uRclId.text() and not form.uWaterRouteName.text()): 
-#             UiUtility.raiseErrorMesg(iface, 'Please supply a Water Route Name')
-#             return False
-#         elif not form.uBase.text():
-#             UiUtility.raiseErrorMesg(iface, 'Please supply a Complete Address Number')
-#             return False
-#         elif action == 'update' and form.ulifeCycle.currentText() == 'Proposed':
-#             UiUtility.raiseErrorMesg(iface, 'A Feature may not be updated to "Proposed"')
-#         else: return True
         
     @staticmethod
     def fullNumChanged(obj, newnumber):

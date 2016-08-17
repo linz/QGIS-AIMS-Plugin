@@ -22,7 +22,7 @@ from datetime import datetime as DT
 from AimsUtility import FeedRef,ActionType,ApprovalType,GroupActionType,GroupApprovalType,UserActionType,FeatureType,FeedType,PersistActionType,Configuration,FEED0,FEEDS,FIRST
 from AimsUtility import AimsException
 from AimsLogging import Logger
-from Const import THREAD_JOIN_TIMEOUT,RES_PATH,LOCAL_ADL,SWZERO,NEZERO,NULL_PAGE_VALUE as NPV
+from Const import THREAD_JOIN_TIMEOUT,RES_PATH,LOCAL_ADL,SWZERO,NEZERO,HACK_SUP_IND,NULL_PAGE_VALUE as NPV
 from Observable import Observable
 
 aimslog = None   
@@ -351,7 +351,7 @@ class DataManager(Observable):
         ###self._addressApprove(address,ApprovalType.SUPPLEMENT,reqid) 
         
         #HACK (2). Set changeid to flag supplemental request
-        address.setChangeId('supplemental{}'.format(address.getAddressId()))
+        address.setChangeId('{hsi}{cid}'.format(hsi=HACK_SUP_IND,cid=address.getAddressId()))
         self._addressApprove(address,ApprovalType.SUPPLEMENT,reqid) 
         
         
@@ -564,8 +564,8 @@ class Persistence():
             #page = (lowest page fetched, highest page number fetched)
             self.tracker[FEEDS['AF']] = {'page':[1,1],    'index':1,'threads':2,'interval':30}    
             self.tracker[FEEDS['AC']] = {'page':[NPV,NPV],'index':1,'threads':0,'interval':125}  
-            self.tracker[FEEDS['AR']] = {'page':[1,1],    'index':1,'threads':1,'interval':10} 
-            self.tracker[FEEDS['GC']] = {'page':[1,1],    'index':1,'threads':0,'interval':130}  
+            self.tracker[FEEDS['AR']] = {'page':[1,1],    'index':1,'threads':1,'interval':10}  
+            self.tracker[FEEDS['GC']] = {'page':[1,1],    'index':1,'threads':0,'interval':130} 
             self.tracker[FEEDS['GR']] = {'page':[1,1],    'index':1,'threads':1,'interval':55}          
             self.tracker[FEEDS['UA']] = {'page':[1,1],    'index':1,'threads':0,'interval':0}              
             

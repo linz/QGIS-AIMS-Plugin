@@ -16,7 +16,7 @@ import re
 
 from Address import Address,AddressChange,AddressResolution#,AimsWarning
 from Config import ConfigReader
-from AimsUtility import FeatureType,ActionType,ApprovalType,GroupActionType,GroupApprovalType,UserActionType,FeedType,LogWrap,FeedRef
+from AimsUtility import FeatureType,ActionType,ApprovalType,GroupActionType,GroupApprovalType,UserActionType,FeedType,LogWrap,FeedRef,SupplementalHack
 from AimsUtility import AimsException
 from Const import MAX_FEATURE_COUNT,TEST_MODE
 from AimsLogging import Logger
@@ -61,18 +61,25 @@ class AimsApi(object):
         @type jcontent: Dict
         @return: Dict of categorised error messages
         '''        
-        ce = {'critical':(),'error':(),'warn':()}
-        if str(resp) in ('400', '404') and jcontent.has_key('entities'):
+        ce = {'reject':(),'error':(),'warning':(),'info':()}
+        if str(resp) in ('400', '404', '200', '201') and jcontent.has_key('entities'):
+
             for entity in jcontent['entities']:
                 if entity['properties']['severity'] == 'Reject':
-                    ce['critical'] += (entity['properties']['description'],)
+                    ce['reject'] += (entity['properties']['description'],)
+                elif entity['properties']['severity'] == 'Warning':
+                    ce['warning'] += (entity['properties']['description'],)
+                elif entity['properties']['severity'] == 'Info':
+                    ce['info'] += (entity['properties']['description'],)
                 else:
-                    ce['error'] += (entity['properties']['description'],)
+                        ce['error'] += (entity['properties']['description'],)
+
+        
+            
         elif str(resp) == '409':
-            #criticalErrors.append(content['properties']['reason'] +'\n'+ content['properties']['message'])
-            ce['critical'] += ('{} - {}'.format(jcontent['properties']['reason'],jcontent['entities'][0]['properties']['description']),)
+            ce['reject'] += ('{} - {}'.format(jcontent['properties']['reason'],jcontent['entities'][0]['properties']['description']),)
         else:
-            ce['critical'] += ('General Exception {}'.format(resp),)
+            ce['reject'] += ('General Exception {}'.format(resp),)
              
         return ce
     
@@ -86,25 +93,36 @@ class AimsApi(object):
         @type jcontent: Dict
         @return: Dict of categorised error messages
         '''
-        ce = {'critical':(),'error':(),'warn':()}
-        if str(resp) not in ('201', '200'):
+        ce = {'reject':(),'error':(),'warning':(),'info':()}
+        if str(resp) not in ('101', '100', '200', '202'):
             # list of validation errors
             ce = self.handleErrors(url, resp, jcontent)
-        return ce,jcontent
-    
-    def _xxxExtractLinkWorkaround(self,jcf):
-        l = ''
-        for link in jcf['links']:
-            if link['rel'][0] == 'addressresolution':
-                l = link['href']
-                break
-        match = re.search('.*\/(\d+)$',l)
-        return match.group(1) if match else ''
-        
+        return ce,jcontent        
 
     #-----------------------------------------------------------------------------------------------------------------------
     #--- A G G R E G A T E S  &  A L I A S E S -----------------------------------------------------------------------------
     #-----------------------------------------------------------------------------------------------------------------------
+    
+    @LogWrap.timediff(prefix='LinkedFeatureHack')
+    def _xxxGetLinkedFeatureWorkaround(self,cid1):
+        '''Workaround to handle supplementary links
+        @param etft: Feed/Feature identifier
+        @type etft: FeedRef
+        @param cid: ChangeId
+        @type cid: Integer
+        @return: Dict of JSON response
+        '''
+        etft1 = FeedRef(FeatureType.ADDRESS,FeedType.FEATURES)
+        cef,jcf = self.getOneFeature(etft1, cid1)
+        
+        cid2 = SupplementalHack.extractlink(jcf)
+        
+        etft2 = FeedRef(FeatureType.ADDRESS,FeedType.RESOLUTIONFEED)
+        cer,jcr = self.getOneFeature(etft2, cid2)
+        
+        return cer,jcr
+    
+    
     def _request(self,*args,**kwargs):
         '''Wraps httplib2 requests for logging
         @param *args: Request arguments
@@ -142,25 +160,6 @@ class AimsApi(object):
         resp, content = self._request(url,'GET', headers = self._headers)
         return self.handleResponse(url,resp["status"], json.loads(content))
         #return jcontent['entities']
-    
-    @LogWrap.timediff(prefix='LinkedFeatureHack')
-    def _xxxGetLinkedFeatureWorkaround(self,cid1):
-        '''Workaround to handle supplementary links
-        @param etft: Feed/Feature identifier
-        @type etft: FeedRef
-        @param cid: ChangeId
-        @type cid: Integer
-        @return: Dict of JSON response
-        '''
-        etft1 = FeedRef(FeatureType.ADDRESS,FeedType.FEATURES)
-        cef,jcf = self.getOneFeature(etft1, cid1)
-        
-        cid2 = self._xxxExtractLinkWorkaround(jcf)
-        
-        etft2 = FeedRef(FeatureType.ADDRESS,FeedType.RESOLUTIONFEED)
-        cer,jcr = self.getOneFeature(etft2, cid2)
-        
-        return cer,jcr
            
     @LogWrap.timediff(prefix='oneFeat')
     def getOneFeature(self,etft,cid):
@@ -174,6 +173,7 @@ class AimsApi(object):
         et = FeatureType.reverse[etft.et].lower()
         ft = FeedType.reverse[etft.ft].lower()
         url = '/'.join((self._url,et,ft.lower(),str(cid) if cid else '')).rstrip('/')
+        #if count: url += '?count={}'.format(count)
         resp, content = self._request(url,'GET', headers = self._headers)
         return self.handleResponse(url,resp["status"], json.loads(content))
         #return jcontent        
@@ -208,10 +208,10 @@ class AimsApi(object):
         @type cid: Integer
         @return: Response from HTTP request
         '''
-        #HACK (2) Bypass on supplemental
-        m = re.search('supplemental(\d+$)',str(cid))
-        if m: return self._xxxGetLinkedFeatureWorkaround(m.group(1))
-        #
+        #<HACK> (2) Bypass on supplemental
+        sup,cid = SupplementalHack.strip(cid)
+        if sup: return self._xxxGetLinkedFeatureWorkaround(cid)
+        #</HACK>
         #aimslog.debug('{0}'.format(payload))
         '''Approve/Decline a change by submitting address to resolutionfeed'''
         et = FeatureType.reverse[FeatureType.ADDRESS].lower()
@@ -265,7 +265,7 @@ class AimsApi(object):
         @type uid: Integer
         @return: Response from HTTP request
         '''
-        #http://devassgeo01:8080/aims/api/admin/users {add/update/delete}
+        #~/aims/api/admin/users {add/update/delete}
         url = '{}/admin/users/{}/{}'.format(self._url,uid,TESTPATH).rstrip('/')
         resp, content = self._request(url,UserActionType.HTTP[uat], json.dumps(payload), self._headers)
         return self.handleResponse(url,resp["status"], json.loads(content) )
@@ -291,4 +291,3 @@ class AimsApi(object):
         
         
         
- 

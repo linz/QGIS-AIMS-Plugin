@@ -62,6 +62,7 @@ class Controller( QObject ):
         QObject.__init__(self)
         self.iface = iface
         self._queues = None
+        self._dockWindow = None
         self._currentMapTool = None
         self.rclParent = None
         self.currentRevItem = None
@@ -238,8 +239,9 @@ class Controller( QObject ):
         """
         if not self._queues:
             queues = AimsQueueWidget(self.iface.mainWindow())
-            DockWindow(self.iface.mainWindow(),queues,"AimsQueues","Aims Queues")
+            self._dockWindow = DockWindow(self.iface.mainWindow(),queues,"AimsQueues","Aims Queues")
             self._queues = queues
+            self._dockWindow.unloadPlugin.connect(self.unload)
         return self._queues
     
     def startDM(self):

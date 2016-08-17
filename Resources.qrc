@@ -7,5 +7,6 @@
     <file>resources/updateaddress.png</file>
     <file>resources/lineage.png</file>
     <file>resources/addresshighlight.png</file>
+<file>resources/selectrcl.png</file>
     </qresource>
 </RCC>

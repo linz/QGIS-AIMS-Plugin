@@ -12,7 +12,9 @@ from Config import ConfigReader
 from functools import wraps, partial
 import time
 import os
+import re
 from AimsLogging import Logger
+from Const import HACK_SUP_IND
 
 aimslog = Logger.setup()
 
@@ -109,7 +111,24 @@ class Enumeration(object):
         enums['next'] = IterEnum.next
         enums['index'] = 0
         return type('Enum', (IterEnum,), enums)
-
+    
+class SupplementalHack(object):
+    
+    @staticmethod
+    def strip(cid):
+        m = re.search('{hsi}(\d+$)'.format(hsi=HACK_SUP_IND),str(cid))
+        return (True,m.group(1)) if m else (False,cid)
+    
+    @staticmethod
+    def extractlink(jcf):
+        l = ''
+        for link in jcf['links']:
+            if link['rel'][0] == 'addressresolution':
+                l = link['href']
+                break
+        match = re.search('.*\/(\d+)$',l)
+        return match.group(1) if match else ''
+        
 class FeedRef(object):
     '''Convenience container class holding Feature/Feed type key'''
     TRUNC = 3

@@ -1,3 +1,14 @@
+################################################################################
+#
+# Copyright 2016 Crown copyright (c)
+# Land Information New Zealand and the New Zealand Government.
+# All rights reserved
+#
+# This program is released under the terms of the 3 clause BSD license. See the 
+# LICENSE file for more information.
+#
+################################################################################
+
 import sys
 import time
 
@@ -98,7 +109,6 @@ class UpdateAddressTool(QgsMapToolIdentify):
             return
         elif len(results) == 1:
             # initialise an address object and populate from selected feature
-
             self._feature = self._controller.uidm.singleFeatureObj(results[0].mFeature.attribute('addressId'))
             
         else: # Stacked points

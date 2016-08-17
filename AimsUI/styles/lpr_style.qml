@@ -1,5 +1,5 @@
 <!DOCTYPE qgis PUBLIC 'http://mrcc.com/qgis.dtd' 'SYSTEM'>
-<qgis version="2.8.1-Wien" minimumScale="-4.65661e-10" maximumScale="10000" simplifyDrawingHints="1" minLabelScale="1" maxLabelScale="10000" simplifyDrawingTol="1" simplifyMaxScale="1" hasScaleBasedVisibilityFlag="1" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
+<qgis version="2.8.1-Wien" minimumScale="0" maximumScale="10000" simplifyDrawingHints="1" minLabelScale="1" maxLabelScale="10000" simplifyDrawingTol="1" simplifyMaxScale="1" hasScaleBasedVisibilityFlag="1" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
   <edittypes>
     <edittype widgetv2type="TextEdit" name="id">
       <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
@@ -34,77 +34,28 @@
   </edittypes>
   <renderer-v2 symbollevels="0" type="RuleRenderer">
     <rules key="{82d4af77-548f-4edc-8573-82ad95044023}">
-      <rule filter=" &quot;parcel_intent&quot; not in ('Road', 'Railway', 'Hydro')" key="{fa341051-8aae-45fe-952d-5f72fa479e5a}" symbol="0" label="Land"/>
-      <rule filter="&quot;parcel_intent&quot;  =  'Hydro'&#xa;" key="{2e4f5ef6-636c-4406-8457-a792e9223030}" symbol="1" label="Hydro"/>
-      <rule filter="&quot;parcel_intent&quot;  =  'Railway or&#xa;&quot;parcel_intent&quot;  =  'Road'" key="{aab1ca16-7351-4415-9a58-c83e7263ad6d}" symbol="2" label="Road Rail"/>
+      <rule checkstate="0" filter=" &quot;parcel_intent&quot; not in ('Road', 'Railway', 'Hydro')" key="{fa341051-8aae-45fe-952d-5f72fa479e5a}" symbol="0" label="Land"/>
     </rules>
     <symbols>
       <symbol alpha="0.0980392" type="fill" name="0">
         <layer pass="0" class="SimpleFill" locked="0">
           <prop k="border_width_map_unit_scale" v="0,0"/>
-          <prop k="color" v="158,156,167,255"/>
-          <prop k="joinstyle" v="bevel"/>
-          <prop k="offset" v="0,0"/>
-          <prop k="offset_map_unit_scale" v="0,0"/>
-          <prop k="offset_unit" v="MM"/>
-          <prop k="outline_color" v="0,0,0,255"/>
-          <prop k="outline_style" v="solid"/>
-          <prop k="outline_width" v="0.66"/>
-          <prop k="outline_width_unit" v="MM"/>
-          <prop k="style" v="no"/>
-        </layer>
-      </symbol>
-      <symbol alpha="0.0980392" type="fill" name="1">
-        <layer pass="0" class="ShapeburstFill" locked="0">
-          <prop k="blur_radius" v="3"/>
-          <prop k="color" v="69,191,251,255"/>
-          <prop k="color1" v="0,0,255,255"/>
-          <prop k="color2" v="0,255,0,255"/>
-          <prop k="color_type" v="0"/>
-          <prop k="discrete" v="0"/>
-          <prop k="distance_map_unit_scale" v="0,0"/>
-          <prop k="distance_unit" v="MM"/>
-          <prop k="gradient_color2" v="255,255,255,255"/>
-          <prop k="ignore_rings" v="0"/>
-          <prop k="max_distance" v="3"/>
-          <prop k="offset" v="0,0"/>
-          <prop k="offset_map_unit_scale" v="0,0"/>
-          <prop k="offset_unit" v="MM"/>
-          <prop k="use_whole_shape" v="0"/>
-        </layer>
-        <layer pass="0" class="SimpleFill" locked="0">
-          <prop k="border_width_map_unit_scale" v="0,0"/>
-          <prop k="color" v="0,0,0,0"/>
-          <prop k="joinstyle" v="bevel"/>
-          <prop k="offset" v="0,0"/>
-          <prop k="offset_map_unit_scale" v="0,0"/>
-          <prop k="offset_unit" v="MM"/>
-          <prop k="outline_color" v="69,191,251,255"/>
-          <prop k="outline_style" v="solid"/>
-          <prop k="outline_width" v="0.26"/>
-          <prop k="outline_width_unit" v="MM"/>
-          <prop k="style" v="solid"/>
-        </layer>
-      </symbol>
-      <symbol alpha="1" type="fill" name="2">
-        <layer pass="0" class="SimpleFill" locked="0">
-          <prop k="border_width_map_unit_scale" v="0,0"/>
-          <prop k="color" v="0,0,0,0"/>
+          <prop k="color" v="255,255,255,255"/>
           <prop k="joinstyle" v="bevel"/>
           <prop k="offset" v="0,0"/>
           <prop k="offset_map_unit_scale" v="0,0"/>
           <prop k="offset_unit" v="MM"/>
           <prop k="outline_color" v="0,0,0,0"/>
           <prop k="outline_style" v="solid"/>
-          <prop k="outline_width" v="0.26"/>
+          <prop k="outline_width" v="0.66"/>
           <prop k="outline_width_unit" v="MM"/>
-          <prop k="style" v="solid"/>
+          <prop k="style" v="no"/>
         </layer>
       </symbol>
     </symbols>
   </renderer-v2>
   <customproperties>
-    <property key="AimsClient.Id" value="par"/>
+    <property key="AimsClient.Id" value="lpr"/>
     <property key="labeling" value="pal"/>
     <property key="labeling/addDirectionSymbol" value="false"/>
     <property key="labeling/angleOffset" value="0"/>
@@ -114,7 +65,7 @@
     <property key="labeling/bufferColorB" value="255"/>
     <property key="labeling/bufferColorG" value="255"/>
     <property key="labeling/bufferColorR" value="255"/>
-    <property key="labeling/bufferDraw" value="false"/>
+    <property key="labeling/bufferDraw" value="true"/>
     <property key="labeling/bufferJoinStyle" value="64"/>
     <property key="labeling/bufferNoFill" value="false"/>
     <property key="labeling/bufferSize" value="1"/>
@@ -130,8 +81,8 @@
     <property key="labeling/distInMapUnits" value="false"/>
     <property key="labeling/distMapUnitMaxScale" value="0"/>
     <property key="labeling/distMapUnitMinScale" value="0"/>
-    <property key="labeling/enabled" value="false"/>
-    <property key="labeling/fieldName" value="CASE WHEN (&quot;roadprefixname&quot; IS NOT NULL) THEN &quot;roadprefixname&quot;  ELSE ''  END&#xa;||&quot;roadname&quot; || ' ' || CASE WHEN (&quot;roadtypename&quot; IS NOT NULL) THEN &quot;roadtypename&quot; ELSE ''  END&#xa;|| ' '|| CASE WHEN (&quot;roadsuffixname&quot; IS NOT NULL) THEN &quot;roadsuffixname&quot;  ELSE ''  END&#xa;"/>
+    <property key="labeling/enabled" value="true"/>
+    <property key="labeling/fieldName" value="appellation"/>
     <property key="labeling/fontBold" value="true"/>
     <property key="labeling/fontCapitals" value="0"/>
     <property key="labeling/fontFamily" value="Ubuntu"/>
@@ -149,7 +100,7 @@
     <property key="labeling/fontWeight" value="63"/>
     <property key="labeling/fontWordSpacing" value="0"/>
     <property key="labeling/formatNumbers" value="false"/>
-    <property key="labeling/isExpression" value="true"/>
+    <property key="labeling/isExpression" value="false"/>
     <property key="labeling/labelOffsetInMapUnits" value="true"/>
     <property key="labeling/labelOffsetMapUnitMaxScale" value="0"/>
     <property key="labeling/labelOffsetMapUnitMinScale" value="0"/>
@@ -183,12 +134,12 @@
     <property key="labeling/scaleMin" value="1"/>
     <property key="labeling/scaleVisibility" value="false"/>
     <property key="labeling/shadowBlendMode" value="6"/>
-    <property key="labeling/shadowColorB" value="0"/>
-    <property key="labeling/shadowColorG" value="0"/>
-    <property key="labeling/shadowColorR" value="0"/>
+    <property key="labeling/shadowColorB" value="255"/>
+    <property key="labeling/shadowColorG" value="255"/>
+    <property key="labeling/shadowColorR" value="255"/>
     <property key="labeling/shadowDraw" value="false"/>
-    <property key="labeling/shadowOffsetAngle" value="135"/>
-    <property key="labeling/shadowOffsetDist" value="1"/>
+    <property key="labeling/shadowOffsetAngle" value="75"/>
+    <property key="labeling/shadowOffsetDist" value="11"/>
     <property key="labeling/shadowOffsetGlobal" value="true"/>
     <property key="labeling/shadowOffsetMapUnitMaxScale" value="0"/>
     <property key="labeling/shadowOffsetMapUnitMinScale" value="0"/>
@@ -199,7 +150,7 @@
     <property key="labeling/shadowRadiusMapUnitMinScale" value="0"/>
     <property key="labeling/shadowRadiusUnits" value="1"/>
     <property key="labeling/shadowScale" value="100"/>
-    <property key="labeling/shadowTransparency" value="30"/>
+    <property key="labeling/shadowTransparency" value="38"/>
     <property key="labeling/shadowUnder" value="0"/>
     <property key="labeling/shapeBlendMode" value="0"/>
     <property key="labeling/shapeBorderColorA" value="255"/>
@@ -238,9 +189,9 @@
     <property key="labeling/shapeTransparency" value="0"/>
     <property key="labeling/shapeType" value="0"/>
     <property key="labeling/textColorA" value="255"/>
-    <property key="labeling/textColorB" value="0"/>
-    <property key="labeling/textColorG" value="0"/>
-    <property key="labeling/textColorR" value="0"/>
+    <property key="labeling/textColorB" value="167"/>
+    <property key="labeling/textColorG" value="156"/>
+    <property key="labeling/textColorR" value="158"/>
     <property key="labeling/textTransp" value="0"/>
     <property key="labeling/upsidedownLabels" value="0"/>
     <property key="labeling/wrapChar" value=""/>

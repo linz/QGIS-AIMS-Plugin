@@ -14,7 +14,6 @@ import re
 import ConfigParser
 from string import whitespace
 
-
 import getpass
 import base64
 try:
@@ -27,6 +26,7 @@ UNAME = os.environ['USERNAME'] if re.search('win',sys.platform) else os.environ[
 DEF_CONFIG = {'db':{'host':'127.0.0.1'},'user':{'name':UNAME}}
 AIMS_CONFIG = os.path.join(os.path.dirname(__file__),'aimsConfig.ini')
 
+
 if not USE_PLAINTEXT:
     K='12345678901234567890123456789012'
     PADDING = '{'
@@ -37,7 +37,6 @@ if not USE_PLAINTEXT:
 
 class ConfigReader(object):
     '''Reader class for configparser object'''
-    
     cp = ConfigParser.ConfigParser()
     
     def __init__(self):
@@ -88,33 +87,36 @@ class ConfigReader(object):
     #and now some security theatre for your amusement
     
     @staticmethod
-    def _detect(p):
+    def _detect(p,cti):
         '''detects whether p has been ciphered or not, add conditions as required'''
-        return len(p)!=24 or bool(re.match('^[a-zA-Z0-9_-]*$',p))
+        return bool(re.match('^{cti}.*$'.format(cti=cti),p))
+
     
     @staticmethod
-    def readp():            
+    def readp():
+        from Const import CT_IND      
         cp = ConfigParser.ConfigParser()
         cp.read(AIMS_CONFIG)
-        ciphertext = cp.get('user','pass')
+        sometext = cp.get('user','pass')
         if USE_PLAINTEXT:
-            return ciphertext
-        else:
-            if ConfigReader._detect(ciphertext):
-                ConfigReader._writep(ciphertext)
-                return ciphertext
-            else:
+            return sometext
+        else:    
+            if ConfigReader._detect(sometext,CT_IND):
                 user = getpass.getuser()
                 aes = AES.new(K, AES.MODE_CBC,pad(user))
-                return DecodeAES(aes,ciphertext)
+                return DecodeAES(aes,sometext.strip(CT_IND))
+            else:
+                ConfigReader._writep(sometext)
+                return sometext
 
     @staticmethod  
     def _writep(plaintext):
+        from Const import CT_IND      
         cp = ConfigParser.ConfigParser()
         cp.read(AIMS_CONFIG)
         user = getpass.getuser()
         aes = AES.new(K, AES.MODE_CBC,pad(user))
-        ciphertext = EncodeAES(aes,plaintext)
+        ciphertext = '{}{}'.format(CT_IND,EncodeAES(aes,plaintext))
         cp.set('user','pass',ciphertext)
         cp.write(open(AIMS_CONFIG,'w'))
         

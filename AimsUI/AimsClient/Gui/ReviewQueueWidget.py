@@ -1,6 +1,6 @@
 ################################################################################
 #
-# Copyright 2015 Crown copyright (c)
+# Copyright 2016 Crown copyright (c)
 # Land Information New Zealand and the New Zealand Government.
 # All rights reserved
 #
@@ -8,6 +8,7 @@
 # LICENSE file for more information.
 #
 ################################################################################
+
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 from qgis.core import *
@@ -53,29 +54,30 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.uidm = self._controller.uidm
         self.uidm.register(self)
         self.reviewData = None
-        self.currentFeatureKey = None
+        self.currentFeatureKey = 0
         self.currentAdrCoord = [0,0]
         self.feature = None
         self.currentGroup = (0,0) #(id, type)
         self.altSelectionId = ()
-        
+        self.comboSelection = []   
         
         # Connections
         self.uDisplayButton.clicked.connect(self.display)
         self.uUpdateButton.clicked.connect(self.updateFeature)
         self.uRejectButton.clicked.connect(self.decline)
         self.uAcceptButton.clicked.connect(self.accept)
-        #self.uRefreshButton.clicked.connect(self.refreshData)
           
         # Features View 
+        self._featureProxyModel = QSortFilterProxyModel()
         featuresHeader = ['Id','Full Num', 'Full Road', 'Life Cycle', 'Town', 'Suburb Locality']
-        self.featuresTableView = self.uFeaturesTableView
+        self.featuresTableView = self.uFeaturesTableView        
         self.featureModel = FeatureTableModel(self.reviewData, featuresHeader)
-        self.featuresTableView.setModel(self.featureModel)
+        self._featureProxyModel.setSourceModel(self.featureModel)
+        self.featuresTableView.setModel(self._featureProxyModel)
         self.featuresTableView.rowSelected.connect(self.featureSelected)
         self.featuresTableView.resizeColumnsToContents()
         self.featuresTableView.setColumnHidden(5, True)
-        self.featuresTableView.selectRow(0)
+        self.featuresTableView.selectRow(0)       
         
         # Group View 
         self._groupProxyModel = QSortFilterProxyModel()
@@ -88,8 +90,6 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self._groupProxyModel.setSourceModel(self.groupModel)
         self.groupTableView.setModel(self._groupProxyModel)
         self.groupTableView.resizeColumnsToContents()
-        #self.groupTableView.selectionModel().currentRowChanged.connect(self.groupSelected)
-        #self.groupTableView.clicked.connect(self.groupSelected)
         self.groupTableView.rowSelectionChanged.connect(self.groupSelected)
                 
         # connect combobox_users to view and model
@@ -163,16 +163,17 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         """
         
         if self.currentFeatureKey:   
-            #QgsMessageLog.logMessage("Primary: {0}, Alternative: {1}".format(self.currentGroup[0], self.altSelectionId), 'AIMS', QgsMessageLog.INFO)     
             matchedIndex = self.groupModel.findfield('{}'.format(self.currentGroup[0]))
+            
             if matchedIndex.isValid() == False:
                 matchedIndex = self.groupModel.findfield('{}'.format(self.altSelectionId)) or 0            
             row = matchedIndex.row()
             self.groupModel.setKey(row)
-            #self.groupTableView.selectRow(row)
+
             if row != -1:
                 self.groupTableView.selectRow(self._groupProxyModel.mapFromSource(matchedIndex).row())
-                self.featuresTableView.selectRow(0)
+                #self.featuresTableView.selectRow(0)
+                self.reinstateFeatSelection()
                 coords = self.uidm.reviewItemCoords(self.currentGroup, self.currentFeatureKey)
                 if coords:
                     self.setMarker(coords)
@@ -208,7 +209,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         
         return self.uidm.currentReviewFeature(self.currentGroup, self.currentFeatureKey)
             
-    def featureSelected(self, row):
+    def featureSelected(self, row = None):
         """ 
         Sets the current feature reference when the user selects a feature
 
@@ -217,11 +218,27 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         """
 
         if self.currentGroup[0]:  
-            self.currentFeatureKey = self.featureModel.tableSelectionMade(row)   
+            fProxyIndex = self.featuresTableView.selectionModel().currentIndex()
+            fSourceIndex = self._featureProxyModel.mapToSource(fProxyIndex)
+            self.currentFeatureKey = self.featureModel.tableSelectionMade(fSourceIndex.row())   
             self.uQueueEditor.currentFeatureToUi(self.currentReviewFeature())
             coords = self.uidm.reviewItemCoords(self.currentGroup, self.currentFeatureKey)
             if coords:
                 self.setMarker(coords)
+
+    
+    def reinstateFeatSelection(self):
+        """
+        When data is refreshed, attempt to reinstate
+        the last feature selection        
+        """
+        
+        if self.currentFeatureKey:   
+            matchedIndex = self.featureModel.findfield('{}'.format(self.currentFeatureKey))
+            if matchedIndex.isValid():
+                self.featuresTableView.selectRow(self._featureProxyModel.mapFromSource(matchedIndex).row())
+                return
+        self.featuresTableView.selectRow(0)
 
     def groupSelected(self, row = None):
         """
@@ -242,15 +259,15 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
             self.altSelectionId = 0
         elif self._groupProxyModel.rowCount() == 1:
             self.altSelectionId = 0
-            self.featuresTableView.selectRow(0)
+            #self.featuresTableView.selectRow(0)
+            self.reinstateFeatSelection()
             return
         elif altProxyIndex.row() == -1:
             altProxyIndex = self.groupTableView.model().index(proxyIndex.row()-1,0)
             
         self.altSelectionId = self.groupTableView.model().data(altProxyIndex)
-        self.featuresTableView.selectRow(0)
-
-        #QgsMessageLog.logMessage("Primary: {0}, Alternative: {1}".format(self.currentGroup[0], self.altSelectionId), 'AIMS', QgsMessageLog.INFO) 
+        self.reinstateFeatSelection()
+        #self.featuresTableView.selectRow(0)
    
     def userFilterChanged(self, index):
         """ 
@@ -266,6 +283,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         else:
             item.setCheckState(Qt.Checked)
         self.applyFilter(self.comboBoxUser)
+        self.groupSelected()
 
     def groupsFilter(self, row, data):
         """
@@ -282,13 +300,14 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         """ 
         Filter Group Table when the comboBoxUser parameters are modified
         """
-           
+        self.comboSelection = []   
         uFilter = ''
         model = parent.model()
         for row in range(model.rowCount()): 
             item = model.item(row)
             if item.checkState() == Qt.Checked:
                 uFilter+='|'+item.text()
+                self.comboSelection.append(item.text())
         self.groupsFilter(row, str(uFilter)[1:])
                 
     def popUserCombo(self):
@@ -296,7 +315,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         Obtain all unique and active AIMS publisher values 
         """
         
-        data = self.groupModel.getUsers()
+        data = list(set(self.groupModel.getUsers()))
         data.sort()
         self.popCombo(data, self.comboModelUser)
                  
@@ -312,8 +331,9 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         
         for i in range(len(cElements)):
             item = QStandardItem(cElements[i])
-            item.setCheckState(Qt.Checked)
             item.setCheckable(True)
+            if item.text() in self.comboSelection:
+                item.setCheckState(Qt.Checked)
             model.setItem(i,item)    
 
    
@@ -334,6 +354,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
             self.uidm.repairAddress(self.feature, respId)
             self._controller.RespHandler.handleResp(respId, FEEDS['AR'])
             self.feature = None
+            self.uQueueEditor.featureId = 0
     
     def reviewResolution(self, action):
         """
@@ -356,7 +377,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
                 elif action == 'decline':
                     self.uidm.decline(reviewObj, feedType, respId)
                     
-                if self._controller.RespHandler.handleResp(respId, FEEDS['AR'], action):
+                if self._controller.RespHandler.handleResp(respId, feedType, action):
                     self.highlight.hideReview()
                 self.reinstateSelection()
                 
@@ -400,13 +421,3 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         """
         
         self._queues.uResolutionTab.refreshData()
-
-#   commented ou 14/6/2016  
-#     
-# if __name__ == '__main__':
-#     app = QApplication(sys.argv)
-#     
-#     
-#     wnd = ReviewQueueWidget()
-#     wnd.show()
-#     sys.exit(app.exec_())

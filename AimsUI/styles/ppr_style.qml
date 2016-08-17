@@ -1,5 +1,5 @@
 <!DOCTYPE qgis PUBLIC 'http://mrcc.com/qgis.dtd' 'SYSTEM'>
-<qgis version="2.8.1-Wien" minimumScale="-4.65661e-10" maximumScale="10000" simplifyDrawingHints="1" minLabelScale="1" maxLabelScale="10000" simplifyDrawingTol="1" simplifyMaxScale="1" hasScaleBasedVisibilityFlag="1" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
+<qgis version="2.8.1-Wien" minimumScale="0" maximumScale="10000" simplifyDrawingHints="1" minLabelScale="0" maxLabelScale="10000" simplifyDrawingTol="1" simplifyMaxScale="1" hasScaleBasedVisibilityFlag="1" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
   <edittypes>
     <edittype widgetv2type="TextEdit" name="id">
       <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
@@ -14,6 +14,9 @@
       <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
     </edittype>
     <edittype widgetv2type="TextEdit" name="topology_type">
+      <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
+    </edittype>
+    <edittype widgetv2type="TextEdit" name="status">
       <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
     </edittype>
     <edittype widgetv2type="TextEdit" name="statutory_actions">
@@ -32,32 +35,25 @@
       <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
     </edittype>
   </edittypes>
-  <renderer-v2 symbollevels="0" type="RuleRenderer">
-    <rules key="{82d4af77-548f-4edc-8573-82ad95044023}">
-      <rule filter=" &quot;parcel_intent&quot; not in ('Road', 'Railway', 'Hydro')" key="{fa341051-8aae-45fe-952d-5f72fa479e5a}" symbol="0" label="Land"/>
-      <rule filter="&quot;parcel_intent&quot;  =  'Hydro'&#xa;" key="{2e4f5ef6-636c-4406-8457-a792e9223030}" symbol="1" label="Hydro"/>
-      <rule filter="&quot;parcel_intent&quot;  =  'Railway or&#xa;&quot;parcel_intent&quot;  =  'Road'" key="{aab1ca16-7351-4415-9a58-c83e7263ad6d}" symbol="2" label="Road Rail"/>
-    </rules>
+  <renderer-v2 symbollevels="0" type="singleSymbol">
     <symbols>
-      <symbol alpha="0.0980392" type="fill" name="0">
+      <symbol alpha="1" type="fill" name="0">
         <layer pass="0" class="SimpleFill" locked="0">
           <prop k="border_width_map_unit_scale" v="0,0"/>
-          <prop k="color" v="158,156,167,255"/>
+          <prop k="color" v="0,0,0,0"/>
           <prop k="joinstyle" v="bevel"/>
           <prop k="offset" v="0,0"/>
           <prop k="offset_map_unit_scale" v="0,0"/>
           <prop k="offset_unit" v="MM"/>
-          <prop k="outline_color" v="0,0,0,255"/>
+          <prop k="outline_color" v="150,223,0,255"/>
           <prop k="outline_style" v="solid"/>
           <prop k="outline_width" v="0.66"/>
           <prop k="outline_width_unit" v="MM"/>
-          <prop k="style" v="no"/>
+          <prop k="style" v="solid"/>
         </layer>
-      </symbol>
-      <symbol alpha="0.0980392" type="fill" name="1">
         <layer pass="0" class="ShapeburstFill" locked="0">
-          <prop k="blur_radius" v="3"/>
-          <prop k="color" v="69,191,251,255"/>
+          <prop k="blur_radius" v="0"/>
+          <prop k="color" v="70,223,0,255"/>
           <prop k="color1" v="0,0,255,255"/>
           <prop k="color2" v="0,255,0,255"/>
           <prop k="color_type" v="0"/>
@@ -72,39 +68,13 @@
           <prop k="offset_unit" v="MM"/>
           <prop k="use_whole_shape" v="0"/>
         </layer>
-        <layer pass="0" class="SimpleFill" locked="0">
-          <prop k="border_width_map_unit_scale" v="0,0"/>
-          <prop k="color" v="0,0,0,0"/>
-          <prop k="joinstyle" v="bevel"/>
-          <prop k="offset" v="0,0"/>
-          <prop k="offset_map_unit_scale" v="0,0"/>
-          <prop k="offset_unit" v="MM"/>
-          <prop k="outline_color" v="69,191,251,255"/>
-          <prop k="outline_style" v="solid"/>
-          <prop k="outline_width" v="0.26"/>
-          <prop k="outline_width_unit" v="MM"/>
-          <prop k="style" v="solid"/>
-        </layer>
-      </symbol>
-      <symbol alpha="1" type="fill" name="2">
-        <layer pass="0" class="SimpleFill" locked="0">
-          <prop k="border_width_map_unit_scale" v="0,0"/>
-          <prop k="color" v="0,0,0,0"/>
-          <prop k="joinstyle" v="bevel"/>
-          <prop k="offset" v="0,0"/>
-          <prop k="offset_map_unit_scale" v="0,0"/>
-          <prop k="offset_unit" v="MM"/>
-          <prop k="outline_color" v="0,0,0,0"/>
-          <prop k="outline_style" v="solid"/>
-          <prop k="outline_width" v="0.26"/>
-          <prop k="outline_width_unit" v="MM"/>
-          <prop k="style" v="solid"/>
-        </layer>
       </symbol>
     </symbols>
+    <rotation/>
+    <sizescale scalemethod="area"/>
   </renderer-v2>
   <customproperties>
-    <property key="AimsClient.Id" value="par"/>
+    <property key="AimsClient.Id" value="ppr"/>
     <property key="labeling" value="pal"/>
     <property key="labeling/addDirectionSymbol" value="false"/>
     <property key="labeling/angleOffset" value="0"/>
@@ -131,7 +101,7 @@
     <property key="labeling/distMapUnitMaxScale" value="0"/>
     <property key="labeling/distMapUnitMinScale" value="0"/>
     <property key="labeling/enabled" value="false"/>
-    <property key="labeling/fieldName" value="CASE WHEN (&quot;roadprefixname&quot; IS NOT NULL) THEN &quot;roadprefixname&quot;  ELSE ''  END&#xa;||&quot;roadname&quot; || ' ' || CASE WHEN (&quot;roadtypename&quot; IS NOT NULL) THEN &quot;roadtypename&quot; ELSE ''  END&#xa;|| ' '|| CASE WHEN (&quot;roadsuffixname&quot; IS NOT NULL) THEN &quot;roadsuffixname&quot;  ELSE ''  END&#xa;"/>
+    <property key="labeling/fieldName" value=""/>
     <property key="labeling/fontBold" value="true"/>
     <property key="labeling/fontCapitals" value="0"/>
     <property key="labeling/fontFamily" value="Ubuntu"/>
@@ -254,7 +224,7 @@
   <label>0</label>
   <labelattributes>
     <label fieldname="" text="Label"/>
-    <family fieldname="" name="MS Shell Dlg 2"/>
+    <family fieldname="" name="Ubuntu"/>
     <size fieldname="" units="pt" value="12"/>
     <bold fieldname="" on="0"/>
     <italic fieldname="" on="0"/>

@@ -1,6 +1,6 @@
 ################################################################################
 #
-# Copyright 2015 Crown copyright (c)
+# Copyright 2016 Crown copyright (c)
 # Land Information New Zealand and the New Zealand Government.
 # All rights reserved
 #
@@ -8,6 +8,7 @@
 # LICENSE file for more information.
 #
 ################################################################################
+
 from qgis.core import *
 from qgis.gui import *
 from PyQt4.QtGui import *
@@ -46,8 +47,13 @@ class ResponseHandler(object):
         @type action: QtGui.QWidget()
         """
         
-        if hasattr(respObj, '_changeGroupId'):
+        if hasattr(respObj, '_changeGroupId') and feedType == FEEDS['AR']:
             respObj = self.afar[FeedType.RESOLUTIONFEED].cast(respObj)  
+            # Hack to allow the supplementing of missing
+            #  AF data with AR data
+            if action == 'supplement':
+                self.updateSuccessful = respObj
+                return True
             self.uidm.updateGdata(respObj)
         elif feedType == FEEDS['AC']:
             respObj = self.afar[FeedType.RESOLUTIONFEED].cast(respObj)
@@ -59,7 +65,8 @@ class ResponseHandler(object):
                 self.updateSuccessful = respObj
                 return True
             self.uidm.updateRdata(respObj, feedType)
-            if action == 'accept':
+            #if action == 'accept':
+            if respObj._queueStatus == 'Accepted':
                 respObj = self.afaf[FeedType.FEATURES].cast(respObj)
                 self.uidm.updateFdata(respObj)
         else:
@@ -103,20 +110,27 @@ class ResponseHandler(object):
             if resp.meta._requestId == respId:  
                 #logging
                 uilog.info(' *** DATA ***    response received from DM for respId: {0} of type: {1} after {2} seconds'.format(respId, feedType, i))    
-                if resp.meta._errors['critical']:
-                    self.displayWarnings(resp.meta.errors['critical'])
+                if resp.meta._errors['reject']:
+                    self.displayWarnings(resp.meta.errors['reject'])
+                    return True
+                if resp.meta._errors['warning'] and resp._queueStatus == 'Accepted':
+                    self.displayWarnings(resp.meta.errors['warning'])
+                    # hack -- failed acceptance but still has an accepted status
+                    resp.setQueueStatus('Under Review') 
+                    self.updateData(resp, feedType, action)
                     return True
                 if resp.meta._errors['error'] and resp._queueStatus == 'Accepted':
                     self.displayWarnings(resp.meta.errors['error'])
-                    return True
-        
-                else:                   
-                # else captured resp and no critical warnings
-                # precede to update self._data
+                    resp.setQueueStatus('Under Review') # hack
                     self.updateData(resp, feedType, action)
                     return True
-                    # return resp     
-                         
+        
+                  
+                # else captured resp and no critical warnings
+                # precede to update self._data
+                self.updateData(resp, feedType, action)
+                return True
+            
     def handleResp(self, respId, feedType, action = None):
         """
         Test for a response in the response queue with the relevant repId'''
@@ -131,13 +145,14 @@ class ResponseHandler(object):
         self.updateSuccessful = False 
         
         for i in range(0,20):
-            time.sleep(1)
             resp = self.uidm.response(feedType)
             if resp and resp != (None,): # found and processed response
                 if self.matchResp(resp, respId, feedType, i, action):
-                    return self.updateSuccessful                                              
+                    return self.updateSuccessful  
+            else: time.sleep(1)                                            
         #logging 
-        self._iface.messageBar().pushMessage("Incomplete Response", "Layer data may not be complete", level=QgsMessageBar.WARNING)
+        self._iface.messageBar().pushMessage("Incomplete Response", "Data may not be complete - Please expect a data refresh shortly", level=QgsMessageBar.WARNING)
+
         uilog.info(' *** DATA ***    Time Out ({0} seconds): No response received from DM for respId: {1} of feedtype: {2}'.format(i, respId, feedType))    
     
            

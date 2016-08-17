@@ -1,5 +1,5 @@
 <!DOCTYPE qgis PUBLIC 'http://mrcc.com/qgis.dtd' 'SYSTEM'>
-<qgis version="2.8.1-Wien" minimumScale="-4.65661e-10" maximumScale="10000" simplifyDrawingHints="0" minLabelScale="1" maxLabelScale="1e+08" simplifyDrawingTol="1" simplifyMaxScale="1" hasScaleBasedVisibilityFlag="1" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
+<qgis version="2.8.1-Wien" minimumScale="0" maximumScale="20000" simplifyDrawingHints="0" minLabelScale="1" maxLabelScale="1e+08" simplifyDrawingTol="1" simplifyMaxScale="1" hasScaleBasedVisibilityFlag="1" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
   <edittypes>
     <edittype widgetv2type="TextEdit" name="AimsId">
       <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
@@ -15,7 +15,7 @@
     <rules key="{f01b8dd9-58db-4188-92f9-24c1416b35c1}">
       <rule filter=" &quot;Action&quot;   =  'Add'" key="{faa48275-b8c9-482b-96c2-fc075d4e6243}" symbol="0" label="Add"/>
       <rule filter=" &quot;Action&quot;   =  'Update'" key="{fc694bed-ff42-4473-bbdc-90f506e38973}" symbol="1" label="Update"/>
-      <rule filter=" &quot;Action&quot;   =  'Retire'" key="{4266f5cf-8ca1-4f6e-9325-8a0d4d9534ad}" symbol="2" label="Retire"/>
+      <rule checkstate="0" filter=" &quot;Action&quot;   =  'Retire'" key="{4266f5cf-8ca1-4f6e-9325-8a0d4d9534ad}" symbol="2" label="Retire"/>
       <rule filter="&quot;Action&quot; not in ('Add', 'Update', 'Retire')" key="{819fc732-ddb4-4b9b-8b2a-12294680f55c}" symbol="3" label="Group"/>
     </rules>
     <symbols>
@@ -129,7 +129,7 @@
     <property key="labeling/dataDefined/Color" value="1~~1~~CASE WHEN &quot;Action&quot; = 'Add' THEN color_rgb(158,156,167)&#xa;WHEN &quot;Action&quot; = 'Update' THEN color_rgb(69,191,251) &#xa;WHEN &quot;Action&quot; = 'Retire' THEN color_rgb(251,98,98)&#xa;ELSE color_rgb(41,167,0) END~~"/>
     <property key="labeling/decimals" value="3"/>
     <property key="labeling/displayAll" value="false"/>
-    <property key="labeling/dist" value="0"/>
+    <property key="labeling/dist" value="0.75"/>
     <property key="labeling/distInMapUnits" value="false"/>
     <property key="labeling/distMapUnitMaxScale" value="0"/>
     <property key="labeling/distMapUnitMinScale" value="0"/>
@@ -153,7 +153,7 @@
     <property key="labeling/fontWordSpacing" value="0"/>
     <property key="labeling/formatNumbers" value="false"/>
     <property key="labeling/isExpression" value="false"/>
-    <property key="labeling/labelOffsetInMapUnits" value="false"/>
+    <property key="labeling/labelOffsetInMapUnits" value="true"/>
     <property key="labeling/labelOffsetMapUnitMaxScale" value="0"/>
     <property key="labeling/labelOffsetMapUnitMinScale" value="0"/>
     <property key="labeling/labelPerPart" value="false"/>
@@ -169,13 +169,13 @@
     <property key="labeling/namedStyle" value="Medium"/>
     <property key="labeling/obstacle" value="true"/>
     <property key="labeling/placeDirectionSymbol" value="0"/>
-    <property key="labeling/placement" value="1"/>
+    <property key="labeling/placement" value="0"/>
     <property key="labeling/placementFlags" value="0"/>
     <property key="labeling/plussign" value="false"/>
     <property key="labeling/preserveRotation" value="true"/>
     <property key="labeling/previewBkgrdColor" value="#ffffff"/>
     <property key="labeling/priority" value="5"/>
-    <property key="labeling/quadOffset" value="8"/>
+    <property key="labeling/quadOffset" value="4"/>
     <property key="labeling/repeatDistance" value="0"/>
     <property key="labeling/repeatDistanceMapUnitMaxScale" value="0"/>
     <property key="labeling/repeatDistanceMapUnitMinScale" value="0"/>
@@ -248,7 +248,7 @@
     <property key="labeling/upsidedownLabels" value="0"/>
     <property key="labeling/wrapChar" value=""/>
     <property key="labeling/xOffset" value="0"/>
-    <property key="labeling/yOffset" value="1"/>
+    <property key="labeling/yOffset" value="0"/>
   </customproperties>
   <blendMode>0</blendMode>
   <featureBlendMode>0</featureBlendMode>

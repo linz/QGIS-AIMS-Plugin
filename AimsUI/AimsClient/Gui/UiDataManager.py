@@ -1,6 +1,6 @@
 ################################################################################
 #
-# Copyright 2015 Crown copyright (c)
+# Copyright 2016 Crown copyright (c)
 # Land Information New Zealand and the New Zealand Government.
 # All rights reserved
 #
@@ -8,6 +8,7 @@
 # LICENSE file for more information.
 #
 ################################################################################
+
 from PyQt4.QtCore import *
 from qgis.core import QgsRectangle
 from qgis.gui import QgsMessageBar
@@ -229,6 +230,7 @@ class UiDataManager(QObject):
     def updateGdata(self, respFeature):
         groupKey = self.matchGroupKey(respFeature._changeGroupId)
         self.data[FEEDS['GR']][groupKey][respFeature._changeId] = respFeature
+        self.rDataChangedSignal.emit()
         
     def matchGroupKey(self, groupId):
         for groupKey in self.data.get(FEEDS['GR']).keys():
@@ -513,7 +515,7 @@ class UiDataManager(QObject):
 
         fullRoad = ''
         for prop in ['_components_roadPrefix', '_components_roadName', '_components_roadType', '_components_roadSuffix',
-                      '_components_waterRoute', '_components_waterName']:
+                      '_components_waterRoute']:
             addProp = None    
             # Groups have nested entities
             if feat._changeType in self.groups:
@@ -768,8 +770,8 @@ class Listener(QThread):
 
         for k , v in self.data.items():
             if v and self.previousData[k] != v:
-                self.emit(SIGNAL('dataChanged'), v, k) # failing as a new object is created for same obj in dm. Need new compare method
-        self.previousData = self.data                   # probably comparing (add_id & version)
+                self.emit(SIGNAL('dataChanged'), v, k) 
+        self.previousData = self.data                   
     
     def run(self):
         """
@@ -841,4 +843,4 @@ class DMObserver(QThread):
         
         uilog.info('*** NOTIFY ***     Notify A[{}]'.format(observable))
         setattr(self.DMData, self.feedData.get(fType),data)
-     
+        
