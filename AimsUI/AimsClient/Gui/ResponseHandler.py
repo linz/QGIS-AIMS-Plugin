@@ -86,7 +86,7 @@ class ResponseHandler(object):
         message = ''
         for warning in warnings:
             message += u'\u2022 {}\n'.format(warning)
-        QMessageBox.warning(self._iface.mainWindow(),"AIMS Warnings", message)
+        QMessageBox.warning(self._iface.mainWindow(),"Action Rejected", message)
      
     def matchResp (self, response, respId, feedType, i, action):
         """
@@ -123,9 +123,8 @@ class ResponseHandler(object):
                     self.displayWarnings(resp.meta.errors['error'])
                     resp.setQueueStatus('Under Review') # hack
                     self.updateData(resp, feedType, action)
-                    return True
-        
-                  
+                    return True             
+
                 # else captured resp and no critical warnings
                 # precede to update self._data
                 self.updateData(resp, feedType, action)
