@@ -498,7 +498,9 @@ class UiDataManager(QObject):
         @rtype: AIMSDataManager.Address property
         """
 
-        return getattr(feat,prop)  
+        att = getattr(feat,prop)  
+        return att if att else ''
+        
     
     def fullRoad(self, feat, feedtype):
         """ 
@@ -536,7 +538,7 @@ class UiDataManager(QObject):
                 addProp = self.flatEntities(feat, prop) 
             else: continue                    
             if addProp != None: fullRoad+=addProp+' '
-        return fullRoad 
+        return fullRoad.lstrip()
 
     def formatGroupTableData(self, obj, groupProperties):
         """

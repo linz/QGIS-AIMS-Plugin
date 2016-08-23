@@ -61,6 +61,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         self.altSelectionId = ()
         self.comboSelection = []   
         
+        
         # Connections
         self.uDisplayButton.clicked.connect(self.display)
         self.uUpdateButton.clicked.connect(self.updateFeature)
@@ -356,6 +357,41 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
             self.feature = None
             self.uQueueEditor.featureId = 0
     
+    def isDuplicateOnRoad(self, reviewObj):
+        """
+        Hack. Solution to adding duplicates to a road has
+        seen the API down grade duplicates from warning to infos. 
+        the requirement is to now raise a warning to the user when
+        creating a duplicate on a road. Unfortunately this can only
+        be caught at this late stage by match the info strings.  
+        
+        
+        @param resObj: resolution object that is being accpeted
+        @type feedType: AIMSDataManager.Address.
+        """
+        info = []
+        dupOnRoad = 'Address is not Unique on the road object'
+        # Standard API feed
+        if hasattr(reviewObj.meta,'_entities'):
+            info = [reviewObj.meta._entities[x]._description for x in range(len(reviewObj.meta._entities))
+                    if hasattr(reviewObj.meta._entities[x], '_description')] 
+        # Temp obj created from API response
+        if hasattr(reviewObj.meta,'_errors'):
+            # is dict if populated 
+            if type(reviewObj.meta._errors) is dict:
+                info = [reviewObj.meta._errors['info'][x] for x in range(len(reviewObj.meta._errors['info']))
+                        if reviewObj.meta._errors.has_key('info')]
+            
+        if dupOnRoad in info: 
+            proceed = QMessageBox.question(self._iface.mainWindow(), 'Duplicate Warning',
+            '{} \n \n Do You Want To Proceed and Create / Modify a Duplicate Address'.format(dupOnRoad),
+             QMessageBox.Yes | QMessageBox.No, QMessageBox.No)    
+            if proceed == QMessageBox.No:
+                return False
+        
+        return True
+        
+    
     def reviewResolution(self, action):
         """
         Decline or Accept review item as per the action parameter  
@@ -373,6 +409,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
             if reviewObj: 
                 respId = int(time.time()) 
                 if action == 'accept':
+                    if not self.isDuplicateOnRoad(reviewObj): return
                     self.uidm.accept(reviewObj,feedType, respId)
                 elif action == 'decline':
                     self.uidm.decline(reviewObj, feedType, respId)

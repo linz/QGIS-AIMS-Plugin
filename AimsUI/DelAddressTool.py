@@ -103,7 +103,7 @@ class DelAddressTool(QgsMapToolIdentify):
             
             if QMessageBox.question(self._iface.mainWindow(), 
                  "Confirm Address Retirement",
-                fullAddress + "\n will be marked for retirement?",
+                ('{}').format(fullAddress) + "\n will be marked for retirement?",
                 QMessageBox.Ok | QMessageBox.Cancel,
                 QMessageBox.Ok ) == QMessageBox.Ok:    
                 retireFeatures.append(retireIds)

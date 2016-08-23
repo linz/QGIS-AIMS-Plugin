@@ -62,7 +62,7 @@
           <prop k="distance_unit" v="MM"/>
           <prop k="gradient_color2" v="255,255,255,255"/>
           <prop k="ignore_rings" v="0"/>
-          <prop k="max_distance" v="3"/>
+          <prop k="max_distance" v="1.25"/>
           <prop k="offset" v="0,0"/>
           <prop k="offset_map_unit_scale" v="0,0"/>
           <prop k="offset_unit" v="MM"/>
