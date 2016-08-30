@@ -32,7 +32,7 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_11">
          <item>
-          <widget class="QLabel" name="label_44">
+          <widget class="QLabel" name="lNumberSplitter">
            <property name="font">
             <font>
              <weight>75</weight>
@@ -62,7 +62,7 @@
        <item>
         <layout class="QGridLayout" name="gridLayout_4">
          <item row="0" column="8">
-          <widget class="QLabel" name="label_41">
+          <widget class="QLabel" name="lAlpha">
            <property name="font">
             <font>
              <weight>75</weight>
@@ -75,7 +75,7 @@
           </widget>
          </item>
          <item row="0" column="0">
-          <widget class="QLabel" name="label_42">
+          <widget class="QLabel" name="lPrefix">
            <property name="font">
             <font>
              <weight>75</weight>
@@ -88,7 +88,7 @@
           </widget>
          </item>
          <item row="0" column="6">
-          <widget class="QLabel" name="label_43">
+          <widget class="QLabel" name="lHigh">
            <property name="font">
             <font>
              <weight>75</weight>
@@ -172,7 +172,7 @@
           </widget>
          </item>
          <item row="0" column="2">
-          <widget class="QLabel" name="label_39">
+          <widget class="QLabel" name="lUnit">
            <property name="font">
             <font>
              <weight>75</weight>
@@ -185,7 +185,7 @@
           </widget>
          </item>
          <item row="0" column="4">
-          <widget class="QLabel" name="label_40">
+          <widget class="QLabel" name="lBase">
            <property name="font">
             <font>
              <weight>75</weight>
@@ -220,7 +220,7 @@
             </widget>
            </item>
            <item row="1" column="0">
-            <widget class="QLabel" name="externalAddressIdLabel_5">
+            <widget class="QLabel" name="lExternalAddressId">
              <property name="text">
               <string>External Address Id:</string>
              </property>
@@ -237,7 +237,7 @@
             </widget>
            </item>
            <item row="2" column="0">
-            <widget class="QLabel" name="externalAddressIdSchemeLabel_5">
+            <widget class="QLabel" name="lExternalAddressIdScheme">
              <property name="text">
               <string>Ext Address Id Scheme:</string>
              </property>
@@ -254,7 +254,7 @@
             </widget>
            </item>
            <item row="3" column="0">
-            <widget class="QLabel" name="lifeCycleLabel">
+            <widget class="QLabel" name="lLifeCycle">
              <property name="text">
               <string>Life Cycle:</string>
              </property>
@@ -264,7 +264,7 @@
             <widget class="QComboBox" name="ulifeCycle"/>
            </item>
            <item row="4" column="0">
-            <widget class="QLabel" name="label_2">
+            <widget class="QLabel" name="lUnitType">
              <property name="text">
               <string>Unit Type:</string>
              </property>
@@ -274,7 +274,7 @@
             <widget class="QComboBox" name="uUnitType"/>
            </item>
            <item row="5" column="0">
-            <widget class="QLabel" name="levelTypeLabel">
+            <widget class="QLabel" name="lLevelType">
              <property name="text">
               <string>Level Type:</string>
              </property>
@@ -284,7 +284,7 @@
             <widget class="QComboBox" name="uLevelType"/>
            </item>
            <item row="6" column="0">
-            <widget class="QLabel" name="levelValueLabel">
+            <widget class="QLabel" name="lLevelValue">
              <property name="text">
               <string>Level Value:</string>
              </property>
@@ -318,7 +318,7 @@
             </widget>
            </item>
            <item row="9" column="0">
-            <widget class="QLabel" name="roadCentrelineIdLabel">
+            <widget class="QLabel" name="lRoadCentrelineId">
              <property name="font">
               <font>
                <weight>50</weight>
@@ -368,7 +368,7 @@
             </layout>
            </item>
            <item row="10" column="0">
-            <widget class="QLabel" name="roadPrefixLabel">
+            <widget class="QLabel" name="lRoadPrefix">
              <property name="text">
               <string>Road Prefix:</string>
              </property>
@@ -382,7 +382,7 @@
             </widget>
            </item>
            <item row="11" column="0">
-            <widget class="QLabel" name="roadNameLabel">
+            <widget class="QLabel" name="lRoadName">
              <property name="font">
               <font>
                <weight>50</weight>
@@ -402,7 +402,7 @@
             </widget>
            </item>
            <item row="12" column="0">
-            <widget class="QLabel" name="roadTypeNameLabel">
+            <widget class="QLabel" name="lRoadTypeName">
              <property name="font">
               <font>
                <weight>50</weight>
@@ -422,7 +422,7 @@
             </widget>
            </item>
            <item row="13" column="0">
-            <widget class="QLabel" name="roadSuffixLabel">
+            <widget class="QLabel" name="lRoadSuffix">
              <property name="font">
               <font>
                <weight>50</weight>
@@ -445,7 +445,7 @@
             </widget>
            </item>
            <item row="14" column="0">
-            <widget class="QLabel" name="waterRouteNameLabel">
+            <widget class="QLabel" name="lWaterRouteName">
              <property name="text">
               <string>Water Route Name:</string>
              </property>
@@ -462,7 +462,7 @@
             </widget>
            </item>
            <item row="15" column="0">
-            <widget class="QLabel" name="waterNameLabel">
+            <widget class="QLabel" name="lWaterName">
              <property name="text">
               <string>Water Name:</string>
              </property>
@@ -538,7 +538,7 @@
              <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
             </property>
             <item row="1" column="0">
-             <widget class="QLabel" name="objectTypeLabel">
+             <widget class="QLabel" name="lObjectType">
               <property name="font">
                <font>
                 <weight>50</weight>
@@ -554,7 +554,7 @@
              <widget class="QComboBox" name="uObjectType"/>
             </item>
             <item row="2" column="0">
-             <widget class="QLabel" name="objectNameLabel">
+             <widget class="QLabel" name="lObjectName">
               <property name="text">
                <string>Object Name:</string>
               </property>
@@ -568,7 +568,7 @@
              </widget>
             </item>
             <item row="3" column="0">
-             <widget class="QLabel" name="label_61">
+             <widget class="QLabel" name="lPositionType">
               <property name="text">
                <string>Position Type:</string>
               </property>
@@ -661,7 +661,7 @@
              </widget>
             </item>
             <item row="9" column="0">
-             <widget class="QLabel" name="label">
+             <widget class="QLabel" name="lMblk">
               <property name="text">
                <string>Meshblock Override:</string>
               </property>
@@ -682,7 +682,7 @@
        <item>
         <layout class="QFormLayout" name="formLayout_4">
          <item row="1" column="0">
-          <widget class="QLabel" name="label_48">
+          <widget class="QLabel" name="lNotes">
            <property name="text">
             <string>Notes:</string>
            </property>

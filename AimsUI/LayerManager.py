@@ -117,6 +117,7 @@ class LayerManager(QObject):
         self._lprLayer = None # labels, parcels
         self._locLayer = None
         self._revLayer = None
+        self._extEvent = False
         
         QgsMapLayerRegistry.instance().layerWillBeRemoved.connect(self.checkRemovedLayer)
         QgsMapLayerRegistry.instance().layerWasAdded.connect( self.checkNewLayer )
@@ -128,6 +129,7 @@ class LayerManager(QObject):
         """
         
         self._canvas.extentsChanged.connect(self.setbbox)
+        self._extEvent = True
     
     def disconnectExtentEvent(self):  
         """
@@ -136,10 +138,9 @@ class LayerManager(QObject):
         """
         #receiversCount = self.receivers(SIGNAL("self._canvas.extentsChanged()"))
         #if receiversCount > 0:
-        try:    
+        if self._extEvent: 
             self._canvas.extentsChanged.disconnect(self.setbbox)
-        except:
-            pass
+            self._extEvent = False   
         
     def layerId(self, layer):
         """ 

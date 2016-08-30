@@ -48,7 +48,6 @@ class GetRcl(QgsMapToolIdentifyFeature):
         self._marker = None
         self._canvas = iface.mapCanvas()
         self.highlight = self._controller.highlighter
-        #self.persistedRcl = None
         
         self.rcl = ''
         self.prefix = ''
@@ -98,18 +97,18 @@ class GetRcl(QgsMapToolIdentifyFeature):
         """
         Populate the Feature Editing form with Road Centreline information
         """
-        
-        self._parent.uRclId.setText(self.rcl)
-        if self._parent.uAddressType.currentText() == 'Road':
-            self._parent.uRoadPrefix.setText(UiUtility.nullEqualsNone(self.prefix))
-            self._parent.uRoadName.setText(UiUtility.nullEqualsNone(self.name))
-            self._parent.uRoadTypeName.setText(UiUtility.nullEqualsNone(self.type))
-            self._parent.uRoadSuffix.setText(UiUtility.nullEqualsNone(self.suffix)) 
-        else:
-            self._parent.uWaterRouteName.setText(UiUtility.nullEqualsNone(self.waterName))
-        
-        if self._parent.__class__.__name__ != 'QueueEditorWidget':# and self._controller.rclcoords:
-            self.highlight.setRcl(self.rclLine)
+        if self.rcl:
+            self._parent.uRclId.setText(self.rcl)
+            if self._parent.uAddressType.currentText() == 'Road':
+                self._parent.uRoadPrefix.setText(UiUtility.nullEqualsNone(self.prefix))
+                self._parent.uRoadName.setText(UiUtility.nullEqualsNone(self.name))
+                self._parent.uRoadTypeName.setText(UiUtility.nullEqualsNone(self.type))
+                self._parent.uRoadSuffix.setText(UiUtility.nullEqualsNone(self.suffix)) 
+            else:
+                self._parent.uWaterRouteName.setText(UiUtility.nullEqualsNone(self.waterName))
+            
+            if self._parent.__class__.__name__ != 'QueueEditorWidget':# and self._controller.rclcoords:
+                self.highlight.setRcl(self.rclLine)
             
     def canvasReleaseEvent(self, mouseEvent):
         """
