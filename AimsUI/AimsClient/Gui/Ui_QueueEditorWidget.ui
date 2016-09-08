@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>1036</height>
+    <height>952</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -29,7 +29,7 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-89</y>
+        <y>0</y>
         <width>364</width>
         <height>1128</height>
        </rect>
@@ -812,6 +812,41 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>uAddressType</tabstop>
+  <tabstop>ulifeCycle</tabstop>
+  <tabstop>uLevelType</tabstop>
+  <tabstop>uLevelValue</tabstop>
+  <tabstop>uUnitType</tabstop>
+  <tabstop>uUnit</tabstop>
+  <tabstop>uPrefix</tabstop>
+  <tabstop>uBase</tabstop>
+  <tabstop>uAlpha</tabstop>
+  <tabstop>uHigh</tabstop>
+  <tabstop>uExternalAddressIdScheme</tabstop>
+  <tabstop>uExternalAddId</tabstop>
+  <tabstop>uRclId</tabstop>
+  <tabstop>uRoadPrefix</tabstop>
+  <tabstop>uRoadName</tabstop>
+  <tabstop>uRoadTypeName</tabstop>
+  <tabstop>uRoadSuffix</tabstop>
+  <tabstop>uWaterRouteName</tabstop>
+  <tabstop>uWaterName</tabstop>
+  <tabstop>uObjectType</tabstop>
+  <tabstop>uObjectName</tabstop>
+  <tabstop>uPositionType</tabstop>
+  <tabstop>uExtObjectIdScheme</tabstop>
+  <tabstop>uExternalObjectId</tabstop>
+  <tabstop>uValuationReference</tabstop>
+  <tabstop>uCertificateOfTitle</tabstop>
+  <tabstop>uAppellation</tabstop>
+  <tabstop>uMblkOverride</tabstop>
+  <tabstop>uGetRclToolButton</tabstop>
+  <tabstop>scrollArea_2</tabstop>
+  <tabstop>scrollArea</tabstop>
+  <tabstop>scrollArea_4</tabstop>
+  <tabstop>uUpdatePosButton</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

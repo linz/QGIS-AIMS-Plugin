@@ -67,6 +67,7 @@ class ResponseHandler(object):
             self.uidm.updateRdata(respObj, feedType)
             #if action == 'accept':
             if respObj._queueStatus == 'Accepted':
+                self.ismeshblockoverride(respObj)
                 respObj = self.afaf[FeedType.FEATURES].cast(respObj)
                 self.uidm.updateFdata(respObj)
         else:
@@ -74,6 +75,19 @@ class ResponseHandler(object):
             return True
         self.updateSuccessful = True
         return True
+    
+    def ismeshblockoverride(self, respObj):
+        """
+        The derived mblk override flag is not in the resp
+        obj, here we check and create if need be
+        
+        @param respObj: AIMS Feature
+        @type  respObj: AIMSDataManager.Address.AddressResolution
+        """
+         
+        if hasattr(respObj, '_codes_meshblock'): 
+            if respObj._codes_meshblock:
+                respObj.setIsMeshblockOverride(True)
     
     def displayWarnings (self, warnings):
         """

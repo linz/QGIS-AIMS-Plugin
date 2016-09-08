@@ -340,10 +340,30 @@ class LayerManager(QObject):
         Install AIMS postgres reference layers
         """
         
-        refLayers ={'par':( 'par', 'lds', 'primary_parcels', 'id', True, "ST_GeometryType(shape) in ('ST_MultiPolygon', 'ST_Polygon' )",'Parcels' ) ,
-                    'lpr':( 'lpr', 'lds', 'primary_parcels', 'id', True, "ST_GeometryType(shape) in ('ST_MultiPolygon', 'ST_Polygon' )",'Parcels (Labels)' ) ,
-                    'rcl':( 'rcl', 'roads', 'simple_road_name_view', 'uid', True, "",'Roads' ),
-                    'ppr':( 'ppr', 'lds', 'all_parcels_pend', 'id', True, "ST_GeometryType(shape) in ('ST_MultiPolygon', 'ST_Polygon' )",'Pending Parcels' )
+        '''
+        
+        in dev - optimisation needs to be explored
+        
+        sql = """(SELECT ROW_NUMBER() OVER (ORDER BY p.id ASC) AS uid, p.id, a.appellation_value, p.shape FROM bde.crs_parcel p
+              JOIN bde.crs_appellation a
+              ON p.id = a.par_id
+              AND p.status IN ('PEND', 'CURR')
+              AND a.status != 'HIST'
+              AND a.TITLE = 'Y'
+              AND ST_GeometryType(p.shape) IN ('ST_MultiPolygon', 'ST_Polygon')
+              )"""
+        '''
+              
+        refLayers ={'par':( 'par', 'bde', 'crs_parcel', 'id', True, 
+                            """ST_GeometryType(shape) IN ('ST_MultiPolygon', 'ST_Polygon') 
+                            AND status = 'CURR' 
+                            AND toc_code = 'PRIM'""",'Parcels' ) ,
+                    #'lpr':( 'lpr', '', sql, 'uid', True, "",'Parcels (Labels)' ) ,
+                    'rcl':( 'rcl', 'roads', 'simple_road_name_view', 'gid', True, "",'Roads' ),
+                    'ppr':( 'ppr', 'bde', 'crs_parcel', 'id', True, 
+                            """ST_GeometryType(shape) IN ('ST_MultiPolygon', 'ST_Polygon') 
+                            AND status = 'PEND' 
+                            AND toc_code = 'PRIM'""",'Pending Parcels' )
                     }
 
         for layerId , layerProps in refLayers.items():

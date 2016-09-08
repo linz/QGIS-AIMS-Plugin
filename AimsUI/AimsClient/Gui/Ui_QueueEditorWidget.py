@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'AimsUI/AimsClient/Gui/Ui_QueueEditorWidget.ui'
 #
-# Created: Tue Aug 30 14:54:50 2016
+# Created: Tue Sep  6 14:48:26 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,7 +26,7 @@ except AttributeError:
 class Ui_QueueEditorWidget(object):
     def setupUi(self, QueueEditorWidget):
         QueueEditorWidget.setObjectName(_fromUtf8("QueueEditorWidget"))
-        QueueEditorWidget.resize(400, 1036)
+        QueueEditorWidget.resize(400, 952)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -38,7 +38,7 @@ class Ui_QueueEditorWidget(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName(_fromUtf8("scrollArea"))
         self.scrollAreaWidgetContents = QtGui.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, -89, 364, 1128))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 364, 1128))
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -428,6 +428,38 @@ class Ui_QueueEditorWidget(object):
 
         self.retranslateUi(QueueEditorWidget)
         QtCore.QMetaObject.connectSlotsByName(QueueEditorWidget)
+        QueueEditorWidget.setTabOrder(self.uAddressType, self.ulifeCycle)
+        QueueEditorWidget.setTabOrder(self.ulifeCycle, self.uLevelType)
+        QueueEditorWidget.setTabOrder(self.uLevelType, self.uLevelValue)
+        QueueEditorWidget.setTabOrder(self.uLevelValue, self.uUnitType)
+        QueueEditorWidget.setTabOrder(self.uUnitType, self.uUnit)
+        QueueEditorWidget.setTabOrder(self.uUnit, self.uPrefix)
+        QueueEditorWidget.setTabOrder(self.uPrefix, self.uBase)
+        QueueEditorWidget.setTabOrder(self.uBase, self.uAlpha)
+        QueueEditorWidget.setTabOrder(self.uAlpha, self.uHigh)
+        QueueEditorWidget.setTabOrder(self.uHigh, self.uExternalAddressIdScheme)
+        QueueEditorWidget.setTabOrder(self.uExternalAddressIdScheme, self.uExternalAddId)
+        QueueEditorWidget.setTabOrder(self.uExternalAddId, self.uRclId)
+        QueueEditorWidget.setTabOrder(self.uRclId, self.uRoadPrefix)
+        QueueEditorWidget.setTabOrder(self.uRoadPrefix, self.uRoadName)
+        QueueEditorWidget.setTabOrder(self.uRoadName, self.uRoadTypeName)
+        QueueEditorWidget.setTabOrder(self.uRoadTypeName, self.uRoadSuffix)
+        QueueEditorWidget.setTabOrder(self.uRoadSuffix, self.uWaterRouteName)
+        QueueEditorWidget.setTabOrder(self.uWaterRouteName, self.uWaterName)
+        QueueEditorWidget.setTabOrder(self.uWaterName, self.uObjectType)
+        QueueEditorWidget.setTabOrder(self.uObjectType, self.uObjectName)
+        QueueEditorWidget.setTabOrder(self.uObjectName, self.uPositionType)
+        QueueEditorWidget.setTabOrder(self.uPositionType, self.uExtObjectIdScheme)
+        QueueEditorWidget.setTabOrder(self.uExtObjectIdScheme, self.uExternalObjectId)
+        QueueEditorWidget.setTabOrder(self.uExternalObjectId, self.uValuationReference)
+        QueueEditorWidget.setTabOrder(self.uValuationReference, self.uCertificateOfTitle)
+        QueueEditorWidget.setTabOrder(self.uCertificateOfTitle, self.uAppellation)
+        QueueEditorWidget.setTabOrder(self.uAppellation, self.uMblkOverride)
+        QueueEditorWidget.setTabOrder(self.uMblkOverride, self.uGetRclToolButton)
+        QueueEditorWidget.setTabOrder(self.uGetRclToolButton, self.scrollArea_2)
+        QueueEditorWidget.setTabOrder(self.scrollArea_2, self.scrollArea)
+        QueueEditorWidget.setTabOrder(self.scrollArea, self.scrollArea_4)
+        QueueEditorWidget.setTabOrder(self.scrollArea_4, self.uUpdatePosButton)
 
     def retranslateUi(self, QueueEditorWidget):
         QueueEditorWidget.setWindowTitle(_translate("QueueEditorWidget", "Form", None))

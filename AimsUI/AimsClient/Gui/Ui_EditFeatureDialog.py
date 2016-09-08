@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'AimsUI/AimsClient/Gui/Ui_EditFeatureDialog.ui'
 #
-# Created: Tue Aug 30 14:54:51 2016
+# Created: Tue Sep  6 14:48:26 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -408,8 +408,35 @@ class Ui_EditFeatureDialog(object):
         EditFeatureDialog.setTabOrder(self.uUnit, self.uBase)
         EditFeatureDialog.setTabOrder(self.uBase, self.uHigh)
         EditFeatureDialog.setTabOrder(self.uHigh, self.uAlpha)
-        EditFeatureDialog.setTabOrder(self.uAlpha, self.uAbort)
+        EditFeatureDialog.setTabOrder(self.uAlpha, self.uExternalAddId)
+        EditFeatureDialog.setTabOrder(self.uExternalAddId, self.uExternalAddressIdScheme)
+        EditFeatureDialog.setTabOrder(self.uExternalAddressIdScheme, self.ulifeCycle)
+        EditFeatureDialog.setTabOrder(self.ulifeCycle, self.uUnitType)
+        EditFeatureDialog.setTabOrder(self.uUnitType, self.uLevelType)
+        EditFeatureDialog.setTabOrder(self.uLevelType, self.uLevelValue)
+        EditFeatureDialog.setTabOrder(self.uLevelValue, self.uRclId)
+        EditFeatureDialog.setTabOrder(self.uRclId, self.uRoadPrefix)
+        EditFeatureDialog.setTabOrder(self.uRoadPrefix, self.uRoadName)
+        EditFeatureDialog.setTabOrder(self.uRoadName, self.uRoadTypeName)
+        EditFeatureDialog.setTabOrder(self.uRoadTypeName, self.uRoadSuffix)
+        EditFeatureDialog.setTabOrder(self.uRoadSuffix, self.uWaterRouteName)
+        EditFeatureDialog.setTabOrder(self.uWaterRouteName, self.uWaterName)
+        EditFeatureDialog.setTabOrder(self.uWaterName, self.uObjectType)
+        EditFeatureDialog.setTabOrder(self.uObjectType, self.uObjectName)
+        EditFeatureDialog.setTabOrder(self.uObjectName, self.uPositionType)
+        EditFeatureDialog.setTabOrder(self.uPositionType, self.uExternalObjectId)
+        EditFeatureDialog.setTabOrder(self.uExternalObjectId, self.uExtObjectIdScheme)
+        EditFeatureDialog.setTabOrder(self.uExtObjectIdScheme, self.uValuationReference)
+        EditFeatureDialog.setTabOrder(self.uValuationReference, self.uCertificateOfTitle)
+        EditFeatureDialog.setTabOrder(self.uCertificateOfTitle, self.uAppellation)
+        EditFeatureDialog.setTabOrder(self.uAppellation, self.uMblkOverride)
+        EditFeatureDialog.setTabOrder(self.uMblkOverride, self.uNotes)
+        EditFeatureDialog.setTabOrder(self.uNotes, self.uAbort)
         EditFeatureDialog.setTabOrder(self.uAbort, self.uSubmitAddressButton)
+        EditFeatureDialog.setTabOrder(self.uSubmitAddressButton, self.uPersistRcl)
+        EditFeatureDialog.setTabOrder(self.uPersistRcl, self.uGetRclToolButton)
+        EditFeatureDialog.setTabOrder(self.uGetRclToolButton, self.buttonAO)
+        EditFeatureDialog.setTabOrder(self.buttonAO, self.scrollArea)
 
     def retranslateUi(self, EditFeatureDialog):
         EditFeatureDialog.setWindowTitle(_translate("EditFeatureDialog", "Form", None))
