@@ -65,14 +65,15 @@ class AimsApi(object):
         if str(resp) in ('400', '404', '200', '201') and jcontent.has_key('entities'):
 
             for entity in jcontent['entities']:
-                if entity['properties']['severity'] == 'Reject':
-                    ce['reject'] += (entity['properties']['description'],)
-                elif entity['properties']['severity'] == 'Warning':
-                    ce['warning'] += (entity['properties']['description'],)
-                elif entity['properties']['severity'] == 'Info':
-                    ce['info'] += (entity['properties']['description'],)
-                else:
-                        ce['error'] += (entity['properties']['description'],)
+                if entity['properties'].has_key('severity'):
+                    if entity['properties']['severity'] == 'Reject':
+                        ce['reject'] += (entity['properties']['description'],)
+                    elif entity['properties']['severity'] == 'Warning':
+                        ce['warning'] += (entity['properties']['description'],)
+                    elif entity['properties']['severity'] == 'Info':
+                        ce['info'] += (entity['properties']['description'],)
+                    else:
+                            ce['error'] += (entity['properties']['description'],)
 
         
             
@@ -93,10 +94,10 @@ class AimsApi(object):
         @type jcontent: Dict
         @return: Dict of categorised error messages
         '''
-        ce = {'reject':(),'error':(),'warning':(),'info':()}
-        if str(resp) not in ('101', '100', '200', '202'):
+        #ce = {'reject':(),'error':(),'warning':(),'info':()}
+        #if str(resp) not in ('101', '100'):#, '200', '202', '201'):
             # list of validation errors
-            ce = self.handleErrors(url, resp, jcontent)
+        ce = self.handleErrors(url, resp, jcontent)
         return ce,jcontent        
 
     #-----------------------------------------------------------------------------------------------------------------------
@@ -159,7 +160,6 @@ class AimsApi(object):
             url = '{}/{}/{}?count={}&page={}'.format(self._url,et,ft,count,pno)
         resp, content = self._request(url,'GET', headers = self._headers)
         return self.handleResponse(url,resp["status"], json.loads(content))
-        #return jcontent['entities']
            
     @LogWrap.timediff(prefix='oneFeat')
     def getOneFeature(self,etft,cid):

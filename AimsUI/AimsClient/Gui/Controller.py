@@ -12,7 +12,6 @@ import sys
 import Resources
 
 from os.path import dirname, abspath
-from AIMSDataManager.DataManager import DataManager
 
 sys.path.append('.qgis2/python/plugins/QGIS-AIMS-Plugin') 
 
@@ -361,10 +360,12 @@ class Controller( QObject ):
         """
         Remove Plugins UI Elements From QGIS
         """
+        
         self._layerManager.disconnectExtentEvent()
         if self._queues:
             self._queues.close()
             self._queues = None 
+        self.uidm.killDm()
         self.iface.mainWindow().removeToolBar(self._toolbar)
         self.iface.removeToolBarIcon(self._loadaction)
         self.iface.removePluginMenu('&QGIS-AIMS-Plugin',self._loadaction)

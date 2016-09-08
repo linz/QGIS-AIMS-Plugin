@@ -79,7 +79,7 @@ class UiDataManager(QObject):
         Start running the DM observer thread and Listener
         (of the DM observer) thread when the plugin is enabled 
         """
-        
+
         self.dm = DataManager()
         # common data obj
         self.DMData = DMData()           
@@ -97,7 +97,8 @@ class UiDataManager(QObject):
         Close DataManager at plugin unload
         """
         
-        self.dm.close()
+        if self.dm:
+            self.dm.close()
     
     ### Observer Methods ###
     def register(self, observer):
