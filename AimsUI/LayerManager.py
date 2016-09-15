@@ -340,9 +340,9 @@ class LayerManager(QObject):
         Install AIMS postgres reference layers
         """
         
-        '''
         
-        in dev - optimisation needs to be explored
+        '''
+        #in dev - optimisation needs to be explored
         
         sql = """(SELECT ROW_NUMBER() OVER (ORDER BY p.id ASC) AS uid, p.id, a.appellation_value, p.shape FROM bde.crs_parcel p
               JOIN bde.crs_appellation a
