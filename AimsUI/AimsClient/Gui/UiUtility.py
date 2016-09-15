@@ -326,26 +326,26 @@ class UiUtility (object):
         if not parent:
             UiUtility.setReadability(self, r'^u.*', False)        
         elif parent == 'update':
-            UiUtility.setReadability(self, r'Road.*|WaterR.*', True)
+            UiUtility.setReadability(self, r'uRoad.*|uWaterR.*', True)
         elif parent == 'rRetire':
             UiUtility.setReadability(self, r'^u.*', True)
             return # no
         elif parent == 'rUpdate' or parent == 'rAdd':
             UiUtility.setReadability(self, r'^u.*', False)
-            UiUtility.setReadability(self, r'Road.*|WaterR.*', True)
+            UiUtility.setReadability(self, r'uRoad.*|uWaterR.*', True)
             
         for child in self.findChildren(QWidget):
             child.setEnabled(True)
         
         # Toggle between Water and Road Fields              
         if self.uAddressType.currentText() == 'Road':
-            waterChildern = self.findChildren(QWidget, QRegExp(r'Water.*'))
+            waterChildern = self.findChildren(QWidget, QRegExp(r'uWater.*'))
             for child in waterChildern:
                 child.clear() 
                 child.setDisabled(True)
                 
         elif self.uAddressType.currentText() == 'Water':
-            roadChildern = self.findChildren(QWidget, QRegExp(r'Road.*'))
+            roadChildern = self.findChildren(QWidget, QRegExp(r'uRoad.*'))
             for child in roadChildern:
                 child.clear() 
                 child.setDisabled(True)
