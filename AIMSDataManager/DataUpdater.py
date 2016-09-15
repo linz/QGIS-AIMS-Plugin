@@ -21,7 +21,7 @@ import threading
 from AimsApi import AimsApi 
 from AimsUtility import FeedRef,ActionType,ApprovalType,GroupActionType,GroupApprovalType,UserActionType,FeatureType,FeedType,SupplementalHack
 from AimsUtility import AimsException
-from Const import ENABLE_ENTITY_EVALUATION, MERGE_RESPONSE,MAX_FEATURE_COUNT
+from Const import ENABLE_ENTITY_EVALUATION,MERGE_RESPONSE,MERGE_EXCLUDE,MAX_FEATURE_COUNT
 from Address import Entity, EntityValidation, EntityAddress
 from AimsLogging import Logger
 from FeatureFactory import FeatureFactory
@@ -353,7 +353,7 @@ class DataUpdaterDRC(DataUpdater):
         if MERGE_RESPONSE:
             aimslog.info('Merge req/res for {}'.format(self.agu))
             self.agu.setVersion(None)
-            self.agu.merge(feature)
+            self.agu.merge(feature,MERGE_EXCLUDE)
             self.queue.put(self.agu)
         else: self.queue.put(feature)
         self.notify(self.ref)

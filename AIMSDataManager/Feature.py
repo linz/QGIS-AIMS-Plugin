@@ -97,13 +97,13 @@ class Feature(object):
 #         #IMPORTANT. Attribute value compare only useful with distinct (deepcopy'd) instances
 #         return all((getattr(self,a)==getattr(other,a) for a in self.__dict__.keys()))
     
-    def merge(self,other):
+    def merge(self,other,exclude=''):
         '''Merges new (other) atributes into existing (self) object
         @param other: Another Feature object whose attributes will be added to selfs attributes
         @return: Feature
         '''
         for key in other.__dict__.keys():
-            setattr(self,key, getattr(other,key))
+            if key not in exclude.split(','): setattr(self,key, getattr(other,key))
         return self
     
     
