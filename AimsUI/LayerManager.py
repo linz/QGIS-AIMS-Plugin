@@ -16,20 +16,13 @@ from PyQt4.QtGui import *
 from qgis.core import *
 from qgis.gui import *
 import sip
-
-import json # temp bug fix test only
-
-
 from AimsClient import Database
 from AimsUI.AimsLogging import Logger
 from AIMSDataManager.AimsUtility import FEEDS
-
 from collections import OrderedDict
 
 aimslog = Logger.setup()
-
 uilog = None
-
 sip.setapi('QVariant', 2)
 
 class Mapping():
@@ -340,30 +333,22 @@ class LayerManager(QObject):
         Install AIMS postgres reference layers
         """
         
-        
-        '''
-        #in dev - optimisation needs to be explored
-        
-        sql = """(SELECT ROW_NUMBER() OVER (ORDER BY p.id ASC) AS uid, p.id, a.appellation_value, p.shape FROM bde.crs_parcel p
-              JOIN bde.crs_appellation a
-              ON p.id = a.par_id
-              AND p.status IN ('PEND', 'CURR')
-              AND a.status != 'HIST'
-              AND a.TITLE = 'Y'
-              AND ST_GeometryType(p.shape) IN ('ST_MultiPolygon', 'ST_Polygon')
-              )"""
-        '''
               
         refLayers ={'par':( 'par', 'bde', 'crs_parcel', 'id', True, 
                             """ST_GeometryType(shape) IN ('ST_MultiPolygon', 'ST_Polygon') 
-                            AND status = 'CURR' 
-                            AND toc_code = 'PRIM'""",'Parcels' ) ,
-                    #'lpr':( 'lpr', '', sql, 'uid', True, "",'Parcels (Labels)' ) ,
+                                AND status = 'CURR' 
+                                AND toc_code = 'PRIM'""",
+                            'Parcels' ) ,
+                    
+                    #'lpr':( 'lpr', 'bde', 'parcel_labels_mview', 'id', True, "",'Parcels (Labels)' ) ,
+                    
                     'rcl':( 'rcl', 'roads', 'simple_road_name_view', 'gid', True, "",'Roads' ),
+                    
                     'ppr':( 'ppr', 'bde', 'crs_parcel', 'id', True, 
                             """ST_GeometryType(shape) IN ('ST_MultiPolygon', 'ST_Polygon') 
-                            AND status = 'PEND' 
-                            AND toc_code = 'PRIM'""",'Pending Parcels' )
+                                AND status = 'PEND' 
+                                AND toc_code = 'PRIM'""",
+                            'Pending Parcels' )
                     }
 
         for layerId , layerProps in refLayers.items():
@@ -464,16 +449,13 @@ class LayerManager(QObject):
                     continue 
                 
             fet = QgsFeature()
-            if reviewItem._changeType in ('Update', 'Add') or reviewItem.meta.requestId:#(reviewItem._changeType == 'Retire' and reviewItem.meta.requestId):
-            #if reviewItem.getAddressPositions()[0]:
-                #uilog.info(' {} '.format(reviewItem.getAddressPositions()[0]))    
+            if reviewItem._changeType in ('Update', 'Add') or reviewItem.meta.requestId: 
                 point = reviewItem.getAddressPositions()[0]._position_coordinates
             else:
                 try:
                     point = reviewItem.meta.entities[0].getAddressPositions()[0]._position_coordinates
                 except: 
                     uilog.error(' *** ERROR ***  ') 
-                    #uilog.info(' *** DATA ***    {} review items being loaded '.format(len(rData)))
             fet.setGeometry(QgsGeometry.fromPoint(QgsPoint(point[0], point[1])))
             fet.setAttributes([ k, reviewItem.getFullNumber(), reviewItem._changeType])
             provider.addFeatures([fet])
@@ -503,10 +485,12 @@ class LayerManager(QObject):
         @rtype: boolean
         """
 
-        if not self.prevExt: return False
+        if not self.prevExt: 
+            return False
         elif QgsRectangle.contains(self.prevExt, ext):
             return True
-        else: return False
+        else: 
+            return False
                         
     def setbbox(self):
         """ 
@@ -572,11 +556,10 @@ class LayerManager(QObject):
             fet.setGeometry(QgsGeometry.fromPoint(QgsPoint(point[0], point[1])))           
             fet.setAttributes([getattr(feature, v[0]) if hasattr (feature, v[0]) else '' for v in Mapping.adrLayerObjMappings.values()])
             if hasattr(getattr(feature,'_addressedObject_addressPositions')[0],'_positionType'):
-                # If positionType update field index 30. Would rather use the explicit name but had issues
+                # If positionType update field index 30. Would rather use the explicit name...
                 fet.setAttribute(30, feature._addressedObject_addressPositions[0]._positionType)
             layer.dataProvider().addFeatures([fet])
-
         layer.updateExtents()
-        #layer.setCacheImage(None)
+        
         uilog.info(' *** CANVAS ***    FEATURES ADDED')  
         

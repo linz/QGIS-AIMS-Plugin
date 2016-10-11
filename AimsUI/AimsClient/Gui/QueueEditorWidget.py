@@ -64,7 +64,14 @@ class QueueEditorWidget( Ui_QueueEditorWidget, QWidget ):
         
         #Ext Object temp taken out of scope
         hide = (self.uExternalObjectId, self.uExtObjectIdScheme, 
-                 self.lExtObjectIdScheme,  self.lExternalObjectId)
+                 self.lExtObjectIdScheme,  self.lExternalObjectId
+                 )
+        
+        """ self.uObjectType, self.uObjectName, self.uPositionType, self.uUpdatePosButton
+                , self.uExtObjectIdScheme, self.uExternalObjectId, self.uValuationReference
+                , self.uCertificateOfTitle, self.uAppellation, self.uMblkOverride
+        """
+        
         for uiElement in hide:
             uiElement.hide()
         

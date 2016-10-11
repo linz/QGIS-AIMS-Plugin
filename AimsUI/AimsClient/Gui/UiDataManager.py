@@ -87,7 +87,9 @@ class UiDataManager(QObject):
                 
         listener = Listener(self.DMData)
         self.connect(listener, SIGNAL('dataChanged'), self.dataUpdated)
-        #### Start Threads
+        #### 
+
+
         listener.start()
         dmObserver.start()
         uilog.info('dm started')

@@ -10,6 +10,12 @@
     <height>1087</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
@@ -55,7 +61,11 @@
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="uAddressType"/>
+          <widget class="QComboBox" name="uAddressType">
+           <property name="sizeAdjustPolicy">
+            <enum>QComboBox::AdjustToContents</enum>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -260,9 +270,6 @@
              </property>
             </widget>
            </item>
-           <item row="3" column="1">
-            <widget class="QComboBox" name="ulifeCycle"/>
-           </item>
            <item row="4" column="0">
             <widget class="QLabel" name="lUnitType">
              <property name="text">
@@ -270,18 +277,12 @@
              </property>
             </widget>
            </item>
-           <item row="4" column="1">
-            <widget class="QComboBox" name="uUnitType"/>
-           </item>
            <item row="5" column="0">
             <widget class="QLabel" name="lLevelType">
              <property name="text">
               <string>Level Type:</string>
              </property>
             </widget>
-           </item>
-           <item row="5" column="1">
-            <widget class="QComboBox" name="uLevelType"/>
            </item>
            <item row="6" column="0">
             <widget class="QLabel" name="lLevelValue">
@@ -485,6 +486,45 @@
              </property>
             </widget>
            </item>
+           <item row="5" column="1">
+            <widget class="QComboBox" name="uLevelType">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="sizeAdjustPolicy">
+              <enum>QComboBox::AdjustToMinimumContentsLength</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1">
+            <widget class="QComboBox" name="uUnitType">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="sizeAdjustPolicy">
+              <enum>QComboBox::AdjustToMinimumContentsLength</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
+            <widget class="QComboBox" name="ulifeCycle">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="sizeAdjustPolicy">
+              <enum>QComboBox::AdjustToMinimumContentsLength</enum>
+             </property>
+            </widget>
+           </item>
           </layout>
          </item>
          <item>
@@ -533,6 +573,12 @@
          </item>
          <item>
           <widget class="QWidget" name="wAddObj" native="true">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <layout class="QFormLayout" name="formLayout_2">
             <property name="fieldGrowthPolicy">
              <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
@@ -550,20 +596,10 @@
               </property>
              </widget>
             </item>
-            <item row="1" column="1">
-             <widget class="QComboBox" name="uObjectType"/>
-            </item>
             <item row="2" column="0">
              <widget class="QLabel" name="lObjectName">
               <property name="text">
                <string>Object Name:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="1">
-             <widget class="QLineEdit" name="uObjectName">
-              <property name="maxLength">
-               <number>250</number>
               </property>
              </widget>
             </item>
@@ -574,20 +610,10 @@
               </property>
              </widget>
             </item>
-            <item row="3" column="1">
-             <widget class="QComboBox" name="uPositionType"/>
-            </item>
             <item row="4" column="0">
              <widget class="QLabel" name="lExternalObjectId">
               <property name="text">
                <string>External Object Id:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="4" column="1">
-             <widget class="QLineEdit" name="uExternalObjectId">
-              <property name="maxLength">
-               <number>15</number>
               </property>
              </widget>
             </item>
@@ -598,17 +624,52 @@
               </property>
              </widget>
             </item>
-            <item row="5" column="1">
-             <widget class="QLineEdit" name="uExtObjectIdScheme">
-              <property name="maxLength">
-               <number>100</number>
-              </property>
-             </widget>
-            </item>
             <item row="6" column="0">
              <widget class="QLabel" name="lValref">
               <property name="text">
                <string>Valuation Reference:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="7" column="0">
+             <widget class="QLabel" name="lCertTitle">
+              <property name="text">
+               <string>Certificate Of Title:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="8" column="0">
+             <widget class="QLabel" name="lAppellation">
+              <property name="text">
+               <string>Appellation:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="9" column="0">
+             <widget class="QLabel" name="lMblk">
+              <property name="text">
+               <string>Meshblock Override:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="9" column="1">
+             <widget class="QLineEdit" name="uMblkOverride">
+              <property name="maxLength">
+               <number>7</number>
+              </property>
+             </widget>
+            </item>
+            <item row="8" column="1">
+             <widget class="QLineEdit" name="uAppellation">
+              <property name="maxLength">
+               <number>500</number>
+              </property>
+             </widget>
+            </item>
+            <item row="7" column="1">
+             <widget class="QLineEdit" name="uCertificateOfTitle">
+              <property name="maxLength">
+               <number>20</number>
               </property>
              </widget>
             </item>
@@ -625,45 +686,50 @@
               </property>
              </widget>
             </item>
-            <item row="7" column="0">
-             <widget class="QLabel" name="lCertTitle">
-              <property name="text">
-               <string>Certificate Of Title:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="7" column="1">
-             <widget class="QLineEdit" name="uCertificateOfTitle">
+            <item row="5" column="1">
+             <widget class="QLineEdit" name="uExtObjectIdScheme">
               <property name="maxLength">
-               <number>20</number>
+               <number>100</number>
               </property>
              </widget>
             </item>
-            <item row="8" column="0">
-             <widget class="QLabel" name="lAppellation">
-              <property name="text">
-               <string>Appellation:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="8" column="1">
-             <widget class="QLineEdit" name="uAppellation">
+            <item row="4" column="1">
+             <widget class="QLineEdit" name="uExternalObjectId">
               <property name="maxLength">
-               <number>500</number>
+               <number>15</number>
               </property>
              </widget>
             </item>
-            <item row="9" column="1">
-             <widget class="QLineEdit" name="uMblkOverride">
+            <item row="3" column="1">
+             <widget class="QComboBox" name="uPositionType">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="sizeAdjustPolicy">
+               <enum>QComboBox::AdjustToMinimumContentsLength</enum>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QLineEdit" name="uObjectName">
               <property name="maxLength">
-               <number>7</number>
+               <number>250</number>
               </property>
              </widget>
             </item>
-            <item row="9" column="0">
-             <widget class="QLabel" name="lMblk">
-              <property name="text">
-               <string>Meshblock Override:</string>
+            <item row="1" column="1">
+             <widget class="QComboBox" name="uObjectType">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="sizeAdjustPolicy">
+               <enum>QComboBox::AdjustToMinimumContentsLength</enum>
               </property>
              </widget>
             </item>
@@ -681,6 +747,9 @@
        </item>
        <item>
         <layout class="QFormLayout" name="formLayout_4">
+         <property name="fieldGrowthPolicy">
+          <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+         </property>
          <item row="1" column="0">
           <widget class="QLabel" name="lNotes">
            <property name="text">

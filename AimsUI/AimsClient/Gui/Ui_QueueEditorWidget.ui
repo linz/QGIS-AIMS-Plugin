@@ -29,9 +29,9 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>0</y>
+        <y>-6</y>
         <width>364</width>
-        <height>1128</height>
+        <height>1122</height>
        </rect>
       </property>
       <property name="sizePolicy">
@@ -88,34 +88,6 @@
              </property>
             </widget>
            </item>
-           <item row="0" column="0">
-            <widget class="QLabel" name="lWarning">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>75</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>Warnings:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-             </property>
-            </widget>
-           </item>
            <item row="0" column="1">
             <widget class="QScrollArea" name="scrollArea_2">
              <property name="widgetResizable">
@@ -160,7 +132,7 @@
            <item row="1" column="1">
             <widget class="QScrollArea" name="scrollArea_4">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
@@ -193,7 +165,7 @@
                <item>
                 <widget class="QLabel" name="uNotes">
                  <property name="sizePolicy">
-                  <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
@@ -210,40 +182,45 @@
              </widget>
             </widget>
            </item>
+           <item row="0" column="0">
+            <widget class="QLabel" name="lWarning">
+             <property name="enabled">
+              <bool>true</bool>
+             </property>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>75</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Warnings:</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+             </property>
+            </widget>
+           </item>
           </layout>
          </widget>
          <widget class="QWidget" name="gridLayoutWidget_8">
           <layout class="QGridLayout" name="gridLayout_15">
-           <item row="18" column="0">
-            <widget class="QLabel" name="lWaterName">
+           <item row="17" column="0">
+            <widget class="QLabel" name="lWaterRoute">
              <property name="text">
-              <string>Water Name:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="7" column="1">
-            <widget class="QLineEdit" name="uBase">
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
-           </item>
-           <item row="9" column="1">
-            <widget class="QLineEdit" name="uHigh">
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="text">
-              <string/>
+              <string>Water Route:</string>
              </property>
             </widget>
            </item>
@@ -274,6 +251,16 @@
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
+             </property>
+             <property name="sizeAdjustPolicy">
+              <enum>QComboBox::AdjustToMinimumContentsLength</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="lLevelType">
+             <property name="text">
+              <string>Level Type:</string>
              </property>
             </widget>
            </item>
@@ -438,6 +425,42 @@
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="sizeAdjustPolicy">
+              <enum>QComboBox::AdjustToMinimumContentsLength</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="18" column="0">
+            <widget class="QLabel" name="lWaterName">
+             <property name="text">
+              <string>Water Name:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="1">
+            <widget class="QLineEdit" name="uBase">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="9" column="1">
+            <widget class="QLineEdit" name="uHigh">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
             </widget>
            </item>
            <item row="12" column="0">
@@ -447,31 +470,10 @@
              </property>
             </widget>
            </item>
-           <item row="19" column="0">
-            <widget class="QLabel" name="label_120">
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
-           </item>
-           <item row="17" column="0">
-            <widget class="QLabel" name="lWaterRoute">
-             <property name="text">
-              <string>Water Route:</string>
-             </property>
-            </widget>
-           </item>
            <item row="16" column="0">
             <widget class="QLabel" name="lRoadSuffix">
              <property name="text">
               <string>Road Suffix:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="lLevelType">
-             <property name="text">
-              <string>Level Type:</string>
              </property>
             </widget>
            </item>
@@ -496,6 +498,9 @@
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="sizeAdjustPolicy">
+              <enum>QComboBox::AdjustToMinimumContentsLength</enum>
+             </property>
             </widget>
            </item>
            <item row="12" column="1">
@@ -512,9 +517,15 @@
              </item>
              <item>
               <widget class="QToolButton" name="uGetRclToolButton">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
                <property name="minimumSize">
                 <size>
-                 <width>24</width>
+                 <width>0</width>
                  <height>0</height>
                 </size>
                </property>
@@ -587,6 +598,9 @@
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="sizeAdjustPolicy">
+              <enum>QComboBox::AdjustToMinimumContentsLength</enum>
+             </property>
             </widget>
            </item>
            <item row="1" column="0">
@@ -611,6 +625,13 @@
            </item>
           </layout>
          </widget>
+        </widget>
+       </item>
+       <item>
+        <widget class="Line" name="line">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
         </widget>
        </item>
        <item>
@@ -647,6 +668,57 @@
        </item>
        <item>
         <layout class="QGridLayout" name="gridLayout_13">
+         <property name="sizeConstraint">
+          <enum>QLayout::SetNoConstraint</enum>
+         </property>
+         <item row="2" column="0">
+          <widget class="QLabel" name="lPositionType">
+           <property name="text">
+            <string>Position Type:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QComboBox" name="uObjectType">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="sizeAdjustPolicy">
+            <enum>QComboBox::AdjustToMinimumContentsLength</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLineEdit" name="uObjectName">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="lExternalObjectId">
+           <property name="text">
+            <string>Ext. Obj Id:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="lExtObjectIdScheme">
+           <property name="text">
+            <string>Ext. Obj Id Scheme:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="8" column="0">
+          <widget class="QLabel" name="lMblk">
+           <property name="text">
+            <string>Mblk Override:</string>
+           </property>
+          </widget>
+         </item>
          <item row="7" column="1">
           <widget class="QLineEdit" name="uAppellation">
            <property name="text">
@@ -654,10 +726,41 @@
            </property>
           </widget>
          </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="lPositionType">
+         <item row="7" column="0">
+          <widget class="QLabel" name="lAppellation">
            <property name="text">
-            <string>Position Type:</string>
+            <string>Appellation:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0">
+          <widget class="QLabel" name="lValref">
+           <property name="text">
+            <string>Val Ref:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QLineEdit" name="uExtObjectIdScheme"/>
+         </item>
+         <item row="6" column="0">
+          <widget class="QLabel" name="lCertTitle">
+           <property name="text">
+            <string>Cert. of Title:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QLineEdit" name="uExternalObjectId">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="1">
+          <widget class="QLineEdit" name="uValuationReference">
+           <property name="text">
+            <string/>
            </property>
           </widget>
          </item>
@@ -681,32 +784,12 @@
            </property>
           </widget>
          </item>
-         <item row="3" column="0">
-          <widget class="QLabel" name="lExtObjectIdScheme">
-           <property name="text">
-            <string>Ext. Obj Id Scheme:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="1">
-          <widget class="QLineEdit" name="uValuationReference">
+         <item row="6" column="1">
+          <widget class="QLineEdit" name="uCertificateOfTitle">
            <property name="text">
             <string/>
            </property>
           </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QComboBox" name="uObjectType">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="1">
-          <widget class="QLineEdit" name="uExtObjectIdScheme"/>
          </item>
          <item row="1" column="0">
           <widget class="QLabel" name="lObjName">
@@ -715,76 +798,23 @@
            </property>
           </widget>
          </item>
-         <item row="6" column="0">
-          <widget class="QLabel" name="lCertTitle">
-           <property name="text">
-            <string>Cert. of Title:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="8" column="0">
-          <widget class="QLabel" name="lMblk">
-           <property name="text">
-            <string>Mblk Override:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="1">
-          <widget class="QLineEdit" name="uExternalObjectId">
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item row="7" column="0">
-          <widget class="QLabel" name="lAppellation">
-           <property name="text">
-            <string>Appellation:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="0">
-          <widget class="QLabel" name="lValref">
-           <property name="text">
-            <string>Val Ref:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="6" column="1">
-          <widget class="QLineEdit" name="uCertificateOfTitle">
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="0">
-          <widget class="QLabel" name="lExternalObjectId">
-           <property name="text">
-            <string>Ext. Obj Id:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QLineEdit" name="uObjectName">
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
          <item row="2" column="1">
-          <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <layout class="QHBoxLayout" name="horizontalLayout_3">
            <item>
             <widget class="QComboBox" name="uPositionType">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
+             <property name="sizeAdjustPolicy">
+              <enum>QComboBox::AdjustToMinimumContentsLength</enum>
              </property>
             </widget>
            </item>
            <item>
             <widget class="QPushButton" name="uUpdatePosButton">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="minimumSize">
               <size>
                <width>24</width>
@@ -834,7 +864,6 @@
   <tabstop>uWaterName</tabstop>
   <tabstop>uObjectType</tabstop>
   <tabstop>uObjectName</tabstop>
-  <tabstop>uPositionType</tabstop>
   <tabstop>uExtObjectIdScheme</tabstop>
   <tabstop>uExternalObjectId</tabstop>
   <tabstop>uValuationReference</tabstop>
@@ -845,7 +874,6 @@
   <tabstop>scrollArea_2</tabstop>
   <tabstop>scrollArea</tabstop>
   <tabstop>scrollArea_4</tabstop>
-  <tabstop>uUpdatePosButton</tabstop>
  </tabstops>
  <resources/>
  <connections/>
