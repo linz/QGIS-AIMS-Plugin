@@ -107,7 +107,7 @@ class GetRcl(QgsMapToolIdentifyFeature):
             else:
                 self._parent.uWaterRouteName.setText(UiUtility.nullEqualsNone(self.waterName))
             
-            if self._parent.__class__.__name__ != 'QueueEditorWidget':# and self._controller.rclcoords:
+            if self._parent.__class__.__name__ != 'QueueEditorWidget':
                 self.highlight.setRcl(self.rclLine)
             
     def canvasReleaseEvent(self, mouseEvent):
@@ -132,7 +132,6 @@ class GetRcl(QgsMapToolIdentifyFeature):
              'waterName' :'road_name_body',}
             
             for k, v in mapping.items():
-                #setattr(self, k, UiUtility.nullEqualsNone(results[0].mFeature.attribute(v)))
                 setattr(self, k, unicode(UiUtility.nullEqualsNone(results[0].mFeature.attribute(v))))
                 
             self.fillform()

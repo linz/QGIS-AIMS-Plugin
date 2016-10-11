@@ -177,7 +177,7 @@ class MoveAddressTool(QgsMapToolIdentify):
 
                 for feature in self._features:
                     # Hack to retrieve the properties missing on the
-                    # feature feed from the resolution feed </ 
+                    # feature feed from the resolution feed < 
                     respId = int(time.time()) 
                     self._controller.uidm.supplementAddress(feature, respId)
                     feature = self._controller.RespHandler.handleResp(respId, FEEDS['AR'], 'supplement')

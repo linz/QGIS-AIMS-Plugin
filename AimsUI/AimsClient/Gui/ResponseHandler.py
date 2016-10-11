@@ -33,9 +33,9 @@ class ResponseHandler(object):
         self.uidm = uidm
         self.updateSuccessful = None
         self.afar= {ft:AddressFactory.getInstance(FEEDS['AR']) for ft in FeedType.reverse}
-        self.afaf= {ft:AddressFactory.getInstance(FEEDS['AF']) for ft in FeedType.reverse} # new method to cast
+        self.afaf= {ft:AddressFactory.getInstance(FEEDS['AF']) for ft in FeedType.reverse}
 
-    def updateData(self, respObj , feedType, action):# rather than action could monitor _queueStatus
+    def updateData(self, respObj , feedType, action):
         """
         Update the UiDataManager's data to reflect the received response from the API
 
@@ -49,32 +49,29 @@ class ResponseHandler(object):
         
         if hasattr(respObj, '_changeGroupId') and feedType == FEEDS['AR']:
             respObj = self.afar[FeedType.RESOLUTIONFEED].cast(respObj)  
-            # Hack to allow the supplementing of missing
-            #  AF data with AR data
+            # Hack to allow the supplementing of missing AF data with AR data
             if action == 'supplement':
                 self.updateSuccessful = respObj
-                return True
+                return
             self.uidm.updateGdata(respObj)
         elif feedType == FEEDS['AC']:
             respObj = self.afar[FeedType.RESOLUTIONFEED].cast(respObj)
             self.uidm.updateRdata(respObj, feedType)
         elif feedType == FEEDS['AR']:
-            # Hack to allow the supplementing of missing
-            #  AF data with AR data
+            # Hack to allow the supplementing of missing AF data with AR data
             if action == 'supplement':
                 self.updateSuccessful = respObj
-                return True
+                return
             self.uidm.updateRdata(respObj, feedType)
-            #if action == 'accept':
             if respObj._queueStatus == 'Accepted':
                 self.ismeshblockoverride(respObj)
                 respObj = self.afaf[FeedType.FEATURES].cast(respObj)
                 self.uidm.updateFdata(respObj)
         else:
             self.updateSuccessful = False
-            return True
+            return 
         self.updateSuccessful = True
-        return True
+        return 
     
     def ismeshblockoverride(self, respObj):
         """
@@ -127,17 +124,15 @@ class ResponseHandler(object):
                 if resp.meta._errors['reject']:
                     self.displayWarnings(resp.meta.errors['reject'])
                     return True
-                if resp.meta._errors['warning'] and resp._queueStatus == 'Accepted':
-                    self.displayWarnings(resp.meta.errors['warning'])
-                    # hack -- failed acceptance but still has an accepted status
+                
+                # Hack -- failed acceptance but has an accepted status
+                elif resp.meta._errors['warning'] and resp._queueStatus == 'Accepted':
+                    self.displayWarnings(resp.meta.errors['warning'])    
                     resp.setQueueStatus('Under Review') 
-                    self.updateData(resp, feedType, action)
-                    return True
-                if resp.meta._errors['error'] and resp._queueStatus == 'Accepted':
+                # Hack -- failed acceptance but  has an accepted status
+                elif resp.meta._errors['error'] and resp._queueStatus == 'Accepted':
                     self.displayWarnings(resp.meta.errors['error'])
-                    resp.setQueueStatus('Under Review') # hack
-                    self.updateData(resp, feedType, action)
-                    return True             
+                    resp.setQueueStatus('Under Review')         
 
                 # else captured resp and no critical warnings
                 # precede to update self._data
@@ -163,9 +158,9 @@ class ResponseHandler(object):
                 if self.matchResp(resp, respId, feedType, i, action):
                     return self.updateSuccessful  
             else: time.sleep(1)                                            
-        #logging 
+        
         self._iface.messageBar().pushMessage("Incomplete Response", "Data may not be complete - Please expect a data refresh shortly", level=QgsMessageBar.WARNING)
-
+        #logging 
         uilog.info(' *** DATA ***    Time Out ({0} seconds): No response received from DM for respId: {1} of feedtype: {2}'.format(i, respId, feedType))    
     
            

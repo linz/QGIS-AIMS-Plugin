@@ -566,7 +566,7 @@ class Persistence():
             self.tracker[FEEDS['AC']] = {'page':[NPV,NPV],'index':1,'threads':0,'interval':125}  
             self.tracker[FEEDS['AR']] = {'page':[1,1],    'index':1,'threads':1,'interval':10}  
             self.tracker[FEEDS['GC']] = {'page':[1,1],    'index':1,'threads':0,'interval':130} 
-            self.tracker[FEEDS['GR']] = {'page':[1,1],    'index':1,'threads':1,'interval':55}          
+            self.tracker[FEEDS['GR']] = {'page':[1,1],    'index':1,'threads':1,'interval':55}      
             self.tracker[FEEDS['UA']] = {'page':[1,1],    'index':1,'threads':0,'interval':0}              
             
             self.write() 

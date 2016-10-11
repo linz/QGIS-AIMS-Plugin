@@ -135,8 +135,6 @@ class CreateNewAddressTool(QgsMapToolIdentify):
         @type coords: QgsPoint
         """   
         # init new address object and open form
-        #if self.formActive: return
-        #self.formActive = True
         UiUtility.clearForm(self._controller._queues.tabWidget)
         coords = UiUtility.transform(self._iface, coords)
         self.setMarker(coords)        

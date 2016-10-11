@@ -164,7 +164,6 @@ class UiUtility (object):
         @type  getter: string
         """
 
-        #if hasattr(feature, property) or hasattr(feature, getter):                                     
         if getter: 
             # use getter
             if getattr(feature, getter)() != 'None':
@@ -418,7 +417,7 @@ class UiUtility (object):
                 if m.group('base') is not None: obj.uBase.setText(m.group('base'))
                 if m.group('alpha') is not None: obj.uAlpha.setText(m.group('alpha'))
             except:
-                pass #silently  
+                pass #silently. This is an edge case, user must split them self  
         else:
             p = re.compile(r'^(?P<flat_prefix>[A-Z]+)?(?:\s)?(?P<flat>[0-9]+/\s*|[0-9]+[A-Z]{,2}/\s*)?(?P<base>[0-9]+)(?:-)(?P<high>[0-9]+)(?P<alpha>[A-Z]+)?$') 
             m = p.match(newnumber.upper())
