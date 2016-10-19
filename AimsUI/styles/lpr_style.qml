@@ -7,34 +7,10 @@
     <edittype widgetv2type="TextEdit" name="appellation">
       <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
     </edittype>
-    <edittype widgetv2type="TextEdit" name="affected_surveys">
-      <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
-    </edittype>
-    <edittype widgetv2type="TextEdit" name="parcel_intent">
-      <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
-    </edittype>
-    <edittype widgetv2type="TextEdit" name="topology_type">
-      <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
-    </edittype>
-    <edittype widgetv2type="TextEdit" name="statutory_actions">
-      <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
-    </edittype>
-    <edittype widgetv2type="TextEdit" name="land_district">
-      <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
-    </edittype>
-    <edittype widgetv2type="TextEdit" name="titles">
-      <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
-    </edittype>
-    <edittype widgetv2type="TextEdit" name="survey_area">
-      <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
-    </edittype>
-    <edittype widgetv2type="TextEdit" name="calc_area">
-      <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
-    </edittype>
   </edittypes>
   <renderer-v2 symbollevels="0" type="RuleRenderer">
-    <rules key="{82d4af77-548f-4edc-8573-82ad95044023}">
-      <rule checkstate="0" filter=" &quot;parcel_intent&quot; not in ('Road', 'Railway', 'Hydro')" key="{fa341051-8aae-45fe-952d-5f72fa479e5a}" symbol="0" label="Land"/>
+    <rules key="{2aa3fd36-1641-48de-b3ca-8a3689b71028}">
+      <rule checkstate="0" filter=" &quot;appellation&quot;  IS NOT  NULL" key="{383cd0c4-ecea-4261-8ea8-408ab689886b}" symbol="0" label="Appellation"/>
     </rules>
     <symbols>
       <symbol alpha="0.0980392" type="fill" name="0">
