@@ -340,7 +340,7 @@ class LayerManager(QObject):
                                 AND toc_code = 'PRIM'""",
                             'Parcels' ) ,
                     
-                    'lpr':( 'lpr', 'admin_bdys', 'parcel_labels_mview', 'id', True, "",'Parcels (Labels)' ) ,
+                    #'lpr':( 'lpr', 'admin_bdys', 'parcel_labels_mview', 'id', True, "",'Parcels (Labels)' ) ,
                     
                     'rcl':( 'rcl', 'roads', 'simple_road_name_view', 'gid', True, "",'Roads' ),
                     
