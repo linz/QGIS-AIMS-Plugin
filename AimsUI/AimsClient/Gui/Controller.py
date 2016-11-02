@@ -26,7 +26,7 @@ from AimsUI.DelAddressTool import DelAddressTool
 from AimsUI.MoveAddressTool import MoveAddressTool
 from AimsUI.CreateNewAddressTool import CreateNewAddressTool
 from AimsUI.UpdateAddressTool import UpdateAddressTool
-from AimsUI.LineageTool import LineageTool
+#from AimsUI.LineageTool import LineageTool
 from AimsUI.GetRclTool import GetRcl
 from AimsUI.UpdateReviewPosition import UpdateReviewPosition
 from AimsQueueWidget import AimsQueueWidget
@@ -159,6 +159,7 @@ class Controller( QObject ):
         self._updateReviewPos = UpdateReviewPosition(self.iface, self._layerManager, self)
        
         # Address lineage
+        """
         self._lineageaction = QAction(QIcon(':/plugins/QGIS-AIMS-Plugin/resources/lineage.png'), 
             'Build Lineage Relationships Between Features', self.iface.mainWindow())
         self._lineageaction.setWhatsThis('Build Lineage Relationships Between Features')
@@ -168,7 +169,8 @@ class Controller( QObject ):
         self._lineagetool = LineageTool( self.iface, self._layerManager, self)
         self._lineageaction.triggered.connect(self._lineagetool.setEnabled)
         self.actions.append(self._lineageaction)
-
+        """
+        
         # Address highlighter
         self._highlightaction = QAction(QIcon(":/plugins/QGIS-AIMS-Plugin/resources/addresshighlight.png"), 
             "Electoral address highlighter", self.iface.mainWindow())
@@ -185,7 +187,7 @@ class Controller( QObject ):
         self._toolbar.addAction(self._deladdressaction)
         self._toolbar.addAction(self._updateaddressaction)
         self._toolbar.addAction(self._moveaddressaction)
-        self._toolbar.addAction(self._lineageaction)
+        #self._toolbar.addAction(self._lineageaction)
         self._toolbar.addAction(self._highlightaction)
         
         # Add actions to menu
@@ -349,13 +351,15 @@ class Controller( QObject ):
         self.iface.mapCanvas().setMapTool(self._deladdtool)
         self._deladdtool.setEnabled(True)
     
+    '''
     def startLineageTool(self):
         """ 
         Enable the "lineage" map tool 
         """
         self.iface.mapCanvas().setMapTool(self._lineagetool)
         self._deladdtool.setEnabled(True) 
- 
+    '''
+        
     def unload(self):
         """
         Remove Plugins UI Elements From QGIS
@@ -373,7 +377,7 @@ class Controller( QObject ):
         self.iface.removePluginMenu('&QGIS-AIMS-Plugin', self._deladdressaction)
         self.iface.removePluginMenu('&QGIS-AIMS-Plugin', self._updateaddressaction)
         self.iface.removePluginMenu('&QGIS-AIMS-Plugin', self._moveaddressaction)
-        self.iface.removePluginMenu('&QGIS-AIMS-Plugin', self._lineageaction)
+        #self.iface.removePluginMenu('&QGIS-AIMS-Plugin', self._lineageaction)
         self.iface.removePluginMenu("&QGIS-AIMS-Plugin'", self._highlightaction)
     
     @pyqtSlot()
