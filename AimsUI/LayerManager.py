@@ -521,7 +521,7 @@ class LayerManager(QObject):
         @param feedType: Type of AIMS API
         @type  feedType: AIMSDataManager.FeatureFactory.FeedRef
         """
-        uilog.info('<<<<<<<<<<<<<<<<< NOTIFY >>>>>>>>>>>>>>>')
+
         uilog.info('*** NOTIFY ***     Notify A[{}]'.format(feedType))
         if feedType == FEEDS['AF']:
             self.getAimsFeatures()

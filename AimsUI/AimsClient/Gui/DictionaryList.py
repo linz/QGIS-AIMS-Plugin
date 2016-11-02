@@ -11,7 +11,7 @@
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-from qgis.core import * # temp for testing
+from qgis.core import *
 
 # DictionaryListView and DictionaryListModel.  
 

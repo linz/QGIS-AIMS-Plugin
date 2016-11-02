@@ -230,8 +230,8 @@ class GroupTableModel(QAbstractTableModel):
         @type headerdata: list    
         @param parent: Inherits from QtGui.QWidget
 
-
         """
+        
         QAbstractTableModel.__init__(self, parent)
         self.dummyData = {('','', '', '', ''): [['', '', '', '', '']]}
         if not data: data = self.dummyData

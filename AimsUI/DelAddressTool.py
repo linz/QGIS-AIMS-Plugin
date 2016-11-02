@@ -165,7 +165,7 @@ class DelAddressDialog( Ui_ComfirmSelection, QDialog ):
             retireIds = {}        
             retireIds['version'] = i['version']
             retireIds['components'] = {'addressId': i['addressId']}
-            retireIds['address'] = i['fullAddress'] #this data not required by the API but useful for error reporting
+            retireIds['address'] = i['fullAddress']
             retireFeatures.append(retireIds)
         return retireFeatures        
 

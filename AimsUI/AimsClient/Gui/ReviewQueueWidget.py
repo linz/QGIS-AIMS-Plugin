@@ -24,7 +24,7 @@ import time
 
 from AIMSDataManager.AimsLogging import Logger
 
-import sys # temp
+import sys # temp - debugging
 
 # Dev only - debugging
 try:
