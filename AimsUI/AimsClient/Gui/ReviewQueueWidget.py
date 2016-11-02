@@ -24,7 +24,7 @@ import time
 
 from AIMSDataManager.AimsLogging import Logger
 
-import sys # temp
+import sys # temp - debugging
 
 # Dev only - debugging
 try:
@@ -182,7 +182,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
                 self.uQueueEditor.clearForm()
                 
         
-    def singleReviewObj(self, feedType, objKey): # can the below replace this?
+    def singleReviewObj(self, feedType, objKey):
         """
         Return either single or group
         review object as per supplied key 
@@ -439,7 +439,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         
         if self.currentFeatureKey:
             coords = self.uidm.reviewItemCoords(self.currentGroup, self.currentFeatureKey)
-            if self.currentAdrCoord == coords: 
+            if self.currentAdrCoord == coords or not coords: 
                 return
             self.currentAdrCoord = coords
             buffer = .00100

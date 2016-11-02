@@ -340,7 +340,7 @@ class LayerManager(QObject):
                                 AND toc_code = 'PRIM'""",
                             'Parcels' ) ,
                     
-                    #'lpr':( 'lpr', 'bde', 'parcel_labels_mview', 'id', True, "",'Parcels (Labels)' ) ,
+                    #'lpr':( 'lpr', 'admin_bdys', 'parcel_labels_mview', 'id', True, "",'Parcels (Labels)' ) ,
                     
                     'rcl':( 'rcl', 'roads', 'simple_road_name_view', 'gid', True, "",'Roads' ),
                     
@@ -521,7 +521,7 @@ class LayerManager(QObject):
         @param feedType: Type of AIMS API
         @type  feedType: AIMSDataManager.FeatureFactory.FeedRef
         """
-        
+
         uilog.info('*** NOTIFY ***     Notify A[{}]'.format(feedType))
         if feedType == FEEDS['AF']:
             self.getAimsFeatures()

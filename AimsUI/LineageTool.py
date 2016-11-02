@@ -9,6 +9,10 @@
 #
 ################################################################################
 
+# Removed from "go live" schedule
+ 
+"""
+
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
@@ -148,4 +152,4 @@ class LineageDialog(Ui_LineageDialog, QDialog):
         if len(self.uGroupId.text()) != 0:
             self.uGroupDescription.setEnabled(False)
         else: self.uGroupDescription.setEnabled(True)
-        
+"""

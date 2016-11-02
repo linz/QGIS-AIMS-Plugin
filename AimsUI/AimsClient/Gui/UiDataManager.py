@@ -114,7 +114,7 @@ class UiDataManager(QObject):
         self._observers.append(observer)
 
     @pyqtSlot()
-    def dataUpdated(self, data, feedType = FEEDS['AR']):
+    def dataUpdated(self, data = None, feedType = FEEDS['AR']):
         """
         Slot communicated to when Review data changed. Updates review layer and table data
 
@@ -123,9 +123,7 @@ class UiDataManager(QObject):
         @param feedType: Type of AIMS API feed
         @type  feedType: AIMSDataManager.FeatureFactory.FeedRef
         """
-        
-        uilog.info("Signal Recieved")
-        if data is None: return 
+
         self.setData(data,feedType)
         for observer in self._observers:
             observer.notify(feedType)
@@ -166,12 +164,14 @@ class UiDataManager(QObject):
         @param feedType: Type of AIMS API feed
         @type  feedType: AIMSDataManager.FeatureFactory.FeedRef
         """
-
-        if listofFeatures:
+        
+        ### was if listofFeatures: but stop the queue being emptied to None
+        if listofFeatures or listofFeatures == []: 
             li = []
             keyId = self.idProperty(feedtype)
             li = dict((getattr(feat, keyId), feat) for feat in listofFeatures)
             self.data[feedtype] = li
+                       
             # [GroupKey:{AdKey:}]            
         if feedtype == FEEDS['GR']:
             # key group objects
@@ -188,7 +188,7 @@ class UiDataManager(QObject):
         @param feedType: Type of AIMS API feed
         @type  feedType: AIMSDataManager.FeatureFactory.FeedRef
         """  
-             
+        
         self.keyData(dataRefresh, FeedType)
 
     def updateRdata(self, respFeature, feedType):
@@ -773,14 +773,14 @@ class Listener(QThread):
         If the is change update the UIDatamanager data
         """
 
-        for k , v in self.data.items():
-            if v and self.previousData[k] != v:
+        for k , v in self.data.items():           
+            if self.previousData[k] != v:
                 self.emit(SIGNAL('dataChanged'), v, k) 
         self.previousData = self.data                   
     
     def run(self):
         """
-        Check for change on the DMData data
+        Check for change in the DM data
         """
         
         while True:
@@ -848,4 +848,6 @@ class DMObserver(QThread):
         
         uilog.info('*** NOTIFY ***     Notify A[{}]'.format(observable))
         setattr(self.DMData, self.feedData.get(fType),data)
+        
+
         

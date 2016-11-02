@@ -66,12 +66,7 @@ class QueueEditorWidget( Ui_QueueEditorWidget, QWidget ):
         hide = (self.uExternalObjectId, self.uExtObjectIdScheme, 
                  self.lExtObjectIdScheme,  self.lExternalObjectId
                  )
-        
-        """ self.uObjectType, self.uObjectName, self.uPositionType, self.uUpdatePosButton
-                , self.uExtObjectIdScheme, self.uExternalObjectId, self.uValuationReference
-                , self.uCertificateOfTitle, self.uAppellation, self.uMblkOverride
-        """
-        
+               
         for uiElement in hide:
             uiElement.hide()
         
@@ -161,8 +156,6 @@ class QueueEditorWidget( Ui_QueueEditorWidget, QWidget ):
                 elif isinstance(getattr(self, uiElement), QComboBox) and getattr(self, v[0]):
                     getattr(self, uiElement).setCurrentIndex(QComboBox.findText(getattr(self, uiElement),getattr(self, v[0])))
 
-
-                    #uiElement.setCurrentIndex(QComboBox.findText(uiElement, prop))
     def clearEdits(self):
         """
         set all temp properties to None
