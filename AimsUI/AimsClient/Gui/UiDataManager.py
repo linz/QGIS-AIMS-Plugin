@@ -225,6 +225,7 @@ class UiDataManager(QObject):
         
         # responses do not have a 'full number'
         # as it is required for labeling it is set here
+        
         respFeature.setFullAddressNumber(respFeature.getFullNumber())
         
         self.data[FEEDS['AF']][respFeature._components_addressId] = respFeature
