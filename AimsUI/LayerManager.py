@@ -397,7 +397,6 @@ class LayerManager(QObject):
         rel.addFieldPair( 'id', 'par_id' )
         rel.setRelationId( self._propBaseName+'appellation_rel' )
         rel.setRelationName( 'Appellation Relation' )
-        # rel.isValid() # It will only be added if it is valid. If not, check the ids and field names
         QgsProject.instance().relationManager().addRelation( rel )
     
     def addLayerFields(self, layer, provider, id, fields):
