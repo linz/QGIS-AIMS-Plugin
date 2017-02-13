@@ -22,8 +22,9 @@ import time
 from AimsUI.AimsClient.Gui.Ui_ComfirmSelection import Ui_ComfirmSelection
 from AimsUI.AimsClient.Gui.UiUtility import UiUtility # remove?
 from AimsUI.AimsClient.Gui.ResponseHandler import ResponseHandler
-from AIMSDataManager.AimsUtility import FeedType, FEEDS
+from AIMSDataManager.AimsUtility import FeedType, FEEDS, FeedRef, FeatureType
 from AIMSDataManager.AddressFactory import AddressFactory
+from AIMSDataManager.FeatureFactory import FeatureFactory
 from AIMSDataManager.AimsLogging import Logger
 
 uilog = None
@@ -56,7 +57,8 @@ class MoveAddressTool(QgsMapToolIdentify):
         self._controller = controller
         self.RespHandler = ResponseHandler(self._iface, self._controller.uidm)
         self.highlighter = self._controller.highlighter
-        self.af = {ft:AddressFactory.getInstance(FEEDS['AC']) for ft in FeedType.reverse}
+        self.afc = {ft:AddressFactory.getInstance(FEEDS['AC']) for ft in FeedType.reverse}
+        self.aff = FeatureFactory.getInstance(FeedRef(FeatureType.ADDRESS,FeedType.FEATURES))
         self._features = []
         self._sb = self._iface.mainWindow().statusBar()
         self.activate()
@@ -182,12 +184,16 @@ class MoveAddressTool(QgsMapToolIdentify):
                     self._controller.uidm.supplementAddress(feature, respId)
                     feature = self._controller.RespHandler.handleResp(respId, FEEDS['AR'], 'supplement')
                     # />
-                    feature._addressedObject_addressPositions[0].setCoordinates(coords)
-                    if feature._codes_isMeshblockOverride != True:
-                        feature.setMeshblock(None)
-                    feature = self.af[FeedType.CHANGEFEED].cast(feature)
+                    #feature.type = FEEDS['AF']
+
+                    # below clone is part of a fix still to be tested
+                    clone = feature.clone(feature, self.aff.get())
+                    clone._addressedObject_addressPositions[0].setCoordinates(coords, )
+                    if clone._codes_isMeshblockOverride != True:
+                        clone.setMeshblock(None)
                     respId = int(time.time()) 
-                    self._controller.uidm.updateAddress(feature, respId)
+                    clone = self.afc[FeedType.CHANGEFEED].cast(clone)
+                    self._controller.uidm.updateAddress(clone, respId)
                     self.RespHandler.handleResp(respId, FEEDS['AC'])
                         
                 self._features = []

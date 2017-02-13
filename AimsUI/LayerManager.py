@@ -108,6 +108,7 @@ class LayerManager(QObject):
         self._parLayer = None
         self._pprLayer = None # pending parcel
         self._lprLayer = None # labels, parcels
+        self._appLayer = None # view = par_id, appellation 
         self._locLayer = None
         self._revLayer = None
         self._extEvent = False
@@ -137,8 +138,8 @@ class LayerManager(QObject):
         
     def layerId(self, layer):
         """ 
-        Takes a layer as Vector Layer as a parameter and reutrns
-        the layers Id as used by the plugin to reffer to the layers
+        Takes a layer as Vector Layer as a parameter and returns
+        the layers Id as used by the plugin to refer to the layers
 
         @param layer: AIMS qgis layer
         @type  layer: qgis._core.QgsVectorLayer 
@@ -204,6 +205,26 @@ class LayerManager(QObject):
         """
         
         return self._revLayer
+
+    def appLayer(self):
+        """
+        Return the Appellation View Layer
+
+        @return: AIMS Review Layer
+        @rtype: qgis._core.QgsVectorLayer 
+        """
+        
+        return self._appLayer
+
+    def lprLayer(self):
+        """
+        Return the (Label) Parcel Layer
+
+        @return: AIMS Review Layer
+        @rtype: qgis._core.QgsVectorLayer 
+        """
+        
+        return self._lprLayer
     
     def checkRemovedLayer(self, id):
         """
@@ -249,9 +270,11 @@ class LayerManager(QObject):
         elif layerId == 'ppr':
             self._pprLayer = layer
         elif layerId == 'lpr':
-            self._pprLayer = layer
+            self._lprLayer = layer
         elif layerId == 'rev':
             self._revLayer = layer
+        elif layerId == 'app':
+            self._appLayer = layer
     
     def findLayer(self, name):
         """
@@ -284,7 +307,7 @@ class LayerManager(QObject):
         except:
             pass
     
-    def installLayer(self, id, schema, table, key, estimated, where, displayname):
+    def installLayer(self, id, schema, table, geom, key, estimated, where, displayname):
         """
         Install AIMS postgres reference layers
 
@@ -318,8 +341,8 @@ class LayerManager(QObject):
         try:
             uri = QgsDataSourceURI()
             uri.setConnection(Database.host(),str(Database.port()),Database.database(),Database.user(),Database.password())
-            uri.setDataSource(schema,table,'shape',where,key)            
-            uri.setUseEstimatedMetadata( estimated )            
+            uri.setDataSource(schema,table,geom,where,key)            
+            uri.setUseEstimatedMetadata(True)
             layer = QgsVectorLayer(uri.uri(),displayname,"postgres")
             self.setLayerId( layer, id )
             self.styleLayer(layer, id)            
@@ -333,28 +356,49 @@ class LayerManager(QObject):
         Install AIMS postgres reference layers
         """
         
-              
-        refLayers ={'par':( 'par', 'bde', 'crs_parcel', 'id', True, 
-                            """ST_GeometryType(shape) IN ('ST_MultiPolygon', 'ST_Polygon') 
+        parQuery =  """ST_GeometryType(shape) IN ('ST_MultiPolygon', 'ST_Polygon') 
                                 AND status = 'CURR' 
-                                AND toc_code = 'PRIM'""",
-                            'Parcels' ) ,
-                    
-                    #'lpr':( 'lpr', 'admin_bdys', 'parcel_labels_mview', 'id', True, "",'Parcels (Labels)' ) ,
-                    
-                    'rcl':( 'rcl', 'roads', 'simple_road_name_view', 'gid', True, "",'Roads' ),
-                    
-                    'ppr':( 'ppr', 'bde', 'crs_parcel', 'id', True, 
-                            """ST_GeometryType(shape) IN ('ST_MultiPolygon', 'ST_Polygon') 
+                                AND toc_code = 'PRIM'"""
+               
+        pendParQuery =  """ST_GeometryType(shape) IN ('ST_MultiPolygon', 'ST_Polygon') 
                                 AND status = 'PEND' 
-                                AND toc_code = 'PRIM'""",
-                            'Pending Parcels' )
+                                AND toc_code = 'PRIM'"""
+                                               
+        refLayers ={'par':( 'par', 'bde', 'crs_parcel', 'shape','id', True, parQuery ,'Parcels' ) ,
+                    
+                    'lpr':( 'lpr', 'bde', 'crs_parcel', 'shape','id', True, parQuery ,'Parcels (Labels)' ) ,
+                    
+                    'app':( 'app', 'bde', 'parcel_appellation_view', None,'par_id', True, "",'Appellation View' ) ,
+
+                    'rcl':( 'rcl', 'roads', 'simple_road_name_view', 'shape','gid', True, "",'Roads' ),
+                    
+                    'ppr':( 'ppr', 'bde', 'crs_parcel', 'shape' ,'id', True, pendParQuery, 'Pending Parcels' )
                     }
 
         for layerId , layerProps in refLayers.items():
             if not self.findLayer(layerId):
                 self.installLayer(* layerProps) 
 
+            # A Relation is required to label 
+            # parcels with an appellation
+            if self.lprLayer() and self.appLayer():
+                self.parRelation()
+    
+    def parRelation(self):
+        """
+        Parcel labeling requires a relation between app (view = parcel ids
+        and their associated appellation) and lpr (crs parcel layer 
+        for labeling purposes)
+        """
+
+        rel = QgsRelation()
+        rel.setReferencingLayer( self.lprLayer().id() )
+        rel.setReferencedLayer( self.appLayer().id() )
+        rel.addFieldPair( 'id', 'par_id' )
+        rel.setRelationId( self._propBaseName+'appellation_rel' )
+        rel.setRelationName( 'Appellation Relation' )
+        QgsProject.instance().relationManager().addRelation( rel )
+    
     def addLayerFields(self, layer, provider, id, fields):
         """
         Add fields to a layer  
