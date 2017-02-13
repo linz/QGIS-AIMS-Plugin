@@ -368,7 +368,7 @@ class LayerManager(QObject):
                     
                     'lpr':( 'lpr', 'bde', 'crs_parcel', 'shape','id', True, parQuery ,'Parcels (Labels)' ) ,
                     
-                    'app':( 'app', 'splanzer', 'app', None,'par_id', True, "",'App View' ) , #used for parcel label layer
+                    'app':( 'app', 'bde', 'parcel_appellation_view', None,'par_id', True, "",'Appellation View' ) ,
 
                     'rcl':( 'rcl', 'roads', 'simple_road_name_view', 'shape','gid', True, "",'Roads' ),
                     
