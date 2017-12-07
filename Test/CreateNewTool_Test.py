@@ -21,10 +21,12 @@ import inspect
 import sys
 import re
 
+sys.path.append('/home/aross/Documents/Github/QGIS-AIMS-Plugin/')
 #from Test._QGisInterface import QgisInterface
-from AimsUI.CreateNewTool import CreateNewTool
-
+from AimsUI.CreateNewAddressTool import CreateNewAddressTool
+from AimsUI.LayerManager import LayerManager
 from AimsUI.AimsLogging import Logger
+from AimsUI.AimsClient.Gui.Controller import Controller
 
 testlog = Logger.setup('test')
 
@@ -37,22 +39,23 @@ class Test_0_LayerManagerSelfTest(unittest.TestCase):
         pass
     
     def test_1_selftest(self):
-        #assertIsNotNone added in 3.1
-        self.assertNotEqual(testlog,None,'Testlog not instantiated')
+        self.assertIsNotNone(testlog,'Testlog not instantiated')
         testlog.debug('LayerManager_Test Log')
         
 class Test_1_LayerManagerSetters(unittest.TestCase):
-    #QI = QgisInterface(_Dummy_Canvas())
 
     def setUp(self): 
         testlog.debug('Instantiate null address, address.setter list')
         self.QI = _Dummy_IFace()
-        self._layermanager = LayerManager(self.QI)
+        self._controller = Controller(self.QI)
+        self._layermanager = LayerManager(self.QI, self._controller)
 
         
     def tearDown(self):
         testlog.debug('Destroy null layermanager')
-        self._layermanager = None        
+        self._layermanager = None  
+        self._controller = None
+        self.QI = None
         
     def test10_instLayerID(self,testval='AIMS1000'):
         '''Test the layer id setter'''
@@ -60,7 +63,22 @@ class Test_1_LayerManagerSetters(unittest.TestCase):
         testlayer = _Dummy_Layer()
         self._layermanager.setLayerId(testlayer,testval)
         self.assertEqual(self._layermanager.layerId(testlayer),testval, 'Unable to set layer ID {}'.format(testval))
-
+        
+class Test_2_CreateNewAddressInit(unittest.TestCase):
+    
+    def setUp(self):
+	self.QI = _Dummy_IFace()
+	self._controller = Controller(self.QI)
+	self._layermanager = LayerManager(self.QI, self._controller)
+	
+    
+    def tearDown(self):
+	self.QI = None
+	self._controller = None
+	self._layermanager = None
+	
+    #def test10_instantiate(self):
+	#self._createNAT = CreateNewAddressTool(self.QI, self._layermanager, self._controller)
             
         
 
@@ -70,9 +88,16 @@ class Test_1_LayerManagerSetters(unittest.TestCase):
 class _Dummy_IFace(object):
     def mainWindow(self):
         return _Dummy_MainWindow()
+    def mapCanvas(sel):
+	return _Dummy_MapCanvas()
     
 class _Dummy_MainWindow(object):
     def statusBar(self): return None
+    
+class _Dummy_MapCanvas(object):
+    def mapSettings(self): return None
+  
+    def extent(self): return None
     
 class _Dummy_Layer(object):
     cp = {}

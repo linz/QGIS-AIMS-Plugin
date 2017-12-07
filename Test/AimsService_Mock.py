@@ -21,8 +21,9 @@ import inspect
 import sys
 import re
 
-
+sys.path.append('/home/aross/Documents/Github/QGIS-AIMS-Plugin/')
 from mock import Mock, patch
+#import unittest.mock
 
 resp = {
         "class":[
@@ -146,6 +147,8 @@ class _QInterface(object):
         #return QgsMapLayerRegistry.instance().mapLayers().values()
     
     def mainWindow(self):
+	#return mock(spec=_QInterface)
+        #print(_MainWindow())
         return _MainWindow()
     
     def mapCanvas(self):
@@ -157,6 +160,7 @@ class _QInterface(object):
     def messageBar(self): pass
     
 class _MapCanvas(object):
+  
     def mapSettings(self):
         return _MapSettings()
     def extent(self): return _Extent()
@@ -171,7 +175,11 @@ class _Extent(object):
     def yMinimum(self):pass
         
 class _MainWindow(object):
-    def statusBar(self): return None
+    def statusBar(self): 
+      return _StatusBar()
+  
+class _StatusBar(object):
+    def showMessage(self, mess): pass
     
 class _Legend(object):
     def isLayerVisible(self, layer): pass
@@ -216,7 +224,7 @@ class _pyqtSignal(object):
 #------------------------------------------------------------- 
 #from contextlib import contextmanager
 #@contextmanager
-class ContextMock(Mock):
+class ContextMock(object): #Mock
     def __exit__(self, exc_type=None, exc_val=None, exc_tb=None): pass
     def __enter__(self): pass
     
@@ -251,7 +259,7 @@ class ASM(object):
     def getMockSpec(cls,type):
         '''doesn't work, getmock is evaluated before __class__'''
         m =  ASM.getMock(type)
-        print type
+        #print type
         return ASM.getMock(type)().__class__
                 
     @staticmethod
@@ -260,15 +268,19 @@ class ASM(object):
     
     @staticmethod
     def getQIMock():
+        #print("Mocking QInterface")
         return Mock(spec=_QInterface)
+        #return _QInterface()
     
     @staticmethod
     def getLayerMock(idrv=None, cprv=None, vlrv=None,tprv=None):
         if vlrv:
             m = Mock(spec=_VectorLayer) #spec argument configures the mock to take its specification from another object
+            #m = _VectorLayer()
             m.type.return_value = m.VectorLayer
         else:
             m = Mock(spec=_Layer)
+            #m = _Layer()
             m.type.return_value = m.Layer
         m.id.return_value = idrv
         m.customProperty.return_value = cprv
