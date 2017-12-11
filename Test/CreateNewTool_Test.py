@@ -15,6 +15,7 @@ Tests on CreateNewTool class
 Created on 05/11/2015
 
 @author: jramsay
+@author: aross
 '''
 import unittest
 import inspect
@@ -77,8 +78,6 @@ class Test_2_CreateNewAddressInit(unittest.TestCase):
 	self._controller = None
 	self._layermanager = None
 	
-    #def test10_instantiate(self):
-	#self._createNAT = CreateNewAddressTool(self.QI, self._layermanager, self._controller)
             
         
 

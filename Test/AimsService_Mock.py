@@ -15,6 +15,7 @@ Tests on Controller class
 Created on 24/11/2015
 
 @author: jramsay
+@author: aross
 '''
 import unittest
 import inspect
@@ -198,6 +199,9 @@ class _Layer(object):
     def updateFields(self): pass
     def commitChanges(self): pass
     def loadNamedStyle(self):pass
+    def hasScaleBasedVisibility(self): pass
+    def maximumScale(self): pass
+    def minimumScale(self): pass
     #def createFeaturesLayer(self):pass
     
 class _VectorLayer(_Layer):

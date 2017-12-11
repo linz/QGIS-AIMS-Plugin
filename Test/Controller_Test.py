@@ -15,16 +15,20 @@ Tests on Controller class
 Created on 05/11/2015
 
 @author: jramsay
+@author: aross
 '''
 import unittest
 import inspect
 import sys
 import re
+sys.path.append('/home/aross/Documents/Github/QGIS-AIMS-Plugin/')
 
 from AimsService_Mock import ASM
+
 #from Test._QGisInterface import QgisInterface
 from AimsUI.AimsClient.Gui.Controller import Controller
-from AimsUI.AimsClient.Address import Address
+
+from AIMSDataManager.Address import Address
 
 from AimsUI.AimsLogging import Logger
 
@@ -61,9 +65,35 @@ class Test_1_ControllerTestSetupFunction(unittest.TestCase):
         
     def test10_initControllerAddress(self):  
         testlog.debug('Test_1.10 Controller/Address instantiation test')
-        self.assertEqual(isinstance(self._controller.initialiseAddressObj(),Address),True,'Cannot init Controller.Address')
+        self.assertTrue(isinstance(self._controller, Controller))
+        # Old tests?
+        #self.assertEqual(isinstance(self._controller.initialiseAddressObj(),Address),True,'Cannot init Controller.Address')
         #self.assertIsInstance(self._controller.initialiseNewAddress(),Address,'Cannot init Controller.Address')
-          
+	
+
+    def test20_startDM(self):
+	self.assertIsNone(self._controller.uidm.dm, 'Data Manager started early')
+	self._controller.startDM()
+	self.assertIsNotNone(self._controller.uidm.dm, 'Data Manager not started correctly')
+	
+
+@unittest.skip("can't access initGui")
+class Test_2_ControllerUI(unittest.TestCase):
+    
+    def setUp(self):
+	qi = ASM.getMock(ASM.ASMenum.QI)()
+	self._controller = Controller(qi)
+	
+    def tearDown(self):
+	self._controller = None
+	
+    def test20_initControllerGui(self):
+	testlog.debug('Test_1.20 Controller/ Gui instantiation test')
+	gui = self._controller.initGui()
+	
+       
+
+
     
 if __name__ == "__main__":
     unittest.main()

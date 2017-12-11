@@ -16,6 +16,7 @@ Tests on LayerManager class
 Created on 05/11/2015
 
 @author: jramsay
+@author: aross
 '''
 
 from PyQt4.QtCore import *
@@ -134,7 +135,7 @@ class Test_1_LayerManagerSetters(unittest.TestCase):
 class Test_2_LayerManagerConnection(unittest.TestCase):
     '''installreflayer->installlayer->findlayer->layers'''
     
-    MLAYERS = (('rcl','_rclLayer'),('par','_parLayer'),('loc','_locLayer'),('adr','_adrLayer'))
+    MLAYERS = (('rcl','_rclLayer'),('par','_parLayer'),('adr', '_adrLayer'), ('lpr', '_lprLayer'), ('ppr', '_pprLayer'))#('loc','_locLayer'),('app','_appLayer'))
     
     def setUp(self): 
         testlog.debug('Instantiate null address, address.setter list')
@@ -228,6 +229,8 @@ class Test_2_LayerManagerConnection(unittest.TestCase):
             qmlr_mock.instance.return_value.mapLayers.return_value.values.return_value = (test_layer,)
             found_layer = self._layermanager.findLayer(test_layer_id)
             self.assertEqual(found_layer, test_layer,'returned layer does not match set layer using name {}'.format(test_layer_id))
+
+            
     
     @unittest.skip("error")
     def test40_installRefLayers(self):
@@ -255,7 +258,7 @@ class Test_2_LayerManagerConnection(unittest.TestCase):
             #testlayer.customProperty.return_value = ltype[0]
             self._layermanager.checkNewLayer(testlayer)
             self.assertEqual(self._layermanager.__getattribute__(ltype[1]),testlayer)
-        
+    
     def test60_checkRemovedLayer(self):
         '''checks layers get null'd by first installing a layer then removing it'''
         test_layerdict = {test_layerpair:ASM.getMock(ASM.ASMenum.LAYER)(idrv=test_layerpair[0],cprv=test_layerpair[0],vlrv=True) for test_layerpair in self.MLAYERS}
@@ -270,7 +273,8 @@ class Test_2_LayerManagerConnection(unittest.TestCase):
             self._layermanager.checkRemovedLayer(test_layerpair[0])
             testlog.debug('T60b - testing checkremovelayer is removed, layer type {}'.format(test_layerpair[0]))
             self.assertEqual(self._layermanager.__getattribute__(test_layerpair[1]),None,'Layer not removed')
-            
+    
+    
     @unittest.skip("skip for now, no createfeaturesLayers")
     def test70_createFeaturesLayers(self):
         r = {'entities':[{'properties':{'version':1,'components':{},'addressedObject':{'addressPosition':{'coordinates':(0,0)}},'codes':{}}}]}
@@ -293,13 +297,34 @@ class Test_2_LayerManagerConnection(unittest.TestCase):
     def test_80_getAimsFeatures(self):
         self._layermanager._iface.mapCanvas.return_value.extent.return_value = 1000#ext?
      
-    @unittest.skip("no loadAimsFeatures") 
+    #@unittest.skip("no loadAimsFeatures") 
     def test90_loadAimsFeatures(self):
         self._layermanager._iface.mapCanvas.return_value.mapSettings.return_value.scale.return_value = 9999999
-        self._layermanager.loadAimsFeatures()
-        self.assertEqual(1,1,'1')
-
+	#rdata = {"o":"one", "t":"two"}
+	#for ltype in self.MLAYERS:
+	  #testlayer = ASM.getMock(ASM.ASMenum.LAYER)(cprv=ltype[0])
+	  #self._layermanager.addToLayer(rdata, testlayer)
+	  #self._layermanager.getAimsFeatures()
+	testlayer = ASM.getMock(ASM.ASMenum.LAYER)(cprv='rev',vlrv=True)
+	self._layermanager.setLayerId(testlayer, 'rev')
+	#print(testlayer)
+	self._layermanager.updateReviewLayer()
+	self._layermanager.getAimsFeatures()
         
+        self.assertEqual(1,1,'1')#?
+        
+    def test100_styleLayer(self):
+	for ltype in self.MLAYERS:
+	  testlayer = ASM.getMock(ASM.ASMenum.LAYER)(cprv=ltype[0])
+	  self._layermanager.styleLayer(testlayer, ltype[0])
+	  self.assertIsNotNone(testlayer.loadNamedStyle())
+
+    @unittest.skip("nonetype error")
+    def test110_installAimsLayer(self):
+	for ltype in self.MLAYERS:
+	  testlayer = ASM.getMock(ASM.ASMenum.LAYER)(cprv=ltype[0])
+	  self._layermanager.installAimsLayer(ltype[0], ltype[1])
+	  
 
     
   
