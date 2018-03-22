@@ -16,7 +16,7 @@ from qgis.core import QgsRectangle
 # Temp, Dev only - debugging
 try:
     import sys
-    sys.path.append('/opt/eclipse/plugins/org.python.pydev_4.4.0.201510052309/pysrc')
+    sys.path.append('~/.p2/pool/plugins/org.python.pydev_6.2.0.201711281614/pysrc')
     from pydevd import settrace, GetGlobalDebugger
     settrace()
 
@@ -40,3 +40,4 @@ class Plugin(object):
     def unload(self): 
         ''' Remove the plugins UI components '''
         self.controller.unload()
+        

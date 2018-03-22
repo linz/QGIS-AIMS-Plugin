@@ -87,6 +87,7 @@ class Controller( QObject ):
         
         # init layerManager
         self._layerManager = LayerManager(self.iface, self)
+        self._layerManager.registerFunctions()
         # init Highlighter
         self.highlighter = FeatureHighlighter(self.iface, self._layerManager, self)
         
@@ -379,6 +380,7 @@ class Controller( QObject ):
         self.iface.removePluginMenu('&QGIS-AIMS-Plugin', self._moveaddressaction)
         #self.iface.removePluginMenu('&QGIS-AIMS-Plugin', self._lineageaction)
         self.iface.removePluginMenu("&QGIS-AIMS-Plugin'", self._highlightaction)
+        self._layerManager
     
     @pyqtSlot()
     def rDataChanged(self):
