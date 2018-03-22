@@ -15,6 +15,7 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from qgis.core import *
 from qgis.gui import *
+from qgis.utils import qgsfunction
 import sip
 from AimsClient import Database
 from AimsUI.AimsLogging import Logger
@@ -112,11 +113,12 @@ class LayerManager(QObject):
         self._locLayer = None
         self._revLayer = None
         self._extEvent = False
-        
+
         QgsMapLayerRegistry.instance().layerWillBeRemoved.connect(self.checkRemovedLayer)
         QgsMapLayerRegistry.instance().layerWasAdded.connect( self.checkNewLayer )
-    
-    def initialiseExtentEvent(self):  
+
+
+    def initialiseExtentEvent(self):
         """ 
         When the plugin is enabled (Via the .Controller()) 
         QGIS extentChanged signal connected to setbbox method  
@@ -398,7 +400,7 @@ class LayerManager(QObject):
         rel.setRelationId( self._propBaseName+'appellation_rel' )
         rel.setRelationName( 'Appellation Relation' )
         QgsProject.instance().relationManager().addRelation( rel )
-    
+
     def addLayerFields(self, layer, provider, id, fields):
         """
         Add fields to a layer  
@@ -605,5 +607,53 @@ class LayerManager(QObject):
             layer.dataProvider().addFeatures([fet])
         layer.updateExtents()
         
-        uilog.info(' *** CANVAS ***    FEATURES ADDED')  
+        uilog.info(' *** CANVAS ***    FEATURES ADDED')
+
+    @qgsfunction(0, 'QGIS-AIMS-Plugin', register=False)
+    def get_par_app(values, feature, parent):
+        """
+        Custom labeling function.
+        For labeling parcels with appellation
+        """
+
+        layer=None
+        for lyr in QgsMapLayerRegistry.instance().mapLayers().values():
+            if lyr.name() == "Parcels (Labels)":
+                layer = lyr
+                break
+        rel = layer.referencingRelations(0)[0]
+        feat_rel = rel.getReferencedFeature(feature)
+        if feat_rel:
+            return feat_rel.attribute('appellation')
+
+
+    @qgsfunction(0, 'QGIS-AIMS-Plugin', register=False)
+    def get_par_app(values, feature, parent):
+        """
+        Custom labeling function.
+        For labeling parcels with appellation
+        """
+
+        layer=None
+        for lyr in QgsMapLayerRegistry.instance().mapLayers().values():
+            if lyr.name() == "Parcels (Labels)":
+                layer = lyr
+                break
+        rel = layer.referencingRelations(0)[0]
+        feat_rel = rel.getReferencedFeature(feature)
+        if feat_rel:
+            return feat_rel.attribute('appellation')
+
+    def registerFunctions(self):
+        """
+        Register custom function (for labeling)
+        """
         
+        QgsExpression.registerFunction(self.get_par_app)
+    
+    def unregisterFunctions(self):
+        """
+        Unregister custom function (for labeling)
+        """
+
+        QgsExpression.unregisterFunction(self.get_par_app.name())
