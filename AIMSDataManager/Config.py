@@ -14,6 +14,8 @@ import re
 import ConfigParser
 from string import whitespace
 
+from qgis.core import QgsApplication
+
 import getpass
 import base64
 try:
@@ -24,7 +26,7 @@ except:
 
 UNAME = os.environ['USERNAME'] if re.search('win',sys.platform) else os.environ['LOGNAME']
 DEF_CONFIG = {'db':{'host':'127.0.0.1'},'user':{'name':UNAME}}
-AIMS_CONFIG = os.path.join(os.path.dirname(__file__),'aimsConfig.ini')
+AIMS_CONFIG  = os.path.join(QgsApplication.qgisSettingsDirPath(), "aims", "aimsConfig.ini")
 
 
 if not USE_PLAINTEXT:

@@ -5,15 +5,15 @@ name: <aims-username>
 pass: <aims-password>
 
 [url]
-api: https://devassgeo01:8080/aims/api
+api: https://<aims server>:8080/aims/api
 
 [db]
 #database connection parameters
 user: <database-username>
 password: <database-password>
-host:
+host: <aims db Server>
 port: 5432
-name: aims
+name: linz_dev
 
 [const]
 #aims UI parameters
@@ -80,4 +80,3 @@ HACK_SUP_IND = 'supplemental'
 
 #string to prepend to ciphered passwords (can be anything)
 CT_IND = '###'
-
