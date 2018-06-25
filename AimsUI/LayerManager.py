@@ -626,24 +626,6 @@ class LayerManager(QObject):
         if feat_rel:
             return feat_rel.attribute('appellation')
 
-
-    @qgsfunction(0, 'QGIS-AIMS-Plugin', register=False)
-    def get_par_app(values, feature, parent):
-        """
-        Custom labeling function.
-        For labeling parcels with appellation
-        """
-
-        layer=None
-        for lyr in QgsMapLayerRegistry.instance().mapLayers().values():
-            if lyr.name() == "Parcels (Labels)":
-                layer = lyr
-                break
-        rel = layer.referencingRelations(0)[0]
-        feat_rel = rel.getReferencedFeature(feature)
-        if feat_rel:
-            return feat_rel.attribute('appellation')
-
     def registerFunctions(self):
         """
         Register custom function (for labeling)
