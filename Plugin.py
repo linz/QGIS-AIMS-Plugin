@@ -8,20 +8,12 @@
 # LICENSE file for more information.
 #
 ################################################################################
-
+from AimsUI.AimsClient.Gui.AimsConfigureDialog import AimsConfigureDialog
+ACD = AimsConfigureDialog() # HACK IF NO CONFIG EXISTS THE PLUGIN FAILS TO INITIATE 
 from AimsUI.AimsClient.Gui.Controller import Controller
 from AimsUI import AimsLogging
-import threading # temp - debugging only
 from qgis.core import QgsRectangle
-# Temp, Dev only - debugging
-try:
-    import sys
-    sys.path.append('~/.p2/pool/plugins/org.python.pydev_6.2.0.201711281614/pysrc')
-    from pydevd import settrace, GetGlobalDebugger
-    settrace()
 
-except:
-    pass
 
 class Plugin(object):
     ''' Initiate the AIMS plugin'''
@@ -31,7 +23,7 @@ class Plugin(object):
     def __init__(self, iface):
         """ Initialise the Controller  """
         self.iface = iface
-        self.controller = Controller(iface)
+        self.controller = Controller(iface, ACD)
         
     def initGui(self):
         ''' Set up the Plugin's GUI '''

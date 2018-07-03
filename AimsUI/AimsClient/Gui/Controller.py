@@ -9,9 +9,10 @@
 #
 ################################################################################
 import sys
+import os
 import Resources
 
-from os.path import dirname, abspath
+#from os.path import dirname, abspath
 
 sys.path.append('.qgis2/python/plugins/QGIS-AIMS-Plugin') 
 
@@ -33,6 +34,8 @@ from AimsQueueWidget import AimsQueueWidget
 from AimsUI.AimsClient.Gui.UiDataManager import UiDataManager
 from AimsUI.AimsClient.Gui.ResponseHandler import ResponseHandler
 from AimsUI.AimsClient.Gui.FeatureHighlighter import FeatureHighlighter
+from AimsUI.AimsClient.Gui.AimsConfigureDialog import AimsConfigureDialog
+
 
 from AIMSDataManager.AimsLogging import Logger
 
@@ -50,7 +53,7 @@ class Controller( QObject ):
     
     _instance = None
     
-    def __init__(self, iface):
+    def __init__(self, iface, configManager):
         """ 
         Initialise UI Data Manager and Response Handler 
         
@@ -70,6 +73,7 @@ class Controller( QObject ):
             Controller._instance = self
         self.uidm = UiDataManager(self.iface, self)
         self.RespHandler = ResponseHandler(self.iface, self.uidm)
+        self._config_ui = configManager
         
         self.refLayer = None
         self.adrlayer = None
@@ -79,7 +83,7 @@ class Controller( QObject ):
         """ 
         Set up UI within QGIS 
         """
-        
+
         # set srs
         self._displayCrs = QgsCoordinateReferenceSystem()
         self._displayCrs.createFromOgcWmsCrs('EPSG:4167') 
@@ -105,6 +109,27 @@ class Controller( QObject ):
         self._loadaction.triggered.connect(self.enableAddressLayer)
         self._loadaction.triggered.connect(self.startDM)
         
+        # Config Dialog
+        self._configdialog = QAction(QIcon(':/plugins/QGIS-AIMS-Plugin/resources/config.png'), 
+            'AIMS Configuration', self.iface.mainWindow())
+        self._configdialog.setWhatsThis('Configure AIMS')
+        self._configdialog.setStatusTip('Configure AIMS')
+        self._configdialog.triggered.connect( self.configureAims )
+        
+        self.config_stacked_widget = self._config_ui.uStackedWidget
+        self.config_list_options = self._config_ui.uListOptions
+        self.config_list_options.itemClicked.connect(self.showConfigSelectedOption)
+
+        item = QListWidgetItem("User Config")
+        image_path = ':/plugins/QGIS-AIMS-Plugin/resources/config.png'
+        item.setIcon(QIcon(image_path))
+        self.config_list_options.addItem(item)
+
+        item = QListWidgetItem("Dev Config")
+        image_path = ':/plugins/QGIS-AIMS-Plugin/resources/config.png'
+        item.setIcon(QIcon(image_path))
+        self.config_list_options.addItem(item)
+
         # Create new address tool
         self._createnewaddressaction = QAction(QIcon(':/plugins/QGIS-AIMS-Plugin/resources/newaddresspoint.png'), 
             'Create AIMS Feature', self.iface.mainWindow())
@@ -199,7 +224,8 @@ class Controller( QObject ):
         self.iface.addPluginToMenu('&QGIS-AIMS-Plugin', self._updateaddressaction)
         self.iface.addPluginToMenu('&QGIS-AIMS-Plugin', self._moveaddressaction)
         self.iface.addPluginToMenu('&QGIS-AIMS-Plugin', self._highlightaction)
-
+        self.iface.addPluginToMenu('&QGIS-AIMS-Plugin', self._configdialog)
+        
         # capture maptool selection changes
         QObject.connect(self.iface.mapCanvas(), SIGNAL( "mapToolSet(QgsMapTool *)" ), self.mapToolChanged)
 
@@ -222,8 +248,17 @@ class Controller( QObject ):
         for action in self.actions:
             if action.text() == 'Highlightaction': continue
             group.addAction( action )
-   
+
     # Plugin Management 
+    def showConfigSelectedOption(self, item):
+        if item:
+            if item.text() == 'User Config':
+                self.config_stacked_widget.setCurrentIndex(0)
+            elif item.text() == 'Dev Config':
+                self.config_stacked_widget.setCurrentIndex(1)
+            elif item.text() == 'Advanced':
+                self.config_stacked_widget.setCurrentIndex(2)
+
     def loadQueues( self ):
         """ 
         Initialise Loading of the queue widgets into QGIS 
@@ -297,6 +332,12 @@ class Controller( QObject ):
         if self.iface.mapCanvas().mapTool() != self._currentMapTool:
             self.iface.mapCanvas().setMapTool(self._currentMapTool)
     
+    def configureAims(self):
+        """
+        Enable the 'configure aims' dialog 
+        """
+        self._config_ui.showDialog()
+        
     def startNewAddressTool(self):
         """
         Enable the 'create new address' map tool 

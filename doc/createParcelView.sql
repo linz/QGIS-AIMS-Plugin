@@ -26,3 +26,10 @@ ALTER TABLE lds.all_parcel_multipoly
   OWNER TO aims_dba;
 GRANT ALL ON TABLE lds.all_parcel_multipoly TO aims_dba;
 GRANT SELECT ON TABLE lds.all_parcel_multipoly TO aims_user;
+*This is a test release*
+
+#198 Map: Pending Parcels
+#195 Refresh: Accepting last item on queue
+#194 Map - Road Parcels
+#200 Display appellation layer
+New Icons
