@@ -94,7 +94,7 @@ class LayerManager(QObject):
         Register the Layer manager with the Data Manager observer pattern
         therefore to be notified of new Data Manager data. 
         """
-        
+
         QObject.__init__(self)
         self._iface = iface
         self._controller = controller

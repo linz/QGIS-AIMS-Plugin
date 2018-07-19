@@ -8,36 +8,29 @@
 # LICENSE file for more information.
 #
 ################################################################################
+from AimsUI.AimsClient.Gui.AimsConfigureDialog import AimsConfigureDialog
+ACD = AimsConfigureDialog()
 
 from AimsUI.AimsClient.Gui.Controller import Controller
 from AimsUI import AimsLogging
-import threading # temp - debugging only
 from qgis.core import QgsRectangle
-# Temp, Dev only - debugging
-try:
-    import sys
-    sys.path.append('~/.p2/pool/plugins/org.python.pydev_6.2.0.201711281614/pysrc')
-    from pydevd import settrace, GetGlobalDebugger
-    settrace()
 
-except:
-    pass
 
 class Plugin(object):
     ''' Initiate the AIMS plugin'''
-        
+
     SettingsBase="QGIS-AIMS-Plugin/"
 
     def __init__(self, iface):
         """ Initialise the Controller  """
         self.iface = iface
-        self.controller = Controller(iface)
+        ACD.setIface(self.iface)
+        self.controller = Controller(iface, ACD)
         
     def initGui(self):
         ''' Set up the Plugin's GUI '''
         self.controller.initGui()
-        
+
     def unload(self): 
         ''' Remove the plugins UI components '''
         self.controller.unload()
-        
