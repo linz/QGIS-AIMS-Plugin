@@ -60,7 +60,7 @@ class Controller( QObject ):
         @param iface: QgisInterface Abstract base class defining interfaces exposed by QgisApp  
         @type iface: Qgisinterface Object
         """
-        
+
         QObject.__init__(self)
         self.iface = iface
         self._queues = None
@@ -74,11 +74,11 @@ class Controller( QObject ):
         self.uidm = UiDataManager(self.iface, self)
         self.RespHandler = ResponseHandler(self.iface, self.uidm)
         self._config_ui = configManager
-        
+
         self.refLayer = None
         self.adrlayer = None
         self.revLayer = None
-        
+
     def initGui(self):
         """ 
         Set up UI within QGIS 
@@ -88,17 +88,17 @@ class Controller( QObject ):
         self._displayCrs = QgsCoordinateReferenceSystem()
         self._displayCrs.createFromOgcWmsCrs('EPSG:4167') 
         self.iface.mapCanvas().mapSettings().setDestinationCrs(self._displayCrs)
-        
+
         # init layerManager
         self._layerManager = LayerManager(self.iface, self)
         self._layerManager.registerFunctions()
         # init Highlighter
         self.highlighter = FeatureHighlighter(self.iface, self._layerManager, self)
-        
+
         # Build an action list from QGIS navigation toolbar
         actionList = self.iface.mapNavToolToolBar().actions()
         self.actions = self.iface.mapNavToolToolBar().actions()
-        
+
         # Main address editing window
         self._loadaction = QAction(QIcon(':/plugins/QGIS-AIMS-Plugin/resources/loadaddress.png'), 
             'QGIS-AIMS-Plugin', self.iface.mainWindow())
@@ -108,14 +108,15 @@ class Controller( QObject ):
         self._loadaction.triggered.connect(self.loadLayers)
         self._loadaction.triggered.connect(self.enableAddressLayer)
         self._loadaction.triggered.connect(self.startDM)
+        self._loadaction.triggered.connect(self.disableConfig)
         
         # Config Dialog
         self._configdialog = QAction(QIcon(':/plugins/QGIS-AIMS-Plugin/resources/config.png'), 
             'AIMS Configuration', self.iface.mainWindow())
         self._configdialog.setWhatsThis('Configure AIMS')
         self._configdialog.setStatusTip('Configure AIMS')
-        self._configdialog.triggered.connect( self.configureAims )
-        
+        self._configdialog.triggered.connect(self.configureAims)
+
         self.config_stacked_widget = self._config_ui.uStackedWidget
         self.config_list_options = self._config_ui.uListOptions
         self.config_list_options.itemClicked.connect(self.showConfigSelectedOption)
@@ -177,13 +178,13 @@ class Controller( QObject ):
         self._updateaddtool = UpdateAddressTool( self.iface, self._layerManager, self)
         self._updateaddtool.setAction( self._updateaddressaction )  
         self.actions.append(self._updateaddressaction)
-                    
+
         # RCL tool -- Not a QAction as triggered from many palaces but not the toolbar
         self._rcltool = GetRcl(self.iface, self._layerManager, self)
-        
+
         # UpdateReview Position tool -- Not a QAction as triggered initiated from review queue form
         self._updateReviewPos = UpdateReviewPosition(self.iface, self._layerManager, self)
-       
+
         # Address lineage
         """
         self._lineageaction = QAction(QIcon(':/plugins/QGIS-AIMS-Plugin/resources/lineage.png'), 
@@ -196,7 +197,7 @@ class Controller( QObject ):
         self._lineageaction.triggered.connect(self._lineagetool.setEnabled)
         self.actions.append(self._lineageaction)
         """
-        
+
         # Address highlighter
         self._highlightaction = QAction(QIcon(":/plugins/QGIS-AIMS-Plugin/resources/addresshighlight.png"), 
             "Electoral address highlighter", self.iface.mainWindow())
@@ -206,7 +207,7 @@ class Controller( QObject ):
         self._highlightaction.setEnabled(False)
         self._highlightaction.setCheckable(True)
         self._highlightaction.toggled.connect( self.highlighter.setEnabled )
-        
+
         # Add to own toolbar
         self._toolbar = self.iface.addToolBar('QGIS-AIMS-Plugin')
         self._toolbar.addAction(self._createnewaddressaction)
@@ -215,7 +216,7 @@ class Controller( QObject ):
         self._toolbar.addAction(self._moveaddressaction)
         #self._toolbar.addAction(self._lineageaction)
         self._toolbar.addAction(self._highlightaction)
-        
+
         # Add actions to menu
         self.iface.addToolBarIcon(self._loadaction)
         self.iface.addPluginToMenu('&QGIS-AIMS-Plugin', self._loadaction)
@@ -225,7 +226,7 @@ class Controller( QObject ):
         self.iface.addPluginToMenu('&QGIS-AIMS-Plugin', self._moveaddressaction)
         self.iface.addPluginToMenu('&QGIS-AIMS-Plugin', self._highlightaction)
         self.iface.addPluginToMenu('&QGIS-AIMS-Plugin', self._configdialog)
-        
+
         # capture maptool selection changes
         QObject.connect(self.iface.mapCanvas(), SIGNAL( "mapToolSet(QgsMapTool *)" ), self.mapToolChanged)
 
@@ -280,30 +281,39 @@ class Controller( QObject ):
             self._queues = queues
             self._dockWindow.unloadPlugin.connect(self.unload)
         return self._queues
-    
+
     def startDM(self):
         """
         Start the Data Manager only once the user enables the Plugin
-        """         
+        """
         self.uidm.startDM()
-    
+
+    def disableConfig(self):
+        """
+        Due to problems reloading the plugin and 
+        configuring once the plugin is running, the option
+        to alter the configuration is removed once running.
+        The user must configure prior to loading the plugin
+        """
+        self._configdialog.setEnabled(False)
+
     def enableAddressLayer(self):
         """ 
         enable tools that are dependent on the Address Layer
         only when the address layer exists 
         """
-        
+
         self._deladdressaction.setEnabled(True)
         self._createnewaddressaction.setEnabled(True)
         self._moveaddressaction.setEnabled(True)
         self._updateaddressaction.setEnabled(True)
         self._highlightaction.setEnabled(True)
-        
+
     def loadLayers(self):
         """ 
         Install map layers
         """
-        
+
         if not self.refLayer:
             self.refLayer = self._layerManager.installRefLayers()
         if not self.adrlayer:
@@ -311,7 +321,7 @@ class Controller( QObject ):
         if not self.revLayer:
             self._layerManager.installAimsLayer('rev', 'AIMS Review')
         self._layerManager.initialiseExtentEvent()
-    
+
     def mapToolChanged(self):
         """ 
         Track the current maptool (excluding rcl tool) to allow 
@@ -331,20 +341,20 @@ class Controller( QObject ):
         """
         if self.iface.mapCanvas().mapTool() != self._currentMapTool:
             self.iface.mapCanvas().setMapTool(self._currentMapTool)
-    
+
     def configureAims(self):
         """
         Enable the 'configure aims' dialog 
         """
         self._config_ui.showDialog()
-        
+
     def startNewAddressTool(self):
         """
         Enable the 'create new address' map tool 
         """
         self.iface.mapCanvas().setMapTool(self._createnewaddresstool)
         self._createnewaddresstool.setEnabled(True)
-    
+
     def startRclTool(self, parent = None):
         """
         Enable the 'get rcl tool' map tool 
@@ -353,11 +363,11 @@ class Controller( QObject ):
                         parent, different highlighting of features is performed
         @type  parent: string     
         """
-        
+
         self.rclParent = parent
         self.iface.mapCanvas().setMapTool(self._rcltool)
         self._rcltool.setEnabled(True)
-    
+
     def startUpdateReviewPosTool(self, revItem = None):
         """ 
         Enable the 'get update Review position tool' map tool
@@ -373,18 +383,18 @@ class Controller( QObject ):
         """ 
         Enable the 'move address' map tool 
         """
-        
+
         self.iface.mapCanvas().setMapTool(self._moveaddtool)
         self._moveaddtool.setEnabled(True)
-    
+
     def startUpdateAddressTool(self):
         """ 
         Enable the "update address" map tool 
         """
-        
+
         self.iface.mapCanvas().setMapTool(self._updateaddtool)
         self._updateaddtool.setEnabled(True)
-        
+
     def startDelAddressTool(self):
         """
         Enable the "delete address" map tool 
@@ -392,7 +402,7 @@ class Controller( QObject ):
         
         self.iface.mapCanvas().setMapTool(self._deladdtool)
         self._deladdtool.setEnabled(True)
-    
+
     '''
     def startLineageTool(self):
         """ 
@@ -401,12 +411,12 @@ class Controller( QObject ):
         self.iface.mapCanvas().setMapTool(self._lineagetool)
         self._deladdtool.setEnabled(True) 
     '''
-        
+
     def unload(self):
         """
         Remove Plugins UI Elements From QGIS
         """
-        
+
         self._layerManager.disconnectExtentEvent()
         if self._queues:
             self._queues.close()
@@ -422,22 +432,22 @@ class Controller( QObject ):
         #self.iface.removePluginMenu('&QGIS-AIMS-Plugin', self._lineageaction)
         self.iface.removePluginMenu("&QGIS-AIMS-Plugin'", self._highlightaction)
         self._layerManager
-    
+
     @pyqtSlot()
     def rDataChanged(self):
         """ 
         Review data changed, update review layer and table 
         """
-        
+
         self._queues.uResolutionTab.refreshData()
         self._layerManager.updateReviewLayer()
-    
+
     @pyqtSlot()
     def fDataChanged(self):
         """
         Feature data changed, update review layer and table 
         """
-        
+
         self._layerManager.getAimsFeatures()
  
 # Singleton instance    
@@ -447,7 +457,7 @@ def instance():
     @return: The single Controller Instance      
     @rtype: AimsUI.AimsClient.Gui.Controller() Instance
     """
-    
+
     if Controller._instance == None:
         Controller._instance = Controller()
     return Controller._instance

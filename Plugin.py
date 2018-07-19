@@ -9,7 +9,8 @@
 #
 ################################################################################
 from AimsUI.AimsClient.Gui.AimsConfigureDialog import AimsConfigureDialog
-ACD = AimsConfigureDialog() # HACK IF NO CONFIG EXISTS THE PLUGIN FAILS TO INITIATE 
+ACD = AimsConfigureDialog()
+
 from AimsUI.AimsClient.Gui.Controller import Controller
 from AimsUI import AimsLogging
 from qgis.core import QgsRectangle
@@ -17,19 +18,19 @@ from qgis.core import QgsRectangle
 
 class Plugin(object):
     ''' Initiate the AIMS plugin'''
-        
+
     SettingsBase="QGIS-AIMS-Plugin/"
 
     def __init__(self, iface):
         """ Initialise the Controller  """
         self.iface = iface
+        ACD.setIface(self.iface)
         self.controller = Controller(iface, ACD)
         
     def initGui(self):
         ''' Set up the Plugin's GUI '''
         self.controller.initGui()
-        
+
     def unload(self): 
         ''' Remove the plugins UI components '''
         self.controller.unload()
-        

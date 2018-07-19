@@ -1,4 +1,5 @@
 from qgis.core import QgsApplication
+from qgis.utils import plugins
 from PyQt4 import uic
 from PyQt4.QtGui import QDialog, QDialogButtonBox
 import os
@@ -61,10 +62,14 @@ class AimsConfigureDialog(QDialog, FORM_CLASS):
         self.buttonBox.button(QDialogButtonBox.Save).clicked.connect(self.UiToFile)
         self.stylize()
         self.ensureConfigExists()
-
+        self.iface = None
+        
     def showDialog(self):
         self.fileToUi()
         self.show()
+
+    def setIface(self, iface):
+        self.iface=iface 
 
     def ensureConfigExists(self):
         self.configDirExists()
@@ -79,7 +84,7 @@ class AimsConfigureDialog(QDialog, FORM_CLASS):
         if not os.path.isfile(conf_file): 
             self.createConfig()
         return
-    
+
     def fileToUi(self, conf_file=CONF_FILE):
         Config = ConfigParser.ConfigParser()
         Config.read(conf_file)
@@ -110,7 +115,7 @@ class AimsConfigureDialog(QDialog, FORM_CLASS):
 
     def stylize(self):
         """ Stylize the list widget """
-        
+
         self.uListOptions.setStyleSheet(
             """ QListWidget {
                     background-color: rgb(105, 105, 105);
@@ -127,6 +132,3 @@ class AimsConfigureDialog(QDialog, FORM_CLASS):
                 };
             """
         )
-
-
-
