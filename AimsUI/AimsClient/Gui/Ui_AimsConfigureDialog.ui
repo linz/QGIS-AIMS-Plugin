@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>599</width>
-    <height>804</height>
+    <height>806</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -420,51 +420,72 @@
      </item>
     </layout>
    </item>
-   <item row="1" column="0">
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Save</set>
-     </property>
-    </widget>
+   <item row="2" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Restart Required</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDialogButtonBox" name="buttonBox">
+       <property name="standardButtons">
+        <set>QDialogButtonBox::Cancel|QDialogButtonBox::Save</set>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>url_api</tabstop>
+  <tabstop>user_org</tabstop>
+  <tabstop>user_name</tabstop>
+  <tabstop>user_pass</tabstop>
+  <tabstop>db_name</tabstop>
+  <tabstop>db_host</tabstop>
+  <tabstop>db_port</tabstop>
+  <tabstop>db_user</tabstop>
+  <tabstop>db_password</tabstop>
+  <tabstop>const_test_mode</tabstop>
+  <tabstop>const_thread_join_timeout</tabstop>
+  <tabstop>const_max_feature_count</tabstop>
+  <tabstop>const_first_page</tabstop>
+  <tabstop>const_page_limit</tabstop>
+  <tabstop>const_pool_page_check_delay</tabstop>
+  <tabstop>const_queue_check_delay</tabstop>
+  <tabstop>const_thread_keepalive</tabstop>
+  <tabstop>const_last_page_guess</tabstop>
+  <tabstop>const_null_page_value</tabstop>
+  <tabstop>const_enable_entity_evaluation</tabstop>
+  <tabstop>const_swzero</tabstop>
+  <tabstop>const_nezero</tabstop>
+  <tabstop>const_skip_null</tabstop>
+  <tabstop>const_def_sep</tabstop>
+  <tabstop>const_res_path</tabstop>
+  <tabstop>const_local_adl</tabstop>
+  <tabstop>const_merge_response</tabstop>
+  <tabstop>const_merge_exclude</tabstop>
+  <tabstop>const_hack_sup_ind</tabstop>
+  <tabstop>const_ct_ind</tabstop>
+  <tabstop>uListOptions</tabstop>
+ </tabstops>
  <resources/>
- <connections>
-  <connection>
-   <sender>buttonBox</sender>
-   <signal>accepted()</signal>
-   <receiver>Dialog</receiver>
-   <slot>accept()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>248</x>
-     <y>254</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>157</x>
-     <y>274</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonBox</sender>
-   <signal>rejected()</signal>
-   <receiver>Dialog</receiver>
-   <slot>reject()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>316</x>
-     <y>260</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>286</x>
-     <y>274</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>
