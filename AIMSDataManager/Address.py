@@ -158,7 +158,7 @@ class Supplemental(object):
         '''
         s = Supplemental()
         #WORKAROUND
-        if d<>SDEF and d['class'][0]=='validation': s.set(d)
+        if d!=SDEF and d['class'][0]=='validation': s.set(d)
         else: aimslog.debug('Supplemental something {}'.format(d['class'][0]))
         return s
         
@@ -244,7 +244,7 @@ class Entity(object):
         '''
         e = Entity()
         #WORKAROUND
-        if d<>EDEF and d['class'][0]=='validation': e.set(d)
+        if d!=EDEF and d['class'][0]=='validation': e.set(d)
         else: aimslog.debug('Entites non-validation type {}'.format(d['class'][0]))
         return e
         
@@ -580,7 +580,7 @@ def test():
     a3.setRoadName('Jones Road')
     
     
-    print a1,a2,a3
+    print (a1,a2,a3)
 
     r2 = af2.convert(a2,ActionType.UPDATE)
     r3 = af3.convert(a3,ApprovalType.UPDATE)

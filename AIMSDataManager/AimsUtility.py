@@ -15,6 +15,7 @@ import os
 import re
 from AimsLogging import Logger
 from Const import HACK_SUP_IND
+import six
 
 aimslog = Logger.setup()
 
@@ -104,7 +105,7 @@ class Enumeration(object):
         @return: Returns type representing enumerated list
         '''
         enums = dict( zip([s for s in seq],range(len(seq))) ,**named)
-        reverse = dict((value, key) for key, value in enums.iteritems())
+        reverse = dict((value, key) for key, value in six.iteritems(enums))
         
         enums['reverse'] = reverse 
         enums['__iter__'] = IterEnum.__iter__

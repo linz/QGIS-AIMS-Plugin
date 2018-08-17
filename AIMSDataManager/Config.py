@@ -11,7 +11,7 @@
 import os
 import sys
 import re
-import ConfigParser
+import six.moves.configparser as configparser
 from string import whitespace
 
 import getpass
@@ -37,7 +37,7 @@ if not USE_PLAINTEXT:
 
 class ConfigReader(object):
     '''Reader class for configparser object'''
-    cp = ConfigParser.ConfigParser()
+    cp = configparser.ConfigParser()
     
     def __init__(self):
         self.cp.read(AIMS_CONFIG)
@@ -45,7 +45,7 @@ class ConfigReader(object):
         self._fillConfig()
         
     def _readConfig(self):
-        '''Read ConfigParser object to saved dict'''
+        '''Read configparser object to saved dict'''
         self.d = {}
         for sect in self.cp.sections():
             self.d[sect] = {}
@@ -95,7 +95,7 @@ class ConfigReader(object):
     @staticmethod
     def readp():
         from Const import CT_IND      
-        cp = ConfigParser.ConfigParser()
+        cp = configparser.ConfigParser()
         cp.read(AIMS_CONFIG)
         sometext = cp.get('user','pass')
         if USE_PLAINTEXT:
@@ -112,7 +112,7 @@ class ConfigReader(object):
     @staticmethod  
     def _writep(plaintext):
         from Const import CT_IND      
-        cp = ConfigParser.ConfigParser()
+        cp = configparser.ConfigParser()
         cp.read(AIMS_CONFIG)
         user = getpass.getuser()
         aes = AES.new(K, AES.MODE_CBC,pad(user))
@@ -125,10 +125,10 @@ class ConfigReader(object):
 def test():
     #ConfigReader.writep('secretpassword')
     p = ConfigReader.readp()
-    print p
+    print (p)
     
     p = ConfigReader.readp()
-    print p
+    print (p)
     
     ConfigReader._writep(p)
     

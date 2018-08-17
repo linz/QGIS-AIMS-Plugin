@@ -33,7 +33,7 @@ class const:
         @param name: Attribute name
         @param value: Attribute value
         '''
-        if self.__dict__.has_key(name):
+        if name in self.__dict__:#.has_key(name):
             raise self.ConstError('Can\'t rebind const {}'.format(name))
         self.__dict__[name]=value
         
