@@ -15,10 +15,10 @@ Zealand Government.
 ##Test Coverage: 
 [![Coverage Status](https://coveralls.io/repos/linz/QGIS-AIMS-Plugin/badge.svg?branch=master&service=github)](https://coveralls.io/github/linz/QGIS-AIMS-Plugin?branch=master)
 --->
-##Dependencies
-	*Qgis 2.6 (min version)
+## Dependencies
+* Qgis 2.6 (min version)
 
-##Installation
+## Installation
 
  This plugin is under development. As development is undertaken and finalised further documentation will be supplied. 
 
