@@ -114,13 +114,14 @@ resp = {
 def enum(*sequential, **named):
     #http://stackoverflow.com/questions/36932/how-can-i-represent-an-enum-in-python
     enums = dict(zip(sequential, range(len(sequential))), **named)
-    reverse = dict((value, key) for key, value in enums.iteritems())
+    reverse = dict((value, key) for key, value in enums.items())
     enums['reverse'] = reverse
     return type('Enum', (), enums)
 
 
 class _results(object):
     def mFeature(self):
+        return None
         return _attribute()
 
 class _AimsHttp(object):
@@ -229,11 +230,13 @@ class _MapLayers(object):
     def values(self): return []
 #-------------------------------------------------------------
 
+class _AimsConfigureDialog(Mock):
+    def configFileExists(): return True
 
 class ASM(object):
     '''Aims Service Mock accessor'''
     
-    ASMenum = enum('HTTP','QI','LAYER','FEATURE','GEOMETRY','POINT','SIGNAL','QMLR','QLGD')
+    ASMenum = enum('HTTP','QI','LAYER','FEATURE','GEOMETRY','POINT','SIGNAL','QMLR','QLGD','ACD')
     
     @classmethod
     def getMock(cls,type):
@@ -245,13 +248,14 @@ class ASM(object):
                 cls.ASMenum.POINT :     ASM.getPointMock,
                 cls.ASMenum.SIGNAL :    ASM.getPyQtSignalMock,
                 cls.ASMenum.QMLR :      ASM.getQMLRMock,
-                cls.ASMenum.QLGD :      ASM.getQLGDMock
+                cls.ASMenum.QLGD :      ASM.getQLGDMock,
+                cls.ASMenum.ACD :       ASM.getACDMock
                 }[type]
     @classmethod            
     def getMockSpec(cls,type):
         '''doesn't work, getmock is evaluated before __class__'''
         m =  ASM.getMock(type)
-        print type
+        print(type)
         return ASM.getMock(type)().__class__
                 
     @staticmethod
@@ -302,6 +306,11 @@ class ASM(object):
     def getQLGDMock(qlgd_rv=None):
         m = Mock(spec=_Legend)
         return m
+    
+    @staticmethod
+    def getACDMock(acd_rv=None):
+        m = Mock(spec=_AimsConfigureDialog)
+        return m
 
 
 ###------
@@ -309,11 +318,11 @@ class ASM(object):
 def main():
     
     m = ASM.getLayerMock()
-    print m.customProperty(2222)
+    print(m.customProperty(2222))
     
     
     m = ASM.getAimsHttpMock()
-    print m
+    print(m)
     m.call()
         
     

@@ -18,17 +18,21 @@ Created on 05/11/2015
 @author: jramsay
 '''
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from qgis.PyQt.QtCore import *
+from qgis.PyQt.QtGui import *
+from qgis.PyQt.QtTest import *
 from qgis.core import *
 from qgis.gui import *
-
-from PyQt4 import QtCore, QtGui, QtTest
 
 import unittest
 import inspect
 import sys
 import re
+import os
+
+ROOT = os.path.join(os.path.dirname(os.path.dirname(__file__)))
+sys.path.append(os.path.join(ROOT, 'AIMSDataManager'))
+sys.path.append(os.path.join(ROOT, 'AimsUI'))
 
 #from Test._QGisInterface import QgisInterface
 from AimsService_Mock import ASM

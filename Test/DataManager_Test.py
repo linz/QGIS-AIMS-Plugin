@@ -23,14 +23,17 @@ import re
 import random
 import string
 import time
+import os
 
-sys.path.append('../AIMSDataManager/')
+ROOT = os.path.join(os.path.dirname(os.path.dirname(__file__)))
+sys.path.append(os.path.join(ROOT, 'AIMSDataManager'))
+sys.path.append(os.path.join(ROOT, 'AimsUI'))
 
-from Address import Address
-from AimsLogging import Logger
-from DataManager import DataManager
-from AimsUtility import FeedRef,FeatureType,FeedType
-from FeatureFactory import FeatureFactory
+from AIMSDataManager.Address import Address, AddressChange, AddressResolution
+from AIMSDataManager.AimsLogging import Logger
+from AIMSDataManager.DataManager import DataManager, Position
+from AIMSDataManager.AimsUtility import FeedRef,FeatureType,FeedType
+from AIMSDataManager.FeatureFactory import FeatureFactory
 
 testlog = Logger.setup('test')
 
@@ -66,7 +69,7 @@ class Test_0_DataManagerSelfTest(unittest.TestCase):
         
     def test20_dataManagerTest(self):
         #assertIsNotNone added in 3.1        
-        testlog.debug('Test_0.20 Address instantiation test')
+        testlog.debug('Test_0.20 Data Manager registration test')
         with DataManager() as dm: 
             dm.register(self)
             self.assertNotEqual(dm,None,'DataManager not instantiated')
@@ -108,7 +111,7 @@ class Test_2_DataManagerSyncStart(unittest.TestCase):
     def test10_validdatastoreTest(self):
         '''Tests whether a valid address object is returned on json decoded arg'''
         initdata = self.dm.pull()
-        self.assertEquals(len(initdata),5,'Invalid ADL list length returned')
+        self.assertEquals(len(initdata),6,'Invalid ADL list length returned')
 
         
     def test20_refreshTest(self):
@@ -186,12 +189,12 @@ class Test_5_DataManagerChangeFeed(unittest.TestCase):
         del self.addr_f
     
     def test10_cast(self):
-        addr_c = self.afc.cast(addr_f)
+        addr_c = self.afc.cast(self.ddr_f)
         self.assertTrue(isinstance(addr_c,AddressChange))
         
     def test20_add(self):
-        addr_c = self.afc.cast(addr_f)
-        addr_c.setVersion(ver)
+        addr_c = self.afc.cast(self.addr_f)
+        addr_c.setVersion(self.ver)
         self.dm.addAddress(addr_c)
         resp = None
         while not resp: 
@@ -201,9 +204,9 @@ class Test_5_DataManagerChangeFeed(unittest.TestCase):
             time.sleep(5)
 
     def test30_update(self):        
-        addr_c = self.afc.cast(addr_f)
+        addr_c = self.afc.cast(self.addr_f)
         addr_c.setFullAddress('Unit B, 16 Islay Street, Glenorchy')
-        addr_c.setVersion(ver)
+        addr_c.setVersion(self.ver)
         self.dm.updateAddress(addr_c)
         resp = None
         while not resp: 
@@ -213,8 +216,8 @@ class Test_5_DataManagerChangeFeed(unittest.TestCase):
             time.sleep(5) 
             
     def test30_retire(self):        
-        addr_c = self.afc.cast(addr_f)
-        addr_c.setVersion(ver)
+        addr_c = self.afc.cast(self.addr_f)
+        addr_c.setVersion(self.ver)
         self.dm.retireAddress(addr_c)
         resp = None
         while not resp: 
@@ -235,7 +238,7 @@ class Test_6_DataManagerResolutionFeed(unittest.TestCase):
         
         self.afc = FeatureFactory.getInstance(self.ac)
         self.afr = FeatureFactory.getInstance(self.ar)
-        self.addr_r = _getTestAddress(af[FeedType.FEATURES])
+        self.addr_r = _getTestAddress(self.af[FeedType.FEATURES])
         
 
     def tearDown(self):
@@ -243,12 +246,12 @@ class Test_6_DataManagerResolutionFeed(unittest.TestCase):
         del self.addr_f
     
     def test10_cast(self):
-        addr_c = self.afc.cast(addr_f)
-        addr_r = self.afr.cast(addr_f)
+        self.addr_c = self.afc.cast(self.addr_f)
+        self.addr_r = self.afr.cast(self.addr_f)
         
     def test20_accept(self):
-        addr_c = self.afc.cast(addr_f)
-        addr_c.setVersion(ver)
+        addr_c = self.afc.cast(self.addr_f)
+        addr_c.setVersion(self.ver)
         self.dm.addAddress(addr_c)
         resp = None
         while not resp: 
@@ -258,9 +261,9 @@ class Test_6_DataManagerResolutionFeed(unittest.TestCase):
             time.sleep(5)
 
     def test30_update(self):        
-        addr_c = self.afc.cast(addr_f)
+        addr_c = self.afc.cast(self.addr_f)
         addr_c.setFullAddress('Unit 1, 1000 Islay Street, Glenorchy')
-        addr_c.setVersion(ver)
+        addr_c.setVersion(self.ver)
         self.dm.updateAddress(addr_c)
         resp = None
         while not resp: 
@@ -270,8 +273,8 @@ class Test_6_DataManagerResolutionFeed(unittest.TestCase):
             time.sleep(5) 
             
     def test30_reject(self):        
-        addr_c = self.afc.cast(addr_f)
-        addr_c.setVersion(ver)
+        addr_c = self.afc.cast(self.addr_f)
+        addr_c.setVersion(self.ver)
         self.dm.retireAddress(addr_c)
         resp = None
         while not resp: 

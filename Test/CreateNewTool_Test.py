@@ -20,11 +20,18 @@ import unittest
 import inspect
 import sys
 import re
+import os
+
+ROOT = os.path.join(os.path.dirname(os.path.dirname(__file__)))
+sys.path.append(os.path.join(ROOT, 'AIMSDataManager'))
+sys.path.append(os.path.join(ROOT, 'AimsUI'))
 
 #from Test._QGisInterface import QgisInterface
-from AimsUI.CreateNewTool import CreateNewTool
-
+# from AimsUI.CreateNewAddressTool import CreateNewTool
+from AimsUI.LayerManager import LayerManager
 from AimsUI.AimsLogging import Logger
+from AimsUI.AimsClient.Gui.Controller import Controller
+from AimsService_Mock import ASM
 
 testlog = Logger.setup('test')
 
@@ -47,7 +54,11 @@ class Test_1_LayerManagerSetters(unittest.TestCase):
     def setUp(self): 
         testlog.debug('Instantiate null address, address.setter list')
         self.QI = _Dummy_IFace()
-        self._layermanager = LayerManager(self.QI)
+        
+        qi = ASM.getMock(ASM.ASMenum.QI)()
+        acd = ASM.getMock(ASM.ASMenum.ACD)()
+        self._controller = Controller(qi, acd)
+        self._layermanager = LayerManager(self.QI, self._controller)
 
         
     def tearDown(self):
@@ -70,9 +81,15 @@ class Test_1_LayerManagerSetters(unittest.TestCase):
 class _Dummy_IFace(object):
     def mainWindow(self):
         return _Dummy_MainWindow()
+
+    def mapCanvas(self):
+        return _Dummy_MapCanvas()
     
 class _Dummy_MainWindow(object):
     def statusBar(self): return None
+    
+class _Dummy_MapCanvas(object):
+    pass
     
 class _Dummy_Layer(object):
     cp = {}

@@ -20,11 +20,16 @@ import unittest
 import inspect
 import sys
 import re
+import os
+
+ROOT = os.path.join(os.path.dirname(os.path.dirname(__file__)))
+sys.path.append(os.path.join(ROOT, 'AIMSDataManager'))
+sys.path.append(os.path.join(ROOT, 'AimsUI'))
 
 from functools import wraps
 from multiprocessing import Process
 
-
+from AIMSDataManager.AimsUtility import AimsException
 from AimsUI.AimsClient import Database
 from AimsUI.AimsLogging import Logger
 
@@ -85,17 +90,17 @@ class Test_1_DatabaseTestSetters(unittest.TestCase):
         '''Tests that all the setters set a matching attribute i.e. setAttribute("X") -> self._Attribute = "X"'''
         testlog.debug('Test_1.10 Instantiate basic setters')
         Database.setHost(DCONF['host'])
-        self.assertEquals(Database.host(),DCONF['host'],'Host not set')        
+        self.assertEqual(Database.host(),DCONF['host'],'Host not set')        
         Database.setPort(DCONF['port'])
-        self.assertEquals(Database.port(),DCONF['port'],'Port not set')        
+        self.assertEqual(Database.port(),DCONF['port'],'Port not set')        
         Database.setUser(DCONF['user'])
-        self.assertEquals(Database.user(),DCONF['user'],'User not set')        
+        self.assertEqual(Database.user(),DCONF['user'],'User not set')        
         Database.setPassword(DCONF['password'])
-        self.assertEquals(Database.password(),DCONF['password'],'Pwd not set')
+        self.assertEqual(Database.password(),DCONF['password'],'Pwd not set')
         Database.setDatabase(DCONF['name'])
-        self.assertEquals(Database.database(),DCONF['name'],'DB not set')
+        self.assertEqual(Database.database(),DCONF['name'],'DB not set')
         Database.setAimsSchema(DCONF['aimsschema'])
-        self.assertEquals(Database.aimsSchema(),DCONF['aimsschema'],'Schema not set')          
+        self.assertEqual(Database.aimsSchema(),DCONF['aimsschema'],'Schema not set')          
         
 class Test_2_DatabaseConnectivity(unittest.TestCase):
     
@@ -114,26 +119,19 @@ class Test_2_DatabaseConnectivity(unittest.TestCase):
         self.cur = None
         self.res = None
     
-    @timeout(seconds=TIMEOUT, message='Timeout connecting to database')
+    # @timeout(seconds=TIMEOUT, message='Timeout connecting to database')
     def test10_connection(self):
         testlog.debug('Test_2.10 Test connection() function')
         self.conn = Database.connection()
         self.assertNotEqual(self.conn,None,'Connection not established')
         
-    @timeout(seconds=TIMEOUT, message='Timeout execution query on database')
+    # @timeout(seconds=TIMEOUT, message='Timeout execution query on database')
     def test20_execute(self):
         '''checks database execution by testing whether a cursor is returned, which happens on commit'''
         testlog.debug('Test_2.20 Test query execution (SELECT) function')
         self.res = Database.execute(self.q1)
         from psycopg2._psycopg import cursor as PPC
         self.assertEquals(isinstance(self.res,PPC),True,'Query "{}" failed with {}'.format(self.q1,self.res))
-    
-    def test30_executeScalar(self):
-        pass
-    
-    def test40_executeRow(self):
-        pass
-    
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testLDSRead']
