@@ -68,7 +68,7 @@ RES_PATH = 'resources'
 
 #filename for persisted feed data
 LOCAL_ADL = 'aimsdata'
-r 
+
 #merge response objects back into their request objects
 MERGE_RESPONSE = True
 
