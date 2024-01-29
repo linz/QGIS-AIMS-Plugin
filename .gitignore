@@ -12,3 +12,4 @@ AIMSDataManager/.cache/*
 /.cache/
 /AimsLogging.html
 /Config.html
+*.vscode
