@@ -1,0 +1,64 @@
+name: Run Tests
+
+on:
+    push:
+      branches:
+        - master
+        - HG-Aims-Upgrade
+    # workflow_dispatch:
+
+jobs:
+
+    test:
+
+        runs-on: ubuntu-latest
+
+        steps:
+
+            - name: Checkout QGIS-AIMS-Plugin
+              uses: actions/checkout@v3
+
+            - name: Pull QGIS Image
+              run: docker pull qgis/qgis:release-3_28
+
+            - name: Pull PostGIS Image
+              run: docker pull kartoza/postgis:14-3.1
+
+            - name: Configure Database
+              run: docker-compose -f QGIS-AIMS-PLUGIN/Test/postgres_docker_compose.yml up -d
+
+            - name: Run Tests
+              run: docker run --rm --net=host --volume `pwd`/QGIS-AIMS-Plugin:/app -w=/app -e QGIS_PLUGIN_IN_CI=1 qgis/qgis:release-3_28 sh -c "pip3 install unittest pytest -v"
+
+
+    # postgres:
+    #     name: Get PostgreSQL database
+    #     runs-on: ubuntu-latest
+    #     container: qgis/qgis:release-3_28
+    #     services:
+    #         postgres:
+    #             image: postgres
+    #             env:
+    #                 POSTGRES_PASSWORD: postgres
+    #                 POSTGRES_DB: aims_ci_test
+    #             ports:
+    #                 - 5432:5432
+
+    #             # Set health checks to wait until postgres has started
+    #             options: >-
+    #                 --health-cmd pg_isready
+    #                 --health-interval 10s
+    #                 --health-timeout 5s
+    #                 --health-retries 5
+            
+    #         qgis:
+    #             image: qgis/qgis:release-3_28
+    
+    #     steps:
+    
+    #         - name: Checkout QGIS-AIMS-Plugin
+    #           uses: actions/checkout@v3
+
+                    
+
+    

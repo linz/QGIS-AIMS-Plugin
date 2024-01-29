@@ -1,0 +1,19 @@
+version: "3.7"
+
+services:
+  qgis-test-db:
+    image: kartoza/postgis:14-3.1
+    volumes:
+      # Add more fixtures here
+      - ./Test/postgres_docker_init.sql:/docker-entrypoint-initdb.d/postgres_docker_init.sql
+    environment:
+      # There are multiple databases, data will be populated to the first only
+      - POSTGRES_DB=aims_ci_test
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASS=postgres
+      - ALLOW_IP_RANGE=0.0.0.0/0
+    ports:
+      - 5432:5432
+    restart: "no"
+    healthcheck:
+      test: "pg_isready --health-interval 10s --health-timeout 5s --health-retries 5"
