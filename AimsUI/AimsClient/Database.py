@@ -10,9 +10,9 @@
 ################################################################################
 
 import psycopg2
-from Error import Error
-import AIMSDataManager.Config
 import getpass
+
+from AimsUI.AimsClient.Error import Error
 from AIMSDataManager.Config import ConfigReader
 from AimsUI.AimsLogging import Logger
 

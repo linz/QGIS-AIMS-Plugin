@@ -9,28 +9,30 @@
 #
 ################################################################################
 
-from PyQt4.QtCore import *
-from qgis.core import QgsRectangle
-from qgis.gui import QgsMessageBar
-import time
-import threading
+from qgis.PyQt.QtCore import *
+# from qgis.core import QgsRectangle
+# from qgis.gui import QgsMessageBar
+# import time
+# import threading
+# import traceback
 
 from AIMSDataManager.DataManager import DataManager
 from AIMSDataManager.AimsLogging import Logger
 from AIMSDataManager.AimsUtility import FeedType, FeedRef, FeatureType, FEEDS
 from AimsUI.AimsClient.Gui.ReviewQueueWidget import ReviewQueueWidget
-# Dev only - debugging
-try:
-    import sys
-    sys.path.append('/opt/eclipse/plugins/org.python.pydev_4.4.0.201510052309/pysrc')
-    from pydevd import settrace, GetGlobalDebugger
-    settrace()
-
-except:
-    pass
 
 uilog = None
-    
+
+# HG FIX - Added DataRunner class to handle passing attributes over to the updateData function in the UIDM
+class DataRunner(object):
+
+    def __init__(self, data, feedType):
+        self.data = data
+        self.feedType = feedType
+
+    def __str__(self):
+        return f'<DR> Feed Type: {self.feedType} - Data: {self.data}'
+
 class UiDataManager(QObject):
     """ 
     Handle all interaction between the UI and Data Manager.
@@ -84,9 +86,9 @@ class UiDataManager(QObject):
         # common data obj
         self.DMData = DMData()           
         dmObserver = DMObserver(self.DMData, self.dm)
-                
-        listener = Listener(self.DMData)
-        self.connect(listener, SIGNAL('dataChanged'), self.dataUpdated)
+        
+        # BUG - QThread didn't like the slot and signal relationship instantiated outside, have moved signal to the Listener class and passed a reference to the UIDataManager
+        listener = Listener(self, self.DMData)
         #### 
 
 
@@ -113,8 +115,9 @@ class UiDataManager(QObject):
 
         self._observers.append(observer)
 
-    @pyqtSlot()
-    def dataUpdated(self, data = None, feedType = FEEDS['AR']):
+    @pyqtSlot(DataRunner)
+    # def dataUpdated(self, data = None, feedType = FEEDS['AR']):
+    def dataUpdated(self, dataRunner:DataRunner):
         """
         Slot communicated to when Review data changed. Updates review layer and table data
 
@@ -124,9 +127,9 @@ class UiDataManager(QObject):
         @type  feedType: AIMSDataManager.FeatureFactory.FeedRef
         """
 
-        self.setData(data,feedType)
+        self.setData(dataRunner.data, dataRunner.feedType)
         for observer in self._observers:
-            observer.notify(feedType)
+            observer.notify(dataRunner.feedType)
 
     def exlopdeGroup(self):
         """
@@ -159,8 +162,8 @@ class UiDataManager(QObject):
     def keyData(self, listofFeatures, feedtype):
         """ Key Data from Data Manager
 
-        @param dataRefresh: list of AIMS objects related for feed (as communicated in param feedtype)
-        @type  dataRefresh: list
+        @param listofFeatures: list of AIMS objects related for feed (as communicated in param feedtype)
+        @type  listofFeatures: list
         @param feedType: Type of AIMS API feed
         @type  feedType: AIMSDataManager.FeatureFactory.FeedRef
         """
@@ -691,12 +694,24 @@ class UiDataManager(QObject):
         @param objkey: Feautre id
         @type  objkey: integer     
         """
-
-        return self.data.get(FEEDS['AF'])[(objkey)]
+        # BUG: JIRA LA-48 It appears that the objkey is coming through as a string rather than as an integer...
+        # Temporary fix to test this, however need to chase this up the chain to find out why this has changed from int to str, and where else this will impact.
+        if isinstance(objkey, str):
+            uilog.warning(f'Feature Id: {objkey} passed through as a string. Should be an integer... Casting to int...')
+            objkey = int(objkey)
+        
+        return self.data.get(FEEDS['AF']).get((objkey))
     
     def singleReviewObj(self, feedtype, objkey):
         ''' return the value of which is an aims review
             obj (group and single) for the keyed data '''
+        
+        # BUG: JIRA LA-48 It appears that the objkey is coming through as a string rather than as an integer...
+        # Temporary fix to test this, however need to chase this up the chain to find out why this has changed from int to str, and where else this will impact.
+        if isinstance(objkey, str):
+            uilog.warning(f'Feature Id: {objkey} passed through as a string. Should be an integer... Casting to int...')
+            objkey = int(objkey)
+        
         if feedtype == FEEDS['AR']:
             return self.data.get(feedtype).get(objkey)
         elif feedtype == FEEDS['GR']:
@@ -718,7 +733,7 @@ class UiDataManager(QObject):
         
         if currentGroup[1] not in ('Add', 'Update', 'Retire' ):
             for group in self.data.get(FEEDS['GR']).values():
-                if group.has_key(currentFeatureKey):
+                if group.get(currentFeatureKey):
                     return group[currentFeatureKey]
         else: 
             return self.data.get(FEEDS['AR']).get(currentFeatureKey)
@@ -751,22 +766,29 @@ class Listener(QThread):
     common data store (DMData()) at defined intervals
     """
 
+    dataChanged = pyqtSignal(DataRunner)
+    
     #listenerSignal = pyqtSignal()
-    def __init__(self, DMData):
+    def __init__(self, UIDM: UiDataManager, DMData):
         super(Listener, self).__init__()
+        self._uidm = UIDM
         self.DMData = DMData
-        self.data = {FEEDS['AF']:[],
-                FEEDS['AC']:[],
-                FEEDS['AR']:[],
-                FEEDS['GC']:[],
-                FEEDS['GR']:[]
-                }
-        self.previousData = {FEEDS['AF']:[],
-                FEEDS['AC']:[],
-                FEEDS['AR']:[],
-                FEEDS['GC']:[],
-                FEEDS['GR']:[]
-                }
+        self.data = {
+            FEEDS['AF'] : [],
+            FEEDS['AC'] : [],
+            FEEDS['AR'] : [],
+            FEEDS['GC'] : [],
+            FEEDS['GR'] : []
+            }
+        self.previousData = {
+            FEEDS['AF'] : [],
+            FEEDS['AC'] : [],
+            FEEDS['AR'] : [],
+            FEEDS['GC'] : [],
+            FEEDS['GR'] : []
+            }
+        
+        self.dataChanged.connect(lambda dataRunner: self._uidm.dataUpdated(dataRunner))
     
     def compareData(self):
         """
@@ -776,8 +798,9 @@ class Listener(QThread):
 
         for k , v in self.data.items():           
             if self.previousData[k] != v:
-                self.emit(SIGNAL('dataChanged'), v, k) 
-        self.previousData = self.data                   
+                dr = DataRunner(data=self.data[k], feedType=k)
+                self.dataChanged.emit(dr)
+        self.previousData = self.data        
     
     def run(self):
         """
@@ -810,10 +833,11 @@ class DMData(object):
         @rtype: dictionary
         """
         
-        return { FEEDS['AR']:self.adrRes,
-                FEEDS['GR']:self.grpRes,
-                FEEDS['AF']:self.adrFea
-                }
+        return {
+            FEEDS['AR'] : self.adrRes,
+            FEEDS['GR'] : self.grpRes,
+            FEEDS['AF'] : self.adrFea
+        }
     
 class DMObserver(QThread):
     """
@@ -843,12 +867,16 @@ class DMObserver(QThread):
         @param args: tuple of data for relevant feed
         @type  args: tuple
         """
-  
+        uilog.info(f'**Observe** - {type(self)} is being observed by observer: {observable} of type {type(observable)} with -- args: {args} -- kwargs: {kwargs}')
         fType = args[0]
         data = args[1]
+
+        fDataType = self.feedData.get(fType)
+        if not fDataType:
+            raise ValueError
         
         uilog.info('*** NOTIFY ***     Notify A[{}]'.format(observable))
-        setattr(self.DMData, self.feedData.get(fType),data)
+        setattr(self.DMData, fDataType, data)
         
 
         

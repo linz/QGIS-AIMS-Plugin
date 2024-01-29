@@ -10,14 +10,14 @@
 ################################################################################
 
 import sys
+import time
+import traceback
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
-
+from qgis.PyQt.QtCore import *
+from qgis.PyQt.QtGui import *
+from qgis.PyQt.QtWidgets import *
 from qgis.core import *
 from qgis.gui import *
-
-import time
 
 from AimsUI.AimsClient.Gui.Ui_ComfirmSelection import Ui_ComfirmSelection
 from AimsUI.AimsClient.Gui.UiUtility import UiUtility # remove?
@@ -135,6 +135,11 @@ class MoveAddressTool(QgsMapToolIdentify):
                 coords = results[0].mFeature.geometry().asPoint()
                 self.setMarker(coords)
                 # create address object for feature. It is this obj properties that will be passed to API
+                # TODO: Investigate Address Object. Why is addressId a string not an integer...
+                # uilog.info(f'Getting address feature at mouse click: {results[0].mFeature} - Type: {type(results[0].mFeature)}')
+                # uilog.info(f'> Feature Fields: {list(results[0].mFeature.fields().field(i) for i in results[0].mFeature.fields().allAttributesList())}')
+                # uilog.info(f'> Feature Attributes: {results[0].mFeature.attributes()}')
+                # uilog.info(f'> Address Feature ID {results[0].mFeature.attribute("addressId")} which is type: {type({results[0].mFeature.attribute("addressId")})}')
                 self._features.append(self._controller.uidm.singleFeatureObj(results[0].mFeature.attribute('addressId')))
                 self._sb.showMessage("Right click for features new location")
                 
@@ -186,8 +191,12 @@ class MoveAddressTool(QgsMapToolIdentify):
                     # />
                     #feature.type = FEEDS['AF']
 
-                    # below clone is part of a fix still to be tested
-                    clone = feature.clone(feature, self.aff.get())
+                    # below clone is part of a fix still to be tested - TODO: Reenable and understand why this was being investigated
+                    # NOTE: Keep an eye out for any issues here via the UI error on failing to create clone.
+                    try:
+                        clone = feature.clone(feature, self.aff.get())
+                    except:
+                        uilog.error(f'Failed to create clone. {traceback.format_exc()}')
                     clone._addressedObject_addressPositions[0].setCoordinates(coords, )
                     if clone._codes_isMeshblockOverride != True:
                         clone.setMeshblock(None)
@@ -195,6 +204,17 @@ class MoveAddressTool(QgsMapToolIdentify):
                     clone = self.afc[FeedType.CHANGEFEED].cast(clone)
                     self._controller.uidm.updateAddress(clone, respId)
                     self.RespHandler.handleResp(respId, FEEDS['AC'])
+                    
+                    # # Old Code ... taken from LINZ copy... why are these different?
+                    # feature._addressedObject_addressPositions[0].setCoordinates(coords)
+                    # if feature._codes_isMeshblockOverride != True:
+                    #     feature.setMeshblock(None)
+                    # # BUG: self.af doesn't exist.
+                    # # feature = self.af[FeedType.CHANGEFEED].cast(feature)
+                    # feature = self.afc[FeedType.CHANGEFEED].cast(feature)
+                    # respId = int(time.time()) 
+                    # self._controller.uidm.updateAddress(feature, respId)
+                    # self.RespHandler.handleResp(respId, FEEDS['AC'])
                         
                 self._features = []
                 self.hideMarker()

@@ -9,32 +9,21 @@
 #
 ################################################################################
 
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
+import time
+
+from qgis.PyQt.QtGui import *
+from qgis.PyQt.QtCore import *
 from qgis.core import *
 from qgis.utils import *
 from qgis.gui import *
 
-from Ui_ReviewQueueWidget import Ui_ReviewQueueWidget
-from QueueEditorWidget import QueueEditorWidget
+from AimsUI.AimsClient.Gui.Ui_ReviewQueueWidget import Ui_ReviewQueueWidget
+from AimsUI.AimsClient.Gui.QueueEditorWidget import QueueEditorWidget
 from AIMSDataManager.AimsUtility import FeedType, FEEDS
-from QueueModelView import *
-from UiUtility import UiUtility 
-import time
+from AimsUI.AimsClient.Gui.QueueModelView import *
+from AimsUI.AimsClient.Gui.UiUtility import UiUtility 
 
 from AIMSDataManager.AimsLogging import Logger
-
-import sys # temp - debugging
-
-# Dev only - debugging
-try:
-    import sys
-    sys.path.append('/opt/eclipse/plugins/org.python.pydev_4.4.0.201510052309/pysrc')
-    from pydevd import settrace, GetGlobalDebugger
-    settrace()
-
-except:
-    pass
 
 uilog = None
 
@@ -109,9 +98,9 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
         @type  controller: AimsUI.AimsClient.Gui.Controller
         """
         
-        import Controller
+        from .Controller import instance
         if not controller:
-            controller = Controller.instance()
+            controller = instance()
         self._controller = controller
     
     def notify(self, feedType):
@@ -380,7 +369,7 @@ class ReviewQueueWidget( Ui_ReviewQueueWidget, QWidget ):
             # is dict if populated 
             if type(reviewObj.meta._errors) is dict:
                 info = [reviewObj.meta._errors['info'][x] for x in range(len(reviewObj.meta._errors['info']))
-                        if reviewObj.meta._errors.has_key('info')]
+                        if reviewObj.meta._errors.get('info')]
             
         if dupOnRoad in info: 
             proceed = QMessageBox.question(self._iface.mainWindow(), 'Duplicate Warning',

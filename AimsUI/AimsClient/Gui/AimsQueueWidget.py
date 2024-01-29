@@ -9,10 +9,11 @@
 #
 ################################################################################
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from qgis.PyQt.QtCore import *
+from qgis.PyQt.QtGui import *
+from qgis.PyQt.QtWidgets import QWidget
 
-from Ui_AimsQueueWidget import Ui_AimsQueueWidget
+from AimsUI.AimsClient.Gui.Ui_AimsQueueWidget import Ui_AimsQueueWidget
 
 class AimsQueueWidget( Ui_AimsQueueWidget, QWidget ):
     """

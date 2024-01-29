@@ -11,15 +11,15 @@
 
 import sys
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from qgis.PyQt.QtCore import *
+from qgis.PyQt.QtGui import *
 
 from qgis.core import *
 from qgis.gui import *
 
-from sip import setapi
-setapi('QString', 2)
-setapi('QVariant', 2)
+# from qgis.PyQt.sip import setapi
+# setapi('QString', 2)
+# setapi('QVariant', 2)
 
 from AimsUI.AimsClient.Gui.UiUtility import UiUtility
 
@@ -132,7 +132,7 @@ class GetRcl(QgsMapToolIdentifyFeature):
              'waterName' :'road_name_body',}
             
             for k, v in mapping.items():
-                setattr(self, k, unicode(UiUtility.nullEqualsNone(results[0].mFeature.attribute(v))))
+                setattr(self, k, str(UiUtility.nullEqualsNone(results[0].mFeature.attribute(v))))
                 
             self.fillform()
             self._controller.setPreviousMapTool() 

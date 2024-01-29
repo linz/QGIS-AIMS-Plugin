@@ -12,9 +12,8 @@
 import sys
 import time
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
-
+from qgis.PyQt.QtCore import *
+from qgis.PyQt.QtGui import *
 from qgis.core import *
 from qgis.gui import *
 
@@ -27,7 +26,7 @@ class UpdateReviewPosition(QgsMapToolIdentifyFeature):
     Tool for relocating AIMS Review Features
     """ 
 
-    def __init__(self, iface, layerManager, controller):
+    def __init__(self, iface: QgisInterface, layerManager, controller):
         """
         Intialise Update Address Tool
         
@@ -40,7 +39,7 @@ class UpdateReviewPosition(QgsMapToolIdentifyFeature):
         """
        
         QgsMapToolIdentify.__init__(self, iface.mapCanvas())
-        self._iface = iface
+        self._iface = iface # TODO: Add typings across the plugin code... much more readable and allows for intellisense to work properly
         self._controller = controller
         self._layers = layerManager
         self._canvas = iface.mapCanvas()
@@ -94,8 +93,8 @@ class UpdateReviewPosition(QgsMapToolIdentifyFeature):
         if self._currentRevItem:
             
             if self._currentRevItem._changeType in ('Retire', 'AddLineage' ):
-                self._iface.messageBar().pushMessage("{} review items cannot be relocated".format(self._currentRevItem._changeType), 
-                                                     level=QgsMessageBar.WARNING, duration = 5)
+                # Qgis.MessageLevel (0: Info, 1: Warning, 2: Error, 3: Success, 4: No Level)
+                self._iface.messageBar().pushMessage("{} review items cannot be relocated".format(self._currentRevItem._changeType), level=Qgis.MessageLevel(0), duration=5)
                 return
             
             if len(results) == 0:                     

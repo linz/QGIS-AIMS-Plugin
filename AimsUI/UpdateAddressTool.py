@@ -12,8 +12,9 @@
 import sys
 import time
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from qgis.PyQt.QtCore import *
+from qgis.PyQt.QtGui import *
+from qgis.PyQt.QtWidgets import *
 from qgis.core import *
 from qgis.gui import *
 
@@ -22,7 +23,6 @@ from AimsUI.AimsClient.Gui.UiUtility import UiUtility
 from AimsUI.AimsClient.Gui.ResponseHandler import ResponseHandler
 from AIMSDataManager.Address import Position
 from AIMSDataManager.AimsUtility import FeedType, FEEDS
-
 
 class UpdateAddressTool(QgsMapToolIdentify):
     """

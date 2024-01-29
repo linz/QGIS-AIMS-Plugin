@@ -9,9 +9,8 @@
 #
 ################################################################################
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
-
+from qgis.PyQt.QtCore import *
+from qgis.PyQt.QtGui import *
 from qgis.core import *
 from qgis.gui import *
 
@@ -65,7 +64,8 @@ class FeatureHighlighter(QObject):
         self._revMarker.setPenWidth(2)
         self._revMarker.setIconType(QgsVertexMarker.ICON_BOX)
 
-        self._rclMarker = QgsRubberBand(self._canvas,False)
+        self._rclMarker = QgsRubberBand(self._canvas, 1) # QgsRubberBand(self._canvas, false) replaced with 1 which is the QgsWkbTypes.Point
+        # self._rclMarker = QgsRubberBand(self._canvas, Qgis.GeometryType.Point) # QgsRubberBand(self._canvas, false) replaced with 1 which is the QgsWkbTypes.Point (Required after Version 3.3x)
         self._rclMarker.hide()
         self._rclMarker.setWidth(3)
         self._rclMarker.setColor(self._rclMarkerColor)
@@ -101,7 +101,7 @@ class FeatureHighlighter(QObject):
         
         if self.isVisible( self._layers.addressLayer() ):
             self.hideNewAddress()
-            self._adrMarker.setCenter( QgsPoint(coords[0], coords[1]) )
+            self._adrMarker.setCenter( QgsPointXY(coords[0], coords[1]) )
             self._adrMarker.show()
 
     def hideAddress(self):
@@ -121,7 +121,7 @@ class FeatureHighlighter(QObject):
         
         if self.isVisible( self._layers.addressLayer() ):
             self.hideAddress()
-            self._newAdrMarker.setCenter( QgsPoint(coords[0], coords[1]) )
+            self._newAdrMarker.setCenter( QgsPointXY(coords[0], coords[1]) )
             self._newAdrMarker.show()
         
     def hideNewAddress(self):
@@ -136,7 +136,7 @@ class FeatureHighlighter(QObject):
         Highlight the feature under review
         """
         
-        self._revMarker.setCenter( QgsPoint(coords[0], coords[1]) )
+        self._revMarker.setCenter( QgsPointXY(coords[0], coords[1]) )
         if self._enabled and self.isVisible(self._layers.revLayer()):
             self._revMarker.show()
     
@@ -154,7 +154,8 @@ class FeatureHighlighter(QObject):
         """
         
         rclLayer = self._layers.rclLayer()
-        self._rclMarker.setToGeometry(QgsGeometry.fromPolyline(line[0]),None)#,rclLayer)
+        # BUG - Change fromPolyline to fromPolylineXY
+        self._rclMarker.setToGeometry(QgsGeometry.fromPolylineXY(line[0]),None)#,rclLayer)
         self._rclMarker.show()
 
     def hideRcl(self):

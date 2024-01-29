@@ -9,22 +9,18 @@
 #
 ################################################################################
 
-import sip
-sip.setapi('QString', 2)
-
-from qgis.core import *
-from qgis.gui import *
-from PyQt4.QtGui import *
-from PyQt4.QtCore import QRegExp 
 import re
 import time
 from collections import OrderedDict
 import sys
 
-from AIMSDataManager.AimsLogging import Logger
-from matplotlib.cbook import Null
+from qgis.core import *
+from qgis.gui import *
+from qgis.PyQt.QtGui import *
+from qgis.PyQt.QtWidgets import *
+from qgis.PyQt.QtCore import QRegExp 
 
-sys.path.append('.qgis2/python/plugins/QGIS-AIMS-Plugin')
+from AIMSDataManager.AimsLogging import Logger
 
 uilog = None
 
@@ -85,10 +81,15 @@ class UiUtility (object):
         @type  tgt: integer
         """
   
-        src_crs = iface.mapCanvas().mapSettings().destinationCrs()
+        src_crs:QgsCoordinateReferenceSystem = iface.mapCanvas().mapSettings().destinationCrs()
         tgt_crs = QgsCoordinateReferenceSystem()
         tgt_crs.createFromOgcWmsCrs('EPSG:{}'.format(tgt))
-        transform = QgsCoordinateTransform( src_crs, tgt_crs )
+        uilog.info(f'Created target CRS with EPSG {tgt}: {tgt_crs}')
+        # BUG FIX: Jira Issue LINZ AIMS LA-48
+        transform = QgsCoordinateTransform()
+        transform.setSourceCrs(src_crs)
+        transform.setDestinationCrs(tgt_crs)
+        uilog.info(f'Succeeded transformating coords ({coords.x()},{coords.y()}) from {src_crs.postgisSrid()} to {tgt_crs.postgisSrid()}')
         return transform.transform( coords.x(), coords.y() ) 
             
     @staticmethod
@@ -171,8 +172,8 @@ class UiUtility (object):
             else: prop = ''
         else:
             # go straight for the objects property 
-            if unicode(getattr(feature, property)) != 'None':
-                prop = unicode(getattr(feature, property)) 
+            if str(getattr(feature, property)) != 'None':
+                prop = str(getattr(feature, property)) 
             else: prop = ''
         return prop
    
@@ -223,7 +224,7 @@ class UiUtility (object):
                     
                     # added to handle the resp warnings which differ 
                     if self.feature.meta.errors:
-                        for k, v in self.feature.meta.errors.iteritems():
+                        for k, v in self.feature.meta.errors.items():
                                 if k:
                                     for i in v:
                                         warnings += k.upper()+': '+i+('\n'*2)                  
@@ -234,7 +235,7 @@ class UiUtility (object):
                 elif ui == 'uMblkOverride' and parent == 'update' and self.feature._codes_isMeshblockOverride != True:
                     continue
                 else: 
-                    uiElement.setText(unicode(prop))
+                    uiElement.setText(str(prop))
                     continue
             elif isinstance(uiElement, QComboBox):
                 uiElement.setCurrentIndex(0)  

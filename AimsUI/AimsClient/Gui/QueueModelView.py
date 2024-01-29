@@ -9,8 +9,9 @@
 #
 ################################################################################
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from qgis.PyQt.QtCore import *
+from qgis.PyQt.QtGui import *
+from qgis.PyQt.QtWidgets import *
 
 class QueueView(QTableView):
     """
@@ -91,7 +92,7 @@ class FeatureTableModel(QAbstractTableModel):
         if not data: data = self.dummyData
         self._data = data
         self.headerdata = headerdata
-        self.dict_key = self._data.keys()[0]
+        self.dict_key = list(self._data.keys())[0]
                         
     def setKey(self, key = None):
         """
@@ -147,7 +148,7 @@ class FeatureTableModel(QAbstractTableModel):
         row = QModelIndex.row()
         column = QModelIndex.column()
         if int_role == Qt.DisplayRole:
-            return unicode(self._data[self.dict_key][row][column])
+            return str(self._data[self.dict_key][row][column])
     
     def refreshData(self, data):
         """
@@ -160,7 +161,7 @@ class FeatureTableModel(QAbstractTableModel):
         if data:
             self._data = data
             # reset dict key
-            self.dict_key = self._data.keys()[0]
+            self.dict_key = list(self._data.keys())[0]
     
     def headerData(self, col, orientation, role):
         """ 

@@ -11,14 +11,12 @@
 
 import re
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from qgis.PyQt.QtCore import *
+from qgis.PyQt.QtGui import *
+from qgis.PyQt.QtWidgets import *
 
-from Ui_QueueEditorWidget import Ui_QueueEditorWidget
-from UiUtility import UiUtility
-
-
-
+from AimsUI.AimsClient.Gui.Ui_QueueEditorWidget import Ui_QueueEditorWidget
+from AimsUI.AimsClient.Gui.UiUtility import UiUtility
 
 class QueueEditorWidget( Ui_QueueEditorWidget, QWidget ):
     """
@@ -71,7 +69,7 @@ class QueueEditorWidget( Ui_QueueEditorWidget, QWidget ):
             uiElement.hide()
         
         # connect all editing ui elements to 
-        for uiElement, v in UiUtility.uiObjMappings.iteritems():    
+        for uiElement, v in UiUtility.uiObjMappings.items():    
             if isinstance(getattr(self, uiElement), QLineEdit):
                 getattr(self, uiElement).textEdited.connect(getattr(self, v[1]))
             elif isinstance(getattr(self, uiElement), QComboBox):
@@ -85,9 +83,9 @@ class QueueEditorWidget( Ui_QueueEditorWidget, QWidget ):
         @type  AimsUI.AimsClient.Gui.Controller() Instance
         """
         
-        import Controller
+        from .Controller import instance
         if not controller:
-            controller = Controller.instance()
+            controller = instance()
         self._controller = controller
     
     def setStyle( self ):
@@ -149,7 +147,7 @@ class QueueEditorWidget( Ui_QueueEditorWidget, QWidget ):
         reinstate the user input values
         """
         
-        for uiElement, v in UiUtility.uiObjMappings.iteritems():
+        for uiElement, v in UiUtility.uiObjMappings.items():
             if hasattr(self, v[0]):
                 if isinstance(getattr(self, uiElement), QLineEdit) and getattr(self,  v[0]):
                     getattr(self, uiElement).setText(getattr(self, v[0]))

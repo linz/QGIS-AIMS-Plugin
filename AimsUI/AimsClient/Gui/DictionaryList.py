@@ -9,8 +9,9 @@
 #
 ################################################################################
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from qgis.PyQt.QtCore import *
+from qgis.PyQt.QtGui import *
+from qgis.PyQt.QtWidgets import *
 from qgis.core import *
 
 # DictionaryListView and DictionaryListModel.  
@@ -307,7 +308,7 @@ class DictionaryListModel( QAbstractTableModel ):
         row = index.row()
         col = index.column()
         if role == Qt.DisplayRole or role == Qt.EditRole:
-            return unicode(self._list[self._index[row]].get(self._columns[col],''))
+            return str(self._list[self._index[row]].get(self._columns[col],''))
         elif role == Qt.BackgroundRole and not self._editable[col] and self._readonlyBrush:
             return self._readonlyBrush
         return None

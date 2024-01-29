@@ -10,21 +10,24 @@
 ################################################################################
 
 from os.path import dirname, abspath, join
+from collections import OrderedDict
+import traceback
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from qgis.PyQt.QtCore import *
+from qgis.PyQt.QtWidgets import *
 from qgis.core import *
 from qgis.gui import *
 from qgis.utils import qgsfunction
-import sip
-from AimsClient import Database
+
+from AimsUI.AimsClient import Database
 from AimsUI.AimsLogging import Logger
-from AIMSDataManager.AimsUtility import FEEDS
-from collections import OrderedDict
+from AIMSDataManager.AimsUtility import FEEDS, AimsException
 
 aimslog = Logger.setup()
 uilog = None
-sip.setapi('QVariant', 2)
+# setapi('QVariant', 2)
+
+class InvalidParameterException(AimsException): pass
 
 class Mapping():
     """ 
@@ -114,8 +117,8 @@ class LayerManager(QObject):
         self._revLayer = None
         self._extEvent = False
 
-        QgsMapLayerRegistry.instance().layerWillBeRemoved.connect(self.checkRemovedLayer)
-        QgsMapLayerRegistry.instance().layerWasAdded.connect( self.checkNewLayer )
+        QgsProject.instance().layerWillBeRemoved.connect(self.checkRemovedLayer)
+        QgsProject.instance().instance().layerWasAdded.connect( self.checkNewLayer )
 
 
     def initialiseExtentEvent(self):
@@ -175,7 +178,7 @@ class LayerManager(QObject):
         @yield: qgis._core.QgsVectorLayer 
         """
 
-        for layer in QgsMapLayerRegistry.instance().mapLayers().values():
+        for layer in QgsProject.instance().mapLayers().values():
                 yield layer
 
     def addressLayer(self):
@@ -335,20 +338,22 @@ class LayerManager(QObject):
         
         layer = self.findLayer(id)
         if layer:
-            legend = self._iface.legendInterface()
-            if not legend.isLayerVisible(layer):
-                legend.setLayerVisible(layer, True)
+            # Get respective layer from layer tree and turn it on if it is turned off
+            ltr: QgsLayerTree = QgsProject.instance().layerTreeRoot()
+            layerLegend = ltr.findLayer(layer)
+            if not layerLegend.isVisible():
+                layerLegend.setItemVisibilityChecked(True)
             return layer
         self._statusBar.showMessage("Loading layer " + displayname)
         try:
-            uri = QgsDataSourceURI()
+            uri = QgsDataSourceUri()
             uri.setConnection(Database.host(),str(Database.port()),Database.database(),Database.user(),Database.password())
             uri.setDataSource(schema,table,geom,where,key)            
             uri.setUseEstimatedMetadata(True)
             layer = QgsVectorLayer(uri.uri(),displayname,"postgres")
             self.setLayerId( layer, id )
             self.styleLayer(layer, id)            
-            QgsMapLayerRegistry.instance().addMapLayer(layer)
+            QgsProject.instance().addMapLayer(layer)
         finally:
             self._statusBar.showMessage("")
         return layer
@@ -381,10 +386,11 @@ class LayerManager(QObject):
             if not self.findLayer(layerId):
                 self.installLayer(* layerProps) 
 
-            # A Relation is required to label 
-            # parcels with an appellation
-            if self.lprLayer() and self.appLayer():
-                self.parRelation()
+        # A Relation is required to label 
+        # parcels with an appellation
+        if self.lprLayer() and self.appLayer():
+            uilog.info(f'Attempting to configure relationship between parcel and appellation layers')
+            self.parRelation()
     
     def parRelation(self):
         """
@@ -392,14 +398,14 @@ class LayerManager(QObject):
         and their associated appellation) and lpr (crs parcel layer 
         for labeling purposes)
         """
-
         rel = QgsRelation()
         rel.setReferencingLayer( self.lprLayer().id() )
         rel.setReferencedLayer( self.appLayer().id() )
         rel.addFieldPair( 'id', 'par_id' )
-        rel.setRelationId( self._propBaseName+'appellation_rel' )
-        rel.setRelationName( 'Appellation Relation' )
+        rel.setId( self._propBaseName+'appellation_rel' )
+        rel.setName( 'Appellation Relation' )
         QgsProject.instance().relationManager().addRelation( rel )
+        uilog.info(f'Succeeded in establishing relationship between Par and App Layers')
 
     def addLayerFields(self, layer, provider, id, fields):
         """
@@ -419,7 +425,7 @@ class LayerManager(QObject):
         provider.addAttributes(fields)
         layer.updateFields()
         self.styleLayer(layer, id)     
-        QgsMapLayerRegistry.instance().addMapLayer(layer)    
+        QgsProject.instance().addMapLayer(layer)    
     
     def installAimsLayer(self, id, displayname):
         """
@@ -435,15 +441,18 @@ class LayerManager(QObject):
             layer = QgsVectorLayer("Point?crs=EPSG:4167", displayname, "memory") 
             self.setLayerId(layer, id)
             provider = layer.dataProvider()
+            # BUG When adding the layer fields, everything is being converted to strings. TODO: Confirm why this is. Or is this supposed to be this way? Need to ask Shahab/Richard to check in Version 2.
+            # self.addLayerFields(layer, provider, id, [QgsField(layerAttName, MappingT.adrLayerObjMappings[layerAttName][1]) for layerAttName in MappingT.adrLayerObjMappings.keys()] ) 
             self.addLayerFields(layer, provider, id, [QgsField(layerAttName, QVariant.String) for layerAttName in Mapping.adrLayerObjMappings.keys()] ) 
         elif id == 'rev' and not self._revLayer:
             layer = QgsVectorLayer("Point?crs=EPSG:4167", displayname, "memory") 
             self.setLayerId(layer, id)
             provider = layer.dataProvider()
+            # self.addLayerFields(layer, provider, id, [QgsField('AimsId', QVariant.String), QgsField('AddressNumber', QVariant.String),QgsField('Action', QVariant.String)])
             self.addLayerFields(layer, provider, id, [QgsField('AimsId', QVariant.String), QgsField('AddressNumber', QVariant.String),QgsField('Action', QVariant.String)])
         else: return
         layer.updateFields()
-        QgsMapLayerRegistry.instance().addMapLayer(layer)           
+        QgsProject.instance().addMapLayer(layer)           
         
     def isVisible(self, layer):
         """
@@ -457,7 +466,12 @@ class LayerManager(QObject):
         """
         
         if layer.hasScaleBasedVisibility():
-            if layer.maximumScale() > self._canvas.scale() and layer.minimumScale() < self._canvas.scale():
+            # BUG - Unsure, but it seems the functionality of maximumScale() and minimumScale() is switched... 
+            # Maximum scale (furthest in) is set to 0 in AIMS Features, with minimumScale (furthest out, exclusive) is set to 20000
+            # Features should be considered visible if canvas is < minimumScale and canvas > maximumScale 
+            uilog.info(f'Layer Scale Visibility Check - Canvas Scale: {self._canvas.scale()} - Layer Min Scale: {layer.minimumScale()} - Layer Max Scale {layer.maximumScale()}')
+            if self._canvas.scale() >= layer.maximumScale() and self._canvas.scale() < layer.minimumScale():
+            # if layer.maximumScale() > self._canvas.scale() and layer.minimumScale() < self._canvas.scale():
                 return True
             else: 
                 return False
@@ -502,7 +516,7 @@ class LayerManager(QObject):
                     point = reviewItem.meta.entities[0].getAddressPositions()[0]._position_coordinates
                 except: 
                     uilog.error(' *** ERROR ***  ') 
-            fet.setGeometry(QgsGeometry.fromPoint(QgsPoint(point[0], point[1])))
+            fet.setGeometry(QgsGeometry.fromPointXY(QgsPointXY(point[0], point[1])))
             fet.setAttributes([ k, reviewItem.getFullNumber(), reviewItem._changeType])
             provider.addFeatures([fet])
         layer.updateExtents()
@@ -538,6 +552,16 @@ class LayerManager(QObject):
         else: 
             return False
                         
+    def getMinMaxScale(self, scale1, scale2) -> (float, float):
+        '''
+        Between two versions it appears they have changed the use of minscale and max scale.
+        To safeguard against this changing, we will just order the scales and our purpose is simply to find if a value is within the range.
+        '''
+        s_minmax = [scale1, scale2]
+        s_minmax.sort()
+
+        return s_minmax[0], s_minmax[1]
+                        
     def setbbox(self):
         """ 
         Triggered by extent change - Set BBox in UIDataManager
@@ -546,7 +570,12 @@ class LayerManager(QObject):
         id = self._addressLayerId
         layer = self.findLayer(id)
         ext = self._canvas.extent()
-        if self._canvas.scale() > layer.maximumScale() or self.bboxWithPrevious(ext): return 
+        # BUG - Unsure, but it seems the functionality of maximumScale() and minimumScale() is switched... 
+        # Maximum scale (furthest in) is set to 0 in AIMS Features, with minimumScale (furthest out, exclusive) is set to 20000
+        # If scale is outside visible extents, we don't want to request AIMS features, so we return
+        uilog.info(f'Layer Scale Visibility Check - Canvas Scale: {self._canvas.scale()} - Layer Min Scale: {layer.minimumScale()} - Layer Max Scale {layer.maximumScale()}')
+        if self._canvas.scale() > layer.minimumScale() or self.bboxWithPrevious(ext): return 
+        # if self._canvas.scale() > layer.maximumScale() or self.bboxWithPrevious(ext): return 
         uilog.info(' *** BBOX ***    {} '.format(ext.toString()))    
         self._controller.uidm.setBbox(sw = (ext.xMinimum(), ext.yMinimum()), ne = (ext.xMaximum(), ext.yMaximum()))
         self.prevExt = ext
@@ -590,16 +619,18 @@ class LayerManager(QObject):
             layer = self.findLayer(id) 
         if not self.isVisible(layer): 
             return
-        legend = self._iface.legendInterface()
-        if not legend.isLayerVisible(layer):
-            legend.setLayerVisible(layer, True)
+        # Get respective layer from layer tree and turn it on if it is turned off
+        ltr: QgsLayerTree = QgsProject.instance().layerTreeRoot()
+        layerLegend: QgsLayerTreeLayer = ltr.findLayer(layer)
+        if not layerLegend.isVisible():
+            layerLegend.setItemVisibilityChecked(True)
         # remove current features 
         self.removeFeatures(layer)
         uilog.info(' *** CANVAS ***    Adding Features') 
-        for feature in featureData.itervalues():
+        for feature in featureData.values():
             fet = QgsFeature()
             point = feature.getAddressPositions()[0]._position_coordinates
-            fet.setGeometry(QgsGeometry.fromPoint(QgsPoint(point[0], point[1])))           
+            fet.setGeometry(QgsGeometry.fromPointXY(QgsPointXY(point[0], point[1])))           
             fet.setAttributes([getattr(feature, v[0]) if hasattr (feature, v[0]) else '' for v in Mapping.adrLayerObjMappings.values()])
             if hasattr(getattr(feature,'_addressedObject_addressPositions')[0],'_positionType'):
                 # If positionType update field index 30. Would rather use the explicit name...
@@ -609,15 +640,32 @@ class LayerManager(QObject):
         
         uilog.info(' *** CANVAS ***    FEATURES ADDED')
 
-    @qgsfunction(0, 'QGIS-AIMS-Plugin', register=False)
-    def get_par_app(values, feature, parent):
+    # @qgsfunction(0, 'QGIS-AIMS-Plugin', register=False)
+    # def get_par_app(values, feature, parent):
+    #     """
+    #     Custom labeling function.
+    #     For labeling parcels with appellation
+    #     """
+
+    #     layer: QgsVectorLayer=None
+    #     for lyr in QgsProject.instance().mapLayers().values():
+    #         if lyr.name() == "Parcels (Labels)":
+    #             layer = lyr
+    #             break
+    #     rel = layer.referencingRelations(0)[0]
+    #     feat_rel = rel.getReferencedFeature(feature)
+    #     if feat_rel:
+    #         return feat_rel.attribute('appellation')
+
+    @qgsfunction(args='auto', group='QGIS-AIMS-Plugin', register=False)
+    def get_par_app(feature, parent):
         """
         Custom labeling function.
         For labeling parcels with appellation
         """
 
-        layer=None
-        for lyr in QgsMapLayerRegistry.instance().mapLayers().values():
+        layer: QgsVectorLayer=None
+        for lyr in QgsProject.instance().mapLayers().values():
             if lyr.name() == "Parcels (Labels)":
                 layer = lyr
                 break
@@ -632,6 +680,7 @@ class LayerManager(QObject):
         """
         
         QgsExpression.registerFunction(self.get_par_app)
+        uilog.info(f'Registered Function for GetParApp')
     
     def unregisterFunctions(self):
         """

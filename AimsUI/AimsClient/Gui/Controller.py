@@ -12,29 +12,26 @@ import sys
 import os
 import Resources
 
-#from os.path import dirname, abspath
-
-sys.path.append('.qgis2/python/plugins/QGIS-AIMS-Plugin') 
-
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from qgis.PyQt.QtCore import *
+from qgis.PyQt.QtGui import *
+from qgis.PyQt.QtWidgets import *
 from qgis.core import *
 from qgis.gui import *
 
-from DockWindow import DockWindow
+from AimsUI.AimsClient.Gui.DockWindow import DockWindow
 from AimsUI.LayerManager import LayerManager
 from AimsUI.DelAddressTool import DelAddressTool
 from AimsUI.MoveAddressTool import MoveAddressTool
 from AimsUI.CreateNewAddressTool import CreateNewAddressTool
 from AimsUI.UpdateAddressTool import UpdateAddressTool
-#from AimsUI.LineageTool import LineageTool
 from AimsUI.GetRclTool import GetRcl
 from AimsUI.UpdateReviewPosition import UpdateReviewPosition
-from AimsQueueWidget import AimsQueueWidget
+from AimsUI.AimsClient.Gui.AimsQueueWidget import AimsQueueWidget
 from AimsUI.AimsClient.Gui.UiDataManager import UiDataManager
 from AimsUI.AimsClient.Gui.ResponseHandler import ResponseHandler
 from AimsUI.AimsClient.Gui.FeatureHighlighter import FeatureHighlighter
 from AimsUI.AimsClient.Gui.AimsConfigureDialog import AimsConfigureDialog
+#from AimsUI.LineageTool import LineageTool
 
 
 from AIMSDataManager.AimsLogging import Logger
@@ -63,7 +60,7 @@ class Controller( QObject ):
 
         QObject.__init__(self)
         self.iface = iface
-        self._queues = None
+        self._queues: AimsQueueWidget = None
         self._dockWindow = None
         self._currentMapTool = None
         self.rclParent = None
@@ -228,7 +225,7 @@ class Controller( QObject ):
         self.iface.addPluginToMenu('&QGIS-AIMS-Plugin', self._configdialog)
 
         # capture maptool selection changes
-        QObject.connect(self.iface.mapCanvas(), SIGNAL( "mapToolSet(QgsMapTool *)" ), self.mapToolChanged)
+        self.iface.mapCanvas().mapToolSet.connect(self.mapToolChanged)
 
         # Add actions from QGIS attributes toolbar (handling QWidgetActions)
         tmpActionList = self.iface.attributesToolBar().actions()
@@ -451,7 +448,7 @@ class Controller( QObject ):
         self._layerManager.getAimsFeatures()
  
 # Singleton instance    
-def instance():
+def instance() -> Controller:
     """
     Return instance of the Controller
     @return: The single Controller Instance      

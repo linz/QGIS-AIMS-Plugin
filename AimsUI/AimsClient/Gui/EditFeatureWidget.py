@@ -1,12 +1,11 @@
-
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
-
+from qgis.PyQt.QtCore import *
+from qgis.PyQt.QtGui import *
+from qgis.PyQt.QtWidgets import *
 from qgis.gui import *
 
-from Ui_EditFeatureDialog import Ui_EditFeatureDialog
+from AimsUI.AimsClient.Gui.Ui_EditFeatureDialog import Ui_EditFeatureDialog
 from AIMSDataManager.FeatureFactory import FeatureFactory
-from UiUtility import UiUtility 
+from AimsUI.AimsClient.Gui.UiUtility import UiUtility 
 from AIMSDataManager.AimsUtility import FEEDS, FeedType
 from AIMSDataManager.Address import Position
 
@@ -79,9 +78,9 @@ class EditFeatureWidget( Ui_EditFeatureDialog, QWidget ):
         @type  controller: AimsUI.AimsClient.Gui.Controller
         """
         
-        import Controller
+        from .Controller import instance
         if not controller:
-            controller = Controller.instance()
+            controller = instance()
         self._controller = controller
     
     def setFeature(self, parent, addInstance, coords = None):
@@ -184,11 +183,13 @@ class EditFeatureWidget( Ui_EditFeatureDialog, QWidget ):
         if self.parent == 'add': 
             self.setPosition()   
             UiUtility.formToObj(self)
+            # TODO: Failing here... need to step into this and keep poking around...
             self._controller.uidm.addAddress(self.feature, respId)
         
         elif self.parent == 'update': 
             UiUtility.formToObj(self)
-            self.feature = self.af[FeedType.CHANGEFEED].cast(self.feature)            
+            self.feature = self.af[FeedType.CHANGEFEED].cast(self.feature)          
+            # TODO: Failing here... need to step into this and keep poking around...  
             self._controller.uidm.updateAddress(self.feature, respId)
         
         # check the response 

@@ -1,10 +1,10 @@
+import os
+import configparser
+
 from qgis.core import QgsApplication
 from qgis.utils import plugins
-from PyQt4 import uic
-from PyQt4.QtGui import QDialog, QDialogButtonBox
-import os
-import ConfigParser
-
+from qgis.PyQt import uic
+from qgis.PyQt.QtWidgets import QDialog, QDialogButtonBox
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'Ui_AimsConfigureDialog.ui'))
@@ -86,16 +86,16 @@ class AimsConfigureDialog(QDialog, FORM_CLASS):
         return
 
     def fileToUi(self, conf_file=CONF_FILE):
-        Config = ConfigParser.ConfigParser()
+        Config = configparser.ConfigParser()
         Config.read(conf_file)
-        for section, options in DEF_CONF.iteritems():
+        for section, options in DEF_CONF.items():
             for option in options:
                 getattr(self,'{0}_{1}'.format(section, option)).setText(Config.get(section, option)) 
 
     def UiToFile(self, conf_file=CONF_FILE):
-        Config = ConfigParser.ConfigParser()
+        Config = configparser.ConfigParser()
         config_file = open(CONF_FILE,'w')
-        for section, options in DEF_CONF.iteritems():
+        for section, options in DEF_CONF.items():
             Config.add_section(section)
             for option in options:
                 value = getattr(self,'{0}_{1}'.format(section, option)).text()
@@ -104,11 +104,11 @@ class AimsConfigureDialog(QDialog, FORM_CLASS):
         config_file.close()
 
     def createConfig(self):
-        Config = ConfigParser.ConfigParser()
+        Config = configparser.ConfigParser()
         config_file = open(CONF_FILE,'w')
-        for section, options in DEF_CONF.iteritems():
+        for section, options in DEF_CONF.items():
             Config.add_section(section)
-            for k, v in options.iteritems():
+            for k, v in options.items():
                 Config.set(section,k,v)
         Config.write(config_file)
         config_file.close()

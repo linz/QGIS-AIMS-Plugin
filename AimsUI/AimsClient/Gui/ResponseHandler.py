@@ -9,15 +9,16 @@
 #
 ################################################################################
 
+import time
+
 from qgis.core import *
 from qgis.gui import *
-from PyQt4.QtGui import *
-import time
+from qgis.PyQt.QtGui import *
+from qgis.PyQt.QtWidgets import *
 
 from AIMSDataManager.AddressFactory import AddressFactory
 from AIMSDataManager.Address import Entity, FeedType
 from AIMSDataManager.AimsUtility import FEEDS
-
 from AIMSDataManager.AimsLogging import Logger
 
 uilog = None
@@ -159,7 +160,9 @@ class ResponseHandler(object):
                     return self.updateSuccessful  
             else: time.sleep(1)                                            
         
-        self._iface.messageBar().pushMessage("Incomplete Response", "Data may not be complete - Please expect a data refresh shortly", level=QgsMessageBar.WARNING)
+        # Qgis.MessageLevel (0: Info, 1: Warning, 2: Error, 3: Success, 4: No Level)
+        self._iface.messageBar().pushMessage("Incomplete Response", "Data may not be complete - Please expect a data refresh shortly", level=Qgis.MessageLevel(0), duration=5)
+                
         #logging 
         uilog.info(' *** DATA ***    Time Out ({0} seconds): No response received from DM for respId: {1} of feedtype: {2}'.format(i, respId, feedType))    
     
