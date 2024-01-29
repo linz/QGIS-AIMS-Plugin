@@ -11,19 +11,20 @@
 
 import os
 import sys
-import Queue
+import queue
 import pickle
 import time
-from Address import Address, AddressChange, AddressResolution,Position
-from FeatureFactory import FeatureFactory
-#from DataUpdater import DataUpdater
-from DataSync import DataSync,DataSyncFeatures,DataSyncFeeds,DataSyncAdmin
 from datetime import datetime as DT
-from AimsUtility import FeedRef,ActionType,ApprovalType,GroupActionType,GroupApprovalType,UserActionType,FeatureType,FeedType,PersistActionType,Configuration,FEED0,FEEDS,FIRST
-from AimsUtility import AimsException
-from AimsLogging import Logger
-from Const import THREAD_JOIN_TIMEOUT,RES_PATH,LOCAL_ADL,SWZERO,NEZERO,HACK_SUP_IND,NULL_PAGE_VALUE as NPV
-from Observable import Observable
+import traceback
+
+from AIMSDataManager.Address import Address, AddressChange, AddressResolution,Position
+from AIMSDataManager.FeatureFactory import FeatureFactory
+from AIMSDataManager.DataSync import DataSync,DataSyncFeatures,DataSyncFeeds,DataSyncAdmin
+from AIMSDataManager.AimsUtility import Feeder,FeedRef,ActionType,ApprovalType,GroupActionType,GroupApprovalType,UserActionType,FeatureType,FeedType,PersistActionType,Configuration,FEED0,FEEDS,FIRST
+from AIMSDataManager.AimsUtility import AimsException
+from AIMSDataManager.AimsLogging import Logger
+from AIMSDataManager.Const import THREAD_JOIN_TIMEOUT,RES_PATH,LOCAL_ADL,SWZERO,NEZERO,HACK_SUP_IND,NULL_PAGE_VALUE as NPV
+from AIMSDataManager.Observable import Observable
 
 aimslog = None   
     
@@ -34,7 +35,7 @@ class DataManager(Observable):
     aimslog = Logger.setup()
     
   
-    def __init__(self,start=FIRST,initialise=False):
+    def __init__(self,start:Feeder=FIRST,initialise=False):
         '''Initialises DataManager initialising DataSync objects, setting up persistence and reading configuration.
         @param start: List of sync objects to be started (excluded FeatureFeed by default until BBOX defined
         @param initialise: Flag to signal initialisation of persisted objects
@@ -42,7 +43,7 @@ class DataManager(Observable):
         '''
         #self.ioq = {'in':Queue.Queue(),'out':Queue.Queue()}   
         super(DataManager,self).__init__()
-        if start and hasattr(start,'__iter__'): self._start = start.values()
+        if start and isinstance(start, Feeder): self._start = start.values()
         self.persist = Persistence(initialise)
         self.conf = Configuration().readConf()
         self._initDS()
@@ -75,11 +76,11 @@ class DataManager(Observable):
         @param **kwargs: Wrapped kwargs
         '''
         if self.stopped():
-            aimslog.warn('Attempt to call stopped DM listener {}'.format(self.getName()))
+            aimslog.warning('Attempt to call stopped DM listener {}'.format(self.getName()))
             return
         aimslog.info('DM Listen A[{}], K[{}] - {}'.format(args,kwargs,observable))
         args += (self._monitor(args[0]),)#observable),)
-        #chained notify/listen calls
+        # This notifies the registered UIDataManager class via the DMObserver and should pass through all the FeedRef data to be updated in the UI side of the plugin
         if hasattr(self,'registered') and self.registered: 
             self.registered.observe(observable, *args, **kwargs)
         self._check()
@@ -120,10 +121,11 @@ class DataManager(Observable):
         ts = '{0:%y%m%d.%H%M%S}'.format(DT.now())
         params = ('DSF..{}.{ts}'.format(etft,ts=ts),etft,self.persist.tracker[etft],self.conf)
         #self.ioq[etft] = {n:Queue.Queue() for n in ('in','out','resp')}
-        dq =  {n:Queue.Queue() for n in ('in','out','resp')}
+        dq =  {n:queue.Queue() for n in ('in','out','resp')}
         ds = feedclass(params,dq)
         ds.setup(self.persist.coords['sw'],self.persist.coords['ne'])
-        ds.setDaemon(True)
+        # ds.setDaemon(True)
+        ds.daemon = True
         ds.setName('DS{}'.format(etft))
         return ds,dq    
     
@@ -146,7 +148,7 @@ class DataManager(Observable):
         '''Safety method to check if a DataSync thread has crashed and restart it'''
         for etft in self._start:
             if self._confirmstart(etft):
-                aimslog.warn('DS thread {} absent, starting'.format(etft))
+                aimslog.warning('DS thread {} absent, starting'.format(etft))
                 #del self.ds[etft]
                 self._checkDS(etft)
                 
@@ -156,7 +158,7 @@ class DataManager(Observable):
         @param etft: FeedRef of requested thread test
         @type etft: FeedRef
         ''' 
-        return int(self.persist.tracker[etft]['threads'])>0 and not (self.ds.has_key(etft) and self.ds[etft] and self.ds[etft].isAlive())
+        return int(self.persist.tracker[etft]['threads'])>0 and not (self.ds.get(etft) and self.ds[etft] and self.ds[etft].is_alive())
     
     #Client Access
     def setbb(self,sw=None,ne=None):
@@ -176,12 +178,12 @@ class DataManager(Observable):
             #save the new coordinates
             self.persist.coords['sw'],self.persist.coords['ne'] = sw,ne
             #kill the old features thread
-            if self.ds[etft] and self.ds[etft].isAlive():
+            if self.ds[etft] and self.ds[etft].is_alive():
                 aimslog.info('Attempting Features Thread STOP')
                 self.ds[etft].stop()
                 self.ds[etft].join(THREAD_JOIN_TIMEOUT)
                 #TODO investigate thread non-stopping issues
-                if self.ds[etft].isAlive(): aimslog.warn('SetBB Features. ! Thread JOIN timeout')
+                if self.ds[etft].is_alive(): aimslog.warning('SetBB Features. ! Thread JOIN timeout')
             del self.ds[etft]
             #reinitialise a new features DataSync
             #self._initFeedDSChecker(etft)
@@ -196,16 +198,16 @@ class DataManager(Observable):
         @type etft: FeedRef
         ''' 
         #NB UI feature request. 
-        aimslog.warn('WARNING {} Thread Restart requested'.format(etft))
-        if self.ds.has_key(etft) and self.ds[etft] and self.ds[etft].isAlive():
+        aimslog.warning('WARNING {} Thread Restart requested'.format(etft))
+        if self.ds.get(etft) and self.ds[etft] and self.ds[etft].is_alive():
             self.ds[etft].stop() 
             self.ds[etft].join(THREAD_JOIN_TIMEOUT)
-            if self.ds[etft].isAlive(): aimslog.warn('{} ! Thread JOIN timeout'.format(etft))
+            if self.ds[etft].is_alive(): aimslog.warning('{} ! Thread JOIN timeout'.format(etft))
         #del self.ds[etft]
         elif not isinstance(etft,FeedRef):
             aimslog.error('Invalid FeedRef on STOP request')
         else:
-            aimslog.warn('Requested thread {} does not exist')
+            aimslog.warning('Requested thread {} does not exist')
         self._check()
         
     def pull(self,etft=None):
@@ -241,7 +243,7 @@ class DataManager(Observable):
         '''
         resp = ()
         delflag = False
-        #while self.ioq.has_key((et,ft)) and not self.ioq[(et,ft)]['resp'].empty():
+        #while self.ioq.get((et,ft)) and not self.ioq[(et,ft)]['resp'].empty():
         while etft in FEEDS.values() and not self.ioq[etft]['resp'].empty():
             resp += (self.ioq[etft]['resp'].get(),)
             #don't delete the queue while we're still getting items from it, instead mark it for deletion
@@ -475,6 +477,7 @@ class DataManager(Observable):
     def _queueAction(self,feedref,atype,aorg):
         '''Queue and notify'''
         self.ioq[feedref]['in'].put({atype:(aorg,)})
+        # TODO: This is heavily linked to where everything is breaking. Investigate further.
         self.notify(feedref)
     
     #----------------------------
@@ -619,7 +622,8 @@ class Persistence():
         @type localds: String
         '''  
         try:
-            archive = pickle.load(open(localds,'rb'))
+            with open(localds,'rb') as lfs:
+                archive = pickle.load(lfs)
             #self.tracker,self.coords,self.ADL = archive
             self.tracker,self.ADL = archive
         except:
@@ -634,7 +638,8 @@ class Persistence():
         try:
             #archive = [self.tracker,self.coords,self.ADL]
             archive = [self.tracker,self.ADL]
-            pickle.dump(archive, open(localds,'wb'))
+            with open(localds,'rb') as lfs:
+                pickle.dump(archive, lfs)
         except:
             return False
         return True

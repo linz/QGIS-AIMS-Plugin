@@ -18,16 +18,16 @@ import re
 import logging
 import time
 import threading
-import Queue
+import queue
 
-from Observable import Observable
-from DataUpdater import DataUpdater,DataUpdaterAction,DataUpdaterApproval,DataUpdaterGroupAction,DataUpdaterGroupApproval,DataUpdaterUserAction
-from AimsApi import AimsApi 
-from AimsLogging import Logger
-from AimsUtility import ActionType,ApprovalType,GroupActionType,GroupApprovalType,UserActionType,FeedType,FeatureType,FeedRef,LogWrap,FEEDS
-from AimsUtility import AimsException
-from Const import MAX_FEATURE_COUNT,THREAD_JOIN_TIMEOUT,PAGE_LIMIT,POOL_PAGE_CHECK_DELAY,THREAD_KEEPALIVE,FIRST_PAGE,LAST_PAGE_GUESS,ENABLE_ENTITY_EVALUATION,NULL_PAGE_VALUE as NPV
-from FeatureFactory import FeatureFactory
+from AIMSDataManager.Observable import Observable
+from AIMSDataManager.DataUpdater import DataUpdater,DataUpdaterAction,DataUpdaterApproval,DataUpdaterGroupAction,DataUpdaterGroupApproval,DataUpdaterUserAction
+from AIMSDataManager.AimsApi import AimsApi 
+from AIMSDataManager.AimsLogging import Logger
+from AIMSDataManager.AimsUtility import ActionType,ApprovalType,GroupActionType,GroupApprovalType,UserActionType,FeedType,FeatureType,FeedRef,LogWrap,FEEDS
+from AIMSDataManager.AimsUtility import AimsException
+from AIMSDataManager.Const import MAX_FEATURE_COUNT,THREAD_JOIN_TIMEOUT,PAGE_LIMIT,POOL_PAGE_CHECK_DELAY,THREAD_KEEPALIVE,FIRST_PAGE,LAST_PAGE_GUESS,ENABLE_ENTITY_EVALUATION,NULL_PAGE_VALUE as NPV
+from AIMSDataManager.FeatureFactory import FeatureFactory
 aimslog = None
 
 FPATH = os.path.join('..',os.path.dirname(__file__)) #base of local datastorage
@@ -69,14 +69,13 @@ class DataRequestChannel(Observable):
         @param **kwargs: Wrapped kwargs
         '''
         if self.stopped(): 
-            aimslog.warn('DM attempt to call stopped DRC listener {}'.format(self.getName()))
+            aimslog.warning('DM attempt to call stopped DRC listener {}'.format(self.getName()))
             return
         aimslog.info('Processing request {}'.format(args[0]))
         if self.client.etft==args[0] and not self.client.inq.empty():
             changelist = self.client.inq.get()    
             aimslog.info('DRC {} - found {} items in queue'.format(self.client.etft,len(changelist)))
             self.client.processInputQueue(changelist)
-
     
 class DataSync(Observable):
     '''Background thread triggering periodic data updates and synchronising update requests from DM.'''
@@ -97,7 +96,7 @@ class DataSync(Observable):
         @param params: List of configuration parameters
         @type params: List<?>
         @param queues: List of IOR queues
-        @type queues: Dict<String,Queue.Queue>        
+        @type queues: Dict<String,queue.Queue>        
         '''
         #from DataManager import FEEDS
         super(DataSync,self).__init__()
@@ -111,7 +110,7 @@ class DataSync(Observable):
         self.inq = queues['in']
         self.outq = queues['out']
         self.respq = queues['resp']
-        #self._stop = threading.Event()
+        #self._xstop = threading.Event()
         
     def setup(self,sw=None,ne=None):
         '''Parameter setup for coordinate feature requests.
@@ -134,7 +133,7 @@ class DataSync(Observable):
         #brutal stop on du threads
         for du in self.duinst.values():
             du.stop()
-        self._stop.set()
+        self._xstop.set()
     
     def close(self):
         '''Alias of stop'''
@@ -187,7 +186,6 @@ class DataSync(Observable):
                     #print 'POOLADD 2',ref
             else:
                 pass
-                #print 'No addresses found in page {}{}'.format(FeedType.reverse[self.ft][:2].capitalize(),r['page'])
             
         if len(self.pool)==0:
             self.syncFeeds(self.newaddr)#syncfeeds does notify DM
@@ -246,13 +244,14 @@ class DataSync(Observable):
         @return: DataUpdater
         '''   
         params = (ref,self.conf,self.factory)
-        adrq = Queue.Queue()
+        adrq = queue.Queue()
         pager = self.updater(params,adrq)
         #address/feature requests called with bbox parameters
         if self.etft==FEEDS['AF']: pager.setup(self.etft,self.sw,self.ne,pno)
         else: pager.setup(self.etft,None,None,pno)
         pager.setName(ref)
-        pager.setDaemon(True)
+        # pager.setDaemon(True)
+        pager.daemon = True
         return pager
 
     #NOTE. To override the behaviour, return feed once full, override this method RLock
@@ -295,7 +294,7 @@ class DataSyncFeatures(DataSync):
         @param params: List of configuration parameters
         @type params: List<?>
         @param queues: List of IOR queues
-        @type queues: Dict<String,Queue.Queue>
+        @type queues: Dict<String,queue.Queue>
         '''
         super(DataSyncFeatures,self).__init__(params,queues)
         #self.ftracker = {'page':[1,1],'index':1,'threads':2,'interval':30}
@@ -316,7 +315,7 @@ class DataSyncFeeds(DataSync):
         @param params: List of configuration parameters
         @type params: List<?>
         @param queues: List of IOR queues
-        @type queues: Dict<String,Queue.Queue>   
+        @type queues: Dict<String,queue.Queue>   
         '''
         super(DataSyncFeeds,self).__init__(params,queues)
         self.drc = DataSyncFeeds.setupDRC(self,params[0])
@@ -332,7 +331,8 @@ class DataSyncFeeds(DataSync):
         '''
         drc = DataRequestChannel(client)
         drc.setName('DRC.{}'.format(p0))
-        drc.setDaemon(True)
+        # drc.setDaemon(True)
+        drc.daemon = True
         return drc
         
     def run(self):
@@ -379,8 +379,9 @@ class DataSyncFeeds(DataSync):
         self.duinst[ref].setup(self.etft,at,feature,None)
         #print 'PROCESS FEAT',self.etft,ref
         self.duinst[ref].setName(ref)
-        self.duinst[ref].setDaemon(True)
-        self.duinst[ref].start()
+        # self.duinst[ref].setDaemon(True)
+        self.duinst[ref].daemon = True
+        self.duinst[ref].start() # <-- Step into me... for testing
         #self.duinst[ref].join()
         return ref
     
@@ -402,7 +403,7 @@ class DataSyncAdmin(DataSyncFeeds):
         @param params: List of configuration parameters
         @type params: List<?>
         @param queues: List of IOR queues
-        @type queues: Dict<String,Queue.Queue>
+        @type queues: Dict<String,queue.Queue>
         '''
         super(DataSyncAdmin,self).__init__(params,queues)
         #self.drc = DataSyncAdmin.setupDRC(self,params[0])

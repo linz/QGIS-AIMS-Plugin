@@ -14,17 +14,24 @@ import threading
 notify_lock = threading.RLock()
 sync_lock = threading.RLock()
 
+from AIMSDataManager.AimsLogging import Logger
+
+aimslog = None
+
 #TODO Split into observer and observed subclasses and multiply inherit depending on roles
 
 class Observable(threading.Thread):
     '''Class implementing interface for the observer pattern.
     Differs from regular pattern as it splits notify() into notify() and observe() functions'''
 
+    global aimslog
+    aimslog = Logger.setup()
+
     def __init__(self): 
         '''Initialise new observable class explicitly including threading stop function'''
         super(Observable,self).__init__()       
         #threading.Thread.__init__(self)
-        self._stop = threading.Event()
+        self._xstop = threading.Event()
         self._observers = []
 
     def register(self, observer):
@@ -59,11 +66,11 @@ class Observable(threading.Thread):
     
     #Explicit stop in observable to prevent notifications on stopped threads    
     def stop(self):
-        self._stop.set()
+        self._xstop.set()
         
     def go(self):
-        self._stop.clear()
+        self._xstop.clear()
 
     def stopped(self):
-        return self._stop.isSet()
+        return self._xstop.isSet()
     

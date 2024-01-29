@@ -16,16 +16,16 @@ import os
 import sys
 import re
 import logging
-
 import threading
-from AimsApi import AimsApi 
-from AimsUtility import FeedRef,ActionType,ApprovalType,GroupActionType,GroupApprovalType,UserActionType,FeatureType,FeedType,SupplementalHack
-from AimsUtility import AimsException
-from Const import ENABLE_ENTITY_EVALUATION,MERGE_RESPONSE,MERGE_EXCLUDE,MAX_FEATURE_COUNT
-from Address import Entity, EntityValidation, EntityAddress
-from AimsLogging import Logger
-from FeatureFactory import FeatureFactory
-from Observable import Observable
+
+from AIMSDataManager.AimsApi import AimsApi 
+from AIMSDataManager.AimsUtility import FeedRef,ActionType,ApprovalType,GroupActionType,GroupApprovalType,UserActionType,FeatureType,FeedType,SupplementalHack
+from AIMSDataManager.AimsUtility import AimsException
+from AIMSDataManager.Const import ENABLE_ENTITY_EVALUATION,MERGE_RESPONSE,MERGE_EXCLUDE,MAX_FEATURE_COUNT
+from AIMSDataManager.Address import Entity, EntityValidation, EntityAddress
+from AIMSDataManager.AimsLogging import Logger
+from AIMSDataManager.FeatureFactory import FeatureFactory
+from AIMSDataManager.Observable import Observable
 
 aimslog = None
 
@@ -57,7 +57,7 @@ class DataUpdater(Observable):
         super(DataUpdater,self).__init__()
         self.ref,self.conf,self.factory = params
         self.queue = queue
-        #self._stop = threading.Event()
+        #self._xstop = threading.Event()
         self.api = AimsApi(self.conf)    
         
     def setup(self,etft,sw,ne,pno):
@@ -83,7 +83,8 @@ class DataUpdater(Observable):
         #    featlist.append(self.processPage(page,self.etft))
         ce,pages = self.api.getOnePage(self.etft,self.sw,self.ne,self.pno)  
         if any(ce.values()): aimslog.error('Single-page request failure {}'.format(ce))       
-        if pages.has_key('entities'): 
+        # TODO: Confirm if we want to allow an empty list of entities to pass through without an error otherwise use if pages.get('entities'):  
+        if pages.get('entities') is not None: 
             for page in pages['entities']:
                 featlist.append(self.processPage(page,self.etft))     
         else:
@@ -164,7 +165,7 @@ class DataUpdater(Observable):
         '''
         featurelist = []
         a = fact(model=feat['properties'])
-        if feat.has_key('entities'):
+        if feat.get('entities'):
             for e in feat['entities']:
                 featurelist.append(self._populateEntity(e))
             a._setEntities(featurelist)
@@ -239,10 +240,10 @@ class DataUpdater(Observable):
         else: raise DataUpdaterSelectionException('Select Address,Groups or Users')
         
     def stop(self):
-        self._stop.set()
+        self._xstop.set()
 
     def stopped(self):
-        return self._stop.isSet()
+        return self._xstop.isSet()
     
     def close(self):
         aimslog.info('Queue {} stopped'.format(self.queue.qsize()))
@@ -321,11 +322,11 @@ class DataUpdaterDRC(DataUpdater):
         _,cid = SupplementalHack.strip(self.identifier)
         ce,jc = self.api.getOneFeature(FeedRef((self.etft.et,self.oft)),cid)
         if any(ce.values()): aimslog.error('Single-feature request failure {}'.format(ce))
-        if jc['properties'].has_key('version'):
+        if jc['properties'].get('version'):
             return jc['properties']['version']
         else:
             #WORKAROUND
-            aimslog.warn('No version number available for address/groupId={}'.format(self.identifier))
+            aimslog.warning('No version number available for address/groupId={}'.format(self.identifier))
             return 1    
         
     def run(self):

@@ -8,13 +8,15 @@
 # LICENSE file for more information.
 #
 ################################################################################
-from Config import ConfigReader
 from functools import wraps, partial
 import time
 import os
 import re
-from AimsLogging import Logger
-from Const import HACK_SUP_IND
+from collections import UserDict
+
+from AIMSDataManager.Config import ConfigReader
+from AIMSDataManager.AimsLogging import Logger
+from AIMSDataManager.Const import HACK_SUP_IND
 
 aimslog = Logger.setup()
 
@@ -104,7 +106,7 @@ class Enumeration(object):
         @return: Returns type representing enumerated list
         '''
         enums = dict( zip([s for s in seq],range(len(seq))) ,**named)
-        reverse = dict((value, key) for key, value in enums.iteritems())
+        reverse = dict((value, key) for key, value in enums.items())
         
         enums['reverse'] = reverse 
         enums['__iter__'] = IterEnum.__iter__
@@ -170,6 +172,13 @@ class FeedRef(object):
     @ft.setter
     def ft(self,ft): pass#self._ft = ft
 
+class Feeder(UserDict):
+    '''Custom dictionary class extending collections.UserDict. This was required due to the deprecated function of appending to the dict_values of a dictionary in python 2.7
+    Previously this would return a list of values whereas now it returns a dict_values object which is immutable. Have backported this functionality for use in the feeds
+    to avoid mass refactoring of the code.'''
+
+    def values(self):
+        return list(v for v in self.data.values())
 
 FeedType = Enumeration.enum('FEATURES','CHANGEFEED','RESOLUTIONFEED','ADMIN')
 FeatureType = Enumeration.enum('ADDRESS','GROUPS','USERS')
@@ -201,13 +210,13 @@ UserActionType = Enumeration.enum('ADD','DELETE','UPDATE')
 UserActionType.PATH =            ('','','')
 UserActionType.HTTP =            ('POST','DELETE','PUT')
 
-FEED0 = {'UA':FeedRef((FeatureType.USERS,FeedType.ADMIN))}
-FEEDS = {'AF':FeedRef((FeatureType.ADDRESS,FeedType.FEATURES)),'AC':FeedRef((FeatureType.ADDRESS,FeedType.CHANGEFEED)),
+FEED0 = Feeder({'UA':FeedRef((FeatureType.USERS,FeedType.ADMIN))})
+FEEDS = Feeder({'AF':FeedRef((FeatureType.ADDRESS,FeedType.FEATURES)),'AC':FeedRef((FeatureType.ADDRESS,FeedType.CHANGEFEED)),
          'AR':FeedRef((FeatureType.ADDRESS,FeedType.RESOLUTIONFEED)),'GC':FeedRef((FeatureType.GROUPS,FeedType.CHANGEFEED)),
-         'GR':FeedRef((FeatureType.GROUPS,FeedType.RESOLUTIONFEED))}
+         'GR':FeedRef((FeatureType.GROUPS,FeedType.RESOLUTIONFEED))})
 FEEDS.update(FEED0) 
-FIRST = {'AC':FeedRef((FeatureType.ADDRESS,FeedType.CHANGEFEED)),'AR':FeedRef((FeatureType.ADDRESS,FeedType.RESOLUTIONFEED)),
-         'GC':FeedRef((FeatureType.GROUPS,FeedType.CHANGEFEED)), 'GR':FeedRef((FeatureType.GROUPS,FeedType.RESOLUTIONFEED))}
+FIRST = Feeder({'AC':FeedRef((FeatureType.ADDRESS,FeedType.CHANGEFEED)),'AR':FeedRef((FeatureType.ADDRESS,FeedType.RESOLUTIONFEED)),
+         'GC':FeedRef((FeatureType.GROUPS,FeedType.CHANGEFEED)), 'GR':FeedRef((FeatureType.GROUPS,FeedType.RESOLUTIONFEED))})
 
 PersistActionType = Enumeration.enum('INIT', 'APPEND', 'REPLACE', 'ALL')
 

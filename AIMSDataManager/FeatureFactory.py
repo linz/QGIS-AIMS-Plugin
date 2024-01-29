@@ -14,25 +14,12 @@
 #http://devassgeo01:8080/aims/api/address/features - properties
 import re
 import os
-from AimsUtility import FeatureType,ActionType,ApprovalType,FeedType
-from AimsUtility import AimsException,InvalidEnumerationType
-from Const import SKIP_NULL, DEF_SEP,RES_PATH
-from Address import Address,AddressChange,AddressResolution,Position
-from AimsLogging import Logger
 
-P = os.path.join(os.path.dirname(__file__),'../resources/')
-
-# ET = FeatureType.ADDRESS
-# 
-# TP = {'{}.{}'.format(FeatureType.reverse[ET].lower(),a):b for a,b in zip(
-#         [FeedType.reverse[ft].lower() for ft in FeedType.reverse],
-#         [   {},
-#             {ActionType.reverse[at].lower():None for at in ActionType.reverse},
-#             {ApprovalType.reverse[at].lower():None for at in ApprovalType.reverse}
-#         ]
-#         )
-#     }
-#AT = {FeedType.FEATURES:Address,FeedType.CHANGEFEED:AddressChange,FeedType.RESOLUTIONFEED:AddressResolution}
+from AIMSDataManager.AimsUtility import FeatureType,ActionType,ApprovalType,FeedType
+from AIMSDataManager.AimsUtility import AimsException,InvalidEnumerationType
+from AIMSDataManager.Const import SKIP_NULL, DEF_SEP,RES_PATH
+from AIMSDataManager.Address import Address,AddressChange,AddressResolution,Position
+from AIMSDataManager.AimsLogging import Logger
 
 aimslog = None
  
@@ -65,18 +52,18 @@ class FeatureFactory(object):
         '''
         #NOTE. Double duty for ft, consider (et,ft) - since enums are just ints et.g=ft.f
         if etft.et==FeatureType.GROUPS:
-            from GroupFactory import GroupChangeFactory,GroupResolutionFactory
+            from .GroupFactory import GroupChangeFactory,GroupResolutionFactory
             if etft.ft==FeedType.CHANGEFEED: return GroupChangeFactory(etft)
             elif etft.ft==FeedType.RESOLUTIONFEED: return GroupResolutionFactory(etft)
             else: raise InvalidEnumerationType('FeedType {} not available'.format(etft))
         elif etft.et==FeatureType.ADDRESS:
-            from AddressFactory import AddressFactory,AddressChangeFactory,AddressResolutionFactory
+            from .AddressFactory import AddressFactory,AddressChangeFactory,AddressResolutionFactory
             if etft.ft==FeedType.FEATURES: return AddressFactory(etft)
             elif etft.ft==FeedType.CHANGEFEED: return AddressChangeFactory(etft)
             elif etft.ft==FeedType.RESOLUTIONFEED: return AddressResolutionFactory(etft)
             else: raise InvalidEnumerationType('FeedType {} not available'.format(etft.ft))
         elif etft.et==FeatureType.USERS:
-            from UserFactory import UserFactory
+            from .UserFactory import UserFactory
             if etft.ft==FeedType.ADMIN: return UserFactory(etft)
             else: raise InvalidEnumerationType('FeedType {} not available'.format(etft.ft))
         else: raise InvalidEnumerationType('FeatureType {} not available'.format(etft.et))
@@ -89,7 +76,7 @@ class FeatureFactory(object):
         @type ppi: String
         @return: List if possible attributes or a default attribute
         '''
-        sppi = ppi.encode('utf8') if hasattr(ppi,'find') else str(ppi)
+        sppi = str(ppi)
         if sppi.find('#')>-1:
             dflt = re.search('default=(\w+)',sppi)
             oneof = re.search('oneof=(\w+)',sppi)#first as default
@@ -115,25 +102,19 @@ class FeatureFactory(object):
                 tp[t1]['response'] = eval(tstr) if tstr else ''
         return tp
     
+# BUG: Refactored this to use isinstance instead of hasattr since in python 3, strings have the attribute __iter__
+# which caused a recursion error in the previous staticmethod.     
     @staticmethod
     def _delNull(obj):
-        '''Removes Null/empty attributes from dict of attributes
-        @param obj: Object to strip of null values
-        @return: Stripped down object
-        '''
-        if hasattr(obj, 'items'):
-            new_obj = type(obj)()
-            for k in obj:
-                #if k != 'NULL' and obj[k] != 'NULL' and obj[k] != None:
-                if k and obj[k]:
+        if isinstance(obj, dict):
+            new_obj = dict()
+            for k in obj.keys():
+                if k and obj.get(k) is not None:
                     res = FeatureFactory._delNull(obj[k])
                     if res: new_obj[k] = res
-        elif hasattr(obj, '__iter__'):
-            new_obj = [] 
+        elif isinstance(obj, list) or isinstance(obj, tuple):
+            new_obj = list()
             for it in obj:
-                #if it != 'NULL' and it != None:
                 if it: new_obj.append(FeatureFactory._delNull(it))
         else: return obj
         return type(obj)(new_obj)
-    
-           

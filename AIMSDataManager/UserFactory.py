@@ -15,15 +15,12 @@
 import re
 import os
 import copy
-from FeatureFactory import FeatureFactory
-from AimsUtility import FeedType,FeatureType,UserActionType
-from Const import SKIP_NULL, DEF_SEP
-from User import User
-from User import UserException
-from AimsLogging import Logger
-#from FeatureFactory import TemplateReader
-
-#P = os.path.join(os.path.dirname(__file__),'../resources/')
+from AIMSDataManager.FeatureFactory import FeatureFactory
+from AIMSDataManager.AimsUtility import FeedType,FeatureType,UserActionType
+from AIMSDataManager.Const import SKIP_NULL, DEF_SEP
+from AIMSDataManager.User import User
+from AIMSDataManager.User import UserException
+from AIMSDataManager.AimsLogging import Logger
 
 ET = FeatureType.USERS
 
@@ -217,11 +214,11 @@ def test():
     uc3 = uf_f.convert(uxx,UserActionType.DELETE)
 
     
-    print 'ADD'
+    print('ADD')
     pp(uc1)
-    print 'UPD'
+    print('UPD')
     pp(uc2)
-    print 'DEL'
+    print('DEL')
     pp(uc3)
 
 

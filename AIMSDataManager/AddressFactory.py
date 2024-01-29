@@ -15,15 +15,13 @@
 import re
 import os
 import copy
-from FeatureFactory import FeatureFactory
-from AimsUtility import FeatureType,ActionType,ApprovalType,FeedType,InvalidEnumerationType,FeedRef
-from Const import SKIP_NULL, DEF_SEP
-from Address import Address,AddressChange,AddressResolution,Position
-from Address import AddressException
-from AimsLogging import Logger
-#from FeatureFactory import TemplateReader
 
-#P = os.path.join(os.path.dirname(__file__),'../resources/')
+from AIMSDataManager.FeatureFactory import FeatureFactory
+from AIMSDataManager.AimsUtility import FeatureType,ActionType,ApprovalType,FeedType,InvalidEnumerationType,FeedRef
+from AIMSDataManager.Const import SKIP_NULL, DEF_SEP
+from AIMSDataManager.Address import Address,AddressChange,AddressResolution,Position
+from AIMSDataManager.Address import AddressException
+from AIMSDataManager.AimsLogging import Logger
 
 ET = FeatureType.ADDRESS
 
@@ -35,7 +33,6 @@ TP = {'{}.{}'.format(FeatureType.reverse[ET].lower(),a):b for a,b in zip(
         ]
         )
     }
-#AT = {FeedType.FEATURES:Address,FeedType.CHANGEFEED:AddressChange,FeedType.RESOLUTIONFEED:AddressResolution}
 
 aimslog = None
    
@@ -255,18 +252,18 @@ def test():
     ar1d = af_r.convert(ar1,ApprovalType.DECLINE)
     ar1u = af_r.convert(ar1,ApprovalType.UPDATE)
     
-    print 'CHGF-ADD'
+    print('CHGF-ADD')
     pp(ac1a)
-    print 'CHGF-RET'
+    print('CHGF-RET')
     pp(ac1r)
-    print 'CHGF-UPD'
+    print('CHGF-UPD')
     pp(ac1u)
     
-    print 'RESF-ACC'
+    print('RESF-ACC')
     pp(ar1a)
-    print 'RESF-DEC'
+    print('RESF-DEC')
     pp(ar1d)
-    print 'RESF-UPD'
+    print('RESF-UPD')
     pp(ar1u)
 
             

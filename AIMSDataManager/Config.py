@@ -11,7 +11,7 @@
 import os
 import sys
 import re
-import ConfigParser
+import configparser
 from string import whitespace
 
 from qgis.core import QgsApplication
@@ -24,9 +24,16 @@ try:
 except:
     USE_PLAINTEXT = True
 
+# HG Added
+from .AimsLogging import Logger
+aimslog = Logger.setup()
+
 UNAME = os.environ['USERNAME'] if re.search('win',sys.platform) else os.environ['LOGNAME']
 DEF_CONFIG = {'db':{'host':'127.0.0.1'},'user':{'name':UNAME}}
 AIMS_CONFIG  = os.path.join(QgsApplication.qgisSettingsDirPath(), "aims", "aimsConfig.ini")
+
+# For Unit Testing, outside of QGIS, set path to your .ini file here as QgsApplication.qgisSettingsDirPath() resolves to '' if not called from QGIS
+if AIMS_CONFIG == 'aims\\aimsConfig.ini': AIMS_CONFIG = r"C:\Users\spm\AppData\Roaming\QGIS\QGIS3\profiles\default\aims\aimsConfig.ini"
 
 if not USE_PLAINTEXT:
     K='12345678901234567890123456789012'
@@ -38,7 +45,7 @@ if not USE_PLAINTEXT:
 
 class ConfigReader(object):
     '''Reader class for configparser object'''
-    cp = ConfigParser.ConfigParser()
+    cp = configparser.ConfigParser()
     
     def __init__(self):
         self.cp.read(AIMS_CONFIG)
@@ -95,8 +102,8 @@ class ConfigReader(object):
     
     @staticmethod
     def readp():
-        from Const import CT_IND      
-        cp = ConfigParser.ConfigParser()
+        from .Const import CT_IND      
+        cp = configparser.ConfigParser()
         cp.read(AIMS_CONFIG)
         sometext = cp.get('user','pass')
         if USE_PLAINTEXT:
@@ -112,8 +119,8 @@ class ConfigReader(object):
 
     @staticmethod  
     def _writep(plaintext):
-        from Const import CT_IND      
-        cp = ConfigParser.ConfigParser()
+        from .Const import CT_IND      
+        cp = configparser.ConfigParser()
         cp.read(AIMS_CONFIG)
         user = getpass.getuser()
         aes = AES.new(K, AES.MODE_CBC,pad(user))
@@ -126,10 +133,10 @@ class ConfigReader(object):
 def test():
     #ConfigReader.writep('secretpassword')
     p = ConfigReader.readp()
-    print p
+    print(p)
     
     p = ConfigReader.readp()
-    print p
+    print(p)
     
     ConfigReader._writep(p)
     

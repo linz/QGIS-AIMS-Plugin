@@ -12,10 +12,10 @@
 ################################################################################
 
 #http://devassgeo01:8080/aims/api/sdmin/users
-from AimsUtility import UserActionType
-from AimsUtility import AimsException
-from AimsLogging import Logger
-from Feature import Feature
+from AIMSDataManager.AimsUtility import UserActionType
+from AIMSDataManager.AimsUtility import AimsException
+from AIMSDataManager.AimsLogging import Logger
+from AIMSDataManager.Feature import Feature
        
 class UserException(AimsException): pass
  

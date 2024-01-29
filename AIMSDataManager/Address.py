@@ -14,17 +14,14 @@
 '''Address module containing data classes representing basic address object as returned from the AIMS API feature.change and resolution feeds'''
 
 #http://devassgeo01:8080/aims/api/address/features - properties
-from AimsUtility import FeatureType,ActionType,ApprovalType,FeedType,FeedRef
-from AimsUtility import AimsException
-from AimsLogging import Logger
-from Feature import Feature,FeatureMetaData
 from collections import OrderedDict
 
+from AIMSDataManager.AimsUtility import FeatureType,ActionType,ApprovalType,FeedType,FeedRef
+from AIMSDataManager.AimsUtility import AimsException
+from AIMSDataManager.AimsLogging import Logger
+from AIMSDataManager.Feature import Feature,FeatureMetaData
 
-#aimslog = None
-#global aimslog
 aimslog = Logger.setup()
-
 
 class AddressException(AimsException): pass
       
@@ -158,7 +155,7 @@ class Supplemental(object):
         '''
         s = Supplemental()
         #WORKAROUND
-        if d<>SDEF and d['class'][0]=='validation': s.set(d)
+        if d != SDEF and d['class'][0]=='validation': s.set(d)
         else: aimslog.debug('Supplemental something {}'.format(d['class'][0]))
         return s
         
@@ -244,7 +241,7 @@ class Entity(object):
         '''
         e = Entity()
         #WORKAROUND
-        if d<>EDEF and d['class'][0]=='validation': e.set(d)
+        if d != EDEF and d['class'][0]=='validation': e.set(d)
         else: aimslog.debug('Entites non-validation type {}'.format(d['class'][0]))
         return e
         
@@ -580,7 +577,7 @@ def test():
     a3.setRoadName('Jones Road')
     
     
-    print a1,a2,a3
+    print(a1,a2,a3)
 
     r2 = af2.convert(a2,ActionType.UPDATE)
     r3 = af3.convert(a3,ApprovalType.UPDATE)

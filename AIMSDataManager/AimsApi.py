@@ -14,12 +14,11 @@ import httplib2
 import json
 import re
 
-from Address import Address,AddressChange,AddressResolution#,AimsWarning
-from Config import ConfigReader
-from AimsUtility import FeatureType,ActionType,ApprovalType,GroupActionType,GroupApprovalType,UserActionType,FeedType,LogWrap,FeedRef,SupplementalHack
-from AimsUtility import AimsException
-from Const import MAX_FEATURE_COUNT,TEST_MODE
-from AimsLogging import Logger
+from AIMSDataManager.Address import Address,AddressChange,AddressResolution#,AimsWarning
+from AIMSDataManager.Config import ConfigReader
+from AIMSDataManager.AimsUtility import FeatureType,ActionType,ApprovalType,GroupActionType,GroupApprovalType,UserActionType,FeedType,LogWrap,FeedRef,SupplementalHack,AimsException
+from AIMSDataManager.Const import MAX_FEATURE_COUNT,TEST_MODE
+from AIMSDataManager.AimsLogging import Logger
 
 
 aimslog = Logger.setup()
@@ -62,10 +61,13 @@ class AimsApi(object):
         @return: Dict of categorised error messages
         '''        
         ce = {'reject':(),'error':(),'warning':(),'info':()}
-        if str(resp) in ('400', '404', '200', '201') and jcontent.has_key('entities'):
+        # TODO: Confirm this, and investigate whether we want to be returning a General Exception rejection error if an empty list is returned
+        # Return empty list of entities instead of a general exception 200 due to no entities.
+        if str(resp) in ('400', '404', '200', '201') and jcontent.get('entities') is not None: # len(jcontent.get('entities') > 0):
+        # if str(resp) in ('400', '404', '200', '201') and jcontent['entities']:
 
             for entity in jcontent['entities']:
-                if entity['properties'].has_key('severity'):
+                if entity['properties'].get('severity'):
                     if entity['properties']['severity'] == 'Reject':
                         ce['reject'] += (entity['properties']['description'],)
                     elif entity['properties']['severity'] == 'Warning':
@@ -174,6 +176,7 @@ class AimsApi(object):
         ft = FeedType.reverse[etft.ft].lower()
         url = '/'.join((self._url,et,ft.lower(),str(cid) if cid else '')).rstrip('/')
         #if count: url += '?count={}'.format(count)
+        aimslog.info(f'Get One Feature: {url} -- ETFT: {etft} -- CID: {cid} -- ET: {et} -- FT: {ft.lower()}')
         resp, content = self._request(url,'GET', headers = self._headers)
         return self.handleResponse(url,resp["status"], json.loads(content))
         #return jcontent        

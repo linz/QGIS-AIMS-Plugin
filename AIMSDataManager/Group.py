@@ -12,21 +12,17 @@
 ################################################################################
 
 #http://devassgeo01:8080/aims/api/address/features - properties
-from AimsUtility import ActionType,ApprovalType,FeedType
-from AimsUtility import AimsException
-from AimsLogging import Logger
-from Feature import Feature 
+from AIMSDataManager.AimsUtility import ActionType,ApprovalType,FeedType
+from AIMSDataManager.AimsUtility import AimsException
+from AIMSDataManager.AimsLogging import Logger
+from AIMSDataManager.Feature import Feature 
 
-
-#aimslog = None
-
-        
 class GroupException(AimsException): pass 
 
 #------------------------------------------------------------------------------
 # G R O U P 
 
-class  Group(Feature):
+class Group(Feature):
     '''AIMS defined Group class which acts as a container for Feature objects'''
     
     #global aimslog

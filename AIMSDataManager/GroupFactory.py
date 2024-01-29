@@ -15,15 +15,13 @@
 import re
 import os
 import copy
-from FeatureFactory import FeatureFactory
-from AimsUtility import FeatureType,GroupActionType,GroupApprovalType,FeedType
-from Const import SKIP_NULL, DEF_SEP
-from Group import Group,GroupChange,GroupResolution
-from Group import GroupException
-from AimsLogging import Logger
-#from FeatureFactory import TemplateReader
 
-#P = os.path.join(os.path.dirname(__file__),'../resources/')
+from AIMSDataManager.FeatureFactory import FeatureFactory
+from AIMSDataManager.AimsUtility import FeatureType,GroupActionType,GroupApprovalType,FeedType
+from AIMSDataManager.Const import SKIP_NULL, DEF_SEP
+from AIMSDataManager.Group import Group,GroupChange,GroupResolution
+from AIMSDataManager.Group import GroupException
+from AIMSDataManager.AimsLogging import Logger
 
 ET = FeatureType.GROUPS
 
@@ -236,18 +234,18 @@ def test():
     ac6 = gf_f.convert(axx,GroupActionType.REMOVE)
 
     
-    print 'CHGF-REP'
+    print('CHGF-REP')
     pp(ac1)
-    print 'CHGF-SUB'
+    print('CHGF-SUB')
     pp(ac2)
-    print 'CHGF-CLS'
+    print('CHGF-CLS')
     pp(ac3)
     
-    print 'RESF-ADR'
+    print('RESF-ADR')
     pp(ac4)
-    print 'RESF-ADD'
+    print('RESF-ADD')
     pp(ac5)
-    print 'RESF-REM'
+    print('RESF-REM')
     pp(ac6)
 
             

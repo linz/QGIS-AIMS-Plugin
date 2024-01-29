@@ -14,7 +14,7 @@
 # To prevent this we have to hold a _ref to sys to keep it from being deleted
 
 import sys
-from Config import ConfigReader
+from AIMSDataManager.Config import ConfigReader
 
 class const:
     '''Const class that reads config stored values and presents them as constant values that can be imported'''
@@ -33,7 +33,7 @@ class const:
         @param name: Attribute name
         @param value: Attribute value
         '''
-        if self.__dict__.has_key(name):
+        if self.__dict__.get(name):
             raise self.ConstError('Can\'t rebind const {}'.format(name))
         self.__dict__[name]=value
         

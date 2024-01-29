@@ -14,9 +14,10 @@
 #http://devassgeo01:8080/aims/api/address/features - properties
 import hashlib
 import re
-from AimsUtility import FeatureType,ActionType,ApprovalType,FeedType
-from AimsLogging import Logger
+from functools import reduce
 
+from AIMSDataManager.AimsUtility import FeatureType,ActionType,ApprovalType,FeedType
+from AIMSDataManager.AimsLogging import Logger
 
 aimslog = None
 
@@ -142,8 +143,9 @@ class Feature(object):
         '''
         #discard all list/nested attributes? This should be okay since we capture the version addess|changeId in the top level
         s0 = [getattr(self,z) for z in self.__dict__.keys() if z not in HASH_EXCLUDES]
-        s1 = [str(z) for z in s0 if isinstance(z,(int,float,long,complex))]
-        s2 = [z.encode('utf8') for z in s0 if isinstance(z,(basestring)) and z not in s1]
+        # Encode still required as the hashlib.md5 function doesn't handle unicode. Encoding to bytestrings required for both s1 and s2 lists
+        s1 = [str(z).encode() for z in s0 if isinstance(z,(int,float,int,complex))]
+        s2 = [z.encode() for z in s0 if isinstance(z, str) and z not in s1]
         #return reduce(lambda x,y: x.update(y), s1+s2,hashlib.md5()) #reduce wont recognise haslib objs
         self.setMeta()
         self.meta.hash = hashlib.md5(reduce(lambda x,y: x+y, s1+s2)).hexdigest()
@@ -159,7 +161,7 @@ class Feature(object):
         @return: Manual deepcop of Feature object 
         '''
         #duplicates only attributes set in source object
-        from FeatureFactory import FeatureFactory
+        from .FeatureFactory import FeatureFactory
         if not b: b = FeatureFactory.getInstance(a.type).get()
         for attr in a.__dict__.keys(): setattr(b,attr,getattr(a,attr))
         return b
