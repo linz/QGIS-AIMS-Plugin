@@ -15,12 +15,14 @@ Zealand Government.
 ##Test Coverage: 
 [![Coverage Status](https://coveralls.io/repos/linz/QGIS-AIMS-Plugin/badge.svg?branch=master&service=github)](https://coveralls.io/github/linz/QGIS-AIMS-Plugin?branch=master)
 --->
-## Dependencies
-* Qgis 2.6 (min version)
+##Dependencies
+	*Qgis 3.28 (min version)
 
-## Installation
+##Installation
 
  This plugin is under development. As development is undertaken and finalised further documentation will be supplied. 
 
-
+## Note
+For testing of individual pieces, if using a conda environment, you may need a hard link between the Qt5Core_conda.dll and the normal Qt5Core.dll
+`C:\windows\system32>mklink /h "C:\OSGeo4W\apps\Qt5\bin\Qt5Core_conda.dll" "C:\OSGeo4W\apps\Qt5\bin\Qt5Core.dll"`
  
