@@ -1,0 +1,558 @@
+{
+    "address.features" : {
+        "response" : {
+            "publishDate" : "1970-01-01",
+            "version" : 0,
+            "components" : {
+                "addressId" : 0,
+                "addressType" : null,
+                "primaryAddressId" : 0,
+                "alternativeOfAddressId" : 0,
+                "lifecycle" : null,
+                "unitType" : null,
+                "unitValue" : null,
+                "levelType" : null,
+                "levelValue" : null,
+                "addressNumberPrefix" : null,
+                "addressNumber" : 0,
+                "addressNumberSuffix" : null,
+                "addressNumberHigh" : null,
+                "roadCentrelineId" : 0,
+                "roadPrefix" : null,
+                "roadName" : null,
+                "roadType" : null,
+                "roadSuffix" : null,
+                "waterRoute" : null,
+                "waterName" : null,
+                "suburbLocality" : null,
+                "townCity" : null,
+                "fullAddressNumber" : 0,
+                "fullRoadName" : null,
+                "fullAddress" : null
+            },
+            "addressedObject" : {
+                "addressableObjectId" : 0,
+                "objectType" : null,
+                "objectName" : null,
+                "addressPositions" : [
+                    {
+                        "position" : {
+                            "type" : "Point",
+                            "coordinates" : [
+                                0,
+                                0
+                            ],
+                            "crs" : {
+                                "type" : "name",
+                                "properties" : {
+                                    "name" : "urn:ogc:def:crs:EPSG::4167"
+                                }
+                            }
+                        },
+                        "positionType" : null,
+                        "primary" : null
+                    }
+                ]
+            },
+            "codes" : {
+                "suburbLocalityId" : 0,
+                "parcelId" : 0,
+                "meshblock" : null,
+                "isMeshblockOverride" : false
+            }
+        }
+    },
+    "address.changefeed" : {
+        "add" : { 
+            "workflow" : {
+                "sourceUser" : null,
+                "sourceReason" : null
+            },
+            "components" : {
+                "addressType" : "#required,oneof=Road|Water",
+                "primaryAddressId" : null,
+                "alternativeOfAddressId" : null,
+                "externalAddressId" : null,
+                "externalAddressIdScheme" : null,
+                "lifecycle" : "#oneof=Proposed|Current|Retired",
+                "unitType" : null,
+                "unitValue" : null,
+                "levelType" : null,
+                "levelValue" : null,
+                "addressNumberPrefix" : null,
+                "addressNumber" : "#required",
+                "addressNumberSuffix" : null,
+                "addressNumberHigh" : null,
+                "roadCentrelineId" : null,
+                "roadPrefix" : null,
+                "roadName" : null,
+                "roadType" : null,
+                "roadSuffix" : null,
+                "waterRoute" : null,
+                "waterName" : null,
+                "suburbLocality" : null,
+                "townCity" : null
+            },
+            "codes" : {
+                "meshblock" : null
+            },
+            "addressedObject" : {
+                "objectType" : "#oneof=Parcel|Building",
+                "objectName" : null,
+                "addressPositions" : [
+                    {
+                        "position" : {
+                            "type" : "Point",
+                            "coordinates" : [
+                                0.0,
+                                0.0
+                            ],
+                            "crs" : {
+                                "type" : "name",
+                                "properties" : {
+                                    "name" : "urn:ogc:def:crs:EPSG::4167"
+                                }
+                            }
+                        },
+                        "positionType" : "#required,oneof=Unknown|Centroid|Label|Set Back Off Road",
+                        "primary" : false
+                    }
+                ],
+                "externalObjectId" : null,
+                "externalObjectIdScheme" : null,
+                "valuationReference" : null,
+                "certificateOfTitle" : null,
+                "appellation" : null
+            }
+        },
+        "response" : {
+            "changeId" : null,
+            "changeType" : "#oneof=Add|Update|Retire",
+            "workflow" : {    
+                "submitterUserName" : null,
+                "submittedDate" : null,
+                "reviewedUserName" : null,
+                "reviewedDate" : null,
+                "queueStatus" : "#oneof=Submitted|Under Review|Accepted|Declined",
+                "statusNotes" : null,
+                "sourceOrganisation" : null,
+                "sourceReason" : null
+            },
+            "components" : {
+                "addressId" : 0,
+                "addressType" : "#oneof=Road|Water",
+                "primaryAddressId" : 0,
+                "alternativeOfAddressId" : 0,
+                "externalAddressId" : null,
+                "externalAddressIdScheme" : null,
+                "lifecycle" : "#oneof=Proposed|Current|Retired",
+                "unitType" : null,
+                "unitValue" : null,
+                "levelType" : null,
+                "levelValue" : null,
+                "addressNumberPrefix" : null,
+                "addressNumber" : 0,
+                "addressNumberSuffix" : null,
+                "addressNumberHigh" : 0,
+                "roadCentrelineId" : 0,
+                "roadPrefix" : null,
+                "roadName" : null,
+                "roadType" : null,
+                "roadSuffix" : null,
+                "waterRoute" : null,
+                "waterName" : null,
+                "suburbLocality" : null,
+                "townCity" : null
+            },
+            "addressedObject" : {
+                "objectType" : "#oneof=Parcel|Building",
+                "objectName" : null,
+                "addressPositions" : [
+                    {
+                        "position" : {
+                            "type" : "Point",
+                            "coordinates" : [
+                                0,
+                                0
+                            ],
+                            "crs" : {
+                                "type" : "name",
+                                "properties" : {
+                                    "name" : "urn:ogc:def:crs:EPSG::4167"
+                                }
+                            }
+                        },
+                        "positionType" : "#oneof=Label|Set Back off Road|Unknown",
+                        "primary" : null
+                    }
+                ],        	
+                "externalObjectId" : null,
+                    "externalObjectIdScheme" : null,
+                    "valuationReference" : null,
+                "certificateOfTitle" : null,
+                "appellation" : null            
+            }
+        },
+        "retire" : {
+            "version" : "#required",
+            "workflow" : {
+                "sourceUser" : "#required",
+                "sourceReason" : null
+            },
+            "components" : {
+                "addressId" : "#required"
+            }
+        },
+        "update" : {
+            "version" : "#required",
+            "workflow" : {
+                "sourceUser" : null,
+                "sourceReason" : null
+            },
+            "components" : {
+                "addressId" : "#required",
+                "addressType" : "#required,oneof=Road|Water",
+                "primaryAddressId" : null,
+                "alternativeOfAddressId" : null,
+                "externalAddressId" : null,
+                "externalAddressIdScheme" : null,
+                "lifecycle" : "#oneof=Proposed|Current|Retired",
+                "unitType" : null,
+                "unitValue" : null,
+                "levelType" : null,
+                "levelValue" : null,
+                "addressNumberPrefix" : null,
+                "addressNumber" : "#required",
+                "addressNumberHigh" : null,
+                "addressNumberSuffix" : null,
+                "roadCentrelineId" : null,
+                "roadPrefix" : null,
+                "roadName" : "None",
+                "roadType" : null,
+                "roadSuffix" : null,
+                "waterRoute" : null,
+                "waterName" : null,
+                "suburbLocality" : null,
+                "townCity" : null
+            },
+            "codes" : {
+                "meshblock" : null
+            },
+            "addressedObject" : {
+                "objectType" : "#oneof=Parcel|Building",
+                "objectName" : null,
+                "addressPositions" : [
+                    {
+                        "position" : {
+                            "type" : "Point",
+                            "coordinates" : [
+                                0.0,
+                                0.0
+                            ],
+                            "crs" : {
+                                "type" : "name",
+                                "properties" : {
+                                    "name" : "urn:ogc:def:crs:EPSG::4167"
+                                }
+                            }
+                        },
+                        "positionType" : "#required,oneof=Unknown|Centroid|Label|Set Back Off Road",
+                        "primary" : false
+                    }
+                ],
+                "externalObjectId" : null,
+                "externalObjectIdScheme" : null,
+                "valuationReference" : null,
+                "certificateOfTitle" : null,
+                "appellation" : null
+            }
+        }
+    },
+    "address.resolutionfeed" : {
+        "accept" : {
+            "version" : "#required",
+            "changeId" : "#required"
+        },
+        "decline" : {
+            "version" : "#required",
+            "changeId" : "#required"
+        },
+        "response" : {
+            "version" : 0,
+            "changeId" : 0,
+            "changeType" : null,
+            "workflow" : {
+                "submitterUserName" : null,
+                "submittedDate" : null,
+                "reviewedUserName" : null,
+                "reviewedDate" : null,
+                "queueStatus" : "#oneof=Submitted|Under Review|Accepted|Declined",
+                "statusNotes" : null,
+                "sourceOrganisation" : null,
+                "sourceReason" : null
+            },
+            "components" : {
+                "addressId" : 0,
+                "addressType" : "#oneof=Road|Water",
+                "primaryAddressId" : 0,
+                "alternativeOfAddressId" : 0,
+                "externalAddressId" : null,
+                "externalAddressIdScheme" : null,
+                "lifecycle" : "#oneof=Proposed|Current|Retired",
+                "unitType" : null,
+                "unitValue" : null,
+                "levelType" : null,
+                "levelValue" : null,
+                "addressNumberPrefix" : null,
+                "addressNumber" : 0,
+                "addressNumberSuffix" : null,
+                "addressNumberHigh" : 0,
+                "roadCentrelineId" : 0,
+                "roadPrefix" : null,
+                "roadName" : null,
+                "roadType" : null,
+                "roadSuffix" : null,
+                "waterRoute" : null,
+                "waterName" : null,
+                "suburbLocality" : null,
+                "townCity" : null
+            },
+            
+            "addressedObject" : {
+                "objectType" : "#oneof=Parcel|Building",
+                "objectName" : null,
+                "addressPositions" : [
+                    {
+                        "position" : {
+                            "type" : "Point",
+                            "coordinates" : [
+                                0.0,
+                                0.0
+                            ],
+                            "crs" : {
+                                "type" : "name",
+                                "properties" : {
+                                    "name" : "urn:ogc:def:crs:EPSG::4167"
+                                }
+                            }
+                        },
+                        "positionType" : "#oneof=Label|Set Back off Road|Unknown",
+                        "primary" : null
+                    }
+                ],        
+                "externalObjectId" : null,
+                    "externalObjectIdScheme" : null,
+                    "valuationReference" : null,
+                "certificateOfTitle" : null,
+                "appellation" : null   
+            }
+        },
+        "supplement" : {
+            "version" : "#required"
+        },
+        "update" : {
+            "version" : "#required",
+            "changeId" : "#required",
+            "workflow" : {
+                "statusNotes" : null
+            },
+            "components" : {
+                "addressType" : "#required,oneof=Road|Water",
+                "primaryAddressId" : null,
+                "alternativeOfAddressId" : null,
+                "externalAddressId" : null,
+                "externalAddressIdScheme" : null,
+                "lifecycle" : "#oneof=Proposed|Current|Retired",
+                "unitType" : null,
+                "unitValue" : null,
+                "levelType" : null,
+                "levelValue" : null,
+                "addressNumberPrefix" : null,
+                "addressNumber" : "#required",
+                "addressNumberSuffix" : null,
+                "addressNumberHigh" : null,
+                "roadCentrelineId" : null,
+                "roadPrefix" : null,
+                "roadName" : "None",
+                "roadType" : null,
+                "roadSuffix" : null,
+                "waterRoute" : null,
+                "waterName" : null,
+                "suburbLocality" : null,
+                "townCity" : null
+            },
+            "codes" : {
+                "meshblock" : null
+            },
+            "addressedObject" : {
+                "objectType" : "#oneof=Parcel|Building",
+                "objectName" : null,
+                "addressPositions" : [
+                    {
+                        "position" : {
+                            "type" : "Point",
+                            "coordinates" : [
+                                0.0,
+                                0.0
+                            ],
+                            "crs" : {
+                                "type" : "name",
+                                "properties" : {
+                                    "name" : "urn:ogc:def:crs:EPSG::4167"
+                                }
+                            }
+                        },
+                        "positionType" : "#required,oneof=Unknown|Centroid|Label|Set Back Off Road",
+                        "primary" : false
+                    }
+                ],
+                "externalObjectId" : null,
+                "externalObjectIdScheme" : null,
+                "valuationReference" : null,
+                "certificateOfTitle" : null,
+                "appelation" : null
+            }
+        }
+    },
+    "groups.changefeed" : {
+        "add" : {
+            "version" : "#required",
+            "workflow" : {
+                "sourceUser" : null,
+                "sourceReason" : null
+            },
+            "components" : {
+                "addressId" : "#required"
+            }
+        },
+        "address" : {           
+            "changeId" : null,
+            "changeType" : null,
+            "changeGroupId" : null,
+            "workflow" : {
+                "submitterUserName" : null,
+                "submittedDate" : null,
+                "queueStatus" : null,
+                "sourceReason" : null
+            },
+            "components" : {
+                "addressId" : null,
+                "lifecycle" : null
+            },
+                "addressedObject" : {
+            }
+        }
+        ,
+        "close" : {
+            "version" : "#required",
+            "changeGroupId" : "#required"
+        },
+        "remove" : {
+            "version" : "#required",
+            "workflow" : {
+                "sourceUser" : null,
+                "sourceReason" : null
+            },
+            "components" : {
+                "addressId" : "#required"
+            }
+        },
+        "replace" : {
+            "description" : null
+        },
+        "response" : {
+            "version" : null,
+            "changeGroupId" : null,
+            "groupType" : "#oneof=Replace",
+            "groupStatus" : "#oneof=Open|Submitted|Closed",
+            "description" : null,
+            "submitterUserName" : null,
+            "submittedDate" : null
+        },
+        "submit" : {
+            "version" : "#required",
+            "changeGroupId" : "#required"
+        },
+        "update" : {
+            "version" : "#required",
+            "changeGroupId" : "#required",
+            "description" : null
+        }
+    },
+    "groups.resolutionfeed" : {
+        "accept" : {
+            "version" : "#required",
+            "changeGroupId" : "#required"
+        },
+        "address" : {           
+            "changeId" : null,
+            "changeType" : null,
+            "changeGroupId" : null,
+            "workflow" : {
+                "submitterUserName" : null,
+                "submittedDate" : null,
+                "queueStatus" : null,
+                "sourceReason" : null
+            },
+            "components" : {
+                "addressId" : null,
+                "lifecycle" : null
+            },
+            "addressedObject" : {
+            }
+        }
+        ,
+        "decline" : {
+            "version" : "#required",
+            "changeGroupId" : "#required"
+        },
+        "response" : {
+            "changeGroupId" : null,
+            "groupType" : "#oneof=Replace",
+            "groupStatus" : "#oneof=Open|Submitted|Closed",
+            "description" : null,
+            "submitterUserName" : null,
+            "submittedDate" : null
+        },
+        "update" : {
+            "version" : "#required",
+            "changeGroupId" : "#required",
+            "description" : null
+        }
+    },
+    "users.admin" : {
+        "add" : {
+            "userName" : "#required",
+            "email" : "#required",
+            "requiresProgress" : "#required",
+            "organisation" : "#required",
+            "role" : "#required"
+        }
+        ,
+        "delete" : {
+            "version" : "#required",
+            "userId" : "#required"
+        }
+        ,
+        "response" : {
+            "version" : "#required",
+            "userId" : "#required",
+            "userName" : "#required",
+            "email" : "#required",
+            "requiresProgress" : "#required",
+            "organisation" : "#required",
+            "role" : "#required"
+        }
+        ,
+        "update" : {
+            "version" : "#required",
+            "userId" : "#required",
+            "userName" : "#required",
+            "email" : "#required",
+            "requiresProgress" : "#required",
+            "organisation" : "#required",
+            "role" : "#required"
+        }
+        
+    }
+}
