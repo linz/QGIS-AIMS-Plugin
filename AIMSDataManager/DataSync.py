@@ -249,8 +249,7 @@ class DataSync(Observable):
         #address/feature requests called with bbox parameters
         if self.etft==FEEDS['AF']: pager.setup(self.etft,self.sw,self.ne,pno)
         else: pager.setup(self.etft,None,None,pno)
-        pager.setName(ref)
-        # pager.setDaemon(True)
+        pager.name = ref
         pager.daemon = True
         return pager
 
@@ -330,7 +329,7 @@ class DataSyncFeeds(DataSync):
         @return: DataRequestChannel
         '''
         drc = DataRequestChannel(client)
-        drc.setName('DRC.{}'.format(p0))
+        drc.name = 'DRC.{}'.format(p0)
         # drc.setDaemon(True)
         drc.daemon = True
         return drc
@@ -392,6 +391,9 @@ class DataSyncFeeds(DataSync):
         '''
         if p[0]: self.ftracker['page'][0] = p[0]
         if p[1]: self.ftracker['page'][1] = p[1]
+
+    def _queueStatus(self):
+        print(f'Queue Status: \n > In: {self.inq.qsize()} \n > Out: {self.outq.qsize()} \n > Resp: {self.respq.qsize()}')
         
 class DataSyncAdmin(DataSyncFeeds):
     '''Admin DS class that doesn't update and is only used as a admin client request channel'''
