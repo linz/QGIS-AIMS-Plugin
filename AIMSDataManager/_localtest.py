@@ -2,7 +2,6 @@
 
 import os
 import sys
-import Queue
 import pickle
 import copy
 import time
@@ -31,15 +30,15 @@ class LocalTest():
         import sys
         ref = sys.modules
         import Const# import const
-        print Const.DEF_SEP
+        print(Const.DEF_SEP)
         
     
     def observe(self,observable,*args,**kwargs):
         self.flag = True
-        print 'LOCALTEST observes:'
-        print '*obs',observable
-        print '*ARGS',args
-        print '*KWARGS',kwargs
+        print('LOCALTEST observes:')
+        print('*obs',observable)
+        print('*ARGS',args)
+        print('*KWARGS',kwargs)
         
     def test(self):
         global refsnap
@@ -59,7 +58,7 @@ class LocalTest():
         #dm.persist.ADL = testdata
         #get some data
         listofaddresses = dm.pull()
-        print 'addr list before feed checkin',[len(l) for l in listofaddresses.values()]
+        print('addr list before feed checkin',[len(l) for l in listofaddresses.values()])
         
         #TESTSUPP
         self.testsupp(dm,af)
@@ -88,13 +87,13 @@ class LocalTest():
         #TEST SHIFT
         self.testfeatureshift(dm)
         
-        aimslog.info('*** Resolution ADD '+str(time.clock()))   
+        aimslog.info(f'*** Resolution ADD {time.process_time()}') 
         time.sleep(30) 
         #return
-        print 'entering response mode'
+        print('entering response mode')
         countdown = 10
         while countdown:
-            aimslog.info('*** Main TICK '+str(time.clock()))
+            aimslog.info(f'*** Main TICK {time.process_time()}')
             rr = self.testresp(dm)
             time.sleep(30)
             countdown -= 1
@@ -114,7 +113,7 @@ class LocalTest():
         
     def testfeatureshift(self,dm):
     
-        aimslog.info('*** Main SHIFT '+str(time.clock()))
+        aimslog.info(f'*** Main SHIFT {time.process_time()}')
         
         #returns features with macrons
         #170.644518397,-45.7574711286, 170.620918622,-45.7764696892
@@ -167,7 +166,7 @@ class LocalTest():
         #cast to addresschange type, to do cf ops
         addr_c = dm.castTo(FeedType.CHANGEFEED,addr_f)
         #addr_c.setVersion(ver)
-#         aimslog.info('*** Change ADD '+str(time.clock()))
+#         aimslog.info(f'*** Change ADD {time.process_time()}')
 #         rqid1 = 1234321
 #         dm.addAddress(addr_c,rqid1)
 #         resp = None
@@ -176,8 +175,8 @@ class LocalTest():
 #             resp,_,_ = self.testresp(dm,FeedType.CHANGEFEED)
 #             if resp: 
 #                 err = resp[0].getErrors()
-#                 print rqid1,resp[0].meta.requestId
-#                 print 'e',err
+#                 printrqid1,resp[0].meta.requestId
+#                 print'e',err
 #                 if not err:
 #                     cid = resp[0].getChangeId()
 #                 break
@@ -187,7 +186,7 @@ class LocalTest():
 #         ver += 1
 #        
 #            
-#         aimslog.info('*** Change UPDATE '+str(time.clock()))
+#         aimslog.info(f'*** Change UPDATE {time.process_time()}')
 #         rqid2 = 2345432
 #         addr_c.setFullAddress('Unit C, 16 Islay Street, Glenorchy')
 #         #addr_c.setChangeId(cid)
@@ -199,8 +198,8 @@ class LocalTest():
 #             resp,_,_ = self.testresp(dm,FeedType.CHANGEFEED)
 #             if resp: 
 #                 err = resp[0].getErrors()
-#                 print rqid2,resp[0].meta.requestId
-#                 print 'e',err
+#                 printrqid2,resp[0].meta.requestId
+#                 print'e',err
 #                 if not err:
 #                     cid = resp[0].getChangeId()
 #                 break
@@ -210,7 +209,7 @@ class LocalTest():
 #         ver += 1
 #         
         
-        aimslog.info('*** Change RETIRE '+str(time.clock()))
+        aimslog.info(f'*** Change RETIRE {time.process_time()}')
         rqid3 = 3456543
         #addr_c.setChangeId(1837997)#cid)
         #addr_c.setVersion(ver)
@@ -222,8 +221,8 @@ class LocalTest():
             resp,_,_ = self.testresp(dm,FeedType.CHANGEFEED)
             if resp: 
                 err = resp[0].getErrors()
-                print rqid3,resp[0].meta.requestId
-                print 'e',err
+                print(rqid3,resp[0].meta.requestId)
+                print('e',err)
                 if not err:
                     cid = resp[0].getChangeId()
                 break
@@ -244,20 +243,20 @@ class LocalTest():
         #addr_r.setVersion(ver)
         addr_r.setChangeId(cid)
         
-        aimslog.info('*** Resolution ACCEPT '+str(time.clock()))
+        aimslog.info(f'*** Resolution ACCEPT {time.process_time()}')
         rqid1 = 4567654
         dm.acceptAddress(addr_r,rqid1)
         resp = None
         while True: 
             resp,_,_ = self.testresp(dm,FeedType.RESOLUTIONFEED)
             if resp: 
-                print rqid1,resp[0].meta.requestId
+                print(rqid1,resp[0].meta.requestId)
                 break
             time.sleep(5)
         ver += 1
      
          
-        aimslog.info('*** Resolution UPDATE '+str(time.clock()))
+        aimslog.info(f'*** Resolution UPDATE {time.process_time()}')
         rqid2 = 5678765
         addr_r.setFullAddress('Unit B, 16 Islay Street, Glenorchy')
         #addr_r.setVersion(ver)
@@ -266,13 +265,13 @@ class LocalTest():
         while True: 
             resp,_,_ = self.testresp(dm,FeedType.RESOLUTIONFEED)
             if resp: 
-                print rqid2,resp[0].meta.requestId
+                print(rqid2,resp[0].meta.requestId)
                 break
             time.sleep(5)
         ver += 1
         
         
-        aimslog.info('*** Resolution DECLINE '+str(time.clock()))
+        aimslog.info(f'*** Resolution DECLINE {time.process_time()}')
         rqid3 = 6789876
         #addr_r.setVersion(ver)
         dm.declineAddress(addr_r,rqid3)
@@ -280,7 +279,7 @@ class LocalTest():
         while not resp: 
             resp,_,_ = self.testresp(dm,FeedType.RESOLUTIONFEED)
             if resp: 
-                print rqid3,resp[0].meta.requestId
+                print(rqid3,resp[0].meta.requestId)
                 break
             time.sleep(5)     
         ver += 1
@@ -292,14 +291,14 @@ class LocalTest():
         #pull address from features (map)
         grp_r = self.gettestgroup(FeatureFactory.getInstance(FeedRef((FeatureType.GROUPS,FeedType.RESOLUTIONFEED))))
         
-        aimslog.info('*** GROUP Resolution ACCEPT '+str(time.clock()))
+        aimslog.info(f'*** GROUP Resolution ACCEPT {time.process_time()}')
         rqid1 = 4321234
         dm.acceptGroup(grp_r,rqid1)
         resp = None
         while True: 
             _,resp,_ = self.testresp(dm,FeedType.RESOLUTIONFEED)
             if resp: 
-                print rqid1,resp[0].meta.requestId
+                print(rqid1,resp[0].meta.requestId)
                 break
             time.sleep(5)
         ver += 1
@@ -326,7 +325,7 @@ class LocalTest():
         while True: 
             _,_,resp = self.testresp(dm,FeedType.ADMIN)
             if resp: 
-                print rqid,resp[0].meta.requestId
+                print(rqid,resp[0].meta.requestId)
                 break
             time.sleep(5)
             
@@ -336,7 +335,7 @@ class LocalTest():
         while True: 
             _,_,resp = self.testresp(dm,FeedType.ADMIN)
             if resp: 
-                print rqid,resp[0].meta.requestId
+                print(rqid,resp[0].meta.requestId)
                 break
             time.sleep(5)
             
@@ -345,7 +344,7 @@ class LocalTest():
         while True: 
             _,_,resp = self.testresp(dm,FeedType.ADMIN)
             if resp: 
-                print rqid,resp[0].meta.requestId
+                print(rqid,resp[0].meta.requestId)
                 break
             time.sleep(5)
         
@@ -447,8 +446,8 @@ class LocalTest():
         
             
 if __name__ == '__main__':
-    print 'start'
+    print('start')
     lt = LocalTest()
     #lt.t2()
     lt.test()  
-    print 'finish'
+    print('finish')
