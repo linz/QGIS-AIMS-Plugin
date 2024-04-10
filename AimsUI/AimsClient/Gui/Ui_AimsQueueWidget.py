@@ -44,8 +44,8 @@ class Ui_AimsQueueWidget(object):
         AimsQueueWidget.setWindowTitle(_translate("AimsQueueWidget", "Form"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.uEditFeatureTab), _translate("AimsQueueWidget", "Edit Feature"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.uResolutionTab), _translate("AimsQueueWidget", "Review"))
-from EditFeatureWidget import EditFeatureWidget
-from ReviewQueueWidget import ReviewQueueWidget
+from AimsUI.AimsClient.Gui.EditFeatureWidget import EditFeatureWidget
+from AimsUI.AimsClient.Gui.ReviewQueueWidget import ReviewQueueWidget
 
 
 if __name__ == "__main__":

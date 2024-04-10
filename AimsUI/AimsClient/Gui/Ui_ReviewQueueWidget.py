@@ -116,8 +116,8 @@ class Ui_ReviewQueueWidget(object):
         self.uRejectButton.setText(_translate("ReviewQueueWidget", "Decline"))
         self.uDisplayButton.setText(_translate("ReviewQueueWidget", "Display"))
         self.uUpdateButton.setText(_translate("ReviewQueueWidget", "Update"))
-from QueueEditorWidget import QueueEditorWidget
-from QueueModelView import QueueView
+from AimsUI.AimsClient.Gui.QueueEditorWidget import QueueEditorWidget
+from AimsUI.AimsClient.Gui.QueueModelView import QueueView
 
 
 if __name__ == "__main__":
