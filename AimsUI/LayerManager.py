@@ -382,15 +382,19 @@ class LayerManager(QObject):
                     'ppr':( 'ppr', 'bde', 'crs_parcel', 'shape' ,'id', True, pendParQuery, 'Pending Parcels' )
                     }
 
+        installedRefLayers = {}
         for layerId , layerProps in refLayers.items():
             if not self.findLayer(layerId):
-                self.installLayer(* layerProps) 
+                installedRefLayers[layerId] = self.installLayer(* layerProps)
 
         # A Relation is required to label 
         # parcels with an appellation
         if self.lprLayer() and self.appLayer():
             uilog.info(f'Attempting to configure relationship between parcel and appellation layers')
             self.parRelation()
+
+        
+        return installedRefLayers # Returning a value here is only used for testing, otherwise it goes to an attribute on the LayerManager that is no longer utilised
     
     def parRelation(self):
         """
