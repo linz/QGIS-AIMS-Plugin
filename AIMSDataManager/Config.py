@@ -19,6 +19,8 @@ from qgis.core import QgsApplication
 import getpass
 import base64
 try:
+    # Unsure about the need/purpose for this. Could be replaced with the hashlib library however needs further investigation in
+    # conjunction with LINZ. Currently we are storing the encryption details in this script which would be on the same machine as the hashed password. This is more or less useless...    
     from Crypto.Cipher import AES
     USE_PLAINTEXT = False
 except:
@@ -28,12 +30,19 @@ except:
 from .AimsLogging import Logger
 aimslog = Logger.setup()
 
-UNAME = os.environ['USERNAME'] if re.search('win',sys.platform) else os.environ['LOGNAME']
+# UNAME = os.environ['USERNAME'] if re.search('win',sys.platform) else os.environ['LOGNAME']
+UNAME = getpass.getuser()
 DEF_CONFIG = {'db':{'host':'127.0.0.1'},'user':{'name':UNAME}}
-AIMS_CONFIG  = os.path.join(QgsApplication.qgisSettingsDirPath(), "aims", "aimsConfig.ini")
+AIMS_CONFIG = os.path.join(QgsApplication.qgisSettingsDirPath(), "aims", "aimsConfig.ini")
 
 # For Unit Testing, outside of QGIS, set path to your .ini file here as QgsApplication.qgisSettingsDirPath() resolves to '' if not called from QGIS
-if AIMS_CONFIG == 'aims\\aimsConfig.ini': AIMS_CONFIG = r"C:\Users\spm\AppData\Roaming\QGIS\QGIS3\profiles\default\aims\aimsConfig.ini"
+if sys.platform == 'linux':
+    # For testing via github actions, builds path to the repository aims_test_config.ini
+    AIMS_CONFIG = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'Test', 'aims_test_config.ini')
+
+if AIMS_CONFIG == 'aims\\aimsConfig.ini':
+    # Local testing 
+    AIMS_CONFIG = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'Test', 'aims_test_config.ini')
 
 if not USE_PLAINTEXT:
     K='12345678901234567890123456789012'
