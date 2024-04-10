@@ -82,7 +82,7 @@ class AimsApi(object):
         elif str(resp) == '409':
             ce['reject'] += ('{} - {}'.format(jcontent['properties']['reason'],jcontent['entities'][0]['properties']['description']),)
         else:
-            ce['reject'] += ('General Exception {}'.format(resp),)
+            ce['reject'] += ('General Exception {} -- {}'.format(resp, jcontent.get('properties')),)
              
         return ce
     
@@ -134,8 +134,16 @@ class AimsApi(object):
         @type **kwargs: Dict<String,?>
         @return: response,content
         '''
-        aimslog.info("Request {}".format(args))
-        return self.h.request(*args,**kwargs)
+        if TEST_MODE:
+            # TBD If this is the best course of action. Unable to get the mocking to intercept calls to httplib2 requests otherwise
+            from Test.AimsService_Mock import mock_api_request
+            return mock_api_request(*args, **kwargs)
+        else:
+            aimslog.info("Request {}".format(args))
+            print(f"Request {args}")
+            res = self.h.request(*args,**kwargs)
+            resp, content = res
+            return res
     
     @LogWrap.timediff(prefix='onePage')
     def getOnePage(self,etft,sw,ne,pno,count=MAX_FEATURE_COUNT):
