@@ -126,7 +126,7 @@ class DataManager(Observable):
         ds.setup(self.persist.coords['sw'],self.persist.coords['ne'])
         # ds.setDaemon(True)
         ds.daemon = True
-        ds.setName('DS{}'.format(etft))
+        ds.name = 'DS{}'.format(etft)
         return ds,dq    
     
     def _cullDS(self,etft):
@@ -477,8 +477,12 @@ class DataManager(Observable):
     def _queueAction(self,feedref,atype,aorg):
         '''Queue and notify'''
         self.ioq[feedref]['in'].put({atype:(aorg,)})
-        # TODO: This is heavily linked to where everything is breaking. Investigate further.
         self.notify(feedref)
+
+    def _queueStatus(self, feedref):
+        print(f'Queue Status:')
+        for i in ['in','out','resp']:
+            print(f' > {i.upper()}: {self.ioq[feedref][i].qsize()}')
     
     #----------------------------
     '''User actions are on-demand only and because they won't be run very often are set up and torn down on each use'''
@@ -554,7 +558,7 @@ class Persistence():
     tracker = {}
     coords = {'sw':SWZERO,'ne':NEZERO}
     ADL = None
-    RP = os.path.join(os.path.dirname(__file__),'..',RES_PATH,LOCAL_ADL)
+    RP = os.path.join(os.path.dirname(os.path.dirname(__file__)),RES_PATH,LOCAL_ADL) + '.aims'
     
     def __init__(self,initialise=False):
         '''Setup stored/tracked data
@@ -626,7 +630,8 @@ class Persistence():
                 archive = pickle.load(lfs)
             #self.tracker,self.coords,self.ADL = archive
             self.tracker,self.ADL = archive
-        except:
+        except Exception as e:
+            aimslog.error(f'Exception occured when unpickling the local data archive: {e}')
             return False
         return True
     
@@ -638,9 +643,10 @@ class Persistence():
         try:
             #archive = [self.tracker,self.coords,self.ADL]
             archive = [self.tracker,self.ADL]
-            with open(localds,'rb') as lfs:
+            with open(localds,'wb+') as lfs:
                 pickle.dump(archive, lfs)
-        except:
+        except Exception as e:
+            aimslog.error(f'Exception occured when pickling the local data archive: {e}')
             return False
         return True
 
