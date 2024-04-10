@@ -26,7 +26,7 @@ ROOT = os.path.join(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(os.path.join(ROOT, 'AIMSDataManager'))
 sys.path.append(os.path.join(ROOT, 'AimsUI'))
 
-from AimsService_Mock import ASM
+from Test.AimsService_Mock import ASM
 #from Test._QGisInterface import QgisInterface
 from AimsUI.AimsClient.Gui.Controller import Controller
 from AIMSDataManager.Address import Address

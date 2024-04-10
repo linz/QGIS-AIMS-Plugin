@@ -20,7 +20,9 @@ import unittest
 import inspect
 import sys
 import re
-
+import json
+import os
+from datetime import datetime
 
 from mock import Mock, patch
 
@@ -312,6 +314,101 @@ class ASM(object):
         m = Mock(spec=_AimsConfigureDialog)
         return m
 
+
+class TestData(object):
+
+    mock_data_path = os.path.join(os.path.dirname(__file__), 'mock_test_data.json')
+    with open(mock_data_path, 'rb') as input_file:
+        test_data = json.load(input_file)
+
+    @classmethod
+    def get(cls, key) -> dict:
+        return cls.test_data.get(key)
+
+#-------------------------------------------------------------
+
+def updateDict(d1: dict, d2: dict={}):
+    print(d1)
+    for k,v in d1.items():
+        if isinstance(v, dict):
+            if k in d2: k[v] = updateDict(v, d2[k])
+    return d1
+
+        
+
+def mock_api_request(url:str, method, payload=None, headers=None, *args, **kwargs):
+    ''' When TEST_MODE environment variable is set to True, intercept calls to API and return what we want it to return '''
+    print(f'ARGS: {args}')
+    print(f'KWARGS: {kwargs}')
+
+    # Don't actually want this... but best to leave in just in case
+    url = url.replace('/test','').rstrip('/')
+
+    # Handle all cases going to the API
+    response = {'cache-control': 'private', 'vary': 'Accept-Encoding', 'content-type': 'application/json', 'content-length': '290', 'date': datetime.utcnow().strftime('%a %d %b %Y, %I:%M:%S GMT'), 'status': '200', '-content-encoding': 'gzip', 'content-location': url}
+    content = None
+    if 'address/features' in url:
+        # Check for a addressId on the end of the URL
+        try:
+            addressId = int(url.split('/')[-1] )
+            content = TestData.get(f'address/features/{addressId}')
+        
+        except ValueError:
+            content = TestData.get('address/features')
+        
+    if 'address/resolutionfeed' in url:
+        # Check for a changeId on the end of the URL
+        try:
+            if url.endswith('accept'):
+                changeId = int(url.split('/')[-2])
+                content = TestData.get(f'address/resolutionfeed/{changeId}/accept')
+            elif url.endswith('decline'):
+                changeId = int(url.split('/')[-2])
+                content = TestData.get(f'address/resolutionfeed/{changeId}/decline')
+            else:
+                changeId = int(url.split('/')[-1])
+                content = TestData.get(f'address/resolutionfeed/{changeId}')
+        
+        except ValueError:
+            content = TestData.get('address/resolutionfeed')
+    
+    if 'address/changefeed/add' in url:
+        # Mocking a post request of a new address being added 
+        content = TestData.get('address/changefeed/add')
+        addr = json.loads(payload)
+        content = updateDict(content, addr)
+        print()
+    
+    if 'address/changefeed/update' in url:
+        # Mocking a post request of a new address being added 
+        content = TestData.get('address/changefeed/update')
+        addr = json.loads(payload)
+        content = updateDict(content, addr)
+        print()
+    
+    if 'address/changefeed/retire' in url:
+        # Mocking a post request of a new address being added 
+        content = TestData.get('address/changefeed/retire')
+        addr = json.loads(payload)
+        content = updateDict(content, addr)
+        print()
+
+    if 'groups/resolutionfeed' in url:
+        # Check for a changeGroupId on the end of the URL
+        try:
+            changeGroupId = int(url.split('/')[-1] )
+            content = TestData.get(f'groups/resolutionfeed/{changeGroupId}')
+        
+        except ValueError:
+            content = TestData.get('groups/resolutionfeed')
+
+    
+
+    if content is None:
+        print()
+        raise LookupError(f'No URL path handling configured for: {url}')
+
+    return response, json.dumps(content)
 
 ###------
 

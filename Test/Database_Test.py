@@ -35,7 +35,7 @@ from AimsUI.AimsLogging import Logger
 
 testlog = Logger.setup('test')
 
-DCONF = {'host':'127.0.0.1', 'port':'5432', 'user':'postgres','password':'', \
+DCONF = {'host':'postgres', 'port':'5432', 'user':'postgres','password':'postgres', \
          'name':'aims_ci_test','aimsschema':'aims', 'table':'aims_test_table'}
 
 TIMEOUT = 30
@@ -107,9 +107,12 @@ class Test_2_DatabaseConnectivity(unittest.TestCase):
     conn = None
     cur = None
     res = None
-    q1 = 'SELECT * FROM {}.{};'.format(DCONF['aimsschema'],DCONF['table'])
-    q2 = "INSERT INTO {}.{} VALUES(1000,'first');".format(DCONF['aimsschema'],DCONF['table'])
-    q3 = "DELETE FROM {}.{} WHERE id=1000;".format(DCONF['aimsschema'],DCONF['table'])
+    q = 'CREATE SCHEMA aims;'
+    q0 = 'CREATE TABLE aims.aims_test_table(id int, name varchar(32));'
+    q1 = "INSERT INTO aims.aims_test_table VALUES (1, 'aims_test_data');"
+    q2 = 'SELECT * FROM {}.{};'.format(DCONF['aimsschema'],DCONF['table'])
+    q3 = "DELETE FROM {}.{} WHERE id=1;".format(DCONF['aimsschema'],DCONF['table'])
+    q4 = 'DROP SCHEMA aims CASCADE;'
     
     def setUp(self): 
         Database.setup(DCONF)
@@ -126,12 +129,44 @@ class Test_2_DatabaseConnectivity(unittest.TestCase):
         self.assertNotEqual(self.conn,None,'Connection not established')
         
     # @timeout(seconds=TIMEOUT, message='Timeout execution query on database')
-    def test20_execute(self):
+    def test20_create_insert_select(self):
         '''checks database execution by testing whether a cursor is returned, which happens on commit'''
-        testlog.debug('Test_2.20 Test query execution (SELECT) function')
+        testlog.debug('Test_2.20 Test query execution (CREATE TABLE, INSERT RECORDS< SELECT) functions')
+        # Create Schema
+        self.res = Database.execute(self.q)
+        from psycopg2._psycopg import cursor as PPC
+        self.assertEqual(isinstance(self.res,PPC),True,'Query "{}" failed with {}'.format(self.q,self.res))
+        # Create Database
+        self.res = Database.execute(self.q0)
+        from psycopg2._psycopg import cursor as PPC
+        self.assertEqual(isinstance(self.res,PPC),True,'Query "{}" failed with {}'.format(self.q0,self.res))
+        # Insert Record
         self.res = Database.execute(self.q1)
         from psycopg2._psycopg import cursor as PPC
-        self.assertEquals(isinstance(self.res,PPC),True,'Query "{}" failed with {}'.format(self.q1,self.res))
+        self.assertEqual(isinstance(self.res,PPC),True,'Query "{}" failed with {}'.format(self.q1,self.res))
+        # Select Records
+        self.res = Database.execute(self.q2)
+        from psycopg2._psycopg import cursor as PPC
+        self.assertEqual(isinstance(self.res,PPC),True,'Query "{}" failed with {}'.format(self.q2,self.res))
+        
+    # @timeout(seconds=TIMEOUT, message='Timeout execution query on database')
+    def test30_execute(self):
+        '''checks database execution by testing whether a cursor is returned, which happens on commit'''
+        testlog.debug('Test_2.30 Test query execution (DELETE) function')
+        # Delete Record
+        self.res = Database.execute(self.q3)
+        from psycopg2._psycopg import cursor as PPC
+        self.assertEqual(isinstance(self.res,PPC),True,'Query "{}" failed with {}'.format(self.q3,self.res))
+        # Select Records
+        self.res = Database.execute(self.q2)
+        from psycopg2._psycopg import cursor as PPC
+        self.assertEqual(isinstance(self.res,PPC),True,'Query "{}" failed with {}'.format(self.q2,self.res))
+    
+    def test40_drop_schema(self):
+        '''drops the schema in case this test is run locally and we don't want to deal with existing objects'''
+        testlog.debug('Test_2.40 drop database schema')
+        # Drop Schema
+        self.res = Database.execute(self.q4)
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testLDSRead']

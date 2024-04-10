@@ -1,0 +1,1022 @@
+{
+    "address/features" : {
+        "class" : [
+            "address",
+            "collection"
+        ],
+        "links" : [
+            {
+                "rel" : [
+                    "self"
+                ],
+                "href" : "http://10.110.35.4:8080/aims-dev/api/address/features?page=1"
+            },
+            {
+                "rel" : [
+                    "next"
+                ],
+                "href" : "http://10.110.35.4:8080/aims-dev/api/address/features?page=2"
+            }
+        ],
+        "actions" : [
+            {
+                "name" : "add",
+                "method" : "POST",
+                "href" : "http://10.110.35.4:8080/aims-dev/api/address/changefeed/add"
+            }
+        ],
+        "entities" : [
+            {
+                "class" : [
+                    "address"
+                ],
+                "rel" : [
+                    "item"
+                ],
+                "links" : [
+                    {
+                        "rel" : [
+                            "self"
+                        ],
+                        "href" : "http://10.110.35.4:8080/aims-dev/api/address/features/1"
+                    }
+                ],
+                "properties" : {
+                    "publishDate" : "2020-12-02",
+                    "components" : {
+                        "addressId" : 1,
+                        "addressType" : "Road",
+                        "lifecycle" : "Current",
+                        "addressNumber" : 104,
+                        "roadCentrelineId" : 14102,
+                        "roadName" : "Lake",
+                        "roadType" : "Street",
+                        "suburbLocality" : "Fiordland National Park",
+                        "fullAddressNumber" : "104",
+                        "fullRoadName" : "Lake Street",
+                        "fullAddress" : "104 Lake Street, Fiordland National Park"
+                    },
+                    "addressedObject" : {
+                        "addressableObjectId" : 9621,
+                        "objectType" : "Parcel",
+                        "addressPositions" : [
+                            {
+                                "position" : {
+                                    "type" : "Point",
+                                    "coordinates" : [
+                                        168.04652838785256,
+                                        -44.398743853685986
+                                    ],
+                                    "crs" : {
+                                        "type" : "name",
+                                        "properties" : {
+                                            "name" : "urn:ogc:def:crs:EPSG::4167"
+                                        }
+                                    }
+                                },
+                                "positionType" : "Unknown",
+                                "primary" : true
+                            }
+                        ]
+                    },
+                    "codes" : {
+                        "suburbLocalityId" : 6536,
+                        "parcelId" : 3009449,
+                        "meshblock" : "3175801",
+                        "isMeshblockOverride" : false
+                    }
+                }
+            },
+            {
+                "class" : [
+                    "address"
+                ],
+                "rel" : [
+                    "item"
+                ],
+                "links" : [
+                    {
+                        "rel" : [
+                            "self"
+                        ],
+                        "href" : "http://10.110.35.4:8080/aims-dev/api/address/features/2"
+                    }
+                ],
+                "properties" : {
+                    "publishDate" : "2020-12-03",
+                    "components" : {
+                        "addressId" : 2,
+                        "addressType" : "Road",
+                        "lifecycle" : "Current",
+                        "addressNumber" : 64,
+                        "roadCentrelineId" : 6166,
+                        "roadName" : "Lake",
+                        "roadType" : "Street",
+                        "suburbLocality" : "Fiordland National Park",
+                        "fullAddressNumber" : "64",
+                        "fullRoadName" : "Lake Street",
+                        "fullAddress" : "64 Lake Street, Fiordland National Park"
+                    },
+                    "addressedObject" : {
+                        "addressableObjectId" : 47988,
+                        "objectType" : "Parcel",
+                        "addressPositions" : [
+                            {
+                                "position" : {
+                                    "type" : "Point",
+                                    "coordinates" : [
+                                        168.04853418333,
+                                        -44.4014042333
+                                    ],
+                                    "crs" : {
+                                        "type" : "name",
+                                        "properties" : {
+                                            "name" : "urn:ogc:def:crs:EPSG::4167"
+                                        }
+                                    }
+                                },
+                                "positionType" : "Unknown",
+                                "primary" : true
+                            }
+                        ]
+                    },
+                    "codes" : {
+                        "suburbLocalityId" : 6536,
+                        "parcelId" : 3053692,
+                        "meshblock" : "3175801",
+                        "isMeshblockOverride" : false
+                    }
+                }
+            },
+            {
+                "class" : [
+                    "address"
+                ],
+                "rel" : [
+                    "item"
+                ],
+                "links" : [
+                    {
+                        "rel" : [
+                            "self"
+                        ],
+                        "href" : "http://10.110.35.4:8080/aims-dev/api/address/features/3"
+                    }
+                ],
+                "properties" : {
+                    "publishDate" : "2020-12-03",
+                    "components" : {
+                        "addressId" : 3,
+                        "addressType" : "Road",
+                        "lifecycle" : "Current",
+                        "addressNumber" : 66,
+                        "roadCentrelineId" : 6166,
+                        "roadName" : "Lake",
+                        "roadType" : "Street",
+                        "suburbLocality" : "Fiordland National Park",
+                        "fullAddressNumber" : "66",
+                        "fullRoadName" : "Lake Street",
+                        "fullAddress" : "66 Lake Street, Fiordland National Park"
+                    },
+                    "addressedObject" : {
+                        "addressableObjectId" : 119501,
+                        "objectType" : "Parcel",
+                        "addressPositions" : [
+                            {
+                                "position" : {
+                                    "type" : "Point",
+                                    "coordinates" : [
+                                        168.04870748333,
+                                        -44.40126075
+                                    ],
+                                    "crs" : {
+                                        "type" : "name",
+                                        "properties" : {
+                                            "name" : "urn:ogc:def:crs:EPSG::4167"
+                                        }
+                                    }
+                                },
+                                "positionType" : "Unknown",
+                                "primary" : true
+                            }
+                        ]
+                    },
+                    "codes" : {
+                        "suburbLocalityId" : 6536,
+                        "parcelId" : 3137674,
+                        "meshblock" : "3175801",
+                        "isMeshblockOverride" : false
+                    }
+                }
+            },
+            {
+                "class" : [
+                    "address"
+                ],
+                "rel" : [
+                    "item"
+                ],
+                "links" : [
+                    {
+                        "rel" : [
+                            "self"
+                        ],
+                        "href" : "http://10.110.35.4:8080/aims-dev/api/address/features/4"
+                    }
+                ],
+                "properties" : {
+                    "publishDate" : "2020-12-02",
+                    "components" : {
+                        "addressId" : 4,
+                        "addressType" : "Road",
+                        "lifecycle" : "Current",
+                        "addressNumber" : 94,
+                        "roadCentrelineId" : 14102,
+                        "roadName" : "Lake",
+                        "roadType" : "Street",
+                        "suburbLocality" : "Fiordland National Park",
+                        "fullAddressNumber" : "94",
+                        "fullRoadName" : "Lake Street",
+                        "fullAddress" : "94 Lake Street, Fiordland National Park"
+                    },
+                    "addressedObject" : {
+                        "addressableObjectId" : 119731,
+                        "objectType" : "Parcel",
+                        "addressPositions" : [
+                            {
+                                "position" : {
+                                    "type" : "Point",
+                                    "coordinates" : [
+                                        168.04777946421677,
+                                        -44.39891519675326
+                                    ],
+                                    "crs" : {
+                                        "type" : "name",
+                                        "properties" : {
+                                            "name" : "urn:ogc:def:crs:EPSG::4167"
+                                        }
+                                    }
+                                },
+                                "positionType" : "Unknown",
+                                "primary" : true
+                            }
+                        ]
+                    },
+                    "codes" : {
+                        "suburbLocalityId" : 6536,
+                        "parcelId" : 3137969,
+                        "meshblock" : "3175801",
+                        "isMeshblockOverride" : false
+                    }
+                }
+            },
+            {
+                "class" : [
+                    "address"
+                ],
+                "rel" : [
+                    "item"
+                ],
+                "links" : [
+                    {
+                        "rel" : [
+                            "self"
+                        ],
+                        "href" : "http://10.110.35.4:8080/aims-dev/api/address/features/5"
+                    }
+                ],
+                "properties" : {
+                    "publishDate" : "2020-12-02",
+                    "components" : {
+                        "addressId" : 5,
+                        "addressType" : "Road",
+                        "lifecycle" : "Current",
+                        "addressNumber" : 96,
+                        "roadCentrelineId" : 14102,
+                        "roadName" : "Lake",
+                        "roadType" : "Street",
+                        "suburbLocality" : "Fiordland National Park",
+                        "fullAddressNumber" : "96",
+                        "fullRoadName" : "Lake Street",
+                        "fullAddress" : "96 Lake Street, Fiordland National Park"
+                    },
+                    "addressedObject" : {
+                        "addressableObjectId" : 46912,
+                        "objectType" : "Parcel",
+                        "addressPositions" : [
+                            {
+                                "position" : {
+                                    "type" : "Point",
+                                    "coordinates" : [
+                                        168.04752652921272,
+                                        -44.39887712051608
+                                    ],
+                                    "crs" : {
+                                        "type" : "name",
+                                        "properties" : {
+                                            "name" : "urn:ogc:def:crs:EPSG::4167"
+                                        }
+                                    }
+                                },
+                                "positionType" : "Unknown",
+                                "primary" : true
+                            }
+                        ]
+                    },
+                    "codes" : {
+                        "suburbLocalityId" : 6536,
+                        "parcelId" : 3052410,
+                        "meshblock" : "3175801",
+                        "isMeshblockOverride" : false
+                    }
+                }
+            }
+        ]
+    },
+    "address/features/29" : {
+        "class" : [
+            "address"
+        ],
+        "links" : [
+            {
+                "rel" : [
+                    "self"
+                ],
+                "href" : "http://10.110.35.4:8080/aims-dev/api/address/features/29"
+            },
+            {
+                "rel" : [
+                    "addressresolution"
+                ],
+                "href" : "http://10.110.35.4:8080/aims-dev/api/address/resolutionfeed/190"
+            }
+        ],
+        "actions" : [
+            {
+                "name" : "update",
+                "method" : "POST",
+                "href" : "http://10.110.35.4:8080/aims-dev/api/address/changefeed/update"
+            },
+            {
+                "name" : "retire",
+                "method" : "POST",
+                "href" : "http://10.110.35.4:8080/aims-dev/api/address/changefeed/retire"
+            }
+        ],
+        "properties" : {
+            "publishDate" : "2016-11-03",
+            "version" : 190,
+            "components" : {
+                "addressId" : 29,
+                "addressType" : "Road",
+                "lifecycle" : "Current",
+                "addressNumber" : 16,
+                "roadCentrelineId" : 11849,
+                "roadName" : "Islay",
+                "roadType" : "Street",
+                "suburbLocality" : "Glenorchy",
+                "fullAddressNumber" : "16",
+                "fullRoadName" : "Islay Street",
+                "fullAddress" : "16 Islay Street, Glenorchy"
+            },
+            "addressedObject" : {
+                "addressableObjectId" : 115229,
+                "objectType" : "Parcel",
+                "addressPositions" : [
+                    {
+                        "position" : {
+                            "type" : "Point",
+                            "coordinates" : [
+                                168.38392191667,
+                                -44.8511013
+                            ],
+                            "crs" : {
+                                "type" : "name",
+                                "properties" : {
+                                    "name" : "urn:ogc:def:crs:EPSG::4167"
+                                }
+                            }
+                        },
+                        "positionType" : "Unknown",
+                        "primary" : true
+                    }
+                ]
+            },
+            "codes" : {
+                "suburbLocalityId" : 2104,
+                "parcelId" : 3132748,
+                "meshblock" : "4001200",
+                "isMeshblockOverride" : false
+            }
+        }
+    },
+    "address/resolutionfeed" : {
+        "class":[
+            "addressresolution",
+            "collection"
+        ],
+        "links":[
+            {
+                "rel":[
+                    "self"
+                ],
+                "href":"https://10.110.35.4:8443/aims-dev/api/address/resolutionfeed?page=1&count=1"
+            },
+            {
+                "rel":[
+                    "next"
+                ],
+                "href":"https://10.110.35.4:8443/aims-dev/api/address/resolutionfeed?page=2&count=1"
+            }
+        ],
+        "entities":[
+            {
+                "class":[
+                    "addressresolution"
+                ],
+                "rel":[
+                    "item"
+                ],
+                "links":[
+                    {
+                        "rel":[
+                            "self"
+                        ],
+                        "href":"https://10.110.35.4:8443/aims-dev/api/address/resolutionfeed/1934059"
+                    }
+                ],
+                "actions":[
+                    {
+                        "name":"update",
+                        "method":"PUT",
+                        "href":"https://10.110.35.4:8443/aims-dev/api/address/resolutionfeed/1934059"
+                    },
+                    {
+                        "name":"accept",
+                        "method":"POST",
+                        "href":"https://10.110.35.4:8443/aims-dev/api/address/resolutionfeed/1934059/accept"
+                    },
+                    {
+                        "name":"decline",
+                        "method":"POST",
+                        "href":"https://10.110.35.4:8443/aims-dev/api/address/resolutionfeed/1934059/decline"
+                    }
+                ],
+                "properties":{
+                    "version":3898626,
+                    "changeId":1934059,
+                    "changeType":"Add",
+                    "workflow":{
+                        "submitterUserName":"test.publisher",
+                        "submittedDate":"2016-07-14",
+                        "queueStatus":"Submitted"
+                    },
+                    "components":{
+                        "addressType":"Road",
+                        "lifecycle":"Current",
+                        "addressNumber":17,
+                        "addressNumberSuffix":"C",
+                        "roadCentrelineId":83727,
+                        "roadName":"Rakau",
+                        "roadType":"Road",
+                        "suburbLocality":"Hataitai",
+                        "townCity":"Wellington"
+                    },
+                    "addressedObject":{
+                        "objectType":"Parcel",
+                        "addressPositions":[
+                            {
+                                "position":{
+                                    "type":"Point",
+                                    "coordinates":[
+                                        174.7976156333,
+                                        -41.2991937
+                                    ],
+                                    "crs":{
+                                        "type":"name",
+                                        "properties":{
+                                            "name":"urn:ogc:def:crs:EPSG::4167"
+                                        }
+                                    }
+                                },
+                                "positionType":"Unknown",
+                                "primary":true
+                            }
+                        ],
+                        "externalObjectId":"4058138"
+                    }
+                },
+                "entities":[
+                ]
+            }
+        ]
+    },
+    "address/resolutionfeed/1934059" : {
+        "class":[
+            "addressresolution"
+        ],
+        "links":[
+            {
+                "rel":[
+                    "self"
+                ],
+                "href":"https://10.110.35.4:8443/aims-dev/api/address/resolutionfeed/1934059"
+            }
+        ],
+        "actions":[
+            {
+                "name":"update",
+                "method":"PUT",
+                "href":"https://10.110.35.4:8443/aims-dev/api/address/resolutionfeed/1934059"
+            },
+            {
+                "name":"accept",
+                "method":"POST",
+                "href":"https://10.110.35.4:8443/aims-dev/api/address/resolutionfeed/1934059/accept"
+            },
+            {
+                "name":"decline",
+                "method":"POST",
+                "href":"https://10.110.35.4:8443/aims-dev/api/address/resolutionfeed/1934059/decline"
+            }
+        ],
+        "properties":{
+            "version":3898626,
+            "changeId":1934059,
+            "changeType":"Add",
+            "workflow" : {
+                "submitterUserName" : "test.administrator",
+                "submittedDate" : "20240207",
+                "queueStatus" : "Submitted"
+            },
+            "components" : {
+                "addressType" : "Road",
+                "lifecycle" : "Current",
+                "addressNumber" : 11,
+                "addressNumberSuffix" : "C",
+                "roadCentrelineId" : 94009,
+                "roadName" : "Hawker",
+                "roadType" : "Street",
+                "suburbLocality" : "Mount Victoria",
+                "townCity" : "Wellington"
+            },
+            "addressedObject" : {
+                "objectType" : "Parcel",
+                "addressPositions" : [
+                    {
+                        "position" : {
+                            "type" : "Point",
+                            "coordinates" : [
+                                170.62953346606358,
+                                -45.768294405809044
+                            ],
+                            "crs" : {
+                                "type" : "name",
+                                "properties" : {
+                                    "name" : "urn:ogc:def:crs:EPSG::4167"
+                                }
+                            }
+                        },
+                        "positionType" : "Centroid",
+                        "primary" : true
+                    }
+                ]
+            }
+        },
+        "entities" : [
+        ]
+    },
+    "address/resolutionfeed/9999999/accept" : {
+        "class" : [
+            "addressresolution"
+        ],
+        "links" : [
+            {
+                "rel" : [
+                    "self"
+                ],
+                "href" : "http://10.110.35.4:8080/aims-dev/api/address/resolutionfeed/190"
+            },
+            {
+                "rel" : [
+                    "address"
+                ],
+                "href" : "http://10.110.35.4:8080/aims-dev/api/address/features/29"
+            }
+        ],
+        "properties" : {
+            "changeId" : 9999999,
+            "changeType" : "Add",
+            "workflow" : {
+                "submitterUserName" : "LINZ_DataMigration",
+                "submittedDate" : "2016-11-03",
+                "queueStatus" : "Accepted",
+                "statusNotes" : "Data Migration 2016-11-03",
+                "sourceOrganisation" : "LINZ"
+            },
+            "components" : {
+                "addressId" : 29,
+                "addressType" : "Road",
+                "lifecycle" : "Current",
+                "addressNumber" : 16,
+                "roadCentrelineId" : 11849,
+                "roadName" : "Islay",
+                "roadType" : "Street",
+                "suburbLocality" : "Glenorchy"
+            },
+            "addressedObject" : {
+                "objectType" : "Parcel",
+                "addressPositions" : [
+                    {
+                        "position" : {
+                            "type" : "Point",
+                            "coordinates" : [
+                                168.38392191667,
+                                -44.8511013
+                            ],
+                            "crs" : {
+                                "type" : "name",
+                                "properties" : {
+                                    "name" : "urn:ogc:def:crs:EPSG::4167"
+                                }
+                            }
+                        },
+                        "positionType" : "Unknown",
+                        "primary" : true
+                    }
+                ],
+                "externalObjectId" : "3132748",
+                "externalObjectIdScheme" : "LINZ"
+            }
+        },
+        "entities" : []
+    },
+    "address/resolutionfeed/1934059/decline" : {
+        "class":[
+            "addressresolution"
+        ],
+        "links":[
+            {
+                "rel":[
+                    "self"
+                ],
+                "href":"https://10.110.35.4:8443/aims-dev/api/address/resolutionfeed/1934059"
+            },
+            {
+                "rel":[
+                    "previous"
+                ],
+                "href":"https://10.110.35.4:8443/aims-dev/api/address/resolutionfeed/1934059"
+            }
+        ],
+        "properties":{
+            "changeId":1934059,
+            "changeType":"Retire",
+            "workflow":{
+                "submitterUserName":"test.publisher",
+                "submittedDate":"2016-07-14",
+                "reviewedUserName":"test.reviewer",
+                "reviewedDate":"2016-07-14",
+                "queueStatus":"Declined"
+            },
+            "components":{
+                "addressId":1612315,
+                "lifecycle":"Retired"
+            },
+            "addressedObject":{
+            }
+        },
+        "entities":[
+        ]
+    },
+    "address/changefeed" : {
+        "class" : [
+            "addresschange",
+            "collection"
+        ],
+        "links" : [
+            {
+                "rel" : [
+                    "self"
+                ],
+                "href" : "http://10.110.35.4:8080/aims-dev/api/address/changefeed?page=1"
+            }
+        ],
+        "actions" : [
+            {
+                "name" : "add",
+                "method" : "POST",
+                "href" : "http://10.110.35.4:8080/aims-dev/api/address/changefeed/add"
+            },
+            {
+                "name" : "update",
+                "method" : "POST",
+                "href" : "http://10.110.35.4:8080/aims-dev/api/address/changefeed/update"
+            },
+            {
+                "name" : "retire",
+                "method" : "POST",
+                "href" : "http://10.110.35.4:8080/aims-dev/api/address/changefeed/retire"
+            }
+        ],
+        "entities" : []
+    },
+    "address/changefeed/add" : {
+        "class":[
+            "addresschange"
+        ],
+        "links":[
+            {
+                "rel":[
+                    "self"
+                ],
+                "href":"https://10.110.35.4:8443/aims-dev/api/address/changefeed/9999999"
+            }
+        ],
+        "properties":{
+            "changeId":9999999,
+            "changeType":"Add",
+            "workflow":{
+                "submitterUserName":"test.publisher",
+                "submittedDate":"20240314",
+                "queueStatus":"Submitted"
+            },
+            "components":{
+                "addressType":"Road",
+                "lifecycle":"Current",
+                "addressNumber":11,
+                "addressNumberSuffix":"C",
+                "roadCentrelineId":94009,
+                "roadName":"Hawker",
+                "roadType":"Street",
+                "suburbLocality":"Mount Victoria",
+                "townCity":"Wellington"
+            },
+            "addressedObject":{
+                "objectType":"Parcel",
+                "addressPositions":[
+                    {
+                        "position":{
+                            "type":"Point",
+                            "coordinates":[
+                                174.78770567,
+                                -41.29408977
+                            ],
+                            "crs":{
+                                "type":"name",
+                                "properties":{
+                                    "name":"urn:ogc:def:crs:EPSG::4167"
+                                }
+                            }
+                        },
+                        "positionType":"Unknown",
+                        "primary":true
+                    }
+                ],
+                "externalObjectId":"3875888"
+            }
+        },
+        "entities":[
+        ]
+    },
+    "address/changefeed/update" : {
+        "class":[
+            "addresschange"
+        ],
+        "links":[
+            {
+                "rel":[
+                    "self"
+                ],
+                "href":"https://10.110.35.4:8443/aims-dev/api/address/changefeed/9999999"
+            }
+        ],
+        "properties":{
+            "changeId":9999999,
+            "changeType":"Update",
+            "workflow":{
+                "submitterUserName":"test.publisher",
+                "submittedDate":"20240314",
+                "queueStatus":"Submitted"
+            },
+            "components":{
+                "addressType":"Road",
+                "lifecycle":"Current",
+                "addressNumber":11,
+                "addressNumberSuffix":"C",
+                "roadCentrelineId":94009,
+                "roadName":"Hawker",
+                "roadType":"Street",
+                "suburbLocality":"Mount Victoria",
+                "townCity":"Wellington"
+            },
+            "addressedObject":{
+                "objectType":"Parcel",
+                "addressPositions":[
+                    {
+                        "position":{
+                            "type":"Point",
+                            "coordinates":[
+                                174.78770567,
+                                -41.29408977
+                            ],
+                            "crs":{
+                                "type":"name",
+                                "properties":{
+                                    "name":"urn:ogc:def:crs:EPSG::4167"
+                                }
+                            }
+                        },
+                        "positionType":"Unknown",
+                        "primary":true
+                    }
+                ],
+                "externalObjectId":"3875888"
+            }
+        },
+        "entities":[
+        ]
+    },
+    "address/changefeed/retire" : {
+        "class":[
+            "addresschange"
+        ],
+        "links":[
+            {
+                "rel":[
+                    "self"
+                ],
+                "href":"https://10.110.35.4:8443/aims-dev/api/address/changefeed/1933645"
+            }
+        ],
+        "properties":{
+            "changeId":1933645,
+            "changeType":"Retire",
+            "workflow":{
+                "submitterUserName":"test.publisher",
+                "submittedDate":"20150429",
+                "queueStatus":"Submitted"
+            },
+            "components":{
+                "addressId":1612315,
+                "lifecycle":"Retired"
+            },
+            "addressedObject":{
+            }
+        },
+        "entities":[
+        ]
+    },
+    "address/changefeed/9999999/accept" : {
+        "class" : [
+            "addresschange"
+        ],
+        "links" : [
+            {
+                "rel" : [
+                    "self"
+                ],
+                "href" : "http://10.110.35.4:8080/aims-dev/api/address/changefeed/9999999"
+            }
+        ],
+        "properties" : {
+            "changeId" : 9999999,
+            "changeType" : "Add",
+            "workflow" : {
+                "submitterUserName" : "test.administrator",
+                "submittedDate" : "20240207",
+                "queueStatus" : "Submitted"
+            },
+            "components" : {
+                "addressType" : "Road",
+                "lifecycle" : "Current",
+                "addressNumber" : 11,
+                "addressNumberSuffix" : "C",
+                "roadCentrelineId" : 94009,
+                "roadName" : "Hawker",
+                "roadType" : "Street",
+                "suburbLocality" : "Mount Victoria",
+                "townCity" : "Wellington"
+            },
+            "addressedObject" : {
+                "objectType" : "Parcel",
+                "addressPositions" : [
+                    {
+                        "position" : {
+                            "type" : "Point",
+                            "coordinates" : [
+                                170.62953346606358,
+                                -45.768294405809044
+                            ],
+                            "crs" : {
+                                "type" : "name",
+                                "properties" : {
+                                    "name" : "urn:ogc:def:crs:EPSG::4167"
+                                }
+                            }
+                        },
+                        "positionType" : "Centroid",
+                        "primary" : true
+                    }
+                ]
+            }
+        },
+        "entities" : [
+        ]
+    },
+    "groups/resolutionfeed" : {
+        "class":[
+            "resolutiongroup",
+            "collection"
+        ],
+        "links":[
+            {
+                "rel":[
+                    "self"
+                ],
+                "href":"https://10.110.35.4:8443/aims-dev/api/groups/resolutionfeed?page=1"
+            }
+        ],
+        "entities":[
+            {
+                "class":[
+                    "resolutiongroup"
+                ],
+                "rel":[
+                    "item"
+                ],
+                "links":[
+                    {
+                        "rel":[
+                            "self"
+                        ],
+                        "href":"https://10.110.35.4:8443/aims-dev/api/groups/resolutionfeed/4095657"
+                    },
+                    {
+                        "rel":[
+                            "address"
+                        ],
+                        "href":"https://10.110.35.4:8443/aims-dev/api/groups/resolutionfeed/4102215/address"
+                    }
+                ],
+                "properties":{
+                    "changeGroupId":4095657,
+                    "groupType":"Replace",
+                    "groupStatus":"Submitted",
+                    "description":"11 Hawker Redevelopment",
+                    "submitterUserName":"test.publisher",
+                    "submittedDate":"2015-12-14"
+                },
+                "entities":[
+                ]
+            }
+        ]
+    },
+    "groups/resolutionfeed/4095657" : {
+        "class":[
+            "resolutiongroup"
+        ],
+        "links":[
+            {
+                "rel":[
+                    "self"
+                ],
+                "href":"https://10.110.35.4:8443/aims-dev/api/groups/resolutionfeed/4095657"
+            },
+            {
+                "rel":[
+                    "address"
+                ],
+                "href":"https://10.110.35.4:8443/aims-dev/api/groups/resolutionfeed/4982950/address"
+            }
+        ],
+        "actions":[
+            {
+                "name":"update",
+                "method":"PUT",
+                "href":"https://10.110.35.4:8443/aims-dev/api/groups/resolutionfeed/4095657"
+            },
+            {
+                "name":"accept",
+                "method":"POST",
+                "href":"https://10.110.35.4:8443/aims-dev/api/groups/resolutionfeed/4095657/accept"
+            },
+            {
+                "name":"decline",
+                "method":"POST",
+                "href":"https://10.110.35.4:8443/aims-dev/api/groups/resolutionfeed/4095657/decline"
+            }
+        ],
+        "properties":{
+            "version":3956870,
+            "changeGroupId":4095657,
+            "groupType":"Replace",
+            "groupStatus":"Submitted",
+            "description":"11 Hawker Redevelopment",
+            "submitterUserName":"test.publisher",
+            "submittedDate":"2015-12-14"
+        },
+        "entities":[
+        ]
+    }
+}
