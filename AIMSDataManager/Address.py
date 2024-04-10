@@ -465,8 +465,10 @@ class Address(Feature):
         '''
         '''adds (nb 'add' not 'set', bcse setter recogniser needs set) another position object'''
         if isinstance(pl,list): self._addressedObject_addressPositions = pl  
-        elif isinstance(pl,Position): self._addressedObject_addressPositions = [pl,]  
-        else: raise InvalidPositionException('Cannot set non list-of-Position type {}'.format(pl))
+        elif isinstance(pl, Position): self._addressedObject_addressPositions = [pl,]  
+        elif isinstance(Position(pl), Position): self._addressedObject_addressPositions = [pl,]   # Force cast
+        else:
+            raise InvalidPositionException('Cannot set non list-of-Position type {}'.format(pl))
             
         
     def getConvertedAddressPositions(self):
