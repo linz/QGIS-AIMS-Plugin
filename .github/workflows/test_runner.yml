@@ -12,53 +12,43 @@ jobs:
     test:
 
         runs-on: ubuntu-latest
+        container: qgis/qgis:release-3_28
+
+        services:
+          postgres:
+            image: kartoza/postgis:14-3.1
+            env:
+              POSTGRES_USER: postgres
+              POSTGRES_PASSWORD: postgres
+              POSTGRES_DB: aims_ci_test
+            ports:
+                - 5432:5432
+            options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+        env:
+          POSTGRES_HOST: postgres
+          POSTGRES_PORT: 5432
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
 
         steps:
 
             - name: Checkout QGIS-AIMS-Plugin
               uses: actions/checkout@v3
+              with:
+                path: ''
 
-            - name: Pull QGIS Image
-              run: docker pull qgis/qgis:release-3_28
+            - name: Initialise QGIS
+              shell: bash
+              run: |
+                cd $GITHUB_WORKSPACE/Test
+                python3 qgis_docker_init.py
 
-            - name: Pull PostGIS Image
-              run: docker pull kartoza/postgis:14-3.1
+            - name: Run Python Tests
+              shell: bash
+              run: |
+                cd $GITHUB_WORKSPACE
+                python3 -m unittest discover -s $GITHUB_WORKSPACE/Test -p '*_Test.py'
+                echo "Ran python tests"
 
-            - name: Configure Database
-              run: docker-compose -f QGIS-AIMS-PLUGIN/Test/postgres_docker_compose.yml up -d
-
-            - name: Run Tests
-              run: docker run --rm --net=host --volume `pwd`/QGIS-AIMS-Plugin:/app -w=/app -e QGIS_PLUGIN_IN_CI=1 qgis/qgis:release-3_28 sh -c "pip3 install unittest pytest -v"
-
-
-    # postgres:
-    #     name: Get PostgreSQL database
-    #     runs-on: ubuntu-latest
-    #     container: qgis/qgis:release-3_28
-    #     services:
-    #         postgres:
-    #             image: postgres
-    #             env:
-    #                 POSTGRES_PASSWORD: postgres
-    #                 POSTGRES_DB: aims_ci_test
-    #             ports:
-    #                 - 5432:5432
-
-    #             # Set health checks to wait until postgres has started
-    #             options: >-
-    #                 --health-cmd pg_isready
-    #                 --health-interval 10s
-    #                 --health-timeout 5s
-    #                 --health-retries 5
-            
-    #         qgis:
-    #             image: qgis/qgis:release-3_28
-    
-    #     steps:
-    
-    #         - name: Checkout QGIS-AIMS-Plugin
-    #           uses: actions/checkout@v3
-
-                    
-
-    
+         
