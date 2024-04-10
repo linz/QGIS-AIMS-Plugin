@@ -72,7 +72,7 @@ class Test_1_AddressTestSetters(unittest.TestCase):
         testlog.debug('Instantiate null address, address.setter list')
         self._address = Address(user_text)
         self._address_setters = [i for i in dict(inspect.getmembers(self._address, predicate=inspect.ismethod)) if i[:3]=='set']
-       #  self._address_setters.remove('setAddressPositions')
+        # self._address_setters.remove('setAddressPositions')
 
         
     def tearDown(self):
@@ -170,6 +170,8 @@ class Test_1_AddressTestSetters(unittest.TestCase):
         if meth == 'setObjectType':return 'Parcel'
         if meth == 'setAddressType':return 'Road' 
         if meth == 'setLifecycle':return 'Current'
+        if meth == 'setRequestId':return 99 # Both of these are limited to integers on their setters
+        if meth == 'setVersion':return 99   # Both of these are limited to integers on their setters
         return
 
     
