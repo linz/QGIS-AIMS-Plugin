@@ -243,7 +243,7 @@ class DataUpdater(Observable):
         self._xstop.set()
 
     def stopped(self):
-        return self._xstop.isSet()
+        return self._xstop.is_set()
     
     def close(self):
         aimslog.info('Queue {} stopped'.format(self.queue.qsize()))

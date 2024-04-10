@@ -72,5 +72,5 @@ class Observable(threading.Thread):
         self._xstop.clear()
 
     def stopped(self):
-        return self._xstop.isSet()
+        return self._xstop.is_set()
     
