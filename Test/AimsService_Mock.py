@@ -338,8 +338,6 @@ def updateDict(d1: dict, d2: dict={}):
 
 def mock_api_request(url:str, method, payload=None, headers=None, *args, **kwargs):
     ''' When TEST_MODE environment variable is set to True, intercept calls to API and return what we want it to return '''
-    print(f'ARGS: {args}')
-    print(f'KWARGS: {kwargs}')
 
     # Don't actually want this... but best to leave in just in case
     url = url.replace('/test','').rstrip('/')
@@ -377,21 +375,18 @@ def mock_api_request(url:str, method, payload=None, headers=None, *args, **kwarg
         content = TestData.get('address/changefeed/add')
         addr = json.loads(payload)
         content = updateDict(content, addr)
-        print()
     
     if 'address/changefeed/update' in url:
         # Mocking a post request of a new address being added 
         content = TestData.get('address/changefeed/update')
         addr = json.loads(payload)
         content = updateDict(content, addr)
-        print()
     
     if 'address/changefeed/retire' in url:
         # Mocking a post request of a new address being added 
         content = TestData.get('address/changefeed/retire')
         addr = json.loads(payload)
         content = updateDict(content, addr)
-        print()
 
     if 'groups/resolutionfeed' in url:
         # Check for a changeGroupId on the end of the URL
@@ -405,7 +400,6 @@ def mock_api_request(url:str, method, payload=None, headers=None, *args, **kwarg
     
 
     if content is None:
-        print()
         raise LookupError(f'No URL path handling configured for: {url}')
 
     return response, json.dumps(content)

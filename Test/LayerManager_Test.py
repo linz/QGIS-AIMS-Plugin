@@ -200,7 +200,6 @@ class Test_2_LayerManagerConnection(unittest.TestCase):
                     
                     # lconf = getLConf(replace={'id':test_id})
                     # if 'geom' not in lconf:
-                    #     print()
                     # res_layer = self._layermanager.installLayer(**lconf)
                     res_layer = self._layermanager.installLayer(**getLConf(replace={'id':test_id}))
         

@@ -86,8 +86,6 @@ class Test_1_AddressTestSetters(unittest.TestCase):
         #this no longer works since changing to full path attribute names eg _components_roadName
         testlog.debug('Test_1.10 Instantiate all setters')
         for asttr in self._address_setters:
-            if asttr == 'setRequestId':
-                print()
             if asttr in ('setAddressPositions', 'setMeta', 'setPublishDate'): continue     # Skip this in the instantiate setters
             aval = self._generateAttrVal(asttr)             # Generate mock value
             getattr(self._address, asttr)(aval)             # Get setter function and set the mock value
@@ -124,7 +122,6 @@ class Test_1_AddressTestSetters(unittest.TestCase):
             acf = AddressChangeFactory(FEEDS['AC'])
             jresult = acf.convert(self._address,at)
             tresult = getTestData(at)
-            print()
             self.assertEqual(jresult, tresult, 'JSON Address constructed incorrectly {}'.format(jresult))
         
     def test31_checkAddressDictNullRemoval(self):
