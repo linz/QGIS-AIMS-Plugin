@@ -9,14 +9,8 @@ LICENSE file for further information.
 Copyright 2015 Crown copyright (c) Land Information New Zealand and the New
 Zealand Government.
 
-<!---
-##Build Status: 
-[![Build Status](https://travis-ci.org/linz/QGIS-AIMS-Plugin.svg?branch=master)](https://travis-ci.org/linz/QGIS-AIMS-Plugin)
-##Test Coverage: 
-[![Coverage Status](https://coveralls.io/repos/linz/QGIS-AIMS-Plugin/badge.svg?branch=master&service=github)](https://coveralls.io/github/linz/QGIS-AIMS-Plugin?branch=master)
---->
 ##Dependencies
-	*Qgis 3.28 (min version)
+	*Qgis 3.28 (target version)
 
 ##Installation
 
@@ -26,3 +20,5 @@ Zealand Government.
 For testing of individual pieces, if using a conda environment, you may need a hard link between the Qt5Core_conda.dll and the normal Qt5Core.dll
 `C:\windows\system32>mklink /h "C:\OSGeo4W\apps\Qt5\bin\Qt5Core_conda.dll" "C:\OSGeo4W\apps\Qt5\bin\Qt5Core.dll"`
  
+## Sym Link for Development on Windows
+mklink /D "C:\Users\###\AppData\Roaming\QGIS\QGIS3\profiles\default\python\plugins\QGIS-AIMS-Plugin" "###\QGIS-AIMS-PLUGIN\QGIS-AIMS-Plugin"
