@@ -13,5 +13,9 @@ echo >&2 ""
 # --workdir /tests_directory \
 # qgis \
 # bash QGIS-AIMS-Plugin/test/run_tests.sh
+
+docker exec --privileged qgis /bin/sh -c "cd / && ls -l"
+docker exec --privileged qgis /bin/sh -c "cd /QGIS-AIMS-Plugin && ls -l -R"
+
 chmod +x /tests_directory/$PLUGIN_NAME/test/run_tests.sh
 docker exec --privileged -w /tests_directory/$PLUGIN_NAME qgis /bin/sh /tests_directory/$PLUGIN_NAME/test/run_tests.sh
