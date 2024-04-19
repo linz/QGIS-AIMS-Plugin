@@ -8,7 +8,7 @@ echo >&2 ""
 
 docker run --privileged \
 --name qgis \
---volume $BASE_DIR/$PLUGIN_NAME:/tests_directory/PLUGIN_NAME \
+--volume $BASE_DIR/$PLUGIN_NAME:/tests_directory/$PLUGIN_NAME \
 --volume /tmp/.X11-unix:/tmp/.X11-unix \
 --net $DOCKER_NETWORK \
 --env DISPLAY=$QGIS_DISPLAY \
