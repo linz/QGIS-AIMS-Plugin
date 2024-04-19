@@ -15,7 +15,7 @@ from qgis.utils import iface
 
 from console.console_output import writeOut
 
-
+print('\n\RUN_TESTS.PY SUCCESSFULLY ENTERED')
 if iface is None:
     sys.exit("Must be run from inside QGIS")
 
@@ -33,6 +33,7 @@ def run_tests():
         test_module_name = os.environ["QGIS_TEST_MODULE"]
         test_class_name = os.environ["QGIS_TEST_CLASS"]
         test_name = os.environ["QGIS_TEST_NAME"]
+        print(f'RUN_TESTS.PY (36) -- Environent Variables: {test_module_name} -- {test_class_name} -- {test_name}')
         if test_module_name != "" and test_class_name != "" and test_name != "":
             test_suite = unittest.TestLoader().loadTestsFromName(f"{test_class_name}.{test_name}", importlib.import_module(test_module_name))
         elif test_module_name != "" and test_class_name != "":
