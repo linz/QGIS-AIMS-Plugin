@@ -60,6 +60,7 @@ class ConfigReader(object):
         self.cp.read(AIMS_CONFIG)
         self._readConfig()
         self._fillConfig()
+        print(f'\n\n<<<{AIMS_CONFIG}>>>\n{self.d}\n<<CONFIG>>\n\n')
         
     def _readConfig(self):
         '''Read ConfigParser object to saved dict'''
