@@ -152,7 +152,7 @@ class Test_3_DataManagerCFRF(unittest.TestCase):
         print(len1)
         print(f'<<<Len 1>>>\n')
         time.sleep(TS1)
-        len2 = self.dm.persist.ADLget(self.ar)
+        len2 = self.dm.persist.ADL.get(self.ar)
         print(f'\n<<<Len 2>>>')
         print(len2)
         print(f'<<<Len 2>>>\n')
