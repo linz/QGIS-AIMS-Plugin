@@ -14,3 +14,4 @@ AIMSDataManager/.cache/*
 /AimsLogging.html
 /Config.html
 *.vscode
+symbology-style.db
