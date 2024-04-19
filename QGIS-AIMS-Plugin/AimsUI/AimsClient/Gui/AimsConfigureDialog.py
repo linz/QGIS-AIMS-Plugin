@@ -1,4 +1,5 @@
 import os
+import json
 import configparser
 
 from qgis.core import QgsApplication
@@ -104,12 +105,13 @@ class AimsConfigureDialog(QDialog, FORM_CLASS):
         config_file.close()
 
     def createConfig(self):
+        print(f'No config file found at path: <<< {CONF_FILE} >>>. Creating default config file.')
         Config = configparser.ConfigParser()
         config_file = open(CONF_FILE,'w')
         for section, options in DEF_CONF.items():
             Config.add_section(section)
             for k, v in options.items():
-                Config.set(section,k,v)
+                Config.set(section, k, json.dumps(v))
         Config.write(config_file)
         config_file.close()
 
