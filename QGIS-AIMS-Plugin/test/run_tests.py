@@ -30,9 +30,9 @@ writeOut.write = _write
 def run_tests():
     app = QgsApplication.instance()
     try:
-        test_module_name = os.environ["QGIS_TEST_MODULE"]
-        test_class_name = os.environ["QGIS_TEST_CLASS"]
-        test_name = os.environ["QGIS_TEST_NAME"]
+        test_module_name = os.environ.get("QGIS_TEST_MODULE","")
+        test_class_name = os.environ.get("QGIS_TEST_CLASS","")
+        test_name = os.environ.get("QGIS_TEST_NAME","")
         if test_module_name != "" and test_class_name != "" and test_name != "":
             test_suite = unittest.TestLoader().loadTestsFromName(f"{test_class_name}.{test_name}", importlib.import_module(test_module_name))
         elif test_module_name != "" and test_class_name != "":
