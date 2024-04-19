@@ -402,7 +402,6 @@ def mock_api_request(url:str, method, payload=None, headers=None, *args, **kwarg
     if content is None:
         raise LookupError(f'No URL path handling configured for: {url}')
 
-    print(f'API MOCK RESPONSE -- URL: {url} -- Method: {method} -- Payload: {payload} -- Response: {response} -- Content: {content}')
     return response, json.dumps(content)
 
 ###------
