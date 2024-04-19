@@ -42,7 +42,6 @@ if sys.platform == 'linux':
     print(f'LINUX CI DETECTED - USING PATH: {AIMS_CONFIG}')
 
 if AIMS_CONFIG == 'aims\\aimsConfig.ini':
-    if os.path.exists()
     # Local testing 
     AIMS_CONFIG = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'Test', 'aims_test_config.ini')
 
