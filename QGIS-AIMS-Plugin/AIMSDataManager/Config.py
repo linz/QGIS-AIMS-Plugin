@@ -38,12 +38,12 @@ AIMS_CONFIG = os.path.join(QgsApplication.qgisSettingsDirPath(), "aims", "aimsCo
 # For Unit Testing, outside of QGIS, set path to your .ini file here as QgsApplication.qgisSettingsDirPath() resolves to '' if not called from QGIS
 if sys.platform == 'linux':
     # For testing via github actions, builds path to the repository aims_test_config.ini
-    # AIMS_CONFIG = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'Test', 'aims_test_config.ini')
+    # AIMS_CONFIG = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'test', 'aims_test_config.ini')
     print(f'LINUX CI DETECTED - USING PATH: {AIMS_CONFIG}')
 
 if AIMS_CONFIG == 'aims\\aimsConfig.ini':
     # Local testing 
-    AIMS_CONFIG = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'Test', 'aims_test_config.ini')
+    AIMS_CONFIG = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'test', 'aims_test_config.ini')
 
 if not USE_PLAINTEXT:
     K='12345678901234567890123456789012'

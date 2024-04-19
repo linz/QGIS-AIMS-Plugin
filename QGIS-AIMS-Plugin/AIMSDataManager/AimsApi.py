@@ -136,7 +136,7 @@ class AimsApi(object):
         '''
         if TEST_MODE:
             # TBD If this is the best course of action. Unable to get the mocking to intercept calls to httplib2 requests otherwise
-            from Test.AimsService_Mock import mock_api_request
+            from test.AimsService_Mock import mock_api_request
             return mock_api_request(*args, **kwargs)
         else:
             aimslog.info("Request {}".format(args))

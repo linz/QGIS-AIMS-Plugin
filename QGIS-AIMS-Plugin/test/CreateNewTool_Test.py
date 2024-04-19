@@ -26,7 +26,7 @@ ROOT = os.path.join(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(os.path.join(ROOT, 'AIMSDataManager'))
 sys.path.append(os.path.join(ROOT, 'AimsUI'))
 
-#from Test._QGisInterface import QgisInterface
+#from test._QGisInterface import QgisInterface
 # from AimsUI.CreateNewAddressTool import CreateNewTool
 from AimsUI.LayerManager import LayerManager
 from AimsUI.AimsLogging import Logger
