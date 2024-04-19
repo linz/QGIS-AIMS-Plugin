@@ -147,14 +147,14 @@ class Test_3_DataManagerCFRF(unittest.TestCase):
     #     self.assertNotEqual(len1,len2,'Changefeed didn\'t update within {} seconds'.format(TS1))       
         
     def test10_rf(self):
-        len1 = self.dm.persist.ADL[self.ar]
+        len1 = self.dm.persist.ADL.get(self.ar)
         print(f'\n<<<Len 1>>>')
-        print(len1[0])
+        print(len1)
         print(f'<<<Len 1>>>\n')
         time.sleep(TS1)
-        len2 = self.dm.persist.ADL[self.ar]
+        len2 = self.dm.persist.ADLget(self.ar)
         print(f'\n<<<Len 2>>>')
-        print(len2[0])
+        print(len2)
         print(f'<<<Len 2>>>\n')
         self.assertNotEqual(len1,len2,'Resolutionfeed didn\'t update within {} seconds'.format(TS1))   
         
