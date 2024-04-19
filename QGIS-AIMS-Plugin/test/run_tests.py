@@ -12,10 +12,12 @@ from pathlib import Path
 from qgis.core import QgsApplication
 from qgis.PyQt.QtCore import QDir
 from qgis.utils import iface
+from qgis.gui import QgisInterface
+iface:QgisInterface = iface
 
 from console.console_output import writeOut
 
-print('\n\RUN_TESTS.PY SUCCESSFULLY ENTERED')
+print(f'\n\RUN_TESTS.PY SUCCESSFULLY ENTERED. Interface: {iface} is a QgisInterface: {isinstance(iface, QgisInterface)}')
 if iface is None:
     sys.exit("Must be run from inside QGIS")
 
@@ -25,10 +27,12 @@ def _write(self, m):
     sys.__stdout__.write(m)
 
 writeOut.write = _write
-
+print('\n\RUN_TESTS.PY SUCCESSFULLY SET WRITOUT.WRITE TO _WRITE')
 
 def run_tests():
+    print('\n\RUN_TESTS.PY SUCCESSFULLY ENTERED RUN_TESTS FUNCTION')
     app = QgsApplication.instance()
+    print(f'\n\RUN_TESTS.PY SUCCESSFULLY ASSIGNED APPLICATION INSTANCE TO: {app} -- Is Correct Type: {isinstance(app, QgsApplication)}')
     try:
         test_module_name = os.environ["QGIS_TEST_MODULE"]
         test_class_name = os.environ["QGIS_TEST_CLASS"]
@@ -50,6 +54,7 @@ def run_tests():
 
 
 sys.path.append(QDir.current().path())  # Add current working dir to the python path
+print(f'\n\RUN_TESTS.PY SUCCESSFULLY ADDED PATH: {QDir.current().path()} TO SYS.PATH')
 iface.initializationCompleted.connect(run_tests)
 
 
