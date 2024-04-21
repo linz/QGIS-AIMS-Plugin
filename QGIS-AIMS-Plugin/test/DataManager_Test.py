@@ -40,6 +40,7 @@ testlog = Logger.setup('test')
 #user to init an address, simple text string read from a stored config file
 ref_int = 1234
 
+INIT = True
 SW1,NE1 = (174.76918,-41.28515),(174.79509,-41.26491)
 TS0,TS1,TS2 = 5, 20, 60
 '''
@@ -129,7 +130,7 @@ class Test_2_DataManagerSyncStart(unittest.TestCase):
         
     
 class Test_3_DataManagerCFRF(unittest.TestCase):
-    init = True
+
     '''tests whether the CF and RF feeds get populated'''
     def setUp(self):    
         self.dm = self.initDM()
@@ -138,10 +139,9 @@ class Test_3_DataManagerCFRF(unittest.TestCase):
         self.ar = FeedRef((FeatureType.ADDRESS,FeedType.RESOLUTIONFEED))
 
     def initDM(self) -> DataManager:
-        dm = DataManager(initialise=self.init)
-        if self.init:
-            dm.pull()
-            self.init = False
+        global INIT
+        dm = DataManager(initialise=INIT)
+        if INIT: INIT = False
         return dm
 
     def tearDown(self):
@@ -157,13 +157,17 @@ class Test_3_DataManagerCFRF(unittest.TestCase):
         len1 = self.dm.persist.ADL.get(self.ar)
         print(f'Test_3_DataManagerCFRF -- LEN 1: {len1}')
         time.sleep(TS1)
-        print(f'Test_3_DataManagerCFRF -- LEN 1: {len2}')
         len2 = self.dm.persist.ADL.get(self.ar)
+        print(f'Test_3_DataManagerCFRF -- LEN 2: {len2}')
         self.assertNotEqual(len1,len2,'Resolutionfeed didn\'t update within {} seconds'.format(TS1)) 
+            
+    @classmethod
+    def tearDownClass(cls) -> None:
+        global INIT
+        INIT = True
+        return super().tearDownClass()
         
 class Test_4_DataManagerShift(unittest.TestCase):
-
-    init = True
     
     def setUp(self):    
         self.dm = self.initDM()
@@ -172,9 +176,9 @@ class Test_4_DataManagerShift(unittest.TestCase):
         self.ar = FeedRef((FeatureType.ADDRESS,FeedType.RESOLUTIONFEED))
 
     def initDM(self) -> DataManager:
-        dm = DataManager(initialise=self.init)
-        dm.pull()
-        self.init = False
+        global INIT
+        dm = DataManager(initialise=INIT)
+        if INIT: INIT = False
         return dm
 
     def tearDown(self):
@@ -187,12 +191,17 @@ class Test_4_DataManagerShift(unittest.TestCase):
         len2 = self.dm.persist.ADL[self.af]
 
         self.assertNotEqual(len1,len2,'Features feed didn\'t update within {} seconds'.format(TS1)) 
+            
+    @classmethod
+    def tearDownClass(cls) -> None:
+        global INIT
+        INIT = True
+        return super().tearDownClass()
 
         
 class Test_5_DataManagerChangeFeed(unittest.TestCase): 
     
     ver = 1000000
-    init = True
 
     def setUp(self):    
         self.dm = self.initDM()
@@ -206,9 +215,9 @@ class Test_5_DataManagerChangeFeed(unittest.TestCase):
         self.addr_f = _getTestAddress(self.afc)
 
     def initDM(self) -> DataManager:
-        dm = DataManager(initialise=self.init)
-        dm.pull()
-        self.init = False
+        global INIT
+        dm = DataManager(initialise=INIT)
+        if INIT: INIT = False
         return dm
 
     def tearDown(self):
@@ -254,6 +263,12 @@ class Test_5_DataManagerChangeFeed(unittest.TestCase):
                 self.assertTrue(isinstance(r, AddressChange))
             time.sleep(5)
             
+    @classmethod
+    def tearDownClass(cls) -> None:
+        global INIT
+        INIT = True
+        return super().tearDownClass()
+            
 class Test_6_DataManagerResolutionFeed(unittest.TestCase): 
     
     ver = 1000000
@@ -270,11 +285,10 @@ class Test_6_DataManagerResolutionFeed(unittest.TestCase):
         self.addr_f = _getTestAddress(self.afr)
 
     def initDM(self) -> DataManager:
-        dm = DataManager(initialise=self.init)
-        dm.pull()
-        self.init = False
+        global INIT
+        dm = DataManager(initialise=INIT)
+        if INIT: INIT = False
         return dm
-        
 
     def tearDown(self):
         self.dm.close()
@@ -321,6 +335,12 @@ class Test_6_DataManagerResolutionFeed(unittest.TestCase):
             resp = self.dm.response(self.ar)
             for r in resp:
                 self.assertTrue(isinstance(r, AddressResolution))
+            
+    @classmethod
+    def tearDownClass(cls) -> None:
+        global INIT
+        INIT = True
+        return super().tearDownClass()
 
     
 # --------------------------------------------------------------------
