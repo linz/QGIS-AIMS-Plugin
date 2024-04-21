@@ -90,7 +90,6 @@ class Test_1_DataManagerFunctionTest(unittest.TestCase):
         '''Tests whether we get a valid list[group[address]]'''
         assert True
     
-    
 class Test_2_DataManagerSyncStart(unittest.TestCase):   
     
     def setUp(self):            
@@ -130,12 +129,19 @@ class Test_2_DataManagerSyncStart(unittest.TestCase):
         
     
 class Test_3_DataManagerCFRF(unittest.TestCase):
+    init = True
     '''tests whether the CF and RF feeds get populated'''
     def setUp(self):    
-        self.dm = DataManager()
+        self.dm = self.initDM()
         self.af = FeedRef((FeatureType.ADDRESS,FeedType.FEATURES))
         self.ac = FeedRef((FeatureType.ADDRESS,FeedType.CHANGEFEED))
         self.ar = FeedRef((FeatureType.ADDRESS,FeedType.RESOLUTIONFEED))
+
+    def initDM(self) -> DataManager:
+        dm = DataManager(initialise=self.init)
+        dm.pull()
+        self.init = False
+        return dm
 
     def tearDown(self):
         self.dm.close()
@@ -148,24 +154,25 @@ class Test_3_DataManagerCFRF(unittest.TestCase):
         
     def test10_rf(self):
         len1 = self.dm.persist.ADL.get(self.ar)
-        print(f'\n<<<Len 1>>>')
-        print(len1[0].__dict__)
-        print(f'<<<Len 1>>>\n')
         time.sleep(TS1)
         len2 = self.dm.persist.ADL.get(self.ar)
-        print(f'\n<<<Len 2>>>')
-        print(len2[0].__dict__)
-        print(f'<<<Len 2>>>\n')
-        self.assertEqual(len1,len2,'Resolutionfeed didn\'t update within {} seconds'.format(TS1))   
-        # self.assertNotEqual(len1,len2,'Resolutionfeed didn\'t update within {} seconds'.format(TS1))   
+        self.assertNotEqual(len1,len2,'Resolutionfeed didn\'t update within {} seconds'.format(TS1)) 
         
 class Test_4_DataManagerShift(unittest.TestCase):
+
+    init = True
     
     def setUp(self):    
-        self.dm = DataManager()        
+        self.dm = self.initDM()
         self.af = FeedRef((FeatureType.ADDRESS,FeedType.FEATURES))
         self.ac = FeedRef((FeatureType.ADDRESS,FeedType.CHANGEFEED))
         self.ar = FeedRef((FeatureType.ADDRESS,FeedType.RESOLUTIONFEED))
+
+    def initDM(self) -> DataManager:
+        dm = DataManager(initialise=self.init)
+        dm.pull()
+        self.init = False
+        return dm
 
     def tearDown(self):
         self.dm.close()
@@ -182,9 +189,10 @@ class Test_4_DataManagerShift(unittest.TestCase):
 class Test_5_DataManagerChangeFeed(unittest.TestCase): 
     
     ver = 1000000
-    
+    init = True
+
     def setUp(self):    
-        self.dm = DataManager(initialise=ref_int)
+        self.dm = self.initDM()
         self.af = FeedRef((FeatureType.ADDRESS,FeedType.FEATURES))
         self.ac = FeedRef((FeatureType.ADDRESS,FeedType.CHANGEFEED))
         self.ar = FeedRef((FeatureType.ADDRESS,FeedType.RESOLUTIONFEED))
@@ -193,6 +201,12 @@ class Test_5_DataManagerChangeFeed(unittest.TestCase):
         self.afc = FeatureFactory.getInstance(self.ac)
         self.afr = FeatureFactory.getInstance(self.ar)
         self.addr_f = _getTestAddress(self.afc)
+
+    def initDM(self) -> DataManager:
+        dm = DataManager(initialise=self.init)
+        dm.pull()
+        self.init = False
+        return dm
 
     def tearDown(self):
         self.dm.close()
@@ -239,9 +253,10 @@ class Test_5_DataManagerChangeFeed(unittest.TestCase):
 class Test_6_DataManagerResolutionFeed(unittest.TestCase): 
     
     ver = 1000000
+    init = True
     
     def setUp(self):    
-        self.dm = DataManager(initialise=ref_int)
+        self.dm = self.initDM()
         self.af = FeedRef((FeatureType.ADDRESS,FeedType.FEATURES))
         self.ac = FeedRef((FeatureType.ADDRESS,FeedType.CHANGEFEED))
         self.ar = FeedRef((FeatureType.ADDRESS,FeedType.RESOLUTIONFEED))
@@ -249,6 +264,12 @@ class Test_6_DataManagerResolutionFeed(unittest.TestCase):
         self.afc = FeatureFactory.getInstance(self.ac)
         self.afr = FeatureFactory.getInstance(self.ar)
         self.addr_f = _getTestAddress(self.afr)
+
+    def initDM(self) -> DataManager:
+        dm = DataManager(initialise=self.init)
+        dm.pull()
+        self.init = False
+        return dm
         
 
     def tearDown(self):
@@ -296,7 +317,6 @@ class Test_6_DataManagerResolutionFeed(unittest.TestCase):
             resp = self.dm.response(self.ar)
             for r in resp:
                 self.assertTrue(isinstance(r, AddressResolution))
-            time.sleep(5)
 
     
 # --------------------------------------------------------------------
