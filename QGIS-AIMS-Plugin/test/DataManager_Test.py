@@ -139,8 +139,9 @@ class Test_3_DataManagerCFRF(unittest.TestCase):
 
     def initDM(self) -> DataManager:
         dm = DataManager(initialise=self.init)
-        dm.pull()
-        self.init = False
+        if self.init:
+            dm.pull()
+            self.init = False
         return dm
 
     def tearDown(self):
@@ -154,7 +155,9 @@ class Test_3_DataManagerCFRF(unittest.TestCase):
         
     def test10_rf(self):
         len1 = self.dm.persist.ADL.get(self.ar)
+        print(f'Test_3_DataManagerCFRF -- LEN 1: {len1}')
         time.sleep(TS1)
+        print(f'Test_3_DataManagerCFRF -- LEN 1: {len2}')
         len2 = self.dm.persist.ADL.get(self.ar)
         self.assertNotEqual(len1,len2,'Resolutionfeed didn\'t update within {} seconds'.format(TS1)) 
         
@@ -223,6 +226,7 @@ class Test_5_DataManagerChangeFeed(unittest.TestCase):
         resp = None
         while not resp: 
             resp = self.dm.response(self.ac)
+            print(f'Waiting for Response to be valid: {resp}')
             for r in resp:
                 self.assertTrue(isinstance(r, AddressChange))
             time.sleep(5)
