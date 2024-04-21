@@ -140,6 +140,7 @@ class Test_3_DataManagerCFRF(unittest.TestCase):
 
     def initDM(self) -> DataManager:
         global INIT
+        print(f'Test_3_DataManagerCFRF -- INIT: {INIT}')
         dm = DataManager(initialise=INIT)
         print(f'Test 3 ADL: {dm.persist.ADL}')
         if INIT: INIT = False
@@ -178,6 +179,7 @@ class Test_4_DataManagerShift(unittest.TestCase):
 
     def initDM(self) -> DataManager:
         global INIT
+        print(f'Test_4_DataManagerShift -- INIT: {INIT}')
         dm = DataManager(initialise=INIT)
         print(f'Test 4 ADL: {dm.persist.ADL}')
         if INIT: INIT = False
@@ -218,6 +220,7 @@ class Test_5_DataManagerChangeFeed(unittest.TestCase):
 
     def initDM(self) -> DataManager:
         global INIT
+        print(f'Test_5_DataManagerChangeFeed -- INIT: {INIT}')
         dm = DataManager(initialise=INIT)
         print(f'Test 5 ADL: {dm.persist.ADL}')
         if INIT: INIT = False
@@ -289,6 +292,7 @@ class Test_6_DataManagerResolutionFeed(unittest.TestCase):
 
     def initDM(self) -> DataManager:
         global INIT
+        print(f'Test_6_DataManagerResolutionFeed -- INIT: {INIT}')
         dm = DataManager(initialise=INIT)
         print(f'Test 6 ADL: {dm.persist.ADL}')
         if INIT: INIT = False
