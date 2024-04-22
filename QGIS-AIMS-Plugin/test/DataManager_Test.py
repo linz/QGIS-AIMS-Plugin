@@ -24,6 +24,7 @@ import random
 import string
 import time
 import os
+import threading
 
 ROOT = os.path.join(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(os.path.join(ROOT, 'AIMSDataManager'))
@@ -202,7 +203,9 @@ class Test_5_DataManagerChangeFeed(unittest.TestCase):
     ver = 1000000
 
     def setUp(self):    
+        for t in threading.enumerate(): print(f'THREAD INFO 0: {t}')
         self.dm = self.initDM()
+        for t in threading.enumerate(): print(f'THREAD INFO 1: {t}')
         self.af = FeedRef((FeatureType.ADDRESS,FeedType.FEATURES))
         self.ac = FeedRef((FeatureType.ADDRESS,FeedType.CHANGEFEED))
         self.ar = FeedRef((FeatureType.ADDRESS,FeedType.RESOLUTIONFEED))
@@ -219,7 +222,13 @@ class Test_5_DataManagerChangeFeed(unittest.TestCase):
         return dm
 
     def tearDown(self):
+        print('\nTHREAD CLEANUP - PRE')
+        for t in threading.enumerate(): print(f'PRE: {t}')
+        print('===============================')
         self.dm.close()
+        for t in threading.enumerate(): print(f'POST 0: {t}')
+        print('===============================')
+        print('THREAD CLEANUP - POST\n')
         del self.addr_f
     
     def test10_cast(self):
@@ -231,6 +240,7 @@ class Test_5_DataManagerChangeFeed(unittest.TestCase):
         addr_c.setVersion(self.ver)
         self.dm.addAddress(addr_c)
         resp = None
+        for t in threading.enumerate(): print(f'THREAD INFO 2: {t}')
         while not resp: 
             resp = self.dm.response(self.ac)
             print(f'Waiting for Response to be valid: {resp}')
@@ -244,6 +254,7 @@ class Test_5_DataManagerChangeFeed(unittest.TestCase):
         addr_c.setVersion(self.ver)
         self.dm.updateAddress(addr_c)
         resp = None
+        for t in threading.enumerate(): print(f'THREAD INFO 3: {t}')
         while not resp: 
             resp = self.dm.response(self.ac)
             for r in resp:
@@ -255,6 +266,7 @@ class Test_5_DataManagerChangeFeed(unittest.TestCase):
         addr_c.setVersion(self.ver)
         self.dm.retireAddress(addr_c)
         resp = None
+        for t in threading.enumerate(): print(f'THREAD INFO 4: {t}')
         while not resp: 
             resp = self.dm.response(self.ac)
             for r in resp:

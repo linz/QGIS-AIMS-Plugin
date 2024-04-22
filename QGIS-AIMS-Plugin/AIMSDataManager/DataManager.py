@@ -244,7 +244,7 @@ class DataManager(Observable):
         resp = ()
         delflag = False
         #while self.ioq.get((et,ft)) and not self.ioq[(et,ft)]['resp'].empty():
-        print(f'DataManager.Response -- ETFT: {etft} -- Result Queue Length: {self.ioq[etft]["resp"]} -- ')
+        print(f'DataManager.Response -- ETFT: {etft} -- Result Queue Length: ~{self.ioq[etft]["resp"].qsize()} -- ') #TODO:Delete
         while etft in FEEDS.values() and not self.ioq[etft]['resp'].empty():
             resp += (self.ioq[etft]['resp'].get(),)
             print(f'Response: {resp}')
