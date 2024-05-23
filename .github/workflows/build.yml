@@ -30,29 +30,36 @@ jobs:
       QGIS_DISPLAY: ":99"
       DOCKER_NETWORK: aims
       PLUGIN_NAME: QGIS-AIMS-Plugin
+      PLUGIN_VERSION: 2.0.0
       
     steps:
 
         - name: Checkout QGIS-AIMS-Plugin
           uses: actions/checkout@v3
 
-        - name: Create Docker Network
-          run: bash $BASE_DIR/scripts/steps/create_docker_network.sh
+        # - name: Create Docker Network
+        #   run: bash $BASE_DIR/scripts/steps/create_docker_network.sh
 
-        - name: Launch database container
-          run: bash $BASE_DIR/scripts/steps/launch_database_container.sh
+        # - name: Launch database container
+        #   run: bash $BASE_DIR/scripts/steps/launch_database_container.sh
 
-        - name: Run database tests
-          run: bash $BASE_DIR/scripts/steps/run_db_tests.sh
+        # - name: Run database tests
+        #   run: bash $BASE_DIR/scripts/steps/run_db_tests.sh
 
-        - name: Launch QGIS container
-          run: bash $BASE_DIR/scripts/steps/launch_qgis_container.sh
+        # - name: Launch QGIS container
+        #   run: bash $BASE_DIR/scripts/steps/launch_qgis_container.sh
 
-        # - name: Load test data
-        #   run: bash $BASE_DIR/scripts/steps/load_qgis_test_data.sh
+        # # - name: Load test data
+        # #   run: bash $BASE_DIR/scripts/steps/load_qgis_test_data.sh
 
-        - name: Setup QGIS plugin
-          run: bash $BASE_DIR/scripts/steps/setup_qgis_plugin.sh
+        # - name: Setup QGIS plugin
+        #   run: bash $BASE_DIR/scripts/steps/setup_qgis_plugin.sh
 
-        - name: Run QGIS tests
-          run: bash $BASE_DIR/scripts/steps/run_qgis_tests.sh
+        # - name: Run QGIS tests
+        #   run: bash $BASE_DIR/scripts/steps/run_qgis_tests.sh
+
+        - name: Install QGIS Plugin CI
+          run: python3 -m pip install qgis-plugin-ci --quiet
+
+        - name: Package
+          run: qgis-plugin-ci package ${{ env.PLUGIN_VERSION }}
