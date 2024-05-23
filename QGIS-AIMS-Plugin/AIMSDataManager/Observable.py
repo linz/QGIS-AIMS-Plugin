@@ -10,6 +10,7 @@
 ################################################################################
 
 import threading
+from qgis.PyQt.QtCore import QThread
 
 notify_lock = threading.RLock()
 sync_lock = threading.RLock()
@@ -20,7 +21,7 @@ aimslog = None
 
 #TODO Split into observer and observed subclasses and multiply inherit depending on roles
 
-class Observable(threading.Thread):
+class Observable(QThread):
     '''Class implementing interface for the observer pattern.
     Differs from regular pattern as it splits notify() into notify() and observe() functions'''
 
@@ -29,9 +30,7 @@ class Observable(threading.Thread):
 
     def __init__(self): 
         '''Initialise new observable class explicitly including threading stop function'''
-        super(Observable,self).__init__()       
-        #threading.Thread.__init__(self)
-        self._xstop = threading.Event()
+        super(Observable,self).__init__()     
         self._observers = []
 
     def register(self, observer):
@@ -63,14 +62,3 @@ class Observable(threading.Thread):
         '''
         if not self.stopped():
             self.notify(*args, **kwargs)
-    
-    #Explicit stop in observable to prevent notifications on stopped threads    
-    def stop(self):
-        self._xstop.set()
-        
-    def go(self):
-        self._xstop.clear()
-
-    def stopped(self):
-        return self._xstop.is_set()
-    
