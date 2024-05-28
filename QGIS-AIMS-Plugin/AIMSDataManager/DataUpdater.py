@@ -57,7 +57,6 @@ class DataUpdater(Observable):
         super(DataUpdater,self).__init__()
         self.ref,self.conf,self.factory = params
         self.queue = queue
-        #self._xstop = threading.Event()
         self.api = AimsApi(self.conf)    
         
     def setup(self,etft,sw,ne,pno):
@@ -238,12 +237,6 @@ class DataUpdater(Observable):
         elif etft.et == FeatureType.ADDRESS: return DataUpdaterAddress
         elif etft.et == FeatureType.USERS: return DataUpdaterUser
         else: raise DataUpdaterSelectionException('Select Address,Groups or Users')
-        
-    def stop(self):
-        self._xstop.set()
-
-    def stopped(self):
-        return self._xstop.is_set()
     
     def close(self):
         aimslog.info('Queue {} stopped'.format(self.queue.qsize()))

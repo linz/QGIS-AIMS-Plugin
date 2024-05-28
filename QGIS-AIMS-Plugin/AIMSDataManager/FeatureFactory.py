@@ -98,7 +98,6 @@ class FeatureFactory(object):
             for k,v in all_tp.items():
                 if k in tp:
                     tp[k] = v
-        aimslog.info(f'Read Templates')
         # for t1 in tp:
         #     for t2 in tp[t1]:
         #         with open(os.path.join(FeatureFactory.RP,'{}.{}.template'.format(t1,t2)),'r') as handle:

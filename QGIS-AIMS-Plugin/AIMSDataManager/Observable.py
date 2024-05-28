@@ -10,8 +10,8 @@
 ################################################################################
 
 import threading
-from qgis.PyQt.QtCore import QThread
-
+from qgis.PyQt.QtCore import QThread, QMutex
+qmutex = QMutex(QMutex.Recursive)
 notify_lock = threading.RLock()
 sync_lock = threading.RLock()
 
@@ -32,6 +32,7 @@ class Observable(QThread):
         '''Initialise new observable class explicitly including threading stop function'''
         super(Observable,self).__init__()     
         self._observers = []
+        self._xstop = False
 
     def register(self, observer):
         '''Register a listener object with the observable
@@ -51,8 +52,13 @@ class Observable(QThread):
         @param **kwargs: Wrapped kwargs
         '''
         for observer in self._observers:
-            with notify_lock:
+            try:
+                qmutex.lock()
                 observer.observe(self,*args, **kwargs)
+            except:
+                pass
+            finally:
+                qmutex.unlock()
                 
     def observe(self, observable, *args, **kwargs):
         '''Listen method called by notification, default calls in turm call notify but override this as needed.
@@ -62,3 +68,9 @@ class Observable(QThread):
         '''
         if not self.stopped():
             self.notify(*args, **kwargs)
+
+    def stopped(self) -> bool:
+        return self._xstop
+    
+    def stop(self):
+        self._xstop = True

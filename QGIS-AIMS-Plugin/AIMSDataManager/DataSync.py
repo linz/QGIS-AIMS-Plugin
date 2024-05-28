@@ -110,7 +110,6 @@ class DataSync(Observable):
         self.inq = queues['in']
         self.outq = queues['out']
         self.respq = queues['resp']
-        #self._xstop = threading.Event()
         
     def setup(self,sw=None,ne=None):
         '''Parameter setup for coordinate feature requests.
@@ -133,7 +132,7 @@ class DataSync(Observable):
         #brutal stop on du threads
         for du in self.duinst.values():
             du.stop()
-        self._xstop.set()
+        self._xstop = True
     
     def close(self):
         '''Alias of stop'''
