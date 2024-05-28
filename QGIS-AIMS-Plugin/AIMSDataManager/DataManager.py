@@ -181,7 +181,7 @@ class DataManager(Observable):
             if self.ds[etft] and self.ds[etft].isRunning():
                 aimslog.info('Attempting Features Thread STOP')
                 self.ds[etft].stop()
-                self.ds[etft].join(THREAD_JOIN_TIMEOUT)
+                self.ds[etft].wait(THREAD_JOIN_TIMEOUT)
                 #TODO investigate thread non-stopping issues
                 if self.ds[etft].isRunning(): aimslog.warning('SetBB Features. ! Thread JOIN timeout')
             del self.ds[etft]
@@ -201,7 +201,7 @@ class DataManager(Observable):
         aimslog.warning('WARNING {} Thread Restart requested'.format(etft))
         if self.ds.get(etft) and self.ds[etft] and self.ds[etft].isRunning():
             self.ds[etft].stop() 
-            self.ds[etft].join(THREAD_JOIN_TIMEOUT)
+            self.ds[etft].wait(THREAD_JOIN_TIMEOUT)
             if self.ds[etft].isRunning(): aimslog.warning('{} ! Thread JOIN timeout'.format(etft))
         #del self.ds[etft]
         elif not isinstance(etft,FeedRef):
