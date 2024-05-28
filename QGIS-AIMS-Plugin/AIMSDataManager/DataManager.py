@@ -158,7 +158,7 @@ class DataManager(Observable):
         @param etft: FeedRef of requested thread test
         @type etft: FeedRef
         ''' 
-        return int(self.persist.tracker[etft]['threads'])>0 and not (self.ds.get(etft) and self.ds[etft] and self.ds[etft].is_alive())
+        return int(self.persist.tracker[etft]['threads'])>0 and not (self.ds.get(etft) and self.ds[etft] and self.ds[etft].isRunning())
     
     #Client Access
     def setbb(self,sw=None,ne=None):
@@ -178,12 +178,12 @@ class DataManager(Observable):
             #save the new coordinates
             self.persist.coords['sw'],self.persist.coords['ne'] = sw,ne
             #kill the old features thread
-            if self.ds[etft] and self.ds[etft].is_alive():
+            if self.ds[etft] and self.ds[etft].isRunning():
                 aimslog.info('Attempting Features Thread STOP')
                 self.ds[etft].stop()
                 self.ds[etft].join(THREAD_JOIN_TIMEOUT)
                 #TODO investigate thread non-stopping issues
-                if self.ds[etft].is_alive(): aimslog.warning('SetBB Features. ! Thread JOIN timeout')
+                if self.ds[etft].isRunning(): aimslog.warning('SetBB Features. ! Thread JOIN timeout')
             del self.ds[etft]
             #reinitialise a new features DataSync
             #self._initFeedDSChecker(etft)
@@ -199,10 +199,10 @@ class DataManager(Observable):
         ''' 
         #NB UI feature request. 
         aimslog.warning('WARNING {} Thread Restart requested'.format(etft))
-        if self.ds.get(etft) and self.ds[etft] and self.ds[etft].is_alive():
+        if self.ds.get(etft) and self.ds[etft] and self.ds[etft].isRunning():
             self.ds[etft].stop() 
             self.ds[etft].join(THREAD_JOIN_TIMEOUT)
-            if self.ds[etft].is_alive(): aimslog.warning('{} ! Thread JOIN timeout'.format(etft))
+            if self.ds[etft].isRunning(): aimslog.warning('{} ! Thread JOIN timeout'.format(etft))
         #del self.ds[etft]
         elif not isinstance(etft,FeedRef):
             aimslog.error('Invalid FeedRef on STOP request')

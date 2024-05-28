@@ -50,7 +50,7 @@ def timeout(seconds=5, message="Timeout"):
             process = Process(None, func, None, args, kwargs)
             process.start()
             process.join(seconds)
-            if process.is_alive():
+            if process.isRunning():
                 process.terminate()
                 if not BYPASS:
                     raise TimeoutError(message)
