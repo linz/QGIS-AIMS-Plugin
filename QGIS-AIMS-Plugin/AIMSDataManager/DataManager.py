@@ -141,7 +141,7 @@ class DataManager(Observable):
     def close(self):
         '''Shutdown, closing/stopping DataSync threads and persist current data'''
         for ds in self.ds.values():
-            if ds: ds.close()
+            if ds: ds.stop()
         self.persist.write()
         
     def _check(self):

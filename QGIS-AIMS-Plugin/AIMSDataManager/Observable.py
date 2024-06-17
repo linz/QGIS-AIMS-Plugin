@@ -33,6 +33,7 @@ class Observable(QThread):
         super(Observable,self).__init__()     
         self._observers = []
         self._xstop = False
+        self.finished.connect(self.finito)
 
     def register(self, observer):
         '''Register a listener object with the observable
@@ -74,3 +75,8 @@ class Observable(QThread):
     
     def stop(self):
         self._xstop = True
+
+    def finito(self):
+        msg = f'The thread {self} has finished...'
+        print(msg)
+        aimslog.debug(msg)

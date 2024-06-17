@@ -34,13 +34,13 @@ ROOT = os.path.join(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(os.path.join(ROOT, 'AIMSDataManager'))
 sys.path.append(os.path.join(ROOT, 'AimsUI'))
 
-#from test._QGisInterface import QgisInterface
-from test.AimsService_Mock import ASM
+#from _QGisInterface import QgisInterface
+from AimsService_Mock import ASM
 
 from AimsUI.LayerManager import LayerManager, InvalidParameterException
 from AimsUI.AimsClient.Gui.Controller import Controller
 from AimsUI.AimsLogging import Logger
-from test.Database_Test import DCONF 
+from Database_Test import DCONF 
 from AimsUI.AimsClient import Database
 
 from mock import Mock, patch

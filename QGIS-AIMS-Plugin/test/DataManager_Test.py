@@ -59,10 +59,10 @@ workflow tests
 class Test_0_DataManagerSelfTest(unittest.TestCase):
     
     def setUp(self):
-        pass
+        self.dm = None 
         
     def tearDown(self):
-        pass
+        if isinstance(self.dm, DataManager): self.dm.close()
     
     def test10_selfTest(self):
         #assertIsNotNone added in 3.1
@@ -72,9 +72,12 @@ class Test_0_DataManagerSelfTest(unittest.TestCase):
     def test20_dataManagerTest(self):
         #assertIsNotNone added in 3.1        
         testlog.debug('Test_0.20 Data Manager registration test')
-        with DataManager(initialise=True) as dm:  # Start with clean self.dm.persist.ADL data each test run
-            dm.register(self)
-            self.assertNotEqual(dm,None,'DataManager not instantiated')
+        # # with DataManager(initialise=True) as dm:  # Start with clean self.dm.persist.ADL data each test run
+        #     dm.register(self)
+        #     self.assertNotEqual(dm,None,'DataManager not instantiated')
+        self.dm = DataManager(initialise=True)
+        self.dm.register(self)
+        self.assertNotEqual(self.dm, None, 'DataManager not instantiated')
         
 class Test_1_DataManagerFunctionTest(unittest.TestCase):
     
