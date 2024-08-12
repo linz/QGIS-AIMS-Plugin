@@ -46,8 +46,13 @@ class AimsApi(object):
         self._password = ConfigReader.readp()
         self.user = config['user']
         self._headers = config['headers']
-
-        self.h = httplib2.Http(".cache")
+        self._cert = config['cert']
+        self._ignore_cert = config['ignore_cert']
+        
+        if self._ignore_cert: 
+            self.h = httplib2.Http(".cache", disable_ssl_certificate_validation=True)
+        else: 
+            self.h = httplib2.Http(".cache", ca_certs=self._cert)
         self.h.add_credentials(self.user, self._password)
     
     def handleErrors(self, url, resp, jcontent):

@@ -47,6 +47,8 @@ class Configuration(object):
         conf['org'] = self.config.configSectionMap('user')['org']
         conf['user'] = self.config.configSectionMap('user')['name']
         conf['password'] = self.config.configSectionMap('user')['pass']
+        conf['cert'] = self.config.configSectionMap('url')['cert']
+        conf['ignore_cert'] = self.config.configSectionMap('url')['ignore_cert']
         conf['headers'] = {'content-type':'application/json', 'accept':'application/json'}
         return conf
 
