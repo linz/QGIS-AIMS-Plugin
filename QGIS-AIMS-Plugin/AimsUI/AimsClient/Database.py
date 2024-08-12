@@ -26,8 +26,10 @@ config = ConfigReader()
 _host = config.configSectionMap('db')['host']
 _port = config.configSectionMap('db')['port']
 _name = config.configSectionMap('db')['name']
-_user=getpass.getuser()
-_password=''
+_user = config.configSectionMap('db')['user']
+_password = config.configSectionMap('db')['password']
+if not _user: _user=getpass.getuser()
+if not _password: _password=''
 
 _aimsSchema='reference'
 
