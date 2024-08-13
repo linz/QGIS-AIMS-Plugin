@@ -6,7 +6,7 @@ pass: <aims-password>
 
 [url]
 api: https://devassgeo01:8080/aims/api
-cert: <path-to-prdassca01.pem-exported-from-cert-store>
+cert: <path-to-prdassca01-root-cert-exported-from-cert-store>
 ignore_cert: False
 
 [db]
