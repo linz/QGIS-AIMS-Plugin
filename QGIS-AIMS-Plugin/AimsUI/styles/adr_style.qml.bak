@@ -220,6 +220,7 @@
     <property key="labeling/distMapUnitMaxScale" value="0"/>
     <property key="labeling/distMapUnitMinScale" value="0"/>
     <property key="labeling/enabled" value="true"/>
+    <property key="labeling/OLDfieldName" value="  CASE&#xa;&#x9;WHEN  &quot;fullAddressNumber&quot; &lt;> 'NULL' THEN  &quot;fullAddressNumber&quot;  &#xa;&#x9;WHEN  &quot;unitValue&quot;  =  '' THEN   &quot;addressNumber&quot;  ||   &quot;addressNumberSuffix&quot; &#xa;&#x9;ELSE  &quot;addressNumberPrefix&quot;  ||  &quot;unitValue&quot;  ||  '/' ||&quot;addressNumber&quot;  ||   &quot;addressNumberSuffix&quot;  &#xa;  END&#xa;   &#xa;   &#xa;   &#xa;"/>
     <property key="labeling/fieldName" value="  CASE&#xd;&#xa;&#x9;WHEN  (&quot;fullAddressNumber&quot; &lt;> 'NULL' AND &quot;unitType&quot; NOT IN ('Apartment','Unit')) THEN &quot;fullAddressNumber&quot;  &#xd;&#xa;&#x9;WHEN  &quot;unitValue&quot;  =  '' THEN   &quot;addressNumber&quot;  ||   &quot;addressNumberSuffix&quot; &#xd;&#xa;&#x9;ELSE  &quot;addressNumberPrefix&quot;  ||  &quot;unitValue&quot;  ||  '/' ||&quot;addressNumber&quot;  ||   &quot;addressNumberSuffix&quot;  &#xd;&#xa;  END&#xd;&#xa;   &#xd;&#xa;   "/> 
     <property key="labeling/fontBold" value="true"/>
     <property key="labeling/fontCapitals" value="0"/>
