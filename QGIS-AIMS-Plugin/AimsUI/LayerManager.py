@@ -12,6 +12,7 @@
 from os.path import dirname, abspath, join
 from collections import OrderedDict
 import traceback
+from typing import Tuple
 
 from qgis.PyQt.QtCore import *
 from qgis.PyQt.QtWidgets import *
@@ -312,7 +313,7 @@ class LayerManager(QObject):
         except:
             pass
     
-    def installLayer(self, id, schema, table, geom, key, estimated, where, displayname):
+    def installLayer(self, id, schema, table, geom, key, estimated, where, displayname, group):
         """
         Install AIMS postgres reference layers
 
@@ -335,6 +336,14 @@ class LayerManager(QObject):
         @return: AIMS Layer
         @rtype: qgis._core.QgsVectorLayer 
         """
+
+        if group:
+            # Check for group layer:
+            ltr: QgsLayerTree = QgsProject.instance().layerTreeRoot()
+            grp = ltr.findGroup(group)
+            if not grp:
+                grp = ltr.addGroup(group)
+                grp.setExpanded(False)
         
         layer = self.findLayer(id)
         if layer:
@@ -352,8 +361,12 @@ class LayerManager(QObject):
             uri.setUseEstimatedMetadata(True)
             layer = QgsVectorLayer(uri.uri(),displayname,"postgres")
             self.setLayerId( layer, id )
-            self.styleLayer(layer, id)            
-            QgsProject.instance().addMapLayer(layer)
+            self.styleLayer(layer, id)     
+
+            # Add to group
+            if group: grp.addLayer(layer)
+            else: QgsProject.instance().addMapLayer(layer)
+            
         finally:
             self._statusBar.showMessage("")
         return layer
@@ -364,22 +377,29 @@ class LayerManager(QObject):
         """
         
         parQuery =  """ST_GeometryType(shape) IN ('ST_MultiPolygon', 'ST_Polygon') 
-                                AND status = 'CURR' 
+                                AND status IN ('CURR', 'PEND')
                                 AND toc_code = 'PRIM'"""
                
-        pendParQuery =  """ST_GeometryType(shape) IN ('ST_MultiPolygon', 'ST_Polygon') 
-                                AND status = 'PEND' 
-                                AND toc_code = 'PRIM'"""
+        # pendParQuery =  """ST_GeometryType(shape) IN ('ST_MultiPolygon', 'ST_Polygon') 
+        #                         AND status = 'PEND' 
+        #                         AND toc_code = 'PRIM'"""
+        
+        ttlQuery =  """ST_GeometryType(shape) IN ('ST_MultiPolygon', 'ST_Polygon') 
+                                AND status = 'LIVE'"""
                                                
-        refLayers ={'par':( 'par', 'bde', 'crs_parcel', 'shape','id', True, parQuery ,'Parcels' ) ,
+        refLayers ={'par':( 'par', 'bde', 'crs_parcel', 'shape','id', True, parQuery ,'Parcels', 'Boundaries' ) ,
                     
-                    'lpr':( 'lpr', 'bde', 'crs_parcel', 'shape','id', True, parQuery ,'Parcels (Labels)' ) ,
+                    'lpr':( 'lpr', 'bde', 'crs_parcel', 'shape','id', True, parQuery ,'Parcels (Labels)', 'Boundaries' ) ,
                     
-                    'app':( 'app', 'bde', 'parcel_appellation_view', None,'par_id', True, "",'Appellation View' ) ,
+                    'app':( 'app', 'bde', 'parcel_appellation_view', None,'par_id', True, "",'Appellation View', 'Boundaries' ) ,
 
-                    'rcl':( 'rcl', 'roads', 'simple_road_name_view', 'shape','gid', True, "",'Roads' ),
+                    'rcl':( 'rcl', 'roads', 'simple_road_name_view', 'shape','gid', True, "",'Roads', None ),
                     
-                    'ppr':( 'ppr', 'bde', 'crs_parcel', 'shape' ,'id', True, pendParQuery, 'Pending Parcels' )
+                    # 'ppr':( 'ppr', 'bde', 'crs_parcel', 'shape' ,'id', True, pendParQuery, 'Pending Parcels', None ), # TODO: Remove. Combined into styling for parcel
+                    
+                    'ta':( 'ta', 'admin_bdys', 'territorial_authority', 'shape' ,'ogc_fid', True, "", 'Territorial Authorities', 'Boundaries' ),
+                    
+                    # 'ttl':( 'ttl', 'bde', 'crs_title', 'shape' ,'id', True, ttlQuery, 'Boundaries' )
                     }
 
         installedRefLayers = {}
@@ -556,7 +576,7 @@ class LayerManager(QObject):
         else: 
             return False
                         
-    def getMinMaxScale(self, scale1, scale2) -> (float, float):
+    def getMinMaxScale(self, scale1, scale2) -> Tuple[float,float]:
         '''
         Between two versions it appears they have changed the use of minscale and max scale.
         To safeguard against this changing, we will just order the scales and our purpose is simply to find if a value is within the range.
