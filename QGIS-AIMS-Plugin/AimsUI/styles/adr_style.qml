@@ -215,7 +215,7 @@
     <property key="labeling/dataDefined/Color" value="1~~1~~CASE WHEN &quot;lifecycle&quot; = 'Current' THEN color_rgb( 31, 120, 180)  WHEN &quot;lifecycle&quot; = 'Proposed' THEN color_rgb( 255,165,0)  ELSE color_rgb( 251, 76, 76) END~~"/>
     <property key="labeling/decimals" value="3"/>
     <property key="labeling/displayAll" value="false"/>
-    <property key="labeling/dist" value="0.75"/>
+    <property key="labeling/dist" value="0.5"/>
     <property key="labeling/distInMapUnits" value="false"/>
     <property key="labeling/distMapUnitMaxScale" value="0"/>
     <property key="labeling/distMapUnitMinScale" value="0"/>

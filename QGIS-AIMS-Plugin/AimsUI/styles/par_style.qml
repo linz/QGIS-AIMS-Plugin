@@ -309,7 +309,7 @@
   </renderer-v2>
   <labeling type="simple">
     <settings calloutType="simple">
-      <text-style textColor="50,50,50,255" fontKerning="1" fontUnderline="0" capitalization="0" multilineHeight="1" fieldName="id" fontFamily="Open Sans" fontSize="10" fontSizeUnit="Point" textOpacity="1" previewBkgrdColor="255,255,255,255" fontWordSpacing="0" useSubstitutions="0" fontStrikeout="0" fontWeight="50" fontSizeMapUnitScale="3x:0,0,0,0,0,0" forcedItalic="0" multilineHeightUnit="Percentage" textOrientation="horizontal" isExpression="0" namedStyle="" forcedBold="0" allowHtml="0" fontLetterSpacing="0" blendMode="0" fontItalic="0" legendString="Aa">
+      <text-style textColor="50,50,50,255" fontKerning="1" fontUnderline="0" capitalization="0" multilineHeight="1" fieldName="appellation" fontFamily="Open Sans" fontSize="10" fontSizeUnit="Point" textOpacity="1" previewBkgrdColor="255,255,255,255" fontWordSpacing="0" useSubstitutions="0" fontStrikeout="0" fontWeight="50" fontSizeMapUnitScale="3x:0,0,0,0,0,0" forcedItalic="0" multilineHeightUnit="Percentage" textOrientation="horizontal" isExpression="0" namedStyle="" forcedBold="0" allowHtml="0" fontLetterSpacing="0" blendMode="0" fontItalic="0" legendString="Aa">
         <families/>
         <text-buffer bufferColor="250,250,250,255" bufferOpacity="1" bufferNoFill="1" bufferJoinStyle="128" bufferBlendMode="0" bufferDraw="0" bufferSizeUnits="MM" bufferSizeMapUnitScale="3x:0,0,0,0,0,0" bufferSize="1"/>
         <text-mask maskSizeMapUnitScale="3x:0,0,0,0,0,0" maskEnabled="0" maskSizeUnits="MM" maskJoinStyle="128" maskType="0" maskSize="0" maskedSymbolLayers="" maskOpacity="1"/>
@@ -395,7 +395,7 @@
         </dd_properties>
         <substitutions/>
       </text-style>
-      <text-format decimals="3" multilineAlign="3" addDirectionSymbol="0" plussign="0" rightDirectionSymbol=">" wrapChar="" autoWrapLength="0" leftDirectionSymbol="&lt;" reverseDirectionSymbol="0" formatNumbers="0" useMaxLineLengthForAutoWrap="1" placeDirectionSymbol="0"/>
+      <text-format decimals="3" multilineAlign="3" addDirectionSymbol="0" plussign="0" rightDirectionSymbol=">" wrapChar="" autoWrapLength="10" leftDirectionSymbol="&lt;" reverseDirectionSymbol="0" formatNumbers="0" useMaxLineLengthForAutoWrap="1" placeDirectionSymbol="0"/>
       <placement rotationAngle="0" placementFlags="10" repeatDistanceMapUnitScale="3x:0,0,0,0,0,0" yOffset="0" distUnits="MM" fitInPolygonOnly="0" lineAnchorPercent="0.5" allowDegraded="0" geometryGeneratorType="PointGeometry" repeatDistance="0" maxCurvedCharAngleOut="-25" overrunDistance="0" offsetType="0" priority="5" centroidWhole="0" repeatDistanceUnits="MM" lineAnchorTextPoint="FollowPlacement" labelOffsetMapUnitScale="3x:0,0,0,0,0,0" geometryGenerator="" centroidInside="0" offsetUnits="MM" maxCurvedCharAngleIn="25" overlapHandling="PreventOverlap" rotationUnit="AngleDegrees" lineAnchorType="0" lineAnchorClipping="0" layerType="PolygonGeometry" xOffset="0" overrunDistanceUnit="MM" polygonPlacementFlags="2" distMapUnitScale="3x:0,0,0,0,0,0" dist="0" quadOffset="4" geometryGeneratorEnabled="0" predefinedPositionOrder="TR,TL,BR,BL,R,L,TSR,BSR" overrunDistanceMapUnitScale="3x:0,0,0,0,0,0" preserveRotation="1" placement="0"/>
       <rendering fontMaxPixelSize="10000" obstacleFactor="1" fontLimitPixelSize="0" upsidedownLabels="0" obstacle="1" zIndex="0" limitNumLabels="0" mergeLines="0" minFeatureSize="0" labelPerPart="0" unplacedVisibility="0" scaleMax="0" scaleMin="0" maxNumLabels="2000" scaleVisibility="0" obstacleType="1" fontMinPixelSize="3" drawLabels="1"/>
       <dd_properties>
@@ -797,7 +797,7 @@ def my_form_open(dialog, layer, feature):
   </reuseLastValue>
   <dataDefinedFieldProperties/>
   <widgets/>
-  <previewExpression>"id"</previewExpression>
+  <previewExpression>"appellation"</previewExpression>
   <mapTip></mapTip>
   <layerGeometryType>2</layerGeometryType>
 </qgis>
