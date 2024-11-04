@@ -16,6 +16,10 @@ Zealand Government.
 
  This plugin is under development. As development is undertaken and finalised further documentation will be supplied. 
 
+## November 5, 2024
+The QGIS AIMS Plugin is ready for use with QGIS 3.28 LTR release
+The HG upgrade branch will be pulled into master.
+
 ## Note
 For testing of individual pieces, if using a conda environment, you may need a hard link between the Qt5Core_conda.dll and the normal Qt5Core.dll
 `C:\windows\system32>mklink /h "C:\OSGeo4W\apps\Qt5\bin\Qt5Core_conda.dll" "C:\OSGeo4W\apps\Qt5\bin\Qt5Core.dll"`
