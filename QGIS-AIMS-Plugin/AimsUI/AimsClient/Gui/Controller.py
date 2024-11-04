@@ -31,6 +31,10 @@ from AimsUI.AimsClient.Gui.UiDataManager import UiDataManager
 from AimsUI.AimsClient.Gui.ResponseHandler import ResponseHandler
 from AimsUI.AimsClient.Gui.FeatureHighlighter import FeatureHighlighter
 from AimsUI.AimsClient.Gui.AimsConfigureDialog import AimsConfigureDialog
+try:
+    from AIMSDataManager.Const import BASE_MAP
+except:
+    BASE_MAP = None
 #from AimsUI.LineageTool import LineageTool
 
 
@@ -81,14 +85,9 @@ class Controller( QObject ):
         Set up UI within QGIS 
         """
 
-        # set srs
-        self._displayCrs = QgsCoordinateReferenceSystem()
-        self._displayCrs.createFromOgcWmsCrs('EPSG:4167') 
-        self.iface.mapCanvas().mapSettings().setDestinationCrs(self._displayCrs)
-
         # init layerManager
         self._layerManager = LayerManager(self.iface, self)
-        self._layerManager.registerFunctions()
+        # self._layerManager.registerFunctions()
         # init Highlighter
         self.highlighter = FeatureHighlighter(self.iface, self._layerManager, self)
 
@@ -101,6 +100,7 @@ class Controller( QObject ):
             'QGIS-AIMS-Plugin', self.iface.mainWindow())
         self._loadaction.setWhatsThis('Open the QGIS-AIMS-Plugin')
         self._loadaction.setStatusTip('Open the QGIS-AIMS-Plugin')
+        self._loadaction.triggered.connect(self.setCrs)
         self._loadaction.triggered.connect(self.loadQueues)
         self._loadaction.triggered.connect(self.loadLayers)
         self._loadaction.triggered.connect(self.enableAddressLayer)
@@ -247,6 +247,28 @@ class Controller( QObject ):
             if action.text() == 'Highlightaction': continue
             group.addAction( action )
 
+    # Basemap
+    def loadBasemap(self):
+        uilog.warning(f'Checking Status of Global variable BASE_MAP: {BASE_MAP}')
+        if BASE_MAP == 'LINZ IMAGERY':
+            src = r'crs=EPSG:3857&dpiMode=7&format=image/jpeg&layers=aerial&styles=default&tileMatrixSet=WebMercatorQuad&url=https://basemaps.linz.govt.nz/v1/tiles/aerial/WebMercatorQuad/WMTSCapabilities.xml?api%3Dc01jac49h2zswr8b7yvnqb98yf9'
+            title = "LINZ Aerial Imagery"
+            basemap = self.iface.addRasterLayer(src, title,"wms")
+            root = QgsProject.instance().layerTreeRoot() 
+            bmp = root.findLayer(basemap).clone()
+            bmp.layer().setOpacity(30)
+            bmp.setItemVisibilityChecked(False)
+            root.addChildNode(bmp)
+            root.removeLayer(basemap)
+            # bmp_ref = root.findLayer(bmp.id())
+            # bmp_ref.setItemVisibilityChecked(False)
+            uilog.warning(f'ADDED BASE MAP: {BASE_MAP} -- AS {title}')
+
+    # CRS Management
+    def setCrs(self):
+        crs = QgsCoordinateReferenceSystem("EPSG:4167")
+        QgsProject.instance().setCrs(crs)
+
     # Plugin Management 
     def showConfigSelectedOption(self, item):
         if item:
@@ -310,13 +332,13 @@ class Controller( QObject ):
         """ 
         Install map layers
         """
-
         if not self.refLayer:
             self.refLayer = self._layerManager.installRefLayers()
         if not self.adrlayer:
             self._layerManager.installAimsLayer('adr', 'AIMS Features')
         if not self.revLayer:
             self._layerManager.installAimsLayer('rev', 'AIMS Review')
+        self.loadBasemap()
         self._layerManager.initialiseExtentEvent()
 
     def mapToolChanged(self):
@@ -351,6 +373,7 @@ class Controller( QObject ):
         """
         self.iface.mapCanvas().setMapTool(self._createnewaddresstool)
         self._createnewaddresstool.setEnabled(True)
+        self._dockWindow.reDock()
 
     def startRclTool(self, parent = None):
         """
@@ -364,6 +387,7 @@ class Controller( QObject ):
         self.rclParent = parent
         self.iface.mapCanvas().setMapTool(self._rcltool)
         self._rcltool.setEnabled(True)
+        self._dockWindow.reDock()
 
     def startUpdateReviewPosTool(self, revItem = None):
         """ 
@@ -375,6 +399,7 @@ class Controller( QObject ):
         self.currentRevItem = revItem
         self.iface.mapCanvas().setMapTool(self._updateReviewPos)
         self._rcltool.setEnabled(True)
+        self._dockWindow.reDock()
     
     def startMoveAddressTool(self):
         """ 
@@ -383,6 +408,7 @@ class Controller( QObject ):
 
         self.iface.mapCanvas().setMapTool(self._moveaddtool)
         self._moveaddtool.setEnabled(True)
+        self._dockWindow.reDock()
 
     def startUpdateAddressTool(self):
         """ 
@@ -391,6 +417,7 @@ class Controller( QObject ):
 
         self.iface.mapCanvas().setMapTool(self._updateaddtool)
         self._updateaddtool.setEnabled(True)
+        self._dockWindow.reDock()
 
     def startDelAddressTool(self):
         """
@@ -399,6 +426,7 @@ class Controller( QObject ):
         
         self.iface.mapCanvas().setMapTool(self._deladdtool)
         self._deladdtool.setEnabled(True)
+        self._dockWindow.reDock()
 
     '''
     def startLineageTool(self):
