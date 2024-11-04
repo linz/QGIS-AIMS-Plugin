@@ -12,7 +12,7 @@
 from os.path import dirname, abspath, join
 from collections import OrderedDict
 import traceback
-from typing import Tuple
+from typing import Tuple, List
 
 from qgis.PyQt.QtCore import *
 from qgis.PyQt.QtWidgets import *
@@ -118,8 +118,12 @@ class LayerManager(QObject):
         self._revLayer = None
         self._extEvent = False
 
-        QgsProject.instance().layerWillBeRemoved.connect(self.checkRemovedLayer)
-        QgsProject.instance().instance().layerWasAdded.connect( self.checkNewLayer )
+        # QgsProject.instance().layerWillBeRemoved.connect(self.checkRemovedLayer)
+        # QgsProject.instance().instance().layerWasAdded.connect( self.checkNewLayer )
+
+        # QgsProject.instance().instance().legendLayersAdded.connect( self.doSomeStuff )
+        QgsProject.instance().instance().layerTreeRoot().addedChildren.connect( self.checkNewLayer )
+        QgsProject.instance().instance().layerTreeRoot().removedChildren.connect( self.checkNewLayer )
 
 
     def initialiseExtentEvent(self):
@@ -174,13 +178,17 @@ class LayerManager(QObject):
 
     def layers(self):
         """
-        Iterates over and yeilds all QGIS Map Layers
+        Iterates over and yeilds all QGIS Map Layers, starting with root, and then through each group in a non-recursive manner. Nested groups not supported at present.
 
         @yield: qgis._core.QgsVectorLayer 
         """
-
         for layer in QgsProject.instance().mapLayers().values():
                 yield layer
+
+        root = QgsProject.instance().layerTreeRoot()
+        for g in root.findGroups():
+            for treeLayer in g.findLayers():
+                yield treeLayer.layer()
 
     def addressLayer(self):
         """
@@ -253,34 +261,35 @@ class LayerManager(QObject):
         if self._revLayer and self._revLayer.id() == id:
             self._revLayer = None
             
-    def checkNewLayer( self, layer ):
+    def checkNewLayer( self, root: QgsLayerTree ):
         """
         Assign an AIMS QgsVectorLayer to a LayerManager layer property
 
         @param layer: New AIMS vector layer  
         @type  layer: qgis._core.QgsVectorLayer 
         """
-        
-        layerId = self.layerId(layer)
-        if not layerId:
-            return
-        if layerId == self._addressLayerId:
-            newlayer = self._adrLayer == None
-            self._adrLayer = layer
-            if newlayer:
-                self.addressLayerAdded.emit(layer)
-        elif layerId == 'rcl':
-            self._rclLayer = layer
-        elif layerId == 'par':
-            self._parLayer = layer
-        elif layerId == 'ppr':
-            self._pprLayer = layer
-        elif layerId == 'lpr':
-            self._lprLayer = layer
-        elif layerId == 'rev':
-            self._revLayer = layer
-        elif layerId == 'app':
-            self._appLayer = layer
+        # Changed to have this trigger on layer added to legend, and route layer lookup through self.layers which properly includes group
+        for layer in self.layers():
+            layerId = self.layerId(layer)
+            if not layerId:
+                return
+            if layerId == self._addressLayerId:
+                newlayer = self._adrLayer == None
+                self._adrLayer = layer
+                if newlayer:
+                    self.addressLayerAdded.emit(layer)
+            elif layerId == 'rcl':
+                self._rclLayer = layer
+            elif layerId == 'par':
+                self._parLayer = layer
+            elif layerId == 'ppr':
+                self._pprLayer = layer
+            elif layerId == 'lpr':
+                self._lprLayer = layer
+            elif layerId == 'rev':
+                self._revLayer = layer
+            elif layerId == 'app':
+                self._appLayer = layer
     
     def findLayer(self, name):
         """
@@ -379,7 +388,8 @@ class LayerManager(QObject):
         parQuery =  """ST_GeometryType(shape) IN ('ST_MultiPolygon', 'ST_Polygon') 
                                 AND status IN ('CURR', 'PEND')
                                 AND toc_code = 'PRIM'"""
-               
+        
+        # NOTE: Seperate layer removed. Primary and Pending parcels now included and shown and symbolized in parcel layer.
         # pendParQuery =  """ST_GeometryType(shape) IN ('ST_MultiPolygon', 'ST_Polygon') 
         #                         AND status = 'PEND' 
         #                         AND toc_code = 'PRIM'"""
@@ -387,31 +397,26 @@ class LayerManager(QObject):
         ttlQuery =  """ST_GeometryType(shape) IN ('ST_MultiPolygon', 'ST_Polygon') 
                                 AND status = 'LIVE'"""
                                                
-        refLayers ={'par':( 'par', 'bde', 'crs_parcel', 'shape','id', True, parQuery ,'Parcels', 'Boundaries' ) ,
-                    
-                    'lpr':( 'lpr', 'bde', 'crs_parcel', 'shape','id', True, parQuery ,'Parcels (Labels)', 'Boundaries' ) ,
-                    
-                    'app':( 'app', 'bde', 'parcel_appellation_view', None,'par_id', True, "",'Appellation View', 'Boundaries' ) ,
+        refLayers ={
+            'par':( 'par', 'bde', 'crs_parcel_with_labels', 'shape','id', True, parQuery ,'Parcels', 'Boundaries' ) ,
+            'rcl':( 'rcl', 'roads', 'simple_road_name_view', 'shape','gid', True, "",'Roads', None ),
+            'ta':( 'ta', 'admin_bdys', 'territorial_authority', 'shape' ,'ogc_fid', True, "", 'Territorial Authorities', 'Boundaries' ),
 
-                    'rcl':( 'rcl', 'roads', 'simple_road_name_view', 'shape','gid', True, "",'Roads', None ),
-                    
-                    # 'ppr':( 'ppr', 'bde', 'crs_parcel', 'shape' ,'id', True, pendParQuery, 'Pending Parcels', None ), # TODO: Remove. Combined into styling for parcel
-                    
-                    'ta':( 'ta', 'admin_bdys', 'territorial_authority', 'shape' ,'ogc_fid', True, "", 'Territorial Authorities', 'Boundaries' ),
-                    
-                    # 'ttl':( 'ttl', 'bde', 'crs_title', 'shape' ,'id', True, ttlQuery, 'Boundaries' )
-                    }
+            # TODO: Add Titles? Could be better serviced via a seperate LINZ plugin however.
+            # 'ttl':( 'ttl', 'bde', 'crs_title', 'shape' ,'id', True, ttlQuery, 'Boundaries' )
+
+            # NOTE: These have all been replaced by the new crs_parcels_with_labels view above. This will provide the proper label alongside the geometry.
+            # 'ppr':( 'ppr', 'bde', 'crs_parcel', 'shape' ,'id', True, pendParQuery, 'Pending Parcels', None ), # TODO: Remove. Combined into styling for parcel
+            # 'lpr':( 'lpr', 'bde', 'crs_parcel', 'shape','id', True, parQuery ,'Parcels (Labels)', 'Boundaries' ) ,
+            # 'app':( 'app', 'bde', 'parcel_appellation_view', None,'par_id', True, "",'Appellation View', 'Boundaries' ) ,
+
+        }
 
         installedRefLayers = {}
         for layerId , layerProps in refLayers.items():
             if not self.findLayer(layerId):
                 installedRefLayers[layerId] = self.installLayer(* layerProps)
 
-        # A Relation is required to label 
-        # parcels with an appellation
-        if self.lprLayer() and self.appLayer():
-            uilog.info(f'Attempting to configure relationship between parcel and appellation layers')
-            self.parRelation()
 
         
         return installedRefLayers # Returning a value here is only used for testing, otherwise it goes to an attribute on the LayerManager that is no longer utilised
@@ -663,52 +668,3 @@ class LayerManager(QObject):
         layer.updateExtents()
         
         uilog.info(' *** CANVAS ***    FEATURES ADDED')
-
-    # @qgsfunction(0, 'QGIS-AIMS-Plugin', register=False)
-    # def get_par_app(values, feature, parent):
-    #     """
-    #     Custom labeling function.
-    #     For labeling parcels with appellation
-    #     """
-
-    #     layer: QgsVectorLayer=None
-    #     for lyr in QgsProject.instance().mapLayers().values():
-    #         if lyr.name() == "Parcels (Labels)":
-    #             layer = lyr
-    #             break
-    #     rel = layer.referencingRelations(0)[0]
-    #     feat_rel = rel.getReferencedFeature(feature)
-    #     if feat_rel:
-    #         return feat_rel.attribute('appellation')
-
-    @qgsfunction(args='auto', group='QGIS-AIMS-Plugin', register=False)
-    def get_par_app(feature, parent):
-        """
-        Custom labeling function.
-        For labeling parcels with appellation
-        """
-
-        layer: QgsVectorLayer=None
-        for lyr in QgsProject.instance().mapLayers().values():
-            if lyr.name() == "Parcels (Labels)":
-                layer = lyr
-                break
-        rel = layer.referencingRelations(0)[0]
-        feat_rel = rel.getReferencedFeature(feature)
-        if feat_rel:
-            return feat_rel.attribute('appellation')
-
-    def registerFunctions(self):
-        """
-        Register custom function (for labeling)
-        """
-        
-        QgsExpression.registerFunction(self.get_par_app)
-        uilog.info(f'Registered Function for GetParApp')
-    
-    def unregisterFunctions(self):
-        """
-        Unregister custom function (for labeling)
-        """
-
-        QgsExpression.unregisterFunction(self.get_par_app.name())
