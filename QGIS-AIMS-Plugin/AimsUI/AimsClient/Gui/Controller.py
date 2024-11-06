@@ -31,12 +31,10 @@ from AimsUI.AimsClient.Gui.UiDataManager import UiDataManager
 from AimsUI.AimsClient.Gui.ResponseHandler import ResponseHandler
 from AimsUI.AimsClient.Gui.FeatureHighlighter import FeatureHighlighter
 from AimsUI.AimsClient.Gui.AimsConfigureDialog import AimsConfigureDialog
-try:
-    from AIMSDataManager.Const import BASE_MAP
-except:
-    BASE_MAP = None
-#from AimsUI.LineageTool import LineageTool
 
+# Load Constants
+try: from AIMSDataManager.Const import BASE_MAP
+except: BASE_MAP = None
 
 from AIMSDataManager.AimsLogging import Logger
 
@@ -63,7 +61,7 @@ class Controller( QObject ):
         """
 
         QObject.__init__(self)
-        self.iface = iface
+        self.iface: QgisInterface = iface
         self._queues: AimsQueueWidget = None
         self._dockWindow = None
         self._currentMapTool = None
@@ -249,19 +247,43 @@ class Controller( QObject ):
 
     # Basemap
     def loadBasemap(self):
-        uilog.warning(f'Checking Status of Global variable BASE_MAP: {BASE_MAP}')
+        # Build Basemap Datasource URI
+        basemapConfig = {
+            'styles' : 'default',
+            'layers' : 'aerial',
+            'crs' : 'EPSG:3857',
+            'dpiMode' : '7',
+            'format' : 'image/jpeg',
+            'url' : 'https://basemaps.linz.govt.nz/v1/tiles/aerial/WebMercatorQuad/WMTSCapabilities.xml?api%3Dc01jac49h2zswr8b7yvnqb98yf9'
+        }
+        basemapURI = QgsDataSourceUri()
+        for k,v in basemapConfig.items(): basemapURI.setParam(k, v)
+
+        root = QgsProject.instance().layerTreeRoot() 
+
         if BASE_MAP == 'LINZ IMAGERY':
             src = r'crs=EPSG:3857&dpiMode=7&format=image/jpeg&layers=aerial&styles=default&tileMatrixSet=WebMercatorQuad&url=https://basemaps.linz.govt.nz/v1/tiles/aerial/WebMercatorQuad/WMTSCapabilities.xml?api%3Dc01jac49h2zswr8b7yvnqb98yf9'
             title = "LINZ Aerial Imagery"
-            basemap = self.iface.addRasterLayer(src, title,"wms")
+            for lyr in root.findLayers():
+                # Remove layer if found. This is so we can refresh after setCRS for the map.
+                if lyr.layer().title() == title: root.removeLayer(lyr)
+            basemap = self.iface.addRasterLayer(src, title,"wms", )
+            
+            # Move Basemap Layer
             root = QgsProject.instance().layerTreeRoot() 
-            bmp = root.findLayer(basemap).clone()
-            bmp.layer().setOpacity(30)
-            bmp.setItemVisibilityChecked(False)
-            root.addChildNode(bmp)
-            root.removeLayer(basemap)
-            # bmp_ref = root.findLayer(bmp.id())
-            # bmp_ref.setItemVisibilityChecked(False)
+            for ch in root.children():
+                if isinstance(ch, QgsLayerTreeLayer):
+                    if ch.layer().name() == basemap.name():
+                        print(f'Cloning Basemap: {ch.layer().name()}')
+                        _ch = ch.clone()
+                        _ch.layer().renderer().setOpacity(0.3)
+                        _ch.setItemVisibilityChecked(False)
+
+                        root.insertChildNode(-1, _ch)
+                        root.removeChildNode(ch)
+
+            QgsProject.instance().addMapLayer(basemap)
+
             uilog.warning(f'ADDED BASE MAP: {BASE_MAP} -- AS {title}')
 
     # CRS Management
