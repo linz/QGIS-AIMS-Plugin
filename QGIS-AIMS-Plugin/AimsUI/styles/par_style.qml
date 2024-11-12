@@ -518,70 +518,14 @@
   <legend type="default-vector" showLabelLegend="0"/>
   <referencedLayers/>
   <fieldConfiguration>
-    <field configurationFlags="None" name="id">
+    <field configurationFlags="None" name="par_id">
       <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="None" name="ldt_loc_id">
-      <editWidget type="Range">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field configurationFlags="None" name="img_id">
-      <editWidget type="Range">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field configurationFlags="None" name="fen_id">
-      <editWidget type="Range">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field configurationFlags="None" name="toc_code">
-      <editWidget type="TextEdit">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field configurationFlags="None" name="alt_id">
-      <editWidget type="Range">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field configurationFlags="None" name="area">
-      <editWidget type="TextEdit">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field configurationFlags="None" name="nonsurvey_def">
-      <editWidget type="TextEdit">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field configurationFlags="None" name="appellation_date">
-      <editWidget type="DateTime">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field configurationFlags="None" name="parcel_intent">
+    <field configurationFlags="None" name="appellation">
       <editWidget type="TextEdit">
         <config>
           <Option/>
@@ -595,29 +539,8 @@
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="None" name="total_area">
+    <field configurationFlags="None" name="toc_code">
       <editWidget type="TextEdit">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field configurationFlags="None" name="calculated_area">
-      <editWidget type="TextEdit">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field configurationFlags="None" name="audit_id">
-      <editWidget type="TextEdit">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field configurationFlags="None" name="se_row_id">
-      <editWidget type="Range">
         <config>
           <Option/>
         </config>
@@ -625,72 +548,28 @@
     </field>
   </fieldConfiguration>
   <aliases>
-    <alias name="" index="0" field="id"/>
-    <alias name="" index="1" field="ldt_loc_id"/>
-    <alias name="" index="2" field="img_id"/>
-    <alias name="" index="3" field="fen_id"/>
-    <alias name="" index="4" field="toc_code"/>
-    <alias name="" index="5" field="alt_id"/>
-    <alias name="" index="6" field="area"/>
-    <alias name="" index="7" field="nonsurvey_def"/>
-    <alias name="" index="8" field="appellation_date"/>
-    <alias name="" index="9" field="parcel_intent"/>
-    <alias name="" index="10" field="status"/>
-    <alias name="" index="11" field="total_area"/>
-    <alias name="" index="12" field="calculated_area"/>
-    <alias name="" index="13" field="audit_id"/>
-    <alias name="" index="14" field="se_row_id"/>
+    <alias name="" index="0" field="par_id"/>
+    <alias name="" index="1" field="appellation"/>
+    <alias name="" index="2" field="status"/>
+    <alias name="" index="3" field="toc_code"/>
   </aliases>
   <defaults>
-    <default expression="" applyOnUpdate="0" field="id"/>
-    <default expression="" applyOnUpdate="0" field="ldt_loc_id"/>
-    <default expression="" applyOnUpdate="0" field="img_id"/>
-    <default expression="" applyOnUpdate="0" field="fen_id"/>
-    <default expression="" applyOnUpdate="0" field="toc_code"/>
-    <default expression="" applyOnUpdate="0" field="alt_id"/>
-    <default expression="" applyOnUpdate="0" field="area"/>
-    <default expression="" applyOnUpdate="0" field="nonsurvey_def"/>
-    <default expression="" applyOnUpdate="0" field="appellation_date"/>
-    <default expression="" applyOnUpdate="0" field="parcel_intent"/>
+    <default expression="" applyOnUpdate="0" field="par_id"/>
+    <default expression="" applyOnUpdate="0" field="appellation"/>
     <default expression="" applyOnUpdate="0" field="status"/>
-    <default expression="" applyOnUpdate="0" field="total_area"/>
-    <default expression="" applyOnUpdate="0" field="calculated_area"/>
-    <default expression="" applyOnUpdate="0" field="audit_id"/>
-    <default expression="" applyOnUpdate="0" field="se_row_id"/>
+    <default expression="" applyOnUpdate="0" field="toc_code"/>
   </defaults>
   <constraints>
-    <constraint unique_strength="1" exp_strength="0" constraints="3" notnull_strength="1" field="id"/>
-    <constraint unique_strength="0" exp_strength="0" constraints="1" notnull_strength="1" field="ldt_loc_id"/>
-    <constraint unique_strength="0" exp_strength="0" constraints="0" notnull_strength="0" field="img_id"/>
-    <constraint unique_strength="0" exp_strength="0" constraints="0" notnull_strength="0" field="fen_id"/>
+    <constraint unique_strength="1" exp_strength="0" constraints="3" notnull_strength="1" field="par_id"/>
+    <constraint unique_strength="0" exp_strength="0" constraints="1" notnull_strength="1" field="appellation"/>
+    <constraint unique_strength="0" exp_strength="0" constraints="0" notnull_strength="1" field="status"/>
     <constraint unique_strength="0" exp_strength="0" constraints="1" notnull_strength="1" field="toc_code"/>
-    <constraint unique_strength="0" exp_strength="0" constraints="0" notnull_strength="0" field="alt_id"/>
-    <constraint unique_strength="0" exp_strength="0" constraints="0" notnull_strength="0" field="area"/>
-    <constraint unique_strength="0" exp_strength="0" constraints="0" notnull_strength="0" field="nonsurvey_def"/>
-    <constraint unique_strength="0" exp_strength="0" constraints="0" notnull_strength="0" field="appellation_date"/>
-    <constraint unique_strength="0" exp_strength="0" constraints="1" notnull_strength="1" field="parcel_intent"/>
-    <constraint unique_strength="0" exp_strength="0" constraints="1" notnull_strength="1" field="status"/>
-    <constraint unique_strength="0" exp_strength="0" constraints="0" notnull_strength="0" field="total_area"/>
-    <constraint unique_strength="0" exp_strength="0" constraints="0" notnull_strength="0" field="calculated_area"/>
-    <constraint unique_strength="1" exp_strength="0" constraints="3" notnull_strength="1" field="audit_id"/>
-    <constraint unique_strength="0" exp_strength="0" constraints="0" notnull_strength="0" field="se_row_id"/>
   </constraints>
   <constraintExpressions>
-    <constraint desc="" exp="" field="id"/>
-    <constraint desc="" exp="" field="ldt_loc_id"/>
-    <constraint desc="" exp="" field="img_id"/>
-    <constraint desc="" exp="" field="fen_id"/>
-    <constraint desc="" exp="" field="toc_code"/>
-    <constraint desc="" exp="" field="alt_id"/>
-    <constraint desc="" exp="" field="area"/>
-    <constraint desc="" exp="" field="nonsurvey_def"/>
-    <constraint desc="" exp="" field="appellation_date"/>
-    <constraint desc="" exp="" field="parcel_intent"/>
+    <constraint desc="" exp="" field="par_id"/>
+    <constraint desc="" exp="" field="appellation"/>
     <constraint desc="" exp="" field="status"/>
-    <constraint desc="" exp="" field="total_area"/>
-    <constraint desc="" exp="" field="calculated_area"/>
-    <constraint desc="" exp="" field="audit_id"/>
-    <constraint desc="" exp="" field="se_row_id"/>
+    <constraint desc="" exp="" field="toc_code"/>
   </constraintExpressions>
   <expressionfields/>
   <attributeactions>
@@ -698,22 +577,10 @@
   </attributeactions>
   <attributetableconfig actionWidgetStyle="dropDown" sortOrder="0" sortExpression="">
     <columns>
-      <column hidden="0" type="field" width="-1" name="id"/>
-      <column hidden="0" type="field" width="-1" name="ldt_loc_id"/>
-      <column hidden="0" type="field" width="-1" name="img_id"/>
-      <column hidden="0" type="field" width="-1" name="fen_id"/>
-      <column hidden="0" type="field" width="-1" name="toc_code"/>
-      <column hidden="0" type="field" width="-1" name="alt_id"/>
-      <column hidden="0" type="field" width="-1" name="area"/>
-      <column hidden="0" type="field" width="-1" name="nonsurvey_def"/>
-      <column hidden="0" type="field" width="-1" name="appellation_date"/>
-      <column hidden="0" type="field" width="-1" name="parcel_intent"/>
+      <column hidden="0" type="field" width="-1" name="par_id"/>
+      <column hidden="0" type="field" width="-1" name="appellation"/>
       <column hidden="0" type="field" width="-1" name="status"/>
-      <column hidden="0" type="field" width="-1" name="total_area"/>
-      <column hidden="0" type="field" width="-1" name="calculated_area"/>
-      <column hidden="0" type="field" width="-1" name="audit_id"/>
-      <column hidden="0" type="field" width="-1" name="se_row_id"/>
-      <column hidden="1" type="actions" width="-1"/>
+      <column hidden="0" type="field" width="-1" name="toc_code"/>
     </columns>
   </attributetableconfig>
   <conditionalstyles>

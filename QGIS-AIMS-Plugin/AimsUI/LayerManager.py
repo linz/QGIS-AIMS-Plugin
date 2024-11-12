@@ -398,7 +398,8 @@ class LayerManager(QObject):
                                 AND status = 'LIVE'"""
                                                
         refLayers ={
-            'par':( 'par', 'bde', 'crs_parcel_with_labels', 'shape','id', True, parQuery ,'Parcels', 'Boundaries' ) ,
+            # 'par':( 'par', 'bde', 'crs_parcel_with_labels', 'shape','id', True, parQuery ,'Parcels', 'Boundaries' ) ,
+            'par':( 'par', 'bde', 'parcel_appellation_view', 'shape','par_id', True, parQuery ,'Parcels', 'Boundaries' ) ,
             'rcl':( 'rcl', 'roads', 'simple_road_name_view', 'shape','gid', True, "",'Roads', None ),
             'ta':( 'ta', 'admin_bdys', 'territorial_authority', 'shape' ,'ogc_fid', True, "", 'Territorial Authorities', 'Boundaries' ),
 
