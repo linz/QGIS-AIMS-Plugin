@@ -867,7 +867,7 @@ class DMObserver(QThread):
         @param args: tuple of data for relevant feed
         @type  args: tuple
         """
-        uilog.info(f'**Observe** - {type(self)} is being observed by observer: {observable} of type {type(observable)} with -- args: {args} -- kwargs: {kwargs}')
+        # uilog.info(f'**Observe** - {type(self)} is being observed by observer: {observable} of type {type(observable)} with -- args: {args} -- kwargs: {kwargs}')
         fType = args[0]
         data = args[1]
 
@@ -875,7 +875,7 @@ class DMObserver(QThread):
         if not fDataType:
             raise ValueError
         
-        uilog.info('*** NOTIFY ***     Notify A[{}]'.format(observable))
+        # uilog.info('*** NOTIFY ***     Notify A[{}]'.format(observable))
         setattr(self.DMData, fDataType, data)
         
 
