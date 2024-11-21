@@ -20,14 +20,21 @@ DEF_CONF = {'user':{
                 'pass':'test.administrator.pass'},
 
             'url':{
-                'api':'<aims_web_server>:8080/aims/api'},
+                'api':'https://<aims_web_server>:8443/aims/api',
+                'cert': os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))), 'cert', 'prdassca.crt'),
+                'ignore_cert': False
+            },
 
             'db':{
                 'user':'vagrant',
                 'password':'',
                 'host':'<aims_db_server>',
                 'port':'5432',
-                'name':'linz_db'},
+                'name':'linz_db',
+                'sslmode':'verify-full',
+                'sslrootcert': os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))), 'cert', 'prdassca.crt'),
+                'ignoressl': False
+            },
 
             'const':{
                 'test_mode':False,
@@ -50,7 +57,8 @@ DEF_CONF = {'user':{
                 'merge_response':True,
                 'merge_exclude':'workflow_sourceReason',
                 'hack_sup_ind':'supplemental',
-                'ct_ind':'###'}
+                'ct_ind':'###',
+                'base_map':'LINZ IMAGERY'}
         }
 
 

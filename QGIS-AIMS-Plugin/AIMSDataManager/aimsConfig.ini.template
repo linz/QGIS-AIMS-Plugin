@@ -5,8 +5,8 @@ name: <aims-username>
 pass: <aims-password>
 
 [url]
-api: https://devassgeo01:8080/aims/api
-cert: <path-to-prdassca01-root-cert-exported-from-cert-store>
+api: https://devassgeo01:8443/aims/api
+cert: 
 ignore_cert: False
 
 [db]
@@ -83,3 +83,5 @@ HACK_SUP_IND = 'supplemental'
 #string to prepend to ciphered passwords (can be anything)
 CT_IND = '###'
 
+#Auto Load Basemap: 'LINZ IMAGERY'|
+BASE_MAP = 'LINZ IMAGERY'

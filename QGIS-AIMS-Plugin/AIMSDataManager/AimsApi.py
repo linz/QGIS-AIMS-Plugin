@@ -12,7 +12,7 @@
 
 import httplib2
 import json
-import re
+import os
 
 from AIMSDataManager.Address import Address,AddressChange,AddressResolution#,AimsWarning
 from AIMSDataManager.Config import ConfigReader
@@ -48,6 +48,8 @@ class AimsApi(object):
         self._headers = config['headers']
         self._cert = config['cert']
         self._ignore_cert = config['ignore_cert']
+        if self._cert is None and not self._ignore_cert:
+            self._cert = os.path.join(os.path.dirname(os.path.dirname(__file__)),'cert','prdassca01-ca_root.pem')
         
         if self._ignore_cert: 
             self.h = httplib2.Http(".cache", disable_ssl_certificate_validation=True)
@@ -145,7 +147,6 @@ class AimsApi(object):
             return mock_api_request(*args, **kwargs)
         else:
             aimslog.info("Request {}".format(args))
-            print(f"Request {args}")
             res = self.h.request(*args,**kwargs)
             resp, content = res
             return res

@@ -9,6 +9,7 @@
 #
 ################################################################################
 
+import os
 import psycopg2
 import getpass
 
@@ -21,6 +22,7 @@ aimslog = Logger.setup()
 _db = None
 _autocommit = True
 _restartRequired = False
+_bundled_cert = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))),'cert','prdassca01-ca_root.pem')
 
 config = ConfigReader()
 _host = config.configSectionMap('db')['host']
@@ -28,8 +30,11 @@ _port = config.configSectionMap('db')['port']
 _name = config.configSectionMap('db')['name']
 _user = config.configSectionMap('db')['user']
 _password = config.configSectionMap('db')['password']
+_sslmode = config.configSectionMap('db')['sslmode']
+_sslrootcert = config.configSectionMap('db')['sslrootcert']
 if not _user: _user=getpass.getuser()
 if not _password: _password=''
+if not _sslrootcert: _sslrootcert=_bundled_cert
 
 _aimsSchema='reference'
 
@@ -42,6 +47,8 @@ def setup(d):
     setAimsSchema(d['aimsschema'])
     setUser(d['user'])
     setPassword(d['password'])
+    setSSLMode(d['sslmode'])
+    setSSLRootCert(d['sslrootcert'])
 
 def host(): return _host
 def setHost(host): 
@@ -78,6 +85,20 @@ def setPassword(password):
         _password=password
         _reset()
 
+def sslmode(): return _sslmode
+def setSSLMode(sslmode): 
+    global _sslmode
+    if _sslmode!=sslmode:
+        _sslmode=sslmode
+        _reset()
+
+def sslrootcert(): return _sslrootcert
+def setSSLRootCert(sslrootcert): 
+    global _sslrootcert
+    if _sslrootcert!=sslrootcert:
+        _sslrootcert=sslrootcert
+        _reset()
+
 def aimsSchema(): return _aimsSchema
 def setAimsSchema(aimsSchema): 
     global _aimsSchema
@@ -102,7 +123,9 @@ def connection():
             port=_port,
             database=_name, 
             user=_user, 
-            password=_password
+            password=_password, 
+            sslmode=_sslmode, 
+            sslrootcert=_sslrootcert
         )
         db.set_isolation_level(0)
         c = db.cursor()
