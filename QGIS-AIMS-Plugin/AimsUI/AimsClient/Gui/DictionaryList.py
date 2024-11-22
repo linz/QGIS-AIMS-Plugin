@@ -42,6 +42,7 @@ class DictionaryListView( QTableView ):
 
         # Own variables
         self._model=None
+        self._proxy=None
         self._dictionaryList = None
         self._selectedId =None
         self._alternativeId =None
@@ -58,22 +59,23 @@ class DictionaryListView( QTableView ):
             self.rowSelected.emit( row )
 
     def setList( self, list, columns=None, headers=None  ):
-        self.setModel( DictionaryListModel(list,columns,headers))
+        model = DictionaryListModel(list,columns,headers,parent=self)
+        proxy_model = CustomSortProxyModel()
+        proxy_model.setSourceModel(model)
+        self.setModel( proxy_model )
 
-    def setModel( self, model ):
-        QTableView.setModel( self, model )
+    def setModel( self, proxy_model ):
+        QTableView.setModel( self, proxy_model )
         if self._model:
             self._model.modelReset.disconnect( self._onModelReset )
             self._model.layoutAboutToBeChanged.disconnect( self._saveSelectedRow )
             self._model.layoutChanged.disconnect( self._restoreSelectedRow )
         if self._dictionaryList:
             self._dictionaryList.resettingModel.disconnect( self._saveSelectedRow )
-        self._model = model 
+        self._proxy = proxy_model
+        self._model = proxy_model.sourceModel() 
         self._dictionaryList = self._model if isinstance(self._model,DictionaryListModel) else None
-        if self._model:
-            self._model.modelReset.connect( self._onModelReset )
-            self._model.layoutAboutToBeChanged.connect( self._saveSelectedRow )
-            self._model.layoutChanged.connect( self._restoreSelectedRow )
+        # NOTE: Moved signal connection to the model class so they are connected before data is added.
         if self._dictionaryList:
             self._dictionaryList.resettingModel.connect( self._saveSelectedRow )
         self._onModelReset()
@@ -143,8 +145,11 @@ class DictionaryListView( QTableView ):
 
     def confirmSelection(self):
         if self._dictionaryList:
-            list = self._dictionaryList
-            return [list.getItem(r) for r in self.selectedRows()]
+            proxy_rows = [
+                self._dictionaryList.getItem(self._proxy.mapToSource(r).row())
+                for r in self.selectionModel().selectedRows()
+            ]
+            return proxy_rows
         return []
 
     def rowCount( self ):
@@ -153,18 +158,36 @@ class DictionaryListView( QTableView ):
             return 0
         return model.rowCount(QModelIndex())
 
+class CustomSortProxyModel( QSortFilterProxyModel ):
+    ''' Custom SortFilterProxyModel to implment a better sorting algorithm for the table '''
+    def __init__(self, *args, **kwargs):
+        QSortFilterProxyModel.__init__(self)
+
+    def lessThan(self, source_left: QModelIndex, source_right: QModelIndex) -> bool:
+
+        sld = source_left.data()
+        srd = source_right.data()
+
+        if str(sld).isnumeric() and str(srd).isnumeric():
+            return int(sld) < int(sld)
+        else:
+            _sld = addressSorter(sld)
+            _srd = addressSorter(srd)
+            return _sld < _srd
+
 class DictionaryListModel( QAbstractTableModel ):
 
     itemUpdated = pyqtSignal( int, name="itemUpdated" )
     resettingModel = pyqtSignal( name="resettingModel" )
 
-    def __init__( self, list=None, columns=None, headers=None, idColumn=None ):
+    def __init__( self, list=None, columns=None, headers=None, idColumn=None, parent=None ):
         QAbstractTableModel.__init__(self)
+        self._parent = parent
         self._columns = []
         self._headers = []
         self._editCols = []
         self._editable = []
-        self._idColumn = id
+        self._idColumn = idColumn
         self._filter = None
         self._sortColumn = None
         self._sortReverse = False
@@ -172,7 +195,13 @@ class DictionaryListModel( QAbstractTableModel ):
         self._lookup = None
         self._idLookup = None
         self._readonlyBrush = None
-        self.setList( list, columns, headers, id )
+
+        # Set signals before setting list. Moved here 
+        self.modelReset.connect( parent._onModelReset )
+        self.layoutAboutToBeChanged.connect( parent._saveSelectedRow )
+        self.layoutChanged.connect( parent._restoreSelectedRow )
+
+        self.setList( list, columns, headers, idColumn )
 
     def list( self ):
         return self._list
@@ -238,7 +267,7 @@ class DictionaryListModel( QAbstractTableModel ):
                            for i in range(len(self._list)) 
                            if self._filter(self._list[i])]
         else:
-            self._index = range( len( self._list) )
+            self._index = [i for i in range( len( self._list) )]
         self._sortIndex()
         self._lookup = None
 
@@ -343,8 +372,10 @@ class DictionaryListModel( QAbstractTableModel ):
         if self._sortColumn == None:
             return
         key = self._columns[self._sortColumn]
-        keyfunc = lambda x: self._list[x].get(key)
-        self._index.sort( None, keyfunc, self._sortReverse )
+        # Replaced sorting function with something more heavy duty for handling of varied address formats while sorting by number.
+        if key in ('fullAddress'):  self._index.sort( key=addressSorter, reverse=self._sortReverse )
+        elif key in ('addressId'):  self._index.sort( key=int, reverse=self._sortReverse )
+        else: raise NotImplementedError
         self._lookup = None
 
     def updateItem( self, index ):
@@ -360,3 +391,36 @@ class DictionaryListModel( QAbstractTableModel ):
         elif showing:
             self.dataChanged.emit(self.index(row,0),self.index(row,len(self._columns)))
         self.itemUpdated.emit( index )
+
+def addressSorter(value:str):
+    import re
+    ''' The purpose of this fucntion to provide proper sorting of the address based on the components, rather than simply as a string. '''
+    _value = value.replace('/','|').replace('-','|')
+    street = ' '.join(x for x in _value.split(' ')[1:])
+    full_num:str = _value.split(' ')[0]
+    has_unit = True if '|' in full_num else False 
+   
+    if has_unit:
+        unit_num, street_num = full_num.split('|')   
+        
+        # Check for Unit Numbers
+        unit_splitter = list(x for x in re.split('(\d+)', unit_num) if x)
+        unit_num, unit_letter = unit_splitter[0], '' if len(unit_splitter) == 1 else unit_splitter
+        
+        # Check for Street Numbers
+        street_splitter = list(x for x in re.split('(\d+)', street_num) if x)
+        street_num, street_letter = street_splitter[0], '' if len(street_splitter) == 1 else street_splitter
+        
+        # Define Sort
+        sort_vals = (
+            int(street_num) if street_num else 0,         # Number, if present, for the street address. Otherwise set to ''
+            street_letter if street_letter else '',     # Letter, if present, for the street address. Otherwise set to 0
+            int(unit_num) if unit_num else 0,         # Number, if present, for the unit. Otherwise set to ''
+            unit_letter if unit_letter else '',         # Letter, if present, for the unit. Otherwise set to 0
+            street                                      # Street, Locality, Region
+        )  
+        return sort_vals
+                    
+    else:
+        num = full_num.strip('|')
+        return (int(num), street)
