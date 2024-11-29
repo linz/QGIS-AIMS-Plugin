@@ -13,6 +13,7 @@ from qgis.PyQt.QtCore import *
 from qgis.PyQt.QtGui import *
 from qgis.PyQt.QtWidgets import *
 from qgis.core import *
+import re
 
 # DictionaryListView and DictionaryListModel.  
 
@@ -393,34 +394,85 @@ class DictionaryListModel( QAbstractTableModel ):
         self.itemUpdated.emit( index )
 
 def addressSorter(value:str):
-    import re
-    ''' The purpose of this fucntion to provide proper sorting of the address based on the components, rather than simply as a string. '''
+    ''' The purpose of this function to provide proper sorting of the address based on the components, rather than simply as a string. '''
+    # Placeholders
+    unit_num, street_num, unit_letter, street_letter = 0, 0, '!', '!'
+
+    # Handle 'Unit' if it precedes the address
+    ignore_prefix = ['Unit', 'Floor', ' ']
+    for x in ignore_prefix: value = value.lstrip(x)
+
+    # Split Address Components
     _value = value.replace('/','|').replace('-','|')
-    street = ' '.join(x for x in _value.split(' ')[1:])
+    remainder = ' '.join(x for x in _value.split(' ')[1:])
     full_num:str = _value.split(' ')[0]
     has_unit = True if '|' in full_num else False 
-   
-    if has_unit:
-        unit_num, street_num = full_num.split('|')   
-        
-        # Check for Unit Numbers
-        unit_splitter = list(x for x in re.split('(\d+)', unit_num) if x)
-        unit_num, unit_letter = unit_splitter[0], '' if len(unit_splitter) == 1 else unit_splitter
-        
-        # Check for Street Numbers
-        street_splitter = list(x for x in re.split('(\d+)', street_num) if x)
-        street_num, street_letter = street_splitter[0], '' if len(street_splitter) == 1 else street_splitter
-        
-        # Define Sort
-        sort_vals = (
-            int(street_num) if street_num else 0,         # Number, if present, for the street address. Otherwise set to ''
-            street_letter if street_letter else '',     # Letter, if present, for the street address. Otherwise set to 0
-            int(unit_num) if unit_num else 0,         # Number, if present, for the unit. Otherwise set to ''
-            unit_letter if unit_letter else '',         # Letter, if present, for the unit. Otherwise set to 0
-            street                                      # Street, Locality, Region
-        )  
-        return sort_vals
-                    
+    num_only = True if full_num.isnumeric() else False
+
+    # If | is present, we know we have a Unit in front of the Street Number
+    if has_unit: unit, street = full_num.split('|') 
+    else:        unit, street = None, full_num
+
+    # If unit: Seperate out into unit letter and number
+    if has_unit and unit:
+        unit_splitter = list(x for x in re.split('(\d+)', unit) if x)
+        unit_num, unit_letter = unit_splitter[0], '!' if len(unit_splitter) == 1 else unit_splitter[1]
+
+    # If full_num is a number, set the street_num value to full_num and move on.
+    if num_only:
+        street_num = full_num
     else:
-        num = full_num.strip('|')
-        return (int(num), street)
+        street_splitter = list(x for x in re.split('(\d+)', street) if x)
+        street_num, street_letter = street_splitter[0], '!' if len(street_splitter) == 1 else street_splitter[1]
+
+   # Define Sort
+    sort_vals = (
+        proxyInt(street_num) if street_num != 0 else 0,         # Number, if present, for the street address. Otherwise set to ''
+        street_letter if street_letter else '!',     # Letter, if present, for the street address. Otherwise set to 0
+        proxyInt(unit_num) if unit_num != 0 else 0,         # Number, if present, for the unit. Otherwise set to ''
+        unit_letter if unit_letter else '!',         # Letter, if present, for the unit. Otherwise set to 0
+        remainder                                      # Street, Locality, Region
+    )  
+    # print(f'[DEBUG] - Sort Value: {sort_vals}')
+    return sort_vals
+    
+def proxyInt(value, proxyVal=10000000):
+    ''' In order to avoid issues with sorting mixed numbers and integers... '''
+    a = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.-_'
+    if isinstance(value, int): return value
+
+    try:
+        _val = int(value)
+    except:
+        _val = proxyVal
+        try:
+            # Using a base value, get the index from the string list about and
+            # add that index to the proxyVal based on first char of the value.
+            if value[0] == 'G': _val = 0
+            else: _val = proxyVal + a.index()
+        except: pass
+    return _val
+
+def test(shortlist):
+    for s in shortlist:
+        print(s)
+
+    print('\n --------------------------------------- \n')
+    shortlist.sort( key=addressSorter, reverse=False )
+
+    for s in shortlist:
+        print(s)
+
+if __name__ == '__main__':
+
+    _shortlist2 = [
+        '2/84A Boulcott Street, Wellington Central, Wellington',
+        '1/84A Boulcott Street, Wellington Central, Wellington',
+        '3/84A Boulcott Street, Wellington Central, Wellington',
+        '84 Boulcott Street, Wellington Central, Wellington',
+        '3/86 Boulcott Street, Wellington Central, Wellington',
+        '84A Boulcott Street, Wellington Central, Wellington',
+        'Unit 3/84A Boulcott Street, Wellington Central, Wellington',
+    ]
+
+    test(_shortlist2)
