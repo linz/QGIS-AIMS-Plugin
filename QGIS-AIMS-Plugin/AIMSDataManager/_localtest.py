@@ -1,0 +1,453 @@
+# -*- coding: utf-8 -*-
+
+import os
+import sys
+import pickle
+import copy
+import time
+import pprint
+import collections
+
+from DataManager import DataManager
+from AimsUtility import FeedRef,ActionType,ApprovalType,GroupActionType,GroupApprovalType,FeatureType,FeedType,Configuration,FEEDS,FIRST
+from AimsLogging import Logger
+from Const import THREAD_JOIN_TIMEOUT,RES_PATH,LOCAL_ADL,SWZERO,NEZERO,NULL_PAGE_VALUE as NPV
+from Address import Address, AddressChange, AddressResolution,Position
+from FeatureFactory import FeatureFactory
+from DataSync import DataSync,DataSyncFeatures,DataSyncFeeds
+from datetime import datetime as DT
+
+aimslog = None
+
+class LocalTest():
+    flag = False    
+    
+    global aimslog
+    aimslog = Logger.setup()
+    
+    def t2(self):
+        #from Config import ConfigReader as CR
+        import sys
+        ref = sys.modules
+        import Const# import const
+        print(Const.DEF_SEP)
+        
+    
+    def observe(self,observable,*args,**kwargs):
+        self.flag = True
+        print('LOCALTEST observes:')
+        print('*obs',observable)
+        print('*ARGS',args)
+        print('*KWARGS',kwargs)
+        
+    def test(self):
+        global refsnap
+        refsnap = {0:None,1:None,2:None}
+        af = {ft:FeatureFactory.getInstance(FeedRef((FeatureType.ADDRESS,ft))) for ft in (FeedType.FEATURES,FeedType.CHANGEFEED,FeedType.RESOLUTIONFEED)}
+        gf = {ft:FeatureFactory.getInstance(FeedRef((FeatureType.GROUPS,ft))) for ft in (FeedType.CHANGEFEED,FeedType.RESOLUTIONFEED)}
+        af[3] = FeatureFactory.getInstance(FeedRef((FeatureType.GROUPS,FeedType.CHANGEFEED)))
+        #with DataManager(start=None) as dm:
+        #    dm.start(FeedType.CHANGEFEED)
+        with DataManager() as dm:
+            dm.registermain(self)
+            self.test1(dm,af)
+            
+            
+    def test1(self,dm,af):
+        #time.sleep(100000) 
+        #dm.persist.ADL = testdata
+        #get some data
+        listofaddresses = dm.pull()
+        print('addr list before feed checkin',[len(l) for l in listofaddresses.values()])
+        
+        #TESTSUPP
+        self.testsupp(dm,af)
+        
+        #TESTUSER
+        #self.testuseractions(dm)
+        
+        #TEST RESTART
+        self.testrestartCR(dm)
+        
+        #TEST ADDRESS ADD REQUEST
+        self.testaddaddress(dm,af)        
+        
+        #TEST SHIFT
+        self.testfeatureshift(dm)
+        
+        # TEST ACF
+        self.testchangefeedAUR(dm,af)
+        
+        # TEST ARF
+        self.testresolutionfeedAUD(dm,af)        
+        
+        # TEST GRF
+        self.testgrpresfeedAUD(dm,af)
+        
+        #TEST SHIFT
+        self.testfeatureshift(dm)
+        
+        aimslog.info(f'*** Resolution ADD {time.process_time()}') 
+        time.sleep(30) 
+        #return
+        print('entering response mode')
+        countdown = 10
+        while countdown:
+            aimslog.info(f'*** Main TICK {time.process_time()}')
+            rr = self.testresp(dm)
+            time.sleep(30)
+            countdown -= 1
+            
+    def testsupp(self,dm,af):
+        a = self.gettestaddress(af[FeedType.FEATURES])
+        #a._version = 3058411
+        dm.supplementAddress(a,2000)
+
+        
+            
+    def testaddaddress(self,dm,af):
+        a = self.getmacronatedtestaddress(af[FeedType.FEATURES])        
+        dm.addAddress(a,2000)
+        
+        
+        
+    def testfeatureshift(self,dm):
+    
+        aimslog.info(f'*** Main SHIFT {time.process_time()}')
+        
+        #returns features with macrons
+        #170.644518397,-45.7574711286, 170.620918622,-45.7764696892
+        dm.setbb(sw=(170.620918622,-45.7764696892), ne=(170.644518397,-45.7574711286))
+        resp = None
+        while not self.flag: 
+            time.sleep(5)   
+        else:
+            r1,r2,r3 = self.testresp(dm) 
+        
+        
+        
+        dm.setbb(sw=(174.76918,-41.28515), ne=(174.79509,-41.26491))
+        #time.sleep(60)
+        resp = None
+        while not self.flag: 
+            time.sleep(5)   
+        else:
+            r1,r2,r3 = self.testresp(dm) 
+            
+        dm.setbb(sw=(174.76928,-41.28515), ne=(174.79519,-41.26481))
+        time.sleep(60)
+        resp = None
+        while not self.flag: 
+            time.sleep(5)   
+        else:
+            r1,r2,r3 = self.testresp(dm) 
+            
+        dm.setbb(sw=(174.76928,-41.28515), ne=(174.79529,-41.26471))
+        time.sleep(60)
+        resp = None
+        while not self.flag: 
+            time.sleep(5)   
+        else:
+            r1,r2,r3 = self.testresp(dm)
+        
+    def testrestartCR(self,dm):
+        dm.restart(FEEDS['AF'])
+        time.sleep(10)
+        dm.restart(FEEDS['AC'])
+        time.sleep(10)
+        dm.restart(FEEDS['AR'])
+        
+    #CHANGEFEED
+    def testchangefeedAUR(self,dm,af):
+        ver = 1000000
+        cid = 2000000
+        #pull address from features (map)
+        addr_f = self.gettestaddress(af[FeedType.FEATURES])
+        #cast to addresschange type, to do cf ops
+        addr_c = dm.castTo(FeedType.CHANGEFEED,addr_f)
+        #addr_c.setVersion(ver)
+#         aimslog.info(f'*** Change ADD {time.process_time()}')
+#         rqid1 = 1234321
+#         dm.addAddress(addr_c,rqid1)
+#         resp = None
+#         tout = 10
+#         while True: 
+#             resp,_,_ = self.testresp(dm,FeedType.CHANGEFEED)
+#             if resp: 
+#                 err = resp[0].getErrors()
+#                 printrqid1,resp[0].meta.requestId
+#                 print'e',err
+#                 if not err:
+#                     cid = resp[0].getChangeId()
+#                 break
+#             if not tout: break
+#             tout +- 1
+#             time.sleep(5)
+#         ver += 1
+#        
+#            
+#         aimslog.info(f'*** Change UPDATE {time.process_time()}')
+#         rqid2 = 2345432
+#         addr_c.setFullAddress('Unit C, 16 Islay Street, Glenorchy')
+#         #addr_c.setChangeId(cid)
+#         #addr_c.setVersion(ver)
+#         dm.updateAddress(addr_c,rqid2)
+#         resp = None
+#         tout = 10
+#         while True: 
+#             resp,_,_ = self.testresp(dm,FeedType.CHANGEFEED)
+#             if resp: 
+#                 err = resp[0].getErrors()
+#                 printrqid2,resp[0].meta.requestId
+#                 print'e',err
+#                 if not err:
+#                     cid = resp[0].getChangeId()
+#                 break
+#             if not tout: break
+#             tout -= 1
+#             time.sleep(5)
+#         ver += 1
+#         
+        
+        aimslog.info(f'*** Change RETIRE {time.process_time()}')
+        rqid3 = 3456543
+        #addr_c.setChangeId(1837997)#cid)
+        #addr_c.setVersion(ver)
+        addr_c.setAddressId(20)#1,10,9,8
+        dm.retireAddress(addr_c,rqid3)
+        resp = None
+        tout = 10
+        while True: 
+            resp,_,_ = self.testresp(dm,FeedType.CHANGEFEED)
+            if resp: 
+                err = resp[0].getErrors()
+                print(rqid3,resp[0].meta.requestId)
+                print('e',err)
+                if not err:
+                    cid = resp[0].getChangeId()
+                break
+            if not tout: break
+            tout -= 1
+            time.sleep(5)     
+        ver += 1
+        
+    def testresolutionfeedAUD(self,dm,af):
+        ver = 6977370
+        #cid = 4117724
+        cid = 4117720
+        #pull address from features (map)
+        addr_f = self.gettestaddress(af[FeedType.FEATURES])
+        #cast to addresschange type, to do cf ops
+        addr_r = dm.castTo(FeedType.RESOLUTIONFEED,addr_f)
+        #addr_r = af[FeedType.RESOLUTIONFEED].cast(addr_f)
+        #addr_r.setVersion(ver)
+        addr_r.setChangeId(cid)
+        
+        aimslog.info(f'*** Resolution ACCEPT {time.process_time()}')
+        rqid1 = 4567654
+        dm.acceptAddress(addr_r,rqid1)
+        resp = None
+        while True: 
+            resp,_,_ = self.testresp(dm,FeedType.RESOLUTIONFEED)
+            if resp: 
+                print(rqid1,resp[0].meta.requestId)
+                break
+            time.sleep(5)
+        ver += 1
+     
+         
+        aimslog.info(f'*** Resolution UPDATE {time.process_time()}')
+        rqid2 = 5678765
+        addr_r.setFullAddress('Unit B, 16 Islay Street, Glenorchy')
+        #addr_r.setVersion(ver)
+        dm.repairAddress(addr_r,rqid2)
+        resp = None
+        while True: 
+            resp,_,_ = self.testresp(dm,FeedType.RESOLUTIONFEED)
+            if resp: 
+                print(rqid2,resp[0].meta.requestId)
+                break
+            time.sleep(5)
+        ver += 1
+        
+        
+        aimslog.info(f'*** Resolution DECLINE {time.process_time()}')
+        rqid3 = 6789876
+        #addr_r.setVersion(ver)
+        dm.declineAddress(addr_r,rqid3)
+        resp = None
+        while not resp: 
+            resp,_,_ = self.testresp(dm,FeedType.RESOLUTIONFEED)
+            if resp: 
+                print(rqid3,resp[0].meta.requestId)
+                break
+            time.sleep(5)     
+        ver += 1
+            
+    def testgrpresfeedAUD(self,dm,af):
+        ver = 6977370
+        #cid = 4117724
+        cid = 4117720
+        #pull address from features (map)
+        grp_r = self.gettestgroup(FeatureFactory.getInstance(FeedRef((FeatureType.GROUPS,FeedType.RESOLUTIONFEED))))
+        
+        aimslog.info(f'*** GROUP Resolution ACCEPT {time.process_time()}')
+        rqid1 = 4321234
+        dm.acceptGroup(grp_r,rqid1)
+        resp = None
+        while True: 
+            _,resp,_ = self.testresp(dm,FeedType.RESOLUTIONFEED)
+            if resp: 
+                print(rqid1,resp[0].meta.requestId)
+                break
+            time.sleep(5)
+        ver += 1
+        
+    def testuseractions(self,dm):
+        '''create and submit user actions, add/update/delete '''
+        ver = 100
+        uid = 100
+        rqid = 100
+        
+        etft = FeedRef((FeatureType.USERS,FeedType.ADMIN))
+        uf = FeatureFactory.getInstance(etft)
+        
+        user = uf.get('local_test_user')
+        user.setUserId(uid)
+        user._version = ver
+        user._userName = 'Scott Tiger'
+        user._email = 'scott@oracle.com'
+        user._requiresProgress = 'False'
+        user._organisation = 'LINZ'
+        user._role = 'follower'
+        
+        dm.addUser(user,rqid)
+        while True: 
+            _,_,resp = self.testresp(dm,FeedType.ADMIN)
+            if resp: 
+                print(rqid,resp[0].meta.requestId)
+                break
+            time.sleep(5)
+            
+        rqid+=1
+        user._userName = 'Scott J Tiger'
+        dm.updateUser(user,rqid)
+        while True: 
+            _,_,resp = self.testresp(dm,FeedType.ADMIN)
+            if resp: 
+                print(rqid,resp[0].meta.requestId)
+                break
+            time.sleep(5)
+            
+        rqid+=1
+        dm.deleteUser(user,rqid)
+        while True: 
+            _,_,resp = self.testresp(dm,FeedType.ADMIN)
+            if resp: 
+                print(rqid,resp[0].meta.requestId)
+                break
+            time.sleep(5)
+        
+        
+        
+        
+    def testresp(self,dm,ft=FeedType.CHANGEFEED):
+        r = None
+        #aimslog.info('*** Main COUNT {}'.format(dm.refresh()))  
+        out = dm.pull()
+        for o in out:
+            #aimslog.info('*** Main OUTPUT {} - [{}]'.format(out[o],len(out[o])))
+            aimslog.info('*** Main OUTPUT {} [{}]'.format(o,len(out[o])))
+        
+        etft = FeedRef((FeatureType.ADDRESS,ft))
+        resp1 = dm.response(etft)
+        for r in resp1:
+            #aimslog.info('*** Main RESP {} - [{}]'.format(r,len(resp1))) 
+            aimslog.info('*** Main RESP {} [{}]'.format(r,len(resp1)))        
+            
+        etft = FeedRef((FeatureType.GROUPS,ft))
+        resp2 = dm.response(etft)
+        for r in resp2:
+            #aimslog.info('*** Main RESP {} - [{}]'.format(r,len(res2p))) 
+            aimslog.info('*** Main GROUP RESP {} [{}]'.format(r,len(resp2)))
+            
+        etft = FeedRef((FeatureType.USERS,ft))
+        resp3 = dm.response(etft)
+        for r in resp3:
+            #aimslog.info('*** Main RESP {} - [{}]'.format(r,len(res2p))) 
+            aimslog.info('*** Main USERS RESP {} [{}]'.format(r,len(resp2)))
+            
+        return resp1,resp2,resp3
+                
+    def gettestaddress(self,ff):
+        a = ff.get('test_featuretype_address')
+        p = Position.getInstance(
+            {'position':{'type':'Point','coordinates': [168.38392191667,-44.8511013],'crs':{'type':'name','properties':{'name':'urn:ogc:def:crs:EPSG::4167'}}},'positionType':'Centroid','primary':True}
+        )
+        a.setAddressType('Road')
+        a.setAddressNumber('16')
+        a.setAddressId('29')
+        a.setLifecycle('Current')
+        a.setRoadCentrelineId('11849')
+        a.setRoadName('Islay')
+        a.setRoadType('Street'),
+        a.setSuburbLocality('Glenorchy')
+        a.setFullAddressNumber('17')
+        a.setFullRoadName('Islay Street')
+        a.setFullAddress('17 Islay Street, Glenorchy')
+        a._addressedObject_addressableObjectId = '1416143'
+        a.setAddObjectType('Parcel')
+        
+        a.setUnitType('Unit')
+        a.setUnitValue('b')
+    
+        a.setAddressPositions(p)
+    
+        a._codes_suburbLocalityId = '2104'
+        a._codes_parcelId = '3132748'
+        a._codes_meshblock = '3174100'
+        return a    
+    
+    def getmacronatedtestaddress(self,ff):
+        a = ff.get('test_macronated_address')
+        p = Position.getInstance(
+            {'position':{'type':'Point','coordinates': [170.62953346606358,-45.768294405809044],'crs':{'type':'name','properties':{'name':'urn:ogc:def:crs:EPSG::4167'}}},'positionType':'Centroid','primary':True}
+        )
+        a.setAddressType('Road')
+        a.setAddressNumber('11')
+        a.setAddressId('1787900')
+        a.setLifecycle('Current')
+        a.setRoadCentrelineId('9512')
+        a.setRoadName('Pūrākaunui School')
+        a.setRoadType('Road'),
+        a.setSuburbLocality('Purakaunui')
+        a.setFullAddressNumber('11')
+        a.setFullRoadName('Pūrākaunui School Road')
+        a.setFullAddress('11 Pūrākaunui School, Purakaunui')
+        a._addressedObject_addressableObjectId = '1794488'
+        a.setAddObjectType('Parcel')
+        
+        a.setUnitType('Unit')
+        a.setUnitValue('f')
+    
+        a.setAddressPositions(p)
+    
+        a._codes_suburbLocalityId = '2480'
+        a._codes_parcelId = '3073736'
+        a._codes_meshblock = '2863900'
+        return a
+
+    
+    def gettestgroup(self,ff):
+        g = ff.get('test_res_group')
+        g.setChangeGroupId('4118268')#override this
+        g.setVersion('9266184')#override this too
+        return g
+        
+            
+if __name__ == '__main__':
+    print('start')
+    lt = LocalTest()
+    #lt.t2()
+    lt.test()  
+    print('finish')

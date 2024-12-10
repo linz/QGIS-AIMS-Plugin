@@ -7,8 +7,12 @@
 *.log
 /.travis.yml.backup
 *ini
+!aims_test_config.ini
 AIMSDataManager/.cache/*
 .gitignore
 /.cache/
 /AimsLogging.html
 /Config.html
+*.vscode
+symbology-style.db
+*.zip

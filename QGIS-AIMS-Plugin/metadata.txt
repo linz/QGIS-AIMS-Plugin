@@ -1,0 +1,25 @@
+################################################################################
+#
+# Copyright 2016 Crown copyright (c)
+# Land Information New Zealand and the New Zealand Government.
+# All rights reserved
+#
+# This program is released under the terms of the new BSD license. See the 
+# LICENSE file for more information.
+#
+################################################################################
+
+[general]
+name=Aims Plugin
+description=QGIS Plugin for managing LINZ address information
+about=QGIS Plugin for managing LINZ address information
+category=Vector
+version=3.28.6
+experimental=True
+qgisMinimumVersion=3.28
+author=LINZ
+email=AddressAdmin@linz.govt.nz
+icon=./resources/loadaddress.png
+homepage=https://github.com/linz/QGIS-AIMS-Plugin
+tracker=https://github.com/linz/QGIS-AIMS-Plugin/issues
+repository=https://github.com/linz/QGIS-AIMS-Plugin
